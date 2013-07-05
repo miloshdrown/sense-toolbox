@@ -65,7 +65,7 @@ public class ApmDialog extends DialogFragment {
         int i = getArguments().getInt("selected");
         Builder bld = new Builder(getActivity());
         bld.setTitle("Advanced Power Menu");
-        bld.setSingleChoiceItems(new String[]{"Normal", "Hot Reboot", "Recovery", "Bootloader"}, i, null);
+        bld.setSingleChoiceItems(new String[]{"Normal", "Hot reboot", "Recovery", "Bootloader"}, i, null);
         bld.setPositiveButton("OK", posL);
         bld.setNegativeButton("Cancel", negL);
         return bld.create();
