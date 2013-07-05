@@ -1,0 +1,49 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:key="prefs" >
+
+    <PreferenceCategory 
+        android:title="Camera Mods"
+        android:key="pref_key_cam">
+        <ListPreference
+            android:key="pref_key_cam_volup"
+            android:summary="The action for Volume Up in camera"
+            android:title="Volume Up action"
+            android:entries="@array/cam_actions"
+            android:entryValues="@array/cam_actions_val"
+            android:defaultValue="4"/>
+        <ListPreference
+            android:key="pref_key_cam_voldown"
+            android:summary="The action for Volume Down in camera"
+            android:title="Volume Down action"
+            android:entries="@array/cam_actions"
+            android:entryValues="@array/cam_actions_val"
+            android:defaultValue="4" />
+        <CheckBoxPreference
+            android:key="pref_key_cam_powerW"
+            android:summary="Enable or disable the battery warning at 14%"
+            android:title="Disable low battery warning"
+            android:defaultValue="true" />
+    </PreferenceCategory>
+    <PreferenceCategory 
+        android:title="SystemUI Mods"
+        android:key="pref_key_sysui">
+        <ListPreference
+            android:key="pref_key_sysui_battery"
+            android:summary="Change battery icon design"
+            android:title="Battery icon"
+            android:entries="@array/batt_icon"
+            android:entryValues="@array/batt_icon_val"
+            android:defaultValue="1"/>
+    </PreferenceCategory>
+    <PreferenceCategory 
+        android:title="Various Mods"
+        android:key="pref_key_other">
+        <CheckBoxPreference
+            android:key="pref_key_other_apm"
+            android:summary="Enable or disable Advanced Power Menu"
+            android:title="APM"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+</PreferenceScreen>
