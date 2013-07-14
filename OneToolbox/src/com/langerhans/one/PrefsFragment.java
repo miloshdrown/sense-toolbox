@@ -1,6 +1,5 @@
 package com.langerhans.one;
 
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
@@ -21,22 +20,10 @@ public class PrefsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
-        //PreferenceManager prefMgr = getPreferenceManager();
         getPreferenceManager().setSharedPreferencesName("one_toolbox_prefs");
         getPreferenceManager().setSharedPreferencesMode(1);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
-        
-        //SharedPreferences prefs = getActivity().getSharedPreferences("one_toolbox_prefs", 1);
-		//if (prefs.getBoolean("firstrun_mods", true)) {
-		//	try { //since setSharedPreferencesMode(1) is deprecated, this is a dirty workaround for the module until xposed 2.2 is available...
-		//		RootTools.sendShell("touch /data/data/com.langerhans.one/shared_prefs/com.langerhans.one_preferences.xml", -1);
-		//		RootTools.sendShell("chmod 664 /data/data/com.langerhans.one/shared_prefs/com.langerhans.one_preferences.xml", -1);
-		//		prefs.edit().putBoolean("firstrun_mods", false).commit();
-		//	} catch (Exception e) {
-		//		e.printStackTrace();
-		//	}
-		//}
-        
+
         addPreferencesFromResource(R.xml.preferences);
         Toast.makeText(getActivity(), "Make sure to enable the module in xposed!", Toast.LENGTH_LONG).show();
         Preference.OnPreferenceChangeListener camChangeListener = new Preference.OnPreferenceChangeListener() {

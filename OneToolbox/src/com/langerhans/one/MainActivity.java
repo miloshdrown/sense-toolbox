@@ -4,6 +4,7 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
 import com.langerhans.one.R;
+import com.langerhans.one.utils.MyTabListener;
 
 public class MainActivity extends Activity {
 

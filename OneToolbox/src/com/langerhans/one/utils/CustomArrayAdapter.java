@@ -1,8 +1,10 @@
-package com.langerhans.one;
+package com.langerhans.one.utils;
 
 import java.util.List;
 
 import com.langerhans.one.R;
+import com.langerhans.one.R.id;
+import com.langerhans.one.R.layout;
 
 import android.app.Activity;
 import android.view.LayoutInflater;

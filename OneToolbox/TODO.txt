@@ -1,2 +1,8 @@
 - Help screen edit
 - new icon
+- horizontal eqs
+- apm
+- transparent status bar
+- batt icons
+- keep screen on
+- minor eqs

@@ -1,4 +1,4 @@
-package com.langerhans.one;
+package com.langerhans.one.utils;
 
 import android.app.ActionBar;
 import android.app.ActionBar.Tab;
@@ -6,7 +6,7 @@ import android.app.Activity;
 import android.app.Fragment;
 import android.app.FragmentTransaction;
 
-class MyTabListener<T extends Fragment> implements ActionBar.TabListener {
+public class MyTabListener<T extends Fragment> implements ActionBar.TabListener {
     private Fragment mFragment;
     private Activity mActivity;
     private final String mTag;

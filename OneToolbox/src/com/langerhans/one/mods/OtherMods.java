@@ -1,4 +1,4 @@
-package com.langerhans.one;
+package com.langerhans.one.mods;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import android.content.Context;
