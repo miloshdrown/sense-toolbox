@@ -2,16 +2,14 @@ package com.langerhans.one.utils;
 
 import java.util.List;
 
-import com.langerhans.one.R;
-import com.langerhans.one.R.id;
-import com.langerhans.one.R.layout;
-
 import android.app.Activity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
+
+import com.langerhans.one.R;
 
 public class CustomArrayAdapter extends ArrayAdapter<String> {
 	

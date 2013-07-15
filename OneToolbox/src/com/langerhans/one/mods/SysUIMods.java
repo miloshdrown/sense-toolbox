@@ -1,8 +1,6 @@
 package com.langerhans.one.mods;
 
 import com.langerhans.one.R;
-import com.langerhans.one.R.drawable;
-
 import android.content.res.XModuleResources;
 import android.view.View;
 import android.widget.ImageView;
