@@ -20,7 +20,9 @@ import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -28,19 +30,22 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Toast;
 
-import com.langerhans.one.utils.CustomArrayAdapter;
+import com.animoto.android.views.DraggableGridView;
+import com.animoto.android.views.OnRearrangeListener;
 import com.langerhans.one.utils.Helpers;
-import com.mobeta.android.dslv.DragSortController;
-import com.mobeta.android.dslv.DragSortListView;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
 public class ReorderFragment extends Fragment {
 
-	DragSortListView listView;
+	DraggableGridView dgv;
 	ArrayAdapter<String> adapter;
 	DocumentBuilderFactory dbf;
 	DocumentBuilder db;
@@ -49,38 +54,8 @@ public class ReorderFragment extends Fragment {
 	String cidXML;
 	ArrayList<String> qsAvail;
 	Context ctx;
-
-	private DragSortListView.DropListener onDrop = new DragSortListView.DropListener()
-	{
-	    @Override
-	    public void drop(int from, int to)
-	    {
-	        if (from != to)
-	        {
-	            String item = adapter.getItem(from);
-	            adapter.remove(item);
-	            adapter.insert(item, to);
-	        }
-	    }
-	};
-
-	private DragSortListView.RemoveListener onRemove = new DragSortListView.RemoveListener()
-	{
-	    @Override
-	    public void remove(int which)
-	    {
-	    	if(adapter.getCount()<2)
-	    	{
-	    		alertbox("Warning", "You can't remove the last item!");
-	    		adapter.notifyDataSetChanged();
-	    		return;
-	    	}else
-	    	{
-			    qsAvail.add(Helpers.mapStringToID(adapter.getItem(which)));
-		        adapter.remove(adapter.getItem(which));
-	    	}
-	    }
-	};
+    String packagename;
+	Resources res;
 		
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -105,41 +80,107 @@ public class ReorderFragment extends Fragment {
 	public void onStart() {
 		super.onStart();
 		ctx = getActivity();
-		SharedPreferences prefs = getActivity().getSharedPreferences("one_toolbox_prefs", 1);
+		SharedPreferences prefs = getActivity().getSharedPreferences("one_toolbox_prefs", 1); //1 = deprecated MODE_WORLD_READABLE
+		
+		//First run handling. May be removed later.
 		if (prefs.getBoolean("firstrun_reorder", true)) {
 			showOverLay();
             prefs.edit().putBoolean("firstrun_reorder", false).commit();
 		}
 
+		//Getting the CID for the right ACC file
 		cidXML = Helpers.getCID();
 		
-		listView = (DragSortListView) getActivity().findViewById(R.id.listview);
+		//Get the available tiles from the Resources
 	    String[] qsAvailH = getResources().getStringArray(R.array.availTiles);
 	    qsAvail = new ArrayList<String>();
 	    Collections.addAll(qsAvail, qsAvailH);
-	    ArrayList<String> list = new ArrayList<String>(Arrays.asList(Helpers.parseACC(cidXML)));
-	    qsAvail.removeAll(list);
-	    for (int i = 0; i<list.size(); i++)
-	    {
-	    	list.set(i, Helpers.mapIDToString(Integer.parseInt(list.get(i))));
-	    }
 	    
-	    adapter = new CustomArrayAdapter(getActivity(), R.layout.row_layout, R.id.text, list);
-	    listView.setAdapter(adapter);
-	    listView.setDropListener(onDrop);
-	    listView.setRemoveListener(onRemove);
+	    //Parse the ACC file and add the currently used tiles into a new list, then create an ArrayAdapter from it
+	    ArrayList<String> used = new ArrayList<String>(Arrays.asList(Helpers.parseACC(cidXML)));
+	    qsAvail.removeAll(used);
+	    adapter = new ArrayAdapter<String>(ctx, R.layout.grid_item_layout, R.id.invisible_text, used);
+	    
+	    //Some setup for later
+	    dgv = ((DraggableGridView)getActivity().findViewById(R.id.dgv));
+	    packagename = ctx.getPackageName();
+		res = ctx.getResources();
+		
+		//Build the initial grid
+		renewGrid();
+	    
+	    dgv.setOnRearrangeListener(new OnRearrangeListener(){
+			@Override
+			public void onRearrange(int from, int to) {
+				if (from != to)
+		        {
+		            String item = adapter.getItem(from);
+		            adapter.remove(item);
+		            adapter.insert(item, to);
+		        }
+			}
+	    });
+	    
+	    dgv.setOnItemClickListener(new OnItemClickListener(){
 
-	    DragSortController controller = new DragSortController(listView);
-	    controller.setDragHandleId(R.id.handler);
-	    controller.setRemoveEnabled(true);
-	    controller.setSortEnabled(true);
-	    controller.setDragInitMode(1);
-
-	    listView.setFloatViewManager(controller);
-	    listView.setOnTouchListener(controller);
-	    listView.setDragEnabled(true);
-		    
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position,
+					long id) {
+				if(adapter.getCount()<2)
+		    	{
+					Toast.makeText(ctx, "You can't remove the last item!", Toast.LENGTH_SHORT).show();
+		    		return;
+		    	}else
+		    	{
+					askForDelete(adapter.getItem(position), view);
+		    	}
+			}
+	    	
+	    });
     }
+	
+	/**
+	 * Ask the user if he wants to delete the clicked EQS tile.
+	 * @param item The tile ID to be removed
+	 * @param view The grid child view to be removed
+	 */
+	private void askForDelete(final String item, final View view)
+	{
+		String tile = Helpers.mapIDToString(Integer.parseInt(item));
+		AlertDialog.Builder adb = new AlertDialog.Builder(ctx);
+		adb.setTitle("Remove " + tile + "?");
+		adb.setMessage("Do you want to remove the " + tile + " tile?\nYou can add it back via the menu on top.");
+		adb.setCancelable(true);
+		adb.setPositiveButton("Yes", new OnClickListener(){
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				adapter.remove(item);
+				dgv.removeView(view);
+			}
+		});
+		adb.setNegativeButton("No", new OnClickListener(){
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				//Do nothing
+			}
+		});
+		AlertDialog removeDialog = adb.create();
+		removeDialog.show();
+	}
+	
+	/**
+	 * Rebuild the grid view, e.g. after the adapter has been filled or a backup is restored
+	 */
+	private void renewGrid()
+	{
+		dgv.removeAllViews();
+		for(int i = 0; i < adapter.getCount(); i++)
+		{
+			ImageView icon = new ImageView(ctx);
+			icon.setImageDrawable(res.getDrawable(res.getIdentifier("qstile_" + adapter.getItem(i), "drawable", packagename)));
+			dgv.addView(icon);
+		}
+	}
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
@@ -163,19 +204,27 @@ public class ReorderFragment extends Fragment {
 		return true;
 	}
 	
+	/**
+	 * Simple helper to display an AlertDialog with an Ok button
+	 * @param title Title of the dialog
+	 * @param mymessage Message of the dialog
+	 */
 	protected void alertbox(String title, String mymessage)
 	{
 		new AlertDialog.Builder(getActivity())
 	    	.setMessage(mymessage)
 	    	.setTitle(title)
 	    	.setCancelable(true)
-	    	.setNeutralButton(android.R.string.cancel,
+	    	.setNeutralButton(android.R.string.ok,
 	        new DialogInterface.OnClickListener() {
 	        public void onClick(DialogInterface dialog, int whichButton){}
 	    	})
 	    	.show();
 	   }		
 	
+	/**
+	 * Ask the user if he wants to do a hot reboot.
+	 */
 	protected void askForReboot()
 	{
 		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
@@ -203,6 +252,9 @@ public class ReorderFragment extends Fragment {
 		alert.show();
 	}
 
+	/**
+	 * Opens a dialog with a list of currently available tiles to add to the grid.
+	 */
 	protected void openAddDialog()
 	{
 		final String[] items = qsAvail.toArray(new String[qsAvail.size()]);
@@ -215,16 +267,21 @@ public class ReorderFragment extends Fragment {
 		builder.setTitle("Select tile to add");
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 		    public void onClick(DialogInterface dialog, int item) {
-		         adapter.insert(items[item], 0);
-		         qsAvail.remove(Helpers.mapStringToID(items[item]));
+		    	 String id = Helpers.mapStringToID(items[item]);
+		         adapter.add(id);
+		         qsAvail.remove(id);
+		         ImageView icon = new ImageView(ctx);
+		         icon.setImageDrawable(res.getDrawable(res.getIdentifier("qstile_" + id, "drawable", packagename)));
+		         dgv.addView(icon);
 		    }
 		});
 		AlertDialog alert = builder.create();
 		alert.show();
 	}
 	
-
-	
+	/**
+	 * Restore the previous made backup, or inform the user that no backup exists
+	 */
 	protected void restorePrev()
 	{
 		File file = new File(getActivity().getExternalFilesDir(null), "qsOrder");
@@ -235,7 +292,10 @@ public class ReorderFragment extends Fragment {
 				if (!qss.isEmpty())
 				{
 					adapter.clear();
-					adapter.addAll(qss.split(";;"));
+					for(String item : qss.split(";;")){
+						adapter.add(Helpers.mapStringToID(item));
+					}
+					renewGrid();
 					alertbox("Success", "Backup successfully restored! Tap on \"Save\" to apply the order.");
 				}
 			} catch (FileNotFoundException e) {
@@ -244,6 +304,9 @@ public class ReorderFragment extends Fragment {
 		}
 	}
 	
+	/**
+	 * Save the backup
+	 */
 	protected void savePrev()
 	{
 		File file = new File(getActivity().getExternalFilesDir(null), "qsOrder");
@@ -264,6 +327,9 @@ public class ReorderFragment extends Fragment {
 		
 	}
 
+	/**
+	 * Shows an overlay view. Used at first start
+	 */
 	private void showOverLay(){
 		final Dialog dialog = new Dialog(ctx, android.R.style.Theme_Translucent_NoTitleBar);
 		dialog.setContentView(R.layout.overlay_view);

@@ -43,6 +43,10 @@ public class Helpers {
 		// TODO Auto-generated constructor stub
 	}
 
+	/**
+	 * Gets the CID of the device.
+	 * @return The CID
+	 */
 	public static String getCID() {
 		String cidXML;
         InputStream inputstream = null;
@@ -77,6 +81,11 @@ public class Helpers {
         return "ERR_NO_CID";
     }	
 	
+	/**
+	 * Parse the ACC XML file for the given CID
+	 * @param cidXML The CID of the device
+	 * @return A String Array that holds all currently used tiles
+	 */
 	public static String[] parseACC(String cidXML)
 	{
 		dbf = DocumentBuilderFactory.newInstance();
@@ -121,6 +130,11 @@ public class Helpers {
 		return null;
 	}
 	
+	/**
+	 * Writes the new ACC XML file.
+	 * @param cidXML The CID for naming the file. Should be the same as we read from.
+	 * @param adapter The ArrayAdapter that holds the tile order to be saved.
+	 */
 	public static void writeACC(String cidXML, ArrayAdapter<String> adapter)
 	{		
 		try 
@@ -129,7 +143,7 @@ public class Helpers {
 			for (int i = 0; i<adapter.getCount(); i++)
 			{
 				Element e = doc.createElement("int");
-				e.appendChild(doc.createTextNode(mapStringToID(adapter.getItem(i))));
+				e.appendChild(doc.createTextNode(adapter.getItem(i)));
 				eQS.appendChild(e);
 			}
 			File file = new File(Environment.getExternalStorageDirectory() + File.separator + "new.xml");
@@ -155,11 +169,20 @@ public class Helpers {
 		
 	}
 	
+	/**
+	 * Removes all children from the given XML node
+	 * @param node The node from which the children should be removed
+	 */
 	public static void removeAllChildren(Node node)
 	{
 	  for (Node child; (child = node.getFirstChild()) != null; node.removeChild(child));
 	}
 	
+	/**
+	 * Gets the String representation from an XML document
+	 * @param doc The XML document
+	 * @return The String representation
+	 */
 	public static String getStringFromDoc(org.w3c.dom.Document doc)    {
 		try {
 			  Transformer transformer = TransformerFactory.newInstance().newTransformer();
@@ -173,6 +196,11 @@ public class Helpers {
 			} 
 	}
 	
+	/**
+	 * Maps a given EQS name to it's ID
+	 * @param name EQS tile name
+	 * @return EQS tile ID
+	 */
 	public static String mapStringToID(String name)
 	{
 		if (name.equals("User Card")) return "0";
@@ -200,6 +228,11 @@ public class Helpers {
 		return "0";
 	}
 	
+	/**
+	 * Maps an EQS tile ID to it's name
+	 * @param id EQS tile ID
+	 * @return EQS tile name
+	 */
 	public static String mapIDToString(int id)
 	{
 		switch(id){

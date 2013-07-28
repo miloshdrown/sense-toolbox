@@ -20,11 +20,6 @@
             android:entries="@array/cam_actions"
             android:entryValues="@array/cam_actions_val"
             android:defaultValue="4" />
-        <CheckBoxPreference
-            android:key="pref_key_cam_powerW"
-            android:summary="Enable or disable the battery warning at 14%"
-            android:title="Disable low battery warning"
-            android:defaultValue="true" />
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="SystemUI Mods"

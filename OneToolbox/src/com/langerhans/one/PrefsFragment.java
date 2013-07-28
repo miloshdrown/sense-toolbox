@@ -1,7 +1,6 @@
 package com.langerhans.one;
 
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
@@ -36,10 +35,8 @@ public class PrefsFragment extends PreferenceFragment {
 
         ListPreference voldownPreference = (ListPreference) findPreference("pref_key_cam_voldown");
         ListPreference volupPreference = (ListPreference) findPreference("pref_key_cam_volup");
-        CheckBoxPreference powerWPreference = (CheckBoxPreference) findPreference("pref_key_cam_powerW");
         voldownPreference.setOnPreferenceChangeListener(camChangeListener);
         volupPreference.setOnPreferenceChangeListener(camChangeListener);
-        powerWPreference.setOnPreferenceChangeListener(camChangeListener);
 	}
 	
 	@Override

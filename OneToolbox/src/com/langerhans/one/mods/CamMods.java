@@ -29,8 +29,7 @@ public class CamMods implements IXposedHookLoadPackage{
 	    pref = new XSharedPreferences("com.langerhans.one", "one_toolbox_prefs");
 	    final int voldown = Integer.parseInt(pref.getString("pref_key_cam_voldown", "4"));
 	    final int volup = Integer.parseInt(pref.getString("pref_key_cam_volup", "4"));
-	    final boolean powerW = pref.getBoolean("pref_key_cam_powerW", false);
-	    if (voldown == 4 && volup == 4 && !powerW)
+	    if (voldown == 4 && volup == 4)
 	    	return;
 	    
 	    this.lpparamF = lpparam;
@@ -89,18 +88,7 @@ public class CamMods implements IXposedHookLoadPackage{
 				Method raise = findMethodExact("com.android.camera.event.Event", lpparamF.classLoader, "raise", Object.class, findClass("com.android.camera.event.EventArgs", lpparam.classLoader));
 				raise.invoke(keydownevent, param.thisObject, keyeventargs);
     		}
-	    });
-	    
-	    findAndHookMethod("com.android.camera.component.BatteryWatcher", lpparamF.classLoader, "isLower", int.class, String.class, new XC_MethodHook() {
-    		@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-    			if(powerW)
-    			{
-    				param.args[0] = 0;
-        			return;
-    			}
-    		}
-    	});
+	    });	    
 	}
 	
 	private void hookKeyUp()

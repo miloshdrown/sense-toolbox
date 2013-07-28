@@ -9,27 +9,8 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".ReorderFragment"
     android:id="@+id/reorder_fragment" >
-
-<com.mobeta.android.dslv.DragSortListView
-    android:id="@+id/listview"
-    android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
-    android:layout_margin="10dp"
-    android:dividerHeight="1dp"
-    android:paddingBottom="0dp"
-    android:paddingLeft="0dp"
-    android:paddingTop="0dp"
-    dslv:collapsed_height="2dp"
-    dslv:drag_enabled="true"
-    dslv:drag_scroll_start="0.33"
-    dslv:drag_start_mode="onMove"
-    dslv:float_alpha="0.3"
-    dslv:max_drag_scroll_speed="30"
-    dslv:remove_enabled="true"
-    dslv:remove_mode="flingRemove"
-    dslv:slide_shuffle_speed="0.8"
-    dslv:sort_enabled="true"
-    dslv:track_drag_sort="false"
-    dslv:use_default_controller="true" />
+    
+    <com.animoto.android.views.DraggableGridView android:id="@+id/dgv" android:layout_height="fill_parent" android:layout_width="fill_parent" android:layout_alignParentTop="true" android:layout_alignParentLeft="true">
+	</com.animoto.android.views.DraggableGridView>
 
 </RelativeLayout>
