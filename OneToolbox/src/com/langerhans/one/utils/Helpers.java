@@ -26,6 +26,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 
+import android.content.Context;
+import android.content.pm.PackageManager;
 import android.os.Environment;
 import android.widget.ArrayAdapter;
 
@@ -282,5 +284,25 @@ public class Helpers {
 			return "APN";
 		}
 		return "";
+	}
+	
+	/**
+	 * Check if the Xposed Installer is installed. 
+	 * It could still be that the user hasn't clikced 'install' there yet. 
+	 * But I don't know of a way to check that...
+	 * @param ctx The app context
+	 * @return true if Xposed Installer is installed
+	 */
+	public static boolean isXposedInstalled(Context ctx)
+	{
+		PackageManager pm = ctx.getPackageManager();
+	    boolean installed = false;
+	    try {
+	       pm.getPackageInfo("de.robv.android.xposed.installer", PackageManager.GET_ACTIVITIES);
+	       installed = true;
+	    } catch (PackageManager.NameNotFoundException e) {
+	       installed = false;
+	    }
+	    return installed;
 	}
 }

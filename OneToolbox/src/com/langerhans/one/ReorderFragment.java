@@ -16,7 +16,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -34,11 +33,10 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import android.widget.Toast;
 
-import com.animoto.android.views.DraggableGridView;
-import com.animoto.android.views.OnRearrangeListener;
+import com.langerhans.one.dgv.DraggableGridView;
+import com.langerhans.one.dgv.OnRearrangeListener;
 import com.langerhans.one.utils.Helpers;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
@@ -84,7 +82,7 @@ public class ReorderFragment extends Fragment {
 		
 		//First run handling. May be removed later.
 		if (prefs.getBoolean("firstrun_reorder", true)) {
-			showOverLay();
+			showHelp();
             prefs.edit().putBoolean("firstrun_reorder", false).commit();
 		}
 
@@ -99,7 +97,7 @@ public class ReorderFragment extends Fragment {
 	    //Parse the ACC file and add the currently used tiles into a new list, then create an ArrayAdapter from it
 	    ArrayList<String> used = new ArrayList<String>(Arrays.asList(Helpers.parseACC(cidXML)));
 	    qsAvail.removeAll(used);
-	    adapter = new ArrayAdapter<String>(ctx, R.layout.grid_item_layout, R.id.invisible_text, used);
+	    adapter = new ArrayAdapter<String>(ctx, R.layout.dummy_layout, R.id.invisible_text, used);
 	    
 	    //Some setup for later
 	    dgv = ((DraggableGridView)getActivity().findViewById(R.id.dgv));
@@ -293,7 +291,7 @@ public class ReorderFragment extends Fragment {
 				{
 					adapter.clear();
 					for(String item : qss.split(";;")){
-						adapter.add(Helpers.mapStringToID(item));
+						adapter.add(item);
 					}
 					renewGrid();
 					alertbox("Success", "Backup successfully restored! Tap on \"Save\" to apply the order.");
@@ -324,22 +322,19 @@ public class ReorderFragment extends Fragment {
 				e.printStackTrace();
 			}
 	    }
-		
 	}
 
 	/**
-	 * Shows an overlay view. Used at first start
+	 * Shows a help dialog. Used at first start
 	 */
-	private void showOverLay(){
-		final Dialog dialog = new Dialog(ctx, android.R.style.Theme_Translucent_NoTitleBar);
-		dialog.setContentView(R.layout.overlay_view);
-		LinearLayout layout = (LinearLayout) dialog.findViewById(R.id.overlayLayout);
-		layout.setOnClickListener(new View.OnClickListener() {
-			@Override
-			public void onClick(View arg0) {
-				dialog.dismiss();
-			}
-		});
-		dialog.show();
+	private void showHelp(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		builder.setTitle("First start");
+		LayoutInflater inflater = getActivity().getLayoutInflater();
+		View dialoglayout = inflater.inflate(R.layout.first_start, (ViewGroup) getActivity().getCurrentFocus());
+		builder.setView(dialoglayout);
+		builder.setNeutralButton("Close dialog forever!", null);
+		AlertDialog alert = builder.create();
+		alert.show();
 	}
 }

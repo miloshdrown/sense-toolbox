@@ -1,5 +1,6 @@
 package com.langerhans.one;
 
+import android.app.AlertDialog;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
@@ -10,6 +11,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.langerhans.one.utils.Helpers;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
@@ -19,12 +21,25 @@ public class PrefsFragment extends PreferenceFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+        
+        if(!Helpers.isXposedInstalled(getActivity()))
+        {
+        	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        	builder.setTitle("Xposed Installer not found");
+        	builder.setMessage("It looks like you don't have Xposed Installed.\n\n"
+        			+ "Please note that the mods on this page will only work with Xposed!\n\n"
+        			+ "Xposed is available in the ARHD installer.");
+        	builder.setNeutralButton("Okay", null);
+        	AlertDialog dlg = builder.create();
+        	dlg.show();
+        }
+        
         getPreferenceManager().setSharedPreferencesName("one_toolbox_prefs");
         getPreferenceManager().setSharedPreferencesMode(1);
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
 
         addPreferencesFromResource(R.xml.preferences);
-        Toast.makeText(getActivity(), "Make sure to enable the module in xposed!", Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), "Make sure to enable the module in Xposed!", Toast.LENGTH_LONG).show();
         Preference.OnPreferenceChangeListener camChangeListener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
