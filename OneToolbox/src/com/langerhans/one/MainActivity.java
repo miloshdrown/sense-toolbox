@@ -3,6 +3,9 @@ package com.langerhans.one;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.Toast;
+
 import com.langerhans.one.R;
 import com.langerhans.one.utils.MyTabListener;
 
@@ -27,4 +30,9 @@ public class MainActivity extends Activity {
 	    ab.addTab(modsTab);
 	    
     } 
+	
+	public void showEasterEgg(View view)
+	{
+		Toast.makeText(view.getContext(), "You can kill a man, but a man you will lose - Matt", Toast.LENGTH_SHORT).show();
+	}
 }
