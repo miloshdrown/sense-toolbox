@@ -20,12 +20,14 @@
     <string-array name="cam_actions">
         <item >Shutter</item>
         <item >Focus</item>
+        <item >Force focus, then shutter</item>
         <item >Record Video</item>
         <item >No change</item>
     </string-array>
     <string-array name="cam_actions_val">
         <item >1</item>
         <item >2</item>
+        <item >5</item>
         <item >3</item>
         <item >4</item>
     </string-array>

@@ -1,7 +1,12 @@
 package com.langerhans.one.mods;
 
 import com.langerhans.one.R;
+
 import android.content.res.XModuleResources;
+import android.content.res.XResources;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import de.robv.android.xposed.IXposedHookInitPackageResources;
@@ -28,6 +33,25 @@ public class SysUIMods implements IXposedHookZygoteInit, IXposedHookInitPackageR
 	        return;
 		
 		pref = new XSharedPreferences("com.langerhans.one", "one_toolbox_prefs");
+		
+		final boolean invisibar = pref.getBoolean("pref_key_sysui_invisibar", false);
+		if(invisibar)
+		{
+			resparam.res.setReplacement("com.android.systemui", "drawable", "status_bar_background", new XResources.DrawableLoader() {
+				@Override
+				public Drawable newDrawable(XResources res, int id) throws Throwable {
+					return new ColorDrawable(Color.parseColor("#00000000"));
+				}
+			});
+			
+			resparam.res.setReplacement("com.android.systemui", "drawable", "super_status_bar", new XResources.DrawableLoader() {
+				@Override
+				public Drawable newDrawable(XResources res, int id) throws Throwable {
+					return new ColorDrawable(Color.parseColor("#00000000"));
+				}
+			});
+		}
+		
 		final int battIcon = Integer.parseInt(pref.getString("pref_key_sysui_battery", "1"));
 		if (battIcon == 1) //Default
 	    	return;

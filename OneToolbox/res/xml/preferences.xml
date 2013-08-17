@@ -31,18 +31,50 @@
             android:entries="@array/batt_icon"
             android:entryValues="@array/batt_icon_val"
             android:defaultValue="1"/>
+        <CheckBoxPreference
+            android:key="pref_key_sysui_invisibar"
+            android:summary="Make the status bar transparent"
+            android:title="Transparent status bar"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+    <PreferenceCategory 
+        android:title="Sense Mods"
+        android:key="pref_key_prism">
+        <CheckBoxPreference
+            android:key="pref_key_prism_invisinav"
+            android:summary="Make the Sense launcher dock transparent"
+            android:title="Transparent dock"
+            android:defaultValue="false" />
+        <!-- For later use
+        <CheckBoxPreference
+            android:key="pref_key_prism_invisifolderclosed"
+            android:summary="Make the closed folder background transparent"
+            android:title="Transparent folder (closed)"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_key_prism_invisifolderopen"
+            android:summary="Make the open folder background transparent"
+            android:title="Transparent folder (open)"
+            android:defaultValue="false" />
+            -->
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="Various Mods"
         android:key="pref_key_other">
         <CheckBoxPreference
             android:key="pref_key_other_apm"
-            android:summary="Enable or disable Advanced Power Menu"
+            android:summary="Enable or disable Advanced Power Menu\nIf you have the native APM installed, better keep this disabled."
             android:title="APM"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_key_other_keepscreenon"
+            android:summary="Show the 'Keep screen on' option in display and development settings"
+            android:title="Enable 'Keep screen on'"
             android:defaultValue="false" />
     </PreferenceCategory>
     <PreferenceCategory
-        android:title="Support">
+        android:title="Support"
+        android:key="pref_key_support">
         <Preference 
             android:title="Visit ARHD thread"
             android:summary="Make sure to 'Follow' the thread to get the latest updates" >
@@ -53,7 +85,7 @@
             android:title="Visit One Toolbox Post"
             android:summary="Find infos and changelog for the app here" >
 		<intent android:action="android.intent.action.VIEW"
-            android:data="http://forum.xda-developers.com/showpost.php?p=38939219&#038;postcount=2" />
+            android:data="http://forum.xda-developers.com/showpost.php?p=44650768&#038;postcount=2" />
 		</Preference>
     </PreferenceCategory>
 </PreferenceScreen>

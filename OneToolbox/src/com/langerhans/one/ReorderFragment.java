@@ -21,6 +21,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -33,6 +34,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.langerhans.one.dgv.DraggableGridView;
@@ -79,6 +81,15 @@ public class ReorderFragment extends Fragment {
 		super.onStart();
 		ctx = getActivity();
 		SharedPreferences prefs = getActivity().getSharedPreferences("one_toolbox_prefs", 1); //1 = deprecated MODE_WORLD_READABLE
+		
+		//Add version string to bottom title
+		try {
+			TextView bottomTitle = (TextView) getActivity().findViewById(R.id.bottom_title);
+			bottomTitle.setText(ctx.getString(R.string.app_name_version, ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionName));
+		} catch (NameNotFoundException e) {
+			// Shouldn't happen...
+			e.printStackTrace();
+		}
 		
 		//First run handling. May be removed later.
 		if (prefs.getBoolean("firstrun_reorder", true)) {

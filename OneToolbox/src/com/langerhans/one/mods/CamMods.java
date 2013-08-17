@@ -8,7 +8,6 @@ import static de.robv.android.xposed.XposedHelpers.newInstance;
 
 import java.lang.reflect.Method;
 
-import android.util.Log;
 import android.view.KeyEvent;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
@@ -45,7 +44,6 @@ public class CamMods implements IXposedHookLoadPackage{
     			KeyEvent key =  (KeyEvent) param.args[1];
     			if (key.getKeyCode() == 25)
     			{
-    				Log.d("voldown", String.valueOf(voldown));
     				switch (voldown){
     				case 1:
     					takePicture.invoke(param.thisObject, "HTCCamera");
@@ -59,13 +57,17 @@ public class CamMods implements IXposedHookLoadPackage{
     					triggerRecord.invoke(param.thisObject);
         				param.setResult(true);
         				return;
+    				case 5:
+    					takeFocus.invoke(param.thisObject, 540, 960);
+    					takePicture.invoke(param.thisObject, "HTCCamera");
+        				param.setResult(true);
+        				return;
         			default:
         				
     				}
     			}
     			if (key.getKeyCode() == 24)
     			{
-    				Log.d("volup", String.valueOf(voldown));
     				switch (volup){
     				case 1:
     					takePicture.invoke(param.thisObject, "HTCCamera");
@@ -77,6 +79,11 @@ public class CamMods implements IXposedHookLoadPackage{
         				return;
     				case 3:
     					triggerRecord.invoke(param.thisObject);
+        				param.setResult(true);
+        				return;
+    				case 5:
+    					takeFocus.invoke(param.thisObject, 540, 960);
+    					takePicture.invoke(param.thisObject, "HTCCamera");
         				param.setResult(true);
         				return;
         			default:

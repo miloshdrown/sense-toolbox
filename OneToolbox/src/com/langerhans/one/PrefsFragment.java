@@ -1,9 +1,11 @@
 package com.langerhans.one;
 
 import android.app.AlertDialog;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.view.Menu;
@@ -39,6 +41,16 @@ public class PrefsFragment extends PreferenceFragment {
         PreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
 
         addPreferencesFromResource(R.xml.preferences);
+        
+        //Add version name to support title
+        try {
+            PreferenceCategory supportCat = (PreferenceCategory) findPreference("pref_key_support");
+			supportCat.setTitle(getActivity().getString(R.string.support_version, getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName));
+		} catch (NameNotFoundException e) {
+			//Shouldn't happen...
+			e.printStackTrace();
+		}
+        
         Toast.makeText(getActivity(), "Make sure to enable the module in Xposed!", Toast.LENGTH_LONG).show();
         Preference.OnPreferenceChangeListener camChangeListener = new Preference.OnPreferenceChangeListener() {
             @Override

@@ -119,6 +119,8 @@ public class Helpers {
 	        			{
 	        				qsList[j] = qsOrder.item(j).getChildNodes().item(0).getNodeValue();
 	        			}
+	    				//Remove tmp.xml
+	    				RootTools.sendShell("rm /data/media/0/tmp.xml", 0);
 	        			return qsList;
 	        		}
 	        	}
