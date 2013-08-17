@@ -51,7 +51,6 @@ public class PrefsFragment extends PreferenceFragment {
 			e.printStackTrace();
 		}
         
-        Toast.makeText(getActivity(), "Make sure to enable the module in Xposed!", Toast.LENGTH_LONG).show();
         Preference.OnPreferenceChangeListener camChangeListener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
