@@ -9,29 +9,18 @@ import static de.robv.android.xposed.XposedHelpers.newInstance;
 import java.lang.reflect.Method;
 
 import android.view.KeyEvent;
-import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
-public class CamMods implements IXposedHookLoadPackage{
+public class CamMods{
 
-	private Method takeFocus;
-	private Method takePicture;
-	private Method triggerRecord;
-	private static XSharedPreferences pref;
-	LoadPackageParam lpparamF;
-	public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
-	    if (!lpparam.packageName.equals("com.android.camera"))
-	        return;
-	    
-	    pref = new XSharedPreferences("com.langerhans.one", "one_toolbox_prefs");
-	    final int voldown = Integer.parseInt(pref.getString("pref_key_cam_voldown", "4"));
-	    final int volup = Integer.parseInt(pref.getString("pref_key_cam_volup", "4"));
-	    if (voldown == 4 && volup == 4)
-	    	return;
-	    
-	    this.lpparamF = lpparam;
+	private static Method takeFocus;
+	private static Method takePicture;
+	private static Method triggerRecord;
+	static LoadPackageParam lpparamF;
+
+	public static void execHook_VolKey(final LoadPackageParam lpparam, final int volup, final int voldown) {
+		lpparamF = lpparam;
 	    takePicture = findMethodExact("com.android.camera.HTCCamera", lpparamF.classLoader, "takePicture", String.class);
 	    takeFocus = findMethodExact("com.android.camera.HTCCamera", lpparamF.classLoader, "takeFocus", int.class, int.class);
 	    triggerRecord = findMethodExact("com.android.camera.HTCCamera", lpparamF.classLoader, "triggerRecord");
@@ -95,10 +84,10 @@ public class CamMods implements IXposedHookLoadPackage{
 				Method raise = findMethodExact("com.android.camera.event.Event", lpparamF.classLoader, "raise", Object.class, findClass("com.android.camera.event.EventArgs", lpparam.classLoader));
 				raise.invoke(keydownevent, param.thisObject, keyeventargs);
     		}
-	    });	    
+	    });
 	}
-	
-	private void hookKeyUp()
+
+	private static void hookKeyUp()
 	{
 		findAndHookMethod("com.android.camera.HTCCamera", lpparamF.classLoader, "onKeyUp", int.class, android.view.KeyEvent.class, new XC_MethodHook() {
     		@Override
@@ -112,5 +101,4 @@ public class CamMods implements IXposedHookLoadPackage{
     		}
 		});	
 	}
-
 }

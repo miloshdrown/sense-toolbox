@@ -10,27 +10,13 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
-import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XSharedPreferences;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
-public class OtherMods implements IXposedHookLoadPackage{
+public class OtherMods{
 
-	private static XSharedPreferences pref;
-	
-	@Override
-	public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
-		if (!lpparam.processName.equals("android"))
-	        return;
-		
-		pref = new XSharedPreferences("com.langerhans.one", "one_toolbox_prefs");
-		final boolean apm = pref.getBoolean("pref_key_other_apm", false);
-		if(!apm)
-			return;
-		
+	public static void execHook_APM(LoadPackageParam lpparam) {
 		final ClassLoader cl = lpparam.classLoader;
-		
 		XC_MethodReplacement mr = new XC_MethodReplacement() {
 			@Override
 			protected Object replaceHookedMethod(final MethodHookParam param) throws Throwable 

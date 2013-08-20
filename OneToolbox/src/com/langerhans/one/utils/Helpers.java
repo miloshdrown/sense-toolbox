@@ -94,12 +94,12 @@ public class Helpers {
 		try {
 			db = dbf.newDocumentBuilder();
 
+			File sdcard = Environment.getExternalStorageDirectory();
+			
 			CommandCapture command = new CommandCapture(0, 
-					"cp /system/customize/ACC/" + cidXML + ".xml /data/media/0/tmp.xml", 
+					"cp /system/customize/ACC/" + cidXML + ".xml " + sdcard.getAbsolutePath() +"/tmp.xml", 
 					"chmod 777 /data/media/0/tmp.xml");
 		    RootTools.getShell(true).add(command).waitForFinish();
-			
-			File sdcard = Environment.getExternalStorageDirectory();
 
 			File file = new File(sdcard,"tmp.xml");
 			
@@ -120,7 +120,7 @@ public class Helpers {
 	        				qsList[j] = qsOrder.item(j).getChildNodes().item(0).getNodeValue();
 	        			}
 	    				//Remove tmp.xml
-	    				RootTools.sendShell("rm /data/media/0/tmp.xml", 0);
+	    				RootTools.sendShell("rm " + sdcard.getAbsolutePath() +"/tmp.xml", 0);
 	        			return qsList;
 	        		}
 	        	}
@@ -150,6 +150,9 @@ public class Helpers {
 				e.appendChild(doc.createTextNode(adapter.getItem(i)));
 				eQS.appendChild(e);
 			}
+			
+			String dir = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
+			
 			File file = new File(Environment.getExternalStorageDirectory() + File.separator + "new.xml");
 			file.createNewFile();
 			if(file.exists())
@@ -159,9 +162,9 @@ public class Helpers {
 			     fo.close();
 			     CommandCapture command = new CommandCapture(0, 
 			    		 "mount -o rw,remount /system", 
-			    		 "cat /data/media/0/new.xml > /system/customize/ACC/" + cidXML + ".xml",
-			    		 "rm /data/media/0/tmp.xml",
-			    		 "rm /data/media/0/new.xml",
+			    		 "cat "+dir+"new.xml > /system/customize/ACC/" + cidXML + ".xml",
+			    		 "rm "+dir+"tmp.xml",
+			    		 "rm "+dir+"new.xml",
 			    		 "mount -o ro,remount /system"
 			    		 );
 			     RootTools.getShell(true).add(command).waitForFinish();

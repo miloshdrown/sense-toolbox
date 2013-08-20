@@ -1,0 +1,80 @@
+package com.langerhans.one.mods;
+
+import de.robv.android.xposed.IXposedHookInitPackageResources;
+import de.robv.android.xposed.IXposedHookLoadPackage;
+import de.robv.android.xposed.IXposedHookZygoteInit;
+import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
+
+public class XMain implements IXposedHookInitPackageResources, IXposedHookZygoteInit, IXposedHookLoadPackage {
+
+	private static String MODULE_PATH = null;
+	private static XSharedPreferences pref;
+	
+	@Override
+	public void initZygote(StartupParam startupParam) throws Throwable {
+		MODULE_PATH = startupParam.modulePath;
+	}
+
+	@Override
+	public void handleInitPackageResources(InitPackageResourcesParam resparam) throws Throwable {
+		String pkg = resparam.packageName;
+		
+		if (pkg.equals("com.htc.launcher"))
+		{
+			if(pref.getBoolean("pref_key_prism_invisinav", false))
+			{
+				int transparency = pref.getInt("pref_key_prism_invisinav_new", 0);
+				transparency = (int) Math.floor(transparency*2.55f);
+				PrismMods.execHook_InvisiNav(resparam, transparency);
+			}
+		}
+		
+		if (pkg.equals("com.android.systemui"))
+		{
+			if(pref.getInt("pref_key_sysui_invisibar_new", 0) != 0)
+			{
+				int transparency = pref.getInt("pref_key_sysui_invisibar_new", 0);
+				transparency = (int) Math.floor(transparency*2.55f);
+				SysUIMods.execHook_InvisiBar(resparam, MODULE_PATH, transparency);
+			}
+			if(Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")) != 1)
+				SysUIMods.execHook_BatteryIcon(resparam, MODULE_PATH, Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")));
+		}
+	}
+
+	@Override
+	public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
+		pref = new XSharedPreferences("com.langerhans.one", "one_toolbox_prefs");
+		String pkg = lpparam.packageName;
+		
+		if (pkg.equals("com.android.settings"))
+		{
+			if(pref.getBoolean("pref_key_other_keepscreenon", false))
+				SettingsMods.execHook_ScreenOn(lpparam);
+		}
+		
+		if (pkg.equals("com.android.camera"))
+		{
+			int voldown = Integer.parseInt(pref.getString("pref_key_cam_voldown", "4"));
+		    int volup = Integer.parseInt(pref.getString("pref_key_cam_volup", "4"));
+		    if (!(voldown == 4 && volup == 4))
+		    	CamMods.execHook_VolKey(lpparam, volup, voldown);
+		}
+		
+		if (pkg.equals("com.android.systemui"))
+		{
+			if(pref.getBoolean("pref_key_sysui_minorqs", false))
+				SysUIMods.execHook_MinorEQS(lpparam);
+		}
+		
+		if (lpparam.processName.equals("android"))
+		{
+			if(pref.getBoolean("pref_key_other_apm", false))
+				OtherMods.execHook_APM(lpparam);
+		}
+	}
+
+}

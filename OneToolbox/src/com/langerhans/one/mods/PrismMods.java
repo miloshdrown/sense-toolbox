@@ -1,36 +1,16 @@
 package com.langerhans.one.mods;
 
-import android.content.res.XResources;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.Drawable;
-import de.robv.android.xposed.IXposedHookInitPackageResources;
-import de.robv.android.xposed.XSharedPreferences;
+import android.widget.FrameLayout;
+import android.widget.ImageView;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
+import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 
-public class PrismMods implements IXposedHookInitPackageResources {
-	
-	private static XSharedPreferences pref;
+public class PrismMods {
 
-	@Override
-	public void handleInitPackageResources(InitPackageResourcesParam resparam) throws Throwable {
-		if (!resparam.packageName.equals("com.htc.launcher"))
-	        return;
-		
-		pref = new XSharedPreferences("com.langerhans.one", "one_toolbox_prefs");
-		final boolean invisinav = pref.getBoolean("pref_key_prism_invisinav", false);
+
 //		final boolean invisifolderclosed = pref.getBoolean("pref_key_prism_invisifolderclosed", false);
 //		final boolean invisifolderopen = pref.getBoolean("pref_key_prism_invisifolderopen", false);
 		
-		if(invisinav)
-		{
-			resparam.res.setReplacement("com.htc.launcher", "drawable", "home_nav_bg", new XResources.DrawableLoader() {
-				@Override
-				public Drawable newDrawable(XResources res, int id) throws Throwable {
-					return new ColorDrawable(Color.parseColor("#00000000"));
-				}
-			});
-		}
 		//For later use...
 //		if(invisifolderclosed)
 //		{
@@ -50,6 +30,17 @@ public class PrismMods implements IXposedHookInitPackageResources {
 //				}
 //			});
 //		}
+
+	public static void execHook_InvisiNav(final InitPackageResourcesParam resparam, final int transparency) {
+		
+		resparam.res.hookLayout("com.htc.launcher", "layout", "launcher", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				FrameLayout hotseat = (FrameLayout) liparam.view.findViewById(resparam.res.getIdentifier("hotseat", "id", "com.htc.launcher"));
+				ImageView bg = (ImageView) hotseat.getChildAt(0);
+				bg.setImageAlpha(transparency);
+			}
+		});
 	}
 
 }

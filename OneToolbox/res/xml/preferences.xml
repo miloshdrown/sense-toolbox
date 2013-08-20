@@ -31,20 +31,31 @@
             android:entries="@array/batt_icon"
             android:entryValues="@array/batt_icon_val"
             android:defaultValue="1"/>
+        <com.langerhans.one.utils.SeekBarPreference 
+            android:key="pref_key_sysui_invisibar_new"
+    		android:title="Transparent status bar"
+    		android:summary="Make the status bar transparent"
+    		android:dialogMessage="0 = transparent, 100 = opaque"
+    		android:defaultValue="0"
+    		android:text=" %"
+    		android:max="100"/>
         <CheckBoxPreference
-            android:key="pref_key_sysui_invisibar"
-            android:summary="Make the status bar transparent"
-            android:title="Transparent status bar"
+            android:key="pref_key_sysui_minorqs"
+            android:summary="Enable horizontal EQS. The first 5 of your normal EQS will show there."
+            android:title="Horizontal EQS"
             android:defaultValue="false" />
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="Sense Mods"
         android:key="pref_key_prism">
-        <CheckBoxPreference
-            android:key="pref_key_prism_invisinav"
-            android:summary="Make the Sense launcher dock transparent"
-            android:title="Transparent dock"
-            android:defaultValue="false" />
+        <com.langerhans.one.utils.SeekBarPreference 
+            android:key="pref_key_prism_invisinav_new"
+    		android:title="Transparent dock"
+    		android:summary="Make the Sense launcher dock transparent"
+    		android:dialogMessage="0 = transparent, 100 = opaque"
+    		android:defaultValue="0"
+    		android:text=" %"
+    		android:max="100"/>
         <!-- For later use
         <CheckBoxPreference
             android:key="pref_key_prism_invisifolderclosed"
