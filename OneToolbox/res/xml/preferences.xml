@@ -36,7 +36,7 @@
     		android:title="Transparent status bar"
     		android:summary="Make the status bar transparent"
     		android:dialogMessage="0 = transparent, 100 = opaque"
-    		android:defaultValue="0"
+    		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
         <CheckBoxPreference
@@ -53,7 +53,7 @@
     		android:title="Transparent dock"
     		android:summary="Make the Sense launcher dock transparent"
     		android:dialogMessage="0 = transparent, 100 = opaque"
-    		android:defaultValue="0"
+    		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
         <!-- For later use

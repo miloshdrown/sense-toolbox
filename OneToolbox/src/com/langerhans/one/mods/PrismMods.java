@@ -1,5 +1,10 @@
 package com.langerhans.one.mods;
 
+import com.langerhans.one.R;
+
+import android.content.res.XModuleResources;
+import android.content.res.XResources;
+import android.graphics.drawable.Drawable;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
@@ -31,14 +36,24 @@ public class PrismMods {
 //			});
 //		}
 
-	public static void execHook_InvisiNav(final InitPackageResourcesParam resparam, final int transparency) {
+	public static void execHook_InvisiNav(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
 		
-		resparam.res.hookLayout("com.htc.launcher", "layout", "launcher", new XC_LayoutInflated() {
+//		resparam.res.hookLayout("com.htc.launcher", "layout", "launcher", new XC_LayoutInflated() {
+//			@Override
+//			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+//				FrameLayout hotseat = (FrameLayout) liparam.view.findViewById(resparam.res.getIdentifier("hotseat", "id", "com.htc.launcher"));
+//				ImageView bg = (ImageView) hotseat.getChildAt(0);
+//				bg.setImageAlpha(transparency);
+//			}
+//		});
+		
+		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.htc.launcher", "drawable", "home_nav_bg", new XResources.DrawableLoader() {
 			@Override
-			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-				FrameLayout hotseat = (FrameLayout) liparam.view.findViewById(resparam.res.getIdentifier("hotseat", "id", "com.htc.launcher"));
-				ImageView bg = (ImageView) hotseat.getChildAt(0);
-				bg.setImageAlpha(transparency);
+			public Drawable newDrawable(XResources res, int id) throws Throwable {
+				Drawable bg = modRes.getDrawable(R.drawable.home_nav_bg);
+				bg.setAlpha(transparency);
+				return bg;
 			}
 		});
 	}

@@ -24,17 +24,17 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.htc.launcher"))
 		{
-			if(pref.getBoolean("pref_key_prism_invisinav", false))
+			if(pref.getInt("pref_key_prism_invisinav_new", 100) != 100)
 			{
 				int transparency = pref.getInt("pref_key_prism_invisinav_new", 0);
 				transparency = (int) Math.floor(transparency*2.55f);
-				PrismMods.execHook_InvisiNav(resparam, transparency);
+				PrismMods.execHook_InvisiNav(resparam, transparency, MODULE_PATH);
 			}
 		}
 		
 		if (pkg.equals("com.android.systemui"))
 		{
-			if(pref.getInt("pref_key_sysui_invisibar_new", 0) != 0)
+			if(pref.getInt("pref_key_sysui_invisibar_new", 100) != 100)
 			{
 				int transparency = pref.getInt("pref_key_sysui_invisibar_new", 0);
 				transparency = (int) Math.floor(transparency*2.55f);
