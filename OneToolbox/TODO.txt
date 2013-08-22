@@ -1,6 +1,3 @@
-- new icon
-- batt icons
-
 - include xposed installer, check if installed -> /system/bin/app_process --xposedversion
 
 - 16 app folder limit
@@ -9,7 +6,6 @@
 - torch toggle
 - prism bg, blinkfeed, notification drawer transparent
 - longer SMS (?)
-- 2 Versions one + one x
 - clock BG -> http://forum.xda-developers.com/showthread.php?t=2276572
 - screen on at sms
 - back button kill,crt off animation,volume button controls for skipping tracks
@@ -17,7 +13,8 @@
 (blinkfeed, bootanimation)
 
 1.3:
-Added One X compatibility for EQS reorder. Mods untested by me (no HOX here), but should work too.
+Added One X 4.2.2 compatibility.
+Fixed transparency settings for a 0 value.
 
 1.2: 
 Added horizontal EQS. The First 5 of your normal EQS will be used there.

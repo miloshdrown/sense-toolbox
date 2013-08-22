@@ -86,7 +86,13 @@
     <PreferenceCategory
         android:title="Support"
         android:key="pref_key_support">
-        <Preference 
+		<!-- <Preference 
+            android:title="Visit ARHD thread"
+            android:summary="Get the latest updates here" >
+    		<intent android:action="android.intent.action.VIEW"
+            android:data="http://forum.xda-developers.com/showthread.php?t=1562603" />
+		</Preference>-->
+		<Preference 
             android:title="Visit ARHD thread"
             android:summary="Make sure to 'Follow' the thread to get the latest updates" >
     		<intent android:action="android.intent.action.VIEW"
