@@ -8,7 +8,6 @@ import android.widget.ImageView;
 import com.langerhans.one.R;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
@@ -16,7 +15,6 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class SysUIMods{
 
 	public static void execHook_InvisiBar(final InitPackageResourcesParam resparam, String MODULE_PATH, final int transparency) {
-				
 		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {

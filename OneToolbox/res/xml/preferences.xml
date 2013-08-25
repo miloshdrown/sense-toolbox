@@ -56,18 +56,14 @@
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
-        <!-- For later use
-        <CheckBoxPreference
-            android:key="pref_key_prism_invisifolderclosed"
-            android:summary="Make the closed folder background transparent"
-            android:title="Transparent folder (closed)"
-            android:defaultValue="false" />
-        <CheckBoxPreference
-            android:key="pref_key_prism_invisifolderopen"
-            android:summary="Make the open folder background transparent"
-            android:title="Transparent folder (open)"
-            android:defaultValue="false" />
-            -->
+        <com.langerhans.one.utils.SeekBarPreference 
+            android:key="pref_key_prism_invisiwidget"
+    		android:title="Transparent clock widget"
+    		android:summary="Make the default clock + weather widget transparent"
+    		android:dialogMessage="0 = transparent, 100 = opaque"
+    		android:defaultValue="100"
+    		android:text=" %"
+    		android:max="100"/>
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="Various Mods"
@@ -86,23 +82,17 @@
     <PreferenceCategory
         android:title="Support"
         android:key="pref_key_support">
-		<!-- <Preference 
-            android:title="Visit ARHD thread"
-            android:summary="Get the latest updates here" >
-    		<intent android:action="android.intent.action.VIEW"
-            android:data="http://forum.xda-developers.com/showthread.php?t=1562603" />
-		</Preference>-->
-		<Preference 
-            android:title="Visit ARHD thread"
-            android:summary="Make sure to 'Follow' the thread to get the latest updates" >
-    		<intent android:action="android.intent.action.VIEW"
-            android:data="http://forum.xda-developers.com/showthread.php?t=2183023" />
-		</Preference>
 		<Preference
-            android:title="Visit One Toolbox Post"
+            android:title="Visit Sense 5 Toolbox Post"
             android:summary="Find infos and changelog for the app here" >
-		<intent android:action="android.intent.action.VIEW"
+			<intent android:action="android.intent.action.VIEW"
             android:data="http://forum.xda-developers.com/showpost.php?p=44650768&#038;postcount=2" />
+		</Preference>
+		<Preference 
+            android:title="Visit ARHD Blog"
+            android:summary="Get the latest news and updates for your favorite ROM here" >
+    		<intent android:action="android.intent.action.VIEW"
+            android:data="http://android-revolution-hd.blogspot.de" />
 		</Preference>
     </PreferenceCategory>
 </PreferenceScreen>

@@ -2,10 +2,8 @@
 <resources>
 
     <string name="menu_save">Save</string>
-    <string name="app_name">One Toolbox</string>
-    <string name="app_name_version">One Toolbox (Version: %1$s)</string>
-    <!-- <string name="app_name_version">One X Toolbox (Version: %1$s)</string>
-    <string name="app_name">One X Toolbox</string>-->
+    <string name="app_name">Sense 5 Toolbox</string>
+    <string name="app_name_version">Sense 5 Toolbox (Version: %1$s)</string>
     <string name="support_version">Support (App Version: %1$s)</string>
 
 </resources>

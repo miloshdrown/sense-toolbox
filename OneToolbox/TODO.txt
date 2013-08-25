@@ -6,23 +6,35 @@
 - torch toggle
 - prism bg, blinkfeed, notification drawer transparent
 - longer SMS (?)
-- clock BG -> http://forum.xda-developers.com/showthread.php?t=2276572
 - screen on at sms
 - back button kill,crt off animation,volume button controls for skipping tracks
+- center clock
+- touch keys 6 seconds
+- mute volume adjust sound
+- status bar data meter: http://forum.xda-developers.com/showthread.php?p=44935359#post44935359
 
 (blinkfeed, bootanimation)
+
+1.4:
+Unified app for One, One X and One X+ - Now called Sense 5 Toolbox!
+Added transparency for the standard HTC clock + weather widget
+	Sorry, but this is the last transparency mod I'm going to add. 
+	Other mods like blinkfeed or app drawer background seem to use a Prism.apk from another device. 
+	Replicating that in xposed would be a huge overhead IMHO. 
+	Maybe some other dev can point me in the right direction...
+
 
 1.3:
 Added One X 4.2.2 compatibility.
 Fixed transparency settings for a 0 value.
 
-1.2: 
+1.2: 321
 Added horizontal EQS. The First 5 of your normal EQS will be used there.
 Added options to set custom transparency values for: Status bar, Prism dock background.
 Fixed transparent Statusbar in combination with battery icon.
 Complete change of the Xposed module hook structure for easier addition of new mods. Also lower overhead.
 
-1.1: 296 DLs
+1.1: 296
 Updated support post link.
 Added more info about APM.
 Add version string to the bottom title and support entry.

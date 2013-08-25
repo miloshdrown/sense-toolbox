@@ -26,7 +26,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if(pref.getInt("pref_key_prism_invisinav_new", 100) != 100)
 			{
-				int transparency = pref.getInt("pref_key_prism_invisinav_new", 0);
+				int transparency = pref.getInt("pref_key_prism_invisinav_new", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiNav(resparam, transparency, MODULE_PATH);
 			}
@@ -36,12 +36,19 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if(pref.getInt("pref_key_sysui_invisibar_new", 100) != 100)
 			{
-				int transparency = pref.getInt("pref_key_sysui_invisibar_new", 0);
+				int transparency = pref.getInt("pref_key_sysui_invisibar_new", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				SysUIMods.execHook_InvisiBar(resparam, MODULE_PATH, transparency);
 			}
 			if(Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")) != 1)
 				SysUIMods.execHook_BatteryIcon(resparam, MODULE_PATH, Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")));
+		}
+		
+		if (pkg.equals("com.htc.widget.weatherclock"))
+		{
+			int transparency = pref.getInt("pref_key_prism_invisiwidget", 100);
+			transparency = (int) Math.floor(transparency*2.55f);
+			PrismMods.execHook_InvisiWidget(resparam, transparency, MODULE_PATH);
 		}
 	}
 

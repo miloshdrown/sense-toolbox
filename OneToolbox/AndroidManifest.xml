@@ -27,7 +27,7 @@
         <activity android:theme="@*android:style/Theme.Holo.Dialog" android:name=".ApmActivity" android:launchMode="singleInstance" />
         <meta-data android:value="true" android:name="xposedmodule"/>
         <meta-data android:value="2.0*" android:name="xposedminversion"/>
-        <meta-data android:value="Several Mods for the HTC One" android:name="xposeddescription"/>
+        <meta-data android:value="Several Mods for Sense 5" android:name="xposeddescription"/>
     </application>
 
 </manifest>
