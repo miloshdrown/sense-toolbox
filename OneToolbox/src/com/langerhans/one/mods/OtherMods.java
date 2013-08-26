@@ -10,6 +10,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.util.Log;
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
@@ -70,6 +73,24 @@ public class OtherMods{
 			}
 		};
 		findAndHookMethod("com.htc.app.HtcShutdownThread", cl, "reboot", Context.class, String.class, boolean.class, mr);
+	}
+
+	public static void execHook_smsscreenon(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.mms.MmsConfig", lpparam.classLoader, "supportBrightScreenOnNewSMS", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.setResult(true);
+			}
+		});
+	}
+
+	public static void execHook_VolSound(LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.view.VolumePanel", lpparam.classLoader, "onPlaySound", int.class, int.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.setResult(null);
+			}
+		});
 	}
 
 }

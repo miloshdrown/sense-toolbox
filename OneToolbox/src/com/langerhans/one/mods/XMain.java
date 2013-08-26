@@ -57,6 +57,18 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		pref = new XSharedPreferences("com.langerhans.one", "one_toolbox_prefs");
 		String pkg = lpparam.packageName;
 		
+		if(pkg.equals("com.android.mms"))
+		{
+			if(pref.getBoolean("pref_key_other_smscreenon", false))
+				OtherMods.execHook_smsscreenon(lpparam);
+		}
+		
+		if(pkg.equals("com.htc.launcher"))
+		{
+			if(pref.getBoolean("pref_key_prism_folder20", false))
+				PrismMods.execHook_20Folder_code(lpparam);
+		}
+		
 		if (pkg.equals("com.android.settings"))
 		{
 			if(pref.getBoolean("pref_key_other_keepscreenon", false))
@@ -81,6 +93,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if(pref.getBoolean("pref_key_other_apm", false))
 				OtherMods.execHook_APM(lpparam);
+			
+			if(pref.getBoolean("pref_key_other_volsound", false))
+				OtherMods.execHook_VolSound(lpparam);
 		}
 	}
 

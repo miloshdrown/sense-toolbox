@@ -1,15 +1,12 @@
 - include xposed installer, check if installed -> /system/bin/app_process --xposedversion
 
-- 16 app folder limit
 - ringtone -/- notification volume
 - beats toggle
 - torch toggle
 - prism bg, blinkfeed, notification drawer transparent
 - longer SMS (?)
-- screen on at sms
 - back button kill,crt off animation,volume button controls for skipping tracks
 - center clock
-- touch keys 6 seconds
 - mute volume adjust sound
 - status bar data meter: http://forum.xda-developers.com/showthread.php?p=44935359#post44935359
 
@@ -22,7 +19,9 @@ Added transparency for the standard HTC clock + weather widget
 	Other mods like blinkfeed or app drawer background seem to use a Prism.apk from another device. 
 	Replicating that in xposed would be a huge overhead IMHO. 
 	Maybe some other dev can point me in the right direction...
-
+Added 'Screen on on received SMS' mod.
+Added possibility to remove folder limit (Was 16 apps per folder)
+Added option to disable the sound that plays on volume change by buttons
 
 1.3:
 Added One X 4.2.2 compatibility.

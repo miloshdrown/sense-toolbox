@@ -64,6 +64,11 @@
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
+        <CheckBoxPreference
+            android:key="pref_key_prism_folder20"
+            android:summary="Enable to have infinite icons per folder."
+            android:title="Infinifolders"
+            android:defaultValue="false" />
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="Various Mods"
@@ -77,6 +82,16 @@
             android:key="pref_key_other_keepscreenon"
             android:summary="Show the 'Keep screen on' option in display and development settings"
             android:title="Enable 'Keep screen on'"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_key_other_smscreenon"
+            android:summary="Turn the screen on, when you receive a SMS."
+            android:title="Screen on on SMS"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_key_other_volsound"
+            android:summary="Check to disable the sound on volume change."
+            android:title="Disable volume change sound."
             android:defaultValue="false" />
     </PreferenceCategory>
     <PreferenceCategory
