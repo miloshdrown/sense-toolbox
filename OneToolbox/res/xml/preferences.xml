@@ -86,7 +86,7 @@
         <CheckBoxPreference
             android:key="pref_key_other_smscreenon"
             android:summary="Turn the screen on, when you receive a SMS."
-            android:title="Screen on on SMS"
+            android:title="Wake on SMS"
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_other_volsound"
