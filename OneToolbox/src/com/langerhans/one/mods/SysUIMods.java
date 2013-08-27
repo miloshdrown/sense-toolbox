@@ -8,6 +8,7 @@ import android.widget.ImageView;
 import com.langerhans.one.R;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
@@ -47,6 +48,16 @@ public class SysUIMods{
 			@Override
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(true);
+			}
+		});
+	}
+
+	public static void execHook_InvisiNotify(final InitPackageResourcesParam resparam, String mODULE_PATH, final int transparency) {
+		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				View bg = liparam.view.findViewById(resparam.res.getIdentifier("notification_panel", "id", "com.android.systemui"));
+				bg.getBackground().setAlpha(transparency);
 			}
 		});
 	}

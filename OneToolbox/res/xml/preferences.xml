@@ -8,14 +8,14 @@
         android:key="pref_key_cam">
         <ListPreference
             android:key="pref_key_cam_volup"
-            android:summary="The action for Volume Up in camera"
+            android:summary="The action for Volume Up in camera."
             android:title="Volume Up action"
             android:entries="@array/cam_actions"
             android:entryValues="@array/cam_actions_val"
             android:defaultValue="4"/>
         <ListPreference
             android:key="pref_key_cam_voldown"
-            android:summary="The action for Volume Down in camera"
+            android:summary="The action for Volume Down in camera."
             android:title="Volume Down action"
             android:entries="@array/cam_actions"
             android:entryValues="@array/cam_actions_val"
@@ -26,7 +26,7 @@
         android:key="pref_key_sysui">
         <ListPreference
             android:key="pref_key_sysui_battery"
-            android:summary="Change battery icon design"
+            android:summary="Change battery icon design."
             android:title="Battery icon"
             android:entries="@array/batt_icon"
             android:entryValues="@array/batt_icon_val"
@@ -34,7 +34,15 @@
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_sysui_invisibar_new"
     		android:title="Transparent status bar"
-    		android:summary="Make the status bar transparent"
+    		android:summary="Make the status bar transparent."
+    		android:dialogMessage="0 = transparent, 100 = opaque"
+    		android:defaultValue="100"
+    		android:text=" %"
+    		android:max="100"/>
+        <com.langerhans.one.utils.SeekBarPreference 
+            android:key="pref_key_sysui_invisinotify"
+    		android:title="Transparent notification background"
+    		android:summary="Make the notification drawer background transparent."
     		android:dialogMessage="0 = transparent, 100 = opaque"
     		android:defaultValue="100"
     		android:text=" %"
@@ -51,7 +59,7 @@
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_prism_invisinav_new"
     		android:title="Transparent dock"
-    		android:summary="Make the Sense launcher dock transparent"
+    		android:summary="Make the Sense launcher dock transparent."
     		android:dialogMessage="0 = transparent, 100 = opaque"
     		android:defaultValue="100"
     		android:text=" %"
@@ -59,7 +67,7 @@
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_prism_invisiwidget"
     		android:title="Transparent clock widget"
-    		android:summary="Make the default clock + weather widget transparent"
+    		android:summary="Make the default clock + weather widget transparent."
     		android:dialogMessage="0 = transparent, 100 = opaque"
     		android:defaultValue="100"
     		android:text=" %"
@@ -80,7 +88,7 @@
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_other_keepscreenon"
-            android:summary="Show the 'Keep screen on' option in display and development settings"
+            android:summary="Show the 'Keep screen on' option in display and development settings."
             android:title="Enable 'Keep screen on'"
             android:defaultValue="false" />
         <CheckBoxPreference
@@ -99,13 +107,13 @@
         android:key="pref_key_support">
 		<Preference
             android:title="Visit Sense 5 Toolbox Post"
-            android:summary="Find infos and changelog for the app here" >
+            android:summary="Find infos and changelog for the app here." >
 			<intent android:action="android.intent.action.VIEW"
             android:data="http://forum.xda-developers.com/showpost.php?p=44650768&#038;postcount=2" />
 		</Preference>
 		<Preference 
             android:title="Visit ARHD Blog"
-            android:summary="Get the latest news and updates for your favorite ROM here" >
+            android:summary="Get the latest news and updates for your favorite ROM here." >
     		<intent android:action="android.intent.action.VIEW"
             android:data="http://android-revolution-hd.blogspot.de" />
 		</Preference>

@@ -2,20 +2,12 @@ package com.langerhans.one.mods;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
-import static de.robv.android.xposed.XposedHelpers.findField;
-import static de.robv.android.xposed.XposedHelpers.findMethodExact;
 import static de.robv.android.xposed.XposedHelpers.setBooleanField;
 import static de.robv.android.xposed.XposedHelpers.setIntField;
 import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
-
-import java.lang.reflect.Method;
-
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.view.ViewGroup;
-import android.widget.FrameLayout;
 
 import com.langerhans.one.R;
 
@@ -55,21 +47,14 @@ public class PrismMods {
 		findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "isFull", new XC_MethodHook() {
 			@Override
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//				Object m_info = findField(findClass("com.htc.launcher.folder.FolderInfo", lpparam.classLoader), "m_info");
-//				Method getContents = findMethodExact(findClass("com.htc.launcher.folder.FolderInfo", lpparam.classLoader), "getContents");
-//				ArrayList<?> contents = (ArrayList<?>) getContents.invoke(m_info);
-//				if(contents.size() <= 24)
-					param.setResult(false);
+				param.setResult(false);
 			}
 		});
 		
 		findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "isFull", findClass("com.htc.launcher.folder.FolderInfo", lpparam.classLoader), new XC_MethodHook() {
 			@Override
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//				Method getContents = findMethodExact(findClass("com.htc.launcher.folder.FolderInfo", lpparam.classLoader), "getContents");
-//				ArrayList<?> contents = (ArrayList<?>) getContents.invoke(param.args[0]);
-//				if(contents.size() <= 24)
-					param.setResult(false);
+				param.setResult(false);
 			}
 		});
 		
