@@ -29,6 +29,7 @@ import org.xml.sax.InputSource;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Environment;
+import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.stericson.RootTools.RootTools;
@@ -88,17 +89,18 @@ public class Helpers {
 	 * @param cidXML The CID of the device
 	 * @return A String Array that holds all currently used tiles
 	 */
-	public static String[] parseACC(String cidXML)
+	public static String[] parseACC(String cidXML, Context ctx)
 	{
 		dbf = DocumentBuilderFactory.newInstance();
 		try {
 			db = dbf.newDocumentBuilder();
 
-			File sdcard = Environment.getExternalStorageDirectory();
+//			File sdcard = Environment.getExternalStorageDirectory();
+			File sdcard = ctx.getCacheDir();
 			
 			CommandCapture command = new CommandCapture(0, 
 					"cp /system/customize/ACC/" + cidXML + ".xml " + sdcard.getAbsolutePath() +"/tmp.xml", 
-					"chmod 777 /data/media/0/tmp.xml");
+					"chmod 777 " + sdcard.getAbsolutePath() + "/tmp.xml");
 		    RootTools.getShell(true).add(command).waitForFinish();
 
 			File file = new File(sdcard,"tmp.xml");
@@ -125,11 +127,11 @@ public class Helpers {
 	        		}
 	        	}
 			} catch (Exception e) {
-				System.out.println("XML Parsing Excpetion = " + e);
+				System.out.println("Inner XML Parsing Excpetion = " + e);
 			}
 			
 		} catch (Exception e) {
-			System.out.println("XML Parsing Excpetion = " + e);
+			System.out.println("Outer XML Parsing Excpetion = " + e);
 		}
 		return null;
 	}
@@ -139,7 +141,7 @@ public class Helpers {
 	 * @param cidXML The CID for naming the file. Should be the same as we read from.
 	 * @param adapter The ArrayAdapter that holds the tile order to be saved.
 	 */
-	public static void writeACC(String cidXML, ArrayAdapter<String> adapter)
+	public static void writeACC(String cidXML, ArrayAdapter<String> adapter, Context ctx)
 	{		
 		try 
 		{
@@ -150,10 +152,12 @@ public class Helpers {
 				e.appendChild(doc.createTextNode(adapter.getItem(i)));
 				eQS.appendChild(e);
 			}
-			
-			String dir = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
-			
-			File file = new File(Environment.getExternalStorageDirectory() + File.separator + "new.xml");
+
+//			String dir = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator;
+			String dir = ctx.getCacheDir().getAbsolutePath() + File.separator;
+
+//			File file = new File(Environment.getExternalStorageDirectory() + File.separator + "new.xml");
+			File file = new File(ctx.getCacheDir() + File.separator + "new.xml");
 			file.createNewFile();
 			if(file.exists())
 			{

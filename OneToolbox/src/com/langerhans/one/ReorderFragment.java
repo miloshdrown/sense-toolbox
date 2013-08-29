@@ -106,7 +106,7 @@ public class ReorderFragment extends Fragment {
 	    Collections.addAll(qsAvail, qsAvailH);
 	    
 	    //Parse the ACC file and add the currently used tiles into a new list, then create an ArrayAdapter from it
-	    ArrayList<String> used = new ArrayList<String>(Arrays.asList(Helpers.parseACC(cidXML)));
+	    ArrayList<String> used = new ArrayList<String>(Arrays.asList(Helpers.parseACC(cidXML, ctx)));
 	    qsAvail.removeAll(used);
 	    adapter = new ArrayAdapter<String>(ctx, R.layout.dummy_layout, R.id.invisible_text, used);
 	    
@@ -195,7 +195,7 @@ public class ReorderFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.menu_save)
 		{
-			Helpers.writeACC(cidXML, adapter);
+			Helpers.writeACC(cidXML, adapter, ctx);
 		    savePrev();
 		    askForReboot();
 			return true;

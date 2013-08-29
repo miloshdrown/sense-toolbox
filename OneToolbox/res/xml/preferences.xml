@@ -79,6 +79,20 @@
             android:defaultValue="false" />
     </PreferenceCategory>
     <PreferenceCategory 
+        android:title="Messaging Mods"
+        android:key="pref_key_sms">
+        <CheckBoxPreference
+            android:key="pref_key_sms_smsmmsconv"
+            android:summary="Check do disable the forced SMS to MMS coversion by the character limit. Network limitations still apply."
+            android:title="Disable SMS -> MMS conversion"
+            android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_key_other_smscreenon"
+            android:summary="Turn the screen on, when you receive a SMS."
+            android:title="Wake on SMS"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+    <PreferenceCategory 
         android:title="Various Mods"
         android:key="pref_key_other">
         <CheckBoxPreference
@@ -90,11 +104,6 @@
             android:key="pref_key_other_keepscreenon"
             android:summary="Show the 'Keep screen on' option in display and development settings."
             android:title="Enable 'Keep screen on'"
-            android:defaultValue="false" />
-        <CheckBoxPreference
-            android:key="pref_key_other_smscreenon"
-            android:summary="Turn the screen on, when you receive a SMS."
-            android:title="Wake on SMS"
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_other_volsound"
