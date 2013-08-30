@@ -80,6 +80,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if(pref.getBoolean("pref_key_prism_folder20", false))
 				PrismMods.execHook_20Folder_code(lpparam);
+			
+			if(pref.getInt("pref_key_sysui_invisibar_new", 100) != 100)
+			{
+				PrismMods.execHookTSBFix(lpparam);
+			}
 		}
 		
 		if (pkg.equals("com.android.settings"))

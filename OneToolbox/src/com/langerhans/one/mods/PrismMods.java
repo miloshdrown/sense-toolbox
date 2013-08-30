@@ -80,6 +80,7 @@ public class PrismMods {
 			}
 		});
 		
+		
 //		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
 //			@Override
 //    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -108,6 +109,15 @@ public class PrismMods {
 //				findField(findClass("com.htc.launcher.Launcher", lpparam.classLoader), "m_feedScrollView").set(param.thisObject, null);
 //			}
 //		});
+	}
+
+	public static void execHookTSBFix(LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.launcher.bar.BarController", lpparam.classLoader, "setStatusBarTransparent", boolean.class, new XC_MethodHook() {
+			@Override
+    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.setResult(null);
+			}
+		});
 	}
 
 }
