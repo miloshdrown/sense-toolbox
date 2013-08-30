@@ -33,7 +33,6 @@ public class SysUIMods{
 				sb.setAlpha(transparency);
 				return sb;
 			}
-			
 		});
 	}
 
@@ -70,6 +69,15 @@ public class SysUIMods{
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
 				View bg = liparam.view.findViewById(resparam.res.getIdentifier("notification_panel", "id", "com.android.systemui"));
 				bg.getBackground().setAlpha(transparency);
+			}
+		});
+	}
+
+	public static void execHook_AospRecent(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.StatusBarFlag", lpparam.classLoader, "isHtcStyleRecentApp", new XC_MethodHook() {
+			@Override
+    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.setResult(false);
 			}
 		});
 	}

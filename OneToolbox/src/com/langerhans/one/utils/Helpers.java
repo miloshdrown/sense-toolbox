@@ -28,8 +28,6 @@ import org.xml.sax.InputSource;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.os.Environment;
-import android.util.Log;
 import android.widget.ArrayAdapter;
 
 import com.stericson.RootTools.RootTools;

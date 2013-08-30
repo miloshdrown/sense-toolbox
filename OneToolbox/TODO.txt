@@ -1,10 +1,8 @@
 - include xposed installer, check if installed -> /system/bin/app_process --xposedversion
 
-- ringtone -/- notification volume
 - beats toggle
 - torch toggle
 - prism bg, blinkfeed transparent
-- longer SMS (?)
 - back button kill,crt off animation,volume button controls for skipping tracks
 - center clock
 - status bar data meter: http://forum.xda-developers.com/showthread.php?p=44935359#post44935359
@@ -18,10 +16,13 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 (blinkfeed, bootanimation)
 
 1.5
+Fixed cause for possible FC on start.
+Changed status bar trasparency approch. This should make it work for thos who had problems before.
 Added transparency setting for notification drawer background.
-Added option to dsable forced SMS to MMS conversion. Network restrictions still apply!
+Added option to disable forced SMS to MMS conversion. Network restrictions still apply!
+Added AOSP style recent apps menu.
 
-1.4:
+1.4: 1117
 Unified app for One, One X and One X+ - Now called Sense 5 Toolbox!
 Added transparency for the standard HTC clock + weather widget
 	Sorry, but this is the last transparency mod I'm going to add. 

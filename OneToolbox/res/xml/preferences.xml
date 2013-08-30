@@ -52,6 +52,11 @@
             android:summary="Enable horizontal EQS. The first 5 of your normal EQS will show there."
             android:title="Horizontal EQS"
             android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_key_sysui_aosprecent"
+            android:summary="Enable AOSP style recent apps screen."
+            android:title="AOSP recent apps"
+            android:defaultValue="false" />
     </PreferenceCategory>
     <PreferenceCategory 
         android:title="Sense Mods"

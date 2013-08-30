@@ -4,7 +4,6 @@ import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
@@ -101,6 +100,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if(pref.getBoolean("pref_key_sysui_minorqs", false))
 				SysUIMods.execHook_MinorEQS(lpparam);
+			
+			if(pref.getBoolean("pref_key_sysui_aosprecent", false))
+					SysUIMods.execHook_AospRecent(lpparam);
 		}
 		
 		if (lpparam.processName.equals("android"))
