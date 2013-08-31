@@ -8,12 +8,15 @@ import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.drawable.Drawable;
+import android.view.View;
 
 import com.langerhans.one.R;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
+import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class PrismMods {
@@ -118,6 +121,39 @@ public class PrismMods {
 				param.setResult(null);
 			}
 		});
+	}
+
+	public static void execHook_InvisiDrawerLayout(final InitPackageResourcesParam resparam, final int transparency, String mODULE_PATH) {
+		resparam.res.hookLayout("com.htc.launcher", "layout", "launcher", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				View bg = liparam.view.findViewById(resparam.res.getIdentifier("all_apps_paged_view", "id", "com.htc.launcher"));
+				if (bg != null) 
+					if (bg.getParent() != null) {
+					View bghost = (View)bg.getParent();
+					bghost.getBackground().setAlpha(transparency);
+					}
+			}
+		});
+	}
+
+	public static void execHook_InvisiDrawerCode(LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "updateWallpaperVisibility", boolean.class, XC_MethodReplacement.DO_NOTHING);
+	}
+
+	public static void execHook_BfRemove(LoadPackageParam lpparam) {
+		try{
+			findAndHookMethod("com.htc.launcher.util.Protection", lpparam.classLoader, "isFeedEnabled", new XC_MethodHook() {
+				@Override
+	    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(false);
+				}
+			});
+		}
+		catch(Exception e)
+		{
+			//Probably on 4.2.2...
+		}
 	}
 
 }

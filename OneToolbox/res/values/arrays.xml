@@ -35,11 +35,13 @@
     <string-array name="batt_icon">
         <item >Default</item>
         <item >Percentage inside</item>
+        <item >Circle with percentage</item>
         <item >No icon</item>
     </string-array>
     <string-array name="batt_icon_val">
         <item >1</item>
         <item >2</item>
         <item >3</item>
+        <item >4</item>
     </string-array>
 </resources>

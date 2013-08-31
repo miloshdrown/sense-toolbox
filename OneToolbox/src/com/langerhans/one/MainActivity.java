@@ -4,13 +4,12 @@ import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.SharedPreferences;
 import android.content.DialogInterface.OnClickListener;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
 
-import com.langerhans.one.R;
 import com.langerhans.one.utils.MyTabListener;
 import com.stericson.RootTools.RootTools;
 
@@ -57,7 +56,6 @@ public class MainActivity extends Activity {
         ActionBar.Tab modsTab = ab.newTab().setText("Mods");
         modsTab.setTabListener(new MyTabListener<PrefsFragment>(this, "prefs", PrefsFragment.class));
 	    ab.addTab(modsTab);
-	    
     } 
 	
 	public void showEasterEgg(View view)

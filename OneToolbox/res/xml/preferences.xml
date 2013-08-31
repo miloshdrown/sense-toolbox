@@ -3,7 +3,7 @@
     android:layout_height="match_parent"
     android:key="prefs" >
 
-    <PreferenceCategory 
+    <PreferenceScreen 
         android:title="Camera Mods"
         android:key="pref_key_cam">
         <ListPreference
@@ -20,17 +20,10 @@
             android:entries="@array/cam_actions"
             android:entryValues="@array/cam_actions_val"
             android:defaultValue="4" />
-    </PreferenceCategory>
-    <PreferenceCategory 
+    </PreferenceScreen>
+    <PreferenceScreen 
         android:title="SystemUI Mods"
         android:key="pref_key_sysui">
-        <ListPreference
-            android:key="pref_key_sysui_battery"
-            android:summary="Change battery icon design."
-            android:title="Battery icon"
-            android:entries="@array/batt_icon"
-            android:entryValues="@array/batt_icon_val"
-            android:defaultValue="1"/>
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_sysui_invisibar_new"
     		android:title="Transparent status bar"
@@ -57,8 +50,55 @@
             android:summary="Enable AOSP style recent apps screen."
             android:title="AOSP recent apps"
             android:defaultValue="false" />
-    </PreferenceCategory>
-    <PreferenceCategory 
+    </PreferenceScreen>
+    <PreferenceScreen
+        android:title="CleanBeam Mods by vomer"
+        android:key="pref_key_cb">
+        <ListPreference
+            android:key="pref_key_sysui_battery"
+            android:summary="Change battery icon design."
+            android:title="Battery icon"
+            android:entries="@array/batt_icon"
+            android:entryValues="@array/batt_icon_val"
+            android:defaultValue="1"/>
+        <CheckBoxPreference 
+            android:key="pref_key_cb_signal"
+            android:summary="Enable CleanBeam signal bar icons."
+            android:title="Signal bar"
+            android:defaultValue="false"/>
+        <CheckBoxPreference 
+            android:key="pref_key_cb_headphone"
+            android:summary="Enable CleanBeam headphone icons."
+            android:title="Headphone"
+            android:defaultValue="false"/>
+        <CheckBoxPreference 
+            android:key="pref_key_cb_beats"
+            android:summary="Enable CleanBeam beats icons."
+            android:title="Beats"
+            android:defaultValue="false"/>
+        <CheckBoxPreference 
+            android:key="pref_key_cb_alarm"
+            android:summary="Enable CleanBeam alarm icon."
+            android:title="Alarm"
+            android:defaultValue="false"/>
+        <CheckBoxPreference 
+            android:key="pref_key_cb_wifi"
+            android:summary="Enable CleanBeam WiFi icons."
+            android:title="WiFi"
+            android:defaultValue="false"/>
+        <Preference
+            android:title="Install Sunbeam"
+            android:summary="Install the Sunbeam Live Wallpaper."
+            android:key="pref_key_cb_sunbeam">
+		</Preference>
+        <Preference
+            android:title="Visit CleanBeam post"
+            android:summary="See a preview and changelog here. Make sure to hit the 'Thanks' button!">
+			<intent android:action="android.intent.action.VIEW"
+            android:data="http://forum.xda-developers.com/showpost.php?p=45123557&#038;postcount=44952" />
+		</Preference>
+    </PreferenceScreen>
+    <PreferenceScreen 
         android:title="Sense Mods"
         android:key="pref_key_prism">
         <com.langerhans.one.utils.SeekBarPreference 
@@ -71,8 +111,16 @@
     		android:max="100"/>
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_prism_invisiwidget"
-    		android:title="Transparent clock widget"
-    		android:summary="Make the default clock + weather widget transparent."
+    		android:title="Transparent 4x1 clock widget"
+    		android:summary="Make the default 4x1 clock + weather widget transparent."
+    		android:dialogMessage="0 = transparent, 100 = opaque"
+    		android:defaultValue="100"
+    		android:text=" %"
+    		android:max="100"/>
+        <com.langerhans.one.utils.SeekBarPreference 
+            android:key="pref_key_prism_invisidrawer"
+    		android:title="Transparent app drawer"
+    		android:summary="Make the Sense launcher app drawer transparent."
     		android:dialogMessage="0 = transparent, 100 = opaque"
     		android:defaultValue="100"
     		android:text=" %"
@@ -82,8 +130,13 @@
             android:summary="Enable to have infinite icons per folder."
             android:title="Infinifolders"
             android:defaultValue="false" />
-    </PreferenceCategory>
-    <PreferenceCategory 
+        <CheckBoxPreference
+            android:key="pref_key_prism_bfremove"
+            android:summary="Only on Android 4.3: Tick to disable BlinkFeed."
+            android:title="Remove BlinkFeed"
+            android:defaultValue="false" />
+    </PreferenceScreen>
+    <PreferenceScreen 
         android:title="Messaging Mods"
         android:key="pref_key_sms">
         <CheckBoxPreference
@@ -96,8 +149,8 @@
             android:summary="Turn the screen on, when you receive a SMS."
             android:title="Wake on SMS"
             android:defaultValue="false" />
-    </PreferenceCategory>
-    <PreferenceCategory 
+    </PreferenceScreen>
+    <PreferenceScreen 
         android:title="Various Mods"
         android:key="pref_key_other">
         <CheckBoxPreference
@@ -107,7 +160,7 @@
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_other_keepscreenon"
-            android:summary="Show the 'Keep screen on' option in display and development settings."
+            android:summary="Show the 'Keep screen on' option in display settings and development settings."
             android:title="Enable 'Keep screen on'"
             android:defaultValue="false" />
         <CheckBoxPreference
@@ -115,7 +168,7 @@
             android:summary="Check to disable the sound on volume change."
             android:title="Disable volume change sound."
             android:defaultValue="false" />
-    </PreferenceCategory>
+    </PreferenceScreen>
     <PreferenceCategory
         android:title="Support"
         android:key="pref_key_support">

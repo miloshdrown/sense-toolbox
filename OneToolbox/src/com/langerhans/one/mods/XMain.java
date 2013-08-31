@@ -15,6 +15,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
 		MODULE_PATH = startupParam.modulePath;
+
+		pref = new XSharedPreferences("com.langerhans.one", "one_toolbox_prefs");
+
+		if(pref.getBoolean("pref_key_cb_beats", false))
+			CleanBeamMods.execHook_BeatsIcon(MODULE_PATH);
 	}
 
 	@Override
@@ -23,17 +28,24 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.htc.launcher"))
 		{
-			if(pref.getInt("pref_key_prism_invisinav_new", 100) != 100)
+			if(pref.getInt("pref_key_prism_invisinav_new", 101) != 101)
 			{
 				int transparency = pref.getInt("pref_key_prism_invisinav_new", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiNav(resparam, transparency, MODULE_PATH);
 			}
+			
+			if(pref.getInt("pref_key_prism_invisidrawer", 100) != 100)
+			{
+				int transparency = pref.getInt("pref_key_prism_invisidrawer", 100);
+				transparency = (int) Math.floor(transparency*2.55f);
+				PrismMods.execHook_InvisiDrawerLayout(resparam, transparency, MODULE_PATH);
+			}
 		}
 		
 		if (pkg.equals("com.android.systemui"))
 		{
-			if(pref.getInt("pref_key_sysui_invisibar_new", 100) != 100)
+			if(pref.getInt("pref_key_sysui_invisibar_new", 101) != 101)
 			{
 				int transparency = pref.getInt("pref_key_sysui_invisibar_new", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
@@ -48,7 +60,19 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			}
 			
 			if(Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")) != 1)
-				SysUIMods.execHook_BatteryIcon(resparam, MODULE_PATH, Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")));
+				CleanBeamMods.execHook_BatteryIcon(resparam, MODULE_PATH, Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")));
+			
+			if(pref.getBoolean("pref_key_cb_signal", false))
+				CleanBeamMods.execHook_SignalIcon(resparam, MODULE_PATH);
+			
+			if(pref.getBoolean("pref_key_cb_headphone", false))
+				CleanBeamMods.execHook_HeadphoneIcon(resparam, MODULE_PATH);
+						
+			if(pref.getBoolean("pref_key_cb_alarm", false))
+				CleanBeamMods.execHook_AlarmIcon(resparam, MODULE_PATH);
+
+			if(pref.getBoolean("pref_key_cb_wifi", false))
+				CleanBeamMods.execHook_WiFiIcon(resparam, MODULE_PATH);
 		}
 		
 		if (pkg.equals("com.htc.widget.weatherclock"))
@@ -64,7 +88,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 
 	@Override
 	public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
-		pref = new XSharedPreferences("com.langerhans.one", "one_toolbox_prefs");
 		String pkg = lpparam.packageName;
 		
 		if(pkg.equals("com.android.mms"))
@@ -85,6 +108,14 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			{
 				PrismMods.execHookTSBFix(lpparam);
 			}
+			
+			if(pref.getInt("pref_key_prism_invisidrawer", 100) != 100)
+			{
+				PrismMods.execHook_InvisiDrawerCode(lpparam);
+			}
+			
+			if(pref.getBoolean("pref_key_prism_bfremove", false))
+				PrismMods.execHook_BfRemove(lpparam);
 		}
 		
 		if (pkg.equals("com.android.settings"))

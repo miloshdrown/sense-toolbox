@@ -5,6 +5,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.ListPreference;
 import android.preference.Preference;
+import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
@@ -13,6 +14,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.Toast;
 
+import com.langerhans.one.utils.ApkInstaller;
 import com.langerhans.one.utils.Helpers;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
@@ -63,6 +65,15 @@ public class PrefsFragment extends PreferenceFragment {
         ListPreference volupPreference = (ListPreference) findPreference("pref_key_cam_volup");
         voldownPreference.setOnPreferenceChangeListener(camChangeListener);
         volupPreference.setOnPreferenceChangeListener(camChangeListener);
+        
+        Preference sunbeamInstallPref = findPreference("pref_key_cb_sunbeam");
+        sunbeamInstallPref.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+			@Override
+			public boolean onPreferenceClick(Preference preference) {
+				ApkInstaller.installSunbeam(getActivity());
+				return true;
+			}
+        });
 	}
 	
 	@Override
