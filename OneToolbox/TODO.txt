@@ -15,8 +15,14 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
 (blinkfeed, bootanimation)
 
+1.6.1
+Fixed SunBeam install procedure
+Fixed status bar background image. No more dissortion now.
+
 1.6:
 Changed layout of the mods settings page. It got a bit cluttered with the number of mods there :D
+Changed theme to have a dark action bar. Looks more Sense-ish :D
+Fixed a bug in EQS Reorder where a removed tile couldn't be added back immediately afterwards.
 Fix for 100% transparency settings on status bar and dock.
 Added transparency setting for app drawer. Huge thanks to @Mikanoshi, who shared his code with me.
 Added option to remove BlinkFeed. Note that this will only work on Android 4.3 builds!

@@ -165,6 +165,7 @@ public class ReorderFragment extends Fragment {
 			public void onClick(DialogInterface dialog, int which) {
 				adapter.remove(item);
 				dgv.removeView(view);
+				qsAvail.add(item);
 			}
 		});
 		adb.setNegativeButton("No", new OnClickListener(){

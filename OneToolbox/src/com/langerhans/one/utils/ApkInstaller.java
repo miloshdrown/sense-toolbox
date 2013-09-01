@@ -10,7 +10,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
@@ -43,9 +42,11 @@ public class ApkInstaller {
 		    out = null;
 
 		    CommandCapture command = new CommandCapture(0, 
-		    		"cp -f" + cache.getAbsolutePath() + "/SunBeam.apk /system/app/SunBeam.apk",
+		    		"mount -o rw,remount /system",
+		    		"cp -f " + cache.getAbsolutePath() + "/SunBeam.apk /system/app/SunBeam.apk",
 		    		"rm -f " + cache.getAbsolutePath() + "/SunBeam.apk",
-		    		"chmod 644 /system/app/SunBeam.apk");
+		    		"chmod 644 /system/app/SunBeam.apk",
+		    		"mount -o ro,remount /system");
 		    RootTools.getShell(true).add(command).waitForFinish();
 		    		    
 		    new AlertDialog.Builder(ctx)
