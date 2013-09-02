@@ -12,6 +12,7 @@ import android.content.Context;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.drawable.Drawable;
+import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
@@ -21,6 +22,7 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
+import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.ImageView;
@@ -116,7 +118,19 @@ public class SysUIMods {
 			}
 		});
 	}
-	
+/*  Stupid hook not working! ^_^
+
+	public static void execHook_InvisiRecentApps(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.internal.policy.impl.RecentApplicationsBackground", lpparam.classLoader, "init", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				XposedBridge.log("INIT!");
+				Drawable mBackground = (Drawable)XposedHelpers.findField(param.thisObject.getClass(), "mBackground").get(param.thisObject);
+				mBackground.setAlpha(140);
+			}
+		});
+	}
+*/	
 	// Pinch to clear all recent apps
 	public static void execHook_RecentAppsClear(final LoadPackageParam lpparam) {
     	Object[] callbackObj = new Object[2];
@@ -142,6 +156,7 @@ public class SysUIMods {
 	private static Method setDelPositionsList;
     
 	private static ScaleGestureDetector mScaleDetector;
+	private static GestureDetector mDetector;
 	static boolean killedEmAll = false;
 	
 	// Get RecentAppFxActivity elements
@@ -163,7 +178,7 @@ public class SysUIMods {
 	}
 	
 	// Exterminate! © Daleks
-	private static void terminateAll(Object termObj, Context termContext, GridView termGridView, ArrayList<?> taskDescriptionsArray) throws InvocationTargetException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
+	private static void terminateAll(Object termObj, Context termContext, GridView termGridView, ArrayList<?> taskDescriptionsArray, int animType) throws InvocationTargetException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
 		if ((taskDescriptionsArray == null) || (taskDescriptionsArray.size() == 0))	{
 			// Recent array is empty, resuming last activity
 			sendOnResume(termObj);
@@ -223,7 +238,7 @@ public class SysUIMods {
 								removeTask.invoke(am, paramsArray2);
 								pTaskId = null;
 							}
-							gridViewItem.startAnimation(terminateAnimation(termContext, i, cnt, termObj));
+							gridViewItem.startAnimation(terminateAnimation(termContext, i, cnt, animType, termObj));
 						}
 					}
 				}
@@ -233,17 +248,32 @@ public class SysUIMods {
 	}
 	
 	// Shrink to center and fade out animations
-	private static Animation terminateAnimation(Context paramContext, int i, int cnt, final Object paramObject) {
+	private static Animation terminateAnimation(Context paramContext, int i, int cnt, int animType, final Object paramObject) {
 		Animation fadeOut = AnimationUtils.loadAnimation(paramContext, android.R.anim.fade_out);
-		ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f); 
-		fadeOut.setDuration(500L);
-		shrink.setDuration(500L);
-		fadeOut.setStartOffset(cnt * 50);
-		fadeOut.setInterpolator(AnimationUtils.loadInterpolator(paramContext, android.R.anim.accelerate_interpolator));
-		shrink.setStartOffset(cnt * 50);
-		shrink.setInterpolator(AnimationUtils.loadInterpolator(paramContext, android.R.anim.accelerate_decelerate_interpolator));
 		AnimationSet localAnimationSet = new AnimationSet(true);
-		localAnimationSet.addAnimation(shrink);
+		if (animType == 0)
+		{
+			fadeOut.setDuration(300l);
+			fadeOut.setStartOffset((i - cnt) * 70);
+			fadeOut.setInterpolator(AnimationUtils.loadInterpolator(paramContext, android.R.anim.linear_interpolator));
+			
+			TranslateAnimation drop = new TranslateAnimation(0.0F, 0.0F, 0.0F, 300.0f);
+			drop.setDuration(500l);
+			drop.setStartOffset((i - cnt) * 70);
+			drop.setInterpolator(AnimationUtils.loadInterpolator(paramContext, android.R.anim.linear_interpolator));
+			localAnimationSet.addAnimation(drop);
+		} else {			
+			fadeOut.setDuration(500l);
+			fadeOut.setStartOffset(cnt * 50);
+			fadeOut.setInterpolator(AnimationUtils.loadInterpolator(paramContext, android.R.anim.accelerate_interpolator));
+			
+			ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f); 
+			shrink.setDuration(500l);
+			shrink.setStartOffset(cnt * 50);
+			shrink.setInterpolator(AnimationUtils.loadInterpolator(paramContext, android.R.anim.accelerate_decelerate_interpolator));
+			localAnimationSet.addAnimation(shrink);
+		}
+
 		localAnimationSet.addAnimation(fadeOut);
 		localAnimationSet.setFillAfter(true);
 		if (cnt == i - 1)
@@ -273,17 +303,41 @@ public class SysUIMods {
 	    public boolean onScale(ScaleGestureDetector detector) {
 	    	killedEmAll = true;
 			try {
-				terminateAll(gridViewObject, gridViewContext, gridViewSelf, (ArrayList<?>)mTaskDescr.get(gridViewObject));
+				terminateAll(gridViewObject, gridViewContext, gridViewSelf, (ArrayList<?>)mTaskDescr.get(gridViewObject), 1);
 			} catch (Exception recentException) {
 				XposedBridge.log("[S5T] TerminateAll Error: " + recentException.getMessage());
 			}
 	        return true;
 	    }
 	}
+
+	// Listener for swipe gestures
+	private static class SwipeListener extends GestureDetector.SimpleOnGestureListener {
+		private final int SWIPE_MIN_DISTANCE = 120;
+		private final int SWIPE_MIN_OFF_PATH = 250;
+		private final int SWIPE_THRESHOLD_VELOCITY = 200;	
+		
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) < SWIPE_MIN_OFF_PATH) return false;
+				if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+			    	killedEmAll = true;
+					try {
+						terminateAll(gridViewObject, gridViewContext, gridViewSelf, (ArrayList<?>)mTaskDescr.get(gridViewObject), 0);
+					} catch (Exception recentException) {
+						XposedBridge.log("[S5T] TerminateAll Error: " + recentException.getMessage());
+					}
+				} 
+			} catch (Exception e) {}
+			return false;
+		}
+	}
 	
-	private static void initScaleGestureDetector(MethodHookParam param) throws Throwable {
+	private static void initDetectors(MethodHookParam param) throws Throwable {
     	final GridView recentGridView = (GridView)param.thisObject;
-    	if (mScaleDetector == null) mScaleDetector = new ScaleGestureDetector(recentGridView.getContext(), new ScaleListener());	    	
+    	if (mScaleDetector == null) mScaleDetector = new ScaleGestureDetector(recentGridView.getContext(), new ScaleListener());
+    	if (mDetector == null) mDetector = new GestureDetector(recentGridView.getContext(), new SwipeListener());
 	}
 	
 	// Detect second finger and cancel action if some app thumbnail was pressed
@@ -292,10 +346,11 @@ public class SysUIMods {
 		
 	    @Override
 	    protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-	    	initScaleGestureDetector(param);
+	    	initDetectors(param);
 	    	ev = (MotionEvent)param.args[0];
 	    	if (ev == null) return;
 		    mScaleDetector.onTouchEvent(ev);
+		    mDetector.onTouchEvent(ev);
 		    
 		    final int action = ev.getAction();
 		    switch (action & MotionEvent.ACTION_MASK) {
@@ -304,20 +359,16 @@ public class SysUIMods {
 		    case MotionEvent.ACTION_POINTER_DOWN: {
 		    	if (ev.getPointerCount() == 2)
 		    	try {
-		    		Object result = replaceHookedMethod(param);
-		    		param.setResult(result);
+		    		param.setResult(Boolean.valueOf(true));
 				} catch (Throwable thw) {
 					param.setThrowable(thw);
 				}
 		    }		    
 		    }		    
 	    }
-	    protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-    		return true;
-    	}	    
 	}
 	
-	// Detect any scale gestures
+	// Detect scale/swipe gestures
 	private static class TouchListenerOnTouch extends XC_MethodHook {
 	    MotionEvent ev = null;
 	    
@@ -329,10 +380,11 @@ public class SysUIMods {
 	    protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 	    	if (killedEmAll == true) return;
 	    	
-	    	initScaleGestureDetector(param);
+	    	initDetectors(param);
 	    	ev = (MotionEvent)param.args[0];
 	    	if (ev == null) return;
 		    mScaleDetector.onTouchEvent(ev);
+		    mDetector.onTouchEvent(ev);
 		}
 	}
 	
@@ -347,5 +399,5 @@ public class SysUIMods {
 		} catch (Exception localException) {
 			XposedBridge.log("[S5T] Error on onResume: " + localException.getMessage());
 		}
-	}	
+	}
 }
