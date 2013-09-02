@@ -2,18 +2,22 @@
 
 - beats toggle
 - torch toggle
-- prism bg, blinkfeed transparent
+- prism bg, blinkfeed, folders transparent
 - back button kill,crt off animation,volume button controls for skipping tracks
 - center clock
 - status bar data meter: http://forum.xda-developers.com/showthread.php?p=44935359#post44935359
-- side way scrolling
-- 4x2 widget bg
+- side way scrolling (Loads of work. probably not feasable...)
+- 4x2 widget bg (Needs way more replacements than I thought. Probably not ganna happen soon.)
 - auto brightness
-- ATT TMoUS Data Icon remove
+- ATT TMoUS Data Icon remove (Has more implications. Waiting till more people request it.)
+- Higher grid size in sense launcher (Already looked into this. needs many dimens.xml changes)
+- Smaller size horizontal EQS. (Could probably remove Text and reduce icon size. Not really sure if many would use it...)
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
-(blinkfeed, bootanimation)
+1.7:
+Pinch to close all recent apps in Sense recent apps screen.
+Added more battery icons thanks to @vomer. (Waiting for PN...)
 
 1.6.1
 Fixed SunBeam install procedure
@@ -28,7 +32,7 @@ Added transparency setting for app drawer. Huge thanks to @Mikanoshi, who shared
 Added option to remove BlinkFeed. Note that this will only work on Android 4.3 builds!
 Added CleanBean mods by @vomer. Each mod can be selected individually. You may need to re-set your battery icon. Make sure to head to his post and hit "Thanks" there: http://forum.xda-developers.com/showpost.php?p=45123557&postcount=44952
 
-1.5.1:
+1.5.1: 1110
 Transparent status bar fix. This will now allow true 0-100% transparency setting for Sense launcher!
 
 1.5: 98
