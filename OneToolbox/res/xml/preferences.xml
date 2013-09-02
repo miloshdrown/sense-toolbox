@@ -50,7 +50,12 @@
             android:summary="Enable AOSP style recent apps screen."
             android:title="AOSP recent apps"
             android:defaultValue="false" />
-    </PreferenceScreen>
+        <CheckBoxPreference
+            android:key="pref_key_sysui_recentappsclear"
+            android:summary="Add ability to clear recent apps list by pinching gesture."
+            android:title="Close all recent apps at once"
+            android:defaultValue="false" />
+	</PreferenceScreen>
     <PreferenceScreen
         android:title="CleanBeam Mods by vomer"
         android:key="pref_key_cb">

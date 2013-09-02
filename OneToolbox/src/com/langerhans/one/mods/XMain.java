@@ -138,7 +138,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				SysUIMods.execHook_MinorEQS(lpparam);
 			
 			if(pref.getBoolean("pref_key_sysui_aosprecent", false))
-					SysUIMods.execHook_AospRecent(lpparam);
+				SysUIMods.execHook_AospRecent(lpparam);
+			
+			if(pref.getBoolean("pref_key_sysui_recentappsclear", false))
+				SysUIMods.execHook_RecentAppsClear(lpparam);
 		}
 		
 		if (lpparam.processName.equals("android"))
