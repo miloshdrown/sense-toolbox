@@ -16,7 +16,8 @@
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
 1.7:
-Pinch to close all recent apps in Sense recent apps screen.
+Added Pinch to close all recent apps in Sense recent apps screen.
+Added center clock mod.
 Added more battery icons thanks to @vomer. (Waiting for PN...)
 
 1.6.1

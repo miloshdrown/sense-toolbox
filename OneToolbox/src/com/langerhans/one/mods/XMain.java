@@ -73,6 +73,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 
 			if(pref.getBoolean("pref_key_cb_wifi", false))
 				CleanBeamMods.execHook_WiFiIcon(resparam, MODULE_PATH);
+			
+			if(pref.getBoolean("pref_key_sysui_centerclock", false))
+				SysUIMods.execHook_CenterClock(resparam, MODULE_PATH);
 		}
 		
 		if (pkg.equals("com.htc.widget.weatherclock"))

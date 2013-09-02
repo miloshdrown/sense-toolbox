@@ -55,6 +55,11 @@
             android:summary="Add ability to clear recent apps list by pinching gesture."
             android:title="Close all recent apps at once"
             android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_key_sysui_centerclock"
+            android:summary="Enable to move the status bar clock to the center."
+            android:title="Center clock"
+            android:defaultValue="false" />
 	</PreferenceScreen>
     <PreferenceScreen
         android:title="CleanBeam Mods by vomer"

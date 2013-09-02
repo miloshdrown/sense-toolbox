@@ -12,14 +12,20 @@ import android.content.Context;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.drawable.Drawable;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewGroup.LayoutParams;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
+import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.langerhans.one.R;
 
@@ -77,6 +83,36 @@ public class SysUIMods {
 			@Override
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(false);
+			}
+		});
+	}
+	
+	public static void execHook_CenterClock(final InitPackageResourcesParam resparam, String MODULE_PATH) {
+		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				FrameLayout status_bar = (FrameLayout) liparam.view.findViewById(resparam.res.getIdentifier("status_bar", "id", "com.android.systemui"));
+				TextView clock = (TextView) liparam.view.findViewById(resparam.res.getIdentifier("clock", "id", "com.android.systemui"));
+				ImageView lights_out = (ImageView) liparam.view.findViewById(resparam.res.getIdentifier("notification_lights_out", "id", "com.android.systemui"));
+				LinearLayout system_icon_area = (LinearLayout) liparam.view.findViewById(resparam.res.getIdentifier("system_icon_area", "id", "com.android.systemui"));
+				
+				if(status_bar != null && clock != null && lights_out != null && system_icon_area != null)
+				{	
+					clock.setGravity(Gravity.CENTER);
+					LinearLayout clock_container = new LinearLayout(clock.getContext());
+					clock_container.setOrientation(LinearLayout.HORIZONTAL);
+					clock_container.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+					clock_container.setGravity(Gravity.CENTER);
+					
+					system_icon_area.removeView(clock);
+					
+					clock_container.addView(clock);
+					
+					status_bar.addView(clock_container, status_bar.indexOfChild(lights_out) - 1);
+				}else
+				{
+					XposedBridge.log("[S5T] Center Clock Error: One or more layouts or views not found");
+				}
 			}
 		});
 	}
