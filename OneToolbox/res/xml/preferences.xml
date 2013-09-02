@@ -60,7 +60,7 @@
             android:summary="Enable to move the status bar clock to the center."
             android:title="Center clock"
             android:defaultValue="false" />
-	</PreferenceScreen>
+    </PreferenceScreen>
     <PreferenceScreen
         android:title="CleanBeam Mods by vomer"
         android:key="pref_key_cb">
