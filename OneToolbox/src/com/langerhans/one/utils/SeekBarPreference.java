@@ -6,6 +6,8 @@ package com.langerhans.one.utils;
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import com.langerhans.one.R;
+
 import android.content.Context;
 import android.preference.DialogPreference;
 import android.util.AttributeSet;
@@ -31,7 +33,7 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
     super(context,attrs); 
     mContext = context;
 
-    mDialogMessage = attrs.getAttributeValue(androidns,"dialogMessage");
+    mDialogMessage = (String) context.getResources().getText(attrs.getAttributeResourceValue(androidns,"dialogMessage",R.string.transparency_msg));
     mSuffix = attrs.getAttributeValue(androidns,"text");
     mDefault = attrs.getAttributeIntValue(androidns,"defaultValue", 0);
     mMax = attrs.getAttributeIntValue(androidns,"max", 100);
@@ -48,7 +50,8 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
     if (mDialogMessage != null)
     {
         mSplashText.setText(mDialogMessage);
-        mSplashText.setPadding(6, 6, 6, 6);
+        mSplashText.setGravity(Gravity.CENTER_HORIZONTAL);
+        mSplashText.setPadding(5, 5, 25, 10);
     }
     layout.addView(mSplashText);
 
@@ -93,7 +96,7 @@ public class SeekBarPreference extends DialogPreference implements SeekBar.OnSee
     mValueText.setText(mSuffix == null ? t : t.concat(mSuffix));
     if (shouldPersist())
       persistInt(value);
-    callChangeListener(new Integer(value));
+    callChangeListener(Integer.valueOf(value));
   }
   public void onStartTrackingTouch(SeekBar seek) {}
   public void onStopTrackingTouch(SeekBar seek) {}

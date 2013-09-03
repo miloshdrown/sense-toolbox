@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="menu_save">Сохранить</string>
+    <string name="app_name">Sense 5 Toolbox</string>
+    <string name="app_name_version">Sense 5 Toolbox (Версия: %1$s)</string>
+    <string name="support_version">Поддержка (Версия: %1$s)</string>
+    <string name="restore">Восстановить</string>
+    <string name="add">Добавить</string>
+    <string name="soft_reboot">Быстрый перезапуск</string>
+    
+    <string name="welcome">Добро пожаловать в Sense 5 Toolbox!</string>
+    <string name="dragndrop">Порядок элементов можно задать перетаскивая их.</string>
+    <string name="title_delete">Нажмите на элемент для его удаления.</string>
+    <string name="plus_icon">Используйте иконку \'+\' для добавления элементов.</string>
+    <string name="save_settings">Не забудьте сохранить Ваши настройки!</string>
+    <string name="restore_layout">Для восстановления порядка элементов нажмите на иконку Восстановить. При этом будет загружена последняя сохранённая конфигурация.</string>
+    <string name="xposed_mods">Все моды на вкладке \'МОДЫ\' работают только при наличии установленного Xposed Framework!</string>
+    
+    <string name="apm_title">Расширенное Меню Управления Питанием</string>
+    <string name="apm_normal">Перезапуск</string>
+    <string name="apm_hotreboot">Быстрый перезапуск</string>
+    <string name="apm_recovery">Recovery</string>
+    <string name="apm_bootloader">Bootloader</string>
+    
+    <string name="eqs_reorder">Порядок EQS</string>
+    <string name="no_root_access">Нет прав рута</string>
+    
+    <string name="no_root_explain">Ваше устройство не рутовано, либо Вы не разрешили приложению доступ к руту.\nБез прав рута вы не сможете изменить порядок EQS, поэтому данная функция будет скрыта.\nВы можете закрыть данное сообщение один раз или навсегда. Проверка на рут будет происходить при каждом запуске приложения, чтобы вновь включить функцию, если Вы решите разрешить доступ позже.</string>
+	<string name="dismiss_once">Закрыть</string>
+	<string name="dismiss_forever">Закрыть навсегда</string>
+	<string name="mods">Моды</string>
+	
+	<string name="xposed_not_found">Не найден Xposed Framework</string>
+	<string name="xposed_not_found_explain">Похоже, что у Вас не установлен Xposed Framework.\n\nВсе моды на данной вкладке работают только при наличии установленного Xposed Framework!\n\nЕго можно установить вместе с прошивкой ARHD.</string>
+	<string name="okay">Окей</string>
+	<string name="close_camera">Убедитесь, что камера закрыта и её нет в списке последних приложений!</string>
+	<string name="remove_last">Вы не можете удалить последний элемент!</string>
+	<string name="remove">Удалить</string>
+	<string name="remove_tile_msg1">Хотите удалить элемент</string>
+	<string name="remove_tile_msg2">\?\nВы сможете добавить его снова используя иконку \'+\'.</string>
+	<string name="yes">Да</string>
+	<string name="no">Нет</string>
+	<string name="hotreboot_explain">Порядок элементов был сохранён! Быстрый перезапуск необходим для применения сделанных изменений. Хотите выполнить её прямо сейчас?</string>
+	<string name="select_tile">Выберите какой элемент добавить</string>
+	<string name="success">Успешно</string>
+	<string name="backup_restored">Конфигурация успешно восстановлена! Нажмите иконку "Сохранить" чтобы применить изменения.</string>
+	<string name="no_backup">Не найдено</string>
+	<string name="no_backup_explain">Извините, резервная копия конфигурации не найдена. Вы делали вайп?</string>
+	<string name="first_start">Первый запуск</string>
+	<string name="close_forever">Закрыть навсегда!</string>
+	
+	<string name="sunbeam_installed">SunBeam обои были установлены. Выполните быстрый перезапуск чтобы увидеть изменения. Помните, что SunBeam необходимо устанавливать после каждой прошивки ROM.</string>
+	<string name="eqs_user_card">Данные юзера</string>
+	<string name="eqs_brightness">Яркость</string>
+	<string name="eqs_settings">Настройки</string>
+	<string name="eqs_wifi">WiFi</string>
+	<string name="eqs_bluetooth">Bluetooth</string>
+	<string name="eqs_airplane">Режим "В самолёте"</string>
+	<string name="eqs_power_save">Энергосбережение</string>
+	<string name="eqs_rotation">Автоповорот</string>
+	<string name="eqs_mobile_data">Мобил. Данные</string>
+	<string name="eqs_sound_profile">Профиль звука</string>
+	<string name="eqs_wifi_hotspot">WiFi роутер</string>
+	<string name="eqs_screenshot">Снимок экрана</string>
+	<string name="eqs_gps">GPS</string>
+	<string name="eqs_roaming">Роаминг</string>
+	<string name="eqs_media_output">МедиаВыход</string>
+	<string name="eqs_auto_sync">Автосинхронизация</string>
+	<string name="eqs_roaming_setting">Настройки роуминга</string>
+	<string name="eqs_music_channel">Муз Канал</string>
+	<string name="eqs_ringtone">Рингтон</string>
+	<string name="eqs_timeout">Спящий режим</string>
+	<string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
+	<string name="eqs_apn">APN</string>
+	<string name="dummy"></string>
+	
+	<string name="transparency_msg">0 = прозрачно, 100 = непрозрачно</string>
+	
+	<string name="camera_mods">Моды камеры</string>
+	<string name="camera_vol_up_title">Повышение громкости</string>
+	<string name="camera_vol_up_summ">Действие на клавишу повыш. громкости в камере.</string>
+	<string name="camera_vol_down_title">Понижение громкости</string>	
+	<string name="camera_vol_down_summ">Действие на клавишу пониж. громкости в камере.</string>
+	
+	<string name="systemui_mods">Моды интерфейса</string>		
+	<string name="systemui_tsb_title">Прозрачная строка состояния</string>
+	<string name="systemui_tsb_summ">Настройка прозрачности статусбара.</string>
+	<string name="systemui_tnb_title">Прозрачный фон области уведомлений</string>
+	<string name="systemui_tnb_summ">Настройка прозрачности фона "шторки".</string>
+	<string name="systemui_heqs_title">Горизонтальные EQS</string>
+	<string name="systemui_heqs_summ">Включить горизонтальные быстрые настройки. В "шторке" будут показаны первые 5 элементов обычных EQS.</string>
+	<string name="systemui_aosp_title">Последние приложения AOSP</string>
+	<string name="systemui_aosp_summ">Включить AOSP-стиль списка последних приложений.</string>
+	<string name="systemui_recentclear_title">Закрыть последние приложения</string>
+	<string name="systemui_recentclear_summ">Добавляет возможность закрыть все последние приложения pinch-жестом или swipe-жестом сверху вниз.</string>
+	<string name="systemui_centerclock_title">Часы по центру</string>
+	<string name="systemui_centerclock_summ">Перемещение часов в центр статусбара.</string>
+	
+	<string name="cleanbeam_mods">Моды CleanBeam от vomer</string>
+	<string name="cleanbeam_battery_title">Иконка батареи</string>
+	<string name="cleanbeam_battery_summ">Смена дизайна иконки батареи.</string>
+	<string name="cleanbeam_signal_title">Сигнал сети</string>
+	<string name="cleanbeam_signal_summ">CleanBeam иконка сигнала.</string>
+	<string name="cleanbeam_headphone_title">наушники</string>
+	<string name="cleanbeam_headphone_summ">CleanBeam иконка наушников.</string>
+	<string name="cleanbeam_beats_title">Beats</string>
+	<string name="cleanbeam_beats_summ">CleanBeam иконка Beats.</string>
+	<string name="cleanbeam_alarm_title">Будильник</string>
+	<string name="cleanbeam_alarm_summ">CleanBeam иконка будильника.</string>
+	<string name="cleanbeam_wifi_title">WiFi</string>
+	<string name="cleanbeam_wifi_summ">CleanBeam иконка WiFi.</string>
+	<string name="cleanbeam_sunbeam_title">Установить Sunbeam</string>
+	<string name="cleanbeam_sunbeam_summ">Инсталяция анимированного фона Sunbeam (Phase Beam).</string>
+	<string name="cleanbeam_post_title">Пост о CleanBeam на XDA</string>
+	<string name="cleanbeam_post_summ">Примеры иконок и список изменений. Не забудьте нажать кнопку \'Thanks\'!</string>
+	
+	<string name="sense_mods">Моды Sense</string>
+	<string name="sense_td_title">Прозрачный док</string>
+	<string name="sense_td_summ">Настройка прозрачности дока ланчера Sense.</string>
+	<string name="sense_twidget_title">Прозрачный виджет часов 4x1</string>
+	<string name="sense_twidget_summ">Настройка прозрачности стандартного виджета часов и погоды 4x1.</string>
+	<string name="sense_tappdrawer_title">Прозрачный фон списка приложений</string>
+	<string name="sense_tappdrawer_summ">Настройка прозрачности фона списка приложений ланчера Sense.</string>
+	<string name="sense_infini_title">Бесконечные папки</string>
+	<string name="sense_infini_summ">Снятие ограничения на количество приложений в папке.</string>
+	<string name="sense_noblink_title">Удаление BlinkFeed</string>
+	<string name="sense_noblink_summ">Только для Android 4.3: отключает и скрывает BlinkFeed.</string>
+	
+	<string name="message_mods">Моды сообщений</string>
+	<string name="message_smsmms_title">Отключение SMS -> MMS</string>
+	<string name="message_smsmms_summ">Отменяет преобразование SMS в MMS при превышении количества символов сверх лимита. Не влияет на ограничения самой сети.</string>
+	<string name="message_smswake_title">Пробуждение при SMS</string>
+	<string name="message_smswake_summ">Включение экрана при приходе SMS.</string>
+	
+	<string name="various_mods">Различные моды</string>
+	<string name="various_apm_title">APM</string>
+	<string name="various_apm_summ">Расширенное меню управления питанием\nЕсли у Вас установлено это меню с прошивкой, то тут следует его отключить.</string>
+	<string name="various_scron_title">Опция \'Не выключать экран\'</string>
+	<string name="various_scron_summ">Добавляет пункт \'Не выключать экран\' в разделы \'Экран, кнопки и жесты\' и \'Для разработчиков\'.</string>
+	<string name="various_volsnd_title">Нет звука при смене громкости</string>
+	<string name="various_volsnd_summ">Отключение проверочного звука при изменении громкости.</string>
+	
+	<string name="support">Поддержка</string>
+	<string name="support_s5t_title">Открыть пост о Sense 5 Toolbox</string>
+	<string name="support_s5t_summ">Тут Вы найдёте информацию о приложении и список изменений.</string>
+	<string name="support_blog_title">Посетить блог ARHD</string>
+	<string name="support_blog_summ">Узнайте о последних новостях и обновлениях этой отличной прошивки :)</string>
+			
+</resources>

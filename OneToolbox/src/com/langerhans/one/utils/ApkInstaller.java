@@ -11,6 +11,7 @@ import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.util.Log;
 
+import com.langerhans.one.R;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
@@ -50,8 +51,8 @@ public class ApkInstaller {
 		    RootTools.getShell(true).add(command).waitForFinish();
 		    		    
 		    new AlertDialog.Builder(ctx)
-		    	.setMessage("SunBeam has been installed. Make sure you soft reboot to apply the changes. Remember that you need to reinstall SunBeam after every ROM flash.")
-		    	.setTitle("Success")
+		    	.setMessage(R.string.sunbeam_installed)
+		    	.setTitle(R.string.success)
 		    	.setCancelable(true)
 		    	.setNeutralButton(android.R.string.ok,
 		        new DialogInterface.OnClickListener() {

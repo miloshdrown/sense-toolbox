@@ -1,6 +1,7 @@
 package com.langerhans.one;
 
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.preference.ListPreference;
@@ -9,9 +10,16 @@ import android.preference.Preference.OnPreferenceClickListener;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
+import android.preference.PreferenceScreen;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.ViewGroup;
+import android.view.ViewParent;
+import android.widget.FrameLayout;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.langerhans.one.utils.ApkInstaller;
@@ -29,11 +37,9 @@ public class PrefsFragment extends PreferenceFragment {
         if(!Helpers.isXposedInstalled(getActivity()))
         {
         	AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-        	builder.setTitle("Xposed Installer not found");
-        	builder.setMessage("It looks like you don't have Xposed Installed.\n\n"
-        			+ "Please note that the mods on this page will only work with Xposed!\n\n"
-        			+ "Xposed is available in the ARHD installer.");
-        	builder.setNeutralButton("Okay", null);
+        	builder.setTitle(R.string.xposed_not_found);
+        	builder.setMessage(R.string.xposed_not_found_explain);
+        	builder.setNeutralButton(R.string.okay, null);
         	AlertDialog dlg = builder.create();
         	dlg.show();
         }
@@ -56,7 +62,7 @@ public class PrefsFragment extends PreferenceFragment {
         Preference.OnPreferenceChangeListener camChangeListener = new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object newValue) {
-                Toast.makeText(getActivity(), "Make sure to close camera from recent apps!", Toast.LENGTH_LONG).show();
+                Toast.makeText(getActivity(), R.string.close_camera, Toast.LENGTH_LONG).show();
                 return true;
             }
         };
@@ -97,4 +103,44 @@ public class PrefsFragment extends PreferenceFragment {
 		}
 		return true;
 	}
+	
+	// Fix for the sub PreferenceScreens HomeAsUp bug 
+	@Override
+	public boolean onPreferenceTreeClick(PreferenceScreen parentPreferenceScreen, Preference preference) {
+		super.onPreferenceTreeClick(parentPreferenceScreen, preference);
+
+		if (preference instanceof PreferenceScreen) {
+			PreferenceScreen preferenceScreen = (PreferenceScreen) preference;
+			final Dialog dialog = preferenceScreen.getDialog();
+
+			if (dialog != null) {
+				dialog.getActionBar().setDisplayHomeAsUpEnabled(true);
+				View homeBtn = dialog.findViewById(android.R.id.home);
+
+				if (homeBtn != null) {
+					OnClickListener dismissDialogClickListener = new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							dialog.dismiss();
+						}
+					};
+
+					ViewParent homeBtnContainer = homeBtn.getParent();
+
+					if (homeBtnContainer instanceof FrameLayout) {
+						ViewGroup containerParent = (ViewGroup) homeBtnContainer.getParent();
+
+						if (containerParent instanceof LinearLayout) {
+							((LinearLayout) containerParent).setOnClickListener(dismissDialogClickListener);
+						} else {
+							((FrameLayout) homeBtnContainer).setOnClickListener(dismissDialogClickListener);
+						}
+					} else {
+						homeBtn.setOnClickListener(dismissDialogClickListener);
+					}
+				}    
+			}	        
+		}
+		return false;
+	}	
 }

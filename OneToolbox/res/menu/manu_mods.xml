@@ -1,4 +1,4 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/softreboot" android:title="Soft Reboot" android:showAsAction="always|withText"></item>
+    <item android:id="@+id/softreboot" android:title="@string/soft_reboot" android:showAsAction="always|withText"></item>
     
 </menu>

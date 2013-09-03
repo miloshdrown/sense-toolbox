@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.res.Resources;
 import android.os.Bundle;
 
 import com.htc.widget.HtcAlertDialog;
@@ -64,8 +65,9 @@ public class ApmDialog extends DialogFragment {
     {
         int i = getArguments().getInt("selected");
         Builder bld = new Builder(getActivity());
-        bld.setTitle("Advanced Power Menu");
-        bld.setSingleChoiceItems(new String[]{"Normal", "Hot reboot", "Recovery", "Bootloader"}, i, null);
+        bld.setTitle(R.string.apm_title);
+        Resources res = getResources();
+        bld.setSingleChoiceItems(new String[]{(String)res.getText(R.string.apm_normal), (String)res.getText(R.string.apm_hotreboot), (String)res.getText(R.string.apm_recovery), (String)res.getText(R.string.apm_bootloader)}, i, null);
         bld.setPositiveButton("OK", posL);
         bld.setNegativeButton("Cancel", negL);
         return bld.create();

@@ -28,8 +28,10 @@ import org.xml.sax.InputSource;
 
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.content.res.Resources;
 import android.widget.ArrayAdapter;
 
+import com.langerhans.one.R;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
@@ -210,30 +212,31 @@ public class Helpers {
 	 * @param name EQS tile name
 	 * @return EQS tile ID
 	 */
-	public static String mapStringToID(String name)
+	public static String mapStringToID(Context context, String name)
 	{
-		if (name.equals("User Card")) return "0";
-		else if (name.equals("Brightness")) return "1";
-		else if (name.equals("Settings")) return "2";
-		else if (name.equals("WiFi")) return "3";
-		else if (name.equals("Bluetooth")) return "4";
-		else if (name.equals("Airplane")) return "5";
-		else if (name.equals("Power Save")) return "6";
-		else if (name.equals("Rotation")) return "7";
-		else if (name.equals("Mobile Data")) return "8";
-		else if (name.equals("Sound Profile")) return "9";
-		else if (name.equals("WiFi Hotspot")) return "10";
-		else if (name.equals("Screenshot")) return "11";
-		else if (name.equals("GPS")) return "12";
-		else if (name.equals("Roaming")) return "13";
-		else if (name.equals("Media Output")) return "14";
-		else if (name.equals("Auto Sync")) return "15";
-		else if (name.equals("Roaming Setting")) return "16";
-		else if (name.equals("Music Channel")) return "17";
-		else if (name.equals("Ringtone")) return "18";
-		else if (name.equals("Timeout")) return "19";
-		else if (name.equals("Syn_All_Fake(?)")) return "20";
-		else if (name.equals("APN")) return "21";
+		Resources res = context.getResources();
+		if (name.equals(res.getText(R.string.eqs_user_card))) return "0";
+		else if (name.equals(res.getText(R.string.eqs_brightness))) return "1";
+		else if (name.equals(res.getText(R.string.eqs_settings))) return "2";
+		else if (name.equals(res.getText(R.string.eqs_wifi))) return "3";
+		else if (name.equals(res.getText(R.string.eqs_bluetooth))) return "4";
+		else if (name.equals(res.getText(R.string.eqs_airplane))) return "5";
+		else if (name.equals(res.getText(R.string.eqs_power_save))) return "6";
+		else if (name.equals(res.getText(R.string.eqs_rotation))) return "7";
+		else if (name.equals(res.getText(R.string.eqs_mobile_data))) return "8";
+		else if (name.equals(res.getText(R.string.eqs_sound_profile))) return "9";
+		else if (name.equals(res.getText(R.string.eqs_wifi_hotspot))) return "10";
+		else if (name.equals(res.getText(R.string.eqs_screenshot))) return "11";
+		else if (name.equals(res.getText(R.string.eqs_gps))) return "12";
+		else if (name.equals(res.getText(R.string.eqs_roaming))) return "13";
+		else if (name.equals(res.getText(R.string.eqs_media_output))) return "14";
+		else if (name.equals(res.getText(R.string.eqs_auto_sync))) return "15";
+		else if (name.equals(res.getText(R.string.eqs_roaming_setting))) return "16";
+		else if (name.equals(res.getText(R.string.eqs_music_channel))) return "17";
+		else if (name.equals(res.getText(R.string.eqs_ringtone))) return "18";
+		else if (name.equals(res.getText(R.string.eqs_timeout))) return "19";
+		else if (name.equals(res.getText(R.string.eqs_syn_all_fake))) return "20";
+		else if (name.equals(res.getText(R.string.eqs_apn))) return "21";
 		return "0";
 	}
 	
@@ -242,55 +245,55 @@ public class Helpers {
 	 * @param id EQS tile ID
 	 * @return EQS tile name
 	 */
-	public static String mapIDToString(int id)
+	public static int mapIDToString(int id)
 	{
 		switch(id){
 		case 0:
-			return "User Card";
+			return R.string.eqs_user_card;
 		case 1:
-			return "Brightness";
+			return R.string.eqs_brightness;
 		case 2:
-			return "Settings";
+			return R.string.eqs_settings;
 		case 3:
-			return "WiFi";
+			return R.string.eqs_wifi;
 		case 4:
-			return "Bluetooth";
+			return R.string.eqs_bluetooth;
 		case 5:
-			return "Airplane";
+			return R.string.eqs_airplane;
 		case 6:
-			return "Power Save";
+			return R.string.eqs_power_save;
 		case 7:
-			return "Rotation";
+			return R.string.eqs_rotation;
 		case 8:
-			return "Mobile Data";
+			return R.string.eqs_mobile_data;
 		case 9:
-			return "Sound Profile";
+			return R.string.eqs_sound_profile;
 		case 10:
-			return "WiFi Hotspot";
+			return R.string.eqs_wifi_hotspot;
 		case 11:
-			return "Screenshot";
+			return R.string.eqs_screenshot;
 		case 12:
-			return "GPS";
+			return R.string.eqs_gps;
 		case 13:
-			return "Roaming";
+			return R.string.eqs_roaming;
 		case 14:
-			return "Media Output";
+			return R.string.eqs_media_output;
 		case 15:
-			return "Auto Sync";
+			return R.string.eqs_auto_sync;
 		case 16:
-			return "Roaming Setting";
+			return R.string.eqs_roaming_setting;
 		case 17:
-			return "Music Channel";
+			return R.string.eqs_music_channel;
 		case 18:
-			return "Ringtone";
+			return R.string.eqs_ringtone;
 		case 19:
-			return "Timeout";
+			return R.string.eqs_timeout;
 		case 20:
-			return "Syn_All_Fake(?)";
+			return R.string.eqs_syn_all_fake;
 		case 21:
-			return "APN";
+			return R.string.eqs_apn;
 		}
-		return "";
+		return R.string.dummy;
 	}
 	
 	/**

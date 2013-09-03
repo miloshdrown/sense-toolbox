@@ -137,7 +137,7 @@ public class ReorderFragment extends Fragment {
 					long id) {
 				if(adapter.getCount()<2)
 		    	{
-					Toast.makeText(ctx, "You can't remove the last item!", Toast.LENGTH_SHORT).show();
+					Toast.makeText(ctx, R.string.remove_last, Toast.LENGTH_SHORT).show();
 		    		return;
 		    	}else
 		    	{
@@ -155,12 +155,12 @@ public class ReorderFragment extends Fragment {
 	 */
 	private void askForDelete(final String item, final View view)
 	{
-		String tile = Helpers.mapIDToString(Integer.parseInt(item));
+		CharSequence tile = getResources().getText(Helpers.mapIDToString(Integer.parseInt(item)));
 		AlertDialog.Builder adb = new AlertDialog.Builder(ctx);
-		adb.setTitle("Remove " + tile + "?");
-		adb.setMessage("Do you want to remove the " + tile + " tile?\nYou can add it back via the menu on top.");
+		adb.setTitle(res.getText(R.string.remove) + " " + tile + "?");
+		adb.setMessage(res.getText(R.string.remove_tile_msg1) + " " + tile + " " + res.getText(R.string.remove_tile_msg2));
 		adb.setCancelable(true);
-		adb.setPositiveButton("Yes", new OnClickListener(){
+		adb.setPositiveButton(R.string.yes, new OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				adapter.remove(item);
@@ -168,7 +168,7 @@ public class ReorderFragment extends Fragment {
 				qsAvail.add(item);
 			}
 		});
-		adb.setNegativeButton("No", new OnClickListener(){
+		adb.setNegativeButton(R.string.no, new OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				//Do nothing
@@ -185,6 +185,7 @@ public class ReorderFragment extends Fragment {
 	{
 		dgv.removeAllViews();
 		for(int i = 0; i < adapter.getCount(); i++)
+		if (res.getIdentifier("qstile_" + adapter.getItem(i), "drawable", packagename) != 0)
 		{
 			ImageView icon = new ImageView(ctx);
 			icon.setImageDrawable(res.getDrawable(res.getIdentifier("qstile_" + adapter.getItem(i), "drawable", packagename)));
@@ -219,7 +220,7 @@ public class ReorderFragment extends Fragment {
 	 * @param title Title of the dialog
 	 * @param mymessage Message of the dialog
 	 */
-	protected void alertbox(String title, String mymessage)
+	protected void alertbox(int title, int mymessage)
 	{
 		new AlertDialog.Builder(getActivity())
 	    	.setMessage(mymessage)
@@ -239,10 +240,10 @@ public class ReorderFragment extends Fragment {
 	{
 		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
 
-		alert.setTitle("Hot Reboot");
-		alert.setMessage("Your order has been saved! A hot reboot is required for this to take effect. Would you like to do this now?");
+		alert.setTitle(R.string.apm_hotreboot);
+		alert.setMessage(R.string.hotreboot_explain);
 
-		alert.setPositiveButton("Yes!", new DialogInterface.OnClickListener() {
+		alert.setPositiveButton(res.getText(R.string.yes) + "!", new DialogInterface.OnClickListener() {
 		public void onClick(DialogInterface dialog, int whichButton) {
 		     try {
 				CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
@@ -253,7 +254,7 @@ public class ReorderFragment extends Fragment {
 		  }
 		});
 
-		alert.setNegativeButton("No!", new DialogInterface.OnClickListener() {
+		alert.setNegativeButton(res.getText(R.string.no) + "!", new DialogInterface.OnClickListener() {
 		  public void onClick(DialogInterface dialog, int whichButton) {
 		    // Canceled.
 		  }
@@ -270,14 +271,14 @@ public class ReorderFragment extends Fragment {
 		final String[] items = qsAvail.toArray(new String[qsAvail.size()]);
 		for (int i = 0; i<items.length;i++)
 		{
-			items[i] = Helpers.mapIDToString(Integer.parseInt(items[i]));
+			items[i] = (String) getResources().getText(Helpers.mapIDToString(Integer.parseInt(items[i])));
 		}
 
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle("Select tile to add");
+		builder.setTitle(R.string.select_tile);
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 		    public void onClick(DialogInterface dialog, int item) {
-		    	 String id = Helpers.mapStringToID(items[item]);
+		    	 String id = Helpers.mapStringToID(getActivity().getBaseContext(), items[item]);
 		         adapter.add(id);
 		         qsAvail.remove(id);
 		         ImageView icon = new ImageView(ctx);
@@ -306,10 +307,10 @@ public class ReorderFragment extends Fragment {
 						adapter.add(item);
 					}
 					renewGrid();
-					alertbox("Success", "Backup successfully restored! Tap on \"Save\" to apply the order.");
+					alertbox(R.string.success, R.string.backup_restored);
 				}
 			} catch (FileNotFoundException e) {
-				alertbox("No backup found", "Sorry, no backup was found. Did you wipe your storage?");
+				alertbox(R.string.no_backup, R.string.no_backup_explain);
 			}
 		}
 	}
@@ -341,11 +342,11 @@ public class ReorderFragment extends Fragment {
 	 */
 	private void showHelp(){
 		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
-		builder.setTitle("First start");
+		builder.setTitle(R.string.first_start);
 		LayoutInflater inflater = getActivity().getLayoutInflater();
 		View dialoglayout = inflater.inflate(R.layout.first_start, (ViewGroup) getActivity().getCurrentFocus());
 		builder.setView(dialoglayout);
-		builder.setNeutralButton("Close dialog forever!", null);
+		builder.setNeutralButton(R.string.close_forever, null);
 		AlertDialog alert = builder.create();
 		alert.show();
 	}

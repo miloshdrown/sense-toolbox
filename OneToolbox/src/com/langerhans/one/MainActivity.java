@@ -25,7 +25,7 @@ public class MainActivity extends Activity {
 		ActionBar ab = getActionBar();
 		
 		if (RootTools.isAccessGiven()) {
-			ActionBar.Tab eqsTab = ab.newTab().setText("EQS Reorder");
+			ActionBar.Tab eqsTab = ab.newTab().setText(R.string.eqs_reorder);
 			eqsTab.setTabListener(new MyTabListener<ReorderFragment>(this, "reorder", ReorderFragment.class));
 			ab.addTab(eqsTab);
 		}else
@@ -34,13 +34,10 @@ public class MainActivity extends Activity {
 			if(prefs.getBoolean("show_root_note", true))
 			{
 				AlertDialog.Builder builder = new AlertDialog.Builder(this);
-	        	builder.setTitle("No root access");
-	        	builder.setMessage("Either your device is not rooted, or you didn't allow the app to access SuperUser.\n"
-	        			+ "Without root you can't reorder your EQS tiles, therefore the function is not shown.\n"
-	        			+ "You can dismiss this message once, or forever. A check for root will be done on every start, "
-	        			+ "to make the function available if you decide to allow root access later.");
-	        	builder.setPositiveButton("Dismiss once", null);
-	        	builder.setNegativeButton("Dismiss forever", new OnClickListener(){
+	        	builder.setTitle(R.string.no_root_access);
+	        	builder.setMessage(R.string.no_root_explain);
+	        	builder.setPositiveButton(R.string.dismiss_once, null);
+	        	builder.setNegativeButton(R.string.dismiss_forever, new OnClickListener(){
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						prefs.edit().putBoolean("show_root_note", false).commit();
@@ -53,10 +50,10 @@ public class MainActivity extends Activity {
 		
 		ab.setNavigationMode(ActionBar.NAVIGATION_MODE_TABS);
 		
-        ActionBar.Tab modsTab = ab.newTab().setText("Mods");
+        ActionBar.Tab modsTab = ab.newTab().setText(R.string.mods);
         modsTab.setTabListener(new MyTabListener<PrefsFragment>(this, "prefs", PrefsFragment.class));
 	    ab.addTab(modsTab);
-    } 
+    }
 	
 	public void showEasterEgg(View view)
 	{

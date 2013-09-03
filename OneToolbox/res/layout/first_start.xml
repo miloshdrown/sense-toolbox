@@ -10,7 +10,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:paddingBottom="12dp"
-        android:text="Welcome to One Toolbox!"
+        android:text="@string/welcome"
         android:textAppearance="?android:attr/textAppearanceLarge" />
 
     <TextView
@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:paddingBottom="6dp"
-        android:text="To rearrange your quick settings use drag&apos;n&apos;drop."
+        android:text="@string/dragndrop"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -28,7 +28,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:paddingBottom="6dp"
-        android:text="To delete a tile just tap on it."
+        android:text="@string/title_delete"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:paddingBottom="6dp"
-        android:text="To add one use the &apos;+&apos; icon."
+        android:text="@string/plus_icon"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -46,7 +46,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:paddingBottom="6dp"
-        android:text="Don&apos;t forget to save your settings!"
+        android:text="@string/save_settings"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:textColor="#ff0000"
         android:textStyle="bold" />
@@ -57,7 +57,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:paddingBottom="6dp"
-        android:text="To restore your layout just tap the restore icon. That will load the last saved config."
+        android:text="@string/restore_layout"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
     <TextView
@@ -65,7 +65,7 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
-        android:text="Plese note that the mods in the &apos;MODS&apos; tab only work if you have Xposed installed!"
+        android:text="@string/xposed_mods"
         android:textAppearance="?android:attr/textAppearanceMedium" />
 
 </LinearLayout>

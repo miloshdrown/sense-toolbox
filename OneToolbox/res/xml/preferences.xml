@@ -4,193 +4,193 @@
     android:key="prefs" >
 
     <PreferenceScreen 
-        android:title="Camera Mods"
+        android:title="@string/camera_mods"
         android:key="pref_key_cam">
         <ListPreference
             android:key="pref_key_cam_volup"
-            android:summary="The action for Volume Up in camera."
-            android:title="Volume Up action"
+            android:summary="@string/camera_vol_up_summ"
+            android:title="@string/camera_vol_up_title"
             android:entries="@array/cam_actions"
             android:entryValues="@array/cam_actions_val"
             android:defaultValue="4"/>
         <ListPreference
             android:key="pref_key_cam_voldown"
-            android:summary="The action for Volume Down in camera."
-            android:title="Volume Down action"
+            android:summary="@string/camera_vol_up_summ"
+            android:title="@string/camera_vol_up_title"
             android:entries="@array/cam_actions"
             android:entryValues="@array/cam_actions_val"
             android:defaultValue="4" />
     </PreferenceScreen>
     <PreferenceScreen 
-        android:title="SystemUI Mods"
+        android:title="@string/systemui_mods"
         android:key="pref_key_sysui">
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_sysui_invisibar_new"
-    		android:title="Transparent status bar"
-    		android:summary="Make the status bar transparent."
-    		android:dialogMessage="0 = transparent, 100 = opaque"
+    		android:title="@string/systemui_tsb_title"
+    		android:summary="@string/systemui_tsb_summ"
+    		android:dialogMessage="@string/transparency_msg"
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_sysui_invisinotify"
-    		android:title="Transparent notification background"
-    		android:summary="Make the notification drawer background transparent."
-    		android:dialogMessage="0 = transparent, 100 = opaque"
+    		android:title="@string/systemui_tnb_title"
+    		android:summary="@string/systemui_tnb_summ"
+    		android:dialogMessage="@string/transparency_msg"
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
         <CheckBoxPreference
             android:key="pref_key_sysui_minorqs"
-            android:summary="Enable horizontal EQS. The first 5 of your normal EQS will show there."
-            android:title="Horizontal EQS"
+            android:summary="@string/systemui_heqs_summ"
+            android:title="@string/systemui_heqs_title"
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_sysui_aosprecent"
-            android:summary="Enable AOSP style recent apps screen."
-            android:title="AOSP recent apps"
+            android:summary="@string/systemui_aosp_summ"
+            android:title="@string/systemui_aosp_title"
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_sysui_recentappsclear"
-            android:summary="Add ability to clear recent apps list by pinching gesture."
-            android:title="Close all recent apps at once"
+            android:summary="@string/systemui_recentclear_summ"
+            android:title="@string/systemui_recentclear_title"
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_sysui_centerclock"
-            android:summary="Enable to move the status bar clock to the center."
-            android:title="Center clock"
+            android:summary="@string/systemui_centerclock_summ"
+            android:title="@string/systemui_centerclock_title"
             android:defaultValue="false" />
     </PreferenceScreen>
     <PreferenceScreen
-        android:title="CleanBeam Mods by vomer"
+        android:title="@string/cleanbeam_mods"
         android:key="pref_key_cb">
         <ListPreference
             android:key="pref_key_sysui_battery"
-            android:summary="Change battery icon design."
-            android:title="Battery icon"
+            android:summary="@string/cleanbeam_battery_summ"
+            android:title="@string/cleanbeam_battery_title"
             android:entries="@array/batt_icon"
             android:entryValues="@array/batt_icon_val"
             android:defaultValue="1"/>
         <CheckBoxPreference 
             android:key="pref_key_cb_signal"
-            android:summary="Enable CleanBeam signal bar icons."
-            android:title="Signal bar"
+            android:summary="@string/cleanbeam_signal_summ"
+            android:title="@string/cleanbeam_signal_title"
             android:defaultValue="false"/>
         <CheckBoxPreference 
             android:key="pref_key_cb_headphone"
-            android:summary="Enable CleanBeam headphone icons."
-            android:title="Headphone"
+            android:summary="@string/cleanbeam_headphone_summ"
+            android:title="@string/cleanbeam_headphone_title"
             android:defaultValue="false"/>
         <CheckBoxPreference 
             android:key="pref_key_cb_beats"
-            android:summary="Enable CleanBeam beats icons."
-            android:title="Beats"
+            android:summary="@string/cleanbeam_beats_summ"
+            android:title="@string/cleanbeam_beats_title"
             android:defaultValue="false"/>
         <CheckBoxPreference 
             android:key="pref_key_cb_alarm"
-            android:summary="Enable CleanBeam alarm icon."
-            android:title="Alarm"
+            android:summary="@string/cleanbeam_alarm_summ"
+            android:title="@string/cleanbeam_alarm_title"
             android:defaultValue="false"/>
         <CheckBoxPreference 
             android:key="pref_key_cb_wifi"
-            android:summary="Enable CleanBeam WiFi icons."
-            android:title="WiFi"
+            android:summary="@string/cleanbeam_wifi_summ"
+            android:title="@string/cleanbeam_wifi_title"
             android:defaultValue="false"/>
         <Preference
-            android:title="Install Sunbeam"
-            android:summary="Install the Sunbeam Live Wallpaper."
+            android:title="@string/cleanbeam_sunbeam_title"
+            android:summary="@string/cleanbeam_sunbeam_summ"
             android:key="pref_key_cb_sunbeam">
 		</Preference>
         <Preference
-            android:title="Visit CleanBeam post"
-            android:summary="See a preview and changelog here. Make sure to hit the 'Thanks' button!">
+            android:title="@string/cleanbeam_post_title"
+            android:summary="@string/cleanbeam_post_summ">
 			<intent android:action="android.intent.action.VIEW"
             android:data="http://forum.xda-developers.com/showpost.php?p=45123557&#038;postcount=44952" />
 		</Preference>
     </PreferenceScreen>
     <PreferenceScreen 
-        android:title="Sense Mods"
+        android:title="@string/sense_mods"
         android:key="pref_key_prism">
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_prism_invisinav_new"
-    		android:title="Transparent dock"
-    		android:summary="Make the Sense launcher dock transparent."
-    		android:dialogMessage="0 = transparent, 100 = opaque"
+    		android:title="@string/sense_td_title"
+    		android:summary="@string/sense_td_summ"
+    		android:dialogMessage="@string/transparency_msg"
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_prism_invisiwidget"
-    		android:title="Transparent 4x1 clock widget"
-    		android:summary="Make the default 4x1 clock + weather widget transparent."
-    		android:dialogMessage="0 = transparent, 100 = opaque"
+    		android:title="@string/sense_twidget_title"
+    		android:summary="@string/sense_twidget_summ"
+    		android:dialogMessage="@string/transparency_msg"
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_prism_invisidrawer"
-    		android:title="Transparent app drawer"
-    		android:summary="Make the Sense launcher app drawer transparent."
-    		android:dialogMessage="0 = transparent, 100 = opaque"
+    		android:title="@string/sense_tappdrawer_title"
+    		android:summary="@string/sense_tappdrawer_summ"
+    		android:dialogMessage="@string/transparency_msg"
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
         <CheckBoxPreference
             android:key="pref_key_prism_folder20"
-            android:summary="Enable to have infinite icons per folder."
-            android:title="Infinifolders"
+            android:summary="@string/sense_infini_summ"
+            android:title="@string/sense_infini_title"
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_prism_bfremove"
-            android:summary="Only on Android 4.3: Tick to disable BlinkFeed."
-            android:title="Remove BlinkFeed"
+            android:summary="@string/sense_noblink_summ"
+            android:title="@string/sense_noblink_title"
             android:defaultValue="false" />
     </PreferenceScreen>
     <PreferenceScreen 
-        android:title="Messaging Mods"
+        android:title="@string/message_mods"
         android:key="pref_key_sms">
         <CheckBoxPreference
             android:key="pref_key_sms_smsmmsconv"
-            android:summary="Check do disable the forced SMS to MMS coversion by the character limit. Network limitations still apply."
-            android:title="Disable SMS -> MMS conversion"
+            android:summary="@string/message_smsmms_summ"
+            android:title="@string/message_smsmms_title"
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_other_smscreenon"
-            android:summary="Turn the screen on, when you receive a SMS."
-            android:title="Wake on SMS"
+            android:summary="@string/message_smswake_summ"
+            android:title="@string/message_smswake_title"
             android:defaultValue="false" />
     </PreferenceScreen>
     <PreferenceScreen 
-        android:title="Various Mods"
+        android:title="@string/various_mods"
         android:key="pref_key_other">
         <CheckBoxPreference
             android:key="pref_key_other_apm"
-            android:summary="Enable or disable Advanced Power Menu\nIf you have the native APM installed, better keep this disabled."
-            android:title="APM"
+            android:summary="@string/various_apm_summ"
+            android:title="@string/various_apm_title"
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_other_keepscreenon"
-            android:summary="Show the 'Keep screen on' option in display settings and development settings."
-            android:title="Enable 'Keep screen on'"
+            android:summary="@string/various_scron_summ"
+            android:title="@string/various_scron_title"
             android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_other_volsound"
-            android:summary="Check to disable the sound on volume change."
-            android:title="Disable volume change sound."
+            android:summary="@string/various_volsnd_summ"
+            android:title="@string/various_volsnd_title"
             android:defaultValue="false" />
     </PreferenceScreen>
     <PreferenceCategory
-        android:title="Support"
+        android:title="@string/support"
         android:key="pref_key_support">
 		<Preference
-            android:title="Visit Sense 5 Toolbox Post"
-            android:summary="Find infos and changelog for the app here." >
+            android:title="@string/support_s5t_title"
+            android:summary="@string/support_s5t_summ" >
 			<intent android:action="android.intent.action.VIEW"
             android:data="http://forum.xda-developers.com/showpost.php?p=44650768&#038;postcount=2" />
 		</Preference>
 		<Preference 
-            android:title="Visit ARHD Blog"
-            android:summary="Get the latest news and updates for your favorite ROM here." >
+            android:title="@string/support_blog_title"
+            android:summary="@string/support_blog_summ" >
     		<intent android:action="android.intent.action.VIEW"
             android:data="http://android-revolution-hd.blogspot.de" />
 		</Preference>
