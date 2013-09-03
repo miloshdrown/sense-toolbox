@@ -75,7 +75,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				CleanBeamMods.execHook_WiFiIcon(resparam, MODULE_PATH);
 			
 			if(pref.getBoolean("pref_key_sysui_centerclock", false))
-				SysUIMods.execHook_CenterClock(resparam, MODULE_PATH);
+				SysUIMods.execHook_CenterClockLayout(resparam, MODULE_PATH);
 		}
 		
 		if (pkg.equals("com.htc.widget.weatherclock"))
@@ -145,6 +145,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_sysui_recentappsclear", false))
 				SysUIMods.execHook_RecentAppsClear(lpparam);
+			
+			if(pref.getBoolean("pref_key_sysui_centerclock", false))
+				SysUIMods.execHook_CenterClockAnimation(lpparam);
 		}
 		
 		if (lpparam.processName.equals("android"))

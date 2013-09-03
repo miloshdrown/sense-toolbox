@@ -1,6 +1,8 @@
 package com.langerhans.one.mods;
 
+import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -9,6 +11,7 @@ import java.util.ArrayList;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.drawable.Drawable;
@@ -32,9 +35,9 @@ import android.widget.TextView;
 import com.langerhans.one.R;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
@@ -89,7 +92,7 @@ public class SysUIMods {
 		});
 	}
 	
-	public static void execHook_CenterClock(final InitPackageResourcesParam resparam, String MODULE_PATH) {
+	public static void execHook_CenterClockLayout(final InitPackageResourcesParam resparam, String MODULE_PATH) {
 		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
@@ -105,6 +108,7 @@ public class SysUIMods {
 					clock_container.setOrientation(LinearLayout.HORIZONTAL);
 					clock_container.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 					clock_container.setGravity(Gravity.CENTER);
+					clock_container.setTag("centerClock");
 					
 					system_icon_area.removeView(clock);
 					
@@ -117,7 +121,69 @@ public class SysUIMods {
 				}
 			}
 		});
+		
 	}
+	
+	public static void execHook_CenterClockAnimation(LoadPackageParam lpparam) {
+		//Helper class to hold needed variables for later methods (because nested methods and final and blah blah... Couldn't think of a better solution)
+		class Stuff{
+			Object statusbar;
+			Context ctx;
+			Resources res;
+			int animOut;
+			int animIn;
+			int animFade;
+			LinearLayout clock_container;
+		}
+		final Stuff stuff = new Stuff();
+		
+		//Get what we need
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook(){
+			@Override
+			protected void afterHookedMethod(MethodHookParam param)
+			{
+				stuff.statusbar = param.thisObject;
+				stuff.ctx = (Context)getObjectField(stuff.statusbar, "mContext");
+				stuff.res = stuff.ctx.getResources();
+				stuff.animFade = stuff.res.getIdentifier("fade_in", "anim", "android");
+				stuff.animIn = stuff.res.getIdentifier("push_down_in", "anim", "android");
+				stuff.animOut = stuff.res.getIdentifier("push_up_out", "anim", "android");
+				stuff.clock_container = (LinearLayout) ((FrameLayout) getObjectField(stuff.statusbar, "mStatusBarView")).findViewWithTag("centerClock");
+			}
+		});
+		
+		//And now the 3 Ticker hooks
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar$MyTicker", lpparam.classLoader, "tickerStarting", new XC_MethodHook(){
+			@Override
+			protected void afterHookedMethod(MethodHookParam param)
+			{
+				stuff.clock_container.setVisibility(View.GONE);
+				Animation ani = (Animation) callMethod(stuff.statusbar, "loadAnim", stuff.animOut, null);
+				stuff.clock_container.startAnimation(ani);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar$MyTicker", lpparam.classLoader, "tickerDone", new XC_MethodHook(){
+			@Override
+			protected void afterHookedMethod(MethodHookParam param)
+			{
+				stuff.clock_container.setVisibility(View.VISIBLE);
+				Animation ani = (Animation) callMethod(stuff.statusbar, "loadAnim", stuff.animIn, null);
+				stuff.clock_container.startAnimation(ani);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar$MyTicker", lpparam.classLoader, "tickerHalting", new XC_MethodHook(){
+			@Override
+			protected void afterHookedMethod(MethodHookParam param)
+			{
+				stuff.clock_container.setVisibility(View.VISIBLE);
+				Animation ani = (Animation) callMethod(stuff.statusbar, "loadAnim", stuff.animFade, null);
+				stuff.clock_container.startAnimation(ani);
+			}
+		});
+	}
+	
 /*  Stupid hook not working! ^_^
 
 	public static void execHook_InvisiRecentApps(LoadPackageParam lpparam) {
