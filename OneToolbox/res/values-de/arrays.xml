@@ -1,0 +1,47 @@
+<resources>
+    <string-array name="availTiles">
+        <item >0</item>
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >4</item>
+        <item >5</item>
+        <item >6</item>
+        <item >7</item>
+        <item >8</item>
+        <item >9</item>
+        <item >10</item>
+        <item >11</item>
+        <item >12</item>
+        <item >15</item>
+        <item >18</item>
+        <item >19</item>
+    </string-array>
+    <string-array name="cam_actions">
+        <item >Auslöser</item>
+        <item >Fokus</item>
+        <item >Erst Fokus, dann Auslöser</item>
+        <item >Video aufnehmen</item>
+        <item >Keine Änderung</item>
+    </string-array>
+    <string-array name="cam_actions_val">
+        <item >1</item>
+        <item >2</item>
+        <item >5</item>
+        <item >3</item>
+        <item >4</item>
+    </string-array>
+    
+    <string-array name="batt_icon">
+        <item >Standadr</item>
+        <item >Prozent im Standard</item>
+        <item >Prozent im Kreis</item>
+        <item >Kein Icon</item>
+    </string-array>
+    <string-array name="batt_icon_val">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >4</item>
+    </string-array>
+</resources>

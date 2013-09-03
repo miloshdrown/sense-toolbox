@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="menu_save">Speichern</string>
+    <string name="app_name">Sense 5 Toolbox</string>
+    <string name="app_name_version">Sense 5 Toolbox (Version: %1$s)</string>
+    <string name="support_version">Support (App Version: %1$s)</string>
+    <string name="restore">Wiederherstellen</string>
+    <string name="add">Hinzufügen</string>
+    <string name="soft_reboot">Schneller Neustart</string>
+    
+    <string name="welcome">Willkommen in Sense 5 Toolbox!</string>
+    <string name="dragndrop">Nutze Drag\'n\'Drop zum Anpassen der Schnelleinstellungen</string>
+    <string name="title_delete">Tippe auf eine Kachel zum löschen.</string>
+    <string name="plus_icon">Nutze das \'+\' Icon zum Hinzufügen.</string>
+    <string name="save_settings">Vergiss das Speichern nicht!</string>
+    <string name="restore_layout">Tippe auf das Wiederherstellungs-Icon um deine Sicherung zu laden.</string>
+    <string name="xposed_mods">Beachte, dass die Einstellungen im \'MODS\' tab nur mit Xposed funktionieren!</string>
+    
+    <string name="apm_title">Neustart-Optionen</string>
+    <string name="apm_normal">Normal</string>
+    <string name="apm_hotreboot">Schneller Neustart</string>
+    <string name="apm_recovery">Recovery</string>
+    <string name="apm_bootloader">Bootloader</string>
+    
+    <string name="eqs_reorder">EQS Sortierung</string>
+    <string name="no_root_access">Kein root-Zugriff</string>
+    
+    <string name="no_root_explain">Entweder hat dein Gerät kein root, oder du hast den Zugriff verweigert.\nOhne root kannst du die Schnelleinstellungen nicht umsortieren, deshalb wurde die Funktion deaktiviert\nDu kannst die Meldung einmalig oder für immer deaktivieren. Es wird bei jedem Start auf root geprüft, falls sich deine Meinung in Zukunft ändert.</string>
+	<string name="dismiss_once">Einmal schließen</string>
+	<string name="dismiss_forever">Dauerhaft schließen</string>
+	<string name="mods">Mods</string>
+	
+	<string name="xposed_not_found">Xposed Installer nicht gefunden</string>
+	<string name="xposed_not_found_explain">Es scheint, als hättest du Xposed nicht installiert.\n\nBitte beachte, dass die Modifikationen hier nur mit Xposed funktionieren.\n\nDu findest Xposed im ARHD Installer.</string>
+	<string name="okay">Okay</string>
+	<string name="close_camera">Bitte starte die Kamera App neu!</string>
+	<string name="remove_last">Du kannst die letzte Kachel nicht entfernen!</string>
+	<string name="remove">Entfernen</string>
+	<string name="remove_tile_msg1">Willst du die</string>
+	<string name="remove_tile_msg2">Kachel entfernen?\nDu kannst sie über das Menü oben wieder hinzufügen.</string>
+	<string name="yes">Ja</string>
+	<string name="no">Nein</string>
+	<string name="hotreboot_explain">Die Sortierung wurde gespeichert. Um sie anzuwenden ist ein schneller Neustart nötig. Willst dies jetzt tun?</string>
+	<string name="select_tile">Wähle eine Kachel</string>
+	<string name="success">Erfolg</string>
+	<string name="backup_restored">Sicherung wiederhergestellt. Tippe auf Speichern, um sie anzuwenden.</string>
+	<string name="no_backup">Keine Sicherung gefunden</string>
+	<string name="no_backup_explain">Es wurde keine Sicherung gefunden. Hast du dein Gerät zurückgesetzt?</string>
+	<string name="first_start">Erster Start</string>
+	<string name="close_forever">Dialog für immer schließen!</string>
+	
+	<string name="sunbeam_installed">SunBeam wurde installiert. Bitte mache einen schnellen Neustart zum fertigstellen. Du musst den Hintergund nach jeder ROM Installation wieder installieren.</string>
+	<string name="eqs_user_card">Benutzer</string>
+	<string name="eqs_brightness">Helligkeit</string>
+	<string name="eqs_settings">Einstellungen</string>
+	<string name="eqs_wifi">WLAN</string>
+	<string name="eqs_bluetooth">Bluetooth</string>
+	<string name="eqs_airplane">Flugzeugmodus</string>
+	<string name="eqs_power_save">Energiesparen</string>
+	<string name="eqs_rotation">Auto-Rotation</string>
+	<string name="eqs_mobile_data">Mobile Daten</string>
+	<string name="eqs_sound_profile">Soundprofil</string>
+	<string name="eqs_wifi_hotspot">WLAN-Hotspot</string>
+	<string name="eqs_screenshot">Bildschirmfoto</string>
+	<string name="eqs_gps">GPS</string>
+	<string name="eqs_roaming">Roaming</string>
+	<string name="eqs_media_output">Medienausgabe</string>
+	<string name="eqs_auto_sync">Auto Sync</string>
+	<string name="eqs_roaming_setting">Roaming Einstellung</string>
+	<string name="eqs_music_channel">Musik-Kanaö</string>
+	<string name="eqs_ringtone">Klingelton</string>
+	<string name="eqs_timeout">Bildschirm-Timeout</string>
+	<string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
+	<string name="eqs_apn">APN</string>
+	<string name="dummy"></string>
+	
+	<string name="transparency_msg">0 = transparent, 100 = undurchsichtig</string>
+	
+	<string name="camera_mods">Kamera Mods</string>
+	<string name="camera_vol_up_title">Lauter-Knopf</string>
+	<string name="camera_vol_up_summ">Aktion auf dem Lauter-Knopf.</string>
+	<string name="camera_vol_down_title">Leiser-Knopf</string>	
+	<string name="camera_vol_down_summ">Aktion auf dem Leiser-Knopf.</string>
+	
+	<string name="systemui_mods">SystemUI Mods</string>		
+	<string name="systemui_tsb_title">Transparente Statusleiste</string>
+	<string name="systemui_tsb_summ">Macht die Statusleiste transparent.</string>
+	<string name="systemui_tnb_title">Transparente Benachrichtigungen</string>
+	<string name="systemui_tnb_summ">Macht den Hintergrund im Benachrichtigungsfenster transparent.</string>
+	<string name="systemui_heqs_title">Horizontale EQS</string>
+	<string name="systemui_heqs_summ">Aktiviere horizontale Schnelleinstellungen. Die erste 5 normalen werden angezeigt.</string>
+	<string name="systemui_aosp_title">AOSP kürzliche Apps</string>
+	<string name="systemui_aosp_summ">Kürzlich genutzte Apps im AOSP-Stil.</string>
+	<string name="systemui_recentclear_title">Alle Apps schließen</string>
+	<string name="systemui_recentclear_summ">Alle kürzlich genutzten Apps durch zusammenschieben oder nach unten ziehen schließen.</string>
+	<string name="systemui_centerclock_title">Mittige Uhr</string>
+	<string name="systemui_centerclock_summ">Verschiebt die Uhr in der Statusleiste in die Mitte.</string>
+	
+	<string name="cleanbeam_mods">CleanBeam Mods von vomer</string>
+	<string name="cleanbeam_battery_title">Akku Icon</string>
+	<string name="cleanbeam_battery_summ">Änderet das Akku-Icon Design.</string>
+	<string name="cleanbeam_signal_title">Netz-Anzeige</string>
+	<string name="cleanbeam_signal_summ">Aktiviert die CleanBean Netz-Icons.</string>
+	<string name="cleanbeam_headphone_title">Kopfhörer</string>
+	<string name="cleanbeam_headphone_summ">Aktiviert die CleanBean Kopfhörer-Icons.</string>
+	<string name="cleanbeam_beats_title">Beats</string>
+	<string name="cleanbeam_beats_summ">Aktiviert die CleanBean Beats-Icons.</string>
+	<string name="cleanbeam_alarm_title">Wecker</string>
+	<string name="cleanbeam_alarm_summ">Aktiviert die CleanBean Wecker-Icons.</string>
+	<string name="cleanbeam_wifi_title">WLAN</string>
+	<string name="cleanbeam_wifi_summ">Aktiviert die CleanBean WLAN-Icons.</string>
+	<string name="cleanbeam_sunbeam_title">Installiere Sunbeam</string>
+	<string name="cleanbeam_sunbeam_summ">Installiert das Sunbeam Live Wallpaper.</string>
+	<string name="cleanbeam_post_title">Besuche den CleanBeam Beitrag</string>
+	<string name="cleanbeam_post_summ">Vorschau und Änderungen hier. Denke dran \'Thanks\' zu klicken!</string>
+	
+	<string name="sense_mods">Sense Mods</string>
+	<string name="sense_td_title">Transparentes Dock</string>
+	<string name="sense_td_summ">Mache das Sense launcher dock transparent.</string>
+	<string name="sense_twidget_title">Transparentes 4x1 Uhr Widget</string>
+	<string name="sense_twidget_summ">Macht das Standard 4x1 Uhr Widget transparent.</string>
+	<string name="sense_tappdrawer_title">Transparenter \'Alle Apps\' Bildschirm</string>
+	<string name="sense_tappdrawer_summ">Macht den \'Alle Apps\' Bildschirm transparent.</string>
+	<string name="sense_infini_title">Infinifolders</string>
+	<string name="sense_infini_summ">Erlaubt unendliche viele Apps in eine Ordner.</string>
+	<string name="sense_noblink_title">Entferne BlinkFeed</string>
+	<string name="sense_noblink_summ">Nur auf Android 4.3: Entfernt den BlinkFeed.</string>
+	
+	<string name="message_mods">Nachrichten-Mods</string>
+	<string name="message_smsmms_title">SMS->MMS Konvertierung verhindern.</string>
+	<string name="message_smsmms_summ">Entfernt die erzwungene Umwandlung von SMS zu MMS auf Grund der Größe. Netzabhängig.</string>
+	<string name="message_smswake_title">Aufwachen bei SMS</string>
+	<string name="message_smswake_summ">Schaltet den Bildschirm bei SMS-Empfang ein.</string>
+	
+	<string name="various_mods">Verschiedne Mods</string>
+	<string name="various_apm_title">APM</string>
+	<string name="various_apm_summ">Aktiviert die erweiterten Startoptionen\nWenn du das native APM nutzt, deaktiviere die Option besser.</string>
+	<string name="various_scron_title">Aktiviere \'Aktiv lassen\'</string>
+	<string name="various_scron_summ">Zeige \'Aktiv lassen\' Option in in den Display- und den Entwicklereinstellungen.</string>
+	<string name="various_volsnd_title">Deaktiviere Lautstärke-Töne</string>
+	<string name="various_volsnd_summ">Deaktviert die Töne beim Ändern der Lautstärke mit den Tasten.</string>
+	
+	<string name="support">Support</string>
+	<string name="support_s5t_title">Besuche den Sense 5 Toolbox Post</string>
+	<string name="support_s5t_summ">Alle Infos und Änderungen hier.</string>
+	<string name="support_blog_title">Besuche den ARHD Blog</string>
+	<string name="support_blog_summ">Alle Updates und neusten Infos über ARHD.</string>
+			
+</resources>
