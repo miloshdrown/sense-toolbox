@@ -57,9 +57,11 @@ public class SysUIMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
-				Drawable sb = modRes.getDrawable(R.drawable.status_bar_background);
-				sb.setAlpha(transparency);
-				return sb;
+				if (modRes.getIdentifier("status_bar_background", "drawable", "com.langerhans.one") != 0) {
+					Drawable sb = modRes.getDrawable(R.drawable.status_bar_background);
+					sb.setAlpha(transparency);
+					return sb;
+				} else return null;
 			}
 		});
 	}
@@ -183,20 +185,7 @@ public class SysUIMods {
 			}
 		});
 	}
-	
-/*  Stupid hook not working! ^_^
 
-	public static void execHook_InvisiRecentApps(LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.internal.policy.impl.RecentApplicationsBackground", lpparam.classLoader, "init", new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				XposedBridge.log("INIT!");
-				Drawable mBackground = (Drawable)XposedHelpers.findField(param.thisObject.getClass(), "mBackground").get(param.thisObject);
-				mBackground.setAlpha(140);
-			}
-		});
-	}
-*/	
 	// Pinch to clear all recent apps
 	public static void execHook_RecentAppsClear(final LoadPackageParam lpparam) {
     	Object[] callbackObj = new Object[2];
