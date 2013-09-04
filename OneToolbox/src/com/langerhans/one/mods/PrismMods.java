@@ -1,5 +1,6 @@
 package com.langerhans.one.mods;
 
+import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.setBooleanField;
@@ -15,6 +16,7 @@ import com.langerhans.one.R;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
@@ -154,6 +156,25 @@ public class PrismMods {
 		{
 			//Probably on 4.2.2...
 		}
+	}
+
+	public static void execHook_InfiniScroll(LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.launcher.SmoothPagedView", lpparam.classLoader, "snapToDestination", new XC_MethodReplacement() {
+			@Override
+			protected Object replaceHookedMethod(MethodHookParam param)	throws Throwable {
+				int i = (Integer) callMethod(param.thisObject, "getPageCount");
+				int j = (Integer) callMethod(param.thisObject, "getCurrentPage");
+				if(j == 0)
+					callMethod(param.thisObject, "snapToPage", i - 1, 550);
+				else
+					if(j == i - 1)
+					{
+						callMethod(param.thisObject, "snapToPage", 0, 550);
+						return null;
+					}
+				return null;
+			}
+		});
 	}
 
 }

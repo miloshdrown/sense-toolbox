@@ -21,6 +21,7 @@ New icon! Thx @vomer!
 You can now navigate back out of the sub-screens with the top left icon.
 Added Pinch and/or swipe down to close all recent apps in Sense recent apps screen.
 Added center clock mod.
+Added infinite home screen scrolling in Sense launcher. Thanks @Onepagebook for the smali hack that pointed me to the correct method.
 /////Added more battery icons thanks to @vomer. (Waiting for PN...)
 Added Russian and German translations.
 

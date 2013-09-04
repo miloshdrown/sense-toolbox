@@ -126,6 +126,8 @@
 	<string name="sense_infini_summ">Снятие ограничения на количество приложений в папке.</string>
 	<string name="sense_noblink_title">Удаление BlinkFeed</string>
 	<string name="sense_noblink_summ">Только для Android 4.3: отключает и скрывает BlinkFeed.</string>
+	<string name="sense_infiniscroll_title">###TRANSLATE_ME###</string>
+	<string name="sense_infiniscroll_summ">###TRANSLATE_ME###</string>
 	
 	<string name="message_mods">Моды сообщений</string>
 	<string name="message_smsmms_title">Отключение SMS -> MMS</string>

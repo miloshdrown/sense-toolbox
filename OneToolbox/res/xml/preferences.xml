@@ -145,6 +145,11 @@
             android:summary="@string/sense_noblink_summ"
             android:title="@string/sense_noblink_title"
             android:defaultValue="false" />
+        <CheckBoxPreference
+            android:key="pref_key_prism_infiniscroll"
+            android:summary="@string/sense_infiniscroll_summ"
+            android:title="@string/sense_infiniscroll_title"
+            android:defaultValue="false" />
     </PreferenceScreen>
     <PreferenceScreen 
         android:title="@string/message_mods"

@@ -119,6 +119,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_prism_bfremove", false))
 				PrismMods.execHook_BfRemove(lpparam);
+			
+			if(pref.getBoolean("pref_key_prism_infiniscroll", false))
+				PrismMods.execHook_InfiniScroll(lpparam);
 		}
 		
 		if (pkg.equals("com.android.settings"))

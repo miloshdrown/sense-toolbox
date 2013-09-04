@@ -126,6 +126,8 @@
 	<string name="sense_infini_summ">Enable to have infinite icons per folder.</string>
 	<string name="sense_noblink_title">Remove BlinkFeed</string>
 	<string name="sense_noblink_summ">Only on Android 4.3: Tick to disable BlinkFeed.</string>
+	<string name="sense_infiniscroll_title">Infinite home screen scroll</string>
+	<string name="sense_infiniscroll_summ">Enable for infinitely scrollable home screens.</string>
 	
 	<string name="message_mods">Messaging Mods</string>
 	<string name="message_smsmms_title">Disable SMS -> MMS conversion</string>
