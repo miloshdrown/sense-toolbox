@@ -124,10 +124,12 @@
 	<string name="sense_tappdrawer_summ">Настройка прозрачности фона списка приложений ланчера Sense.</string>
 	<string name="sense_infini_title">Бесконечные папки</string>
 	<string name="sense_infini_summ">Снятие ограничения на количество приложений в папке.</string>
+	<string name="sense_adnoclock_title">Убрать часы из списка приложений</string>
+	<string name="sense_adnoclock_summ">Скрывает виджет часов и погоды в списке приложений и сдвигает иконки наверх.</string>	
 	<string name="sense_noblink_title">Удаление BlinkFeed</string>
 	<string name="sense_noblink_summ">Только для Android 4.3: отключает и скрывает BlinkFeed.</string>
-	<string name="sense_infiniscroll_title">###TRANSLATE_ME###</string>
-	<string name="sense_infiniscroll_summ">###TRANSLATE_ME###</string>
+	<string name="sense_infiniscroll_title">Бесконечный скроллинг</string>
+	<string name="sense_infiniscroll_summ">Включает переход с последнего домашнего экрана на первый и обратно.</string>
 	
 	<string name="message_mods">Моды сообщений</string>
 	<string name="message_smsmms_title">Отключение SMS -> MMS</string>

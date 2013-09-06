@@ -41,6 +41,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiDrawerLayout(resparam, transparency, MODULE_PATH);
 			}
+			
+			PrismMods.execHook_AppDrawerGridSizesLayout(resparam, MODULE_PATH);
 		}
 		
 		if (pkg.equals("com.android.systemui"))
@@ -122,6 +124,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_prism_infiniscroll", false))
 				PrismMods.execHook_InfiniScroll(lpparam);
+			
+			if(pref.getBoolean("pref_key_prism_adnoclock", false))
+				PrismMods.execHook_AppDrawerNoClock(lpparam);
+			
+			PrismMods.execHook_AppDrawerGridSizes(lpparam);
 		}
 		
 		if (pkg.equals("com.android.settings"))

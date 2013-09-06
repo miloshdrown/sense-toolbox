@@ -6,17 +6,24 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.setBooleanField;
 import static de.robv.android.xposed.XposedHelpers.setIntField;
 import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
+
+import java.util.Arrays;
+
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.drawable.Drawable;
 import android.view.View;
+import android.widget.FrameLayout;
 
 import com.langerhans.one.R;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodHook.Unhook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
-import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
+import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
@@ -141,6 +148,154 @@ public class PrismMods {
 
 	public static void execHook_InvisiDrawerCode(LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "updateWallpaperVisibility", boolean.class, XC_MethodReplacement.DO_NOTHING);
+	}
+	
+	static Unhook onclickOption = null;
+	public static int gridSizeVal = 0;
+
+	public static void execHook_AppDrawerNoClock(LoadPackageParam lpparam) {
+		// Remove header clocks
+		findAndHookMethod("com.htc.launcher.masthead.Masthead", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				View m_headerContent = (View)XposedHelpers.findField(param.thisObject.getClass(), "m_headerContent").get(param.thisObject);
+				((FrameLayout)m_headerContent.getParent()).removeView(m_headerContent);
+			}			
+		});
+	
+		// Move first row up
+		findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "getRowOffsets", XC_MethodReplacement.returnConstant(0));
+	
+		// Move ActionBar up
+		findAndHookMethod("com.htc.launcher.masthead.Masthead", lpparam.classLoader, "updateActionbarPosition", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				FrameLayout m_headerActionBar = (FrameLayout)XposedHelpers.findField(param.thisObject.getClass(), "m_headerActionBar").get(param.thisObject);
+				if (m_headerActionBar != null) {
+					FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams)m_headerActionBar.getLayoutParams();
+					lp.topMargin = 0;
+					m_headerActionBar.setLayoutParams(lp);
+				}
+				param.setResult(null);
+			}
+		});
+
+		// AppDrawer top padding fine tune
+		findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "setupPaddings", Context.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				int m_nPageLayoutPaddingTop = (Integer)XposedHelpers.findField(param.thisObject.getClass(), "m_nPageLayoutPaddingTop").get(param.thisObject);
+				XposedHelpers.findField(param.thisObject.getClass(), "m_nPageLayoutPaddingTop").set(param.thisObject, (int)Math.round((float)m_nPageLayoutPaddingTop/1.5));
+			}
+		});			
+	}
+
+	public static void execHook_AppDrawerGridSizes(LoadPackageParam lpparam) {
+		// Override grid size with current value
+		findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "setupGrid", Context.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				int cellX = 3;
+				int cellY = 4;
+				
+				if (gridSizeVal == 0)
+				{
+					cellX = 3;
+					cellY = 4;
+				} else if (gridSizeVal == 1) {
+					cellX = 4;
+					cellY = 5;
+				} else if (gridSizeVal == 2) {
+					cellX = 4;
+					cellY = 6;
+				} else if (gridSizeVal == 3) {
+					cellX = 5;
+					cellY = 5;
+				} else if (gridSizeVal == 4) {
+					cellX = 5;
+					cellY = 6;
+				}
+				
+				XposedHelpers.findField(param.thisObject.getClass(), "m_nCellCountX").set(param.thisObject, cellX);
+				XposedHelpers.findField(param.thisObject.getClass(), "m_nCellCountY").set(param.thisObject, cellY);					
+			}
+		});
+
+		// Change grid size on dialog click
+		final Class<?> OnOptionClickListener = XposedHelpers.findClass("com.htc.launcher.pageview.AllAppsDialogFragment.OnOptionClickListener", lpparam.classLoader);
+		findAndHookMethod("com.htc.launcher.pageview.AllAppsDialogFragment", lpparam.classLoader, "setOnClickSortListener", OnOptionClickListener, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				if (onclickOption != null) onclickOption.unhook();
+				onclickOption = XposedHelpers.findAndHookMethod(param.args[0].getClass(), "onclickOption", int.class, new XC_MethodHook() {
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+						gridSizeVal = (Integer)param.args[0];
+					}
+				});
+			}
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			}
+		});
+		
+		// Save grid size to Sense launcher preferences
+		findAndHookMethod("com.htc.launcher.pageview.AllAppsOptionsManager", lpparam.classLoader, "saveGridSize", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				Context m_Context = (Context)XposedHelpers.findField(param.thisObject.getClass(), "m_Context").get(param.thisObject);
+				SharedPreferences.Editor editor = m_Context.getSharedPreferences("launcher.preferences", 0).edit();
+				editor.putInt("grid_size_override", gridSizeVal).commit();
+			}
+		});
+
+		// Load grid size from Sense launcher preferences
+		findAndHookMethod("com.htc.launcher.pageview.AllAppsOptionsManager", lpparam.classLoader, "loadGridSize", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				Context m_Context = (Context)XposedHelpers.findField(param.thisObject.getClass(), "m_Context").get(param.thisObject);
+				SharedPreferences prefs = m_Context.getSharedPreferences("launcher.preferences", 0);
+				if (prefs.contains("grid_size_override")) gridSizeVal = prefs.getInt("grid_size_override", 0);
+			}
+		});
+		
+		// Select current grid size in dialog
+		findAndHookMethod("com.htc.launcher.pageview.AllAppsDialogFragment", lpparam.classLoader, "newInstance", int.class, int.class, int.class, boolean.class, boolean.class, boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.args[2] = gridSizeVal;
+			}
+		});
+		
+		// Layout scale and frame border for editor layout
+		final Class<?> EditLayoutHelper = XposedHelpers.findClass("com.htc.launcher.pageview.AllAppsPagedView.EditLayoutHelper", lpparam.classLoader);
+		XposedBridge.hookAllConstructors(EditLayoutHelper, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.args[2] = 0.95f;
+				param.args[3] = false;
+				//param.args[1] = Color.argb(153, 0, 0, 0);
+				//m_nEditLayoutPageSpacing
+				//param.args[4] = 300;
+			}
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			}								
+		});		
+	}
+
+	// Add 4x6 grid option to dialog
+	public static void execHook_AppDrawerGridSizesLayout(final InitPackageResourcesParam resparam, String MODULE_PATH) {
+		int apps_grid_option = resparam.res.getIdentifier("apps_grid_option", "array", "com.htc.launcher");
+		String[] gridSizes = resparam.res.getStringArray(apps_grid_option);
+		
+	    final int n = gridSizes.length;
+	    gridSizes = Arrays.copyOf(gridSizes, n + 3);
+	    gridSizes[n] = "4 × 6";
+	    gridSizes[n + 1] = "5 × 5";
+	    gridSizes[n + 2] = "5 × 6";
+	    
+		resparam.res.setReplacement(apps_grid_option, gridSizes);
 	}
 
 	public static void execHook_BfRemove(LoadPackageParam lpparam) {
