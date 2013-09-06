@@ -138,10 +138,10 @@ public class PrismMods {
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
 				View bg = liparam.view.findViewById(resparam.res.getIdentifier("all_apps_paged_view", "id", "com.htc.launcher"));
 				if (bg != null) 
-					if (bg.getParent() != null) {
+				if (bg.getParent() != null) {
 					View bghost = (View)bg.getParent();
 					bghost.getBackground().setAlpha(transparency);
-					}
+				}
 			}
 		});
 	}
@@ -278,13 +278,10 @@ public class PrismMods {
 				//m_nEditLayoutPageSpacing
 				//param.args[4] = 300;
 			}
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-			}								
 		});		
 	}
 
-	// Add 4x6 grid option to dialog
+	// Add 4x6, 5x5 and 5x6 grid options to dialog
 	public static void execHook_AppDrawerGridSizesLayout(final InitPackageResourcesParam resparam, String MODULE_PATH) {
 		int apps_grid_option = resparam.res.getIdentifier("apps_grid_option", "array", "com.htc.launcher");
 		String[] gridSizes = resparam.res.getStringArray(apps_grid_option);
