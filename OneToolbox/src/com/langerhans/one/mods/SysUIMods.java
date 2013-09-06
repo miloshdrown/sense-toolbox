@@ -185,7 +185,12 @@ public class SysUIMods {
 			}
 		});
 	}
-
+	
+	public static void execHook_DisableEQS(final InitPackageResourcesParam resparam) {
+		resparam.res.setReplacement("com.android.systemui", "bool", "config_hasSettingsPanel", false);
+		resparam.res.setReplacement("com.android.systemui", "bool", "config_hasFlipSettingsPanel", false);
+	}
+	
 	// Pinch to clear all recent apps
 	public static void execHook_RecentAppsClear(final LoadPackageParam lpparam) {
     	Object[] callbackObj = new Object[2];

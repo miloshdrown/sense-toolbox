@@ -46,6 +46,11 @@
             android:title="@string/systemui_heqs_title"
             android:defaultValue="false" />
         <CheckBoxPreference
+            android:key="pref_key_sysui_noeqs"
+            android:summary="@string/systemui_noeqs_summ"
+            android:title="@string/systemui_noeqs_title"
+            android:defaultValue="false" />
+        <CheckBoxPreference
             android:key="pref_key_sysui_aosprecent"
             android:summary="@string/systemui_aosp_summ"
             android:title="@string/systemui_aosp_title"

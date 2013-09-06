@@ -90,6 +90,8 @@
 	<string name="systemui_tnb_summ">Macht den Hintergrund im Benachrichtigungsfenster transparent.</string>
 	<string name="systemui_heqs_title">Horizontale EQS</string>
 	<string name="systemui_heqs_summ">Aktiviere horizontale Schnelleinstellungen. Die erste 5 normalen werden angezeigt.</string>
+	<string name="systemui_noeqs_title">###TRANSLATE_ME###</string>
+	<string name="systemui_noeqs_summ">###TRANSLATE_ME###</string>	
 	<string name="systemui_aosp_title">AOSP kürzliche Apps</string>
 	<string name="systemui_aosp_summ">Kürzlich genutzte Apps im AOSP-Stil.</string>
 	<string name="systemui_recentclear_title">Alle Apps schließen</string>

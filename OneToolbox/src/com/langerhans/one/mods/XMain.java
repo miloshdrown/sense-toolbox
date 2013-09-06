@@ -78,6 +78,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_sysui_centerclock", false))
 				SysUIMods.execHook_CenterClockLayout(resparam, MODULE_PATH);
+			
+			if(pref.getBoolean("pref_key_sysui_noeqs", false))
+				SysUIMods.execHook_DisableEQS(resparam);
 		}
 		
 		if (pkg.equals("com.htc.widget.weatherclock"))
