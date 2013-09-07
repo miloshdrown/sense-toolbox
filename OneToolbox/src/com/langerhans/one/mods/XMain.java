@@ -93,6 +93,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_cb_profile", false))
 				CleanBeamMods.execHook_ProfileIcon(resparam, MODULE_PATH);
 			
+			if(pref.getBoolean("pref_key_cb_sync", false))
+				CleanBeamMods.execHook_SyncIcon(resparam, MODULE_PATH);
+			
 			if(pref.getBoolean("pref_key_sysui_centerclock", false))
 				SysUIMods.execHook_CenterClockLayout(resparam, MODULE_PATH);
 			

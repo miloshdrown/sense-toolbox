@@ -168,4 +168,26 @@ public class CleanBeamMods{
 			}	
 		});
 	}
+
+	public static void execHook_SyncIcon(InitPackageResourcesParam resparam, String MODULE_PATH) {
+		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_sync", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_sync);
+			}	
+		});
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_sync_anim0", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_sync_anim0);
+			}	
+		});
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_sync_error", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_sync_error);
+			}	
+		});
+	}
 }

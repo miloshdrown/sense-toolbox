@@ -78,10 +78,10 @@
 	<string name="transparency_msg">0 = transparent, 100 = undurchsichtig</string>
 	
 	<string name="camera_mods">Kamera Mods</string>
-	<string name="camera_vol_up_title">Lauter-Knopf</string>
-	<string name="camera_vol_up_summ">Aktion auf dem Lauter-Knopf.</string>
-	<string name="camera_vol_down_title">Leiser-Knopf</string>	
-	<string name="camera_vol_down_summ">Aktion auf dem Leiser-Knopf.</string>
+	<string name="camera_vol_up_title">Lauter-Taste</string>
+	<string name="camera_vol_up_summ">Aktion auf dem Lauter-Taste.</string>
+	<string name="camera_vol_down_title">Leiser-Taste</string>	
+	<string name="camera_vol_down_summ">Aktion auf dem Leiser-Taste.</string>
 	
 	<string name="systemui_mods">SystemUI Mods</string>		
 	<string name="systemui_tsb_title">Transparente Statusleiste</string>
@@ -114,6 +114,8 @@
 	<string name="cleanbeam_alarm_summ">Aktiviert die CleanBean Wecker-Icons.</string>
 	<string name="cleanbeam_wifi_title">WLAN</string>
 	<string name="cleanbeam_wifi_summ">Aktiviert die CleanBean WLAN-Icons.</string>
+	<string name="cleanbeam_sync_title">Sync</string>
+	<string name="cleanbeam_sync_summ">Aktiviert die CleanBeam Sync icons.</string>
 	<string name="cleanbeam_sunbeam_title">Installiere Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Installiert das Sunbeam Live Wallpaper.</string>
 	<string name="cleanbeam_post_title">Besuche den CleanBeam Beitrag</string>

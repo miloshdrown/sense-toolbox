@@ -114,6 +114,8 @@
 	<string name="cleanbeam_alarm_summ">Enable CleanBeam alarm icon.</string>
 	<string name="cleanbeam_wifi_title">WiFi</string>
 	<string name="cleanbeam_wifi_summ">Enable CleanBeam WiFi icons.</string>
+	<string name="cleanbeam_sync_title">Sync</string>
+	<string name="cleanbeam_sync_summ">Enable CleanBeam sync icons.</string>
 	<string name="cleanbeam_sunbeam_title">Install Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Install the Sunbeam Live Wallpaper.</string>
 	<string name="cleanbeam_post_title">Visit CleanBeam post</string>
