@@ -165,7 +165,24 @@ public class PrismMods {
 			}
 		});
 	}
-
+	
+	public static void execHook_InvisiFolderBkg(final InitPackageResourcesParam resparam, final int transparency,  String MODULE_PATH) {
+		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.htc.launcher", "drawable", "home_folder_base", new XResources.DrawableLoader() {
+			@Override
+			public Drawable newDrawable(XResources res, int id) throws Throwable {
+				try {
+					Drawable bg = modRes.getDrawable(R.drawable.home_folder_base);
+					bg.setAlpha(transparency);
+					return bg;
+				} catch(Exception e){
+					XposedBridge.log("[S5T] Resource loading bug... Need full restart");
+					return null;
+				}
+			}
+		});
+	}
+	
 	public static void execHook_InvisiDrawerCode(LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "updateWallpaperVisibility", boolean.class, XC_MethodReplacement.DO_NOTHING);
 	}

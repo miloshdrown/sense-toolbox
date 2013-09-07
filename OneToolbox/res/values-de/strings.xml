@@ -125,7 +125,9 @@
 	<string name="sense_tappdrawer_title">Transparenter \'Alle Apps\' Bildschirm</string>
 	<string name="sense_tappdrawer_summ">Macht den \'Alle Apps\' Bildschirm transparent.</string>
 	<string name="sense_tfolders_title">###TRANSLATE_ME###</string>
-	<string name="sense_tfolders_summ">###TRANSLATE_ME###</string>	
+	<string name="sense_tfolders_summ">###TRANSLATE_ME###</string>
+	<string name="sense_tfoldersbkg_title">###TRANSLATE_ME###</string>
+	<string name="sense_tfoldersbkg_summ">###TRANSLATE_ME###</string>
 	<string name="sense_infini_title">Infinifolders</string>
 	<string name="sense_infini_summ">Erlaubt unendliche viele Apps in eine Ordner.</string>
 	<string name="sense_adnoclock_title">###TRANSLATE_ME###</string>

@@ -48,6 +48,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiFolder(resparam, transparency);
 			}
+
+			if(pref.getInt("pref_key_prism_invisifoldersbkg", 100) != 100)
+			{
+				int transparency = pref.getInt("pref_key_prism_invisifoldersbkg", 100);
+				transparency = (int) Math.floor(transparency*2.55f);
+				PrismMods.execHook_InvisiFolderBkg(resparam, transparency, MODULE_PATH);
+			}
 			
 			PrismMods.execHook_AppDrawerGridSizesLayout(resparam, MODULE_PATH);
 		}
