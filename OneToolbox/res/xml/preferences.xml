@@ -140,6 +140,14 @@
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
+        <com.langerhans.one.utils.SeekBarPreference 
+            android:key="pref_key_prism_invisifolders"
+    		android:title="@string/sense_tfolders_title"
+    		android:summary="@string/sense_tfolders_summ"
+    		android:dialogMessage="@string/transparency_msg"
+    		android:defaultValue="100"
+    		android:text=" %"
+    		android:max="100"/>
         <CheckBoxPreference
             android:key="pref_key_prism_folder20"
             android:summary="@string/sense_infini_summ"

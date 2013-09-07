@@ -124,6 +124,8 @@
 	<string name="sense_twidget_summ">Macht das Standard 4x1 Uhr Widget transparent.</string>
 	<string name="sense_tappdrawer_title">Transparenter \'Alle Apps\' Bildschirm</string>
 	<string name="sense_tappdrawer_summ">Macht den \'Alle Apps\' Bildschirm transparent.</string>
+	<string name="sense_tfolders_title">###TRANSLATE_ME###</string>
+	<string name="sense_tfolders_summ">###TRANSLATE_ME###</string>	
 	<string name="sense_infini_title">Infinifolders</string>
 	<string name="sense_infini_summ">Erlaubt unendliche viele Apps in eine Ordner.</string>
 	<string name="sense_adnoclock_title">###TRANSLATE_ME###</string>

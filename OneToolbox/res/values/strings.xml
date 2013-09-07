@@ -124,6 +124,8 @@
 	<string name="sense_twidget_summ">Make the default 4x1 clock + weather widget transparent.</string>
 	<string name="sense_tappdrawer_title">Transparent app drawer</string>
 	<string name="sense_tappdrawer_summ">Make the Sense launcher app drawer transparent.</string>
+	<string name="sense_tfolders_title">Transparent folders</string>
+	<string name="sense_tfolders_summ">Make folders background transparent.</string>
 	<string name="sense_infini_title">Infinifolders</string>
 	<string name="sense_infini_summ">Enable to have infinite icons per folder.</string>
 	<string name="sense_adnoclock_title">Remove app drawer clock</string>

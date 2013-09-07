@@ -124,6 +124,8 @@
 	<string name="sense_twidget_summ">Настройка прозрачности стандартного виджета часов и погоды 4x1.</string>
 	<string name="sense_tappdrawer_title">Прозрачный фон списка приложений</string>
 	<string name="sense_tappdrawer_summ">Настройка прозрачности фона списка приложений ланчера Sense.</string>
+	<string name="sense_tfolders_title">Прозрачный фон папок</string>
+	<string name="sense_tfolders_summ">Настройка прозрачности фона папок ланчера.</string>
 	<string name="sense_infini_title">Бесконечные папки</string>
 	<string name="sense_infini_summ">Снятие ограничения на количество приложений в папке.</string>
 	<string name="sense_adnoclock_title">Убрать часы из списка приложений</string>

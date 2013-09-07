@@ -13,9 +13,12 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.langerhans.one.R;
 
@@ -132,7 +135,7 @@ public class PrismMods {
 		});
 	}
 
-	public static void execHook_InvisiDrawerLayout(final InitPackageResourcesParam resparam, final int transparency, String mODULE_PATH) {
+	public static void execHook_InvisiDrawerLayout(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
 		resparam.res.hookLayout("com.htc.launcher", "layout", "launcher", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
@@ -141,6 +144,23 @@ public class PrismMods {
 				if (bg.getParent() != null) {
 					View bghost = (View)bg.getParent();
 					bghost.getBackground().setAlpha(transparency);
+				}
+			}
+		});
+	}
+	
+	public static void execHook_InvisiFolder(final InitPackageResourcesParam resparam, final int transparency) {
+		resparam.res.hookLayout("com.htc.launcher", "layout", "user_folder", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				RelativeLayout bg = (RelativeLayout)liparam.view;
+				bg.getBackground().setAlpha(transparency);
+				LinearLayout nameframe = (LinearLayout)liparam.view.findViewById(resparam.res.getIdentifier("folder_name_frame", "id", "com.htc.launcher"));
+				if (nameframe != null) {
+					RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)nameframe.getLayoutParams();
+					lp.rightMargin = 3;
+					nameframe.setLayoutParams(lp);
+					nameframe.setBackgroundColor(Color.argb(255, 20, 20, 20));
 				}
 			}
 		});
@@ -185,7 +205,7 @@ public class PrismMods {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				int m_nPageLayoutPaddingTop = (Integer)XposedHelpers.findField(param.thisObject.getClass(), "m_nPageLayoutPaddingTop").get(param.thisObject);
-				XposedHelpers.findField(param.thisObject.getClass(), "m_nPageLayoutPaddingTop").set(param.thisObject, (int)Math.round((float)m_nPageLayoutPaddingTop/1.5));
+				XposedHelpers.setIntField(param.thisObject, "m_nPageLayoutPaddingTop", (int)Math.round((float)m_nPageLayoutPaddingTop/1.5));
 			}
 		});			
 	}
@@ -216,8 +236,8 @@ public class PrismMods {
 					cellY = 6;
 				}
 				
-				XposedHelpers.findField(param.thisObject.getClass(), "m_nCellCountX").set(param.thisObject, cellX);
-				XposedHelpers.findField(param.thisObject.getClass(), "m_nCellCountY").set(param.thisObject, cellY);					
+				XposedHelpers.setIntField(param.thisObject, "m_nCellCountX", cellX);
+				XposedHelpers.setIntField(param.thisObject, "m_nCellCountY", cellY);
 			}
 		});
 

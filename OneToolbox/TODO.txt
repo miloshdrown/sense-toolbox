@@ -25,6 +25,7 @@ Added infinite home screen scrolling in Sense launcher. Thanks @Onepagebook for 
 Added Remove clock/weather widget from app drawer
 Added New grid sizes in app drawer
 Added Disable EQS and restore settings button
+Added Folders transparency setting
 /////Added more battery icons thanks to @vomer. (Waiting for PN...)
 Added Russian and German translations.
 
