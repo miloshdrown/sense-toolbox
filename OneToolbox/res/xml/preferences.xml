@@ -15,8 +15,8 @@
             android:defaultValue="4"/>
         <ListPreference
             android:key="pref_key_cam_voldown"
-            android:summary="@string/camera_vol_up_summ"
-            android:title="@string/camera_vol_up_title"
+            android:summary="@string/camera_vol_down_summ"
+            android:title="@string/camera_vol_down_title"
             android:entries="@array/cam_actions"
             android:entryValues="@array/cam_actions_val"
             android:defaultValue="4" />
