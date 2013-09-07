@@ -92,6 +92,11 @@
             android:title="@string/cleanbeam_beats_title"
             android:defaultValue="false"/>
         <CheckBoxPreference 
+            android:key="pref_key_cb_profile"
+            android:summary="@string/cleanbeam_profile_summ"
+            android:title="@string/cleanbeam_profile_title"
+            android:defaultValue="false"/>
+        <CheckBoxPreference 
             android:key="pref_key_cb_alarm"
             android:summary="@string/cleanbeam_alarm_summ"
             android:title="@string/cleanbeam_alarm_title"

@@ -23,10 +23,10 @@ Added Pinch and/or swipe down to close all recent apps in Sense recent apps scre
 Added center clock mod.
 Added infinite home screen scrolling in Sense launcher. Thanks @Onepagebook for the smali hack that pointed me to the correct method.
 Added Remove clock/weather widget from app drawer
-Added New grid sizes in app drawer
+Added New grid sizes in app drawer - This is active automatically! Set up the desired size in App drawer.
 Added Disable EQS and restore settings button
-Added Folders transparency setting
-/////Added more battery icons thanks to @vomer. (Waiting for PN...)
+Added Folders transparency setting. This includes open folders and their icons. Sometimes needs a FULL reboot to work.
+Added sound profile icons and exchanged headphone icons. Thanks to @vomer.
 Added Russian and German translations.
 
 1.6.1:

@@ -94,36 +94,6 @@ public class PrismMods {
 				setIntField(param.thisObject, "m_MaxCheckedAmount", 9999);
 			}
 		});
-		
-		
-//		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
-//			@Override
-//    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-//				ViewGroup m_workspace = (ViewGroup) findField(findClass("com.htc.launcher.Launcher", lpparam.classLoader), "m_workspace").get(param.thisObject);
-//				FrameLayout m_feedScrollView = (FrameLayout) findField(findClass("com.htc.launcher.Launcher", lpparam.classLoader), "m_feedScrollView").get(param.thisObject);
-////				Method removeView = findMethodExact(findClass("com.htc.launcher.Workspace", lpparam.classLoader), "removeView");
-////				removeView.invoke(m_workspace, m_feedScrollView);
-//				m_workspace.removeView(m_feedScrollView);
-//				findField(findClass("com.htc.launcher.Launcher", lpparam.classLoader), "m_feedScrollView").set(param.thisObject, null);
-//			}
-//			
-//			@Override
-//    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-//				findField(findClass("com.htc.launcher.Launcher", lpparam.classLoader), "m_feedScrollView").set(param.thisObject, null);
-//			}
-//		});
-		
-//		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "setupViews", new XC_MethodHook() {
-//			@Override
-//    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-//				ViewGroup m_workspace = (ViewGroup) findField(findClass("com.htc.launcher.Launcher", lpparam.classLoader), "m_workspace").get(param.thisObject);
-//				FrameLayout m_feedScrollView = (FrameLayout) m_workspace.findViewById(0x7f070070); //findField(findClass("com.htc.launcher.Launcher", lpparam.classLoader), "m_feedScrollView").get(param.thisObject);
-////				Method removeView = findMethodExact(findClass("com.htc.launcher.Workspace", lpparam.classLoader), "removeView");
-////				removeView.invoke(m_workspace, m_feedScrollView);
-//				m_workspace.removeView(m_feedScrollView);
-//				findField(findClass("com.htc.launcher.Launcher", lpparam.classLoader), "m_feedScrollView").set(param.thisObject, null);
-//			}
-//		});
 	}
 
 	public static void execHookTSBFix(LoadPackageParam lpparam) {

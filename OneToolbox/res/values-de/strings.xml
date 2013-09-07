@@ -50,7 +50,7 @@
 	<string name="first_start">Erster Start</string>
 	<string name="close_forever">Dialog für immer schließen!</string>
 	
-	<string name="sunbeam_installed">SunBeam wurde installiert. Bitte mache einen schnellen Neustart zum fertigstellen. Du musst den Hintergund nach jeder ROM Installation wieder installieren.</string>
+	<string name="sunbeam_installed">SunBeam wurde installiert. Bitte mache einen schnellen Neustart zum fertigstellen. Du musst den Hintergrund nach jeder ROM Installation wieder installieren.</string>
 	<string name="eqs_user_card">Benutzer</string>
 	<string name="eqs_brightness">Helligkeit</string>
 	<string name="eqs_settings">Einstellungen</string>
@@ -90,8 +90,8 @@
 	<string name="systemui_tnb_summ">Macht den Hintergrund im Benachrichtigungsfenster transparent.</string>
 	<string name="systemui_heqs_title">Horizontale EQS</string>
 	<string name="systemui_heqs_summ">Aktiviere horizontale Schnelleinstellungen. Die erste 5 normalen werden angezeigt.</string>
-	<string name="systemui_noeqs_title">###TRANSLATE_ME###</string>
-	<string name="systemui_noeqs_summ">###TRANSLATE_ME###</string>	
+	<string name="systemui_noeqs_title">Deaktiviere EQS</string>
+	<string name="systemui_noeqs_summ">Deaktiviert die Schnelleinstellungen vollständig.</string>	
 	<string name="systemui_aosp_title">AOSP kürzliche Apps</string>
 	<string name="systemui_aosp_summ">Kürzlich genutzte Apps im AOSP-Stil.</string>
 	<string name="systemui_recentclear_title">Alle Apps schließen</string>
@@ -108,6 +108,8 @@
 	<string name="cleanbeam_headphone_summ">Aktiviert die CleanBean Kopfhörer-Icons.</string>
 	<string name="cleanbeam_beats_title">Beats</string>
 	<string name="cleanbeam_beats_summ">Aktiviert die CleanBean Beats-Icons.</string>
+	<string name="cleanbeam_profile_title">Sound Profil</string>
+	<string name="cleanbeam_profile_summ">Aktiviert die CleanBeam Sound Profil Icons.</string>
 	<string name="cleanbeam_alarm_title">Wecker</string>
 	<string name="cleanbeam_alarm_summ">Aktiviert die CleanBean Wecker-Icons.</string>
 	<string name="cleanbeam_wifi_title">WLAN</string>
@@ -124,14 +126,14 @@
 	<string name="sense_twidget_summ">Macht das Standard 4x1 Uhr Widget transparent.</string>
 	<string name="sense_tappdrawer_title">Transparenter \'Alle Apps\' Bildschirm</string>
 	<string name="sense_tappdrawer_summ">Macht den \'Alle Apps\' Bildschirm transparent.</string>
-	<string name="sense_tfolders_title">###TRANSLATE_ME###</string>
-	<string name="sense_tfolders_summ">###TRANSLATE_ME###</string>
-	<string name="sense_tfoldersbkg_title">###TRANSLATE_ME###</string>
-	<string name="sense_tfoldersbkg_summ">###TRANSLATE_ME###</string>
+	<string name="sense_tfolders_title">Transparenter Ordner-Hintergrund</string>
+	<string name="sense_tfolders_summ">Macht den Hintergrund der Ordner transparent.</string>
+	<string name="sense_tfoldersbkg_title">Transparente Ordner-Icons</string>
+	<string name="sense_tfoldersbkg_summ">Macht den Hintergrund der Ordner-Icons transparent.</string>
 	<string name="sense_infini_title">Infinifolders</string>
 	<string name="sense_infini_summ">Erlaubt unendliche viele Apps in eine Ordner.</string>
-	<string name="sense_adnoclock_title">###TRANSLATE_ME###</string>
-	<string name="sense_adnoclock_summ">###TRANSLATE_ME###</string>	
+	<string name="sense_adnoclock_title">Keine Uhr in \'Alle Apps\'</string>
+	<string name="sense_adnoclock_summ">Entfernt die Uhr im \'Alle Apps\' Menü.</string>	
 	<string name="sense_noblink_title">Entferne BlinkFeed</string>
 	<string name="sense_noblink_summ">Nur auf Android 4.3: Entfernt den BlinkFeed.</string>
 	<string name="sense_infiniscroll_title">Unendliches Scrollen</string>

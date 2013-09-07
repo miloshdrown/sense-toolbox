@@ -108,6 +108,8 @@
 	<string name="cleanbeam_headphone_summ">Enable CleanBeam headphone icons.</string>
 	<string name="cleanbeam_beats_title">Beats</string>
 	<string name="cleanbeam_beats_summ">Enable CleanBeam beats icons.</string>
+	<string name="cleanbeam_profile_title">Sound profile</string>
+	<string name="cleanbeam_profile_summ">Enable CleanBeam sound profile icons.</string>
 	<string name="cleanbeam_alarm_title">Alarm</string>
 	<string name="cleanbeam_alarm_summ">Enable CleanBeam alarm icon.</string>
 	<string name="cleanbeam_wifi_title">WiFi</string>

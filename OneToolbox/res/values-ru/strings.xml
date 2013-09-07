@@ -108,6 +108,8 @@
 	<string name="cleanbeam_headphone_summ">CleanBeam иконка наушников.</string>
 	<string name="cleanbeam_beats_title">Beats</string>
 	<string name="cleanbeam_beats_summ">CleanBeam иконка Beats.</string>
+	<string name="cleanbeam_profile_title">Профиль звука</string>
+	<string name="cleanbeam_profile_summ">CleanBeam иконка профиля звука.</string>
 	<string name="cleanbeam_alarm_title">Будильник</string>
 	<string name="cleanbeam_alarm_summ">CleanBeam иконка будильника.</string>
 	<string name="cleanbeam_wifi_title">WiFi</string>
