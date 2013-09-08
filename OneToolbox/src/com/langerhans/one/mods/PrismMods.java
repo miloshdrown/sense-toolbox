@@ -11,6 +11,7 @@ import java.util.Arrays;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.Color;
@@ -18,6 +19,7 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -109,7 +111,7 @@ public class PrismMods {
 			}
 		});
 	}
-
+/*
 	public static void execHook_InvisiDrawerLayout(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
 		resparam.res.hookLayout("com.htc.launcher", "layout", "launcher", new XC_LayoutInflated() {
 			@Override
@@ -123,7 +125,7 @@ public class PrismMods {
 			}
 		});
 	}
-	
+*/	
 	public static void execHook_InvisiFolder(final InitPackageResourcesParam resparam, final int transparency) {
 		resparam.res.hookLayout("com.htc.launcher", "layout", "user_folder", new XC_LayoutInflated() {
 			@Override
@@ -158,18 +160,37 @@ public class PrismMods {
 		});
 	}
 	
-	public static void execHook_InvisiDrawerCode(LoadPackageParam lpparam) {
+	public static void execHook_InvisiDrawerCode(LoadPackageParam lpparam, final int transparency) {
 		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "updateWallpaperVisibility", boolean.class, XC_MethodReplacement.DO_NOTHING);
+		
+		findAndHookMethod("com.htc.launcher.pageview.AllAppsPagedViewHost", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				ViewGroup m_PagedView = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "m_PagedView").get(param.thisObject);
+				if (m_PagedView.getParent() != null)
+				((RelativeLayout)m_PagedView.getParent()).getBackground().setAlpha(transparency);
+			}
+		});
 	}
 	
 	static Unhook onclickOption = null;
 	public static int gridSizeVal = 0;
 
+	// Move Action Bar
 	private static void moveAB(MethodHookParam param) throws Throwable {
 		FrameLayout m_headerActionBar = (FrameLayout)XposedHelpers.findField(param.thisObject.getClass(), "m_headerActionBar").get(param.thisObject);
 		if (m_headerActionBar != null) {
 			FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams)m_headerActionBar.getLayoutParams();
-			lp.topMargin = 0;
+			
+			Object container = ((FrameLayout)param.thisObject).getParent();
+			if (container.getClass().getCanonicalName().equalsIgnoreCase("com.htc.launcher.feeds.view.FeedScrollView")) {
+				Resources res = m_headerActionBar.getContext().getResources();
+				lp.topMargin = res.getDimensionPixelSize(res.getIdentifier("header_height", "dimen", "com.htc.launcher"));
+				XposedBridge.log("FeedScrollView: " + String.valueOf(lp.topMargin));
+			} else {			
+				lp.topMargin = 0;
+				XposedBridge.log("AllApps: " + String.valueOf(lp.topMargin));
+			}
 			m_headerActionBar.setLayoutParams(lp);
 		}
 	}
@@ -201,14 +222,14 @@ public class PrismMods {
 			}
 		});
 		
-		// Restore clocks in BlinkFeed
+		// Restore clocks on BlinkFeed page
 		try {
 			findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showWorkspace", boolean.class, Runnable.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					Object m_masthead = XposedHelpers.findField(param.thisObject.getClass(), "m_masthead").get(param.thisObject);
 					View m_headerContent = (View)XposedHelpers.findField(m_masthead.getClass(), "m_headerContent").get(m_masthead);
-					m_headerContent.setVisibility(0);				
+					m_headerContent.setVisibility(0);
 				}
 			});
 		} catch (NoSuchMethodError e) {
