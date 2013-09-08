@@ -176,11 +176,11 @@
             android:summary="@string/sense_infiniscroll_summ"
             android:title="@string/sense_infiniscroll_title"
             android:defaultValue="false" />
-        <!-- <CheckBoxPreference
+        <CheckBoxPreference
             android:key="pref_key_prism_adnoclock"
             android:summary="@string/sense_adnoclock_summ"
             android:title="@string/sense_adnoclock_title"
-            android:defaultValue="false" />-->
+            android:defaultValue="false" />
         <CheckBoxPreference
             android:key="pref_key_prism_bfremove"
             android:summary="@string/sense_noblink_summ"
