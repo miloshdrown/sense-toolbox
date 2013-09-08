@@ -171,6 +171,19 @@ public class PrismMods {
 				((RelativeLayout)m_PagedView.getParent()).getBackground().setAlpha(transparency);
 			}
 		});
+		
+		try {
+			// This will fail on 4.2.2, best version check ever!
+			XposedHelpers.findMethodExact("com.htc.launcher.masthead.Masthead", lpparam.classLoader, "updateActionbarPosition");
+		} catch (NoSuchMethodError e){
+			findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAllApps", boolean.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					ViewGroup m_workspace = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "m_workspace").get(param.thisObject);
+					m_workspace.setVisibility(4);
+				}
+			});
+		}						
 	}
 	
 	static Unhook onclickOption = null;
@@ -186,10 +199,8 @@ public class PrismMods {
 			if (container.getClass().getCanonicalName().equalsIgnoreCase("com.htc.launcher.feeds.view.FeedScrollView")) {
 				Resources res = m_headerActionBar.getContext().getResources();
 				lp.topMargin = res.getDimensionPixelSize(res.getIdentifier("header_height", "dimen", "com.htc.launcher"));
-				XposedBridge.log("FeedScrollView: " + String.valueOf(lp.topMargin));
 			} else {			
 				lp.topMargin = 0;
-				XposedBridge.log("AllApps: " + String.valueOf(lp.topMargin));
 			}
 			m_headerActionBar.setLayoutParams(lp);
 		}
