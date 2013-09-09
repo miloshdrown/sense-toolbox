@@ -13,6 +13,7 @@
 - Higher grid size in sense launcher (Already looked into this. needs many dimens.xml changes)
 - Smaller size horizontal EQS. (Could probably remove Text and reduce icon size. Not really sure if many would use it...)
 - Limit number of loaded SMS in stock SMS app. One user said he has 10k SMS and it makes his phone slow... wtf?
+- Gestures (to lock phone) in sense launcher. Idea I got by PM. I said not gonna happen soon :D
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
