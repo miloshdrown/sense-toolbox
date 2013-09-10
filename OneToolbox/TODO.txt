@@ -4,7 +4,6 @@
 - torch toggle
 - prism bg, blinkfeed, folders transparent
 - back button kill,crt off animation,volume button controls for skipping tracks
-- center clock
 - status bar data meter: http://forum.xda-developers.com/showthread.php?p=44935359#post44935359
 - side way scrolling (Loads of work. probably not feasable...)
 - 4x2 widget bg (Needs way more replacements than I thought. Probably not ganna happen soon.)
@@ -14,6 +13,8 @@
 - Smaller size horizontal EQS. (Could probably remove Text and reduce icon size. Not really sure if many would use it...)
 - Limit number of loaded SMS in stock SMS app. One user said he has 10k SMS and it makes his phone slow... wtf?
 - Gestures (to lock phone) in sense launcher. Idea I got by PM. I said not gonna happen soon :D
+- remove clock
+- fix that damn infinite scroll on BF removal mods -.-
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 

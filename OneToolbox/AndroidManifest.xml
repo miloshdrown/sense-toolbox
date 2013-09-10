@@ -22,7 +22,10 @@
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
+				<category android:name="com.htc.settings.category.PLUGIN_ENTRY"/>
 			</intent-filter>
+			<meta-data android:name="plugAnchorItem" android:value="personalize"/>
+			<meta-data android:name="plugAnchorShift" android:value="-1.0"/>
 		</activity>
 		<activity
 			android:name="com.langerhans.one.ReorderActivity"
