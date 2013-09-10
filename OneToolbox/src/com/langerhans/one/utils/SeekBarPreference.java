@@ -6,10 +6,10 @@ package com.langerhans.one.utils;
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
+import com.htc.preference.HtcDialogPreference;
 import com.langerhans.one.R;
 
 import android.content.Context;
-import android.preference.DialogPreference;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -18,7 +18,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 
-public class SeekBarPreference extends DialogPreference implements SeekBar.OnSeekBarChangeListener
+public class SeekBarPreference extends HtcDialogPreference implements SeekBar.OnSeekBarChangeListener
 {
   private static final String androidns="http://schemas.android.com/apk/res/android";
 

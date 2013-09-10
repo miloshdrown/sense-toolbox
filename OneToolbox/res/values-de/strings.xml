@@ -24,6 +24,7 @@
     <string name="apm_bootloader">Bootloader</string>
     
     <string name="eqs_reorder">EQS Sortierung</string>
+    <string name="eqs_reorder_explain">###TRANSLATE_ME###</string>
     <string name="no_root_access">Kein root-Zugriff</string>
     
     <string name="no_root_explain">Entweder hat dein Gerät kein root, oder du hast den Zugriff verweigert.\nOhne root kannst du die Schnelleinstellungen nicht umsortieren, deshalb wurde die Funktion deaktiviert\nDu kannst die Meldung einmalig oder für immer deaktivieren. Es wird bei jedem Start auf root geprüft, falls sich deine Meinung in Zukunft ändert.</string>

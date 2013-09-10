@@ -1,27 +1,40 @@
-<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<com.htc.preference.HtcPreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:key="prefs" >
 
-    <PreferenceScreen 
+	<com.htc.preference.HtcPreference
+		android:title="@string/eqs_reorder"
+		android:summary="@string/eqs_reorder_explain"
+		android:key="pref_key_eqs">
+		<intent
+			android:action="android.intent.action.VIEW"
+			android:targetPackage="com.langerhans.one"
+			android:targetClass="com.langerhans.one.ReorderActivity" />
+	</com.htc.preference.HtcPreference>
+	
+    <com.htc.preference.HtcPreferenceCategory
+        android:title="@string/mods"
+        android:key="pref_key_mods">
+    <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/camera_mods"
         android:key="pref_key_cam">
-        <ListPreference
+        <com.htc.preference.HtcListPreference
             android:key="pref_key_cam_volup"
             android:summary="@string/camera_vol_up_summ"
             android:title="@string/camera_vol_up_title"
             android:entries="@array/cam_actions"
             android:entryValues="@array/cam_actions_val"
             android:defaultValue="4"/>
-        <ListPreference
+        <com.htc.preference.HtcListPreference
             android:key="pref_key_cam_voldown"
             android:summary="@string/camera_vol_down_summ"
             android:title="@string/camera_vol_down_title"
             android:entries="@array/cam_actions"
             android:entryValues="@array/cam_actions_val"
             android:defaultValue="4" />
-    </PreferenceScreen>
-    <PreferenceScreen 
+    </com.htc.preference.HtcPreferenceScreen>
+    <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/systemui_mods"
         android:key="pref_key_sysui">
         <com.langerhans.one.utils.SeekBarPreference 
@@ -40,90 +53,90 @@
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_minorqs"
             android:summary="@string/systemui_heqs_summ"
             android:title="@string/systemui_heqs_title"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_noeqs"
             android:summary="@string/systemui_noeqs_summ"
             android:title="@string/systemui_noeqs_title"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_aosprecent"
             android:summary="@string/systemui_aosp_summ"
             android:title="@string/systemui_aosp_title"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_recentappsclear"
             android:summary="@string/systemui_recentclear_summ"
             android:title="@string/systemui_recentclear_title"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_centerclock"
             android:summary="@string/systemui_centerclock_summ"
             android:title="@string/systemui_centerclock_title"
             android:defaultValue="false" />
-    </PreferenceScreen>
-    <PreferenceScreen
+    </com.htc.preference.HtcPreferenceScreen>
+    <com.htc.preference.HtcPreferenceScreen
         android:title="@string/cleanbeam_mods"
         android:key="pref_key_cb">
-        <ListPreference
+        <com.htc.preference.HtcListPreference
             android:key="pref_key_sysui_battery"
             android:summary="@string/cleanbeam_battery_summ"
             android:title="@string/cleanbeam_battery_title"
             android:entries="@array/batt_icon"
             android:entryValues="@array/batt_icon_val"
             android:defaultValue="1"/>
-        <CheckBoxPreference 
+        <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_signal"
             android:summary="@string/cleanbeam_signal_summ"
             android:title="@string/cleanbeam_signal_title"
             android:defaultValue="false"/>
-        <CheckBoxPreference 
+        <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_headphone"
             android:summary="@string/cleanbeam_headphone_summ"
             android:title="@string/cleanbeam_headphone_title"
             android:defaultValue="false"/>
-        <CheckBoxPreference 
+        <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_beats"
             android:summary="@string/cleanbeam_beats_summ"
             android:title="@string/cleanbeam_beats_title"
             android:defaultValue="false"/>
-        <CheckBoxPreference 
+        <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_profile"
             android:summary="@string/cleanbeam_profile_summ"
             android:title="@string/cleanbeam_profile_title"
             android:defaultValue="false"/>
-        <CheckBoxPreference 
+        <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_alarm"
             android:summary="@string/cleanbeam_alarm_summ"
             android:title="@string/cleanbeam_alarm_title"
             android:defaultValue="false"/>
-        <CheckBoxPreference 
+        <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_wifi"
             android:summary="@string/cleanbeam_wifi_summ"
             android:title="@string/cleanbeam_wifi_title"
             android:defaultValue="false"/>
-        <CheckBoxPreference 
+        <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_sync"
             android:summary="@string/cleanbeam_sync_summ"
             android:title="@string/cleanbeam_sync_title"
             android:defaultValue="false"/>
-        <Preference
+        <com.htc.preference.HtcPreference
             android:title="@string/cleanbeam_sunbeam_title"
             android:summary="@string/cleanbeam_sunbeam_summ"
             android:key="pref_key_cb_sunbeam">
-		</Preference>
-        <Preference
+		</com.htc.preference.HtcPreference>
+        <com.htc.preference.HtcPreference
             android:title="@string/cleanbeam_post_title"
             android:summary="@string/cleanbeam_post_summ">
 			<intent android:action="android.intent.action.VIEW"
             android:data="http://forum.xda-developers.com/showpost.php?p=45123557&#038;postcount=44952" />
-		</Preference>
-    </PreferenceScreen>
-    <PreferenceScreen 
+		</com.htc.preference.HtcPreference>
+    </com.htc.preference.HtcPreferenceScreen>
+    <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/sense_mods"
         android:key="pref_key_prism">
         <com.langerhans.one.utils.SeekBarPreference 
@@ -166,74 +179,76 @@
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_folder20"
             android:summary="@string/sense_infini_summ"
             android:title="@string/sense_infini_title"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_infiniscroll"
             android:summary="@string/sense_infiniscroll_summ"
             android:title="@string/sense_infiniscroll_title"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_adnoclock"
             android:summary="@string/sense_adnoclock_summ"
             android:title="@string/sense_adnoclock_title"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_bfremove"
             android:summary="@string/sense_noblink_summ"
             android:title="@string/sense_noblink_title"
             android:defaultValue="false" />
-    </PreferenceScreen>
-    <PreferenceScreen 
+    </com.htc.preference.HtcPreferenceScreen>
+    <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/message_mods"
         android:key="pref_key_sms">
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sms_smsmmsconv"
             android:summary="@string/message_smsmms_summ"
             android:title="@string/message_smsmms_title"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_other_smscreenon"
             android:summary="@string/message_smswake_summ"
             android:title="@string/message_smswake_title"
             android:defaultValue="false" />
-    </PreferenceScreen>
-    <PreferenceScreen 
+    </com.htc.preference.HtcPreferenceScreen>
+    <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/various_mods"
         android:key="pref_key_other">
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_other_apm"
             android:summary="@string/various_apm_summ"
             android:title="@string/various_apm_title"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_other_keepscreenon"
             android:summary="@string/various_scron_summ"
             android:title="@string/various_scron_title"
             android:defaultValue="false" />
-        <CheckBoxPreference
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_other_volsound"
             android:summary="@string/various_volsnd_summ"
             android:title="@string/various_volsnd_title"
             android:defaultValue="false" />
-    </PreferenceScreen>
-    <PreferenceCategory
+    </com.htc.preference.HtcPreferenceScreen>
+    </com.htc.preference.HtcPreferenceCategory>
+    
+    <com.htc.preference.HtcPreferenceCategory
         android:title="@string/support"
         android:key="pref_key_support">
-		<Preference
+		<com.htc.preference.HtcPreference
             android:title="@string/support_s5t_title"
             android:summary="@string/support_s5t_summ" >
 			<intent android:action="android.intent.action.VIEW"
             android:data="http://forum.xda-developers.com/showpost.php?p=44650768&#038;postcount=2" />
-		</Preference>
-		<Preference 
+		</com.htc.preference.HtcPreference>
+		<com.htc.preference.HtcPreference 
             android:title="@string/support_blog_title"
             android:summary="@string/support_blog_summ" >
     		<intent android:action="android.intent.action.VIEW"
             android:data="http://android-revolution-hd.blogspot.de" />
-		</Preference>
-    </PreferenceCategory>
-</PreferenceScreen>
+		</com.htc.preference.HtcPreference>
+    </com.htc.preference.HtcPreferenceCategory>
+</com.htc.preference.HtcPreferenceScreen>

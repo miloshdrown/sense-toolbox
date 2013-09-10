@@ -7,6 +7,8 @@ import static de.robv.android.xposed.XposedHelpers.setBooleanField;
 import static de.robv.android.xposed.XposedHelpers.setIntField;
 import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import android.content.Context;
@@ -17,7 +19,10 @@ import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.view.Display;
+import android.view.GestureDetector;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
@@ -65,6 +70,10 @@ public class PrismMods {
 		});
 	}
 
+	public static void execHook_PreserveWallpaper(LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "updateWallpaperVisibility", boolean.class, XC_MethodReplacement.DO_NOTHING);
+	}
+		
 	public static void execHook_20Folder_code(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "isFull", new XC_MethodHook() {
 			@Override
@@ -111,21 +120,7 @@ public class PrismMods {
 			}
 		});
 	}
-/*
-	public static void execHook_InvisiDrawerLayout(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
-		resparam.res.hookLayout("com.htc.launcher", "layout", "launcher", new XC_LayoutInflated() {
-			@Override
-			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-				View bg = liparam.view.findViewById(resparam.res.getIdentifier("all_apps_paged_view", "id", "com.htc.launcher"));
-				if (bg != null) 
-				if (bg.getParent() != null) {
-					View bghost = (View)bg.getParent();
-					bghost.getBackground().setAlpha(transparency);
-				}
-			}
-		});
-	}
-*/	
+	
 	public static void execHook_InvisiFolder(final InitPackageResourcesParam resparam, final int transparency) {
 		resparam.res.hookLayout("com.htc.launcher", "layout", "user_folder", new XC_LayoutInflated() {
 			@Override
@@ -161,7 +156,7 @@ public class PrismMods {
 	}
 	
 	public static void execHook_InvisiDrawerCode(LoadPackageParam lpparam, final int transparency) {
-		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "updateWallpaperVisibility", boolean.class, XC_MethodReplacement.DO_NOTHING);
+		execHook_PreserveWallpaper(lpparam);
 		
 		findAndHookMethod("com.htc.launcher.pageview.AllAppsPagedViewHost", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
 			@Override
@@ -413,6 +408,88 @@ public class PrismMods {
 	    gridSizes[n + 2] = "5 × 6";
 	    
 		resparam.res.setReplacement(apps_grid_option, gridSizes);
+	}
+	
+	private static GestureDetector mDetector;
+	
+	public static void execHook_SwipeNotifications(LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouch());
+	}
+	
+	// Detect swipe down gesture
+	private static class TouchListenerOnTouch extends XC_MethodHook {
+		MotionEvent ev = null;
+	    
+		@Override
+		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+			final ViewGroup recentGridView = (ViewGroup)param.thisObject;
+			if (mDetector == null) mDetector = new GestureDetector(recentGridView.getContext(), new SwipeListener(recentGridView.getContext()));
+
+			ev = (MotionEvent)param.args[0];
+			if (ev == null) return;
+			mDetector.onTouchEvent(ev);
+		}
+	}
+	
+	// Listener for swipe down gesture
+	private static class SwipeListener extends GestureDetector.SimpleOnGestureListener {
+		private final int SWIPE_MIN_DISTANCE = 120;
+		private final int SWIPE_MIN_OFF_PATH = 250;
+		private final int SWIPE_THRESHOLD_VELOCITY = 200;
+		
+		final Context helperContext;
+
+		public SwipeListener(Context context) {
+			helperContext = context;
+		}
+		
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			try {
+				if (Math.abs(e1.getY() - e2.getY()) < SWIPE_MIN_OFF_PATH) return false;
+				if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+					XposedBridge.log("onFling");
+					Object sbservice = helperContext.getSystemService("statusbar");
+					Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+					Method showsb;
+					if (Build.VERSION.SDK_INT >= 17) {
+					    showsb = statusbarManager.getMethod("expandNotificationsPanel");
+					} else {
+					    showsb = statusbarManager.getMethod("expand");
+					}
+					showsb.setAccessible(true);
+					showsb.invoke(sbservice);
+				} 
+			} catch (NoSuchMethodError e) {
+				if (e.getMessage() != null)
+					XposedBridge.log(e.getMessage());
+				else
+					XposedBridge.log("NoSuchMethodError");
+			} catch (ClassNotFoundException e) {
+				if (e.getMessage() != null)
+					XposedBridge.log(e.getMessage());
+				else
+					XposedBridge.log("ClassNotFoundError");
+			} catch (NoSuchMethodException e) {
+				if (e.getMessage() != null)
+					XposedBridge.log(e.getMessage());
+				else
+					XposedBridge.log("NoSuchMethodException");
+			} catch (InvocationTargetException e) {
+				if (e.getMessage() != null)
+					XposedBridge.log(e.getMessage());
+				else {
+					XposedBridge.log("InvocationTargetException");
+					e.printStackTrace();
+				}
+			} catch (IllegalAccessException e) {
+				if (e.getMessage() != null)
+					XposedBridge.log(e.getMessage());
+				else
+					XposedBridge.log("IllegalAccessException");
+			}
+			return false;
+		}
 	}
 
 	public static void execHook_BfRemove(LoadPackageParam lpparam) {

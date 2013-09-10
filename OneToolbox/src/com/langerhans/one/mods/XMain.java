@@ -28,7 +28,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.htc.launcher"))
 		{
-			if(pref.getInt("pref_key_prism_invisinav_new", 101) != 101)
+			if(pref.getInt("pref_key_prism_invisinav_new", 100) != 100)
 			{
 				int transparency = pref.getInt("pref_key_prism_invisinav_new", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
@@ -129,6 +129,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if(pkg.equals("com.htc.launcher"))
 		{
+			if(pref.getInt("pref_key_prism_invisinav_new", 100) != 100)
+				PrismMods.execHook_PreserveWallpaper(lpparam);
+
 			if(pref.getBoolean("pref_key_prism_folder20", false))
 				PrismMods.execHook_20Folder_code(lpparam);
 			
@@ -152,6 +155,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				PrismMods.execHook_AppDrawerNoClock(lpparam);
 			
 			PrismMods.execHook_AppDrawerGridSizes(lpparam);
+			PrismMods.execHook_SwipeNotifications(lpparam);
 		}
 		
 		if (pkg.equals("com.android.settings"))

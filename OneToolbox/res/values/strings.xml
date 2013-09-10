@@ -24,6 +24,7 @@
     <string name="apm_bootloader">Bootloader</string>
     
     <string name="eqs_reorder">EQS Reorder</string>
+    <string name="eqs_reorder_explain">Set custom order for EQS tiles</string>
     <string name="no_root_access">No root access</string>
     
     <string name="no_root_explain">Either your device is not rooted, or you didn\'t allow the app to access SuperUser.\nWithout root you can\'t reorder your EQS tiles, therefore the function is not shown.\nYou can dismiss this message once, or forever. A check for root will be done on every start, to make the function available if you decide to allow root access later.</string>

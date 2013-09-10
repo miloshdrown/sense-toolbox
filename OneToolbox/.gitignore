@@ -5,6 +5,9 @@ bin/
 # ignore all target directories
 target/
 
+# ignore generated files
+gen/
+
 # ignore all files ending with ~
 *~
 /.settings

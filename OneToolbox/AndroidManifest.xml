@@ -1,33 +1,42 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.langerhans.one"
-    android:versionCode="10"
-    android:versionName="1.7" >
+	package="com.langerhans.one"
+	android:versionCode="10"
+	android:versionName="1.7" >
 
-    <uses-sdk
-        android:minSdkVersion="16"
-        android:targetSdkVersion="18" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+	<uses-sdk
+		android:minSdkVersion="16"
+		android:targetSdkVersion="18" />
+	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_SUPERUSER"/>
+	<uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/> 
 
-    <application
-        android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
-        android:label="@string/app_name"
-        android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
-	<activity
-            android:name="com.langerhans.one.MainActivity"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait" >
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity android:theme="@*android:style/Theme.Holo.Dialog" android:name=".ApmActivity" android:launchMode="singleInstance" />
-        <meta-data android:value="true" android:name="xposedmodule"/>
-        <meta-data android:value="2.0*" android:name="xposedminversion"/>
-        <meta-data android:value="Several Mods for Sense 5" android:name="xposeddescription"/>
-    </application>
+	<application
+		android:allowBackup="true"
+		android:icon="@drawable/ic_launcher"
+		android:label="@string/app_name"
+		android:theme="@android:style/Theme.Holo.Light.DarkActionBar" >
+		<activity
+			android:name="com.langerhans.one.MainActivity"
+			android:label="@string/app_name"
+			android:screenOrientation="portrait" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
+		<activity
+			android:name="com.langerhans.one.ReorderActivity"
+			android:label="@string/eqs_reorder"
+			android:screenOrientation="portrait">
+			<intent-filter>
+				<action android:name="android.intent.action.VIEW" />
+				<category android:name="android.intent.category.PREFERENCE" />
+			</intent-filter>
+		</activity>
+		<activity android:theme="@*android:style/Theme.Holo.Dialog" android:name="com.langerhans.one.ApmActivity" android:launchMode="singleInstance" />
+		<meta-data android:value="true" android:name="xposedmodule"/>
+		<meta-data android:value="2.0*" android:name="xposedminversion"/>
+		<meta-data android:value="Several Mods for Sense 5" android:name="xposeddescription"/>
+	</application>
 
 </manifest>

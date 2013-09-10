@@ -15,9 +15,7 @@ import javax.xml.parsers.DocumentBuilderFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
-import android.app.AlertDialog;
-import android.app.Fragment;
-import android.content.Context;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
@@ -26,7 +24,6 @@ import android.content.res.Resources;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -37,13 +34,17 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.htc.widget.ActionBarContainer;
+import com.htc.widget.ActionBarExt;
+import com.htc.widget.ActionBarText;
+import com.htc.widget.HtcAlertDialog;
 import com.langerhans.one.dgv.DraggableGridView;
 import com.langerhans.one.dgv.OnRearrangeListener;
 import com.langerhans.one.utils.Helpers;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
-public class ReorderFragment extends Fragment {
+public class ReorderActivity extends Activity {
 
 	DraggableGridView dgv;
 	ArrayAdapter<String> adapter;
@@ -53,23 +54,41 @@ public class ReorderFragment extends Fragment {
 	Element eQS;
 	String cidXML;
 	ArrayList<String> qsAvail;
-	Context ctx;
     String packagename;
 	Resources res;
 		
 	@Override
-	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
-	{
-		setHasOptionsMenu(true);
-		return inflater.inflate(R.layout.reorder_fragment, container, false);
+	protected void onCreate(Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		setContentView(R.layout.reorder_fragment);
+		
+		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
+        actionBarExt.enableHTCLandscape(false);
+        ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
+        ActionBarText actionBarText = new ActionBarText(this);    		        
+	    actionBarText.setPrimaryText(R.string.eqs_reorder);   
+	    actionBarContainer.addCenterView(actionBarText);
+		actionBarContainer.setRightDividerEnabled(true);
+		actionBarContainer.setBackUpEnabled(true);
+		
+        View homeBtn = actionBarContainer.getChildAt(0);
+		if (homeBtn != null) {
+			View.OnClickListener goBackFromEQS = new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					finish();
+				}
+			};
+			homeBtn.setOnClickListener(goBackFromEQS);
+		}
 	}
 	
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		inflater.inflate(R.menu.main, menu);
-	}
-	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+    
 	@Override
 	public void onSaveInstanceState(Bundle outState) {
 	    super.onSaveInstanceState(outState);
@@ -79,13 +98,12 @@ public class ReorderFragment extends Fragment {
 	@Override
 	public void onStart() {
 		super.onStart();
-		ctx = getActivity();
-		SharedPreferences prefs = getActivity().getSharedPreferences("one_toolbox_prefs", 1); //1 = deprecated MODE_WORLD_READABLE
+		SharedPreferences prefs = getSharedPreferences("one_toolbox_prefs", 1); //1 = deprecated MODE_WORLD_READABLE
 		
 		//Add version string to bottom title
 		try {
-			TextView bottomTitle = (TextView) getActivity().findViewById(R.id.bottom_title);
-			bottomTitle.setText(ctx.getString(R.string.app_name_version, ctx.getPackageManager().getPackageInfo(ctx.getPackageName(), 0).versionName));
+			TextView bottomTitle = (TextView) findViewById(R.id.bottom_title);
+			bottomTitle.setText(getString(R.string.app_name_version, getPackageManager().getPackageInfo(getPackageName(), 0).versionName));
 		} catch (NameNotFoundException e) {
 			// Shouldn't happen...
 			e.printStackTrace();
@@ -106,14 +124,14 @@ public class ReorderFragment extends Fragment {
 	    Collections.addAll(qsAvail, qsAvailH);
 	    
 	    //Parse the ACC file and add the currently used tiles into a new list, then create an ArrayAdapter from it
-	    ArrayList<String> used = new ArrayList<String>(Arrays.asList(Helpers.parseACC(cidXML, ctx)));
+	    ArrayList<String> used = new ArrayList<String>(Arrays.asList(Helpers.parseACC(cidXML, this)));
 	    qsAvail.removeAll(used);
-	    adapter = new ArrayAdapter<String>(ctx, R.layout.dummy_layout, R.id.invisible_text, used);
+	    adapter = new ArrayAdapter<String>(this, R.layout.dummy_layout, R.id.invisible_text, used);
 	    
 	    //Some setup for later
-	    dgv = ((DraggableGridView)getActivity().findViewById(R.id.dgv));
-	    packagename = ctx.getPackageName();
-		res = ctx.getResources();
+	    dgv = ((DraggableGridView)findViewById(R.id.dgv));
+	    packagename = getPackageName();
+		res = getResources();
 		
 		//Build the initial grid
 		renewGrid();
@@ -137,7 +155,7 @@ public class ReorderFragment extends Fragment {
 					long id) {
 				if(adapter.getCount()<2)
 		    	{
-					Toast.makeText(ctx, R.string.remove_last, Toast.LENGTH_SHORT).show();
+					Toast.makeText(getBaseContext(), R.string.remove_last, Toast.LENGTH_SHORT).show();
 		    		return;
 		    	}else
 		    	{
@@ -156,7 +174,7 @@ public class ReorderFragment extends Fragment {
 	private void askForDelete(final String item, final View view)
 	{
 		CharSequence tile = getResources().getText(Helpers.mapIDToString(Integer.parseInt(item)));
-		AlertDialog.Builder adb = new AlertDialog.Builder(ctx);
+		HtcAlertDialog.Builder adb = new HtcAlertDialog.Builder(this);
 		adb.setTitle(res.getText(R.string.remove) + " " + tile + "?");
 		adb.setMessage(res.getText(R.string.remove_tile_msg1) + " " + tile + " " + res.getText(R.string.remove_tile_msg2));
 		adb.setCancelable(true);
@@ -174,7 +192,7 @@ public class ReorderFragment extends Fragment {
 				//Do nothing
 			}
 		});
-		AlertDialog removeDialog = adb.create();
+		HtcAlertDialog removeDialog = adb.create();
 		removeDialog.show();
 	}
 	
@@ -187,7 +205,7 @@ public class ReorderFragment extends Fragment {
 		for(int i = 0; i < adapter.getCount(); i++)
 		if (res.getIdentifier("qstile_" + adapter.getItem(i), "drawable", packagename) != 0)
 		{
-			ImageView icon = new ImageView(ctx);
+			ImageView icon = new ImageView(this);
 			icon.setImageDrawable(res.getDrawable(res.getIdentifier("qstile_" + adapter.getItem(i), "drawable", packagename)));
 			dgv.addView(icon);
 		}
@@ -197,7 +215,7 @@ public class ReorderFragment extends Fragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.menu_save)
 		{
-			Helpers.writeACC(cidXML, adapter, ctx);
+			Helpers.writeACC(cidXML, adapter, this);
 		    savePrev();
 		    askForReboot();
 			return true;
@@ -222,7 +240,7 @@ public class ReorderFragment extends Fragment {
 	 */
 	protected void alertbox(int title, int mymessage)
 	{
-		new AlertDialog.Builder(getActivity())
+		new HtcAlertDialog.Builder(this)
 	    	.setMessage(mymessage)
 	    	.setTitle(title)
 	    	.setCancelable(true)
@@ -238,7 +256,7 @@ public class ReorderFragment extends Fragment {
 	 */
 	protected void askForReboot()
 	{
-		AlertDialog.Builder alert = new AlertDialog.Builder(getActivity());
+		HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(this);
 
 		alert.setTitle(R.string.apm_hotreboot);
 		alert.setMessage(R.string.hotreboot_explain);
@@ -274,19 +292,19 @@ public class ReorderFragment extends Fragment {
 			items[i] = (String) getResources().getText(Helpers.mapIDToString(Integer.parseInt(items[i])));
 		}
 
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(this);
 		builder.setTitle(R.string.select_tile);
 		builder.setItems(items, new DialogInterface.OnClickListener() {
 		    public void onClick(DialogInterface dialog, int item) {
-		    	 String id = Helpers.mapStringToID(getActivity().getBaseContext(), items[item]);
+		    	 String id = Helpers.mapStringToID(getBaseContext(), items[item]);
 		         adapter.add(id);
 		         qsAvail.remove(id);
-		         ImageView icon = new ImageView(ctx);
+		         ImageView icon = new ImageView(getBaseContext());
 		         icon.setImageDrawable(res.getDrawable(res.getIdentifier("qstile_" + id, "drawable", packagename)));
 		         dgv.addView(icon);
 		    }
 		});
-		AlertDialog alert = builder.create();
+		HtcAlertDialog alert = builder.create();
 		alert.show();
 	}
 	
@@ -295,7 +313,7 @@ public class ReorderFragment extends Fragment {
 	 */
 	protected void restorePrev()
 	{
-		File file = new File(getActivity().getExternalFilesDir(null), "qsOrder");
+		File file = new File(getExternalFilesDir(null), "qsOrder");
 		if (file != null) {
 			String qss;
 			try {
@@ -320,7 +338,7 @@ public class ReorderFragment extends Fragment {
 	 */
 	protected void savePrev()
 	{
-		File file = new File(getActivity().getExternalFilesDir(null), "qsOrder");
+		File file = new File(getExternalFilesDir(null), "qsOrder");
 		if (file != null) {
 			StringBuilder sb = new StringBuilder(adapter.getItem(0));
 			for (int i = 1; i < adapter.getCount();i++)
@@ -341,13 +359,13 @@ public class ReorderFragment extends Fragment {
 	 * Shows a help dialog. Used at first start
 	 */
 	private void showHelp(){
-		AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(this);
 		builder.setTitle(R.string.first_start);
-		LayoutInflater inflater = getActivity().getLayoutInflater();
-		View dialoglayout = inflater.inflate(R.layout.first_start, (ViewGroup) getActivity().getCurrentFocus());
+		LayoutInflater inflater = getLayoutInflater();
+		View dialoglayout = inflater.inflate(R.layout.first_start, (ViewGroup) getCurrentFocus());
 		builder.setView(dialoglayout);
 		builder.setNeutralButton(R.string.close_forever, null);
-		AlertDialog alert = builder.create();
+		HtcAlertDialog alert = builder.create();
 		alert.show();
 	}
 }
