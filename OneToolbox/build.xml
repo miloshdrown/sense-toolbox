@@ -74,6 +74,12 @@
             </fileset>
         </copy>
     </target>
+    <target name="-post-compile">
+        <path id="project.all.jars.path">
+                <!-- un-comment below line if you want it-->
+                <pathelement path="libs/RootTools-2.6.jar"></pathelement>
+        </path>
+    </target>
     <!-- Import the actual build file.
 
          To customize existing targets, there are two options:
