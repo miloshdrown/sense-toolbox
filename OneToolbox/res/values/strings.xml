@@ -4,6 +4,7 @@
     <string name="menu_save">Save</string>
     <string name="app_name">Sense 5 Toolbox</string>
     <string name="app_name_version">Sense 5 Toolbox (Version: %1$s)</string>
+    <string name="app_about">About</string>
     <string name="support_version">Support (App Version: %1$s)</string>
     <string name="restore">Restore</string>
     <string name="add">Add</string>
@@ -141,6 +142,8 @@
 	<string name="sense_noblink_summ">Only on Android 4.3: Tick to disable BlinkFeed.</string>
 	<string name="sense_infiniscroll_title">Infinite home screen scroll</string>
 	<string name="sense_infiniscroll_summ">Enable for infinitely scrollable home screens.</string>
+	<string name="sense_notifiswipe_title">Swipe to open notification drawer</string>
+	<string name="sense_notifiswipe_summ">Allows notification drawer expanding by swiping down on any home screen.</string>
 	
 	<string name="message_mods">Messaging Mods</string>
 	<string name="message_smsmms_title">Disable SMS -> MMS conversion</string>
@@ -161,5 +164,12 @@
 	<string name="support_s5t_summ">Find infos and changelog for the app here.</string>
 	<string name="support_blog_title">Visit ARHD Blog</string>
 	<string name="support_blog_summ">Get the latest news and updates for your favorite ROM here.</string>
+	
+	<string name="about_devs">Developers</string>
+	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
+	<string name="about_thanks">Thanks</string>
+	<string name="about_sense">Sense 5</string>
+	<string name="about_toolbox">Toolbox</string>
+	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
 			
 </resources>

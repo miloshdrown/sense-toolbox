@@ -66,6 +66,7 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal"
         android:text="@string/xposed_mods"
-        android:textAppearance="?android:attr/textAppearanceMedium" />
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:visibility="gone" />
 
 </LinearLayout>

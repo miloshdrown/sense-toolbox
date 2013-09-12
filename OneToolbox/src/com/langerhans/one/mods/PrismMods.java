@@ -7,7 +7,6 @@ import static de.robv.android.xposed.XposedHelpers.setBooleanField;
 import static de.robv.android.xposed.XposedHelpers.setIntField;
 import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
 
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
@@ -411,30 +410,72 @@ public class PrismMods {
 	}
 	
 	private static GestureDetector mDetector;
+	private static GestureDetector mDetectorWP;
 	
-	public static void execHook_SwipeNotifications(LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouch());
+	public static void execHook_SwipeNotifications(final LoadPackageParam lpparam) {
+		//findAndHookMethod("com.htc.launcher.scroller.PagedViewScrollerHorizontally", lpparam.classLoader, "handleInterceptTouchEvet", MotionEvent.class, new TouchListenerOnTouch());
+		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "initWorkspace", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				XposedHelpers.findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouch(param.thisObject));
+				try {
+					XposedHelpers.findAndHookMethod("com.htc.launcher.scroller.PagedViewScroller", lpparam.classLoader, "handleOnTouchEvent", MotionEvent.class, new TouchListenerOnTouchWP(param.thisObject));
+				} catch (NoSuchMethodError e) {
+					//XposedBridge.log("No handleOnTouchEvent here!");
+					//XposedHelpers.findAndHookMethod("com.htc.launcher.scroller.PagedViewScroller", lpparam.classLoader, "handleInterceptTouchEvet", MotionEvent.class, new TouchListenerOnTouch(param.thisObject));
+				}
+			}
+		});
 	}
-	
-	// Detect swipe down gesture
+
+	// Detect vertical swipes
 	private static class TouchListenerOnTouch extends XC_MethodHook {
 		MotionEvent ev = null;
-	    
+		Context helperContext = null;
+		Object workspace = null;
+		
+		public TouchListenerOnTouch(Object wspace) {
+			helperContext = ((ViewGroup)wspace).getContext();
+			workspace = wspace;
+		}
+
 		@Override
 		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-			final ViewGroup recentGridView = (ViewGroup)param.thisObject;
-			if (mDetector == null) mDetector = new GestureDetector(recentGridView.getContext(), new SwipeListener(recentGridView.getContext()));
+			if (workspace == null || helperContext == null) return;
+			if (mDetector == null) mDetector = new GestureDetector(helperContext, new SwipeListener(helperContext));
 
 			ev = (MotionEvent)param.args[0];
 			if (ev == null) return;
 			mDetector.onTouchEvent(ev);
 		}
 	}
+
+	// Detect horizontal swipes (blank for now)
+	private static class TouchListenerOnTouchWP extends XC_MethodHook {
+		MotionEvent ev = null;
+		Context helperContext = null;
+		Object workspace = null;
+		
+		public TouchListenerOnTouchWP(Object wspace) {
+			helperContext = ((ViewGroup)wspace).getContext();
+			workspace = wspace;
+		}
+
+		@Override
+		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+			if (workspace == null || helperContext == null) return;
+			if (mDetectorWP == null) mDetectorWP = new GestureDetector(helperContext, new SwipeListenerWP(workspace));
+
+			ev = (MotionEvent)param.args[0];
+			if (ev == null) return;
+			mDetectorWP.onTouchEvent(ev);
+		}
+	}
 	
-	// Listener for swipe down gesture
+	// Listener for vertical swipe gestures
 	private static class SwipeListener extends GestureDetector.SimpleOnGestureListener {
-		private final int SWIPE_MIN_DISTANCE = 120;
-		private final int SWIPE_MIN_OFF_PATH = 250;
+		private final int SWIPE_MIN_DISTANCE = 250;
+		private final int SWIPE_MIN_OFF_PATH = 350;
 		private final int SWIPE_THRESHOLD_VELOCITY = 200;
 		
 		final Context helperContext;
@@ -444,11 +485,16 @@ public class PrismMods {
 		}
 		
 		@Override
+		public boolean onDown(MotionEvent e) {
+			return true;			
+		} 
+		
+		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			try {
+				if (e1 == null || e2 == null) return false;
 				if (Math.abs(e1.getY() - e2.getY()) < SWIPE_MIN_OFF_PATH) return false;
 				if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-					XposedBridge.log("onFling");
 					Object sbservice = helperContext.getSystemService("statusbar");
 					Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
 					Method showsb;
@@ -459,39 +505,55 @@ public class PrismMods {
 					}
 					showsb.setAccessible(true);
 					showsb.invoke(sbservice);
-				} 
-			} catch (NoSuchMethodError e) {
-				if (e.getMessage() != null)
-					XposedBridge.log(e.getMessage());
-				else
-					XposedBridge.log("NoSuchMethodError");
-			} catch (ClassNotFoundException e) {
-				if (e.getMessage() != null)
-					XposedBridge.log(e.getMessage());
-				else
-					XposedBridge.log("ClassNotFoundError");
-			} catch (NoSuchMethodException e) {
-				if (e.getMessage() != null)
-					XposedBridge.log(e.getMessage());
-				else
-					XposedBridge.log("NoSuchMethodException");
-			} catch (InvocationTargetException e) {
-				if (e.getMessage() != null)
-					XposedBridge.log(e.getMessage());
-				else {
-					XposedBridge.log("InvocationTargetException");
-					e.printStackTrace();
+					return true;
 				}
-			} catch (IllegalAccessException e) {
-				if (e.getMessage() != null)
-					XposedBridge.log(e.getMessage());
-				else
-					XposedBridge.log("IllegalAccessException");
+			} catch (Throwable e) {
+				e.printStackTrace();
 			}
+			
+			try {
+				if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+					Object sbservice = helperContext.getSystemService("statusbar");
+					Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+					if (Build.VERSION.SDK_INT >= 17) {
+						Method showeqs = statusbarManager.getMethod("expandSettingsPanel");
+						showeqs.invoke(sbservice);
+						return true;
+					}
+				}
+			} catch (Throwable e) {
+				e.printStackTrace();
+			}
+
 			return false;
 		}
 	}
+	
+	// Listener for horizontal swipe gestures
+	private static class SwipeListenerWP extends GestureDetector.SimpleOnGestureListener {
+		//private final int SWIPE_MIN_DISTANCE = 250;
+		//private final int SWIPE_MIN_OFF_PATH = 350;
+		//private final int SWIPE_THRESHOLD_VELOCITY = 200;
+		
+		final Object workspace;
 
+		public SwipeListenerWP(Object wspace) {
+			workspace = wspace;
+		}
+
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return true;			
+		} 
+		
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			XposedBridge.log("Fling!" + workspace.getClass());
+			//ViewGroup ws = (ViewGroup)workspace;
+			return false;
+		}
+	}
+			
 	public static void execHook_BfRemove(LoadPackageParam lpparam) {
 		try{
 			findAndHookMethod("com.htc.launcher.util.Protection", lpparam.classLoader, "isFeedEnabled", new XC_MethodHook() {

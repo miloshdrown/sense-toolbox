@@ -63,11 +63,13 @@ public class ReorderActivity extends Activity {
 		setContentView(R.layout.reorder_fragment);
 		
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
-        actionBarExt.enableHTCLandscape(false);
-        ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
-        ActionBarText actionBarText = new ActionBarText(this);    		        
-	    actionBarText.setPrimaryText(R.string.eqs_reorder);   
-	    actionBarContainer.addCenterView(actionBarText);
+		ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
+		ActionBarText actionBarText = new ActionBarText(this);    		        
+		actionBarText.setPrimaryText(R.string.eqs_reorder);   
+		actionBarContainer.addCenterView(actionBarText);
+        
+		actionBarExt.enableHTCLandscape(false);
+		actionBarExt.setShowHideAnimationEnabled(true);
 		actionBarContainer.setRightDividerEnabled(true);
 		actionBarContainer.setBackUpEnabled(true);
 		

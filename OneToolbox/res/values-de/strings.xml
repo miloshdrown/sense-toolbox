@@ -4,6 +4,7 @@
     <string name="menu_save">Speichern</string>
     <string name="app_name">Sense 5 Toolbox</string>
     <string name="app_name_version">Sense 5 Toolbox (Version: %1$s)</string>
+    <string name="app_about">###TRANSLATE_ME###</string>
     <string name="support_version">Support (App Version: %1$s)</string>
     <string name="restore">Wiederherstellen</string>
     <string name="add">Hinzufügen</string>
@@ -141,6 +142,8 @@
 	<string name="sense_noblink_summ">Nur auf Android 4.3: Entfernt den BlinkFeed.</string>
 	<string name="sense_infiniscroll_title">Unendliches Scrollen</string>
 	<string name="sense_infiniscroll_summ">Unendliches Scrollen durch die Home Screens.</string>
+	<string name="sense_notifiswipe_title">###TRANSLATE_ME###</string>
+	<string name="sense_notifiswipe_summ">###TRANSLATE_ME###</string>
 	
 	<string name="message_mods">Nachrichten-Mods</string>
 	<string name="message_smsmms_title">SMS->MMS Konvertierung verhindern.</string>

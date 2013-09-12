@@ -8,7 +8,6 @@
 		android:targetSdkVersion="18" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_SUPERUSER"/>
-	<uses-permission android:name="android.permission.EXPAND_STATUS_BAR"/> 
 
 	<application
 		android:allowBackup="true"
@@ -18,7 +17,7 @@
 		<activity
 			android:name="com.langerhans.one.MainActivity"
 			android:label="@string/app_name"
-			android:screenOrientation="portrait" >
+			android:configChanges="keyboardHidden|orientation|screenSize" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -30,13 +29,14 @@
 		<activity
 			android:name="com.langerhans.one.ReorderActivity"
 			android:label="@string/eqs_reorder"
-			android:screenOrientation="portrait">
+			android:configChanges="keyboardHidden|orientation|screenSize" >
 			<intent-filter>
 				<action android:name="android.intent.action.VIEW" />
 				<category android:name="android.intent.category.PREFERENCE" />
 			</intent-filter>
 		</activity>
 		<activity android:theme="@*android:style/Theme.Holo.Dialog" android:name="com.langerhans.one.ApmActivity" android:launchMode="singleInstance" />
+		<activity android:name="com.langerhans.one.AboutScreen" android:screenOrientation="portrait" />
 		<meta-data android:value="true" android:name="xposedmodule"/>
 		<meta-data android:value="2.0*" android:name="xposedminversion"/>
 		<meta-data android:value="Several Mods for Sense 5" android:name="xposeddescription"/>

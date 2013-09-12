@@ -2,6 +2,7 @@ package com.langerhans.one;
 
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.view.Menu;
@@ -105,7 +106,11 @@ public class PrefsFragment extends HtcPreferenceFragment {
 				e.printStackTrace();
 			}
 			return true;
+		} else if (item.getItemId() == R.id.about) {
+			Intent intent = new Intent(getActivity(), AboutScreen.class);
+			startActivity(intent);
 		}
+		
 		return true;
 	}
 	

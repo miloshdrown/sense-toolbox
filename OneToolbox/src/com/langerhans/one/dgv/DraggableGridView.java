@@ -12,6 +12,7 @@ package com.langerhans.one.dgv;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.graphics.Point;
@@ -70,6 +71,7 @@ public class DraggableGridView extends FrameLayout implements View.OnTouchListen
     	secondaryOnClickListener = l;
     }
     protected Runnable updateTask = new Runnable() {
+        @SuppressLint("WrongCall")
         public void run()
         {
             if (dragged != -1)
@@ -228,7 +230,8 @@ public class DraggableGridView extends FrameLayout implements View.OnTouchListen
         }
         return false;
     }
-    public boolean onTouch(View view, MotionEvent event)
+    @SuppressLint("WrongCall")
+	public boolean onTouch(View view, MotionEvent event)
     {
         int action = event.getAction();
            switch (action & MotionEvent.ACTION_MASK) {
@@ -283,7 +286,7 @@ public class DraggableGridView extends FrameLayout implements View.OnTouchListen
                        }
                        v.clearAnimation();
                        if (v instanceof ImageView)
-                    	   ((ImageView)v).setAlpha(255);
+                    	   ((ImageView)v).setImageAlpha(255);
                        lastTarget = -1;
                        dragged = -1;
                    }
@@ -354,6 +357,7 @@ public class DraggableGridView extends FrameLayout implements View.OnTouchListen
 			newPositions.set(i, newPos);
     	}
     }
+    @SuppressLint("WrongCall")
     protected void reorderChildren()
     {
         //FIGURE OUT HOW TO REORDER CHILDREN WITHOUT REMOVING THEM ALL AND RECONSTRUCTING THE LIST!!!

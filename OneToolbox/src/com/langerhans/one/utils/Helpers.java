@@ -50,6 +50,7 @@ public class Helpers {
 	 * Gets the CID of the device.
 	 * @return The CID
 	 */
+	@SuppressWarnings("deprecation")
 	public static String getCID() {
 		String cidXML;
         InputStream inputstream = null;
@@ -89,6 +90,7 @@ public class Helpers {
 	 * @param cidXML The CID of the device
 	 * @return A String Array that holds all currently used tiles
 	 */
+	@SuppressWarnings("deprecation")
 	public static String[] parseACC(String cidXML, Context ctx)
 	{
 		dbf = DocumentBuilderFactory.newInstance();

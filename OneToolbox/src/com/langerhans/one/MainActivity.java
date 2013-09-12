@@ -22,16 +22,13 @@ public class MainActivity extends HtcPreferenceActivity {
 		super.onCreate(savedInstanceState);
 
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
+		ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
+		ActionBarText actionBarText = new ActionBarText(this);    		        
+		actionBarText.setPrimaryText(R.string.app_name);
+		actionBarContainer.addCenterView(actionBarText);
+
+		actionBarExt.enableHTCLandscape(false);
 		actionBarExt.setShowHideAnimationEnabled(true);
-        actionBarExt.enableHTCLandscape(false);
-        ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
-        ActionBarText actionBarText = new ActionBarText(this);    		        
-	    actionBarText.setPrimaryText(R.string.app_name);
-	    //ImageView logo = new ImageView(actionBarContainer.getContext());
-	    //logo.setImageDrawable(getResources().getDrawable(R.drawable.ic_launcher));
-	    //actionBarText.addView(logo);
-	    actionBarText.setLogoDrawable(getResources().getDrawable(R.drawable.ic_launcher));
-	    actionBarContainer.addCenterView(actionBarText);
 		actionBarContainer.setRightDividerEnabled(true);
 		actionBarContainer.setBackUpEnabled(false);
 

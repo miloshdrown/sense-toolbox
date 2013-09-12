@@ -1,5 +1,7 @@
 package com.langerhans.one.mods;
 
+import com.langerhans.one.utils.PackagePermissions;
+
 import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
@@ -20,6 +22,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 
 		if(pref.getBoolean("pref_key_cb_beats", false))
 			CleanBeamMods.execHook_BeatsIcon(MODULE_PATH);
+		
+		if(pref.getBoolean("pref_key_prism_notifiswipe", false))
+			PackagePermissions.initHooks();
 	}
 
 	@Override
@@ -34,14 +39,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiNav(resparam, transparency, MODULE_PATH);
 			}
-/*			
-			if(pref.getInt("pref_key_prism_invisidrawer", 100) != 100)
-			{
-				int transparency = pref.getInt("pref_key_prism_invisidrawer", 100);
-				transparency = (int) Math.floor(transparency*2.55f);
-				PrismMods.execHook_InvisiDrawerLayout(resparam, transparency, MODULE_PATH);
-			}
-*/			
+
 			if(pref.getInt("pref_key_prism_invisifolders", 100) != 100)
 			{
 				int transparency = pref.getInt("pref_key_prism_invisifolders", 100);
@@ -154,8 +152,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_adnoclock", false))
 				PrismMods.execHook_AppDrawerNoClock(lpparam);
 			
+			if(pref.getBoolean("pref_key_prism_notifiswipe", false))
+				PrismMods.execHook_SwipeNotifications(lpparam);
+			
 			PrismMods.execHook_AppDrawerGridSizes(lpparam);
-			PrismMods.execHook_SwipeNotifications(lpparam);
 		}
 		
 		if (pkg.equals("com.android.settings"))
