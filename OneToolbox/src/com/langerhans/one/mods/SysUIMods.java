@@ -28,7 +28,6 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.GridView;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -98,25 +97,34 @@ public class SysUIMods {
 		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-				FrameLayout status_bar = (FrameLayout) liparam.view.findViewById(resparam.res.getIdentifier("status_bar", "id", "com.android.systemui"));
+				FrameLayout statusBar = (FrameLayout) liparam.view.findViewById(resparam.res.getIdentifier("status_bar", "id", "com.android.systemui"));
 				TextView clock = (TextView) liparam.view.findViewById(resparam.res.getIdentifier("clock", "id", "com.android.systemui"));
-				ImageView lights_out = (ImageView) liparam.view.findViewById(resparam.res.getIdentifier("notification_lights_out", "id", "com.android.systemui"));
-				LinearLayout system_icon_area = (LinearLayout) liparam.view.findViewById(resparam.res.getIdentifier("system_icon_area", "id", "com.android.systemui"));
+				LinearLayout systemIconArea = (LinearLayout) liparam.view.findViewById(resparam.res.getIdentifier("system_icon_area", "id", "com.android.systemui"));
+				LinearLayout statusBarContents = (LinearLayout) liparam.view.findViewById(resparam.res.getIdentifier("status_bar_contents", "id", "com.android.systemui"));
 				
-				if(status_bar != null && clock != null && lights_out != null && system_icon_area != null)
+				if(statusBar != null && clock != null && systemIconArea != null && statusBarContents != null)
 				{	
 					clock.setGravity(Gravity.CENTER);
-					LinearLayout clock_container = new LinearLayout(clock.getContext());
-					clock_container.setOrientation(LinearLayout.HORIZONTAL);
-					clock_container.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-					clock_container.setGravity(Gravity.CENTER);
-					clock_container.setTag("centerClock");
+					clock.setPadding(0, 0, 0, 0);
+					LinearLayout clockContainer = new LinearLayout(clock.getContext());
+					clockContainer.setOrientation(LinearLayout.HORIZONTAL);
+					clockContainer.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+					clockContainer.setGravity(Gravity.CENTER);
+					clockContainer.setTag("centerClock");
+					clockContainer.setPadding(0, 0, 0, 0);
 					
-					system_icon_area.removeView(clock);
+					systemIconArea.removeView(clock);
 					
-					clock_container.addView(clock);
+					clockContainer.addView(clock);
 					
-					status_bar.addView(clock_container, status_bar.indexOfChild(lights_out) - 1);
+					statusBar.addView(clockContainer);
+					
+					LinearLayout fillView = new LinearLayout(clock.getContext());
+					fillView.setOrientation(LinearLayout.HORIZONTAL);
+					fillView.setLayoutParams(new LayoutParams(500, LayoutParams.MATCH_PARENT));
+					fillView.setId(0x999999);
+					statusBarContents.addView(fillView, statusBarContents.indexOfChild(systemIconArea));
+					
 				}else
 				{
 					XposedBridge.log("[S5T] Center Clock Error: One or more layouts or views not found");
@@ -126,7 +134,60 @@ public class SysUIMods {
 		
 	}
 	
+	/**
+	 * Updates the fillView to make the notification icons move to the left
+	 * @param viewToUpdate 0 = iconMerger; 1 = signalClusterView
+	 * @param param params of the hooked method
+	 */
+	private static void updateFillView(int viewToUpdate, MethodHookParam param)
+	{
+		//iconMerger needs to be retrieved, where we can use the current object for signal cluster
+		LinearLayout startView = (LinearLayout) ((viewToUpdate == 0) ? getObjectField(param.thisObject, "mNotificationIcons") : param.thisObject);
+		if (startView != null)
+		{
+			//signal cluster is one step deeper in the view hierarchy...
+			FrameLayout statusBar = (viewToUpdate == 0) ? ((FrameLayout)startView.getParent().getParent().getParent()) : ((FrameLayout)startView.getParent().getParent().getParent().getParent());
+			if(statusBar != null)
+			{
+				LinearLayout systemIconArea = (LinearLayout) statusBar.findViewById(statusBar.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
+				if(systemIconArea != null)
+				{
+					LinearLayout fillView = (LinearLayout) statusBar.findViewById(0x999999);
+					if(fillView != null)
+					{
+						TextView clock = (TextView) statusBar.findViewById(statusBar.getResources().getIdentifier("clock", "id", "com.android.systemui"));
+						if(clock != null)
+						{
+							int systemIconAreaLeft = systemIconArea.getLeft();
+							int clockContainerLeft = clock.getLeft();
+							LayoutParams fillViewParams = fillView.getLayoutParams();
+							fillViewParams.width = systemIconAreaLeft - clockContainerLeft;
+							fillView.setLayoutParams(fillViewParams);
+							fillView.invalidate();
+						}else XposedBridge.log("clockContainer = null");
+					}else XposedBridge.log("fillView = null");
+				}else XposedBridge.log("systemIconArea = null");
+			}else XposedBridge.log("statusBar = null");
+		}else XposedBridge.log("startView = null");
+	}
+	
 	public static void execHook_CenterClockAnimation(LoadPackageParam lpparam) {
+		//Listen for icon changes and update the width of the fill view
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateNotificationIcons", new XC_MethodHook(){
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param)
+			{
+				updateFillView(0, param);
+			}
+		});
+		findAndHookMethod("com.android.systemui.statusbar.HtcGenericSignalClusterView", lpparam.classLoader, "apply", new XC_MethodHook(){
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param)
+			{
+				updateFillView(1, param);
+			}
+		});
+
 		//Helper class to hold needed variables for later methods (because nested methods and final and blah blah... Couldn't think of a better solution)
 		class Stuff{
 			Object statusbar;
