@@ -4,7 +4,7 @@
     <string name="menu_save">Speichern</string>
     <string name="app_name">Sense 5 Toolbox</string>
     <string name="app_name_version">Sense 5 Toolbox (Version: %1$s)</string>
-    <string name="app_about">###TRANSLATE_ME###</string>
+    <string name="app_about">Info</string>
     <string name="support_version">Support (App Version: %1$s)</string>
     <string name="restore">Wiederherstellen</string>
     <string name="add">Hinzufügen</string>

@@ -18,6 +18,15 @@
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
+2.0: (Yes, that completely new look is a major release :D)
+Total UI overhaul.
+The Toolbox is now accessible through the phone settings.
+Landscape orientation is now possible.
+Added "About" screen.
+Wallpaper is not removed when in appdrawer and dock is transparent, prevents dock black background.
+Center clock is now really in the center.
+Notification icons will now only go up until they reach the center clock. This is instant for notification icons a may be a bit delayed for the right hand icons.
+
 1.7:
 New icon! Thx @vomer!
 You can now navigate back out of the sub-screens with the top left icon.
