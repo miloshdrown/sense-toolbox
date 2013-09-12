@@ -143,7 +143,7 @@
 	<string name="sense_infiniscroll_title">Infinite home screen scroll</string>
 	<string name="sense_infiniscroll_summ">Enable for infinitely scrollable home screens.</string>
 	<string name="sense_notifiswipe_title">Swipe to open notification drawer</string>
-	<string name="sense_notifiswipe_summ">Allows notification drawer expanding by swiping down on any home screen.</string>
+	<string name="sense_notifiswipe_summ">Allows notification/EQS panel expanding by swiping down/up on any home screen.</string>
 	
 	<string name="message_mods">Messaging Mods</string>
 	<string name="message_smsmms_title">Disable SMS -> MMS conversion</string>

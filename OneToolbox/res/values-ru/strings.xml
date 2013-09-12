@@ -143,7 +143,7 @@
 	<string name="sense_infiniscroll_title">Бесконечный скроллинг</string>
 	<string name="sense_infiniscroll_summ">Включает переход с последнего домашнего экрана на первый и обратно.</string>
 	<string name="sense_notifiswipe_title">Быстрое открытие панели уведомлений</string>
-	<string name="sense_notifiswipe_summ">Позволяет открыть "шторку" проведя пальцем сверху вниз на любом рабочем столе.</string>
+	<string name="sense_notifiswipe_summ">Позволяет открыть панель уведомлений/EQS проведя пальцем сверху вниз/снизу вверх на любом рабочем столе.</string>
 	
 	<string name="message_mods">Моды сообщений</string>
 	<string name="message_smsmms_title">Отключение SMS -> MMS</string>
