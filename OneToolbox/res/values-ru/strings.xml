@@ -102,10 +102,10 @@
 	<string name="systemui_recentclear_summ">Добавляет возможность закрыть все последние приложения pinch-жестом или swipe-жестом сверху вниз.</string>
 	<string name="systemui_centerclock_title">Часы по центру</string>
 	<string name="systemui_centerclock_summ">Перемещение часов в центр статусбара.</string>
-	<string name="systemui_ampmremove_title">###TRANLATE_ME###</string>
-	<string name="systemui_ampmremove_summ">###TRANLATE_ME###</string>
-	<string name="systemui_clockstyle_title">###TRANLATE_ME###</string>
-	<string name="systemui_clockstyle_summ">###TRANLATE_ME###</string>
+	<string name="systemui_ampmremove_title">Скрыть AM/PM</string>
+	<string name="systemui_ampmremove_summ">Позволяет удалить AM/PM, если часы в 12ч формате.</string>
+	<string name="systemui_clockstyle_title">Стиль часов</string>
+	<string name="systemui_clockstyle_summ">Изменить стиль часов в статусбаре.</string>
 	
 	<string name="cleanbeam_mods">Моды CleanBeam от vomer</string>
 	<string name="cleanbeam_battery_title">Иконка батареи</string>
@@ -148,8 +148,10 @@
 	<string name="sense_noblink_summ">Только для Android 4.3: отключает и скрывает BlinkFeed.</string>
 	<string name="sense_infiniscroll_title">Бесконечный скроллинг</string>
 	<string name="sense_infiniscroll_summ">Включает переход с последнего домашнего экрана на первый и обратно.</string>
-	<string name="sense_notifiswipe_title">Быстрое открытие панели уведомлений</string>
-	<string name="sense_notifiswipe_summ">Позволяет открыть панель уведомлений/EQS проведя пальцем сверху вниз/снизу вверх на любом рабочем столе.</string>
+	<string name="sense_swipedownaction_title">Действие на свайп сверху вниз</string>
+	<string name="sense_swipedownaction_summ">Присвоить действие жесту вниз на любом домашнем экране ланчера.</string>
+	<string name="sense_swipeupaction_title">Действие на свайп снизу вверх</string>
+	<string name="sense_swipeupaction_summ">Присвоить действие жесту вверх на любом домашнем экране ланчера.</string>
 	
 	<string name="message_mods">Моды сообщений</string>
 	<string name="message_smsmms_title">Отключение SMS -> MMS</string>
@@ -170,5 +172,10 @@
 	<string name="support_s5t_summ">Тут Вы найдёте информацию о приложении и список изменений.</string>
 	<string name="support_blog_title">Посетить блог ARHD</string>
 	<string name="support_blog_summ">Узнайте о последних новостях и обновлениях этой отличной прошивки :)</string>
-			
+
+	<string name="lock_permission">Sense 5 Toolbox Lock Helper</string>
+	<string name="lock_permission_explain">Позволяет заблокировать устройство</string>
+	<string name="admin_enabled">Sense 5 Toolbox теперь может блокировать устройство</string>
+	<string name="admin_disabled">Sense 5 Toolbox больше не может блокировать устройство</string>
+
 </resources>

@@ -196,11 +196,20 @@
             android:summary="@string/sense_infiniscroll_summ"
             android:title="@string/sense_infiniscroll_title"
             android:defaultValue="false" />
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_notifiswipe"
-            android:summary="@string/sense_notifiswipe_summ"
-            android:title="@string/sense_notifiswipe_title"
-            android:defaultValue="false" />
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_prism_swipedownaction"
+            android:summary="@string/sense_swipedownaction_summ"
+            android:title="@string/sense_swipedownaction_title"
+            android:entries="@array/sense_swipeactions"
+            android:entryValues="@array/sense_swipeactions_val"
+            android:defaultValue="1" />
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_prism_swipeupaction"
+            android:summary="@string/sense_swipeupaction_summ"
+            android:title="@string/sense_swipeupaction_title"
+            android:entries="@array/sense_swipeactions"
+            android:entryValues="@array/sense_swipeactions_val"
+            android:defaultValue="1" />
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_adnoclock"
             android:summary="@string/sense_adnoclock_summ"

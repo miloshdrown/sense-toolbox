@@ -13,6 +13,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 
 	private static String MODULE_PATH = null;
 	private static XSharedPreferences pref;
+	public static int pref_swipedown = 1;
+	public static int pref_swipeup = 1;
 	
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
@@ -23,7 +25,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if(pref.getBoolean("pref_key_cb_beats", false))
 			CleanBeamMods.execHook_BeatsIcon(MODULE_PATH);
 		
-		if(pref.getBoolean("pref_key_prism_notifiswipe", false))
+		pref_swipedown = Integer.parseInt(pref.getString("pref_key_prism_swipedownaction", "1"));
+	    pref_swipeup = Integer.parseInt(pref.getString("pref_key_prism_swipeupaction", "1"));
+	    if (pref_swipedown != 1 || pref_swipeup != 1)
 			PackagePermissions.initHooks();
 	}
 
@@ -152,8 +156,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_adnoclock", false))
 				PrismMods.execHook_AppDrawerNoClock(lpparam);
 			
-			if(pref.getBoolean("pref_key_prism_notifiswipe", false))
-				PrismMods.execHook_SwipeNotifications(lpparam);
+		    if (pref_swipedown != 1 || pref_swipedown != 1)
+				PrismMods.execHook_SwipeActions(lpparam);
 			
 			PrismMods.execHook_AppDrawerGridSizes(lpparam);
 		}

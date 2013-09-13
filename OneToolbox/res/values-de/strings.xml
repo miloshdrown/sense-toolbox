@@ -148,8 +148,10 @@
 	<string name="sense_noblink_summ">Nur auf Android 4.3: Entfernt den BlinkFeed.</string>
 	<string name="sense_infiniscroll_title">Unendliches Scrollen</string>
 	<string name="sense_infiniscroll_summ">Unendliches Scrollen durch die Home Screens.</string>
-	<string name="sense_notifiswipe_title">Benachrichtigungen via Geste</string>
-	<string name="sense_notifiswipe_summ">Erlaubt das herunterziehen der Benachrichtigungen/EQS auf jeder Launcher Seite.</string>
+	<string name="sense_swipedownaction_title">###TRANSLATE_ME###</string>
+	<string name="sense_swipedownaction_summ">###TRANSLATE_ME###</string>
+	<string name="sense_swipeupaction_title">###TRANSLATE_ME###</string>
+	<string name="sense_swipeupaction_summ">###TRANSLATE_ME###</string>
 	
 	<string name="message_mods">Nachrichten-Mods</string>
 	<string name="message_smsmms_title">SMS->MMS Konvertierung verhindern.</string>
@@ -170,5 +172,10 @@
 	<string name="support_s5t_summ">Alle Infos und Änderungen hier.</string>
 	<string name="support_blog_title">Besuche den ARHD Blog</string>
 	<string name="support_blog_summ">Alle Updates und neusten Infos über ARHD.</string>
-			
+	
+	<string name="lock_permission">###TRANSLATE_ME###</string>
+	<string name="lock_permission_explain">###TRANSLATE_ME###</string>
+	<string name="admin_enabled">###TRANSLATE_ME###</string>
+	<string name="admin_disabled">###TRANSLATE_ME###</string>	
+
 </resources>

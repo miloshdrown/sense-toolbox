@@ -46,13 +46,26 @@
     </string-array>
     
     <string-array name="clock_style">
-        <item >###TRANSLATE_ME###(default)</item>
-        <item >###TRANSLATE_ME###(center)</item>
-        <item >###TRANSLATE_ME###(no clock)</item>
+        <item >Стандартный</item>
+        <item >По центру</item>
+        <item >Часы скрыты</item>
     </string-array>
     <string-array name="clock_style_val">
         <item >1</item>
         <item >2</item>
         <item >3</item>
+    </string-array>
+    
+    <string-array name="sense_swipeactions">
+        <item >Нет действия</item>
+        <item >Октрыть панель уведомлений</item>
+        <item >Октрыть панель EQS</item>
+        <item >Заблокировать девайс</item>
+    </string-array>
+    <string-array name="sense_swipeactions_val">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >4</item>
     </string-array>
 </resources>

@@ -148,8 +148,10 @@
 	<string name="sense_noblink_summ">Only on Android 4.3: Tick to disable BlinkFeed.</string>
 	<string name="sense_infiniscroll_title">Infinite home screen scroll</string>
 	<string name="sense_infiniscroll_summ">Enable for infinitely scrollable home screens.</string>
-	<string name="sense_notifiswipe_title">Swipe to open notification drawer</string>
-	<string name="sense_notifiswipe_summ">Allows notification/EQS panel expanding by swiping down/up on any home screen.</string>
+	<string name="sense_swipedownaction_title">Swipe down action</string>
+	<string name="sense_swipedownaction_summ">Action for swipe down gesture on any home screen.</string>
+	<string name="sense_swipeupaction_title">Swipe up action</string>
+	<string name="sense_swipeupaction_summ">Action for swipe up gesture on any home screen.</string>
 	
 	<string name="message_mods">Messaging Mods</string>
 	<string name="message_smsmms_title">Disable SMS -> MMS conversion</string>
@@ -177,5 +179,10 @@
 	<string name="about_sense">Sense 5</string>
 	<string name="about_toolbox">Toolbox</string>
 	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
-			
+	
+	<string name="lock_permission">Sense 5 Toolbox Lock Helper</string>
+	<string name="lock_permission_explain">Provides ability to lock device</string>
+	<string name="admin_enabled">Sense 5 Toolbox can now lock device</string>
+	<string name="admin_disabled">Sense 5 Toolbox cannot lock device anymore</string>
+
 </resources>

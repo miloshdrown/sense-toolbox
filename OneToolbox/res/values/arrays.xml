@@ -55,4 +55,17 @@
         <item >2</item>
         <item >3</item>
     </string-array>
+	
+    <string-array name="sense_swipeactions">
+        <item >No action</item>
+        <item >Expand notifications drawer</item>
+        <item >Expand EQS panel</item>
+        <item >Lock device</item>
+    </string-array>
+    <string-array name="sense_swipeactions_val">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >4</item>
+    </string-array>
 </resources>

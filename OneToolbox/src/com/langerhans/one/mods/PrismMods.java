@@ -11,6 +11,7 @@ import java.lang.reflect.Method;
 import java.util.Arrays;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
@@ -412,7 +413,7 @@ public class PrismMods {
 	private static GestureDetector mDetector;
 	private static GestureDetector mDetectorWP;
 	
-	public static void execHook_SwipeNotifications(final LoadPackageParam lpparam) {
+	public static void execHook_SwipeActions(final LoadPackageParam lpparam) {
 		//findAndHookMethod("com.htc.launcher.scroller.PagedViewScrollerHorizontally", lpparam.classLoader, "handleInterceptTouchEvet", MotionEvent.class, new TouchListenerOnTouch());
 		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "initWorkspace", new XC_MethodHook() {
 			@Override
@@ -421,7 +422,7 @@ public class PrismMods {
 				try {
 					XposedHelpers.findAndHookMethod("com.htc.launcher.scroller.PagedViewScroller", lpparam.classLoader, "handleOnTouchEvent", MotionEvent.class, new TouchListenerOnTouchWP(param.thisObject));
 				} catch (NoSuchMethodError e) {
-					//XposedBridge.log("No handleOnTouchEvent here!");
+					//XposedBridge.log("No handleOnTouchEvent!");
 					//XposedHelpers.findAndHookMethod("com.htc.launcher.scroller.PagedViewScroller", lpparam.classLoader, "handleInterceptTouchEvet", MotionEvent.class, new TouchListenerOnTouch(param.thisObject));
 				}
 			}
@@ -491,38 +492,24 @@ public class PrismMods {
 		
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			try {
-				if (e1 == null || e2 == null) return false;
-				if (Math.abs(e1.getY() - e2.getY()) < SWIPE_MIN_OFF_PATH) return false;
-				if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-					Object sbservice = helperContext.getSystemService("statusbar");
-					Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-					Method showsb;
-					if (Build.VERSION.SDK_INT >= 17) {
-					    showsb = statusbarManager.getMethod("expandNotificationsPanel");
-					} else {
-					    showsb = statusbarManager.getMethod("expand");
-					}
-					showsb.setAccessible(true);
-					showsb.invoke(sbservice);
-					return true;
+			if (e1 == null || e2 == null) return false;
+			if (Math.abs(e1.getY() - e2.getY()) < SWIPE_MIN_OFF_PATH) return false;
+			if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+				switch (XMain.pref_swipedown) {
+					case 2: return expandNotifications(helperContext);
+					case 3: return expandEQS(helperContext);
+					case 4: return lockDevice(helperContext);
+					default: return false;					
 				}
-			} catch (Throwable e) {
-				e.printStackTrace();
 			}
 			
-			try {
-				if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-					Object sbservice = helperContext.getSystemService("statusbar");
-					Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-					if (Build.VERSION.SDK_INT >= 17) {
-						Method showeqs = statusbarManager.getMethod("expandSettingsPanel");
-						showeqs.invoke(sbservice);
-						return true;
-					}
+			if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+				switch (XMain.pref_swipeup) {
+					case 2: return expandNotifications(helperContext);
+					case 3: return expandEQS(helperContext);
+					case 4: return lockDevice(helperContext);
+					default: return false;
 				}
-			} catch (Throwable e) {
-				e.printStackTrace();
 			}
 
 			return false;
@@ -548,8 +535,55 @@ public class PrismMods {
 		
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			XposedBridge.log("Fling!" + workspace.getClass());
+			XposedBridge.log("Fling! " + workspace.getClass());
 			//ViewGroup ws = (ViewGroup)workspace;
+			return false;
+		}
+	}
+	
+	public static boolean expandNotifications(Context context) {
+		try {
+			Object sbservice = context.getSystemService("statusbar");
+			Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+			Method showsb;
+			if (Build.VERSION.SDK_INT >= 17) {
+				showsb = statusbarManager.getMethod("expandNotificationsPanel");
+			} else {
+				showsb = statusbarManager.getMethod("expand");
+			}
+			showsb.setAccessible(true);
+			showsb.invoke(sbservice);
+			return true;
+		} catch (Throwable e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static boolean expandEQS(Context context) {
+		try {
+			Object sbservice = context.getSystemService("statusbar");
+			Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+			if (Build.VERSION.SDK_INT >= 17) {
+				Method showeqs;
+				showeqs = statusbarManager.getMethod("expandSettingsPanel");
+				showeqs.invoke(sbservice);
+				return true;
+			} else return false;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	public static boolean lockDevice(Context context) {
+		try {
+			Intent intent = new Intent("com.langerhans.action.RUN_LOCKER");
+			intent.addCategory("android.intent.category.DEFAULT");
+			context.startService(intent);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
 			return false;
 		}
 	}
