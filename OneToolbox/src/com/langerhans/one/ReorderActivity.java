@@ -366,6 +366,7 @@ public class ReorderActivity extends Activity {
 		LayoutInflater inflater = getLayoutInflater();
 		View dialoglayout = inflater.inflate(R.layout.first_start, (ViewGroup) getCurrentFocus());
 		builder.setView(dialoglayout);
+		builder.setIcon(android.R.drawable.ic_dialog_info);
 		builder.setNeutralButton(R.string.close_forever, null);
 		HtcAlertDialog alert = builder.create();
 		alert.show();

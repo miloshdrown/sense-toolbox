@@ -10,6 +10,8 @@
     <string name="add">Добавить</string>
     <string name="soft_reboot">Быстрый перезапуск</string>
     
+    <string name="warning">Внимание!</string>
+    <string name="xposed_not_installed">Xposed Framework установлен не полностью, Вы должны установить app_process и XposedBridge.jar в Xposed Installer, затем активировать модуль Sense 5 Toolbox и перезагрузиться.</string>
     <string name="welcome">Добро пожаловать в Sense 5 Toolbox!</string>
     <string name="dragndrop">Порядок элементов можно задать перетаскивая их.</string>
     <string name="title_delete">Нажмите на элемент для его удаления.</string>
