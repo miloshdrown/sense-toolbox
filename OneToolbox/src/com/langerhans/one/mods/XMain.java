@@ -94,7 +94,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_cb_sync", false))
 				CleanBeamMods.execHook_SyncIcon(resparam, MODULE_PATH);
 			
-			if(pref.getBoolean("pref_key_sysui_centerclock", false))
+			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockLayout(resparam, MODULE_PATH);
 			
 			if(pref.getBoolean("pref_key_sysui_noeqs", false))
@@ -183,8 +183,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_sysui_recentappsclear", false))
 				SysUIMods.execHook_RecentAppsClear(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_centerclock", false))
+			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockAnimation(lpparam);
+			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 3)
+				SysUIMods.execHook_ClockRemove(lpparam);
+			
+			if(pref.getBoolean("pref_key_sysui_ampmremove", false))
+				SysUIMods.execHook_removeAMPM(lpparam);
 		}
 		
 		if (lpparam.processName.equals("android"))

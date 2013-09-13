@@ -102,6 +102,10 @@
 	<string name="systemui_recentclear_summ">Добавляет возможность закрыть все последние приложения pinch-жестом или swipe-жестом сверху вниз.</string>
 	<string name="systemui_centerclock_title">Часы по центру</string>
 	<string name="systemui_centerclock_summ">Перемещение часов в центр статусбара.</string>
+	<string name="systemui_ampmremove_title">###TRANLATE_ME###</string>
+	<string name="systemui_ampmremove_summ">###TRANLATE_ME###</string>
+	<string name="systemui_clockstyle_title">###TRANLATE_ME###</string>
+	<string name="systemui_clockstyle_summ">###TRANLATE_ME###</string>
 	
 	<string name="cleanbeam_mods">Моды CleanBeam от vomer</string>
 	<string name="cleanbeam_battery_title">Иконка батареи</string>

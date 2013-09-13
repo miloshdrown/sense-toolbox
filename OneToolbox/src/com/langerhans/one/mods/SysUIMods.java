@@ -2,6 +2,7 @@ package com.langerhans.one.mods;
 
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 import java.lang.reflect.Field;
@@ -243,6 +244,37 @@ public class SysUIMods {
 				stuff.clock_container.setVisibility(View.VISIBLE);
 				Animation ani = (Animation) callMethod(stuff.statusbar, "loadAnim", stuff.animFade, null);
 				stuff.clock_container.startAnimation(ani);
+			}
+		});
+	}
+	
+	public static void execHook_removeAMPM(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook(){
+			@Override
+			protected void afterHookedMethod(MethodHookParam param)
+			{
+				String newTime = ((TextView)param.thisObject).getText().toString().replaceAll("(?i)am|pm", "").trim();
+				((TextView)param.thisObject).setText(newTime);
+			}
+		});
+	}
+	
+	public static void execHook_ClockRemove(LoadPackageParam lpparam) {
+		//Make clock invisible
+		findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook(){
+			@Override
+			protected void afterHookedMethod(MethodHookParam param)
+			{
+				((TextView)param.thisObject).setVisibility(View.GONE);
+			}
+		});
+		//Prevent clock to be shown after phone unlock
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "showClock", boolean.class, new XC_MethodHook(){
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param)
+			{
+				if((Boolean) param.args[0])
+					param.setResult(null);
 			}
 		});
 	}

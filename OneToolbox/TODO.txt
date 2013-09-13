@@ -26,6 +26,10 @@ Added "About" screen.
 Wallpaper is not removed when in appdrawer and dock is transparent, prevents dock black background.
 Center clock is now really in the center.
 Notification icons will now only go up until they reach the center clock. This is instant for notification icons a may be a bit delayed for the right hand icons.
+Added option to remove status bar clock.
+Added option to hide AM and PM.
+Added check if xposed is actually installed. Maybe this will reduce the amount of questions a bit ;)
+You need to re-set your desired clock style, cause of the added options!
 
 1.7:
 New icon! Thx @vomer!
