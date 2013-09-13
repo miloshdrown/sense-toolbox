@@ -41,6 +41,7 @@ public class MainActivity extends HtcPreferenceActivity {
 				HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(this);
 				builder.setTitle(R.string.no_root_access);
 				builder.setMessage(R.string.no_root_explain);
+				builder.setIcon(android.R.drawable.ic_dialog_alert);
 				builder.setPositiveButton(R.string.dismiss_once, null);
 				builder.setNegativeButton(R.string.dismiss_forever, new OnClickListener(){
 					@Override

@@ -5,12 +5,12 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.util.Log;
 
+import com.htc.widget.HtcAlertDialog;
 import com.langerhans.one.R;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
@@ -50,7 +50,7 @@ public class ApkInstaller {
 		    		"mount -o ro,remount /system");
 		    RootTools.getShell(true).add(command).waitForFinish();
 		    		    
-		    new AlertDialog.Builder(ctx)
+		    new HtcAlertDialog.Builder(ctx)
 		    	.setMessage(R.string.sunbeam_installed)
 		    	.setTitle(R.string.success)
 		    	.setCancelable(true)

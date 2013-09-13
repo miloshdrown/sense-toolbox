@@ -1,7 +1,11 @@
 package com.langerhans.one;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
@@ -42,10 +46,11 @@ public class PrefsFragment extends HtcPreferenceFragment {
         	HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
         	builder.setTitle(R.string.xposed_not_found);
         	builder.setMessage(R.string.xposed_not_found_explain);
+        	builder.setIcon(android.R.drawable.ic_dialog_alert);
         	builder.setNeutralButton(R.string.okay, null);
         	HtcAlertDialog dlg = builder.create();
         	dlg.show();
-        }
+        } else checkForXposed();
         
         getPreferenceManager().setSharedPreferencesName("one_toolbox_prefs");
         getPreferenceManager().setSharedPreferencesMode(1);
@@ -154,5 +159,52 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			}	        
 		}
 		return false;
-	}	
+	}
+	
+	public static boolean isXposedInstalled = false;
+	
+	public void checkForXposed() {		
+		CommandCapture command = new CommandCapture(0, "/system/bin/app_process --xposedversion") {
+			@Override
+			public void output(int id, String line)
+			{
+				Pattern pattern = Pattern.compile("Xposed version: (\\d+)");
+				Matcher matcher = pattern.matcher(line);
+				if (matcher.find()) {
+					String xposed_ver = matcher.group(1);
+					try {
+						Integer.parseInt(xposed_ver);
+						isXposedInstalled = true;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				if (!isXposedInstalled)					
+				getActivity().runOnUiThread(new Runnable() {
+					public void run() {
+						showXposedDialog();
+					}
+				});
+			}
+		};
+		try {
+			RootTools.getShell(false).add(command).waitForFinish();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+
+	public void showXposedDialog()
+	{
+		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
+		builder.setTitle(R.string.warning);
+		builder.setMessage(R.string.xposed_not_installed);
+		builder.setIcon(android.R.drawable.ic_dialog_alert);
+		builder.setCancelable(true);
+		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton){}
+		});
+		HtcAlertDialog dlg = builder.create();
+		dlg.show();
+	}
 }

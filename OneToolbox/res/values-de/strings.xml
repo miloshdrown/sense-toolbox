@@ -10,6 +10,8 @@
     <string name="add">Hinzufügen</string>
     <string name="soft_reboot">Schneller Neustart</string>
     
+    <string name="warning">###TRANSLATE_ME###</string>
+    <string name="xposed_not_installed">###TRANSLATE_ME###</string>
     <string name="welcome">Willkommen in Sense 5 Toolbox!</string>
     <string name="dragndrop">Nutze Drag\'n\'Drop zum Anpassen der Schnelleinstellungen</string>
     <string name="title_delete">Tippe auf eine Kachel zum löschen.</string>
