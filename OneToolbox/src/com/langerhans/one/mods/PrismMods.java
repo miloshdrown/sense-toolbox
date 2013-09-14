@@ -448,7 +448,7 @@ public class PrismMods {
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				XposedHelpers.findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouch(param.thisObject));
 				try {
-					XposedHelpers.findAndHookMethod("com.htc.launcher.scroller.PagedViewScroller", lpparam.classLoader, "handleOnTouchEvent", MotionEvent.class, new TouchListenerOnTouchWP(param.thisObject));
+//					XposedHelpers.findAndHookMethod("com.htc.launcher.scroller.PagedViewScroller", lpparam.classLoader, "handleOnTouchEvent", MotionEvent.class, new TouchListenerOnTouchWP(param.thisObject));
 				} catch (NoSuchMethodError e) {
 					//XposedBridge.log("No handleOnTouchEvent!");
 					//XposedHelpers.findAndHookMethod("com.htc.launcher.scroller.PagedViewScroller", lpparam.classLoader, "handleInterceptTouchEvet", MotionEvent.class, new TouchListenerOnTouch(param.thisObject));
@@ -480,26 +480,26 @@ public class PrismMods {
 	}
 
 	// Detect horizontal swipes (blank for now)
-	private static class TouchListenerOnTouchWP extends XC_MethodHook {
-		MotionEvent ev = null;
-		Context helperContext = null;
-		Object workspace = null;
-		
-		public TouchListenerOnTouchWP(Object wspace) {
-			helperContext = ((ViewGroup)wspace).getContext();
-			workspace = wspace;
-		}
-
-		@Override
-		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-			if (workspace == null || helperContext == null) return;
-			if (mDetectorWP == null) mDetectorWP = new GestureDetector(helperContext, new SwipeListenerWP(workspace));
-
-			ev = (MotionEvent)param.args[0];
-			if (ev == null) return;
-			mDetectorWP.onTouchEvent(ev);
-		}
-	}
+//	private static class TouchListenerOnTouchWP extends XC_MethodHook {
+//		MotionEvent ev = null;
+//		Context helperContext = null;
+//		Object workspace = null;
+//		
+//		public TouchListenerOnTouchWP(Object wspace) {
+//			helperContext = ((ViewGroup)wspace).getContext();
+//			workspace = wspace;
+//		}
+//
+//		@Override
+//		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+//			if (workspace == null || helperContext == null) return;
+//			if (mDetectorWP == null) mDetectorWP = new GestureDetector(helperContext, new SwipeListenerWP(workspace));
+//
+//			ev = (MotionEvent)param.args[0];
+//			if (ev == null) return;
+//			mDetectorWP.onTouchEvent(ev);
+//		}
+//	}
 	
 	// Listener for vertical swipe gestures
 	private static class SwipeListener extends GestureDetector.SimpleOnGestureListener {
@@ -545,29 +545,29 @@ public class PrismMods {
 	}
 	
 	// Listener for horizontal swipe gestures
-	private static class SwipeListenerWP extends GestureDetector.SimpleOnGestureListener {
-		//private final int SWIPE_MIN_DISTANCE = 250;
-		//private final int SWIPE_MIN_OFF_PATH = 350;
-		//private final int SWIPE_THRESHOLD_VELOCITY = 200;
-		
-		final Object workspace;
-
-		public SwipeListenerWP(Object wspace) {
-			workspace = wspace;
-		}
-
-		@Override
-		public boolean onDown(MotionEvent e) {
-			return true;			
-		} 
-		
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			XposedBridge.log("Fling! " + workspace.getClass());
-			//ViewGroup ws = (ViewGroup)workspace;
-			return false;
-		}
-	}
+//	private static class SwipeListenerWP extends GestureDetector.SimpleOnGestureListener {
+//		//private final int SWIPE_MIN_DISTANCE = 250;
+//		//private final int SWIPE_MIN_OFF_PATH = 350;
+//		//private final int SWIPE_THRESHOLD_VELOCITY = 200;
+//		
+//		final Object workspace;
+//
+//		public SwipeListenerWP(Object wspace) {
+//			workspace = wspace;
+//		}
+//
+//		@Override
+//		public boolean onDown(MotionEvent e) {
+//			return true;			
+//		} 
+//		
+//		@Override
+//		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+//			XposedBridge.log("Fling! " + workspace.getClass());
+//			//ViewGroup ws = (ViewGroup)workspace;
+//			return false;
+//		}
+//	}
 	
 	public static boolean expandNotifications(Context context) {
 		try {

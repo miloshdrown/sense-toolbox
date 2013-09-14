@@ -88,19 +88,19 @@
 	<string name="camera_vol_down_summ">Aktion auf dem Leiser-Taste.</string>
 	
 	<string name="systemui_mods">SystemUI Mods</string>
-	<string name="systemui_statusbar">###TRANSLATE_ME###</string>
+	<string name="systemui_statusbar">Statusleiste und Benachrichtigungen</string>
 	<string name="systemui_tsb_title">Transparente Statusleiste</string>
 	<string name="systemui_tsb_summ">Macht die Statusleiste transparent.</string>
 	<string name="systemui_tnb_title">Transparente Benachrichtigungen</string>
 	<string name="systemui_tnb_summ">Macht den Hintergrund im Benachrichtigungsfenster transparent.</string>
-	<string name="systemui_eqs">###TRANSLATE_ME###</string>
+	<string name="systemui_eqs">Schnelleinstellungen</string>
 	<string name="systemui_heqs_title">Horizontale EQS</string>
-	<string name="systemui_heqs_summ">Aktiviere horizontale Schnelleinstellungen. Die erste 5 normalen werden angezeigt.</string>
+	<string name="systemui_heqs_summ">Aktiviere horizontale Schnelleinstellungen. Enthält die normalen EQS (scrollbar)</string>
 	<string name="systemui_heqs_notext_title">Kleine horizontale EQS</string>
 	<string name="systemui_heqs_notext_summ">Entfernt den Text der horizontalen EQS.</string>
 	<string name="systemui_noeqs_title">Deaktiviere EQS</string>
 	<string name="systemui_noeqs_summ">Deaktiviert die Schnelleinstellungen vollständig.</string>
-	<string name="systemui_recent">###TRANLATE_ME###</string>
+	<string name="systemui_recent">Kürzlich genutzte Apps</string>
 	<string name="systemui_aosp_title">AOSP kürzliche Apps</string>
 	<string name="systemui_aosp_summ">Kürzlich genutzte Apps im AOSP-Stil.</string>
 	<string name="systemui_recentclear_title">Alle Apps schließen</string>
@@ -135,9 +135,9 @@
 	<string name="cleanbeam_post_summ">Vorschau und Änderungen hier. Denke dran \'Thanks\' zu klicken!</string>
 	
 	<string name="sense_mods">Sense Mods</string>
-	<string name="sense_transparency">###TRANSLATE_ME###</string>
-	<string name="sense_homescreen">###TRANSLATE_ME###</string>
-	<string name="sense_appdrawer">###TRANSLATE_ME###</string>
+	<string name="sense_transparency">Transparenz</string>
+	<string name="sense_homescreen">Home Screen</string>
+	<string name="sense_appdrawer">\'Alle Apps\'</string>
 	<string name="sense_td_title">Dock</string>
 	<string name="sense_td_summ">Mache das Sense launcher dock transparent.</string>
 	<string name="sense_twidget_title">4x1 Uhr Widget</string>
