@@ -1,8 +1,12 @@
 package com.langerhans.one.mods;
 
 import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
+import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
+import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
@@ -14,13 +18,16 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
+import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
@@ -28,6 +35,8 @@ import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.FrameLayout;
 import android.widget.GridView;
+import android.widget.HorizontalScrollView;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -35,6 +44,7 @@ import com.langerhans.one.R;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
+import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
@@ -65,11 +75,102 @@ public class SysUIMods {
 		});
 	}
 
-	public static void execHook_MinorEQS(LoadPackageParam lpparam) {
+	public static void execHook_MinorEQS(final LoadPackageParam lpparam, final boolean removeText) {
+		//Enable mEQS
 		findAndHookMethod("com.android.systemui.statusbar.StatusBarFlag", lpparam.classLoader, "loadMinorQuickSetting", new XC_MethodHook() {
 			@Override
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(true);
+			}
+		});
+		
+		//Recreate method to allow more tiles to be added to mEQS
+		findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettings", lpparam.classLoader, "refreshQuickSettingConfig", int[].class, new XC_MethodReplacement() {
+			@Override
+			protected Object replaceHookedMethod(MethodHookParam param)	throws Throwable {
+				int[] QS_DEFAULT = (int[]) getStaticObjectField(param.thisObject.getClass(), "QS_DEFAULT");
+				String[] QS_MAPPING = (String[]) getStaticObjectField(param.thisObject.getClass(), "QS_MAPPING");
+				ArrayList<String> qsContent = new ArrayList<String>();
+				ArrayList<String> qsContent2 = new ArrayList<String>();
+				int[] paramArgs = (int[]) param.args[0];
+				Class<?> CustomizationUtil = findClass("com.android.systemui.CustomizationUtil", lpparam.classLoader);
+				Object hcr = callStaticMethod(CustomizationUtil, "getReader");
+				if(hcr == null)
+					paramArgs = QS_DEFAULT;
+				else
+				{
+					paramArgs = (int[]) callMethod(hcr, "readIntArray", "quick_setting_items", QS_DEFAULT);
+				}
+				if (paramArgs == null || paramArgs.length == 0)
+					paramArgs = QS_DEFAULT;
+				int i = QS_MAPPING.length;
+		        int j = 0;
+		        for (int k = paramArgs.length; j < k; j++)
+		        {
+		            int i1 = paramArgs[j];
+		            if (i1 >= 0 && i1 < i)
+		                qsContent.add(QS_MAPPING[i1]);
+		        }
+		        qsContent2 = new ArrayList<String>();
+		        int l = 0;
+		        do
+		        {
+		            if (l >= qsContent.size())
+		                break;
+		            if (!((String)qsContent.get(l)).equals("user_card"))
+		                qsContent2.add(qsContent.get(l));
+//		            if (qsContent2.size() == 5)
+//		                break;
+		            l++;
+		        } while (true);
+		        setObjectField(param.thisObject, "qsContent", qsContent);
+		        setObjectField(param.thisObject, "qsContent2", qsContent2);
+				return null;
+			}
+		});
+		
+		//Makes them scrolling. Showing 5 at once.
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				FrameLayout mStatusBarWindow = (FrameLayout) getObjectField(param.thisObject, "mStatusBarWindow");
+				if (mStatusBarWindow != null)
+				{
+					LinearLayout qsContainer = (LinearLayout) mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("quick_settings_minor_container", "id", "com.android.systemui"));
+					LinearLayout notificationContainer = (LinearLayout) mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("notification_container", "id", "com.android.systemui"));
+					if (qsContainer != null && notificationContainer != null)
+					{
+						HorizontalScrollView qsScroll = new HorizontalScrollView(mStatusBarWindow.getContext());
+						qsScroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+						qsScroll.setFillViewport(true);
+						qsScroll.setHorizontalFadingEdgeEnabled(true);
+						qsScroll.setHorizontalScrollBarEnabled(false);
+						
+						WindowManager wm = (WindowManager) mStatusBarWindow.getContext().getSystemService(Context.WINDOW_SERVICE);
+						Display display = wm.getDefaultDisplay();
+						Point displaySize = new Point();
+						display.getSize(displaySize);
+						int displayWidth = displaySize.x;
+						
+						for(int i = 0; i < qsContainer.getChildCount(); i++)
+						{
+							LinearLayout tmp = (LinearLayout) qsContainer.getChildAt(i);
+							LinearLayout.LayoutParams tmpParams = (LinearLayout.LayoutParams) tmp.getLayoutParams();
+							tmpParams.width = (int) Math.floor(displayWidth / 5);
+							tmp.setLayoutParams(tmpParams);
+							if(removeText)
+							{
+								tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_text", "id", "com.android.systemui")).setVisibility(View.GONE);;
+								ImageView qsImg = (ImageView) tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_image", "id", "com.android.systemui"));
+								qsImg.setPadding(0, 0, 0, 20);
+							}
+						}
+
+						notificationContainer.removeView(qsContainer);
+						qsScroll.addView(qsContainer);
+						notificationContainer.addView(qsScroll, 0);
+					}
+				}
 			}
 		});
 	}
@@ -80,6 +181,12 @@ public class SysUIMods {
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
 				View bg = liparam.view.findViewById(resparam.res.getIdentifier("notification_panel", "id", "com.android.systemui"));
 				bg.getBackground().setAlpha(transparency);
+			}
+		});
+		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				
 			}
 		});
 	}

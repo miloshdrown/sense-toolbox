@@ -28,8 +28,12 @@ Center clock is now really in the center.
 Notification icons will now only go up until they reach the center clock. This is instant for notification icons a may be a bit delayed for the right hand icons.
 Added option to remove status bar clock.
 Added option to hide AM and PM.
-Added check if xposed is actually installed. Maybe this will reduce the amount of questions a bit ;)
 You need to re-set your desired clock style, cause of the added options!
+Added check if xposed is actually installed. Maybe this will reduce the amount of questions a bit ;)
+Added mod that allows to assign different options to swipe up/down gestures on Sense launcher home screens. Currently included: Pull down notifications, EQS and lock device. Device lock needs a device admin to be activated.
+Added option to lower the font size in app drawer. Useful if you use higher grid values. (Enabled by default)
+Horizontal EQS are now showing all the EQS tiles. You can scroll them. It shows 5 at once.
+Added option to remove text from horizontal EQS.
 
 1.7:
 New icon! Thx @vomer!

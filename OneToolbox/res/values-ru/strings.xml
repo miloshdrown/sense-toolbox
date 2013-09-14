@@ -94,6 +94,8 @@
 	<string name="systemui_tnb_summ">Настройка прозрачности фона "шторки".</string>
 	<string name="systemui_heqs_title">Горизонтальные EQS</string>
 	<string name="systemui_heqs_summ">Включить горизонтальные быстрые настройки. В "шторке" будут показаны первые 5 элементов обычных EQS.</string>
+	<string name="systemui_heqs_notext_title">###TRANLATE_ME###</string>
+	<string name="systemui_heqs_notext_summ">###TRANLATE_ME###</string>
 	<string name="systemui_noeqs_title">Отключить панель EQS</string>
 	<string name="systemui_noeqs_summ">Удалить панель EQS и вернуть кнопку открытия настроек.</string>
 	<string name="systemui_aosp_title">Последние приложения AOSP</string>

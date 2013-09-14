@@ -179,7 +179,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pkg.equals("com.android.systemui"))
 		{
 			if(pref.getBoolean("pref_key_sysui_minorqs", false))
-				SysUIMods.execHook_MinorEQS(lpparam);
+				SysUIMods.execHook_MinorEQS(lpparam, pref.getBoolean("pref_key_sysui_minorqs_notext", false));
 			
 			if(pref.getBoolean("pref_key_sysui_aosprecent", false))
 				SysUIMods.execHook_AospRecent(lpparam);

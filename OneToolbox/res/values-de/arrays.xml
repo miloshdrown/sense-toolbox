@@ -57,10 +57,10 @@
     </string-array>
     
     <string-array name="sense_swipeactions">
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
+        <item >Keine Aktion</item>
+        <item >Benachrichtigungen</item>
+        <item >Schnelleinstellungen</item>
+        <item >Display sperren</item>
     </string-array>
     <string-array name="sense_swipeactions_val">
         <item >1</item>

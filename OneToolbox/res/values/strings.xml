@@ -94,6 +94,8 @@
 	<string name="systemui_tnb_summ">Make the notification drawer background transparent.</string>
 	<string name="systemui_heqs_title">Horizontal EQS</string>
 	<string name="systemui_heqs_summ">Enable horizontal EQS. The first 5 of your normal EQS will show there.</string>
+	<string name="systemui_heqs_notext_title">Smaller horizontal EQS</string>
+	<string name="systemui_heqs_notext_summ">Removes the text from horizontal EQS.</string>
 	<string name="systemui_noeqs_title">Disable EQS panel</string>
 	<string name="systemui_noeqs_summ">Remove EQS panel and restore settings button.</string>
 	<string name="systemui_aosp_title">AOSP recent apps</string>
