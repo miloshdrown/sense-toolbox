@@ -83,9 +83,9 @@
 	
 	<string name="camera_mods">Kamera Mods</string>
 	<string name="camera_vol_up_title">Lauter-Taste</string>
-	<string name="camera_vol_up_summ">Aktion auf dem Lauter-Taste.</string>
+	<string name="camera_vol_up_summ">Aktion auf der Lauter-Taste.</string>
 	<string name="camera_vol_down_title">Leiser-Taste</string>	
-	<string name="camera_vol_down_summ">Aktion auf dem Leiser-Taste.</string>
+	<string name="camera_vol_down_summ">Aktion auf der Leiser-Taste.</string>
 	
 	<string name="systemui_mods">SystemUI Mods</string>
 	<string name="systemui_statusbar">Statusleiste und Benachrichtigungen</string>
@@ -169,7 +169,7 @@
 	<string name="message_smswake_title">Aufwachen bei SMS</string>
 	<string name="message_smswake_summ">Schaltet den Bildschirm bei SMS-Empfang ein.</string>
 	
-	<string name="various_mods">Verschiedne Mods</string>
+	<string name="various_mods">Verschiedene Mods</string>
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Aktiviert die erweiterten Startoptionen\nWenn du das native APM nutzt, deaktiviere die Option besser.</string>
 	<string name="various_scron_title">Aktiviere \'Aktiv lassen\'</string>
