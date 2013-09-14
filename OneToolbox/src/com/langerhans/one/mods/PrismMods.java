@@ -415,9 +415,6 @@ public class PrismMods {
 	public static void execHook_AppDrawerGridTinyText(LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "bindView", View.class, Context.class, int.class, new XC_MethodHook() {
 			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-			}
-			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				Object item = param.args[0];
 				TextView itemlabel = null;

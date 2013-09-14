@@ -14,8 +14,7 @@
 	</com.htc.preference.HtcPreference>
 	
     <com.htc.preference.HtcPreferenceCategory
-        android:title="@string/mods"
-        android:key="pref_key_mods">
+        android:title="@string/mods">
     <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/camera_mods"
         android:key="pref_key_cam">
@@ -34,9 +33,12 @@
             android:entryValues="@array/cam_actions_val"
             android:defaultValue="4" />
     </com.htc.preference.HtcPreferenceScreen>
+    
     <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/systemui_mods"
         android:key="pref_key_sysui">
+        <com.htc.preference.HtcPreferenceCategory
+        	android:title="@string/systemui_statusbar">
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_sysui_invisibar_new"
     		android:title="@string/systemui_tsb_title"
@@ -53,6 +55,22 @@
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
+		<com.htc.preference.HtcListPreference
+            android:key="pref_key_sysui_clockstyle"
+            android:summary="@string/systemui_clockstyle_summ"
+            android:title="@string/systemui_clockstyle_title"
+            android:entries="@array/clock_style"
+            android:entryValues="@array/clock_style_val"
+            android:defaultValue="1"/>
+		<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_ampmremove"
+            android:summary="@string/systemui_ampmremove_summ"
+            android:title="@string/systemui_ampmremove_title"
+            android:defaultValue="false" />
+        </com.htc.preference.HtcPreferenceCategory>
+        
+        <com.htc.preference.HtcPreferenceCategory
+        	android:title="@string/systemui_eqs">
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_minorqs"
             android:summary="@string/systemui_heqs_summ"
@@ -68,6 +86,10 @@
             android:summary="@string/systemui_noeqs_summ"
             android:title="@string/systemui_noeqs_title"
             android:defaultValue="false" />
+        </com.htc.preference.HtcPreferenceCategory>
+        
+        <com.htc.preference.HtcPreferenceCategory
+        	android:title="@string/systemui_recent">
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_aosprecent"
             android:summary="@string/systemui_aosp_summ"
@@ -78,19 +100,9 @@
             android:summary="@string/systemui_recentclear_summ"
             android:title="@string/systemui_recentclear_title"
             android:defaultValue="false" />
-		<com.htc.preference.HtcListPreference
-            android:key="pref_key_sysui_clockstyle"
-            android:summary="@string/systemui_clockstyle_summ"
-            android:title="@string/systemui_clockstyle_title"
-            android:entries="@array/clock_style"
-            android:entryValues="@array/clock_style_val"
-            android:defaultValue="1"/>
-		<com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_sysui_ampmremove"
-            android:summary="@string/systemui_ampmremove_summ"
-            android:title="@string/systemui_ampmremove_title"
-            android:defaultValue="false" />
+        </com.htc.preference.HtcPreferenceCategory>
     </com.htc.preference.HtcPreferenceScreen>
+
     <com.htc.preference.HtcPreferenceScreen
         android:title="@string/cleanbeam_mods"
         android:key="pref_key_cb">
@@ -148,9 +160,12 @@
             android:data="http://forum.xda-developers.com/showpost.php?p=45123557&#038;postcount=44952" />
 		</com.htc.preference.HtcPreference>
     </com.htc.preference.HtcPreferenceScreen>
+    
     <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/sense_mods"
         android:key="pref_key_prism">
+        <com.htc.preference.HtcPreferenceCategory
+        	android:title="@string/sense_transparency">
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_prism_invisinav_new"
     		android:title="@string/sense_td_title"
@@ -191,6 +206,10 @@
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"/>
+		</com.htc.preference.HtcPreferenceCategory>
+		
+        <com.htc.preference.HtcPreferenceCategory
+        	android:title="@string/sense_homescreen">
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_folder20"
             android:summary="@string/sense_infini_summ"
@@ -201,11 +220,6 @@
             android:summary="@string/sense_infiniscroll_summ"
             android:title="@string/sense_infiniscroll_title"
             android:defaultValue="false" />
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_gridtinyfont"
-            android:summary="@string/sense_gridtinyfont_summ"
-            android:title="@string/sense_gridtinyfont_title"
-            android:defaultValue="true" />
         <com.htc.preference.HtcListPreference
             android:key="pref_key_prism_swipedownaction"
             android:summary="@string/sense_swipedownaction_summ"
@@ -221,16 +235,27 @@
             android:entryValues="@array/sense_swipeactions_val"
             android:defaultValue="1" />
         <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_adnoclock"
-            android:summary="@string/sense_adnoclock_summ"
-            android:title="@string/sense_adnoclock_title"
-            android:defaultValue="false" />
-        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_bfremove"
             android:summary="@string/sense_noblink_summ"
             android:title="@string/sense_noblink_title"
             android:defaultValue="false" />
+        </com.htc.preference.HtcPreferenceCategory>
+        
+        <com.htc.preference.HtcPreferenceCategory
+        	android:title="@string/sense_appdrawer">        
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_prism_gridtinyfont"
+            android:summary="@string/sense_gridtinyfont_summ"
+            android:title="@string/sense_gridtinyfont_title"
+            android:defaultValue="true" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_prism_adnoclock"
+            android:summary="@string/sense_adnoclock_summ"
+            android:title="@string/sense_adnoclock_title"
+            android:defaultValue="false" />
+        </com.htc.preference.HtcPreferenceCategory>
     </com.htc.preference.HtcPreferenceScreen>
+    
     <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/message_mods"
         android:key="pref_key_sms">
@@ -245,6 +270,7 @@
             android:title="@string/message_smswake_title"
             android:defaultValue="false" />
     </com.htc.preference.HtcPreferenceScreen>
+    
     <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/various_mods"
         android:key="pref_key_other">

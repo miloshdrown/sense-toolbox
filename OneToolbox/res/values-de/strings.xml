@@ -87,17 +87,20 @@
 	<string name="camera_vol_down_title">Leiser-Taste</string>	
 	<string name="camera_vol_down_summ">Aktion auf dem Leiser-Taste.</string>
 	
-	<string name="systemui_mods">SystemUI Mods</string>		
+	<string name="systemui_mods">SystemUI Mods</string>
+	<string name="systemui_statusbar">###TRANSLATE_ME###</string>
 	<string name="systemui_tsb_title">Transparente Statusleiste</string>
 	<string name="systemui_tsb_summ">Macht die Statusleiste transparent.</string>
 	<string name="systemui_tnb_title">Transparente Benachrichtigungen</string>
 	<string name="systemui_tnb_summ">Macht den Hintergrund im Benachrichtigungsfenster transparent.</string>
+	<string name="systemui_eqs">###TRANSLATE_ME###</string>
 	<string name="systemui_heqs_title">Horizontale EQS</string>
 	<string name="systemui_heqs_summ">Aktiviere horizontale Schnelleinstellungen. Die erste 5 normalen werden angezeigt.</string>
 	<string name="systemui_heqs_notext_title">Kleine horizontale EQS</string>
 	<string name="systemui_heqs_notext_summ">Entfernt den Text der horizontalen EQS.</string>
 	<string name="systemui_noeqs_title">Deaktiviere EQS</string>
-	<string name="systemui_noeqs_summ">Deaktiviert die Schnelleinstellungen vollständig.</string>	
+	<string name="systemui_noeqs_summ">Deaktiviert die Schnelleinstellungen vollständig.</string>
+	<string name="systemui_recent">###TRANLATE_ME###</string>
 	<string name="systemui_aosp_title">AOSP kürzliche Apps</string>
 	<string name="systemui_aosp_summ">Kürzlich genutzte Apps im AOSP-Stil.</string>
 	<string name="systemui_recentclear_title">Alle Apps schließen</string>
@@ -132,15 +135,18 @@
 	<string name="cleanbeam_post_summ">Vorschau und Änderungen hier. Denke dran \'Thanks\' zu klicken!</string>
 	
 	<string name="sense_mods">Sense Mods</string>
-	<string name="sense_td_title">Transparentes Dock</string>
+	<string name="sense_transparency">###TRANSLATE_ME###</string>
+	<string name="sense_homescreen">###TRANSLATE_ME###</string>
+	<string name="sense_appdrawer">###TRANSLATE_ME###</string>
+	<string name="sense_td_title">Dock</string>
 	<string name="sense_td_summ">Mache das Sense launcher dock transparent.</string>
-	<string name="sense_twidget_title">Transparentes 4x1 Uhr Widget</string>
+	<string name="sense_twidget_title">4x1 Uhr Widget</string>
 	<string name="sense_twidget_summ">Macht das Standard 4x1 Uhr Widget transparent.</string>
-	<string name="sense_tappdrawer_title">Transparenter \'Alle Apps\' Bildschirm</string>
+	<string name="sense_tappdrawer_title">\'Alle Apps\' Bildschirm</string>
 	<string name="sense_tappdrawer_summ">Macht den \'Alle Apps\' Bildschirm transparent.</string>
-	<string name="sense_tfolders_title">Transparenter Ordner-Hintergrund</string>
+	<string name="sense_tfolders_title">Ordner-Hintergrund</string>
 	<string name="sense_tfolders_summ">Macht den Hintergrund der Ordner transparent.</string>
-	<string name="sense_tfoldersbkg_title">Transparente Ordner-Icons</string>
+	<string name="sense_tfoldersbkg_title">Ordner-Icons</string>
 	<string name="sense_tfoldersbkg_summ">Macht den Hintergrund der Ordner-Icons transparent.</string>
 	<string name="sense_infini_title">Infinifolders</string>
 	<string name="sense_infini_summ">Erlaubt unendliche viele Apps in eine Ordner.</string>
