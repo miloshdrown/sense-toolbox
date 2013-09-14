@@ -201,6 +201,11 @@
             android:summary="@string/sense_infiniscroll_summ"
             android:title="@string/sense_infiniscroll_title"
             android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_prism_gridtinyfont"
+            android:summary="@string/sense_gridtinyfont_summ"
+            android:title="@string/sense_gridtinyfont_title"
+            android:defaultValue="true" />
         <com.htc.preference.HtcListPreference
             android:key="pref_key_prism_swipedownaction"
             android:summary="@string/sense_swipedownaction_summ"

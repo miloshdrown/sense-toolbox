@@ -154,6 +154,8 @@
 	<string name="sense_swipedownaction_summ">Aktion für ein abwärts Wischen auf dem Home Screen.</string>
 	<string name="sense_swipeupaction_title">Aufwärts-Geste</string>
 	<string name="sense_swipeupaction_summ">Aktion für ein aufwärts Wischen auf dem Home Screen.</string>
+	<string name="sense_gridtinyfont_title">Kleine Schrift in \'Alle Apps\'</string>
+	<string name="sense_gridtinyfont_summ">Verkleinert die Schrift in \'Alle Apps\'. Nützlich für größere Raster.</string>
 	
 	<string name="message_mods">Nachrichten-Mods</string>
 	<string name="message_smsmms_title">SMS->MMS Konvertierung verhindern.</string>

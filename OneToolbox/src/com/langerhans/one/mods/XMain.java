@@ -26,8 +26,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			CleanBeamMods.execHook_BeatsIcon(MODULE_PATH);
 		
 		pref_swipedown = Integer.parseInt(pref.getString("pref_key_prism_swipedownaction", "1"));
-	    pref_swipeup = Integer.parseInt(pref.getString("pref_key_prism_swipeupaction", "1"));
-	    if (pref_swipedown != 1 || pref_swipeup != 1)
+		pref_swipeup = Integer.parseInt(pref.getString("pref_key_prism_swipeupaction", "1"));
+		if (pref_swipedown != 1 || pref_swipeup != 1)
 			PackagePermissions.initHooks();
 	}
 
@@ -156,10 +156,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_adnoclock", false))
 				PrismMods.execHook_AppDrawerNoClock(lpparam);
 			
-		    if (pref_swipedown != 1 || pref_swipedown != 1)
+			if (pref_swipedown != 1 || pref_swipedown != 1)
 				PrismMods.execHook_SwipeActions(lpparam);
 			
 			PrismMods.execHook_AppDrawerGridSizes(lpparam);
+			
+			if(pref.getBoolean("pref_key_prism_gridtinyfont", false))
+				PrismMods.execHook_AppDrawerGridTinyText(lpparam);
 		}
 		
 		if (pkg.equals("com.android.settings"))

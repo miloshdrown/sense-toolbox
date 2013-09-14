@@ -150,6 +150,8 @@
 	<string name="sense_noblink_summ">Только для Android 4.3: отключает и скрывает BlinkFeed.</string>
 	<string name="sense_infiniscroll_title">Бесконечный скроллинг</string>
 	<string name="sense_infiniscroll_summ">Включает переход с последнего домашнего экрана на первый и обратно.</string>
+	<string name="sense_gridtinyfont_title">Мелкий шрифт в списке приложений</string>
+	<string name="sense_gridtinyfont_summ">Уменьшает размер шрифта в списке приложений для сеток с 6 горизонтальными рядами</string>
 	<string name="sense_swipedownaction_title">Действие на свайп сверху вниз</string>
 	<string name="sense_swipedownaction_summ">Присвоить действие жесту вниз на любом домашнем экране ланчера.</string>
 	<string name="sense_swipeupaction_title">Действие на свайп снизу вверх</string>

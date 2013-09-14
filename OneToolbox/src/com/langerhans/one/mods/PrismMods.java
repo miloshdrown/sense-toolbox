@@ -20,6 +20,7 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
@@ -29,6 +30,7 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.langerhans.one.R;
 
@@ -408,6 +410,35 @@ public class PrismMods {
 	    gridSizes[n + 2] = "5 × 6";
 	    
 		resparam.res.setReplacement(apps_grid_option, gridSizes);
+	}
+	
+	public static void execHook_AppDrawerGridTinyText(LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "bindView", View.class, Context.class, int.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			}
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Object item = param.args[0];
+				TextView itemlabel = null;
+			
+				try {
+					if (item instanceof TextView) {
+						itemlabel = (TextView) item;
+					} else if (item instanceof LinearLayout) {
+						itemlabel = (TextView) ((LinearLayout) item).getChildAt(1);
+						itemlabel.setPadding(itemlabel.getPaddingLeft(), itemlabel.getPaddingTop(), itemlabel.getPaddingRight(), 0);
+					}
+	        
+					if (itemlabel != null) {
+						if (gridSizeVal == 3 || gridSizeVal == 4)
+							itemlabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, 0.73f * itemlabel.getTextSize());
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
 	}
 	
 	private static GestureDetector mDetector;
