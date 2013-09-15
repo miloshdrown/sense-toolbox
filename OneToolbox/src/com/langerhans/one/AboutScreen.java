@@ -1,15 +1,16 @@
 package com.langerhans.one;
 
-import com.htc.widget.ActionBarContainer;
-import com.htc.widget.ActionBarExt;
-import com.htc.widget.ActionBarText;
-
 import android.app.Activity;
+import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+
+import com.htc.widget.ActionBarContainer;
+import com.htc.widget.ActionBarExt;
+import com.htc.widget.ActionBarText;
 
 public class AboutScreen extends Activity {
 	
@@ -51,7 +52,18 @@ public class AboutScreen extends Activity {
 				}
 			};
 			homeBtn.setOnClickListener(goBackFromEQS);
-		}	
+		}
+		
+		//Add version name
+        try {
+        	TextView versionTv = (TextView) findViewById(R.id.textViewVersion);
+			versionTv.setText(getString(R.string.about_version, getPackageManager().getPackageInfo(getPackageName(), 0).versionName));
+			versionTv.setTypeface(face);
+			versionTv.setPaintFlags(iv02.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+		} catch (NameNotFoundException e) {
+			//Shouldn't happen...
+			e.printStackTrace();
+		}
 	}
 
 }
