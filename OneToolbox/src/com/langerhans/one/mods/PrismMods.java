@@ -10,8 +10,10 @@ import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
@@ -20,6 +22,9 @@ import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.SystemClock;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -46,7 +51,14 @@ import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class PrismMods {
-
+	
+	public static Object mPWM = null;
+	
+	static Unhook onclickOption = null;
+	public static int gridSizeVal = 0;
+	private static GestureDetector mDetector;
+	//private static GestureDetector mDetectorWP;
+	
 	public static void execHook_InvisiNav(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
 		
 		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
@@ -183,9 +195,6 @@ public class PrismMods {
 		}						
 	}
 	
-	static Unhook onclickOption = null;
-	public static int gridSizeVal = 0;
-
 	// Move Action Bar
 	private static void moveAB(MethodHookParam param) throws Throwable {
 		FrameLayout m_headerActionBar = (FrameLayout)XposedHelpers.findField(param.thisObject.getClass(), "m_headerActionBar").get(param.thisObject);
@@ -438,9 +447,6 @@ public class PrismMods {
 		});
 	}
 	
-	private static GestureDetector mDetector;
-	private static GestureDetector mDetectorWP;
-	
 	public static void execHook_SwipeActions(final LoadPackageParam lpparam) {
 		//findAndHookMethod("com.htc.launcher.scroller.PagedViewScrollerHorizontally", lpparam.classLoader, "handleInterceptTouchEvet", MotionEvent.class, new TouchListenerOnTouch());
 		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "initWorkspace", new XC_MethodHook() {
@@ -527,6 +533,7 @@ public class PrismMods {
 					case 2: return expandNotifications(helperContext);
 					case 3: return expandEQS(helperContext);
 					case 4: return lockDevice(helperContext);
+					case 5: return goToSleep(helperContext);
 					default: return false;					
 				}
 			}
@@ -536,6 +543,7 @@ public class PrismMods {
 					case 2: return expandNotifications(helperContext);
 					case 3: return expandEQS(helperContext);
 					case 4: return lockDevice(helperContext);
+					case 5: return goToSleep(helperContext);
 					default: return false;
 				}
 			}
@@ -568,6 +576,47 @@ public class PrismMods {
 //			return false;
 //		}
 //	}
+
+	private static BroadcastReceiver mBR = new BroadcastReceiver() {      
+        public void onReceive(Context context, Intent intent)
+        {
+        	String action = intent.getAction();
+        	if (action.equals("com.langerhans.one.mods.PrismMods.GoToSleep")) {
+        		((PowerManager)context.getSystemService(Context.POWER_SERVICE)).goToSleep(SystemClock.uptimeMillis());
+        	}
+        	if (action.equals("com.langerhans.one.mods.PrismMods.LockDevice")) {
+        		try {
+        			final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
+        			Method lockNow = XposedHelpers.findMethodExact(clsPWM, "lockNow", Bundle.class);
+        			Object[] params = new Object[1];
+        			params[0] = null;
+					lockNow.invoke(mPWM, params);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+        	}
+        }
+	};
+	
+	public static void setupPWM() {
+		try {
+			final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
+
+			findAndHookMethod(clsPWM, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					mPWM = param.thisObject;
+					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+		            IntentFilter intentfilter = new IntentFilter();
+		            intentfilter.addAction("com.langerhans.one.mods.PrismMods.GoToSleep");
+		            intentfilter.addAction("com.langerhans.one.mods.PrismMods.LockDevice");
+					mPWMContext.registerReceiver(mBR, intentfilter);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static boolean expandNotifications(Context context) {
 		try {
@@ -582,7 +631,7 @@ public class PrismMods {
 			showsb.setAccessible(true);
 			showsb.invoke(sbservice);
 			return true;
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
@@ -606,14 +655,26 @@ public class PrismMods {
 	
 	public static boolean lockDevice(Context context) {
 		try {
-			Intent intent = new Intent("com.langerhans.action.RUN_LOCKER");
-			intent.addCategory("android.intent.category.DEFAULT");
-			context.startService(intent);
+        	Intent intent = new Intent();
+            intent.setAction("com.langerhans.one.mods.PrismMods.LockDevice");
+            context.sendBroadcast(intent);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
+	}
+	
+	public static boolean goToSleep(Context context) {
+        try {
+        	Intent intent = new Intent();
+            intent.setAction("com.langerhans.one.mods.PrismMods.GoToSleep");
+            context.sendBroadcast(intent);
+        	return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
 	}
 			
 	public static void execHook_BfRemove(LoadPackageParam lpparam) {

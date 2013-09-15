@@ -5,9 +5,6 @@ import java.util.regex.Pattern;
 
 import android.app.ActionBar;
 import android.app.Dialog;
-import android.app.admin.DevicePolicyManager;
-import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
@@ -34,7 +31,6 @@ import com.htc.widget.ActionBarExt;
 import com.htc.widget.HtcAlertDialog;
 import com.langerhans.one.utils.ApkInstaller;
 import com.langerhans.one.utils.Helpers;
-import com.langerhans.one.utils.LockHelper.LockHelperReceiver;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
@@ -65,12 +61,6 @@ public class PrefsFragment extends HtcPreferenceFragment {
         if (findPreference("pref_key_eqs") != null && MainActivity.isRootAccessGiven == false)
         findPreference("pref_key_eqs").setEnabled(false);
         
-        HtcListPreference lpSwipeDown = (HtcListPreference) findPreference("pref_key_prism_swipedownaction");
-        lpSwipeDown.setOnPreferenceChangeListener(constructListener(13370));
-        
-        HtcListPreference lpSwipeUp = (HtcListPreference) findPreference("pref_key_prism_swipeupaction");
-        lpSwipeUp.setOnPreferenceChangeListener(constructListener(13371));
-
         //Add version name to support title
         try {
         	HtcPreferenceCategory supportCat = (HtcPreferenceCategory) findPreference("pref_key_support");
@@ -103,27 +93,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
         });
 	}
 	
-	public HtcListPreference.OnPreferenceChangeListener constructListener(final int requestCode){
-		return new HtcListPreference.OnPreferenceChangeListener() {
-			@Override
-			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-				if (((String)newValue).equals("4")) {
-					DevicePolicyManager mDPM = (DevicePolicyManager)getActivity().getSystemService(Context.DEVICE_POLICY_SERVICE);
-					ComponentName mDeviceAdmin = new ComponentName(getActivity(), LockHelperReceiver.class);
-					if (!mDPM.isAdminActive(mDeviceAdmin)) {
-						Intent intent = new Intent(DevicePolicyManager.ACTION_ADD_DEVICE_ADMIN);
-						intent.putExtra(DevicePolicyManager.EXTRA_DEVICE_ADMIN, mDeviceAdmin);
-						intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, getActivity().getString(R.string.lock_permission_explain));
-						startActivityForResult(intent, requestCode);
-						return false;
-					}
-				}
-				return true;        		
-			}
-		};
-    }
-	
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
     	if (requestCode == 13370 && resultCode == -1)
     	((HtcListPreference)findPreference("pref_key_prism_swipedownaction")).setValue("4");
 

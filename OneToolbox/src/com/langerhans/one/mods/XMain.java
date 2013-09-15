@@ -21,14 +21,16 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		MODULE_PATH = startupParam.modulePath;
 
 		pref = new XSharedPreferences("com.langerhans.one", "one_toolbox_prefs");
-
+		
 		if(pref.getBoolean("pref_key_cb_beats", false))
 			CleanBeamMods.execHook_BeatsIcon(MODULE_PATH);
 		
 		pref_swipedown = Integer.parseInt(pref.getString("pref_key_prism_swipedownaction", "1"));
 		pref_swipeup = Integer.parseInt(pref.getString("pref_key_prism_swipeupaction", "1"));
-		if (pref_swipedown != 1 || pref_swipeup != 1)
+		if (pref_swipedown != 1 || pref_swipeup != 1) {
 			PackagePermissions.initHooks();
+			PrismMods.setupPWM();
+		}
 	}
 
 	@Override

@@ -61,11 +61,13 @@
         <item >Октрыть панель уведомлений</item>
         <item >Октрыть панель EQS</item>
         <item >Заблокировать девайс</item>
+        <item >Выключить экран (режим сна)</item>
     </string-array>
     <string-array name="sense_swipeactions_val">
         <item >1</item>
         <item >2</item>
         <item >3</item>
         <item >4</item>
+        <item >5</item>
     </string-array>
 </resources>
