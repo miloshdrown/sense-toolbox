@@ -158,7 +158,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_adnoclock", false))
 				PrismMods.execHook_AppDrawerNoClock(lpparam);
 			
-			if (pref_swipedown != 1 || pref_swipedown != 1)
+			if (pref_swipedown != 1 || pref_swipeup != 1)
 				PrismMods.execHook_SwipeActions(lpparam);
 			
 			PrismMods.execHook_AppDrawerGridSizes(lpparam);
