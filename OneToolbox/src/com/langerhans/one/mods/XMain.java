@@ -31,6 +31,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			PackagePermissions.initHooks();
 			PrismMods.setupPWM();
 		}
+		PrismMods.setupPWMKeys();
 	}
 
 	@Override
