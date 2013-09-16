@@ -163,11 +163,12 @@
 	<string name="sense_swipedownaction_summ">Aktion für ein abwärts Wischen auf dem Home Screen.</string>
 	<string name="sense_swipeupaction_title">Aufwärts-Geste</string>
 	<string name="sense_swipeupaction_summ">Aktion für ein aufwärts Wischen auf dem Home Screen.</string>
-	<string name="sense_swipedownapp_title">###TRANSLATE_ME###</string>
-	<string name="sense_swipeupapp_title">###TRANSLATE_ME###</string>
-	<string name="notselected">###TRANSLATE_ME###</string>
+	<string name="sense_swipedownapp_title">Zu startende App (abwärts wischen)</string>
+	<string name="sense_swipeupapp_title">Zu startende App (aufwärts wischen)</string>
+	<string name="notselected">Keine ausgewählt</string>
+	<string name="loading_app_data">Lade Apps&#8230;</string>
 	
-	<string name="message_mods">Nachrichten-Mods</string>
+	<string name="message_mods">Nachrichten Mods</string>
 	<string name="message_smsmms_title">SMS->MMS Konvertierung verhindern.</string>
 	<string name="message_smsmms_summ">Entfernt die erzwungene Umwandlung von SMS zu MMS auf Grund der Größe. Netzabhängig.</string>
 	<string name="message_smswake_title">Aufwachen bei SMS</string>
@@ -175,10 +176,10 @@
 	<string name="message_toast_title">Sendebericht als Toast</string>
 	<string name="message_toast_summ">Sendeberichte als Toast, statt als Benachrichtigung anzeigen.</string>
 	
-	<string name="controls_mods">###TRANSLATE_ME###</string>
-	<string name="controls_backlongpressaction_title">###TRANSLATE_ME###</string>
-	<string name="controls_backlongpressaction_summ">###TRANSLATE_ME###</string>
-	<string name="controls_backlongpressapp_title">###TRANSLATE_ME###</string>
+	<string name="controls_mods">Tasten Mods</string>
+	<string name="controls_backlongpressaction_title">Zurück halten Aktion</string>
+	<string name="controls_backlongpressaction_summ">Aktion beim halten der Zurück-Taste</string>
+	<string name="controls_backlongpressapp_title">Zu startende App</string>
 	
 	<string name="various_mods">Verschiedene Mods</string>
 	<string name="various_apm_title">APM</string>

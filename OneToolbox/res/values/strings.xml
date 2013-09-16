@@ -166,6 +166,7 @@
 	<string name="sense_swipedownapp_title">App to launch on swipe down</string>
 	<string name="sense_swipeupapp_title">App to launch on swipe up</string>
 	<string name="notselected">Not selected</string>
+	<string name="loading_app_data">Loading apps&#8230;</string>
 	
 	<string name="message_mods">Messaging Mods</string>
 	<string name="message_smsmms_title">Disable SMS -> MMS conversion</string>

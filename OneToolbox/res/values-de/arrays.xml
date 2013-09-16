@@ -62,7 +62,7 @@
         <item >Schnelleinstellungen</item>
         <item >Displaysperre anzeigen</item>
         <item >Standby aktivieren</item>
-        <item >###TRANSLATE_ME###</item>
+        <item >App starten</item>
     </string-array>
     <string-array name="global_actions_val">
         <item >1</item>

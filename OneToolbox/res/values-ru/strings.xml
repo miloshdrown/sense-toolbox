@@ -166,6 +166,7 @@
 	<string name="sense_swipedownapp_title">Приложение для запуска по свайпу вниз</string>
 	<string name="sense_swipeupapp_title">Приложение для запуска по свайпу вверх</string>
 	<string name="notselected">Не выбрано</string>
+	<string name="loading_app_data">###TRANSLATE_ME###&#8230;</string>
 	
 	<string name="message_mods">Моды сообщений</string>
 	<string name="message_smsmms_title">Отключение SMS -> MMS</string>

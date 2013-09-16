@@ -153,7 +153,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 				
 				if (PrefsFragment.pkgAppsList == null) {
 					final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
-					dialog.setMessage("Loading apps data...");
+					dialog.setMessage(getString(R.string.loading_app_data));
 					dialog.setCancelable(false);
 					dialog.show();
 					
