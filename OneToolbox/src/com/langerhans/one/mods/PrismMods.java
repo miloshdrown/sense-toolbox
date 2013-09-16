@@ -21,14 +21,12 @@ import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.GestureDetector;
-import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,6 +37,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.langerhans.one.R;
+import com.langerhans.one.utils.GlobalActions;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
@@ -510,7 +509,7 @@ public class PrismMods {
 	
 	// Listener for vertical swipe gestures
 	private static class SwipeListener extends GestureDetector.SimpleOnGestureListener {
-		private final int SWIPE_MIN_DISTANCE = 250;
+		private final int SWIPE_MIN_DISTANCE = 270;
 		private final int SWIPE_MAX_OFF_PATH = 250;
 		private final int SWIPE_THRESHOLD_VELOCITY = 200;
 		
@@ -532,20 +531,22 @@ public class PrismMods {
 			
 			if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 				switch (XMain.pref_swipedown) {
-					case 2: return expandNotifications(helperContext);
-					case 3: return expandEQS(helperContext);
-					case 4: return lockDevice(helperContext);
-					case 5: return goToSleep(helperContext);
+					case 2: return GlobalActions.expandNotifications(helperContext);
+					case 3: return GlobalActions.expandEQS(helperContext);
+					case 4: return GlobalActions.lockDevice(helperContext);
+					case 5: return GlobalActions.goToSleep(helperContext);
+					case 6: return GlobalActions.launchApp(helperContext, 1);
 					default: return false;					
 				}
 			}
 			
 			if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 				switch (XMain.pref_swipeup) {
-					case 2: return expandNotifications(helperContext);
-					case 3: return expandEQS(helperContext);
-					case 4: return lockDevice(helperContext);
-					case 5: return goToSleep(helperContext);
+					case 2: return GlobalActions.expandNotifications(helperContext);
+					case 3: return GlobalActions.expandEQS(helperContext);
+					case 4: return GlobalActions.lockDevice(helperContext);
+					case 5: return GlobalActions.goToSleep(helperContext);
+					case 6: return GlobalActions.launchApp(helperContext, 2);
 					default: return false;
 				}
 			}
@@ -556,8 +557,8 @@ public class PrismMods {
 	
 	// Listener for horizontal swipe gestures
 //	private static class SwipeListenerWP extends GestureDetector.SimpleOnGestureListener {
-//		//private final int SWIPE_MIN_DISTANCE = 250;
-//		//private final int SWIPE_MIN_OFF_PATH = 350;
+//		//private final int SWIPE_MIN_DISTANCE = 270;
+//		//private final int SWIPE_MAX_OFF_PATH = 250;
 //		//private final int SWIPE_THRESHOLD_VELOCITY = 200;
 //		
 //		final Object workspace;
@@ -620,128 +621,6 @@ public class PrismMods {
 		}
 	}
 	
-	private static boolean isBackLongPressed = false;
-	
-	public static void setupPWMKeys() {
-		try {
-			final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
-
-			findAndHookMethod(clsPWM, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					KeyEvent keyEvent = (KeyEvent)param.args[0];
-					
-					int keycode = keyEvent.getKeyCode();
-					int action = keyEvent.getAction();
-					int flags = keyEvent.getFlags();
-					
-					XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
-					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
-						if (keycode == 4 && action == 0) {
-							isBackLongPressed = false;
-						}
-						if (isBackLongPressed == true && keycode == 4 && action == 1) {
-							param.setResult(-1L);
-						}
-					}
-				}
-			});
-			
-			findAndHookMethod(clsPWM, "interceptKeyBeforeDispatching", "android.view.WindowManagerPolicy$WindowState", KeyEvent.class, int.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					KeyEvent keyEvent = (KeyEvent)param.args[1];
-					
-					int keycode = keyEvent.getKeyCode();
-					int action = keyEvent.getAction();
-					int repeats = keyEvent.getRepeatCount();
-					int flags = keyEvent.getFlags();
-					
-					//XposedBridge.log("interceptKeyBeforeDispatching: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
-					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
-						if (keycode == 4 && action == 0 && repeats >= 5) {
-							if (isBackLongPressed == false) {
-								XposedBridge.log("Home LongPress event");
-								Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-								goToSleep(mContext);
-							}
-							isBackLongPressed = true;
-							param.setResult(-1L);
-							return;
-						}
-						if (keycode == 4 && action == 1) {
-							if (isBackLongPressed == true) {
-								isBackLongPressed = false;
-								param.setResult(-1L);
-							}
-						}
-					}
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
-	public static boolean expandNotifications(Context context) {
-		try {
-			Object sbservice = context.getSystemService("statusbar");
-			Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-			Method showsb;
-			if (Build.VERSION.SDK_INT >= 17) {
-				showsb = statusbarManager.getMethod("expandNotificationsPanel");
-			} else {
-				showsb = statusbarManager.getMethod("expand");
-			}
-			showsb.setAccessible(true);
-			showsb.invoke(sbservice);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	public static boolean expandEQS(Context context) {
-		try {
-			Object sbservice = context.getSystemService("statusbar");
-			Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-			if (Build.VERSION.SDK_INT >= 17) {
-				Method showeqs;
-				showeqs = statusbarManager.getMethod("expandSettingsPanel");
-				showeqs.invoke(sbservice);
-				return true;
-			} else return false;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	public static boolean lockDevice(Context context) {
-		try {
-        	Intent intent = new Intent();
-            intent.setAction("com.langerhans.one.mods.PrismMods.LockDevice");
-            context.sendBroadcast(intent);
-			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
-			return false;
-		}
-	}
-	
-	public static boolean goToSleep(Context context) {
-        try {
-        	Intent intent = new Intent();
-            intent.setAction("com.langerhans.one.mods.PrismMods.GoToSleep");
-            context.sendBroadcast(intent);
-        	return true;
-        } catch (Exception e) {
-            e.printStackTrace();
-            return false;
-        }
-	}
-			
 	public static void execHook_BfRemove(LoadPackageParam lpparam) {
 		try{
 			findAndHookMethod("com.htc.launcher.util.Protection", lpparam.classLoader, "isFeedEnabled", new XC_MethodHook() {

@@ -163,12 +163,20 @@
 	<string name="sense_swipedownaction_summ">Action for swipe down gesture on any home screen.</string>
 	<string name="sense_swipeupaction_title">Swipe up action</string>
 	<string name="sense_swipeupaction_summ">Action for swipe up gesture on any home screen.</string>
+	<string name="sense_swipedownapp_title">App to launch on swipe down</string>
+	<string name="sense_swipeupapp_title">App to launch on swipe up</string>
+	<string name="notselected">Not selected</string>
 	
 	<string name="message_mods">Messaging Mods</string>
 	<string name="message_smsmms_title">Disable SMS -> MMS conversion</string>
 	<string name="message_smsmms_summ">Check do disable the forced SMS to MMS coversion by the character limit. Network limitations still apply.</string>
 	<string name="message_smswake_title">Wake on SMS</string>
 	<string name="message_smswake_summ">Turn the screen on, when you receive a SMS.</string>
+	
+	<string name="controls_mods">Controls Mods</string>
+	<string name="controls_backlongpressaction_title">Back long press action</string>
+	<string name="controls_backlongpressaction_summ">Action for back button long press.</string>
+	<string name="controls_backlongpressapp_title">App to launch on back long press</string>
 	
 	<string name="various_mods">Various Mods</string>
 	<string name="various_apm_title">APM</string>

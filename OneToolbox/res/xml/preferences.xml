@@ -209,7 +209,8 @@
 		</com.htc.preference.HtcPreferenceCategory>
 		
         <com.htc.preference.HtcPreferenceCategory
-        	android:title="@string/sense_homescreen">
+        	android:title="@string/sense_homescreen"
+        	android:key="sense_homescreen">
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_folder20"
             android:summary="@string/sense_infini_summ"
@@ -224,16 +225,24 @@
             android:key="pref_key_prism_swipedownaction"
             android:summary="@string/sense_swipedownaction_summ"
             android:title="@string/sense_swipedownaction_title"
-            android:entries="@array/sense_swipeactions"
-            android:entryValues="@array/sense_swipeactions_val"
+            android:entries="@array/global_actions"
+            android:entryValues="@array/global_actions_val"
             android:defaultValue="1" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_prism_swipedown_app"
+			android:summary="@string/notselected"
+            android:title="@string/sense_swipedownapp_title" />
         <com.htc.preference.HtcListPreference
             android:key="pref_key_prism_swipeupaction"
             android:summary="@string/sense_swipeupaction_summ"
             android:title="@string/sense_swipeupaction_title"
-            android:entries="@array/sense_swipeactions"
-            android:entryValues="@array/sense_swipeactions_val"
+            android:entries="@array/global_actions"
+            android:entryValues="@array/global_actions_val"
             android:defaultValue="1" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_prism_swipeup_app"
+			android:summary="@string/notselected"
+            android:title="@string/sense_swipeupapp_title" />
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_bfremove"
             android:summary="@string/sense_noblink_summ"
@@ -269,6 +278,22 @@
             android:summary="@string/message_smswake_summ"
             android:title="@string/message_smswake_title"
             android:defaultValue="false" />
+    </com.htc.preference.HtcPreferenceScreen>
+
+    <com.htc.preference.HtcPreferenceScreen 
+        android:title="@string/controls_mods"
+        android:key="pref_key_controls">
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_controls_backlongpressaction"
+            android:summary="@string/controls_backlongpressaction_summ"
+            android:title="@string/controls_backlongpressaction_title"
+            android:entries="@array/global_actions"
+            android:entryValues="@array/global_actions_val"
+            android:defaultValue="1" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_controls_backlongpress_app"
+			android:summary="@string/notselected"
+            android:title="@string/controls_backlongpressapp_title" />
     </com.htc.preference.HtcPreferenceScreen>
     
     <com.htc.preference.HtcPreferenceScreen 
