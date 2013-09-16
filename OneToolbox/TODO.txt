@@ -10,14 +10,17 @@
 - auto brightness
 - ATT TMoUS Data Icon remove (Has more implications. Waiting till more people request it.)
 - Higher grid size in sense launcher (Already looked into this. needs many dimens.xml changes)
-- Smaller size horizontal EQS. (Could probably remove Text and reduce icon size. Not really sure if many would use it...)
 - Limit number of loaded SMS in stock SMS app. One user said he has 10k SMS and it makes his phone slow... wtf?
-- Gestures (to lock phone) in sense launcher. Idea I got by PM. I said not gonna happen soon :D
-- remove clock
 - fix that damn infinite scroll on BF removal mods -.-
 - "is it possible to get Always extended lockscreen widget like there is in Orio Rom?"
+- Soft reboot icon still seems to be confusing. Maybe another icon, or a dialog to confirm?
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
+
+2.1:
+Added options for long press back.
+Added custom app launch for swipe up/down gestures and long press back.
+Added mod to make messaging app use toast instead of notifications for delivery reports.
 
 2.0: (Yes, that completely new look is a major release :D)
 Total UI overhaul.

@@ -172,6 +172,8 @@
 	<string name="message_smsmms_summ">Entfernt die erzwungene Umwandlung von SMS zu MMS auf Grund der Größe. Netzabhängig.</string>
 	<string name="message_smswake_title">Aufwachen bei SMS</string>
 	<string name="message_smswake_summ">Schaltet den Bildschirm bei SMS-Empfang ein.</string>
+	<string name="message_toast_title">Sendebericht als Toast</string>
+	<string name="message_toast_summ">Sendeberichte als Toast, statt als Benachrichtigung anzeigen.</string>
 	
 	<string name="controls_mods">###TRANSLATE_ME###</string>
 	<string name="controls_backlongpressaction_title">###TRANSLATE_ME###</string>

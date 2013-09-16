@@ -278,6 +278,11 @@
             android:summary="@string/message_smswake_summ"
             android:title="@string/message_smswake_title"
             android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sms_toastnotification"
+            android:summary="@string/message_toast_summ"
+            android:title="@string/message_toast_title"
+            android:defaultValue="false" />
     </com.htc.preference.HtcPreferenceScreen>
 
     <com.htc.preference.HtcPreferenceScreen 
