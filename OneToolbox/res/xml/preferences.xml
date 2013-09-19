@@ -75,17 +75,20 @@
             android:key="pref_key_sysui_minorqs"
             android:summary="@string/systemui_heqs_summ"
             android:title="@string/systemui_heqs_title"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            android:dependency="pref_key_sysui_noeqs" />
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_minorqs_notext"
             android:summary="@string/systemui_heqs_notext_summ"
             android:title="@string/systemui_heqs_notext_title"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            android:dependency="pref_key_sysui_noeqs" />
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_noeqs"
             android:summary="@string/systemui_noeqs_summ"
             android:title="@string/systemui_noeqs_title"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            android:disableDependentsState="true" />
         </com.htc.preference.HtcPreferenceCategory>
         
         <com.htc.preference.HtcPreferenceCategory
@@ -94,12 +97,14 @@
             android:key="pref_key_sysui_aosprecent"
             android:summary="@string/systemui_aosp_summ"
             android:title="@string/systemui_aosp_title"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            android:disableDependentsState="true" />
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_recentappsclear"
             android:summary="@string/systemui_recentclear_summ"
             android:title="@string/systemui_recentclear_title"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            android:dependency="pref_key_sysui_aosprecent" />
         </com.htc.preference.HtcPreferenceCategory>
     </com.htc.preference.HtcPreferenceScreen>
 
@@ -299,6 +304,17 @@
             android:key="pref_key_controls_backlongpress_app"
 			android:summary="@string/notselected"
             android:title="@string/controls_backlongpressapp_title" />
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_controls_homeassistaction"
+            android:summary="@string/controls_homeassistaction_summ"
+            android:title="@string/controls_homeassistaction_title"
+            android:entries="@array/global_actions"
+            android:entryValues="@array/global_actions_val"
+            android:defaultValue="1" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_controls_homeassist_app"
+			android:summary="@string/notselected"
+            android:title="@string/controls_homeassistapp_title" />
     </com.htc.preference.HtcPreferenceScreen>
     
     <com.htc.preference.HtcPreferenceScreen 

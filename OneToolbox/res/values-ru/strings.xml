@@ -21,11 +21,15 @@
     <string name="restore_layout">Для восстановления порядка элементов нажмите на иконку Восстановить. При этом будет загружена последняя сохранённая конфигурация.</string>
     <string name="xposed_mods">Все моды на вкладке \'МОДЫ\' работают только при наличии установленного Xposed Framework!</string>
     
-    <string name="apm_title">Расширенное Меню Управления Питанием</string>
-    <string name="apm_normal">Перезапуск</string>
-    <string name="apm_hotreboot">Быстрый перезапуск</string>
-    <string name="apm_recovery">Recovery</string>
-    <string name="apm_bootloader">Bootloader</string>
+    <string name="apm_title">Выберите действие</string>
+    <string name="apm_normal_title">Перезапуск</string>
+    <string name="apm_normal_summ">Закрыть все приложения и перезагрузить девайс</string>
+    <string name="apm_hotreboot_title">Быстрый перезапуск</string>
+    <string name="apm_hotreboot_summ">Перезапустить оболочку</string>
+    <string name="apm_recovery_title">Recovery</string>
+    <string name="apm_recovery_summ">Перезагрузка напрямую в recovery</string>
+    <string name="apm_bootloader_title">Bootloader</string>
+    <string name="apm_bootloader_summ">Перезагрузка напрямую в bootloader</string>
     
     <string name="eqs_reorder">Порядок EQS</string>
     <string name="eqs_reorder_explain">Настроить порядок EQS переключателей</string>
@@ -166,20 +170,23 @@
 	<string name="sense_swipedownapp_title">Приложение для запуска по свайпу вниз</string>
 	<string name="sense_swipeupapp_title">Приложение для запуска по свайпу вверх</string>
 	<string name="notselected">Не выбрано</string>
-	<string name="loading_app_data">###TRANSLATE_ME###&#8230;</string>
+	<string name="loading_app_data">Загрузка списка приложений&#8230;</string>
 	
 	<string name="message_mods">Моды сообщений</string>
 	<string name="message_smsmms_title">Отключение SMS -> MMS</string>
 	<string name="message_smsmms_summ">Отменяет преобразование SMS в MMS при превышении количества символов сверх лимита. Не влияет на ограничения самой сети.</string>
 	<string name="message_smswake_title">Пробуждение при SMS</string>
 	<string name="message_smswake_summ">Включение экрана при приходе SMS.</string>
-	<string name="message_toast_title">###TRANSLATE_ME###</string>
-	<string name="message_toast_summ">###TRANSLATE_ME###</string>
+	<string name="message_toast_title">Отчёт о доставке SMS</string>
+	<string name="message_toast_summ">Показывать всплывающее сообщение об успешной доставке вместо уведомления</string>
 	
 	<string name="controls_mods">Моды управления</string>
 	<string name="controls_backlongpressaction_title">Действие на долгое нажание Назад</string>
 	<string name="controls_backlongpressaction_summ">Присвоить действие на долгое нажатие кнопки Назад.</string>
 	<string name="controls_backlongpressapp_title">Приложение на долгое нажатие Назад</string>
+	<string name="controls_homeassistaction_title">Действие на вызов ассистента</string>
+	<string name="controls_homeassistaction_summ">Заменяет вызов ассистента (Google Now по умолчанию) на кнопке Домой.</string>
+	<string name="controls_homeassistapp_title">Приложение в качестве ассистента</string>
 	
 	<string name="various_mods">Различные моды</string>
 	<string name="various_apm_title">APM</string>
@@ -194,10 +201,5 @@
 	<string name="support_s5t_summ">Тут Вы найдёте информацию о приложении и список изменений.</string>
 	<string name="support_blog_title">Посетить блог ARHD</string>
 	<string name="support_blog_summ">Узнайте о последних новостях и обновлениях этой отличной прошивки :)</string>
-
-	<string name="lock_permission">Sense 5 Toolbox Lock Helper</string>
-	<string name="lock_permission_explain">Позволяет заблокировать устройство</string>
-	<string name="admin_enabled">Sense 5 Toolbox теперь может блокировать устройство</string>
-	<string name="admin_disabled">Sense 5 Toolbox больше не может блокировать устройство</string>
 
 </resources>

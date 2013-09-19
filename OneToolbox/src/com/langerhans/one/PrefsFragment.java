@@ -105,6 +105,9 @@ public class PrefsFragment extends HtcPreferenceFragment {
 
 				if (preference.equals(findPreference("pref_key_controls_backlongpressaction")))
 				launchApps = findPreference("pref_key_controls_backlongpress_app");
+
+				if (preference.equals(findPreference("pref_key_controls_homeassistaction")))
+				launchApps = findPreference("pref_key_controls_homeassist_app");
 				
 				if (launchApps != null)
 				if (newValue.equals("6")) {
@@ -185,15 +188,18 @@ public class PrefsFragment extends HtcPreferenceFragment {
         HtcListPreference swipeDownActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipedownaction");
         HtcListPreference swipeUpActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipeupaction");
         HtcListPreference backLongPressActionPreference = (HtcListPreference) findPreference("pref_key_controls_backlongpressaction");
+        HtcListPreference homeAssistActionPreference = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
         voldownPreference.setOnPreferenceChangeListener(camChangeListener);
         volupPreference.setOnPreferenceChangeListener(camChangeListener);
         swipeDownActionPreference.setOnPreferenceChangeListener(chooseAppToLaunch);
         swipeUpActionPreference.setOnPreferenceChangeListener(chooseAppToLaunch);
         backLongPressActionPreference.setOnPreferenceChangeListener(chooseAppToLaunch);
+        homeAssistActionPreference.setOnPreferenceChangeListener(chooseAppToLaunch);
         
 		HtcPreference launchAppsSwipeDown = findPreference("pref_key_prism_swipedown_app");
 		HtcPreference launchAppsSwipeUp = findPreference("pref_key_prism_swipeup_app");
 		HtcPreference launchAppsBackLongPress = findPreference("pref_key_controls_backlongpress_app");
+		HtcPreference launchAppsHomeAssist = findPreference("pref_key_controls_homeassist_app");
 		
 		SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
 		String not_selected = getResources().getString(R.string.notselected);
@@ -203,6 +209,8 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		launchAppsSwipeUp.setOnPreferenceClickListener(clickPref);
 		launchAppsBackLongPress.setSummary(getAppName(prefs.getString("pref_key_controls_backlongpress_app", not_selected)));
 		launchAppsBackLongPress.setOnPreferenceClickListener(clickPref);
+		launchAppsHomeAssist.setSummary(getAppName(prefs.getString("pref_key_controls_homeassist_app", not_selected)));
+		launchAppsHomeAssist.setOnPreferenceClickListener(clickPref);
 		
 		if (swipeDownActionPreference.getValue().equals("6"))
 			launchAppsSwipeDown.setEnabled(true);
@@ -218,6 +226,11 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			launchAppsBackLongPress.setEnabled(true);
 		else
 			launchAppsBackLongPress.setEnabled(false);
+
+		if (homeAssistActionPreference.getValue().equals("6"))
+			launchAppsHomeAssist.setEnabled(true);
+		else
+			launchAppsHomeAssist.setEnabled(false);
 		
         HtcPreference sunbeamInstallPref = findPreference("pref_key_cb_sunbeam");
         sunbeamInstallPref.setOnPreferenceClickListener(new HtcPreference.OnPreferenceClickListener(){

@@ -21,11 +21,15 @@
     <string name="restore_layout">Tap the restore icon to restore your layout. That will load the last saved config.</string>
     <string name="xposed_mods">Please note that the mods in the \'MODS\' tab only work if you have Xposed installed!</string>
     
-    <string name="apm_title">Advanced Power Menu</string>
-    <string name="apm_normal">Normal</string>
-    <string name="apm_hotreboot">Hot Reboot</string>
-    <string name="apm_recovery">Recovery</string>
-    <string name="apm_bootloader">Bootloader</string>
+    <string name="apm_title">Choose reboot option</string>
+    <string name="apm_normal_title">Reboot</string>
+    <string name="apm_normal_summ">Close all apps and restart device</string>
+    <string name="apm_hotreboot_title">Hot Reboot</string>
+    <string name="apm_hotreboot_summ">Restart the shell</string>
+    <string name="apm_recovery_title">Recovery</string>
+    <string name="apm_recovery_summ">Reboot directly to recovery</string>
+    <string name="apm_bootloader_title">Bootloader</string>
+    <string name="apm_bootloader_summ">Reboot directly to bootloader</string>
     
     <string name="eqs_reorder">EQS Reorder</string>
     <string name="eqs_reorder_explain">Set custom order for EQS tiles</string>
@@ -180,7 +184,10 @@
 	<string name="controls_backlongpressaction_title">Back long press action</string>
 	<string name="controls_backlongpressaction_summ">Action for back button long press.</string>
 	<string name="controls_backlongpressapp_title">App to launch on back long press</string>
-	
+	<string name="controls_homeassistaction_title">Home assist action</string>
+	<string name="controls_homeassistaction_summ">Overrides assist action (which is Google Now by default).</string>
+	<string name="controls_homeassistapp_title">App to launch on home assist</string>
+		
 	<string name="various_mods">Various Mods</string>
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Enable or disable Advanced Power Menu\nIf you have the native APM installed, better keep this disabled.</string>
@@ -201,10 +208,5 @@
 	<string name="about_sense">Sense 5</string>
 	<string name="about_toolbox">Toolbox</string>
 	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
-	
-	<string name="lock_permission">Sense 5 Toolbox Lock Helper</string>
-	<string name="lock_permission_explain">Provides ability to lock device</string>
-	<string name="admin_enabled">Sense 5 Toolbox can now lock device</string>
-	<string name="admin_disabled">Sense 5 Toolbox cannot lock device anymore</string>
 
 </resources>

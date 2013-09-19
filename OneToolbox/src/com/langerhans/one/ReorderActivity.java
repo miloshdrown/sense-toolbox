@@ -260,7 +260,7 @@ public class ReorderActivity extends Activity {
 	{
 		HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(this);
 
-		alert.setTitle(R.string.apm_hotreboot);
+		alert.setTitle(R.string.apm_hotreboot_title);
 		alert.setMessage(R.string.hotreboot_explain);
 
 		alert.setPositiveButton(res.getText(R.string.yes) + "!", new DialogInterface.OnClickListener() {

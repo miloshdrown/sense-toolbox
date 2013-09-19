@@ -22,10 +22,14 @@
     <string name="xposed_mods">Beachte, dass die Einstellungen im \'MODS\' tab nur mit Xposed funktionieren!</string>
     
     <string name="apm_title">Neustart-Optionen</string>
-    <string name="apm_normal">Normal</string>
-    <string name="apm_hotreboot">Schneller Neustart</string>
-    <string name="apm_recovery">Recovery</string>
-    <string name="apm_bootloader">Bootloader</string>
+    <string name="apm_normal_title">Neustart</string>
+    <string name="apm_normal_summ">###TRANSLATE_ME###</string>
+    <string name="apm_hotreboot_title">Schneller Neustart</string>
+    <string name="apm_hotreboot_summ">###TRANSLATE_ME###</string>
+    <string name="apm_recovery_title">Recovery</string>
+    <string name="apm_recovery_summ">###TRANSLATE_ME###</string>
+    <string name="apm_bootloader_title">Bootloader</string>
+    <string name="apm_bootloader_summ">###TRANSLATE_ME###</string>
     
     <string name="eqs_reorder">EQS Sortierung</string>
     <string name="eqs_reorder_explain">Ermöglicht die Sortierung der Schnelleinstellungen</string>
@@ -180,6 +184,9 @@
 	<string name="controls_backlongpressaction_title">Zurück halten Aktion</string>
 	<string name="controls_backlongpressaction_summ">Aktion beim halten der Zurück-Taste</string>
 	<string name="controls_backlongpressapp_title">Zu startende App</string>
+	<string name="controls_homeassistaction_title">###TRANSLATE_ME###</string>
+	<string name="controls_homeassistaction_summ">###TRANSLATE_ME###</string>
+	<string name="controls_homeassistapp_title">###TRANSLATE_ME###</string>
 	
 	<string name="various_mods">Verschiedene Mods</string>
 	<string name="various_apm_title">APM</string>
@@ -194,10 +201,5 @@
 	<string name="support_s5t_summ">Alle Infos und Änderungen hier.</string>
 	<string name="support_blog_title">Besuche den ARHD Blog</string>
 	<string name="support_blog_summ">Alle Updates und neusten Infos über ARHD.</string>
-	
-	<string name="lock_permission">Sense 5 Toolbox Lock Helper</string>
-	<string name="lock_permission_explain">Ermöglicht der App das Display zu sperren und abzuschalten.</string>
-	<string name="admin_enabled">Sense 5 Toolbox kann das Display jetzt sperren.</string>
-	<string name="admin_disabled">Sense 5 Toolbox kann das Display nicht mehr sperren.</string>	
 
 </resources>

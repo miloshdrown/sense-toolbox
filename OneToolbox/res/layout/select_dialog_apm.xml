@@ -9,6 +9,5 @@
 		android:layout_height="wrap_content">
 		<com.htc.widget.HtcListItemTileImage android:id="@+id/list_item_img" />
 		<com.htc.widget.HtcListItem2LineText android:id="@+id/list_item" />
-		<com.htc.widget.HtcListItemRadioButton android:id="@+id/list_item_radio" />
 	</com.htc.widget.HtcListItem>
 </LinearLayout>

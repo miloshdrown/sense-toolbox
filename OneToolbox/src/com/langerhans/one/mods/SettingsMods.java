@@ -14,7 +14,7 @@ public class SettingsMods {
 				param.setResult(true);
 			}
 		});
-		/* Some additional settings
+		// Some additional settings.
 		findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportROMVersion", new XC_MethodHook(){
 			@Override
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -26,6 +26,6 @@ public class SettingsMods {
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(true);
 			}
-		}); */
+		});
 	}
 }

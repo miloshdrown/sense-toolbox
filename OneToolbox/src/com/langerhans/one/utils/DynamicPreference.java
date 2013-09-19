@@ -8,20 +8,18 @@ import com.langerhans.one.PrefsFragment;
 import com.langerhans.one.R;
 
 import com.htc.widget.HtcAlertDialog.Builder;
+import com.htc.widget.HtcListItem2LineText;
+import com.htc.widget.HtcListItemRadioButton;
+import com.htc.widget.HtcListItemTileImage;
 import com.htc.widget.HtcListView;
 
-import android.app.Activity;
 import android.content.Context;
-import android.graphics.Typeface;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.CheckedTextView;
-import android.widget.ImageView;
+import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
-import android.widget.RelativeLayout;
 
 public class DynamicPreference extends HtcListPreference {
 
@@ -61,36 +59,54 @@ public class DynamicPreference extends HtcListPreference {
 	protected void onPrepareDialogBuilder(Builder builder) {
 		int index = findIndexOfValue(getSharedPreferences().getString(getKey(), "1"));
 
-		ListAdapter listAdapter = new ImageArrayAdapter(getContext(), R.layout.select_dialog_with_images, getEntries(), index);
+		ListAdapter listAdapter = new ImageArrayAdapter(getContext(), getEntries(), index);
 
 		builder.setAdapter(listAdapter, this);
 		super.onPrepareDialogBuilder(builder);
 	}
 	
-	private class ImageArrayAdapter extends ArrayAdapter<CharSequence> {
+	private class ImageArrayAdapter extends BaseAdapter {
+		
+		final CharSequence[] items;
+		private LayoutInflater mInflater;
 		private int index = 0;
+		Context mContext = null;
 
-		public ImageArrayAdapter(Context context, int textViewResourceId, CharSequence[] objects, int i) {
-			super(context, textViewResourceId, objects);
+		public ImageArrayAdapter(Context context, CharSequence[] objects, int i) {
+			mContext = context;
+			items = objects;
 			index = i;
+			mInflater = LayoutInflater.from(context);
+		}
+		
+		public int getCount() {
+			return items.length;
+		}
+		 
+		public CharSequence getItem(int position) {
+			return items[position];
+		}
+		 
+		public long getItemId(int position) {
+			return position;
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-			LayoutInflater inflater = ((Activity)getContext()).getLayoutInflater();
-			View row = inflater.inflate(R.layout.select_dialog_with_images, parent, false);
+			View row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
 
-			ImageView imageView = (ImageView)row.findViewById(android.R.id.icon1);
-			imageView.setImageDrawable(PrefsFragment.pkgAppsListIcons.get(position));
-			RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(row.getLayoutParams().height, row.getLayoutParams().height);
-			imageView.setLayoutParams(lp);
+			HtcListItem2LineText itemTitle = (HtcListItem2LineText) row.findViewById(R.id.list_item);
+			HtcListItemTileImage itemIcon = (HtcListItemTileImage) row.findViewById(R.id.list_item_img);
+			HtcListItemRadioButton itemRadio = (HtcListItemRadioButton) row.findViewById(R.id.list_item_radio);
 			
-			CheckedTextView checkedTextView = (CheckedTextView)row.findViewById(android.R.id.text1);
-			checkedTextView.setText(getItem(position));
-			if (PrefsFragment.pkgAppsListSystem.get(position)) checkedTextView.setTypeface(null, Typeface.BOLD); 
+			itemTitle.setPrimaryText(getItem(position));
+			itemTitle.setSecondaryTextVisibility(8);
+			itemIcon.setTileImageDrawable(PrefsFragment.pkgAppsListIcons.get(position));
+			itemIcon.setScaleX(0.65f);
+			itemIcon.setScaleY(0.65f);
+			itemIcon.setTranslationX(mContext.getResources().getDisplayMetrics().density * 5.0f);
 
-			if (position == index) {
-				checkedTextView.setChecked(true);
-			}
+			//if (PrefsFragment.pkgAppsListSystem.get(position)) 
+			if (position == index) itemRadio.setChecked(true);
 
 			return row;
 		}
