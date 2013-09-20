@@ -136,6 +136,10 @@
 	<string name="cleanbeam_wifi_summ">CleanBeam иконка WiFi.</string>
 	<string name="cleanbeam_sync_title">Синхронизация</string>
 	<string name="cleanbeam_sync_summ">CleanBeam иконка синхронизации.</string>
+	<string name="cleanbeam_gps_title">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_gps_summ">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_bt_title">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_bt_summ">###TRANSLATE_ME###</string>
 	<string name="cleanbeam_sunbeam_title">Установить Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Инсталяция анимированных обоев Sunbeam (Phase Beam).</string>
 	<string name="cleanbeam_post_title">Пост о CleanBeam на XDA</string>

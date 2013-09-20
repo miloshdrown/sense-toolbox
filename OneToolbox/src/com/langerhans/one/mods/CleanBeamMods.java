@@ -190,4 +190,36 @@ public class CleanBeamMods{
 			}	
 		});
 	}
+
+	public static void execHook_GpsIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
+		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_gps_acquiring", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_gps_acquiring);
+			}	
+		});
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_gps_on", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_gps_on);
+			}	
+		});
+	}
+
+	public static void execHook_BtIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
+		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_data_bluetooth", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_data_bluetooth);
+			}	
+		});
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_data_bluetooth_connected", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_data_bluetooth_connected);
+			}	
+		});
+	}
 }

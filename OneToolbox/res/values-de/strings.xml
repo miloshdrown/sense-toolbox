@@ -136,6 +136,10 @@
 	<string name="cleanbeam_wifi_summ">Aktiviert die CleanBean WLAN-Icons.</string>
 	<string name="cleanbeam_sync_title">Sync</string>
 	<string name="cleanbeam_sync_summ">Aktiviert die CleanBeam Sync icons.</string>
+	<string name="cleanbeam_gps_title">GPS</string>
+	<string name="cleanbeam_gps_summ">Aktiviert die CleanBeam GPS icons.</string>
+	<string name="cleanbeam_bt_title">Bluetooth</string>
+	<string name="cleanbeam_bt_summ">Aktiviert die CleanBeam Bluetooth icons.</string>
 	<string name="cleanbeam_sunbeam_title">Installiere Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Installiert das Sunbeam Live Wallpaper.</string>
 	<string name="cleanbeam_post_title">Besuche den CleanBeam Beitrag</string>
