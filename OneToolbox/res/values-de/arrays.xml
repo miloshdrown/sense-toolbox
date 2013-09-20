@@ -62,9 +62,9 @@
         <item >Schnelleinstellungen</item>
         <item >Displaysperre anzeigen</item>
         <item >Standby aktivieren</item>
-        <item >###TRANSLATE_ME###</item>
+        <item >Bildschirmfoto machen</item>
         <item >App starten</item>
-        <item >###TRANSLATE_ME###</item>
+        <item >Einstellung ändern</item>
     </string-array>
     <string-array name="global_actions_val">
         <item >1</item>
@@ -82,11 +82,11 @@
         <item >Bluetooth</item>
         <item >GPS</item>
         <item >NFC</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
+        <item >Soundprofil</item>
+        <item >Automatische Helligkeit</item>
+        <item >Automatische Drehung</item>
+        <item >Taschenlampe</item>
+        <item >Mobile Daten</item>
     </string-array>
     <string-array name="global_toggles_val">
         <item >1</item>
