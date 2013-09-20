@@ -85,6 +85,8 @@
 	<string name="dummy"></string>
 	
 	<string name="transparency_msg">0 = transparent, 100 = opaque</string>
+	<string name="launch_app">Launch app</string>
+	<string name="toggle_settings">Toggle setting</string>
 	
 	<string name="camera_mods">Camera Mods</string>
 	<string name="camera_vol_up_title">Volume Up action</string>
@@ -143,6 +145,7 @@
 	<string name="sense_transparency">Transparency</string>
 	<string name="sense_homescreen">Home screen</string>
 	<string name="sense_appdrawer">App drawer</string>
+	<string name="sense_gestures">Gestures</string>
 	<string name="sense_td_title">Dock</string>
 	<string name="sense_td_summ">Make the Sense launcher dock transparent.</string>
 	<string name="sense_twidget_title">4x1 clock widget</string>
@@ -181,13 +184,13 @@
 	<string name="message_toast_summ">Show a toast instead of a notification for delivery reports.</string>
 	
 	<string name="controls_mods">Controls Mods</string>
-	<string name="controls_backlongpressaction_title">Back long press action</string>
+	<string name="controls_mods_backlongpress">Back button long press</string>
+	<string name="controls_backlongpressaction_title">Action</string>
 	<string name="controls_backlongpressaction_summ">Action for back button long press.</string>
-	<string name="controls_backlongpressapp_title">App to launch on back long press</string>
-	<string name="controls_homeassistaction_title">Home assist action</string>
+	<string name="controls_mods_homeassist">Home assist</string>
+	<string name="controls_homeassistaction_title">Action</string>
 	<string name="controls_homeassistaction_summ">Overrides assist action (which is Google Now by default).</string>
-	<string name="controls_homeassistapp_title">App to launch on home assist</string>
-		
+
 	<string name="various_mods">Various Mods</string>
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Enable or disable Advanced Power Menu\nIf you have the native APM installed, better keep this disabled.</string>
@@ -195,6 +198,8 @@
 	<string name="various_scron_summ">Show the \'Keep screen on\' option in display settings and development settings.</string>
 	<string name="various_volsnd_title">Disable volume change sound</string>
 	<string name="various_volsnd_summ">Check to disable the sound on volume change.</string>
+	<string name="various_mtpnotif_title">Hide MTP notification</string>
+	<string name="various_mtpnotif_summ">Make MTP service background and disable notification. Mod is for ROMs based on leaked 4.3.</string>
 	
 	<string name="support">Support</string>
 	<string name="support_s5t_title">Visit Sense 5 Toolbox Post</string>
@@ -207,6 +212,6 @@
 	<string name="about_thanks">Thanks</string>
 	<string name="about_sense">Sense 5</string>
 	<string name="about_toolbox">Toolbox</string>
-	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
+	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nDunc001 and LeSScro - for their APM icons\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
 
 </resources>

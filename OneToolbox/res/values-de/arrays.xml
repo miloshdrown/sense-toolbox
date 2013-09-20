@@ -62,7 +62,9 @@
         <item >Schnelleinstellungen</item>
         <item >Displaysperre anzeigen</item>
         <item >Standby aktivieren</item>
+        <item >###TRANSLATE_ME###</item>
         <item >App starten</item>
+        <item >###TRANSLATE_ME###</item>
     </string-array>
     <string-array name="global_actions_val">
         <item >1</item>
@@ -71,5 +73,30 @@
         <item >4</item>
         <item >5</item>
         <item >6</item>
+        <item >7</item>
+        <item >8</item>
+    </string-array>
+    
+    <string-array name="global_toggles">
+        <item >Wi-Fi</item>
+        <item >Bluetooth</item>
+        <item >GPS</item>
+        <item >NFC</item>
+        <item >###TRANSLATE_ME###</item>
+        <item >###TRANSLATE_ME###</item>
+        <item >###TRANSLATE_ME###</item>
+        <item >###TRANSLATE_ME###</item>
+        <item >###TRANSLATE_ME###</item>
+    </string-array>
+    <string-array name="global_toggles_val">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >4</item>
+        <item >5</item>
+        <item >6</item>
+        <item >7</item>
+        <item >8</item>
+        <item >9</item>
     </string-array>
 </resources>

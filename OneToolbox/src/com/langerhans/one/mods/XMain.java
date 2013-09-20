@@ -1,5 +1,6 @@
 package com.langerhans.one.mods;
 
+import com.langerhans.one.utils.GlobalActions;
 import com.langerhans.one.utils.PackagePermissions;
 
 import de.robv.android.xposed.IXposedHookInitPackageResources;
@@ -11,12 +12,12 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class XMain implements IXposedHookInitPackageResources, IXposedHookZygoteInit, IXposedHookLoadPackage {
 
-	private static String MODULE_PATH = null;
 	public static XSharedPreferences pref;
-	public static int pref_swipedown = 1;
-	public static int pref_swipeup = 1;
-	public static int pref_backlongpress = 1;
-	public static int pref_homeassist = 1;
+	private static String MODULE_PATH = null;
+	private static int pref_swipedown = 1;
+	private static int pref_swipeup = 1;
+	private static int pref_backlongpress = 1;
+	private static int pref_homeassist = 1;
 	
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
@@ -31,13 +32,14 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		pref_swipeup = Integer.parseInt(pref.getString("pref_key_prism_swipeupaction", "1"));
 		pref_backlongpress = Integer.parseInt(pref.getString("pref_key_controls_backlongpressaction", "1"));
 		pref_homeassist = Integer.parseInt(pref.getString("pref_key_controls_homeassistaction", "1"));
+		
 		if (pref_swipedown != 1 || pref_swipeup != 1)
 			PackagePermissions.initHooks();
 		
 		if (pref_backlongpress != 1 || pref_homeassist != 1)
 			ControlsMods.setupPWMKeys();
 		
-		PrismMods.setupPWM();
+		GlobalActions.setupPWM();
 	}
 
 	@Override
@@ -129,6 +131,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
 		String pkg = lpparam.packageName;
 		
+		if (lpparam.packageName.equals("com.android.providers.media")) {
+			if(pref.getBoolean("pref_key_other_mtpnotif", false))
+				OtherMods.execHook_MTPNotif(lpparam);
+		}
+		
 		if(pkg.equals("com.android.mms"))
 		{
 			if(pref.getBoolean("pref_key_other_smscreenon", false))
@@ -176,7 +183,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_gridtinyfont", false))
 				PrismMods.execHook_AppDrawerGridTinyText(lpparam);
 			
-			//PrismMods.execHook_DockScroll(lpparam);
+			PrismMods.execHook_DockScroll(lpparam);
 		}
 		
 		if (pkg.equals("com.android.settings"))

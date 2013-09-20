@@ -28,9 +28,10 @@ public class ControlsMods {
 					int flags = keyEvent.getFlags();
 					
 					//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
+					int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 						// Back long press
-						if (XMain.pref_backlongpress != 1 && keycode == 4) {
+						if (pref_backlongpress != 1 && keycode == 4) {
 							if (action == 0) {
 								isBackLongPressed = false;
 							}
@@ -53,18 +54,21 @@ public class ControlsMods {
 					int flags = keyEvent.getFlags();
 
 					//XposedBridge.log("interceptKeyBeforeDispatching: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
+					int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 						// Back long press
-						if (XMain.pref_backlongpress != 1 && keycode == 4) {
+						if (pref_backlongpress != 1 && keycode == 4) {
 							if (action == 0 && repeats >= 5) {
 								if (isBackLongPressed == false) {
 									Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-									switch (XMain.pref_backlongpress) {
+									switch (pref_backlongpress) {
 										case 2: GlobalActions.expandNotifications(mContext); break;
 										case 3: GlobalActions.expandEQS(mContext); break;
 										case 4: GlobalActions.lockDevice(mContext); break;
 										case 5: GlobalActions.goToSleep(mContext); break;
-										case 6: GlobalActions.launchApp(mContext, 3); break;
+										case 6: GlobalActions.takeScreenshot(mContext); break;
+										case 7: GlobalActions.launchApp(mContext, 3); break;
+										case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpress_toggle", "0"))); break;
 									}
 								}
 								isBackLongPressed = true;
@@ -85,14 +89,17 @@ public class ControlsMods {
 			findAndHookMethod(clsPWM, "launchAssistAction", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-					if (XMain.pref_homeassist != 1) {
+					int pref_homeassist = Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassistaction", "1"));
+					if (pref_homeassist != 1) {
 						Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-						switch (XMain.pref_homeassist) {
+						switch (pref_homeassist) {
 							case 2: GlobalActions.expandNotifications(mContext); break;
 							case 3: GlobalActions.expandEQS(mContext); break;
 							case 4: GlobalActions.lockDevice(mContext); break;
 							case 5: GlobalActions.goToSleep(mContext); break;
-							case 6: GlobalActions.launchApp(mContext, 4); break;
+							case 6: GlobalActions.takeScreenshot(mContext); break;
+							case 7: GlobalActions.launchApp(mContext, 4); break;
+							case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassist_toggle", "0"))); break;
 						}
 						param.setResult(null);
 					}

@@ -62,7 +62,9 @@
         <item >Октрыть панель EQS</item>
         <item >Заблокировать девайс</item>
         <item >Выключить экран (режим сна)</item>
+        <item >Сделать снимок экрана</item>
         <item >Запустить приложение</item>
+        <item >Включить/выключить настройки</item>
     </string-array>
     <string-array name="global_actions_val">
         <item >1</item>
@@ -71,5 +73,30 @@
         <item >4</item>
         <item >5</item>
         <item >6</item>
+        <item >7</item>
+        <item >8</item>
+    </string-array>
+    
+    <string-array name="global_toggles">
+        <item >Wi-Fi</item>
+        <item >Bluetooth</item>
+        <item >GPS</item>
+        <item >NFC</item>
+        <item >Профиль звука</item>
+        <item >Автояркость</item>
+        <item >Автоповорот</item>
+        <item >Фонарик</item>
+        <item >Мобильный Интернет</item>
+    </string-array>
+    <string-array name="global_toggles_val">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >4</item>
+        <item >5</item>
+        <item >6</item>
+        <item >7</item>
+        <item >8</item>
+        <item >9</item>
     </string-array>
 </resources>

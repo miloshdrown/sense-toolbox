@@ -215,7 +215,7 @@
 		
         <com.htc.preference.HtcPreferenceCategory
         	android:title="@string/sense_homescreen"
-        	android:key="sense_homescreen">
+        	android:key="pref_key_sense_homescreen">
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_folder20"
             android:summary="@string/sense_infini_summ"
@@ -226,28 +226,6 @@
             android:summary="@string/sense_infiniscroll_summ"
             android:title="@string/sense_infiniscroll_title"
             android:defaultValue="false" />
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_prism_swipedownaction"
-            android:summary="@string/sense_swipedownaction_summ"
-            android:title="@string/sense_swipedownaction_title"
-            android:entries="@array/global_actions"
-            android:entryValues="@array/global_actions_val"
-            android:defaultValue="1" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_prism_swipedown_app"
-			android:summary="@string/notselected"
-            android:title="@string/sense_swipedownapp_title" />
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_prism_swipeupaction"
-            android:summary="@string/sense_swipeupaction_summ"
-            android:title="@string/sense_swipeupaction_title"
-            android:entries="@array/global_actions"
-            android:entryValues="@array/global_actions_val"
-            android:defaultValue="1" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_prism_swipeup_app"
-			android:summary="@string/notselected"
-            android:title="@string/sense_swipeupapp_title" />
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_bfremove"
             android:summary="@string/sense_noblink_summ"
@@ -267,6 +245,45 @@
             android:summary="@string/sense_adnoclock_summ"
             android:title="@string/sense_adnoclock_title"
             android:defaultValue="false" />
+        </com.htc.preference.HtcPreferenceCategory>
+
+        <com.htc.preference.HtcPreferenceCategory
+        	android:title="@string/sense_gestures"
+        	android:key="pref_key_sense_gestures">
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_prism_swipedownaction"
+            android:summary="@string/sense_swipedownaction_summ"
+            android:title="@string/sense_swipedownaction_title"
+            android:entries="@array/global_actions"
+            android:entryValues="@array/global_actions_val"
+            android:defaultValue="1" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_prism_swipedown_app"
+			android:summary="@string/notselected"
+            android:title="@string/launch_app" />
+        <com.langerhans.one.utils.HtcListPreferencePlus
+            android:key="pref_key_prism_swipedown_toggle"
+			android:summary="@string/notselected"
+            android:title="@string/toggle_settings"
+            android:entries="@array/global_toggles"
+            android:entryValues="@array/global_toggles_val" />
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_prism_swipeupaction"
+            android:summary="@string/sense_swipeupaction_summ"
+            android:title="@string/sense_swipeupaction_title"
+            android:entries="@array/global_actions"
+            android:entryValues="@array/global_actions_val"
+            android:defaultValue="1" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_prism_swipeup_app"
+			android:summary="@string/notselected"
+            android:title="@string/launch_app" />
+        <com.langerhans.one.utils.HtcListPreferencePlus
+            android:key="pref_key_prism_swipeup_toggle"
+			android:summary="@string/notselected"
+            android:title="@string/toggle_settings"
+            android:entries="@array/global_toggles"
+            android:entryValues="@array/global_toggles_val" />
         </com.htc.preference.HtcPreferenceCategory>
     </com.htc.preference.HtcPreferenceScreen>
     
@@ -293,6 +310,9 @@
     <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/controls_mods"
         android:key="pref_key_controls">
+        <com.htc.preference.HtcPreferenceCategory
+    	    android:title="@string/controls_mods_backlongpress"
+    	    android:key="pref_key_controls_back">
         <com.htc.preference.HtcListPreference
             android:key="pref_key_controls_backlongpressaction"
             android:summary="@string/controls_backlongpressaction_summ"
@@ -303,7 +323,18 @@
         <com.htc.preference.HtcPreference
             android:key="pref_key_controls_backlongpress_app"
 			android:summary="@string/notselected"
-            android:title="@string/controls_backlongpressapp_title" />
+            android:title="@string/launch_app" />
+        <com.langerhans.one.utils.HtcListPreferencePlus
+            android:key="pref_key_controls_backlongpress_toggle"
+			android:summary="@string/notselected"
+            android:title="@string/toggle_settings"
+            android:entries="@array/global_toggles"
+            android:entryValues="@array/global_toggles_val" />
+        </com.htc.preference.HtcPreferenceCategory>
+        
+        <com.htc.preference.HtcPreferenceCategory
+    	    android:title="@string/controls_mods_homeassist"
+    	    android:key="pref_key_controls_home">
         <com.htc.preference.HtcListPreference
             android:key="pref_key_controls_homeassistaction"
             android:summary="@string/controls_homeassistaction_summ"
@@ -314,7 +345,14 @@
         <com.htc.preference.HtcPreference
             android:key="pref_key_controls_homeassist_app"
 			android:summary="@string/notselected"
-            android:title="@string/controls_homeassistapp_title" />
+            android:title="@string/launch_app" />
+        <com.langerhans.one.utils.HtcListPreferencePlus
+            android:key="pref_key_controls_homeassist_toggle"
+			android:summary="@string/notselected"
+            android:title="@string/toggle_settings"
+            android:entries="@array/global_toggles"
+            android:entryValues="@array/global_toggles_val" />
+        </com.htc.preference.HtcPreferenceCategory>
     </com.htc.preference.HtcPreferenceScreen>
     
     <com.htc.preference.HtcPreferenceScreen 
@@ -334,6 +372,11 @@
             android:key="pref_key_other_volsound"
             android:summary="@string/various_volsnd_summ"
             android:title="@string/various_volsnd_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_mtpnotif"
+            android:summary="@string/various_mtpnotif_summ"
+            android:title="@string/various_mtpnotif_title"
             android:defaultValue="false" />
     </com.htc.preference.HtcPreferenceScreen>
     </com.htc.preference.HtcPreferenceCategory>

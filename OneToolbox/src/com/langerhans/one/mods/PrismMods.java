@@ -7,13 +7,9 @@ import static de.robv.android.xposed.XposedHelpers.setBooleanField;
 import static de.robv.android.xposed.XposedHelpers.setIntField;
 import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
 
-import java.lang.reflect.Method;
 import java.util.Arrays;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
-import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
@@ -21,9 +17,6 @@ import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
-import android.os.PowerManager;
-import android.os.SystemClock;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -51,8 +44,6 @@ import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class PrismMods {
-	
-	public static Object mPWM = null;
 	
 	static Unhook onclickOption = null;
 	public static int gridSizeVal = 0;
@@ -519,23 +510,27 @@ public class PrismMods {
 			if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH) return false;
 			
 			if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-				switch (XMain.pref_swipedown) {
+				switch (Integer.parseInt(XMain.pref.getString("pref_key_prism_swipedownaction", "1"))) {
 					case 2: return GlobalActions.expandNotifications(helperContext);
 					case 3: return GlobalActions.expandEQS(helperContext);
 					case 4: return GlobalActions.lockDevice(helperContext);
 					case 5: return GlobalActions.goToSleep(helperContext);
-					case 6: return GlobalActions.launchApp(helperContext, 1);
+					case 6: return GlobalActions.takeScreenshot(helperContext);
+					case 7: return GlobalActions.launchApp(helperContext, 1);
+					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swipedown_toggle", "0")));
 					default: return false;					
 				}
 			}
 			
 			if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-				switch (XMain.pref_swipeup) {
+				switch (Integer.parseInt(XMain.pref.getString("pref_key_prism_swipeupaction", "1"))) {
 					case 2: return GlobalActions.expandNotifications(helperContext);
 					case 3: return GlobalActions.expandEQS(helperContext);
 					case 4: return GlobalActions.lockDevice(helperContext);
 					case 5: return GlobalActions.goToSleep(helperContext);
-					case 6: return GlobalActions.launchApp(helperContext, 2);
+					case 6: return GlobalActions.takeScreenshot(helperContext);
+					case 7: return GlobalActions.launchApp(helperContext, 2);
+					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swipeup_toggle", "0")));
 					default: return false;
 				}
 			}
@@ -570,47 +565,6 @@ public class PrismMods {
 		}
 	}*/
 
-	private static BroadcastReceiver mBR = new BroadcastReceiver() {      
-        public void onReceive(Context context, Intent intent)
-        {
-        	String action = intent.getAction();
-        	if (action.equals("com.langerhans.one.mods.PrismMods.GoToSleep")) {
-        		((PowerManager)context.getSystemService(Context.POWER_SERVICE)).goToSleep(SystemClock.uptimeMillis());
-        	}
-        	if (action.equals("com.langerhans.one.mods.PrismMods.LockDevice")) {
-        		try {
-        			final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
-        			Method lockNow = XposedHelpers.findMethodExact(clsPWM, "lockNow", Bundle.class);
-        			Object[] params = new Object[1];
-        			params[0] = null;
-					lockNow.invoke(mPWM, params);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-        	}
-        }
-	};
-	
-	public static void setupPWM() {
-		try {
-			final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
-
-			findAndHookMethod(clsPWM, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					mPWM = param.thisObject;
-					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-		            IntentFilter intentfilter = new IntentFilter();
-		            intentfilter.addAction("com.langerhans.one.mods.PrismMods.GoToSleep");
-		            intentfilter.addAction("com.langerhans.one.mods.PrismMods.LockDevice");
-					mPWMContext.registerReceiver(mBR, intentfilter);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-	
 	public static void execHook_BfRemove(LoadPackageParam lpparam) {
 		try{
 			findAndHookMethod("com.htc.launcher.util.Protection", lpparam.classLoader, "isFeedEnabled", new XC_MethodHook() {
@@ -692,10 +646,10 @@ public class PrismMods {
 		private final int SWIPE_MIN_DISTANCE_VERT = 50;
 		private final int SWIPE_THRESHOLD_VELOCITY = 100;
 		
-		//final Context helperContext;
+		final Context helperContext;
 
 		public SwipeListenerDock(Context context) {
-			//helperContext = context;
+			helperContext = context;
 		}
 		
 		@Override
@@ -707,11 +661,17 @@ public class PrismMods {
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			if (e1 == null || e2 == null) return false;
 			
-			if (Math.abs(e2.getX() - e1.getX()) > SWIPE_MIN_DISTANCE_HORIZ && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				//XposedBridge.log("Horizontal Swipe!");
+			if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE_HORIZ && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				//XposedBridge.log("Horizontal Swipe to right!");
+				GlobalActions.takeScreenshot(helperContext);
 				return true;
-
 			}
+			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE_HORIZ && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				//XposedBridge.log("Horizontal Swipe to left!");
+				//GlobalActions.toggleWiFi(helperContext);
+				return true;
+			}
+
 			if (Math.abs(e2.getY() - e1.getY()) > SWIPE_MIN_DISTANCE_VERT && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 				//XposedBridge.log("Vertical Swipe!");
 				return true;
