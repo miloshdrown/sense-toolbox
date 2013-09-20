@@ -294,7 +294,15 @@ public class SysUIMods {
 				updateFillView(1, param);
 			}
 		});
-
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateResources", new XC_MethodHook(){
+			@Override
+			protected void afterHookedMethod(MethodHookParam param)
+			{
+				updateFillView(0, param);
+			}
+		});
+		
 		//Helper class to hold needed variables for later methods (because nested methods and final and blah blah... Couldn't think of a better solution)
 		class Stuff{
 			Object statusbar;

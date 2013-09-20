@@ -14,16 +14,31 @@ public class SettingsMods {
 				param.setResult(true);
 			}
 		});
+		/*Unlock Sense 5.5 features in settings
+		findAndHookMethod("com.android.settings.framework.flag.feature.HtcFeatureFlags", lpparam.classLoader, "getSenseVersion", new XC_MethodHook(){
+			@Override
+    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.setResult(5.5F);
+			}
+		});
+		findAndHookMethod("com.android.settings.framework.flag.feature.HtcFeatureFlags", lpparam.classLoader, "getSenseVersionInString", new XC_MethodHook(){
+			@Override
+    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.setResult("5.5");
+			}
+		});
+		*/
+		
 		// Some additional settings.
 		findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportROMVersion", new XC_MethodHook(){
 			@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(true);
 			}
 		});
 		findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportDistributionTime", new XC_MethodHook(){
 			@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(true);
 			}
 		});
