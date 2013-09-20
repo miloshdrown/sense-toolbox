@@ -2,13 +2,17 @@ package com.langerhans.one.mods;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
-
-import com.langerhans.one.utils.GlobalActions;
-
 import android.content.Context;
 import android.view.KeyEvent;
+
+import com.langerhans.one.utils.GlobalActions;
+import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.execution.CommandCapture;
+
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class ControlsMods {
 	
@@ -107,6 +111,50 @@ public class ControlsMods {
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+
+	public static void execHook_Vol2Wake(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", lpparam.classLoader, "isWakeKeyWhenScreenOff", int.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				int keyCode = (Integer) param.args[0];
+				XposedBridge.log("Pressed button! Keycode = " + String.valueOf(keyCode));
+				if (keyCode == 24 || keyCode == 25)
+					param.setResult(true);
+			}
+		});
+	}
+	
+	/**
+	 * Enables or diables the init script for vol2wake
+	 * @param newState true to enable, false to disable
+	 */
+	public static void initScriptHandler(Boolean newState)
+	{
+		if(newState)
+		{
+			CommandCapture command = new CommandCapture(0,
+					"mount -o rw,remount /system",
+					"echo \"#!/system/bin/sh\n\necho 1 > /sys/keyboard/vol_wakeup\nchmod 444 /sys/keyboard/vol_wakeup\" > /etc/init.d/89s5tvol2wake",
+					"mount -o ro,remount /system");
+			try {
+				RootTools.getShell(true).add(command).waitForFinish();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			CommandCapture command = new CommandCapture(0,
+					"mount -o rw,remount /system",
+					"rm -f /etc/init.d/89s5tvol2wake",
+					"mount -o ro,remount /system");
+		    try {
+				RootTools.getShell(true).add(command).waitForFinish();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 }

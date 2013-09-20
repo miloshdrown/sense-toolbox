@@ -30,6 +30,7 @@ import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import com.htc.app.HtcProgressDialog;
+import com.htc.preference.HtcCheckBoxPreference;
 import com.htc.preference.HtcListPreference;
 import com.htc.preference.HtcPreference;
 import com.htc.preference.HtcPreference.OnPreferenceChangeListener;
@@ -40,6 +41,7 @@ import com.htc.preference.HtcPreferenceScreen;
 import com.htc.widget.ActionBarContainer;
 import com.htc.widget.ActionBarExt;
 import com.htc.widget.HtcAlertDialog;
+import com.langerhans.one.mods.ControlsMods;
 import com.langerhans.one.utils.ApkInstaller;
 import com.langerhans.one.utils.DynamicPreference;
 import com.langerhans.one.utils.Helpers;
@@ -286,6 +288,15 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			@Override
 			public boolean onPreferenceClick(HtcPreference preference) {
 				ApkInstaller.installSunbeam(getActivity());
+				return true;
+			}
+        });
+        
+        HtcPreference vol2wakePref = findPreference("pref_key_controls_vol2wake");
+        vol2wakePref.setOnPreferenceClickListener(new HtcPreference.OnPreferenceClickListener(){
+			@Override
+			public boolean onPreferenceClick(HtcPreference preference) {
+				ControlsMods.initScriptHandler(((HtcCheckBoxPreference) preference).isChecked());
 				return true;
 			}
         });

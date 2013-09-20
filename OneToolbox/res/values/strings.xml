@@ -190,7 +190,10 @@
 	<string name="controls_mods_homeassist">Home assist</string>
 	<string name="controls_homeassistaction_title">Action</string>
 	<string name="controls_homeassistaction_summ">Overrides assist action (which is Google Now by default).</string>
-
+	<string name="controls_homeassistapp_title">App to launch on home assist</string>
+	<string name="controls_vol2wake_title">Volume2Wake</string>
+	<string name="controls_vol2wake_summ">Wake your phone with the volume keys. Needs Root! Make a FULL reboot to apply!</string>
+	
 	<string name="various_mods">Various Mods</string>
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Enable or disable Advanced Power Menu\nIf you have the native APM installed, better keep this disabled.</string>

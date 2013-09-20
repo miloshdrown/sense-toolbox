@@ -227,6 +227,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_other_volsound", false))
 				OtherMods.execHook_VolSound(lpparam);
+			
+			if (pref.getBoolean("pref_key_controls_vol2wake", false))
+				ControlsMods.execHook_Vol2Wake(lpparam);
 		}
 	}
 

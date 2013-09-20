@@ -190,6 +190,8 @@
 	<string name="controls_mods_homeassist">Вызов ассистента на кнопку Домой</string>
 	<string name="controls_homeassistaction_title">Действие</string>
 	<string name="controls_homeassistaction_summ">Заменяет вызов ассистента (Google Now по умолчанию).</string>
+	<string name="controls_vol2wake_title">###TRANSLATE_ME###</string>
+	<string name="controls_vol2wake_summ">###TRANSLATE_ME###</string>
 	
 	<string name="various_mods">Различные моды</string>
 	<string name="various_apm_title">APM</string>

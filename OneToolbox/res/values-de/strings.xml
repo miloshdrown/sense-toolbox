@@ -23,13 +23,13 @@
     
     <string name="apm_title">Neustart-Optionen</string>
     <string name="apm_normal_title">Neustart</string>
-    <string name="apm_normal_summ">###TRANSLATE_ME###</string>
+    <string name="apm_normal_summ">Alle Apps beenden und neu starten</string>
     <string name="apm_hotreboot_title">Schneller Neustart</string>
-    <string name="apm_hotreboot_summ">###TRANSLATE_ME###</string>
+    <string name="apm_hotreboot_summ">Neustart der Benutzeroberfläche</string>
     <string name="apm_recovery_title">Recovery</string>
-    <string name="apm_recovery_summ">###TRANSLATE_ME###</string>
+    <string name="apm_recovery_summ">Startet das Recovery</string>
     <string name="apm_bootloader_title">Bootloader</string>
-    <string name="apm_bootloader_summ">###TRANSLATE_ME###</string>
+    <string name="apm_bootloader_summ">Startet den Bootloader</string>
     
     <string name="eqs_reorder">EQS Sortierung</string>
     <string name="eqs_reorder_explain">Ermöglicht die Sortierung der Schnelleinstellungen</string>
@@ -85,8 +85,8 @@
 	<string name="dummy"></string>
 	
 	<string name="transparency_msg">0 = transparent, 100 = undurchsichtig</string>
-	<string name="launch_app">###TRANSLATE_ME###</string>
-	<string name="toggle_settings">###TRANSLATE_ME###</string>
+	<string name="launch_app">App starten</string>
+	<string name="toggle_settings">Einstellung ändern</string>
 	
 	<string name="camera_mods">Kamera Mods</string>
 	<string name="camera_vol_up_title">Lauter-Taste</string>
@@ -145,7 +145,7 @@
 	<string name="sense_transparency">Transparenz</string>
 	<string name="sense_homescreen">Home Screen</string>
 	<string name="sense_appdrawer">\'Alle Apps\'</string>
-	<string name="sense_gestures">###TRANSLATE_ME###</string>
+	<string name="sense_gestures">Gesten</string>
 	<string name="sense_td_title">Dock</string>
 	<string name="sense_td_summ">Mache das Sense launcher dock transparent.</string>
 	<string name="sense_twidget_title">4x1 Uhr Widget</string>
@@ -184,12 +184,16 @@
 	<string name="message_toast_summ">Sendeberichte als Toast, statt als Benachrichtigung anzeigen.</string>
 	
 	<string name="controls_mods">Tasten Mods</string>
-	<string name="controls_mods_backlongpress">###TRANSLATE_ME###</string>
-	<string name="controls_backlongpressaction_title">Zurück halten Aktion</string>
+	<string name="controls_mods_backlongpress">Zurück halten</string>
+	<string name="controls_backlongpressaction_title">Aktion</string>
 	<string name="controls_backlongpressaction_summ">Aktion beim halten der Zurück-Taste</string>
-	<string name="controls_mods_homeassist">###TRANSLATE_ME###</string>
-	<string name="controls_homeassistaction_title">###TRANSLATE_ME###</string>
-	<string name="controls_homeassistaction_summ">###TRANSLATE_ME###</string>
+	<string name="controls_backlongpressapp_title">Zu startende App</string>
+	<string name="controls_mods_homeassist">Home wischen</string>
+	<string name="controls_homeassistaction_title">Aktion</string>
+	<string name="controls_homeassistaction_summ">Aktion beim hochwischen von der Home Taste aus. (ersetzt Google Now)</string>
+	<string name="controls_homeassistapp_title">Home wischen App</string>
+	<string name="controls_vol2wake_title">Volume2Wake</string>
+	<string name="controls_vol2wake_summ">Wecke das Handy mit den Lautstärketasten. Benötigt Root! Starte VOLLSTÄNDIG neu nach der Änderung!</string>
 	
 	<string name="various_mods">Verschiedene Mods</string>
 	<string name="various_apm_title">APM</string>
@@ -198,8 +202,8 @@
 	<string name="various_scron_summ">Zeige \'Aktiv lassen\' Option in in den Display- und den Entwicklereinstellungen.</string>
 	<string name="various_volsnd_title">Deaktiviere Lautstärke-Töne</string>
 	<string name="various_volsnd_summ">Deaktviert die Töne beim Ändern der Lautstärke mit den Tasten.</string>
-	<string name="various_mtpnotif_title">###TRANSLATE_ME###</string>
-	<string name="various_mtpnotif_summ">###TRANSLATE_ME###</string>
+	<string name="various_mtpnotif_title">Verstecke MTP-Benachrichtigung</string>
+	<string name="various_mtpnotif_summ">Versteckt die MTP-Benachrichtigung. Gedacht für geleakte 4.3 Versionen.</string>
 	
 	<string name="support">Support</string>
 	<string name="support_s5t_title">Besuche den Sense 5 Toolbox Post</string>
