@@ -136,10 +136,10 @@
 	<string name="cleanbeam_wifi_summ">CleanBeam иконка WiFi.</string>
 	<string name="cleanbeam_sync_title">Синхронизация</string>
 	<string name="cleanbeam_sync_summ">CleanBeam иконка синхронизации.</string>
-	<string name="cleanbeam_gps_title">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_gps_summ">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_bt_title">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_bt_summ">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_gps_title">GPS</string>
+	<string name="cleanbeam_gps_summ">CleanBeam иконка GPS</string>
+	<string name="cleanbeam_bt_title">Bluetooth</string>
+	<string name="cleanbeam_bt_summ">CleanBeam иконка Bluetooth</string>
 	<string name="cleanbeam_sunbeam_title">Установить Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Инсталяция анимированных обоев Sunbeam (Phase Beam).</string>
 	<string name="cleanbeam_post_title">Пост о CleanBeam на XDA</string>
@@ -194,8 +194,8 @@
 	<string name="controls_mods_homeassist">Вызов ассистента на кнопку Домой</string>
 	<string name="controls_homeassistaction_title">Действие</string>
 	<string name="controls_homeassistaction_summ">Заменяет вызов ассистента (Google Now по умолчанию).</string>
-	<string name="controls_vol2wake_title">###TRANSLATE_ME###</string>
-	<string name="controls_vol2wake_summ">###TRANSLATE_ME###</string>
+	<string name="controls_vol2wake_title">Пробуждение на клавиши громкости</string>
+	<string name="controls_vol2wake_summ">Выводит устройство из режима сна при нажатии на клавиши громкости. Обязателен root! Для включения нужна полная перезагрузка!</string>
 	
 	<string name="various_mods">Различные моды</string>
 	<string name="various_apm_title">APM</string>

@@ -320,6 +320,12 @@
     <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/controls_mods"
         android:key="pref_key_controls">
+		<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_controls_vol2wake"
+            android:summary="@string/controls_vol2wake_summ"
+            android:title="@string/controls_vol2wake_title"
+            android:defaultValue="false" />
+                
         <com.htc.preference.HtcPreferenceCategory
     	    android:title="@string/controls_mods_backlongpress"
     	    android:key="pref_key_controls_back">
@@ -362,15 +368,6 @@
             android:title="@string/toggle_settings"
             android:entries="@array/global_toggles"
             android:entryValues="@array/global_toggles_val" />
-        </com.htc.preference.HtcPreferenceCategory>
-        <com.htc.preference.HtcPreferenceCategory
-    	    android:title="@string/various_mods"
-    	    android:key="pref_key_controls_volwake">
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_controls_vol2wake"
-            android:summary="@string/controls_vol2wake_summ"
-            android:title="@string/controls_vol2wake_title"
-            android:defaultValue="false" />
         </com.htc.preference.HtcPreferenceCategory>
     </com.htc.preference.HtcPreferenceScreen>
     
