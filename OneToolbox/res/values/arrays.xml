@@ -62,7 +62,9 @@
         <item >Expand EQS panel</item>
         <item >Lock device</item>
         <item >Go to sleep</item>
+        <item >Take screenshot</item>
         <item >Launch app</item>
+        <item >Toggle settings</item>
     </string-array>
     <string-array name="global_actions_val">
         <item >1</item>
@@ -71,5 +73,30 @@
         <item >4</item>
         <item >5</item>
         <item >6</item>
+        <item >7</item>
+        <item >8</item>
+    </string-array>
+    
+    <string-array name="global_toggles">
+        <item >Wi-Fi</item>
+        <item >Bluetooth</item>
+        <item >GPS</item>
+        <item >NFC</item>
+        <item >Sound profile</item>
+        <item >Auto brightness</item>
+        <item >Auto rotation</item>
+        <item >Flashlight</item>
+        <item >Mobile data</item>
+    </string-array>
+    <string-array name="global_toggles_val">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >4</item>
+        <item >5</item>
+        <item >6</item>
+        <item >7</item>
+        <item >8</item>
+        <item >9</item>
     </string-array>
 </resources>

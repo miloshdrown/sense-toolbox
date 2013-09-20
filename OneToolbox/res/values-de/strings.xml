@@ -85,6 +85,8 @@
 	<string name="dummy"></string>
 	
 	<string name="transparency_msg">0 = transparent, 100 = undurchsichtig</string>
+	<string name="launch_app">###TRANSLATE_ME###</string>
+	<string name="toggle_settings">###TRANSLATE_ME###</string>
 	
 	<string name="camera_mods">Kamera Mods</string>
 	<string name="camera_vol_up_title">Lauter-Taste</string>
@@ -143,6 +145,7 @@
 	<string name="sense_transparency">Transparenz</string>
 	<string name="sense_homescreen">Home Screen</string>
 	<string name="sense_appdrawer">\'Alle Apps\'</string>
+	<string name="sense_gestures">###TRANSLATE_ME###</string>
 	<string name="sense_td_title">Dock</string>
 	<string name="sense_td_summ">Mache das Sense launcher dock transparent.</string>
 	<string name="sense_twidget_title">4x1 Uhr Widget</string>
@@ -181,12 +184,12 @@
 	<string name="message_toast_summ">Sendeberichte als Toast, statt als Benachrichtigung anzeigen.</string>
 	
 	<string name="controls_mods">Tasten Mods</string>
+	<string name="controls_mods_backlongpress">###TRANSLATE_ME###</string>
 	<string name="controls_backlongpressaction_title">Zurück halten Aktion</string>
 	<string name="controls_backlongpressaction_summ">Aktion beim halten der Zurück-Taste</string>
-	<string name="controls_backlongpressapp_title">Zu startende App</string>
+	<string name="controls_mods_homeassist">###TRANSLATE_ME###</string>
 	<string name="controls_homeassistaction_title">###TRANSLATE_ME###</string>
 	<string name="controls_homeassistaction_summ">###TRANSLATE_ME###</string>
-	<string name="controls_homeassistapp_title">###TRANSLATE_ME###</string>
 	
 	<string name="various_mods">Verschiedene Mods</string>
 	<string name="various_apm_title">APM</string>
@@ -195,6 +198,8 @@
 	<string name="various_scron_summ">Zeige \'Aktiv lassen\' Option in in den Display- und den Entwicklereinstellungen.</string>
 	<string name="various_volsnd_title">Deaktiviere Lautstärke-Töne</string>
 	<string name="various_volsnd_summ">Deaktviert die Töne beim Ändern der Lautstärke mit den Tasten.</string>
+	<string name="various_mtpnotif_title">###TRANSLATE_ME###</string>
+	<string name="various_mtpnotif_summ">###TRANSLATE_ME###</string>
 	
 	<string name="support">Support</string>
 	<string name="support_s5t_title">Besuche den Sense 5 Toolbox Post</string>

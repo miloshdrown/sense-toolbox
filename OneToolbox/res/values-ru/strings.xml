@@ -85,6 +85,8 @@
 	<string name="dummy"></string>
 	
 	<string name="transparency_msg">0 = прозрачно, 100 = непрозрачно</string>
+	<string name="launch_app">Запустить приложение</string>
+	<string name="toggle_settings">Переключить настройку</string>
 	
 	<string name="camera_mods">Моды камеры</string>
 	<string name="camera_vol_up_title">Повышение громкости</string>
@@ -143,6 +145,7 @@
 	<string name="sense_transparency">Прозрачность</string>
 	<string name="sense_homescreen">Домашний экран</string>
 	<string name="sense_appdrawer">Список приложений</string>
+	<string name="sense_gestures">Жесты</string>
 	<string name="sense_td_title">Док</string>
 	<string name="sense_td_summ">Настройка прозрачности дока ланчера Sense.</string>
 	<string name="sense_twidget_title">Виджет часов 4x1</string>
@@ -178,15 +181,15 @@
 	<string name="message_smswake_title">Пробуждение при SMS</string>
 	<string name="message_smswake_summ">Включение экрана при приходе SMS.</string>
 	<string name="message_toast_title">Отчёт о доставке SMS</string>
-	<string name="message_toast_summ">Показывать всплывающее сообщение об успешной доставке вместо уведомления</string>
+	<string name="message_toast_summ">Показывать всплывающее сообщение вместо уведомления при успешной доставке</string>
 	
 	<string name="controls_mods">Моды управления</string>
-	<string name="controls_backlongpressaction_title">Действие на долгое нажание Назад</string>
+	<string name="controls_mods_backlongpress">Долгое нажатие на кнопку Назад</string>
+	<string name="controls_backlongpressaction_title">Действие</string>
 	<string name="controls_backlongpressaction_summ">Присвоить действие на долгое нажатие кнопки Назад.</string>
-	<string name="controls_backlongpressapp_title">Приложение на долгое нажатие Назад</string>
-	<string name="controls_homeassistaction_title">Действие на вызов ассистента</string>
-	<string name="controls_homeassistaction_summ">Заменяет вызов ассистента (Google Now по умолчанию) на кнопке Домой.</string>
-	<string name="controls_homeassistapp_title">Приложение в качестве ассистента</string>
+	<string name="controls_mods_homeassist">Вызов ассистента на кнопку Домой</string>
+	<string name="controls_homeassistaction_title">Действие</string>
+	<string name="controls_homeassistaction_summ">Заменяет вызов ассистента (Google Now по умолчанию).</string>
 	
 	<string name="various_mods">Различные моды</string>
 	<string name="various_apm_title">APM</string>
@@ -195,6 +198,8 @@
 	<string name="various_scron_summ">Добавляет пункт \'Не выключать экран\' в разделы \'Экран, кнопки и жесты\' и \'Для разработчиков\'.</string>
 	<string name="various_volsnd_title">Нет звука при смене громкости</string>
 	<string name="various_volsnd_summ">Отключение проверочного звука при изменении громкости.</string>
+	<string name="various_mtpnotif_title">Скрыть уведомление сервиса MTP</string>
+	<string name="various_mtpnotif_summ">Делает MTP сервис фоновым и скрывает уведомление. Мод предназначен для прошивок на основе утечки 4.3.</string>
 	
 	<string name="support">Поддержка</string>
 	<string name="support_s5t_title">Открыть пост о Sense 5 Toolbox</string>
