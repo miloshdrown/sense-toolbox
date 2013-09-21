@@ -69,6 +69,11 @@
             android:summary="@string/systemui_ampmremove_summ"
             android:title="@string/systemui_ampmremove_title"
             android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_brightslide"
+            android:summary="@string/systemui_brightslide_summ"
+            android:title="@string/systemui_brightslide_title"
+            android:defaultValue="false" />
         </com.htc.preference.HtcPreferenceCategory>
         
         <com.htc.preference.HtcPreferenceCategory

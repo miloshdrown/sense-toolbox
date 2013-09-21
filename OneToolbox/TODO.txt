@@ -18,6 +18,7 @@
 - CM brightness bar mod. MOAR touch interceptors :D
 - Day of week next to clock (isn't the status bar crowded enough?
 - More homescreens. (Have some code for it lying around)
+- Change position of volume slider to make it go out of view while watching videos.
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
@@ -33,6 +34,7 @@ Added mod to make messaging app use toast instead of notifications for delivery 
 Added mod to override "Swipe up from home button for Google Now". It can do the same like the other gesture mods.
 Added mod to hide the MTP notification by making MTP a background service instead of a foreground service.
 Added Vol2Wake. Works in deep sleep. Needs root and a full reboot to be applied!
+Added brightness slider for notifications panel
 
 2.0: (Yes, that completely new look is a major release :D)
 Total UI overhaul.

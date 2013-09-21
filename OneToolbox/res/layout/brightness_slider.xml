@@ -1,0 +1,38 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/sliderContainer"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingBottom="5dp"
+    android:paddingLeft="10dp"
+    android:paddingRight="10dp"
+    android:paddingTop="5dp" >
+    
+	<com.htc.widget.HtcCheckBox
+	    android:id="@+id/autoCheckBox"
+	    android:layout_width="wrap_content"
+	    android:layout_height="match_parent" />
+	
+	<TextView
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_gravity="center_vertical"
+	    android:id="@+id/autoText"
+	    android:text="Auto" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="horizontal" >
+        
+	    <com.htc.widget.HtcSeekBar
+	        android:id="@+id/sliderSeekBar"
+	        android:layout_width="match_parent"
+	        android:layout_height="wrap_content"
+	        android:max="255" />
+    
+    </LinearLayout>
+
+
+</LinearLayout>

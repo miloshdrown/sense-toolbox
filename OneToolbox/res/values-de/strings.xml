@@ -118,6 +118,8 @@
 	<string name="systemui_ampmremove_summ">Entfernt AM und PM im 12 Stunden Modus der Uhr in der Statusleiste.</string>
 	<string name="systemui_clockstyle_title">Uhr Stil</string>
 	<string name="systemui_clockstyle_summ">Ändert die Position der Uhr in der Statusleiste.</string>
+	<string name="systemui_brightslide_title">Helligkeitsregler</string>
+	<string name="systemui_brightslide_summ">Fügt den Benachrichtigungen einen Helligkeitsregler hinzu.</string>
 	
 	<string name="cleanbeam_mods">CleanBeam Mods von vomer</string>
 	<string name="cleanbeam_battery_title">Akku Icon</string>
@@ -215,13 +217,13 @@
 	<string name="support_blog_title">Besuche den ARHD Blog</string>
 	<string name="support_blog_summ">Alle Updates und neusten Infos über ARHD.</string>
 	
-	<string name="toggle_wifi_on">###TRANSLATE_ME###</string>
-	<string name="toggle_wifi_off">###TRANSLATE_ME###</string>
-	<string name="toggle_bt_on">###TRANSLATE_ME###</string>
-	<string name="toggle_bt_off">###TRANSLATE_ME###</string>
-	<string name="toggle_gps_on">###TRANSLATE_ME###</string>
-	<string name="toggle_gps_off">###TRANSLATE_ME###</string>
-	<string name="toggle_nfc_on">###TRANSLATE_ME###</string>
-	<string name="toggle_nfc_off">###TRANSLATE_ME###</string>
+	<string name="toggle_wifi_on">WLAN eingeschaltet</string>
+	<string name="toggle_wifi_off">WLAN ausgeschaltet</string>
+	<string name="toggle_bt_on">Bluetooth eingeschaltet</string>
+	<string name="toggle_bt_off">Bluetooth ausgeschaltet</string>
+	<string name="toggle_gps_on">GPS eingeschaltet</string>
+	<string name="toggle_gps_off">GPS ausgeschaltet</string>
+	<string name="toggle_nfc_on">NFC eingeschaltet</string>
+	<string name="toggle_nfc_off">NFC ausgeschaltet</string>
 
 </resources>

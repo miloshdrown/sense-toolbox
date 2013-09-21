@@ -14,18 +14,23 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import android.app.ActivityManager;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.provider.Settings.SettingNotFoundException;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -38,8 +43,14 @@ import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.SeekBar;
+import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.htc.widget.HtcCheckBox;
+import com.htc.widget.HtcCompoundButton;
+import com.htc.widget.HtcCompoundButton.OnCheckedChangeListener;
+import com.htc.widget.HtcSeekBar;
 import com.langerhans.one.R;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -238,7 +249,6 @@ public class SysUIMods {
 				}
 			}
 		});
-		
 	}
 	
 	/**
@@ -389,6 +399,89 @@ public class SysUIMods {
 			{
 				if((Boolean) param.args[0])
 					param.setResult(null);
+			}
+		});
+	}
+	
+	public static void execHook_BrightnessSlider(LoadPackageParam lpparam, final String MODULE_PATH) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook(){
+			@Override
+			protected void afterHookedMethod(MethodHookParam param)
+			{
+				final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, null);
+				
+				FrameLayout mStatusBarWindow = (FrameLayout) getObjectField(param.thisObject, "mStatusBarWindow"); 
+				LinearLayout panel = (LinearLayout) mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("panel", "id", "com.android.systemui"));
+
+				//Inflate the slider layout
+				LayoutInflater inflater = LayoutInflater.from(panel.getContext());
+				LinearLayout sliderConatiner = new LinearLayout(panel.getContext());
+				sliderConatiner = (LinearLayout) inflater.inflate(modRes.getLayout(R.layout.brightness_slider), panel, false);
+				sliderConatiner.setOnTouchListener(new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						//Just capture the event so the status bar won't get it.
+						return true;
+					}
+				});
+				
+				TextView autoText = (TextView) sliderConatiner.findViewById(R.id.autoText);
+				final HtcCheckBox cb = (HtcCheckBox) sliderConatiner.findViewById(R.id.autoCheckBox);
+				autoText.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						cb.toggle(); //Make it easier to toggle the checkbox. Way harder to hit it without that...
+					}
+				});
+				
+				panel.addView(sliderConatiner, 1);
+				
+				final HtcSeekBar seekBar = (HtcSeekBar) mStatusBarWindow.findViewById(R.id.sliderSeekBar);
+				HtcCheckBox checkBox = (HtcCheckBox) mStatusBarWindow.findViewById(R.id.autoCheckBox);
+				final ContentResolver cr = mStatusBarWindow.getContext().getContentResolver();
+				
+				try {
+					seekBar.setProgress(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS));
+					checkBox.setChecked(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE) == 0 ? false : true);
+					seekBar.setEnabled(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE) == 0 ? true : false);
+				} catch (SettingNotFoundException e) {
+					//No brightness setting?
+				}
+				seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+					@Override
+					public void onStopTrackingTouch(SeekBar seekBar) {
+						//Don't care
+					}
+					@Override
+					public void onStartTrackingTouch(SeekBar seekBar) {
+						//Don't care
+					}
+					@Override
+					public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+						android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, progress);
+					}
+				});
+				
+				checkBox.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+					@Override
+					public void onCheckedChanged(HtcCompoundButton arg0, boolean arg1) {
+						try{
+							if(arg1)
+							{
+								android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, 1);
+								seekBar.setProgress(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS));
+								seekBar.setEnabled(false);
+							}else
+							{
+								android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, 0);
+								seekBar.setProgress(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS));
+								seekBar.setEnabled(true);
+							}
+						} catch (SettingNotFoundException e) {
+							//No brightness setting?
+						}
+					}
+				});
 			}
 		});
 	}
