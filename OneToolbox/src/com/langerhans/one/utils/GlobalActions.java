@@ -15,10 +15,13 @@ import android.content.pm.PackageManager;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.location.LocationManager;
+import android.media.AudioManager;
+import android.net.ConnectivityManager;
 import android.net.wifi.WifiManager;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.provider.Settings;
@@ -34,6 +37,7 @@ import de.robv.android.xposed.XposedHelpers;
 public class GlobalActions {
 
 	public static Object mPWM = null;
+	private static int mCurrentLEDLevel = 0;
 	
 	private static BroadcastReceiver mBR = new BroadcastReceiver() {      
 		public void onReceive(Context context, Intent intent)
@@ -122,7 +126,100 @@ public class GlobalActions {
 				}
 			}
 			if (action.equals("com.langerhans.one.mods.action.ToggleSoundProfile")) {
+				AudioManager am = (AudioManager)context.getSystemService(Context.AUDIO_SERVICE);
+				int currentMode = am.getRingerMode();
+				if (currentMode == 0) {
+					am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
+					Toast.makeText(context, modRes.getString(R.string.toggle_sound_vibrate), Toast.LENGTH_SHORT).show();
+				} else if (currentMode == 1) {
+					am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+					Toast.makeText(context, modRes.getString(R.string.toggle_sound_normal), Toast.LENGTH_SHORT).show();
+				} else if (currentMode == 2) {
+					am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+					Toast.makeText(context, modRes.getString(R.string.toggle_sound_silent), Toast.LENGTH_SHORT).show();
+				}
+			}
+			if (action.equals("com.langerhans.one.mods.action.ToggleAutoBrightness")) {
+				if (Settings.System.getInt(context.getContentResolver(), "screen_brightness_mode", 0) == 0) {
+					Settings.System.putInt(context.getContentResolver(), "screen_brightness_mode", 1);
+					Toast.makeText(context, modRes.getString(R.string.toggle_autobright_on), Toast.LENGTH_SHORT).show();
+				} else {
+					Settings.System.putInt(context.getContentResolver(), "screen_brightness_mode", 0);
+					Toast.makeText(context, modRes.getString(R.string.toggle_autobright_off), Toast.LENGTH_SHORT).show();
+				}
+			}
+			if (action.equals("com.langerhans.one.mods.action.ToggleAutoRotation")) {
+				if (Settings.System.getInt(context.getContentResolver(), "accelerometer_rotation", 0) == 0) {
+					Settings.System.putInt(context.getContentResolver(), "accelerometer_rotation", 1);
+					Toast.makeText(context, modRes.getString(R.string.toggle_autorotate_on), Toast.LENGTH_SHORT).show();
+				} else {
+					Settings.System.putInt(context.getContentResolver(), "accelerometer_rotation", 0);
+					Toast.makeText(context, modRes.getString(R.string.toggle_autorotate_off), Toast.LENGTH_SHORT).show();
+				}
+			}
+			
+			if (action.equals("com.langerhans.one.mods.action.ToggleFlashlight")) {
+				Method setFlashlightBrightness = null;
+				Object svc = null;
 				
+				try {
+					Object HTCHW = Class.forName("android.os.ServiceManager").getMethod("getService", new Class[] { String.class }).invoke(null, new Object[] { "htchardware" });
+					Method HTCHWInterface = Class.forName("android.os.IHtcHardwareService$Stub").getMethod("asInterface", new Class[] { IBinder.class });
+					Object[] paramArray = new Object[1];
+					paramArray[0] = ((IBinder)HTCHW);
+					svc = HTCHWInterface.invoke(null, paramArray);
+					Class<?> svcClass = svc.getClass();
+					Class<?>[] paramArray2 = new Class[1];
+					paramArray2[0] = Integer.TYPE;
+					setFlashlightBrightness = svcClass.getMethod("setFlashlightBrightness", paramArray2);
+				} catch (Exception e) {
+					e.printStackTrace();
+					setFlashlightBrightness = null;
+				}
+				
+				if (setFlashlightBrightness != null)
+				try {
+					Object[] paramArray = new Object[1];
+					if (mCurrentLEDLevel == 0) {
+						paramArray[0] = 125;
+						mCurrentLEDLevel = 125;
+						Toast.makeText(context, modRes.getString(R.string.toggle_flash_low), Toast.LENGTH_SHORT).show();
+					} else if (mCurrentLEDLevel == 125) {
+						paramArray[0] = 126;
+						mCurrentLEDLevel = 126;
+						Toast.makeText(context, modRes.getString(R.string.toggle_flash_med), Toast.LENGTH_SHORT).show();
+					} else if (mCurrentLEDLevel == 126) {
+						paramArray[0] = 127;
+						mCurrentLEDLevel = 127;
+						Toast.makeText(context, modRes.getString(R.string.toggle_flash_high), Toast.LENGTH_SHORT).show();
+					} else if (mCurrentLEDLevel == 127) {
+						paramArray[0] = 0;
+						mCurrentLEDLevel = 0;
+						Toast.makeText(context, modRes.getString(R.string.toggle_flash_off), Toast.LENGTH_SHORT).show();
+					}
+					setFlashlightBrightness.invoke(svc, paramArray);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+			if (action.equals("com.langerhans.one.mods.action.ToggleMobileData")) {
+				try {
+					ConnectivityManager dataManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+					Method setMTE = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", boolean.class);
+					Method getMTE = ConnectivityManager.class.getDeclaredMethod("getMobileDataEnabled");
+					setMTE.setAccessible(true);
+					getMTE.setAccessible(true);
+					
+					if ((Boolean)getMTE.invoke(dataManager)) {
+						setMTE.invoke(dataManager, false);
+						Toast.makeText(context, modRes.getString(R.string.toggle_mobiledata_off), Toast.LENGTH_SHORT).show();
+					} else {
+						setMTE.invoke(dataManager, true);
+						Toast.makeText(context, modRes.getString(R.string.toggle_mobiledata_on), Toast.LENGTH_SHORT).show();
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
 			}
 		}
 	};

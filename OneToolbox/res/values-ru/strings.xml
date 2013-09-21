@@ -223,5 +223,18 @@
 	<string name="toggle_gps_off">GPS отключен</string>
 	<string name="toggle_nfc_on">NFC включен</string>
 	<string name="toggle_nfc_off">NFC отключен</string>
+	<string name="toggle_sound_normal">Профиль звука: обычный</string>
+	<string name="toggle_sound_silent">Профиль звука: тишина</string>
+	<string name="toggle_sound_vibrate">Профиль звука: вибрация</string>
+	<string name="toggle_autobright_on">Авторегулировка яркости включена</string>
+	<string name="toggle_autobright_off">Авторегулировка яркости отключена</string>
+	<string name="toggle_autorotate_on">Автопоповрот экрана включен</string>
+	<string name="toggle_autorotate_off">Автопоповрот экрана отключен</string>
+	<string name="toggle_flash_low">Фонарик: тускло</string>
+	<string name="toggle_flash_med">Фонарик: средне</string>
+	<string name="toggle_flash_high">Фонарик: ярко</string>
+	<string name="toggle_flash_off">Фонарик выключен</string>
+	<string name="toggle_mobiledata_on">Мобильный Интернет включен</string>
+	<string name="toggle_mobiledata_off">Мобильный Интернет отключен</string>
 
 </resources>

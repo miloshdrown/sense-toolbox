@@ -224,6 +224,19 @@
 	<string name="toggle_gps_off">GPS disabled</string>
 	<string name="toggle_nfc_on">NFC enabled</string>
 	<string name="toggle_nfc_off">NFC disabled</string>
+	<string name="toggle_sound_normal">Sound profile: Normal</string>
+	<string name="toggle_sound_silent">Sound profile: Silent</string>
+	<string name="toggle_sound_vibrate">Sound profile: Vibrate</string>
+	<string name="toggle_autobright_on">Auto brightness enabled</string>
+	<string name="toggle_autobright_off">Auto brightness disabled</string>
+	<string name="toggle_autorotate_on">Auto rotation enabled</string>
+	<string name="toggle_autorotate_off">Auto rotation disabled</string>
+	<string name="toggle_flash_low">Flashlight: low</string>
+	<string name="toggle_flash_med">Flashlight: medium</string>
+	<string name="toggle_flash_high">Flashlight: high</string>
+	<string name="toggle_flash_off">Flashlight: off</string>
+	<string name="toggle_mobiledata_on">Mobile data enabled</string>
+	<string name="toggle_mobiledata_off">Mobile data disabled</string>
 	
 	<string name="about_devs">Developers</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
