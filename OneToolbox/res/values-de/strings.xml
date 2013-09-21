@@ -225,18 +225,18 @@
 	<string name="toggle_gps_off">GPS ausgeschaltet</string>
 	<string name="toggle_nfc_on">NFC eingeschaltet</string>
 	<string name="toggle_nfc_off">NFC ausgeschaltet</string>
-	<string name="toggle_sound_normal">###TRANSLATE_ME###</string>
-	<string name="toggle_sound_silent">###TRANSLATE_ME###</string>
-	<string name="toggle_sound_vibrate">###TRANSLATE_ME###</string>
-	<string name="toggle_autobright_on">###TRANSLATE_ME###</string>
-	<string name="toggle_autobright_off">###TRANSLATE_ME###</string>
-	<string name="toggle_autorotate_on">###TRANSLATE_ME###</string>
-	<string name="toggle_autorotate_off">###TRANSLATE_ME###</string>
-	<string name="toggle_flash_low">###TRANSLATE_ME###</string>
-	<string name="toggle_flash_med">###TRANSLATE_ME###</string>
-	<string name="toggle_flash_high">###TRANSLATE_ME###</string>
-	<string name="toggle_flash_off">###TRANSLATE_ME###</string>
-	<string name="toggle_mobiledata_on">###TRANSLATE_ME###</string>
-	<string name="toggle_mobiledata_off">###TRANSLATE_ME###</string>
+	<string name="toggle_sound_normal">Sound: Normal</string>
+	<string name="toggle_sound_silent">Sound: Lautlos</string>
+	<string name="toggle_sound_vibrate">Sound: Vibration</string>
+	<string name="toggle_autobright_on">Automatische Helligkeit eingeschaltet</string>
+	<string name="toggle_autobright_off">Automatische Helligkeit ausgeschaltet</string>
+	<string name="toggle_autorotate_on">Autorotation eingeschaltet</string>
+	<string name="toggle_autorotate_off">Autorotation ausgeschaltet</string>
+	<string name="toggle_flash_low">Taschenlampe: Niedrig</string>
+	<string name="toggle_flash_med">Taschenlampe: Mittel</string>
+	<string name="toggle_flash_high">Taschenlampe: Hoch</string>
+	<string name="toggle_flash_off">Taschenlampe: Ausgeschaltet</string>
+	<string name="toggle_mobiledata_on">Mobile datein eingeschaltet</string>
+	<string name="toggle_mobiledata_off">Mobile Daten ausgeschaltet</string>
 
 </resources>
