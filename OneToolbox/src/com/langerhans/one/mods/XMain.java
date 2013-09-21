@@ -13,7 +13,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class XMain implements IXposedHookInitPackageResources, IXposedHookZygoteInit, IXposedHookLoadPackage {
 
 	public static XSharedPreferences pref;
-	private static String MODULE_PATH = null;
+	public static String MODULE_PATH = null;
 	private static int pref_swipedown = 1;
 	private static int pref_swipeup = 1;
 	private static int pref_backlongpress = 1;

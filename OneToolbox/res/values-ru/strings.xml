@@ -212,5 +212,14 @@
 	<string name="support_s5t_summ">Тут Вы найдёте информацию о приложении и список изменений.</string>
 	<string name="support_blog_title">Посетить блог ARHD</string>
 	<string name="support_blog_summ">Узнайте о последних новостях и обновлениях этой отличной прошивки :)</string>
+	
+	<string name="toggle_wifi_on">Wi-Fi включен</string>
+	<string name="toggle_wifi_off">Wi-Fi отключен</string>
+	<string name="toggle_bt_on">Bluetooth включен</string>
+	<string name="toggle_bt_off">Bluetooth отключен</string>
+	<string name="toggle_gps_on">GPS включен</string>
+	<string name="toggle_gps_off">GPS отключен</string>
+	<string name="toggle_nfc_on">NFC включен</string>
+	<string name="toggle_nfc_off">NFC отключен</string>
 
 </resources>

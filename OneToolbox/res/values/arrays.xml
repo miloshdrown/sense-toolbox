@@ -99,4 +99,10 @@
         <item >8</item>
         <item >9</item>
     </string-array>
+	<array name="battery_images">
+		<item >@drawable/stat_sys_battery_100</item>
+		<item >@drawable/b_stat_sys_battery_95</item>
+		<item >@drawable/c_stat_sys_battery_95</item>
+		<item ></item>
+	</array>
 </resources>

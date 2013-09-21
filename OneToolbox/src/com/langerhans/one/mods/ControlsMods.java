@@ -10,7 +10,6 @@ import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
@@ -119,7 +118,7 @@ public class ControlsMods {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				int keyCode = (Integer) param.args[0];
-				XposedBridge.log("Pressed button! Keycode = " + String.valueOf(keyCode));
+				//XposedBridge.log("Pressed button! Keycode = " + String.valueOf(keyCode));
 				if (keyCode == 24 || keyCode == 25)
 					param.setResult(true);
 			}

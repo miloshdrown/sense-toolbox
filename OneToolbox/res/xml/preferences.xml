@@ -1,4 +1,6 @@
-<com.htc.preference.HtcPreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+<com.htc.preference.HtcPreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:toolbox="http://schemas.android.com/apk/res/com.langerhans.one"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:key="prefs" >
@@ -111,57 +113,67 @@
     <com.htc.preference.HtcPreferenceScreen
         android:title="@string/cleanbeam_mods"
         android:key="pref_key_cb">
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_sysui_battery"
+		<com.langerhans.one.utils.ImageListPreference
+			android:key="pref_key_sysui_battery"
             android:summary="@string/cleanbeam_battery_summ"
             android:title="@string/cleanbeam_battery_title"
             android:entries="@array/batt_icon"
             android:entryValues="@array/batt_icon_val"
-            android:defaultValue="1"/>
+			android:defaultValue="1"
+			toolbox:entryImages="@array/battery_images" />
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_signal"
             android:summary="@string/cleanbeam_signal_summ"
             android:title="@string/cleanbeam_signal_title"
+            android:icon="@drawable/stat_sys_5signal_4"
             android:defaultValue="false"/>
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_headphone"
             android:summary="@string/cleanbeam_headphone_summ"
             android:title="@string/cleanbeam_headphone_title"
+            android:icon="@drawable/stat_sys_headphones"
             android:defaultValue="false"/>
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_beats"
             android:summary="@string/cleanbeam_beats_summ"
             android:title="@string/cleanbeam_beats_title"
+            android:icon="@drawable/stat_sys_beats"
             android:defaultValue="false"/>
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_profile"
             android:summary="@string/cleanbeam_profile_summ"
             android:title="@string/cleanbeam_profile_title"
+            android:icon="@drawable/stat_sys_ringer_silent"
             android:defaultValue="false"/>
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_alarm"
             android:summary="@string/cleanbeam_alarm_summ"
             android:title="@string/cleanbeam_alarm_title"
+            android:icon="@drawable/stat_notify_alarm"
             android:defaultValue="false"/>
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_wifi"
             android:summary="@string/cleanbeam_wifi_summ"
             android:title="@string/cleanbeam_wifi_title"
+            android:icon="@drawable/stat_sys_wifi_signal_4"
             android:defaultValue="false"/>
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_sync"
             android:summary="@string/cleanbeam_sync_summ"
             android:title="@string/cleanbeam_sync_title"
+            android:icon="@drawable/stat_sys_sync"
             android:defaultValue="false"/>
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_gps"
             android:summary="@string/cleanbeam_gps_summ"
             android:title="@string/cleanbeam_gps_title"
+            android:icon="@drawable/stat_sys_gps_acquiring"
             android:defaultValue="false"/>
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_bt"
             android:summary="@string/cleanbeam_bt_summ"
             android:title="@string/cleanbeam_bt_title"
+            android:icon="@drawable/stat_sys_data_bluetooth_connected"
             android:defaultValue="false"/>
         <com.htc.preference.HtcPreference
             android:title="@string/cleanbeam_sunbeam_title"

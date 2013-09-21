@@ -214,6 +214,15 @@
 	<string name="support_blog_title">Visit ARHD Blog</string>
 	<string name="support_blog_summ">Get the latest news and updates for your favorite ROM here.</string>
 	
+	<string name="toggle_wifi_on">Wi-Fi enabled</string>
+	<string name="toggle_wifi_off">Wi-Fi disabled</string>
+	<string name="toggle_bt_on">Bluetooth enabled</string>
+	<string name="toggle_bt_off">Bluetooth disabled</string>
+	<string name="toggle_gps_on">GPS enabled</string>
+	<string name="toggle_gps_off">GPS disabled</string>
+	<string name="toggle_nfc_on">NFC enabled</string>
+	<string name="toggle_nfc_off">NFC disabled</string>
+	
 	<string name="about_devs">Developers</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
 	<string name="about_thanks">Thanks</string>

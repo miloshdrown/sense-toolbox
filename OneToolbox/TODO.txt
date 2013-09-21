@@ -22,10 +22,10 @@
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
 2.1:
-Swipes are now a bit more snesetive.
+Swipes are now a bit more sensetive.
 Fixed the flashing "more notifications" icon in most places. It still may happen when you come from camera app. Just wait until it updates...
 Fixed Xposed installation warning message count.
-APM is now in true sense style! Credits for the icons go to @Dunc and @LeSScro. Thanks for letting us use your icons!
+APM is now in true sense style! Credits for the icons go to @Dunc001 and @LeSScro. Thanks for letting us use your icons!
 Added options for long press back.
 Added custom app launch for swipe up/down gestures and long press back.
 Added settings toggles for the gestures and long press back.
