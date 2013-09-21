@@ -120,6 +120,7 @@
 	<string name="systemui_clockstyle_summ">Ändert die Position der Uhr in der Statusleiste.</string>
 	<string name="systemui_brightslide_title">Helligkeitsregler</string>
 	<string name="systemui_brightslide_summ">Fügt den Benachrichtigungen einen Helligkeitsregler hinzu.</string>
+	<string name="systemui_brightslide_auto">Auto</string>
 	
 	<string name="cleanbeam_mods">CleanBeam Mods von vomer</string>
 	<string name="cleanbeam_battery_title">Akku Icon</string>

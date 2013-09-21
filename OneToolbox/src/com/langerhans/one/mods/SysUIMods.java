@@ -436,6 +436,7 @@ public class SysUIMods {
 						cb.toggle(); //Make it easier to toggle the checkbox. Way harder to hit it without that...
 					}
 				});
+				autoText.setText(modRes.getText(R.string.systemui_brightslide_auto));
 				
 				panel.addView(sliderConatiner, 1);
 				

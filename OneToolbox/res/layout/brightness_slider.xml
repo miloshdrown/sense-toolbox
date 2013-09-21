@@ -18,7 +18,7 @@
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="center_vertical"
 	    android:id="@+id/autoText"
-	    android:text="Auto" />
+	    android:text="@string/systemui_brightslide_auto" />
 
     <LinearLayout
         android:layout_width="match_parent"

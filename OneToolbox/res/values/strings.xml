@@ -120,6 +120,7 @@
 	<string name="systemui_clockstyle_summ">Changes the style of the status bar clock.</string>
 	<string name="systemui_brightslide_title">Brightness slider</string>
 	<string name="systemui_brightslide_summ">Add a brightness slider to the notification panel.</string>
+	<string name="systemui_brightslide_auto">Auto</string>
 	
 	<string name="cleanbeam_mods">CleanBeam Mods by vomer</string>
 	<string name="cleanbeam_battery_title">Battery icon</string>

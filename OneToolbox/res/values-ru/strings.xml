@@ -120,6 +120,7 @@
 	<string name="systemui_clockstyle_summ">Изменить стиль часов в статусбаре.</string>
 	<string name="systemui_brightslide_title">###TRANSLATE_ME###</string>
 	<string name="systemui_brightslide_summ">###TRANSLATE_ME###</string>
+	<string name="systemui_brightslide_auto">Авто</string>
 	
 	<string name="cleanbeam_mods">Моды CleanBeam от vomer</string>
 	<string name="cleanbeam_battery_title">Иконка батареи</string>
