@@ -19,8 +19,11 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
+import android.database.ContentObserver;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Handler;
 import android.provider.Settings.SettingNotFoundException;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -437,7 +440,7 @@ public class SysUIMods {
 				panel.addView(sliderConatiner, 1);
 				
 				final HtcSeekBar seekBar = (HtcSeekBar) mStatusBarWindow.findViewById(R.id.sliderSeekBar);
-				HtcCheckBox checkBox = (HtcCheckBox) mStatusBarWindow.findViewById(R.id.autoCheckBox);
+				final HtcCheckBox checkBox = (HtcCheckBox) mStatusBarWindow.findViewById(R.id.autoCheckBox);
 				final ContentResolver cr = mStatusBarWindow.getContext().getContentResolver();
 				
 				try {
@@ -482,8 +485,37 @@ public class SysUIMods {
 						}
 					}
 				});
+				
+				SettingsObserver so = new SettingsObserver(new Handler());
+				so.setup(checkBox, cr);
+				cr.registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, so);
 			}
 		});
+	}
+	
+	//Need this to listen for settings changes
+	protected static class SettingsObserver extends ContentObserver {	
+		private HtcCheckBox cb = null;
+		private ContentResolver cr;
+		public SettingsObserver(Handler handler) {
+			super(handler);			
+		}
+		public void setup(HtcCheckBox cb, ContentResolver cr) {
+			this.cb = cb;
+			this.cr = cr;
+		}
+		@Override
+		public void onChange(boolean selfChange) {
+			this.onChange(selfChange, null);
+		}	
+		@Override
+		public void onChange(boolean selfChange, Uri uri) {
+			try {
+				this.cb.setChecked(android.provider.Settings.System.getInt(this.cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE) == 0 ? false : true);
+			} catch (SettingNotFoundException e) {
+				//No brightness setting?
+			}
+		}		
 	}
 	
 	public static void execHook_DisableEQS(final InitPackageResourcesParam resparam) {
