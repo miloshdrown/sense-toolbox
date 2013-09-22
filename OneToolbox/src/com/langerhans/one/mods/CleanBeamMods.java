@@ -232,7 +232,7 @@ public class CleanBeamMods{
 		Field[] fields = R.drawable.class.getFields();
 	    HashMap<String, Integer> dataIcons = new HashMap<String, Integer>();
 	    for (Field field : fields) {
-	        if (field.getName().startsWith("stat_sys_data_")) {
+	        if (field.getName().startsWith("stat_sys_data_") && !field.getName().contains("bluetooth")) { //Because bluetooth is seperate but also stat_sys_data_*. Meh!
 	            try {
 					dataIcons.put(field.getName(), field.getInt(null));
 				} catch (Exception e) {

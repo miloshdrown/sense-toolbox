@@ -35,7 +35,7 @@ Added mod to override "Swipe up from home button for Google Now". It can do the 
 Added mod to hide the MTP notification by making MTP a background service instead of a foreground service.
 Added Vol2Wake. Works in deep sleep. Needs root and a full reboot to be applied!
 Added brightness slider for notifications panel
-Added CleanBeam GPS, BT and data icons.
+Added CleanBeam GPS, BT and data icons. Data icons are the default 3G, H, H+, and LTE icons only for now. More will be added later.
 
 2.0: (Yes, that completely new look is a major release :D)
 Total UI overhaul.
