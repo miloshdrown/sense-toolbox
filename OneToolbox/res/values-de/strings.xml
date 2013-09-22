@@ -177,10 +177,10 @@
 	<string name="sense_swipedownaction_summ">Aktion für ein abwärts Wischen auf dem Home Screen.</string>
 	<string name="sense_swipeupaction_title">Aufwärts-Geste</string>
 	<string name="sense_swipeupaction_summ">Aktion für ein aufwärts Wischen auf dem Home Screen.</string>
-	<string name="sense_swiperightaction_title">###TRANSLATE_ME###</string>
-	<string name="sense_swiperightaction_summ">###TRANSLATE_ME###</string>
-	<string name="sense_swipeleftaction_title">###TRANSLATE_ME###</string>
-	<string name="sense_swipeleftaction_summ">###TRANSLATE_ME###</string>
+	<string name="sense_swiperightaction_title">Nach rechts Geste</string>
+	<string name="sense_swiperightaction_summ">Aktion für ein Wischen nach rechts auf dem Launcher Dock.</string>
+	<string name="sense_swipeleftaction_title">Nach links Geste</string>
+	<string name="sense_swipeleftaction_summ">Aktion für ein Wischen nach links auf dem Launcher Dock.</string>
 	<string name="notselected">Keine ausgewählt</string>
 	<string name="loading_app_data">Lade Apps&#8230;</string>
 	
