@@ -127,6 +127,8 @@
 	<string name="cleanbeam_battery_summ">Änderet das Akku-Icon Design.</string>
 	<string name="cleanbeam_signal_title">Netz-Anzeige</string>
 	<string name="cleanbeam_signal_summ">Aktiviert die CleanBean Netz-Icons.</string>
+	<string name="cleanbeam_data_title">Daten-Anzeige</string>
+	<string name="cleanbeam_data_summ">Aktiviert die CleanBean Icons für mobile Daten.</string>
 	<string name="cleanbeam_headphone_title">Kopfhörer</string>
 	<string name="cleanbeam_headphone_summ">Aktiviert die CleanBean Kopfhörer-Icons.</string>
 	<string name="cleanbeam_beats_title">Beats</string>

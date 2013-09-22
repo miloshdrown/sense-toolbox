@@ -127,6 +127,8 @@
 	<string name="cleanbeam_battery_summ">Смена дизайна иконки батареи.</string>
 	<string name="cleanbeam_signal_title">Сигнал сети</string>
 	<string name="cleanbeam_signal_summ">CleanBeam иконка сигнала.</string>
+	<string name="cleanbeam_data_title">Мобильный Интернет</string>
+	<string name="cleanbeam_data_summ">CleanBeam иконка мобильного инета.</string>
 	<string name="cleanbeam_headphone_title">Наушники</string>
 	<string name="cleanbeam_headphone_summ">CleanBeam иконка наушников.</string>
 	<string name="cleanbeam_beats_title">Beats</string>

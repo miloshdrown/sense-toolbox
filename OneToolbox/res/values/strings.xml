@@ -127,6 +127,8 @@
 	<string name="cleanbeam_battery_summ">Change battery icon design.</string>
 	<string name="cleanbeam_signal_title">Signal bar</string>
 	<string name="cleanbeam_signal_summ">Enable CleanBeam signal bar icons.</string>
+	<string name="cleanbeam_data_title">Mobile data</string>
+	<string name="cleanbeam_data_summ">Enable CleanBeam mobile data icons.</string>
 	<string name="cleanbeam_headphone_title">Headphone</string>
 	<string name="cleanbeam_headphone_summ">Enable CleanBeam headphone icons.</string>
 	<string name="cleanbeam_beats_title">Beats</string>

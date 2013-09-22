@@ -133,6 +133,12 @@
             android:icon="@drawable/stat_sys_5signal_4"
             android:defaultValue="false"/>
         <com.htc.preference.HtcCheckBoxPreference 
+            android:key="pref_key_cb_data"
+            android:summary="@string/cleanbeam_data_summ"
+            android:title="@string/cleanbeam_data_title"
+            android:icon="@drawable/stat_sys_data_inandout_lte"
+            android:defaultValue="false"/>
+        <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_headphone"
             android:summary="@string/cleanbeam_headphone_summ"
             android:title="@string/cleanbeam_headphone_title"

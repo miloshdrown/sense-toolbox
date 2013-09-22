@@ -119,6 +119,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_cb_bt", false))
 				CleanBeamMods.execHook_BtIcon(resparam, MODULE_PATH);
 			
+			if(pref.getBoolean("pref_key_cb_data", false))
+				CleanBeamMods.execHook_DataIcon(resparam, MODULE_PATH);
+			
 			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockLayout(resparam, MODULE_PATH);
 			

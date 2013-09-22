@@ -1,5 +1,9 @@
 package com.langerhans.one.mods;
 
+import java.lang.reflect.Field;
+import java.util.HashMap;
+import java.util.Map.Entry;
+
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.drawable.Drawable;
@@ -221,5 +225,30 @@ public class CleanBeamMods{
 				return modRes.getDrawable(R.drawable.stat_sys_data_bluetooth_connected);
 			}	
 		});
+	}
+
+	public static void execHook_DataIcon(InitPackageResourcesParam resparam, String MODULE_PATH) {
+		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		Field[] fields = R.drawable.class.getFields();
+	    HashMap<String, Integer> dataIcons = new HashMap<String, Integer>();
+	    for (Field field : fields) {
+	        if (field.getName().startsWith("stat_sys_data_")) {
+	            try {
+					dataIcons.put(field.getName(), field.getInt(null));
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+	        }
+	    }
+	    
+	    for(final Entry<String, Integer> icon : dataIcons.entrySet())
+	    {
+	    	resparam.res.setReplacement("com.android.systemui", "drawable", icon.getKey(), new XResources.DrawableLoader(){
+				@Override
+				public Drawable newDrawable(XResources res, int id)	throws Throwable {
+					return modRes.getDrawable(icon.getValue());
+				}	
+			});
+	    }
 	}
 }
