@@ -287,13 +287,15 @@
         <com.htc.preference.HtcPreference
             android:key="pref_key_prism_swipedown_app"
 			android:summary="@string/notselected"
-            android:title="@string/launch_app" />
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
         <com.langerhans.one.utils.HtcListPreferencePlus
             android:key="pref_key_prism_swipedown_toggle"
 			android:summary="@string/notselected"
             android:title="@string/toggle_settings"
             android:entries="@array/global_toggles"
-            android:entryValues="@array/global_toggles_val" />
+            android:entryValues="@array/global_toggles_val"
+            android:icon="@drawable/right_arrow" />
         <com.htc.preference.HtcListPreference
             android:key="pref_key_prism_swipeupaction"
             android:summary="@string/sense_swipeupaction_summ"
@@ -304,14 +306,54 @@
         <com.htc.preference.HtcPreference
             android:key="pref_key_prism_swipeup_app"
 			android:summary="@string/notselected"
-            android:title="@string/launch_app" />
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
         <com.langerhans.one.utils.HtcListPreferencePlus
             android:key="pref_key_prism_swipeup_toggle"
 			android:summary="@string/notselected"
             android:title="@string/toggle_settings"
             android:entries="@array/global_toggles"
-            android:entryValues="@array/global_toggles_val" />
-        </com.htc.preference.HtcPreferenceCategory>
+            android:entryValues="@array/global_toggles_val"
+            android:icon="@drawable/right_arrow" />
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_prism_swiperightaction"
+            android:summary="@string/sense_swiperightaction_summ"
+            android:title="@string/sense_swiperightaction_title"
+            android:entries="@array/global_actions"
+            android:entryValues="@array/global_actions_val"
+            android:defaultValue="1" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_prism_swiperight_app"
+			android:summary="@string/notselected"
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
+        <com.langerhans.one.utils.HtcListPreferencePlus
+            android:key="pref_key_prism_swiperight_toggle"
+			android:summary="@string/notselected"
+            android:title="@string/toggle_settings"
+            android:entries="@array/global_toggles"
+            android:entryValues="@array/global_toggles_val"
+            android:icon="@drawable/right_arrow" />
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_prism_swipeleftaction"
+            android:summary="@string/sense_swipeleftaction_summ"
+            android:title="@string/sense_swipeleftaction_title"
+            android:entries="@array/global_actions"
+            android:entryValues="@array/global_actions_val"
+            android:defaultValue="1" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_prism_swipeleft_app"
+			android:summary="@string/notselected"
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
+        <com.langerhans.one.utils.HtcListPreferencePlus
+            android:key="pref_key_prism_swipeleft_toggle"
+			android:summary="@string/notselected"
+            android:title="@string/toggle_settings"
+            android:entries="@array/global_toggles"
+            android:entryValues="@array/global_toggles_val"
+            android:icon="@drawable/right_arrow" />
+		</com.htc.preference.HtcPreferenceCategory>
     </com.htc.preference.HtcPreferenceScreen>
     
     <com.htc.preference.HtcPreferenceScreen 
@@ -356,13 +398,15 @@
         <com.htc.preference.HtcPreference
             android:key="pref_key_controls_backlongpress_app"
 			android:summary="@string/notselected"
-            android:title="@string/launch_app" />
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
         <com.langerhans.one.utils.HtcListPreferencePlus
             android:key="pref_key_controls_backlongpress_toggle"
 			android:summary="@string/notselected"
             android:title="@string/toggle_settings"
             android:entries="@array/global_toggles"
-            android:entryValues="@array/global_toggles_val" />
+            android:entryValues="@array/global_toggles_val"
+            android:icon="@drawable/right_arrow" />
         </com.htc.preference.HtcPreferenceCategory>
         
         <com.htc.preference.HtcPreferenceCategory
@@ -378,13 +422,15 @@
         <com.htc.preference.HtcPreference
             android:key="pref_key_controls_homeassist_app"
 			android:summary="@string/notselected"
-            android:title="@string/launch_app" />
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
         <com.langerhans.one.utils.HtcListPreferencePlus
             android:key="pref_key_controls_homeassist_toggle"
 			android:summary="@string/notselected"
             android:title="@string/toggle_settings"
             android:entries="@array/global_toggles"
-            android:entryValues="@array/global_toggles_val" />
+            android:entryValues="@array/global_toggles_val"
+            android:icon="@drawable/right_arrow" />
         </com.htc.preference.HtcPreferenceCategory>
     </com.htc.preference.HtcPreferenceScreen>
     

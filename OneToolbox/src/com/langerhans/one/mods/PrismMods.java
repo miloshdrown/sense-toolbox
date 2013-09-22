@@ -604,20 +604,6 @@ public class PrismMods {
 	static int y_start = 0;
 	
 	public static void execHook_DockScroll(final LoadPackageParam lpparam) {
-		XposedBridge.hookAllConstructors(XposedHelpers.findClass("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader), new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				//XposedHelpers.setObjectField(param.thisObject, "m_nCellCountY", 3);
-			}
-		});
-
-		findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				//ViewGroup m_content = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_content");
-			}
-		});
-
 		XposedHelpers.findAndHookMethod("com.htc.launcher.CellLayout", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
@@ -662,19 +648,33 @@ public class PrismMods {
 			if (e1 == null || e2 == null) return false;
 			
 			if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE_HORIZ && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				//XposedBridge.log("Horizontal Swipe to right!");
-				GlobalActions.takeScreenshot(helperContext);
-				return true;
+				switch (Integer.parseInt(XMain.pref.getString("pref_key_prism_swiperightaction", "1"))) {
+					case 2: return GlobalActions.expandNotifications(helperContext);
+					case 3: return GlobalActions.expandEQS(helperContext);
+					case 4: return GlobalActions.lockDevice(helperContext);
+					case 5: return GlobalActions.goToSleep(helperContext);
+					case 6: return GlobalActions.takeScreenshot(helperContext);
+					case 7: return GlobalActions.launchApp(helperContext, 5);
+					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swiperight_toggle", "0")));
+					default: return false;					
+				}
 			}
 			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE_HORIZ && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
-				//XposedBridge.log("Horizontal Swipe to left!");
-				//GlobalActions.toggleWiFi(helperContext);
-				return true;
+				switch (Integer.parseInt(XMain.pref.getString("pref_key_prism_swipeleftaction", "1"))) {
+					case 2: return GlobalActions.expandNotifications(helperContext);
+					case 3: return GlobalActions.expandEQS(helperContext);
+					case 4: return GlobalActions.lockDevice(helperContext);
+					case 5: return GlobalActions.goToSleep(helperContext);
+					case 6: return GlobalActions.takeScreenshot(helperContext);
+					case 7: return GlobalActions.launchApp(helperContext, 6);
+					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swipeleft_toggle", "0")));
+					default: return false;					
+				}
 			}
 
 			if (Math.abs(e2.getY() - e1.getY()) > SWIPE_MIN_DISTANCE_VERT && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 				//XposedBridge.log("Vertical Swipe!");
-				return true;
+				return false;
 			}
 
 			return false;

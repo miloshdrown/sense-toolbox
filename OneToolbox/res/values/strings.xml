@@ -177,8 +177,10 @@
 	<string name="sense_swipedownaction_summ">Action for swipe down gesture on any home screen.</string>
 	<string name="sense_swipeupaction_title">Swipe up action</string>
 	<string name="sense_swipeupaction_summ">Action for swipe up gesture on any home screen.</string>
-	<string name="sense_swipedownapp_title">App to launch on swipe down</string>
-	<string name="sense_swipeupapp_title">App to launch on swipe up</string>
+	<string name="sense_swiperightaction_title">Swipe right action</string>
+	<string name="sense_swiperightaction_summ">Action for swipe right gesture on launcher dock.</string>
+	<string name="sense_swipeleftaction_title">Swipe left action</string>
+	<string name="sense_swipeleftaction_summ">Action for swipe left gesture on launcher dock.</string>
 	<string name="notselected">Not selected</string>
 	<string name="loading_app_data">Loading apps&#8230;</string>
 	
@@ -197,7 +199,6 @@
 	<string name="controls_mods_homeassist">Home assist</string>
 	<string name="controls_homeassistaction_title">Action</string>
 	<string name="controls_homeassistaction_summ">Overrides assist action (which is Google Now by default).</string>
-	<string name="controls_homeassistapp_title">App to launch on home assist</string>
 	<string name="controls_vol2wake_title">Volume2Wake</string>
 	<string name="controls_vol2wake_summ">Wake your phone with the volume keys. Needs Root! Make a FULL reboot to apply!</string>
 	

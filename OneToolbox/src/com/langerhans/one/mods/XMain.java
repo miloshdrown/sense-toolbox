@@ -16,6 +16,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	public static String MODULE_PATH = null;
 	private static int pref_swipedown = 1;
 	private static int pref_swipeup = 1;
+	private static int pref_swiperight = 1;
+	private static int pref_swipeleft = 1;
 	private static int pref_backlongpress = 1;
 	private static int pref_homeassist = 1;
 	
@@ -30,16 +32,18 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		pref_swipedown = Integer.parseInt(pref.getString("pref_key_prism_swipedownaction", "1"));
 		pref_swipeup = Integer.parseInt(pref.getString("pref_key_prism_swipeupaction", "1"));
+		pref_swiperight = Integer.parseInt(pref.getString("pref_key_prism_swiperightaction", "1"));
+		pref_swipeleft = Integer.parseInt(pref.getString("pref_key_prism_swipeleftaction", "1"));
 		pref_backlongpress = Integer.parseInt(pref.getString("pref_key_controls_backlongpressaction", "1"));
 		pref_homeassist = Integer.parseInt(pref.getString("pref_key_controls_homeassistaction", "1"));
 		
-		if (pref_swipedown != 1 || pref_swipeup != 1)
+		if (pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1) {
 			PackagePermissions.initHooks();
+			GlobalActions.setupPWM();
+		}
 		
 		if (pref_backlongpress != 1 || pref_homeassist != 1)
 			ControlsMods.setupPWMKeys();
-		
-		GlobalActions.setupPWM();
 	}
 
 	@Override
@@ -189,7 +193,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_gridtinyfont", false))
 				PrismMods.execHook_AppDrawerGridTinyText(lpparam);
 			
-			PrismMods.execHook_DockScroll(lpparam);
+			if (pref_swiperight != 1 || pref_swipeleft != 1)
+				PrismMods.execHook_DockScroll(lpparam);
 		}
 		
 		if (pkg.equals("com.android.settings"))

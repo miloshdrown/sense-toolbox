@@ -177,8 +177,10 @@
 	<string name="sense_swipedownaction_summ">Присвоить действие жесту вниз на любом домашнем экране ланчера.</string>
 	<string name="sense_swipeupaction_title">Действие на свайп снизу вверх</string>
 	<string name="sense_swipeupaction_summ">Присвоить действие жесту вверх на любом домашнем экране ланчера.</string>
-	<string name="sense_swipedownapp_title">Приложение для запуска по свайпу вниз</string>
-	<string name="sense_swipeupapp_title">Приложение для запуска по свайпу вверх</string>
+	<string name="sense_swiperightaction_title">Действие на свайп вправо</string>
+	<string name="sense_swiperightaction_summ">Присвоить действие жесту вправо на доке ланчера.</string>
+	<string name="sense_swipeleftaction_title">Действие на свайп влево</string>
+	<string name="sense_swipeleftaction_summ">Присвоить действие жесту влево на доке ланчера.</string>
 	<string name="notselected">Не выбрано</string>
 	<string name="loading_app_data">Загрузка списка приложений&#8230;</string>
 	

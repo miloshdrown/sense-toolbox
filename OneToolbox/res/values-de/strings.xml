@@ -177,8 +177,10 @@
 	<string name="sense_swipedownaction_summ">Aktion für ein abwärts Wischen auf dem Home Screen.</string>
 	<string name="sense_swipeupaction_title">Aufwärts-Geste</string>
 	<string name="sense_swipeupaction_summ">Aktion für ein aufwärts Wischen auf dem Home Screen.</string>
-	<string name="sense_swipedownapp_title">Zu startende App (abwärts wischen)</string>
-	<string name="sense_swipeupapp_title">Zu startende App (aufwärts wischen)</string>
+	<string name="sense_swiperightaction_title">###TRANSLATE_ME###</string>
+	<string name="sense_swiperightaction_summ">###TRANSLATE_ME###</string>
+	<string name="sense_swipeleftaction_title">###TRANSLATE_ME###</string>
+	<string name="sense_swipeleftaction_summ">###TRANSLATE_ME###</string>
 	<string name="notselected">Keine ausgewählt</string>
 	<string name="loading_app_data">Lade Apps&#8230;</string>
 	
@@ -194,11 +196,9 @@
 	<string name="controls_mods_backlongpress">Zurück halten</string>
 	<string name="controls_backlongpressaction_title">Aktion</string>
 	<string name="controls_backlongpressaction_summ">Aktion beim halten der Zurück-Taste</string>
-	<string name="controls_backlongpressapp_title">Zu startende App</string>
 	<string name="controls_mods_homeassist">Home wischen</string>
 	<string name="controls_homeassistaction_title">Aktion</string>
 	<string name="controls_homeassistaction_summ">Aktion beim hochwischen von der Home Taste aus. (ersetzt Google Now)</string>
-	<string name="controls_homeassistapp_title">Home wischen App</string>
 	<string name="controls_vol2wake_title">Volume2Wake</string>
 	<string name="controls_vol2wake_summ">Wecke das Handy mit den Lautstärketasten. Benötigt Root! Starte VOLLSTÄNDIG neu nach der Änderung!</string>
 	

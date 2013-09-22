@@ -113,6 +113,16 @@ public class PrefsFragment extends HtcPreferenceFragment {
 					launchApps = findPreference("pref_key_prism_swipeup_app");
 					toggleSettings = findPreference("pref_key_prism_swipeup_toggle");
 				}
+				
+				if (preference.equals(findPreference("pref_key_prism_swiperightaction"))) {
+					launchApps = findPreference("pref_key_prism_swiperight_app");
+					toggleSettings = findPreference("pref_key_prism_swiperight_toggle");
+				}
+				
+				if (preference.equals(findPreference("pref_key_prism_swipeleftaction"))) {
+					launchApps = findPreference("pref_key_prism_swipeleft_app");
+					toggleSettings = findPreference("pref_key_prism_swipeleft_toggle");
+				}
 
 				if (preference.equals(findPreference("pref_key_controls_backlongpressaction"))) {
 					launchApps = findPreference("pref_key_controls_backlongpress_app");
@@ -173,6 +183,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 				
 				final DynamicPreference dp = new DynamicPreference(mContext);
 				dp.setTitle(preference.getTitle());
+				dp.setIcon(preference.getIcon());
 				dp.setDialogTitle(preference.getTitle());
 				dp.setSummary(preference.getSummary());
 				dp.setOrder(preference.getOrder());
@@ -220,26 +231,35 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		};
 		
 		HtcListPreference voldownPreference = (HtcListPreference) findPreference("pref_key_cam_voldown");
-        HtcListPreference volupPreference = (HtcListPreference) findPreference("pref_key_cam_volup");
-        HtcListPreference swipeDownActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipedownaction");
-        HtcListPreference swipeUpActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipeupaction");
-        HtcListPreference backLongPressActionPreference = (HtcListPreference) findPreference("pref_key_controls_backlongpressaction");
-        HtcListPreference homeAssistActionPreference = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
-        
-        voldownPreference.setOnPreferenceChangeListener(camChangeListener);
-        volupPreference.setOnPreferenceChangeListener(camChangeListener);
-        swipeDownActionPreference.setOnPreferenceChangeListener(chooseAction);
-        swipeUpActionPreference.setOnPreferenceChangeListener(chooseAction);
-        backLongPressActionPreference.setOnPreferenceChangeListener(chooseAction);
-        homeAssistActionPreference.setOnPreferenceChangeListener(chooseAction);
-        
+		HtcListPreference volupPreference = (HtcListPreference) findPreference("pref_key_cam_volup");
+		HtcListPreference swipeDownActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipedownaction");
+		HtcListPreference swipeUpActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipeupaction");
+		HtcListPreference swipeRightActionPreference = (HtcListPreference) findPreference("pref_key_prism_swiperightaction");
+		HtcListPreference swipeLeftActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipeleftaction");
+		HtcListPreference backLongPressActionPreference = (HtcListPreference) findPreference("pref_key_controls_backlongpressaction");
+		HtcListPreference homeAssistActionPreference = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
+		
+		voldownPreference.setOnPreferenceChangeListener(camChangeListener);
+		volupPreference.setOnPreferenceChangeListener(camChangeListener);
+		swipeDownActionPreference.setOnPreferenceChangeListener(chooseAction);
+		swipeUpActionPreference.setOnPreferenceChangeListener(chooseAction);
+		swipeRightActionPreference.setOnPreferenceChangeListener(chooseAction);
+		swipeLeftActionPreference.setOnPreferenceChangeListener(chooseAction);
+		backLongPressActionPreference.setOnPreferenceChangeListener(chooseAction);
+		homeAssistActionPreference.setOnPreferenceChangeListener(chooseAction);
+		
 		HtcPreference launchAppsSwipeDown = findPreference("pref_key_prism_swipedown_app");
-		HtcListPreferencePlus toggleSwipeDown = (HtcListPreferencePlus) findPreference("pref_key_prism_swipedown_toggle");
 		HtcPreference launchAppsSwipeUp = findPreference("pref_key_prism_swipeup_app");
-		HtcListPreferencePlus toggleSwipeUp = (HtcListPreferencePlus) findPreference("pref_key_prism_swipeup_toggle");
+		HtcPreference launchAppsSwipeRight = findPreference("pref_key_prism_swiperight_app");
+		HtcPreference launchAppsSwipeLeft = findPreference("pref_key_prism_swipeleft_app");
 		HtcPreference launchAppsBackLongPress = findPreference("pref_key_controls_backlongpress_app");
-		HtcListPreferencePlus toggleBackLongPress = (HtcListPreferencePlus) findPreference("pref_key_controls_backlongpress_toggle");
 		HtcPreference launchAppsHomeAssist = findPreference("pref_key_controls_homeassist_app");
+		
+		HtcListPreferencePlus toggleSwipeDown = (HtcListPreferencePlus) findPreference("pref_key_prism_swipedown_toggle");
+		HtcListPreferencePlus toggleSwipeUp = (HtcListPreferencePlus) findPreference("pref_key_prism_swipeup_toggle");
+		HtcListPreferencePlus toggleSwipeRight = (HtcListPreferencePlus) findPreference("pref_key_prism_swiperight_toggle");
+		HtcListPreferencePlus toggleSwipeLeft = (HtcListPreferencePlus) findPreference("pref_key_prism_swipeleft_toggle");
+		HtcListPreferencePlus toggleBackLongPress = (HtcListPreferencePlus) findPreference("pref_key_controls_backlongpress_toggle");
 		HtcListPreferencePlus toggleHomeAssist = (HtcListPreferencePlus) findPreference("pref_key_controls_homeassist_toggle");
 		
 		OnPreferenceChangeListener setEntryAsSummary = new OnPreferenceChangeListener() {
@@ -264,6 +284,16 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		toggleSwipeUp.setSummary(toggleSwipeUp.getEntry() == null ? not_selected: toggleSwipeUp.getEntry());
 		toggleSwipeUp.setOnPreferenceChangeListener(setEntryAsSummary);
 		
+		launchAppsSwipeRight.setSummary(getAppName(prefs.getString("pref_key_prism_swiperight_app", not_selected)));
+		launchAppsSwipeRight.setOnPreferenceClickListener(clickPref);
+		toggleSwipeRight.setSummary(toggleSwipeRight.getEntry() == null ? not_selected: toggleSwipeRight.getEntry());
+		toggleSwipeRight.setOnPreferenceChangeListener(setEntryAsSummary);
+		
+		launchAppsSwipeLeft.setSummary(getAppName(prefs.getString("pref_key_prism_swipeleft_app", not_selected)));
+		launchAppsSwipeLeft.setOnPreferenceClickListener(clickPref);
+		toggleSwipeLeft.setSummary(toggleSwipeLeft.getEntry() == null ? not_selected: toggleSwipeLeft.getEntry());
+		toggleSwipeLeft.setOnPreferenceChangeListener(setEntryAsSummary);
+		
 		launchAppsBackLongPress.setSummary(getAppName(prefs.getString("pref_key_controls_backlongpress_app", not_selected)));
 		launchAppsBackLongPress.setOnPreferenceClickListener(clickPref);
 		toggleBackLongPress.setSummary(toggleBackLongPress.getEntry() == null ? not_selected: toggleBackLongPress.getEntry());
@@ -278,6 +308,10 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		if (swipeDownActionPreference.getValue().equals("8"))		toggleSwipeDown.setEnabled(true);			else toggleSwipeDown.setEnabled(false);
 		if (swipeUpActionPreference.getValue().equals("7"))			launchAppsSwipeUp.setEnabled(true);			else launchAppsSwipeUp.setEnabled(false);
 		if (swipeUpActionPreference.getValue().equals("8"))			toggleSwipeUp.setEnabled(true);				else toggleSwipeUp.setEnabled(false);
+		if (swipeRightActionPreference.getValue().equals("7"))		launchAppsSwipeRight.setEnabled(true);		else launchAppsSwipeRight.setEnabled(false);
+		if (swipeRightActionPreference.getValue().equals("8"))		toggleSwipeRight.setEnabled(true);			else toggleSwipeRight.setEnabled(false);
+		if (swipeLeftActionPreference.getValue().equals("7"))		launchAppsSwipeLeft.setEnabled(true);		else launchAppsSwipeLeft.setEnabled(false);
+		if (swipeLeftActionPreference.getValue().equals("8"))		toggleSwipeLeft.setEnabled(true);			else toggleSwipeLeft.setEnabled(false);
 		if (backLongPressActionPreference.getValue().equals("7"))	launchAppsBackLongPress.setEnabled(true);	else launchAppsBackLongPress.setEnabled(false);
 		if (backLongPressActionPreference.getValue().equals("8"))	toggleBackLongPress.setEnabled(true);		else toggleBackLongPress.setEnabled(false);
 		if (homeAssistActionPreference.getValue().equals("7"))		launchAppsHomeAssist.setEnabled(true);		else launchAppsHomeAssist.setEnabled(false);
@@ -335,14 +369,6 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		}
 		return (ai != null ? pm.getApplicationLabel(ai) : not_selected);
 	}
-	
-	public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    	if (requestCode == 13370 && resultCode == -1)
-    	((HtcListPreference)findPreference("pref_key_prism_swipedownaction")).setValue("4");
-
-    	if (requestCode == 13371 && resultCode == -1)
-    	((HtcListPreference)findPreference("pref_key_prism_swipeupaction")).setValue("4");
-    }
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
