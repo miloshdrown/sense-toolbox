@@ -209,6 +209,8 @@
 	<string name="various_apm_summ">Aktiviert die erweiterten Startoptionen\nWenn du das native APM nutzt, deaktiviere die Option besser.</string>
 	<string name="various_scron_title">Aktiviere \'Aktiv lassen\'</string>
 	<string name="various_scron_summ">Zeige \'Aktiv lassen\' Option in in den Display- und den Entwicklereinstellungen.</string>
+	<string name="various_apps_title">###TRANSLATE_ME###</string>
+	<string name="various_apps_summ">###TRANSLATE_ME###</string>
 	<string name="various_volsnd_title">Deaktiviere Lautstärke-Töne</string>
 	<string name="various_volsnd_summ">Deaktviert die Töne beim Ändern der Lautstärke mit den Tasten.</string>
 	<string name="various_mtpnotif_title">Verstecke MTP-Benachrichtigung</string>
@@ -241,5 +243,15 @@
 	<string name="toggle_flash_off">Taschenlampe: Ausgeschaltet</string>
 	<string name="toggle_mobiledata_on">Mobile datein eingeschaltet</string>
 	<string name="toggle_mobiledata_off">Mobile Daten ausgeschaltet</string>
+	
+	<string name="appdetails_launch">###TRANSLATE_ME###</string>
+	<string name="appdetails_package">###TRANSLATE_ME###</string>
+	<string name="appdetails_apk_file">###TRANSLATE_ME###</string>
+	<string name="appdetails_apk_path">###TRANSLATE_ME###</string>
+	<string name="appdetails_data_path">###TRANSLATE_ME###</string>
+	<string name="appdetails_dev">###TRANSLATE_ME###</string>
+	<string name="appdetails_proc_name">###TRANSLATE_ME###</string>
+	<string name="appdetails_uid">###TRANSLATE_ME###</string>
+	<string name="appdetails_sdk">###TRANSLATE_ME###</string>
 
 </resources>

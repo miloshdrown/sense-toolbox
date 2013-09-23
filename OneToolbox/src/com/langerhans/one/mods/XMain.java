@@ -204,6 +204,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if(pref.getBoolean("pref_key_other_keepscreenon", false))
 				SettingsMods.execHook_ScreenOn(lpparam);
+
+			if(pref.getBoolean("pref_key_other_appdetails", false))
+				SettingsMods.execHook_Apps(lpparam);
 		}
 		
 		if (pkg.equals("com.android.camera"))

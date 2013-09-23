@@ -209,6 +209,8 @@
 	<string name="various_apm_summ">Расширенное меню управления питанием\nЕсли у Вас установлено это меню с прошивкой, то тут следует его отключить.</string>
 	<string name="various_scron_title">Опция \'Не выключать экран\'</string>
 	<string name="various_scron_summ">Добавляет пункт \'Не выключать экран\' в разделы \'Экран, кнопки и жесты\' и \'Для разработчиков\'.</string>
+	<string name="various_apps_title">Доп. сведения о приложении</string>
+	<string name="various_apps_summ">Добавляет новые элементы в Настройки > Приложения:\n- кнопку запуска приложения\n- имя и путь до apk\n- путь до данных\n- имя процесса\n- номер пользователя\n- версию SDK</string>
 	<string name="various_volsnd_title">Нет звука при смене громкости</string>
 	<string name="various_volsnd_summ">Отключение проверочного звука при изменении громкости.</string>
 	<string name="various_mtpnotif_title">Скрыть уведомление сервиса MTP</string>
@@ -241,5 +243,15 @@
 	<string name="toggle_flash_off">Фонарик выключен</string>
 	<string name="toggle_mobiledata_on">Мобильный Интернет включен</string>
 	<string name="toggle_mobiledata_off">Мобильный Интернет отключен</string>
+	
+	<string name="appdetails_launch">Запустить</string>
+	<string name="appdetails_package">Пакет</string>
+	<string name="appdetails_apk_file">Имя APK файла</string>
+	<string name="appdetails_apk_path">Путь до APK</string>
+	<string name="appdetails_data_path">Путь до данных</string>
+	<string name="appdetails_dev">Для разработчика</string>
+	<string name="appdetails_proc_name">Имя процесса</string>
+	<string name="appdetails_uid">ID пользователя</string>
+	<string name="appdetails_sdk">Версия SDK</string>
 
 </resources>

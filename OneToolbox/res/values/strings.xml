@@ -209,6 +209,8 @@
 	<string name="various_apm_summ">Enable or disable Advanced Power Menu\nIf you have the native APM installed, better keep this disabled.</string>
 	<string name="various_scron_title">Enable \'Keep screen on\'</string>
 	<string name="various_scron_summ">Show the \'Keep screen on\' option in display settings and development settings.</string>
+	<string name="various_apps_title">Show additional app details</string>
+	<string name="various_apps_summ">Add new fields to Settings > Apps:\n- button to launch an app\n- apk filename and path\n- data path\n- process name\n- user id\n- target SDK version</string>
 	<string name="various_volsnd_title">Disable volume change sound</string>
 	<string name="various_volsnd_summ">Check to disable the sound on volume change.</string>
 	<string name="various_mtpnotif_title">Hide MTP notification</string>
@@ -241,6 +243,16 @@
 	<string name="toggle_flash_off">Flashlight: off</string>
 	<string name="toggle_mobiledata_on">Mobile data enabled</string>
 	<string name="toggle_mobiledata_off">Mobile data disabled</string>
+	
+	<string name="appdetails_launch">Launch</string>
+	<string name="appdetails_package">Package</string>
+	<string name="appdetails_apk_file">APK filename</string>
+	<string name="appdetails_apk_path">APK path</string>
+	<string name="appdetails_data_path">Data path</string>
+	<string name="appdetails_dev">Developer</string>
+	<string name="appdetails_proc_name">Process name</string>
+	<string name="appdetails_uid">User ID</string>
+	<string name="appdetails_sdk">Target SDK Version</string>
 	
 	<string name="about_devs">Developers</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
