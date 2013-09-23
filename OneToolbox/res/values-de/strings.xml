@@ -209,8 +209,8 @@
 	<string name="various_apm_summ">Aktiviert die erweiterten Startoptionen\nWenn du das native APM nutzt, deaktiviere die Option besser.</string>
 	<string name="various_scron_title">Aktiviere \'Aktiv lassen\'</string>
 	<string name="various_scron_summ">Zeige \'Aktiv lassen\' Option in in den Display- und den Entwicklereinstellungen.</string>
-	<string name="various_apps_title">###TRANSLATE_ME###</string>
-	<string name="various_apps_summ">###TRANSLATE_ME###</string>
+	<string name="various_apps_title">Zusätzliche App-Details</string>
+	<string name="various_apps_summ">Neue Felder für Apps unter Einstellungen > Apps:\n- Taste zum Starten\n- APK Name und Pfad\n- Daten-Pfad\n- Prozess\n- Benutzer ID\n- SDK Version</string>
 	<string name="various_volsnd_title">Deaktiviere Lautstärke-Töne</string>
 	<string name="various_volsnd_summ">Deaktviert die Töne beim Ändern der Lautstärke mit den Tasten.</string>
 	<string name="various_mtpnotif_title">Verstecke MTP-Benachrichtigung</string>
@@ -244,14 +244,14 @@
 	<string name="toggle_mobiledata_on">Mobile datein eingeschaltet</string>
 	<string name="toggle_mobiledata_off">Mobile Daten ausgeschaltet</string>
 	
-	<string name="appdetails_launch">###TRANSLATE_ME###</string>
-	<string name="appdetails_package">###TRANSLATE_ME###</string>
-	<string name="appdetails_apk_file">###TRANSLATE_ME###</string>
-	<string name="appdetails_apk_path">###TRANSLATE_ME###</string>
-	<string name="appdetails_data_path">###TRANSLATE_ME###</string>
-	<string name="appdetails_dev">###TRANSLATE_ME###</string>
-	<string name="appdetails_proc_name">###TRANSLATE_ME###</string>
-	<string name="appdetails_uid">###TRANSLATE_ME###</string>
-	<string name="appdetails_sdk">###TRANSLATE_ME###</string>
+	<string name="appdetails_launch">Starten</string>
+	<string name="appdetails_package">Paket</string>
+	<string name="appdetails_apk_file">APK Datei</string>
+	<string name="appdetails_apk_path">APK Pfad</string>
+	<string name="appdetails_data_path">Daten Pfad</string>
+	<string name="appdetails_dev">Entwickler</string>
+	<string name="appdetails_proc_name">Prozess</string>
+	<string name="appdetails_uid">User ID</string>
+	<string name="appdetails_sdk">SDK Version</string>
 
 </resources>

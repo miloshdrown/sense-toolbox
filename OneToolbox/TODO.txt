@@ -36,6 +36,7 @@ Added mod to hide the MTP notification by making MTP a background service instea
 Added Vol2Wake. Works in deep sleep. Needs root and a full reboot to be applied!
 Added brightness slider for notifications panel
 Added CleanBeam GPS, BT and data icons. Data icons are the default 3G, H, H+, and LTE icons only for now. More will be added later.
+Added mod to show additional information for each app under Settings > Apps. Includes button to launch an app, apk filename and path, data path, process name, user id, target SDK version.
 
 2.0: (Yes, that completely new look is a major release :D)
 Total UI overhaul.
