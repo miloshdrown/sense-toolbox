@@ -4,7 +4,9 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 
 import java.lang.reflect.Method;
+import java.util.List;
 
+import android.app.ActivityManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -12,6 +14,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.location.LocationManager;
@@ -21,6 +24,7 @@ import android.net.wifi.WifiManager;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
@@ -31,16 +35,16 @@ import com.langerhans.one.R;
 import com.langerhans.one.mods.XMain;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
 public class GlobalActions {
 
 	public static Object mPWM = null;
+	public static Handler mHandler = null;
 	private static int mCurrentLEDLevel = 0;
 	
-	private static BroadcastReceiver mBR = new BroadcastReceiver() {      
-		public void onReceive(Context context, Intent intent)
+	private static BroadcastReceiver mBR = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent)
 		{
 			String action = intent.getAction();
 			// Actions
@@ -66,6 +70,18 @@ public class GlobalActions {
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+			if (action.equals("com.langerhans.one.mods.action.killForegroundAppShedule")) {
+				if (mHandler == null) return;
+				mHandler.postDelayed(new Runnable() {
+					@Override
+				    public void run() {
+						removeTask(context, true);
+				    }
+				}, 1000);
+			}
+			if (action.equals("com.langerhans.one.mods.action.killForegroundApp")) {
+				removeTask(context, false);
 			}
 			
 			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
@@ -226,6 +242,38 @@ public class GlobalActions {
 	
 	private static String beforeEnable;
 	
+	private static void removeTask(Context context, boolean isKillWithoutDialog) {
+		try {
+			final ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+			final List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+			final Method removeTask = am.getClass().getMethod("removeTask", new Class[] { int.class, int.class });
+			removeTask.setAccessible(true);
+
+			boolean isLauncher = false;
+			if (!isKillWithoutDialog) {
+				PackageManager pm = context.getPackageManager();
+				Intent intent_home = new Intent(Intent.ACTION_MAIN);
+				intent_home.addCategory(Intent.CATEGORY_HOME);
+				intent_home.addCategory(Intent.CATEGORY_DEFAULT);
+				List<ResolveInfo> launcherList = pm.queryIntentActivities(intent_home, 0);
+				String thisPkg = taskInfo.get(0).topActivity.getPackageName();
+				
+				for (ResolveInfo launcher: launcherList)
+				if (launcher.activityInfo.packageName.equals(thisPkg)) isLauncher = true;
+			}
+			
+			if (isLauncher && !isKillWithoutDialog) {
+				Intent intent_dilaog = new Intent();
+				intent_dilaog.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+				intent_dilaog.setClassName("com.langerhans.one", "com.langerhans.one.DimmedActivity");
+				intent_dilaog.putExtra("dialogType", 2);
+				context.startActivity(intent_dilaog);
+			} else removeTask.invoke(am, Integer.valueOf(taskInfo.get(0).id), Integer.valueOf(1));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	private static void turnGPSOn(Context context) {
 		beforeEnable = Settings.Secure.getString (context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 		String newSet;
@@ -235,7 +283,6 @@ public class GlobalActions {
 			newSet = String.format("%s,%s", beforeEnable, LocationManager.GPS_PROVIDER);
 		
 		try {
-			XposedBridge.log("Putting: " + newSet);
 			Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet);	
 		} catch(Exception e) {
 			e.printStackTrace();
@@ -277,6 +324,7 @@ public class GlobalActions {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					mPWM = param.thisObject;
+					mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 		            IntentFilter intentfilter = new IntentFilter();
 		            
@@ -284,6 +332,8 @@ public class GlobalActions {
 		            intentfilter.addAction("com.langerhans.one.mods.action.GoToSleep");
 		            intentfilter.addAction("com.langerhans.one.mods.action.LockDevice");
 		            intentfilter.addAction("com.langerhans.one.mods.action.TakeScreenshot");
+		            intentfilter.addAction("com.langerhans.one.mods.action.killForegroundApp");
+		            intentfilter.addAction("com.langerhans.one.mods.action.killForegroundAppShedule");
 		            
 		            // Toggles
 		            intentfilter.addAction("com.langerhans.one.mods.action.ToggleWiFi");
@@ -398,6 +448,18 @@ public class GlobalActions {
         try {
         	Intent intent = new Intent();
             intent.setAction("com.langerhans.one.mods.action.TakeScreenshot");
+            context.sendBroadcast(intent);
+        	return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+	}
+	
+	public static boolean killForegroundApp(Context context) {
+        try {
+        	Intent intent = new Intent();
+            intent.setAction("com.langerhans.one.mods.action.killForegroundApp");
             context.sendBroadcast(intent);
         	return true;
         } catch (Exception e) {

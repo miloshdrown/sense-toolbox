@@ -1,6 +1,7 @@
 package com.langerhans.one;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -239,6 +240,12 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		HtcListPreference backLongPressActionPreference = (HtcListPreference) findPreference("pref_key_controls_backlongpressaction");
 		HtcListPreference homeAssistActionPreference = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
 		
+		// Insert new option to controls listprefs
+		backLongPressActionPreference.setEntries(addToArray(backLongPressActionPreference.getEntries(), 5, getResources().getString(R.string.kill_foreground)));
+		backLongPressActionPreference.setEntryValues(addToArray(backLongPressActionPreference.getEntryValues(), 5, "9"));
+		homeAssistActionPreference.setEntries(addToArray(homeAssistActionPreference.getEntries(), 5, getResources().getString(R.string.kill_foreground)));
+		homeAssistActionPreference.setEntryValues(addToArray(homeAssistActionPreference.getEntryValues(), 5, "9"));
+		
 		voldownPreference.setOnPreferenceChangeListener(camChangeListener);
 		volupPreference.setOnPreferenceChangeListener(camChangeListener);
 		swipeDownActionPreference.setOnPreferenceChangeListener(chooseAction);
@@ -334,6 +341,13 @@ public class PrefsFragment extends HtcPreferenceFragment {
 				return true;
 			}
         });
+	}
+	
+	private CharSequence[] addToArray(CharSequence[] cs, int position, String toAdd) {
+		List<CharSequence> entries = new ArrayList<CharSequence>(Arrays.asList(cs));
+		entries.add(position, toAdd);
+		CharSequence[] entriesNew = entries.toArray(new CharSequence[entries.size()]);
+		return entriesNew;
 	}
 	
 	public void getApps() {

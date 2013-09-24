@@ -29,7 +29,8 @@ public class OtherMods{
 					final Context ctx = (Context) param.args[0];
 					Intent intent = new Intent();
 					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					intent.setClassName("com.langerhans.one", "com.langerhans.one.ApmActivity");
+					intent.setClassName("com.langerhans.one", "com.langerhans.one.DimmedActivity");
+					intent.putExtra("dialogType", 1);
 					
 					IntentFilter filter = new IntentFilter();
 					filter.addAction("ONETB_REBOOT");

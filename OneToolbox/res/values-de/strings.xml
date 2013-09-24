@@ -204,6 +204,11 @@
 	<string name="controls_vol2wake_title">Volume2Wake</string>
 	<string name="controls_vol2wake_summ">Wecke das Handy mit den Lautstärketasten. Benötigt Root! Starte VOLLSTÄNDIG neu nach der Änderung!</string>
 	
+	<string name="kill_foreground">###TRANSLATE_ME###</string>
+	<string name="kill_foreground_warn">###TRANSLATE_ME###</string>
+	<string name="kill_foreground_yes">###TRANSLATE_ME###</string>
+	<string name="kill_foreground_no">###TRANSLATE_ME###</string>
+	
 	<string name="various_mods">Verschiedene Mods</string>
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Aktiviert die erweiterten Startoptionen\nWenn du das native APM nutzt, deaktiviere die Option besser.</string>

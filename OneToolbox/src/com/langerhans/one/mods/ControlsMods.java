@@ -39,7 +39,7 @@ public class ControlsMods {
 								isBackLongPressed = false;
 							}
 							if (action == 1 && isBackLongPressed == true) {
-								param.setResult(-1L);
+								param.setResult(0);
 							}
 						}
 					}
@@ -70,8 +70,9 @@ public class ControlsMods {
 										case 4: GlobalActions.lockDevice(mContext); break;
 										case 5: GlobalActions.goToSleep(mContext); break;
 										case 6: GlobalActions.takeScreenshot(mContext); break;
-										case 7: GlobalActions.launchApp(mContext, 3); break;
+										case 7: XposedHelpers.callMethod(param.thisObject, "dismissKeyguardLw"); GlobalActions.launchApp(mContext, 3); break;
 										case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpress_toggle", "0"))); break;
+										case 9: GlobalActions.killForegroundApp(mContext); break;
 									}
 								}
 								isBackLongPressed = true;
@@ -95,22 +96,33 @@ public class ControlsMods {
 					int pref_homeassist = Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassistaction", "1"));
 					if (pref_homeassist != 1) {
 						Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+						param.setResult(null);
 						switch (pref_homeassist) {
 							case 2: GlobalActions.expandNotifications(mContext); break;
 							case 3: GlobalActions.expandEQS(mContext); break;
 							case 4: GlobalActions.lockDevice(mContext); break;
 							case 5: GlobalActions.goToSleep(mContext); break;
 							case 6: GlobalActions.takeScreenshot(mContext); break;
-							case 7: GlobalActions.launchApp(mContext, 4); break;
+							case 7: XposedHelpers.callMethod(param.thisObject, "dismissKeyguardLw"); GlobalActions.launchApp(mContext, 4); break;
 							case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassist_toggle", "0"))); break;
+							case 9: GlobalActions.killForegroundApp(mContext); break;
 						}
-						param.setResult(null);
 					}
 				}
 			});
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static void execHook_dieGoogleNow(LoadPackageParam lpparam) {
+		final Class<?> clsGPV = findClass("com.htc.lockscreen.HtcLockScreen", lpparam.classLoader);
+		findAndHookMethod(clsGPV, "launchGoogleNow", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.setResult(null);
+			}
+		});
 	}
 
 	public static void execHook_Vol2Wake(final LoadPackageParam lpparam) {

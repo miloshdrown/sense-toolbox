@@ -200,6 +200,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				PrismMods.execHook_DockScroll(lpparam);
 		}
 		
+		if (pkg.equals("com.htc.lockscreen")) {
+			if (pref_homeassist != 1)
+				ControlsMods.execHook_dieGoogleNow(lpparam);
+		}		
+		
 		if (pkg.equals("com.android.settings"))
 		{
 			if(pref.getBoolean("pref_key_other_keepscreenon", false))

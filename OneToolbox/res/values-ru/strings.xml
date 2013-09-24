@@ -204,6 +204,11 @@
 	<string name="controls_vol2wake_title">Пробуждение на клавиши громкости</string>
 	<string name="controls_vol2wake_summ">Выводит устройство из режима сна при нажатии на клавиши громкости. Обязателен root! Для включения нужна полная перезагрузка!</string>
 	
+	<string name="kill_foreground">Выгрузить текущее приложение</string>
+	<string name="kill_foreground_warn">Вы пытаетесь выгрузить ланчер!</string>
+	<string name="kill_foreground_yes">Я знаю</string>
+	<string name="kill_foreground_no">Отмена!</string>
+	
 	<string name="various_mods">Различные моды</string>
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Расширенное меню управления питанием\nЕсли у Вас установлено это меню с прошивкой, то тут следует его отключить.</string>
