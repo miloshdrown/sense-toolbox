@@ -22,6 +22,14 @@
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
+2.1.1
+Fix for Vol2Wake. After installation go into the settings, disable Vol2Wake, wait a sec, enable it again, full reboot to apply. You don't need to do it if you don't have problems.
+Fix for home assist action on lockscreen.
+Fix for misaligned text under CleanBeam settings.
+Fixed missing translation.
+Added back button to kill option.
+App launch on long press back and home assist will now dismiss lockscreen. Only lockscreen, NOT your PIN or pattern lock. I repeat: Toolbox does NOT circumvent your lock :D
+
 2.1:
 Swipes are now a bit more sensetive.
 Fixed the flashing "more notifications" icon in most places. It still may happen when you come from camera app. Just wait until it updates...
