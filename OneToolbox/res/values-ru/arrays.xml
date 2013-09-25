@@ -58,8 +58,8 @@
     
     <string-array name="global_actions">
         <item >Нет действия</item>
-        <item >Октрыть панель уведомлений</item>
-        <item >Октрыть панель EQS</item>
+        <item >Открыть панель уведомлений</item>
+        <item >Открыть панель EQS</item>
         <item >Заблокировать девайс</item>
         <item >Выключить экран (режим сна)</item>
         <item >Сделать снимок экрана</item>

@@ -603,7 +603,7 @@ public class PrismMods {
 	static int x_start = 0;
 	static int y_start = 0;
 	
-	public static void execHook_DockScroll(final LoadPackageParam lpparam) {
+	public static void execHook_DockSwipe(final LoadPackageParam lpparam) {
 		XposedHelpers.findAndHookMethod("com.htc.launcher.CellLayout", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {

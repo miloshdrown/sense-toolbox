@@ -197,7 +197,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				PrismMods.execHook_AppDrawerGridTinyText(lpparam);
 			
 			if (pref_swiperight != 1 || pref_swipeleft != 1)
-				PrismMods.execHook_DockScroll(lpparam);
+				PrismMods.execHook_DockSwipe(lpparam);
 		}
 		
 		if (pkg.equals("com.htc.lockscreen")) {

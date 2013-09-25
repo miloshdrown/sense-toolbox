@@ -28,6 +28,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.widget.Toast;
 
@@ -71,6 +72,7 @@ public class GlobalActions {
 					e.printStackTrace();
 				}
 			}
+			/*
 			if (action.equals("com.langerhans.one.mods.action.killForegroundAppShedule")) {
 				if (mHandler == null) return;
 				mHandler.postDelayed(new Runnable() {
@@ -80,8 +82,9 @@ public class GlobalActions {
 					}
 				}, 1000);
 			}
+			*/
 			if (action.equals("com.langerhans.one.mods.action.killForegroundApp")) {
-				removeTask(context, false);
+				removeTask(context);
 			}
 			
 			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
@@ -242,7 +245,7 @@ public class GlobalActions {
 	
 	private static String beforeEnable;
 	
-	private static void removeTask(Context context, boolean isKillWithoutDialog) {
+	private static void removeTask(Context context) {
 		try {
 			final ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
 			final List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
@@ -253,28 +256,30 @@ public class GlobalActions {
 			String thisPkg = taskInfo.get(0).topActivity.getPackageName();
 			
 			boolean isLauncher = false;
-			if (!isKillWithoutDialog) {
-				PackageManager pm = context.getPackageManager();
-				Intent intent_home = new Intent(Intent.ACTION_MAIN);
-				intent_home.addCategory(Intent.CATEGORY_HOME);
-				intent_home.addCategory(Intent.CATEGORY_DEFAULT);
-				List<ResolveInfo> launcherList = pm.queryIntentActivities(intent_home, 0);
-				
-				for (ResolveInfo launcher: launcherList)
-				if (launcher.activityInfo.packageName.equals(thisPkg)) isLauncher = true;
-			}
+			PackageManager pm = context.getPackageManager();
+			Intent intent_home = new Intent(Intent.ACTION_MAIN);
+			intent_home.addCategory(Intent.CATEGORY_HOME);
+			intent_home.addCategory(Intent.CATEGORY_DEFAULT);
+			List<ResolveInfo> launcherList = pm.queryIntentActivities(intent_home, 0);
 			
-			if (isLauncher && !isKillWithoutDialog) {
-				Intent intent_dilaog = new Intent();
-				intent_dilaog.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-				intent_dilaog.setClassName("com.langerhans.one", "com.langerhans.one.DimmedActivity");
-				intent_dilaog.putExtra("dialogType", 2);
-				context.startActivity(intent_dilaog);
-			} else {
-				// Removes from recents also
-				removeTask.invoke(am, Integer.valueOf(taskInfo.get(0).id), Integer.valueOf(1));
-				// Force closes all package parts 
-				forceStopPackage.invoke(am, thisPkg);				
+			for (ResolveInfo launcher: launcherList)
+			if (launcher.activityInfo.packageName.equals(thisPkg)) isLauncher = true;
+			
+			if (isLauncher) return;
+
+			// Removes from recents also
+			removeTask.invoke(am, Integer.valueOf(taskInfo.get(0).id), Integer.valueOf(1));
+			// Force closes all package parts 
+			forceStopPackage.invoke(am, thisPkg);
+			
+			// Getting HTC Power Saver vibration state
+			Class<?> clsSP = Class.forName("android.os.SystemProperties");
+			Method getFunc = clsSP.getDeclaredMethod("get", String.class);
+			String haptic = (String)getFunc.invoke(null, "sys.psaver.haptic");
+			
+			if (haptic.equals("false")) {			
+				Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
+				vibe.vibrate(50);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -340,7 +345,7 @@ public class GlobalActions {
 		            intentfilter.addAction("com.langerhans.one.mods.action.LockDevice");
 		            intentfilter.addAction("com.langerhans.one.mods.action.TakeScreenshot");
 		            intentfilter.addAction("com.langerhans.one.mods.action.killForegroundApp");
-		            intentfilter.addAction("com.langerhans.one.mods.action.killForegroundAppShedule");
+		            //intentfilter.addAction("com.langerhans.one.mods.action.killForegroundAppShedule");
 		            
 		            // Toggles
 		            intentfilter.addAction("com.langerhans.one.mods.action.ToggleWiFi");

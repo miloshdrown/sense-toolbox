@@ -1,9 +1,6 @@
 package com.langerhans.one;
 
-import com.htc.widget.HtcAlertDialog;
-
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -20,7 +17,7 @@ public class DimmedActivity extends Activity {
 		if (dialogType == 1) {
 			ApmDialog rebD = new ApmDialog(this);
 			rebD.show();
-		} else if (dialogType == 2) {
+		} /* else if (dialogType == 2) {
 			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(this);
 			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
 			    @Override
@@ -39,7 +36,7 @@ public class DimmedActivity extends Activity {
 			    }
 			};
 			builder.setMessage(R.string.kill_foreground_warn).setCancelable(false).setPositiveButton(R.string.kill_foreground_yes, dialogClickListener).setNegativeButton(R.string.kill_foreground_no, dialogClickListener).show();
-		} 
+		} */ 
 	}
 
 	@Override
