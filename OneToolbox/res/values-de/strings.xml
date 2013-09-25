@@ -85,6 +85,7 @@
 	<string name="dummy"></string>
 	
 	<string name="transparency_msg">0 = transparent, 100 = undurchsichtig</string>
+	<string name="transparency_enable">Transparenz aktivieren</string>
 	<string name="launch_app">App starten</string>
 	<string name="toggle_settings">Einstellung ändern</string>
 	

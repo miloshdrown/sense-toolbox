@@ -52,21 +52,21 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.htc.launcher"))
 		{
-			if(pref.getInt("pref_key_prism_invisinav_new", 100) != 100)
+			if(pref.getBoolean("pref_key_prism_invisinav_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_prism_invisinav_new", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiNav(resparam, transparency, MODULE_PATH);
 			}
 
-			if(pref.getInt("pref_key_prism_invisifolders", 100) != 100)
+			if(pref.getBoolean("pref_key_prism_invisifolders_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_prism_invisifolders", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiFolder(resparam, transparency);
 			}
 
-			if(pref.getInt("pref_key_prism_invisifoldersbkg", 100) != 100)
+			if(pref.getBoolean("pref_key_prism_invisifoldersbkg_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_prism_invisifoldersbkg", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
@@ -78,14 +78,14 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.android.systemui"))
 		{
-			if(pref.getInt("pref_key_sysui_invisibar_new", 101) != 101)
+			if(pref.getBoolean("pref_key_sysui_invisibar_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_sysui_invisibar_new", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				SysUIMods.execHook_InvisiBar(resparam, MODULE_PATH, transparency);
 			}
 			
-			if(pref.getInt("pref_key_sysui_invisinotify", 100) != 100)
+			if(pref.getBoolean("pref_key_sysui_invisinotify_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_sysui_invisinotify", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
@@ -131,7 +131,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.htc.widget.weatherclock"))
 		{
-			if(pref.getInt("pref_key_prism_invisiwidget", 100) != 100)
+			if(pref.getBoolean("pref_key_prism_invisiwidget_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_prism_invisiwidget", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
@@ -163,13 +163,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if(pkg.equals("com.htc.launcher"))
 		{
-			if(pref.getInt("pref_key_prism_invisinav_new", 100) != 100)
+			if(pref.getBoolean("pref_key_prism_invisinav_enable", false))
 				PrismMods.execHook_PreserveWallpaper(lpparam);
 
 			if(pref.getBoolean("pref_key_prism_folder20", false))
 				PrismMods.execHook_20Folder_code(lpparam);
 			
-			if(pref.getInt("pref_key_sysui_invisibar_new", 100) != 100)
+			if(pref.getBoolean("pref_key_sysui_invisibar_enable", false))
 				PrismMods.execHookTSBFix(lpparam);
 			
 			if(pref.getInt("pref_key_prism_invisidrawer", 100) != 100)

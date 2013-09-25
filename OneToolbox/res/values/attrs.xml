@@ -3,4 +3,8 @@
 	<declare-styleable name="ImageListPreference">
 		<attr name="entryImages" format="reference" />
 	</declare-styleable>
+	
+	<declare-styleable name="SeekBarPreference">
+		<attr name="enableKey" format="string" />
+	</declare-styleable>
 </resources>

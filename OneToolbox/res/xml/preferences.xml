@@ -48,7 +48,8 @@
     		android:dialogMessage="@string/transparency_msg"
     		android:defaultValue="100"
     		android:text=" %"
-    		android:max="100"/>
+    		android:max="100"
+    		toolbox:enableKey="pref_key_sysui_invisibar_enable"/>
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_sysui_invisinotify"
     		android:title="@string/systemui_tnb_title"
@@ -56,7 +57,8 @@
     		android:dialogMessage="@string/transparency_msg"
     		android:defaultValue="100"
     		android:text=" %"
-    		android:max="100"/>
+    		android:max="100"
+    		toolbox:enableKey="pref_key_sysui_invisinotify_enable"/>
 		<com.htc.preference.HtcListPreference
             android:key="pref_key_sysui_clockstyle"
             android:summary="@string/systemui_clockstyle_summ"
@@ -211,7 +213,8 @@
     		android:dialogMessage="@string/transparency_msg"
     		android:defaultValue="100"
     		android:text=" %"
-    		android:max="100"/>
+    		android:max="100"
+    		toolbox:enableKey="pref_key_prism_invisinav_enable"/>
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_prism_invisiwidget"
     		android:title="@string/sense_twidget_title"
@@ -219,7 +222,8 @@
     		android:dialogMessage="@string/transparency_msg"
     		android:defaultValue="100"
     		android:text=" %"
-    		android:max="100"/>
+    		android:max="100"
+    		toolbox:enableKey="pref_key_prism_invisiwidget_enable"/>
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_prism_invisidrawer"
     		android:title="@string/sense_tappdrawer_title"
@@ -227,7 +231,8 @@
     		android:dialogMessage="@string/transparency_msg"
     		android:defaultValue="100"
     		android:text=" %"
-    		android:max="100"/>
+    		android:max="100"
+    		toolbox:enableKey="pref_key_prism_invisidrawer_enable"/>
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_prism_invisifolders"
     		android:title="@string/sense_tfolders_title"
@@ -235,7 +240,8 @@
     		android:dialogMessage="@string/transparency_msg"
     		android:defaultValue="100"
     		android:text=" %"
-    		android:max="100"/>
+    		android:max="100"
+    		toolbox:enableKey="pref_key_prism_invisifolders_enable"/>
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_prism_invisifoldersbkg"
     		android:title="@string/sense_tfoldersbkg_title"
@@ -243,7 +249,8 @@
     		android:dialogMessage="@string/transparency_msg"
     		android:defaultValue="100"
     		android:text=" %"
-    		android:max="100"/>
+    		android:max="100"
+    		toolbox:enableKey="pref_key_prism_invisifoldersbkg_enable"/>
 		</com.htc.preference.HtcPreferenceCategory>
 		
         <com.htc.preference.HtcPreferenceCategory
