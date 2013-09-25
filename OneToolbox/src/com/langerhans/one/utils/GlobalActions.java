@@ -75,9 +75,9 @@ public class GlobalActions {
 				if (mHandler == null) return;
 				mHandler.postDelayed(new Runnable() {
 					@Override
-				    public void run() {
+					public void run() {
 						removeTask(context, true);
-				    }
+					}
 				}, 1000);
 			}
 			if (action.equals("com.langerhans.one.mods.action.killForegroundApp")) {
@@ -247,8 +247,11 @@ public class GlobalActions {
 			final ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
 			final List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
 			final Method removeTask = am.getClass().getMethod("removeTask", new Class[] { int.class, int.class });
+			final Method forceStopPackage = am.getClass().getMethod("forceStopPackage", new Class[] { String.class });
 			removeTask.setAccessible(true);
-
+			forceStopPackage.setAccessible(true);
+			String thisPkg = taskInfo.get(0).topActivity.getPackageName();
+			
 			boolean isLauncher = false;
 			if (!isKillWithoutDialog) {
 				PackageManager pm = context.getPackageManager();
@@ -256,7 +259,6 @@ public class GlobalActions {
 				intent_home.addCategory(Intent.CATEGORY_HOME);
 				intent_home.addCategory(Intent.CATEGORY_DEFAULT);
 				List<ResolveInfo> launcherList = pm.queryIntentActivities(intent_home, 0);
-				String thisPkg = taskInfo.get(0).topActivity.getPackageName();
 				
 				for (ResolveInfo launcher: launcherList)
 				if (launcher.activityInfo.packageName.equals(thisPkg)) isLauncher = true;
@@ -268,7 +270,12 @@ public class GlobalActions {
 				intent_dilaog.setClassName("com.langerhans.one", "com.langerhans.one.DimmedActivity");
 				intent_dilaog.putExtra("dialogType", 2);
 				context.startActivity(intent_dilaog);
-			} else removeTask.invoke(am, Integer.valueOf(taskInfo.get(0).id), Integer.valueOf(1));
+			} else {
+				// Removes from recents also
+				removeTask.invoke(am, Integer.valueOf(taskInfo.get(0).id), Integer.valueOf(1));
+				// Force closes all package parts 
+				forceStopPackage.invoke(am, thisPkg);				
+			}
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
