@@ -9,7 +9,9 @@ import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
 
 import java.util.Arrays;
 
+import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
@@ -17,20 +19,28 @@ import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.provider.Settings;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.GestureDetector;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.htc.widget.HtcPopupWindow;
 import com.langerhans.one.R;
 import com.langerhans.one.utils.GlobalActions;
+import com.langerhans.one.utils.PopupAdapter;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
@@ -52,7 +62,6 @@ public class PrismMods {
 	//private static GestureDetector mDetectorWP;
 	
 	public static void execHook_InvisiNav(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
-		
 		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.htc.launcher", "drawable", "home_nav_bg", new XResources.DrawableLoader() {
 			@Override
@@ -681,5 +690,47 @@ public class PrismMods {
 
 			return false;
 		}
+	}
+	
+	public static void execHook_HomeMenu(final LoadPackageParam lpparam) {
+		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onKeyDown", int.class, KeyEvent.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				if ((Integer)param.args[0] == 82) {
+					final ViewGroup m_workspace = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_workspace");				
+					final Activity launcher = (Activity)param.thisObject;
+					final HtcPopupWindow popup = new HtcPopupWindow(m_workspace.getContext());
+					popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+					popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+					popup.setTouchable(true);
+			        popup.setFocusable(true);
+					popup.setOutsideTouchable(true);
+					ListView options = new ListView(m_workspace.getContext());
+					
+					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+					ListAdapter listAdapter = new PopupAdapter(options.getContext(), modRes.getStringArray(R.array.home_menu));
+					options.setAdapter(listAdapter);
+					options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+						@Override
+						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+							popup.dismiss();
+							if (position == 0) {
+								launcher.startActivity(new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
+							} else if (position == 1) {
+								launcher.startActivity((new Intent("android.intent.action.MAIN")).setAction("com.htc.personalize.ACTION_HOMEPERSONALIZE"));
+							} else if (position == 2) {
+								launcher.startActivity(new Intent(Settings.ACTION_SETTINGS));
+							} else if (position == 3) {
+								launcher.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+							} else if (position == 4) {
+								OtherMods.startAPM(launcher);
+							}
+						}						
+					});
+					popup.setContentView(options);
+					popup.showAtLocation(m_workspace, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+				}
+			}
+		});
 	}
 }

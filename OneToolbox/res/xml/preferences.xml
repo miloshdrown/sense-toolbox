@@ -289,6 +289,11 @@
             android:summary="@string/sense_noblink_summ"
             android:title="@string/sense_noblink_title"
             android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_prism_homemenu"
+            android:summary="@string/sense_homemenu_summ"
+            android:title="@string/sense_homemenu_title"
+            android:defaultValue="false" />
         </com.htc.preference.HtcPreferenceCategory>
         
         <com.htc.preference.HtcPreferenceCategory

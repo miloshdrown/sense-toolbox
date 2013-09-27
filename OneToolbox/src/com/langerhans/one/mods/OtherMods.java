@@ -1,16 +1,9 @@
 package com.langerhans.one.mods;
 
-import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
-import static de.robv.android.xposed.XposedHelpers.findClass;
-import static de.robv.android.xposed.XposedHelpers.setStaticBooleanField;
-import static de.robv.android.xposed.XposedHelpers.setStaticObjectField;
 import android.app.Service;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.util.Log;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedHelpers;
@@ -19,61 +12,25 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class OtherMods{
 
 	public static void execHook_APM(LoadPackageParam lpparam) {
-		final ClassLoader cl = lpparam.classLoader;
-		XC_MethodReplacement mr = new XC_MethodReplacement() {
+		findAndHookMethod("com.htc.app.HtcShutdownThread", lpparam.classLoader, "reboot", Context.class, String.class, boolean.class, new XC_MethodReplacement() {
 			@Override
-			protected Object replaceHookedMethod(final MethodHookParam param) throws Throwable 
-			{
-				try
-				{
-					final Context ctx = (Context) param.args[0];
-					Intent intent = new Intent();
-					intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-					intent.setClassName("com.langerhans.one", "com.langerhans.one.DimmedActivity");
-					intent.putExtra("dialogType", 1);
-					
-					IntentFilter filter = new IntentFilter();
-					filter.addAction("ONETB_REBOOT");
-					filter.addAction("ONETB_RECOVERY");
-					filter.addAction("ONETB_BOOTLOADER");
-					BroadcastReceiver receiver = new BroadcastReceiver() {
-					   @Override
-					   public void onReceive(Context context, Intent intent) {
-					     if(intent.getAction().equals("ONETB_REBOOT"))
-					     {
-				    		setStaticObjectField(findClass("com.android.server.power.ShutdownThread", cl), "mRebootReason", "oem-11");
-				    		setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", cl), "mReboot", true);
-				    		setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", cl), "mRebootSafeMode", false);
-							callStaticMethod(findClass("com.android.server.power.ShutdownThread", cl), "shutdownInner", (Context) param.args[0], false);
-					     }
-					     if(intent.getAction().equals("ONETB_RECOVERY"))
-					     {
-					    	 setStaticObjectField(findClass("com.android.server.power.ShutdownThread", cl), "mRebootReason", "recovery");
-					    	 setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", cl), "mReboot", true);
-					    	 setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", cl), "mRebootSafeMode", false);
-					    	 callStaticMethod(findClass("com.android.server.power.ShutdownThread", cl), "shutdownInner", (Context) param.args[0], false);
-					     }
-					     if(intent.getAction().equals("ONETB_BOOTLOADER"))
-					     {
-					    	 setStaticObjectField(findClass("com.android.server.power.ShutdownThread", cl), "mRebootReason", "bootloader");
-					    	 setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", cl), "mReboot", true);
-					    	 setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", cl), "mRebootSafeMode", false);
-					    	 callStaticMethod(findClass("com.android.server.power.ShutdownThread", cl), "shutdownInner", (Context) param.args[0], false);
-					     }
-					   }
-					};
-
-					ctx.registerReceiver(receiver, filter);
-					
-					ctx.startActivity(intent);
-				}catch(Throwable t)
-				{
-					Log.e("AAAAA", t.toString());
-				}
+			protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+				startAPM((Context)param.args[0]);
 				return null;
 			}
-		};
-		findAndHookMethod("com.htc.app.HtcShutdownThread", cl, "reboot", Context.class, String.class, boolean.class, mr);
+		});
+	}
+	
+	public static void startAPM(Context ctx){
+		try {
+			Intent intent = new Intent();
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.setClassName("com.langerhans.one", "com.langerhans.one.DimmedActivity");
+			intent.putExtra("dialogType", 1);
+			ctx.startActivity(intent);
+		} catch(Throwable t) {
+			t.printStackTrace();
+		}
 	}
 
 	public static void execHook_VolSound(LoadPackageParam lpparam) {

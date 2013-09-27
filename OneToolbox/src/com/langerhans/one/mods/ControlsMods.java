@@ -116,8 +116,8 @@ public class ControlsMods {
 	}
 	
 	public static void execHook_dieGoogleNow(LoadPackageParam lpparam) {
-		final Class<?> clsGPV = findClass("com.htc.lockscreen.HtcLockScreen", lpparam.classLoader);
-		findAndHookMethod(clsGPV, "launchGoogleNow", new XC_MethodHook() {
+		final Class<?> clsHLS = findClass("com.htc.lockscreen.HtcLockScreen", lpparam.classLoader);
+		findAndHookMethod(clsHLS, "launchGoogleNow", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(null);

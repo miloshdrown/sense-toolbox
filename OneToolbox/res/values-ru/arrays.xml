@@ -99,4 +99,11 @@
         <item >8</item>
         <item >9</item>
     </string-array>
+    <string-array name="home_menu">
+        <item >Управление приложениями</item>
+        <item >Персонализация</item>
+        <item >Настройки</item>
+        <item >Wi-Fi</item>
+        <item >APM</item>
+    </string-array>
 </resources>

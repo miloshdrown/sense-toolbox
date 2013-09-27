@@ -85,7 +85,7 @@
 	<string name="dummy"></string>
 	
 	<string name="transparency_msg">0 = прозрачно, 100 = непрозрачно</string>
-	<string name="transparency_enable">###TRANSLATE_ME###</string>
+	<string name="transparency_enable">Изменить прозрачность</string>
 	<string name="launch_app">Запустить приложение</string>
 	<string name="toggle_settings">Переключить настройку</string>
 	
@@ -146,12 +146,12 @@
 	<string name="cleanbeam_gps_summ">CleanBeam иконка GPS</string>
 	<string name="cleanbeam_bt_title">Bluetooth</string>
 	<string name="cleanbeam_bt_summ">CleanBeam иконка Bluetooth</string>
-	<string name="cleanbeam_screenshot_title">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_screenshot_summ">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_usb_title">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_usb_summ">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_powersave_title">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_powersave_summ">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_screenshot_title">Снимок экрана</string>
+	<string name="cleanbeam_screenshot_summ">CleanBeam иконка при снятии скриншота</string>
+	<string name="cleanbeam_usb_title">USB</string>
+	<string name="cleanbeam_usb_summ">CleanBeam иконка USB</string>
+	<string name="cleanbeam_powersave_title">Энергосбережение</string>
+	<string name="cleanbeam_powersave_summ">CleanBeam иконка сервиса сохранения энергии</string>
 	<string name="cleanbeam_sunbeam_title">Установить Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Инсталяция анимированных обоев Sunbeam (Phase Beam).</string>
 	<string name="cleanbeam_post_title">Пост о CleanBeam на XDA</string>
@@ -178,6 +178,8 @@
 	<string name="sense_adnoclock_summ">Скрывает виджет часов и погоды в списке приложений и сдвигает иконки наверх.</string>	
 	<string name="sense_noblink_title">Удаление BlinkFeed</string>
 	<string name="sense_noblink_summ">Только для Android 4.3: отключает и скрывает BlinkFeed.</string>
+	<string name="sense_homemenu_title">Всплывающее меню ланчера</string>
+	<string name="sense_homemenu_summ">Показывать всплывающее меню с полезными командами на домашнем экране при нажатии кнопки Меню или долгом нажатии кнопки Домой.</string>
 	<string name="sense_infiniscroll_title">Бесконечный скроллинг</string>
 	<string name="sense_infiniscroll_summ">Включает переход с последнего домашнего экрана на первый и обратно.</string>
 	<string name="sense_gridtinyfont_title">Мелкий шрифт в списке приложений</string>
@@ -200,8 +202,8 @@
 	<string name="message_smswake_summ">Включение экрана при приходе SMS.</string>
 	<string name="message_toast_title">Отчёт о доставке SMS</string>
 	<string name="message_toast_summ">Показывать всплывающее сообщение вместо уведомления при успешной доставке</string>
-	<string name="message_size_title">###TRANSLATE_ME###</string>
-	<string name="message_size_summ">###TRANSLATE_ME###</string>
+	<string name="message_size_title">Увеличить размер MMS</string>
+	<string name="message_size_summ">Увеличение макс. размера MMS до 300 КБ, 600 КБ или 1000 КБ.</string>
 	
 	<string name="controls_mods">Моды управления</string>
 	<string name="controls_mods_backlongpress">Долгое нажатие на кнопку Назад</string>

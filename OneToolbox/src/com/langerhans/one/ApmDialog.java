@@ -108,7 +108,7 @@ public class ApmDialog extends HtcAlertDialog.Builder {
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
 				case 0: 
-					Intent rebIntent = new Intent("ONETB_REBOOT");
+					Intent rebIntent = new Intent("com.langerhans.one.mods.action.APMReboot");
 					((Activity)context).sendBroadcast(rebIntent);
 					break;
 				case 1:
@@ -120,11 +120,11 @@ public class ApmDialog extends HtcAlertDialog.Builder {
 					}
 					break;
 				case 2:
-					Intent recIntent = new Intent("ONETB_RECOVERY");
+					Intent recIntent = new Intent("com.langerhans.one.mods.action.APMRebootRecovery");
 					((Activity)context).sendBroadcast(recIntent);
 					break;
 				case 3:
-					Intent blIntent = new Intent("ONETB_BOOTLOADER");
+					Intent blIntent = new Intent("com.langerhans.one.mods.action.APMRebootBootloader");
 					((Activity)context).sendBroadcast(blIntent);
 					break;
 				}

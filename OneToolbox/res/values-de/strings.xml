@@ -178,6 +178,8 @@
 	<string name="sense_adnoclock_summ">Entfernt die Uhr im \'Alle Apps\' Menü.</string>	
 	<string name="sense_noblink_title">Entferne BlinkFeed</string>
 	<string name="sense_noblink_summ">Nur auf Android 4.3: Entfernt den BlinkFeed.</string>
+	<string name="sense_homemenu_title">###TRANSLATE_ME###</string>
+	<string name="sense_homemenu_summ">###TRANSLATE_ME###</string>
 	<string name="sense_infiniscroll_title">Unendliches Scrollen</string>
 	<string name="sense_infiniscroll_summ">Unendliches Scrollen durch die Home Screens.</string>
 	<string name="sense_gridtinyfont_title">Kleine Schrift in \'Alle Apps\'</string>

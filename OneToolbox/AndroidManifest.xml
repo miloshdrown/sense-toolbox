@@ -36,7 +36,7 @@
 				<category android:name="android.intent.category.PREFERENCE" />
 			</intent-filter>
 		</activity>
-		<activity android:theme="@style/Invisible" android:name="com.langerhans.one.DimmedActivity" android:launchMode="singleInstance" android:excludeFromRecents="true" />
+		<activity android:theme="@style/Invisible" android:name="com.langerhans.one.DimmedActivity" android:exported="true" android:launchMode="singleInstance" android:excludeFromRecents="true" />
 		<activity android:name="com.langerhans.one.AboutScreen" android:screenOrientation="portrait" />
 		<meta-data android:value="true" android:name="xposedmodule"/>
 		<meta-data android:value="2.0*" android:name="xposedminversion"/>

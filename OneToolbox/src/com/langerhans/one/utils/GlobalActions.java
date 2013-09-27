@@ -1,7 +1,10 @@
 package com.langerhans.one.utils;
 
+import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.setStaticBooleanField;
+import static de.robv.android.xposed.XposedHelpers.setStaticObjectField;
 
 import java.lang.reflect.Method;
 import java.util.List;
@@ -240,6 +243,24 @@ public class GlobalActions {
 					e.printStackTrace();
 				}
 			}
+			if (action.equals("com.langerhans.one.mods.action.APMReboot")) {
+				setStaticObjectField(findClass("com.android.server.power.ShutdownThread", null), "mRebootReason", "oem-11");
+				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mReboot", true);
+				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mRebootSafeMode", false);
+				callStaticMethod(findClass("com.android.server.power.ShutdownThread", null), "shutdownInner", context, false);
+			}
+			if (action.equals("com.langerhans.one.mods.action.APMRebootRecovery")) {
+				setStaticObjectField(findClass("com.android.server.power.ShutdownThread", null), "mRebootReason", "recovery");
+				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mReboot", true);
+				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mRebootSafeMode", false);
+				callStaticMethod(findClass("com.android.server.power.ShutdownThread", null), "shutdownInner", context, false);
+			}
+			if (action.equals("com.langerhans.one.mods.action.APMRebootBootloader")) {
+				setStaticObjectField(findClass("com.android.server.power.ShutdownThread", null), "mRebootReason", "bootloader");
+				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mReboot", true);
+				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mRebootSafeMode", false);
+				callStaticMethod(findClass("com.android.server.power.ShutdownThread", null), "shutdownInner", context, false);
+			}
 		}
 	};
 	
@@ -357,7 +378,12 @@ public class GlobalActions {
 		            intentfilter.addAction("com.langerhans.one.mods.action.ToggleAutoRotation");
 		            intentfilter.addAction("com.langerhans.one.mods.action.ToggleFlashlight");
 		            intentfilter.addAction("com.langerhans.one.mods.action.ToggleMobileData");
-
+		            
+		            //APM
+		            intentfilter.addAction("com.langerhans.one.mods.action.APMReboot");
+		            intentfilter.addAction("com.langerhans.one.mods.action.APMRebootRecovery");
+		            intentfilter.addAction("com.langerhans.one.mods.action.APMRebootBootloader");
+		            
 		            mPWMContext.registerReceiver(mBR, intentfilter);
 				}
 			});
