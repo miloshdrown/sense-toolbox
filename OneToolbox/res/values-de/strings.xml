@@ -194,6 +194,8 @@
 	<string name="message_smswake_summ">Schaltet den Bildschirm bei SMS-Empfang ein.</string>
 	<string name="message_toast_title">Sendebericht als Toast</string>
 	<string name="message_toast_summ">Sendeberichte als Toast, statt als Benachrichtigung anzeigen.</string>
+	<string name="message_size_title">Größere MMS</string>
+	<string name="message_size_summ">Erhöht die MMS Größenbeschränkung auf 300k, 600k, 1000k.</string>
 	
 	<string name="controls_mods">Tasten Mods</string>
 	<string name="controls_mods_backlongpress">Zurück halten</string>

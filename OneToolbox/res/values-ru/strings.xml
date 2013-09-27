@@ -194,6 +194,8 @@
 	<string name="message_smswake_summ">Включение экрана при приходе SMS.</string>
 	<string name="message_toast_title">Отчёт о доставке SMS</string>
 	<string name="message_toast_summ">Показывать всплывающее сообщение вместо уведомления при успешной доставке</string>
+	<string name="message_size_title">###TRANSLATE_ME###</string>
+	<string name="message_size_summ">###TRANSLATE_ME###</string>
 	
 	<string name="controls_mods">Моды управления</string>
 	<string name="controls_mods_backlongpress">Долгое нажатие на кнопку Назад</string>

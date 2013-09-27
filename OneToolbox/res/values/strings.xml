@@ -194,6 +194,8 @@
 	<string name="message_smswake_summ">Turn the screen on, when you receive a SMS.</string>
 	<string name="message_toast_title">Toast delivery reports</string>
 	<string name="message_toast_summ">Show a toast instead of a notification for delivery reports.</string>
+	<string name="message_size_title">Raise MMS size</string>
+	<string name="message_size_summ">Raise the MMS size limit to 300k, 600k, 1000k.</string>
 	
 	<string name="controls_mods">Controls Mods</string>
 	<string name="controls_mods_backlongpress">Back button long press</string>
