@@ -188,6 +188,24 @@
             android:title="@string/cleanbeam_bt_title"
             android:icon="@drawable/stat_sys_data_bluetooth_connected"
             android:defaultValue="false"/>
+        <com.htc.preference.HtcCheckBoxPreference 
+            android:key="pref_key_cb_screenshot"
+            android:summary="@string/cleanbeam_screenshot_summ"
+            android:title="@string/cleanbeam_screenshot_title"
+            android:icon="@drawable/stat_notify_image"
+            android:defaultValue="false"/>
+        <com.htc.preference.HtcCheckBoxPreference 
+            android:key="pref_key_cb_usb"
+            android:summary="@string/cleanbeam_usb_summ"
+            android:title="@string/cleanbeam_usb_title"
+            android:icon="@drawable/stat_sys_data_usb"
+            android:defaultValue="false"/>
+        <com.htc.preference.HtcCheckBoxPreference 
+            android:key="pref_key_cb_powersave"
+            android:summary="@string/cleanbeam_powersave_summ"
+            android:title="@string/cleanbeam_powersave_title"
+            android:icon="@drawable/stat_notify_power_saver"
+            android:defaultValue="false"/>
         <com.htc.preference.HtcPreference
             android:title="@string/cleanbeam_sunbeam_title"
             android:summary="@string/cleanbeam_sunbeam_summ"

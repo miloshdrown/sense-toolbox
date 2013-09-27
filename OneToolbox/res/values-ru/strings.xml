@@ -146,6 +146,12 @@
 	<string name="cleanbeam_gps_summ">CleanBeam иконка GPS</string>
 	<string name="cleanbeam_bt_title">Bluetooth</string>
 	<string name="cleanbeam_bt_summ">CleanBeam иконка Bluetooth</string>
+	<string name="cleanbeam_screenshot_title">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_screenshot_summ">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_usb_title">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_usb_summ">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_powersave_title">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_powersave_summ">###TRANSLATE_ME###</string>
 	<string name="cleanbeam_sunbeam_title">Установить Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Инсталяция анимированных обоев Sunbeam (Phase Beam).</string>
 	<string name="cleanbeam_post_title">Пост о CleanBeam на XDA</string>

@@ -39,6 +39,7 @@ Killing launchers isn't possible anymore. That removes the corresponding dialog 
 Transparency settings can now be enabled and disabled by a new checkbox in the settings dialog. Please re-set your transparency settings.
 Small UI tweaks
 Added MMS size mod. Sizes are 300k, 600k, 100k. Network restrictions still apply ;)
+Added CleanBeam 4G, USB, Powersave and screenshot icon.
 
 2.1.1
 Fix for Vol2Wake. After installation go into the settings, disable Vol2Wake, wait a sec, enable it again, full reboot to apply. You don't need to do it if you don't have problems.

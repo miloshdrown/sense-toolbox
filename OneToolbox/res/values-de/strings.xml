@@ -146,6 +146,12 @@
 	<string name="cleanbeam_gps_summ">Aktiviert die CleanBeam GPS icons.</string>
 	<string name="cleanbeam_bt_title">Bluetooth</string>
 	<string name="cleanbeam_bt_summ">Aktiviert die CleanBeam Bluetooth icons.</string>
+	<string name="cleanbeam_screenshot_title">Screenshot</string>
+	<string name="cleanbeam_screenshot_summ">Aktiviert das CleanBeam Screenshot icon.</string>
+	<string name="cleanbeam_usb_title">USB</string>
+	<string name="cleanbeam_usb_summ">Aktiviert die CleanBeam USB icons.</string>
+	<string name="cleanbeam_powersave_title">Energiesparen</string>
+	<string name="cleanbeam_powersave_summ">Aktiviert das CleanBeam Energiesparen icon.</string>
 	<string name="cleanbeam_sunbeam_title">Installiere Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Installiert das Sunbeam Live Wallpaper.</string>
 	<string name="cleanbeam_post_title">Besuche den CleanBeam Beitrag</string>

@@ -118,15 +118,30 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_cb_bt", false))
 				CleanBeamMods.execHook_BtIcon(resparam, MODULE_PATH);
-			
+
 			if(pref.getBoolean("pref_key_cb_data", false))
 				CleanBeamMods.execHook_DataIcon(resparam, MODULE_PATH);
 			
+			if(pref.getBoolean("pref_key_cb_screenshot", false))
+				CleanBeamMods.execHook_ScreenshotIcon(resparam, MODULE_PATH);
+						
 			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockLayout(resparam, MODULE_PATH);
 			
 			if(pref.getBoolean("pref_key_sysui_noeqs", false))
 				SysUIMods.execHook_DisableEQS(resparam);
+		}
+		
+		if (pkg.equals("com.android.settings"))
+		{
+			if(pref.getBoolean("pref_key_cb_usb", false))
+				CleanBeamMods.execHook_USBIcon(resparam, MODULE_PATH);
+		}
+		
+		if (pkg.equals("com.htc.htcpowermanager"))
+		{
+			if(pref.getBoolean("pref_key_cb_powersave", false))
+				CleanBeamMods.execHook_PowerSaveIcon(resparam, MODULE_PATH);
 		}
 		
 		if (pkg.equals("com.htc.widget.weatherclock"))

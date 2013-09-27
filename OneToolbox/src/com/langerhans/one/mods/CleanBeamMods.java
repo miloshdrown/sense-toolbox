@@ -232,7 +232,7 @@ public class CleanBeamMods{
 		Field[] fields = R.drawable.class.getFields();
 	    HashMap<String, Integer> dataIcons = new HashMap<String, Integer>();
 	    for (Field field : fields) {
-	        if (field.getName().startsWith("stat_sys_data_") && !field.getName().contains("bluetooth")) { //Because bluetooth is seperate but also stat_sys_data_*. Meh!
+	        if (field.getName().startsWith("stat_sys_data_") && !field.getName().contains("bluetooth") && !field.getName().contains("usb")) { //Because bluetooth is seperate but also stat_sys_data_*. Meh!
 	            try {
 					dataIcons.put(field.getName(), field.getInt(null));
 				} catch (Exception e) {
@@ -250,5 +250,35 @@ public class CleanBeamMods{
 				}	
 			});
 	    }
+	}
+	
+	public static void execHook_PowerSaveIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
+		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.htc.htcpowermanager", "drawable", "stat_notify_power_saver", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_notify_power_saver);
+			}	
+		});
+	}
+	
+	public static void execHook_ScreenshotIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
+		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_notify_image", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_notify_image);
+			}	
+		});
+	}
+	
+	public static void execHook_USBIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
+		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.android.settings", "drawable", "stat_sys_data_usb", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_data_usb);
+			}	
+		});
 	}
 }
