@@ -686,8 +686,10 @@ public class PrismMods {
 			}
 
 			if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE_VERT && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-				createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace"), (Activity)launcher);
-				return false;
+				if (XMain.pref.getBoolean("pref_key_prism_homemenu", false)) {
+					createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace"), (Activity)launcher);
+					return true;
+				} else return false;
 			}
 
 			return false;
