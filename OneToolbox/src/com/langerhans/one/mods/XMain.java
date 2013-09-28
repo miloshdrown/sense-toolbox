@@ -144,6 +144,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				CleanBeamMods.execHook_PowerSaveIcon(resparam, MODULE_PATH);
 		}
 		
+		if (pkg.equals("com.android.nfc"))
+		{
+			if(pref.getBoolean("pref_key_cb_nfc", false))
+				CleanBeamMods.execHook_NFCIcon(resparam, MODULE_PATH);
+		}
+		
 		if (pkg.equals("com.htc.widget.weatherclock"))
 		{
 			if(pref.getBoolean("pref_key_prism_invisiwidget_enable", false))

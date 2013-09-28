@@ -281,4 +281,14 @@ public class CleanBeamMods{
 			}	
 		});
 	}
+	
+	public static void execHook_NFCIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
+		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.android.nfc", "drawable", "stat_sys_nfc_vzw", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_nfc_vzw);
+			}	
+		});
+	}
 }

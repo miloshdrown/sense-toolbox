@@ -206,6 +206,12 @@
             android:title="@string/cleanbeam_powersave_title"
             android:icon="@drawable/stat_notify_power_saver"
             android:defaultValue="false"/>
+        <com.htc.preference.HtcCheckBoxPreference 
+            android:key="pref_key_cb_nfc"
+            android:summary="@string/cleanbeam_nfc_summ"
+            android:title="@string/cleanbeam_nfc_title"
+            android:icon="@drawable/stat_sys_nfc_vzw"
+            android:defaultValue="false"/>
         <com.htc.preference.HtcPreference
             android:title="@string/cleanbeam_sunbeam_title"
             android:summary="@string/cleanbeam_sunbeam_summ"

@@ -152,6 +152,8 @@
 	<string name="cleanbeam_usb_summ">Enable CleanBeam USB icons.</string>
 	<string name="cleanbeam_powersave_title">Powersave</string>
 	<string name="cleanbeam_powersave_summ">Enable CleanBeam Powersave icon.</string>
+	<string name="cleanbeam_nfc_title">NFC</string>
+	<string name="cleanbeam_nfc_summ">Enable CleanBeam NFC icon.</string>
 	<string name="cleanbeam_sunbeam_title">Install Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Install the Sunbeam Live Wallpaper.</string>
 	<string name="cleanbeam_post_title">Visit CleanBeam post</string>

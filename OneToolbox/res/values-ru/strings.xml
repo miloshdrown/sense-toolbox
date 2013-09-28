@@ -152,6 +152,8 @@
 	<string name="cleanbeam_usb_summ">CleanBeam иконка USB</string>
 	<string name="cleanbeam_powersave_title">Энергосбережение</string>
 	<string name="cleanbeam_powersave_summ">CleanBeam иконка сервиса сохранения энергии</string>
+	<string name="cleanbeam_nfc_title">NFC</string>
+	<string name="cleanbeam_nfc_summ">CleanBeam иконка NFC</string>
 	<string name="cleanbeam_sunbeam_title">Установить Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Инсталяция анимированных обоев Sunbeam (Phase Beam).</string>
 	<string name="cleanbeam_post_title">Пост о CleanBeam на XDA</string>
