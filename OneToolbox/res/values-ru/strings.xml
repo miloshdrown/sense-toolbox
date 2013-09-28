@@ -232,7 +232,9 @@
 	<string name="various_apps_title">Доп. сведения о приложении</string>
 	<string name="various_apps_summ">Добавляет новые элементы в Настройки > Приложения:\n- кнопку запуска приложения\n- имя и путь до apk\n- путь до данных\n- имя процесса\n- номер пользователя\n- версию SDK</string>
 	<string name="various_volsnd_title">Нет звука при смене громкости</string>
-	<string name="various_volsnd_summ">Отключение проверочного звука при изменении громкости.</string>
+	<string name="various_volsnd_summ">Отключает проверочный звук при изменении громкости.</string>
+	<string name="various_movevol_title">Выравнять окно изменения громкости по низу</string>
+	<string name="various_movevol_summ">Выравнивает окно по низу, чтобы оно не закрывало обзор.</string>
 	<string name="various_mtpnotif_title">Скрыть уведомление сервиса MTP</string>
 	<string name="various_mtpnotif_summ">Делает MTP сервис фоновым и скрывает уведомление. Мод предназначен для прошивок на основе утечки 4.3.</string>
 	

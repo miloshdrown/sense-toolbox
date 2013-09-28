@@ -511,6 +511,11 @@
             android:title="@string/various_volsnd_title"
             android:defaultValue="false" />
         <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_movevol"
+            android:summary="@string/various_movevol_summ"
+            android:title="@string/various_movevol_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_other_mtpnotif"
             android:summary="@string/various_mtpnotif_summ"
             android:title="@string/various_mtpnotif_title"

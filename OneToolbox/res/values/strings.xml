@@ -95,7 +95,7 @@
 	<string name="camera_vol_down_title">Volume Down action</string>	
 	<string name="camera_vol_down_summ">The action for Volume Down in camera.</string>
 	
-	<string name="systemui_mods">SystemUI Mods</string>
+	<string name="systemui_mods">Interface Mods</string>
 	<string name="systemui_statusbar">Status Bar and Notification Drawer</string>
 	<string name="systemui_tsb_title">Transparent status bar</string>
 	<string name="systemui_tsb_summ">Make the status bar transparent.</string>
@@ -233,6 +233,8 @@
 	<string name="various_apps_summ">Add new fields to Settings > Apps:\n- button to launch an app\n- apk filename and path\n- data path\n- process name\n- user id\n- target SDK version</string>
 	<string name="various_volsnd_title">Disable volume change sound</string>
 	<string name="various_volsnd_summ">Check to disable the sound on volume change.</string>
+	<string name="various_movevol_title">Align volume dialog to bottom</string>
+	<string name="various_movevol_summ">Make volume dialog bottom aligned so it won\'t block the view.</string>
 	<string name="various_mtpnotif_title">Hide MTP notification</string>
 	<string name="various_mtpnotif_summ">Make MTP service background and disable notification. Mod is for ROMs based on leaked 4.3.</string>
 	

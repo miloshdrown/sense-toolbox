@@ -1,9 +1,8 @@
-- include xposed installer, check if installed -> /system/bin/app_process --xposedversion
 
 - beats toggle
 - torch toggle
-- prism bg, blinkfeed, folders transparent
-- back button kill,crt off animation,volume button controls for skipping tracks
+- prism bg, blinkfeed
+- crt off animation,volume button controls for skipping tracks
 - status bar data meter: http://forum.xda-developers.com/showthread.php?p=44935359#post44935359
 - side way scrolling (Loads of work. probably not feasable...)
 - 4x2 widget bg (Needs way more replacements than I thought. Probably not ganna happen soon.)
@@ -12,7 +11,7 @@
 - Higher grid size in sense launcher (Already looked into this. needs many dimens.xml changes)
 - Limit number of loaded SMS in stock SMS app. One user said he has 10k SMS and it makes his phone slow... wtf?
 - "is it possible to get Always extended lockscreen widget like there is in Orio Rom?"
-- Soft reboot icon still seems to be confusing. Maybe another icon, or a dialog to confirm?
+- Soft reboot icon ... dialog to confirm?
 - Other apps in HTC lock screen notifications
 - HDMI output with screen off (Don't have such an adapter...)
 - CM brightness bar mod. MOAR touch interceptors :D
@@ -24,8 +23,7 @@
 - Exchange security mod
 - More options for brightnes slider
 - gallery statusbar transparency
-- That mod: http://forum.xda-developers.com/showthread.php?p=45939148#post45939148 (No idea...)
-- Prism menu
+- That mod: http://forum.xda-developers.com/showpost.php?p=45931184&postcount=46834 (No idea...)
 - brightness slider design
 - Only one toast for group notifications
 
@@ -40,7 +38,7 @@ Transparency settings can now be enabled and disabled by a new checkbox in the s
 Small UI tweaks
 Added MMS size mod. Sizes are 300k, 600k, 1000k. Network restrictions still apply ;)
 Added CleanBeam 4G, USB, Powersave and screenshot icon.
-Added Sense launcher home screen popup menu. Acces via menu or longpress home. Has some useful functions like access to settings, apps manager and APM.
+Added Sense launcher home screen popup menu. Acces via Menu, longpress Home or swipe up from launcher dock. Has some useful functions like access to settings, apps manager and APM.
 Added mod to force enable "Support SMS special accent characters". Helpful for some specific regions to show actual character count. Code donated by @rumil86 . Thx for that!
 
 2.1.1
