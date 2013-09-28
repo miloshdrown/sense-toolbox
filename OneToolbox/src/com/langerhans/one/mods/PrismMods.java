@@ -620,7 +620,7 @@ public class PrismMods {
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				Context helperContext = ((ViewGroup)param.thisObject).getContext();
 				if (helperContext == null) return;
-				if (mDetectorDock == null) mDetectorDock = new GestureDetector(helperContext, new SwipeListenerDock(helperContext));
+				if (mDetectorDock == null) mDetectorDock = new GestureDetector(helperContext, new SwipeListenerDock(param.thisObject));
 				
 				boolean m_bIsHotseat = (Boolean)XposedHelpers.getObjectField(param.thisObject, "m_bIsHotseat");
 				if (m_bIsHotseat) {
@@ -644,9 +644,11 @@ public class PrismMods {
 		private final int SWIPE_THRESHOLD_VELOCITY = 100;
 		
 		final Context helperContext;
+		final Object launcher;
 
-		public SwipeListenerDock(Context context) {
-			helperContext = context;
+		public SwipeListenerDock(Object cellLayout) {
+			launcher = XposedHelpers.getObjectField(cellLayout, "m_launcher");
+			helperContext = ((ViewGroup)cellLayout).getContext();			
 		}
 		
 		@Override
@@ -683,9 +685,11 @@ public class PrismMods {
 				}
 			}
 
-			if (Math.abs(e2.getY() - e1.getY()) > SWIPE_MIN_DISTANCE_VERT && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-				//XposedBridge.log("Vertical Swipe!");
-				return false;
+			if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE_VERT && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+				if (XMain.pref.getBoolean("pref_key_prism_homemenu", false)) {
+					createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace"), (Activity)launcher);
+					return true;
+				} else return false;
 			}
 
 			return false;
@@ -696,41 +700,42 @@ public class PrismMods {
 		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onKeyDown", int.class, KeyEvent.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				if ((Integer)param.args[0] == 82) {
-					final ViewGroup m_workspace = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_workspace");				
-					final Activity launcher = (Activity)param.thisObject;
-					final HtcPopupWindow popup = new HtcPopupWindow(m_workspace.getContext());
-					popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
-					popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-					popup.setTouchable(true);
-			        popup.setFocusable(true);
-					popup.setOutsideTouchable(true);
-					ListView options = new ListView(m_workspace.getContext());
-					
-					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-					ListAdapter listAdapter = new PopupAdapter(options.getContext(), modRes.getStringArray(R.array.home_menu));
-					options.setAdapter(listAdapter);
-					options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-						@Override
-						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-							popup.dismiss();
-							if (position == 0) {
-								launcher.startActivity(new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
-							} else if (position == 1) {
-								launcher.startActivity((new Intent("android.intent.action.MAIN")).setAction("com.htc.personalize.ACTION_HOMEPERSONALIZE"));
-							} else if (position == 2) {
-								launcher.startActivity(new Intent(Settings.ACTION_SETTINGS));
-							} else if (position == 3) {
-								launcher.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
-							} else if (position == 4) {
-								OtherMods.startAPM(launcher);
-							}
-						}						
-					});
-					popup.setContentView(options);
-					popup.showAtLocation(m_workspace, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
-				}
+				if ((Integer)param.args[0] == 82)
+				createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_workspace"), (Activity)param.thisObject);
 			}
 		});
+	}
+	
+	public static void createAndShowPopup(ViewGroup m_workspace, final Activity launcher) {
+		final HtcPopupWindow popup = new HtcPopupWindow(m_workspace.getContext());
+		popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+		popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+		popup.setTouchable(true);
+        popup.setFocusable(true);
+		popup.setOutsideTouchable(true);
+		ListView options = new ListView(m_workspace.getContext());
+		
+		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+		ListAdapter listAdapter = new PopupAdapter(options.getContext(), modRes.getStringArray(R.array.home_menu));
+		options.setAdapter(listAdapter);
+		options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+			@Override
+			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+				popup.dismiss();
+				if (position == 0) {
+					launcher.startActivity(new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
+				} else if (position == 1) {
+					launcher.startActivity((new Intent("android.intent.action.MAIN")).setAction("com.htc.personalize.ACTION_HOMEPERSONALIZE"));
+				} else if (position == 2) {
+					launcher.startActivity(new Intent(Settings.ACTION_SETTINGS));
+				} else if (position == 3) {
+					launcher.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+				} else if (position == 4) {
+					OtherMods.startAPM(launcher);
+				}
+			}						
+		});
+		popup.setContentView(options);
+		popup.showAtLocation(m_workspace, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
 	}
 }

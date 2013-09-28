@@ -223,7 +223,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_gridtinyfont", false))
 				PrismMods.execHook_AppDrawerGridTinyText(lpparam);
 			
-			if (pref_swiperight != 1 || pref_swipeleft != 1)
+			if (pref_swiperight != 1 || pref_swipeleft != 1 || pref.getBoolean("pref_key_prism_homemenu", false))
 				PrismMods.execHook_DockSwipe(lpparam);
 			
 			if(pref.getBoolean("pref_key_prism_homemenu", false))
