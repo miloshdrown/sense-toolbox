@@ -177,6 +177,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_sms_mmssize", false))
 				SmsMods.execHook_MmsSize(lpparam);
+			
+			if(pref.getBoolean("pref_key_sms_accents", false))
+				SmsMods.execHook_SmsAccents(lpparam);
 		}
 		
 		if(pkg.equals("com.htc.launcher"))

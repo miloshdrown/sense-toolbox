@@ -100,10 +100,10 @@
         <item >9</item>
     </string-array>
     <string-array name="home_menu">
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
+        <item >App-Manager</item>
+        <item >Personalisieren</item>
+        <item >Einstellungen</item>
+        <item >WLAN</item>
+        <item >APM (Neustart)</item>
     </string-array>
 </resources>

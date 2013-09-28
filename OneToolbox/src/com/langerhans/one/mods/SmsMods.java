@@ -89,4 +89,13 @@ public class SmsMods{
 			}
 		});
 	}
+	
+	public static void execHook_SmsAccents(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.mms.MmsConfig", lpparam.classLoader, "isSupportAccentConvert", new XC_MethodReplacement() {
+	        @Override
+	        protected Object replaceHookedMethod(MethodHookParam methodHookParam) throws Throwable {
+	            return Boolean.TRUE;
+	        }
+	    });
+	}
 }
