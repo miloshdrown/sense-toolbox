@@ -448,6 +448,7 @@ public class SysUIMods {
 					seekBar.setProgress(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS));
 					checkBox.setChecked(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE) == 0 ? false : true);
 					seekBar.setEnabled(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE) == 0 ? true : false);
+					seekBar.setDisplayMode(1); //Seekbar black BG
 				} catch (SettingNotFoundException e) {
 					//No brightness setting?
 				}
