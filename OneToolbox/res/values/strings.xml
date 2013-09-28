@@ -206,7 +206,7 @@
 	<string name="message_toast_summ">Show a toast instead of a notification for delivery reports.</string>
 	<string name="message_size_title">Raise MMS size</string>
 	<string name="message_size_summ">Raise the MMS size limit to 300k, 600k, 1000k.</string>
-	<string name="message_accents_title">Eneable accent support</string>
+	<string name="message_accents_title">Enable accent support</string>
 	<string name="message_accents_summ">Enable accent support option in SMS settings.</string>
 	
 	<string name="controls_mods">Controls Mods</string>

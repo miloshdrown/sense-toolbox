@@ -206,8 +206,8 @@
 	<string name="message_toast_summ">Показывать всплывающее сообщение вместо уведомления при успешной доставке</string>
 	<string name="message_size_title">Увеличить размер MMS</string>
 	<string name="message_size_summ">Увеличение макс. размера MMS до 300 КБ, 600 КБ или 1000 КБ.</string>
-	<string name="message_accents_title">###TRANSLATE_ME###</string>
-	<string name="message_accents_summ">###TRANSLATE_ME###</string>
+	<string name="message_accents_title">Включить поддержку ударений</string>
+	<string name="message_accents_summ">Позволяет включить поддержку ударений в настройках SMS.</string>
 	
 	<string name="controls_mods">Моды управления</string>
 	<string name="controls_mods_backlongpress">Долгое нажатие на кнопку Назад</string>
