@@ -30,6 +30,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if(pref.getBoolean("pref_key_cb_beats", false))
 			CleanBeamMods.execHook_BeatsIcon(MODULE_PATH);
 		
+		if(pref.getBoolean("pref_key_other_movevol", false))
+			OtherMods.execHook_MoveVolume(startupParam);
+		
 		pref_swipedown = Integer.parseInt(pref.getString("pref_key_prism_swipedownaction", "1"));
 		pref_swipeup = Integer.parseInt(pref.getString("pref_key_prism_swipeupaction", "1"));
 		pref_swiperight = Integer.parseInt(pref.getString("pref_key_prism_swiperightaction", "1"));
@@ -165,7 +168,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
 		String pkg = lpparam.packageName;
 		
-		if (lpparam.packageName.equals("com.android.providers.media")) {
+		if(pkg.equals("com.android.providers.media")) {
 			if(pref.getBoolean("pref_key_other_mtpnotif", false))
 				OtherMods.execHook_MTPNotif(lpparam);
 		}

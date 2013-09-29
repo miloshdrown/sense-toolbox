@@ -1,9 +1,15 @@
 package com.langerhans.one.mods;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+
+import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.view.Gravity;
+import android.view.Window;
+import android.view.WindowManager;
+import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedHelpers;
@@ -12,13 +18,17 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class OtherMods{
 
 	public static void execHook_APM(LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.app.HtcShutdownThread", lpparam.classLoader, "reboot", Context.class, String.class, boolean.class, new XC_MethodReplacement() {
-			@Override
-			protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
-				startAPM((Context)param.args[0]);
-				return null;
-			}
-		});
+		try {
+			findAndHookMethod("com.htc.app.HtcShutdownThread", lpparam.classLoader, "reboot", Context.class, String.class, boolean.class, new XC_MethodReplacement() {
+				@Override
+				protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+					startAPM((Context)param.args[0]);
+					return null;
+				}
+			});
+		} catch(Throwable t) {
+			t.printStackTrace();
+		}
 	}
 	
 	public static void startAPM(Context ctx){
@@ -48,6 +58,37 @@ public class OtherMods{
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					((Service)param.thisObject).stopForeground(true);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void execHook_MoveVolume(StartupParam startparam) {
+		try {
+			final Class<?> clsVP = XposedHelpers.findClass("com.htc.view.VolumePanel", null);
+			XposedHelpers.findAndHookMethod(clsVP, "updatePanelRotationPosition", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Dialog dlg = (Dialog)XposedHelpers.getObjectField(param.thisObject, "mDialog");
+					Dialog dlgEx = (Dialog)XposedHelpers.getObjectField(param.thisObject, "mDialogEx");
+					
+					float density = dlg.getContext().getResources().getDisplayMetrics().density;
+					int orientation = dlg.getContext().getResources().getConfiguration().orientation;
+					int bottomMargin = 75;
+					if (orientation == 2) bottomMargin = 10;
+					
+					Window dlgWin = dlg.getWindow();
+					Window dlgExWin = dlgEx.getWindow();
+					WindowManager.LayoutParams dlgWinAttrs = dlgWin.getAttributes();
+					WindowManager.LayoutParams dlgExWinAttrs = dlgExWin.getAttributes();
+					dlgWinAttrs.gravity = Gravity.BOTTOM;
+					dlgExWinAttrs.gravity = Gravity.BOTTOM;
+					dlgWinAttrs.y = Math.round(bottomMargin * density);
+					dlgExWinAttrs.y = Math.round(bottomMargin * density);
+					dlgWin.setAttributes(dlgWinAttrs);
+					dlgExWin.setAttributes(dlgExWinAttrs);
 				}
 			});
 		} catch (Exception e) {
