@@ -148,6 +148,7 @@ public class ControlsMods {
 			CommandCapture command = new CommandCapture(0,
 					"mount -o rw,remount /system",
 					"echo \"#!/system/bin/sh\n\necho 1 > /sys/keyboard/vol_wakeup\nchmod 444 /sys/keyboard/vol_wakeup\" > /etc/init.d/89s5tvol2wake",
+					"chmod 755 /system/etc/init.d/89s5tvol2wake",
 					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)$\\)/\\1   WAKE_DROPPED/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",
 					"mount -o ro,remount /system");
 			try {

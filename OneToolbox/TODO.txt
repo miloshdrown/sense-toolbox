@@ -26,6 +26,7 @@
 - That mod: http://forum.xda-developers.com/showpost.php?p=45931184&postcount=46834 (No idea...)
 - brightness slider design
 - Only one toast for group notifications
+- Small font also on home screens
 
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
