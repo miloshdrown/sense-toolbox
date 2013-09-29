@@ -95,7 +95,7 @@
 	<string name="camera_vol_down_title">Leiser-Taste</string>	
 	<string name="camera_vol_down_summ">Aktion auf der Leiser-Taste.</string>
 	
-	<string name="systemui_mods">###TRANSLATE_ME###</string>
+	<string name="systemui_mods">Interface Mods</string>
 	<string name="systemui_statusbar">Statusleiste und Benachrichtigungen</string>
 	<string name="systemui_tsb_title">Transparente Statusleiste</string>
 	<string name="systemui_tsb_summ">Macht die Statusleiste transparent.</string>
@@ -233,8 +233,8 @@
 	<string name="various_apps_summ">Neue Felder für Apps unter Einstellungen > Apps:\n- Taste zum Starten\n- APK Name und Pfad\n- Daten-Pfad\n- Prozess\n- Benutzer ID\n- SDK Version</string>
 	<string name="various_volsnd_title">Deaktiviere Lautstärke-Töne</string>
 	<string name="various_volsnd_summ">Deaktviert die Töne beim Ändern der Lautstärke mit den Tasten.</string>
-	<string name="various_movevol_title">###TRANSLATE_ME###</string>
-	<string name="various_movevol_summ">###TRANSLATE_ME###</string>
+	<string name="various_movevol_title">Lautstärkendialog verschieben</string>
+	<string name="various_movevol_summ">Verschiebt den Dialog beim ändern der Lautstärke and den unteren Bildschirmrand.</string>
 	<string name="various_mtpnotif_title">Verstecke MTP-Benachrichtigung</string>
 	<string name="various_mtpnotif_summ">Versteckt die MTP-Benachrichtigung. Gedacht für geleakte 4.3 Versionen.</string>
 	
