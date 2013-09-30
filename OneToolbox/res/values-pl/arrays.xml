@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="availTiles">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+        <item>10</item>
+        <item>11</item>
+        <item>12</item>
+        <item>15</item>
+        <item>18</item>
+        <item>19</item>
+    </string-array>
+    <string-array name="cam_actions">
+        <item>Migawka</item>
+        <item>Focus</item>
+        <item>Focus, a następnie Migawka</item>
+        <item>Nagrywanie wideo</item>
+        <item>Bez zmian</item>
+    </string-array>
+    <string-array name="cam_actions_val">
+        <item>1</item>
+        <item>2</item>
+        <item>5</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="batt_icon">
+        <item>Domyślnie</item>
+        <item>Domyślnie z procentami</item>
+        <item>Koło z procentami</item>
+        <item>Brak ikony</item>
+    </string-array>
+    <string-array name="batt_icon_val">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+    </string-array>
+    <string-array name="clock_style">
+        <item>Domyślnie</item>
+        <item>Zegar pośrodku</item>
+        <item>Brak zegara</item>
+    </string-array>
+    <string-array name="clock_style_val">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
+    <string-array name="global_actions">
+        <item>Brak akcji</item>
+        <item>Rozwiń belkę powiadomień</item>
+        <item>Rozwiń panel EQ</item>
+        <item>Blokada urządzenia</item>
+        <item>Idź spać</item>
+        <item>Zrób zrzut ekranu</item>
+        <item>Uruchom aplikację</item>
+        <item>Przełącz ustawienia</item>
+    </string-array>
+    <string-array name="global_actions_val">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+    </string-array>
+    <string-array name="global_toggles">
+        <item>Wi-Fi</item>
+        <item>Bluetooth</item>
+        <item>GPS</item>
+        <item>NFC</item>
+        <item>Profil dźwięku</item>
+        <item>Autom jasności</item>
+        <item>Autom obrót</item>
+        <item>Latarka</item>
+        <item>Transmisja danych</item>
+    </string-array>
+    <string-array name="global_toggles_val">
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+        <item>4</item>
+        <item>5</item>
+        <item>6</item>
+        <item>7</item>
+        <item>8</item>
+        <item>9</item>
+    </string-array>
+    <array name="battery_images">
+        <item>@drawable/stat_sys_battery_100</item>
+        <item>@drawable/b_stat_sys_battery_95</item>
+        <item>@drawable/c_stat_sys_battery_95</item>
+        <item></item>
+    </array>
+</resources> 

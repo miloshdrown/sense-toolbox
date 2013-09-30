@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="menu_save">Zapisz</string>
+    <string name="app_name">Sense 5 Toolbox</string>
+    <string name="app_name_version">Sense 5 Toolbox (Wersja: %1$s)</string>
+    <string name="app_about">O programie</string>
+    <string name="about_version">Wersja: %1$s</string>
+    <string name="support_version">Wsparcie (Wersja Aplikacji: %1$s)</string>
+    <string name="restore">Przywróć</string>
+    <string name="add">Dodaj</string>
+    <string name="soft_reboot">Szybki restart</string>
+    <string name="warning">Ostrzeżenie!</string>
+    <string name="xposed_not_installed">Xposed Framework nie jest prawidłowo zainstalowany, należy zainstalować app_process i XposedBridge.jar z Instalatora Xposed, a następnie włączyć Sense 5 Toolbox i ponownie uruchomić moduł.</string>
+    <string name="welcome">Witaj w Sense 5 Toolbox!</string>
+    <string name="dragndrop">"Używaj przeciągnięć, aby zmieniać układ swoich szybkich ustawień."</string>
+    <string name="title_delete">Wystarczy dotknąć elementu, aby go usunąć..</string>
+    <string name="plus_icon">"Użyj '+' ikony, aby dodać element."</string>
+    <string name="save_settings">"Nie zapomnij zapisać swoich ustawieni!"</string>
+    <string name="restore_layout">Dotknij ikony przywracania aby przywrócić swój układ. To załaduje ostatnio zapisane konfiguracje.</string>
+    <string name="xposed_mods">"Należy pamiętać, że modyfikacje w zakładce 'MODYFIKACJE' będą działać tylko wtedy, gdy masz zainstalowany Xposed!"</string>
+    <string name="apm_title">Wybierz opcję restartu</string>
+    <string name="apm_normal_title">Uruchom ponownie</string>
+    <string name="apm_normal_summ">Zamknij wszystkie aplikacje i uruchom ponownie</string>
+    <string name="apm_hotreboot_title">Szybki restart</string>
+    <string name="apm_hotreboot_summ">Natychmiast uruchom ponownie bez zamykania</string>
+    <string name="apm_recovery_title">Recovery</string>
+    <string name="apm_recovery_summ">Uruchom ponownie w trybie recovery</string>
+    <string name="apm_bootloader_title">Bootloader</string>
+    <string name="apm_bootloader_summ">Uruchom ponownie w trybie bootloader</string>
+    <string name="eqs_reorder">Zmiana kolejności EQS</string>
+    <string name="eqs_reorder_explain">Ustaw własną kolejność elementów EQS</string>
+    <string name="no_root_access">Brak uprawnień roota</string>
+    <string name="no_root_explain">"Albo twoje urządzenie nie jest zrotowane, albo nie pozwala aplikacji na dostęp do SuperUser.
+Bez roota nie można zmienić kolejność elementów w EQS, dlatego, ta funkcja jest nie dostępna. 
+Możesz odrzucić tę wiadomość raz, lub na zawsze. Sprawdzenie root zostanie wykonany po każdym uruchomieniu, aby funkcja była dostępna, jeśli zdecydujesz się później na udostąpienie roota."</string>
+    <string name="dismiss_once">Odrzuć raz</string>
+    <string name="dismiss_forever">Odrzuć na zawsze</string>
+    <string name="mods">Modyfikacje</string>
+    <string name="xposed_not_found">Nie znaleziono Xposed Installer</string>
+    <string name="xposed_not_found_explain">"Wygląda na to, że nie masz Xposed Installed.
+
+Prosimy pamiętać, że w tej zakładce modyfikacje działają tylko z Xposed!
+
+Xposed jest dostępny w instalatorze ARHD."</string>
+    <string name="okay">W porządku</string>
+    <string name="close_camera">Upewnij się, że kamera jest zamknięta i nie ma jej na liście ostatnio używanych aplikacji!</string>
+    <string name="remove_last">"Nie można usunąć ostatniego elementu!"</string>
+    <string name="remove">Usuń</string>
+    <string name="remove_tile_msg1">Czy chcesz usunąć</string>
+    <string name="remove_tile_msg2">"element?
+Możesz dodać go ponownie za pomocą ikony '+'."</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="hotreboot_explain">Twoje ustawienia zostały zapisane! Szybki restart jest wymagany do tego, aby podjąć działanie. Czy chciałbyś zrobić to teraz?</string>
+    <string name="select_tile">Wybierz element, aby go dodać</string>
+    <string name="success">Sukces</string>
+    <string name="backup_restored">Kopia pomyślnie przywrócona! Dotknij Zapisz, aby zastosować kolejność.</string>
+    <string name="no_backup">Nie znaleziono kopii</string>
+    <string name="no_backup_explain">Niestety, nie znaleziono kopii zapasowej. Czy wyczyścić (wipe) twoje urządzenie?</string>
+    <string name="first_start">Pierwsze uruchomienie</string>
+    <string name="close_forever">Zamknij okno dialogowe na zawsze!</string>
+    <string name="sunbeam_installed">Sunbeam został zainstalowany. Wykonaj szybki restart, aby zastosować zmiany. Pamiętaj, że musisz ponownie zainstalować Sunbeam po każdym wgraniu Romu.</string>
+    <string name="eqs_user_card">Karta użytkownika</string>
+    <string name="eqs_brightness">Jasność</string>
+    <string name="eqs_settings">Ustawienia</string>
+    <string name="eqs_wifi">WiFi</string>
+    <string name="eqs_bluetooth">Bluetooth</string>
+    <string name="eqs_airplane">Tryb Samolototowy</string>
+    <string name="eqs_power_save">Oszczędzanie energii</string>
+    <string name="eqs_rotation">Automatyczne obracanie</string>
+    <string name="eqs_mobile_data">Dane urządzenia</string>
+    <string name="eqs_sound_profile">Profil dźwięku</string>
+    <string name="eqs_wifi_hotspot">WiFi Hotspot</string>
+    <string name="eqs_screenshot">Zrzut ekranu</string>
+    <string name="eqs_gps">GPS</string>
+    <string name="eqs_roaming">Roaming</string>
+    <string name="eqs_media_output">Wyjście mediów</string>
+    <string name="eqs_auto_sync">Auto Sync</string>
+    <string name="eqs_roaming_setting">Ustawienia roamingu</string>
+    <string name="eqs_music_channel">Kanał muzyczny</string>
+    <string name="eqs_ringtone">Dzwonek</string>
+    <string name="eqs_timeout">Limit czasu</string>
+    <string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
+    <string name="eqs_apn">APN</string>
+    <string name="dummy" />
+    <string name="transparency_msg">0 = przezroczysty, 100 = nieprzezroczysty</string>
+    <string name="launch_app">Uruchom aplikację</string>
+    <string name="toggle_settings">Przełącz ustawienia</string>
+    <string name="camera_mods">Modyfikacje aparatu </string>
+    <string name="camera_vol_up_title">Działanie klawisza podgłaśniania</string>
+    <string name="camera_vol_up_summ">Akcja aparatu na zwiększanie głośności.</string>
+    <string name="camera_vol_down_title">Działanie klawisza ściszania</string>
+    <string name="camera_vol_down_summ">Akcja aparatu na zmniejszanie głośności.</string>
+    <string name="systemui_mods">Modyfikacje SystemUI</string>
+    <string name="systemui_statusbar">Pasek stanu oraz powiadomień</string>
+    <string name="systemui_tsb_title">Przezroczysty pasek stanu</string>
+    <string name="systemui_tsb_summ">Dodaj przezroczysty pasek stanu.</string>
+    <string name="systemui_tnb_title">Przezroczyste tło powiadomień</string>
+    <string name="systemui_tnb_summ">Dodaj przezroczyste tło powiadomień.</string>
+    <string name="systemui_eqs">Rozszerzone Szybkie Ustawienia</string>
+    <string name="systemui_heqs_title">Poziomy EQS</string>
+    <string name="systemui_heqs_summ">Włącz poziomy EQS. Twój normalny EQS będzie tam (przewijany).</string>
+    <string name="systemui_heqs_notext_title">Poziomy mniejszy EQS</string>
+    <string name="systemui_heqs_notext_summ">Usunięcie tekstu z poziomego EQS.</string>
+    <string name="systemui_noeqs_title">Wyłącz panel EQS</string>
+    <string name="systemui_noeqs_summ">Usuń panel EQS i przycisk przywracania ustawień.</string>
+    <string name="systemui_recent">Ostatnie aplikacje</string>
+    <string name="systemui_aosp_title">Ostatnie aplikacje AOSP</string>
+    <string name="systemui_aosp_summ">Włącz styl AOSP Ostatnie aplikacje na ekranie.</string>
+    <string name="systemui_recentclear_title">Zamknij wszystkie ostatnie aplikacje naraz</string>
+    <string name="systemui_recentclear_summ">Dodaj możliwość, aby usunąć listę ostatnich aplikacje, szczypiąc albo przesuwając w dół.</string>
+    <string name="systemui_centerclock_title">Zegar w centrum</string>
+    <string name="systemui_centerclock_summ">Włącz, przenieśenie zegar na pasku stanu do centrum.</string>
+    <string name="systemui_ampmremove_title">Usuń AM/PM</string>
+    <string name="systemui_ampmremove_summ">Włącz, aby usunąć AM/PM na pasku stanu zegara w trybie 12h.</string>
+    <string name="systemui_clockstyle_title">Styl zegara</string>
+    <string name="systemui_clockstyle_summ">Zmiana stylu zegara na pasku stanu.</string>
+    <string name="systemui_brightslide_title">Suwak jasności</string>
+    <string name="systemui_brightslide_summ">Dodaj suwak jasności w panelu powiadomień.</string>
+    <string name="systemui_brightslide_auto">Automatyczne</string>
+    <string name="cleanbeam_mods">Modyfikacje CleanBeam od vomer</string>
+    <string name="cleanbeam_battery_title">Ikona baterii</string>
+    <string name="cleanbeam_battery_summ">Zmień styl ikony baterii.</string>
+    <string name="cleanbeam_signal_title">Ikona sygnału</string>
+    <string name="cleanbeam_signal_summ">Włącz ikonę CleanBeam wskaźnika poziomu sygnału.</string>
+    <string name="cleanbeam_data_title">Transmisja danych</string>
+    <string name="cleanbeam_data_summ">Włącz ikonę CleanBeam transmisji danych.</string>
+    <string name="cleanbeam_headphone_title">Słuchawki</string>
+    <string name="cleanbeam_headphone_summ">Włącz ikonę CleanBeam słuchawek.</string>
+    <string name="cleanbeam_beats_title">Beats</string>
+    <string name="cleanbeam_beats_summ">Włącz ikonę CleanBeam beats.</string>
+    <string name="cleanbeam_profile_title">Profil dźwięku</string>
+    <string name="cleanbeam_profile_summ">Włącz ikonę CleanBeam profilu dźwięku.</string>
+    <string name="cleanbeam_alarm_title">Alarm</string>
+    <string name="cleanbeam_alarm_summ">Włącz ikonę CleanBeam alarmu.</string>
+    <string name="cleanbeam_wifi_title">WiFi</string>
+    <string name="cleanbeam_wifi_summ">Włącz ikonę CleanBeam WiFi.</string>
+    <string name="cleanbeam_sync_title">Synchronizacja</string>
+    <string name="cleanbeam_sync_summ">Włącz ikonę CleanBeam synchronizacji.</string>
+    <string name="cleanbeam_gps_title">GPS</string>
+    <string name="cleanbeam_gps_summ">Włącz ikonę CleanBeam GPS.</string>
+    <string name="cleanbeam_bt_title">Bluetooth</string>
+    <string name="cleanbeam_bt_summ">Włącz ikonę CleanBeam Bluetooth.</string>
+    <string name="cleanbeam_sunbeam_title">Zainstaluj Sunbeam</string>
+    <string name="cleanbeam_sunbeam_summ">Zainstaluj żywe tapety Sunbeam.</string>
+    <string name="cleanbeam_post_title">Odwiedź CleanBeam</string>
+    <string name="cleanbeam_post_summ">"Zobacz zapowiedź i listę zmian tutaj. Upewnij się, aby trafić w przycisk "Dzięki!"</string>
+    <string name="sense_mods">Modyfikacje Sense</string>
+    <string name="sense_transparency">Przezroczystość</string>
+    <string name="sense_homescreen">Ekran główny</string>
+    <string name="sense_appdrawer">Lista aplikacji</string>
+    <string name="sense_gestures">Gesty</string>
+    <string name="sense_td_title">Stacja dokująca</string>
+    <string name="sense_td_summ">Dodaj przejrzysty launcher Sense dla stacji dokującej .</string>
+    <string name="sense_twidget_title">4x1 widget zegara</string>
+    <string name="sense_twidget_summ">Dodaj domyślny zegar 4x1 + przezroczysty widżet pogody.</string>
+    <string name="sense_tappdrawer_title">Lista aplikacji</string>
+    <string name="sense_tappdrawer_summ">Dodaj przejrzysty launcher Sense dla szuflady aplikacji.</string>
+    <string name="sense_tfolders_title">Foldery</string>
+    <string name="sense_tfolders_summ">Dodaj przezroczyste tło folderów.</string>
+    <string name="sense_tfoldersbkg_title">Ikony folderów</string>
+    <string name="sense_tfoldersbkg_summ">Dodaj przezroczyste tło ikon folderów.</string>
+    <string name="sense_infini_title">Nieograniczona ilość</string>
+    <string name="sense_infini_summ">Włącz aby mieć nieograniczoną ilość ikon w folderze.</string>
+    <string name="sense_adnoclock_title">Usuń zegar z szuflady aplikacji</string>
+    <string name="sense_adnoclock_summ">Ukryj zegar i widget pogody w szufladzie aplikacji.</string>
+    <string name="sense_noblink_title">Usuń BlinkFeed</string>
+    <string name="sense_noblink_summ">Działa tylko na Android 4.3: Zaznacz, aby wyłączyć BlinkFeed.</string>
+    <string name="sense_infiniscroll_title">Nieskończone przewijanie ekranu głównego</string>
+    <string name="sense_infiniscroll_summ">Włącz dla nieskończone przewijania ekranu głównego.</string>
+    <string name="sense_gridtinyfont_title">Mała czcionka siatki dla szuflady aplikacji</string>
+    <string name="sense_gridtinyfont_summ">Zmniejsz rozmiar czcionki tytułów dla 6-rzędowej siatki szuflady aplikacji</string>
+    <string name="sense_swipedownaction_title">Działanie przesuń w dół</string>
+    <string name="sense_swipedownaction_summ">Akcja dla gestu przesunięcia w dół na dowolnym ekranie głównym.</string>
+    <string name="sense_swipeupaction_title">Działanie przesuń w górę</string>
+    <string name="sense_swipeupaction_summ">Akcja dla gestu przesunięcia w górę na dowolnym ekranie głównym.</string>
+    <string name="sense_swiperightaction_title">Działanie przesuń w prawo</string>
+    <string name="sense_swiperightaction_summ">Akcja dla gest przesunięcia w prawej dla stacji dokującej.</string>
+    <string name="sense_swipeleftaction_title">Działanie przesuń w lewo</string>
+    <string name="sense_swipeleftaction_summ">Akcja dla gest przesunięcia w lewo dla stacji dokującej.</string>
+    <string name="notselected">Nie wybrano</string>
+    <string name="loading_app_data">Ładowanie aplikacji…</string>
+    <string name="message_mods">Modyfikacje wiadomości</string>
+    <string name="message_smsmms_title">Wyłącz konwersje SMS -> MMS</string>
+    <string name="message_smsmms_summ">Wyłącz przymusową konwersję SMS na MMS przez limit znaków. Nadal obowiązują ograniczenia sieci.</string>
+    <string name="message_smswake_title">Wyudzenie przez SMS</string>
+    <string name="message_smswake_summ">Włącz ekran, po odebraniu wiadomości SMS.</string>
+    <string name="message_toast_title">Toast raportów doręczenia</string>
+    <string name="message_toast_summ">Wyświetl toast zamiast powiadomienia dla raportów doręczenia.</string>
+    <string name="controls_mods">Modyfikacje sterowania</string>
+    <string name="controls_mods_backlongpress">Długie naciśnięcie przycisku Wstecz</string>
+    <string name="controls_backlongpressaction_title">Akcja</string>
+    <string name="controls_backlongpressaction_summ">Akcja dla długiego naciśnięcie przycisku Wstecz.</string>
+    <string name="controls_mods_homeassist">Strona główna pomocy</string>
+    <string name="controls_homeassistaction_title">Akcja</string>
+    <string name="controls_homeassistaction_summ">Zastępuje działanie pomocy(która jest domyślnie Google Now).</string>
+    <string name="controls_vol2wake_title">Volume2Wake</string>
+    <string name="controls_vol2wake_summ">Wyudzenie telefonu klawiszami głośności. Wymagany root! Wykonaj pełny restart w celu zastosowania!</string>
+    <string name="kill_foreground">Zabij pierwszoplanowe aplikację</string>
+    <string name="kill_foreground_warn">Próbujesz zabić launcher!</string>
+    <string name="kill_foreground_yes">Wiem</string>
+    <string name="kill_foreground_no">Przerwij!</string>
+    <string name="various_mods">Różne Modyfikacje</string>
+    <string name="various_apm_title">APM</string>
+    <string name="various_apm_summ">"Włącz lub wyłącz Zaawansowane Menu Zasilania
+Jeśli masz natywny APM zainstalowany,  to lepiej mieć to wyłączone."</string>
+    <string name="various_scron_title">"Włącz 'Zachowaj ekran włączony'"</string>
+    <string name="various_scron_summ">"Pokaż opcję "Zachowaj ekran włączony" w ustawienia wyświetlania i deweloperskich."</string>
+    <string name="various_apps_title">Pokaż dodatkowe informacje aplikacji</string>
+    <string name="various_apps_summ">"Dodaj nowe obszary do Ustawień > Aplikacje:
+- przycisk, aby uruchomić aplikację
+- nazwa pliku apk i ścieżka
+- ścieżka danych
+- nazwa procesu
+- id użytkownika
+- wersja docelowego SDK"</string>
+    <string name="various_volsnd_title">Wyłącz dźwięk zmiany głośności</string>
+    <string name="various_volsnd_summ">Zaznacz, aby wyłączyć dźwięk podczas zmiany głośności.</string>
+    <string name="various_mtpnotif_title">Ukryj powiadomienia MTP</string>
+    <string name="various_mtpnotif_summ">Dodaj usługę MTP w tłe i wyłącz powiadomienia. Mod jest na ROM oparty na przecieku 4.3.</string>
+    <string name="support">Wsparcie</string>
+    <string name="support_s5t_title">Odwiedź Stronę Sense 5 Toolbox</string>
+    <string name="support_s5t_summ">Znajdź tutaj informacje o aplikacji i listę zmian.</string>
+    <string name="support_blog_title">Odwiedź blog ARHD</string>
+    <string name="support_blog_summ">Poznaj najnowsze wiadomości i aktualizacje dla swojego ulubionego ROMU.</string>
+    <string name="toggle_wifi_on">Wi-Fi włączone</string>
+    <string name="toggle_wifi_off">Wi-Fi wyłączone</string>
+    <string name="toggle_bt_on">Bluetooth wyłączony</string>
+    <string name="toggle_bt_off">Bluetooth wyłączony</string>
+    <string name="toggle_gps_on">GPS włączony</string>
+    <string name="toggle_gps_off">GPS wyłączony</string>
+    <string name="toggle_nfc_on">NFC włączony</string>
+    <string name="toggle_nfc_off">NFC wyłączony</string>
+    <string name="toggle_sound_normal">Profil dźwięku: Normalny</string>
+    <string name="toggle_sound_silent">Profil dźwięku: Cichy</string>
+    <string name="toggle_sound_vibrate">Profil dźwięku: Wibracja</string>
+    <string name="toggle_autobright_on">Automatyczna jasności włączona</string>
+    <string name="toggle_autobright_off">Automatyczna jasności wyłączona</string>
+    <string name="toggle_autorotate_on">Automatyczny obrót włączony</string>
+    <string name="toggle_autorotate_off">Automatyczny obrót wyłączony</string>
+    <string name="toggle_flash_low">Latarka: słaba</string>
+    <string name="toggle_flash_med">Latarka: średnia</string>
+    <string name="toggle_flash_high">Latarka: mocna</string>
+    <string name="toggle_flash_off">Latarka: wyłączona</string>
+    <string name="toggle_mobiledata_on">Transmisja danych włączona</string>
+    <string name="toggle_mobiledata_off">Transmisja danyc wyłączona </string>
+    <string name="appdetails_launch">Uruchom</string>
+    <string name="appdetails_package">Pakiet</string>
+    <string name="appdetails_apk_file">Nazwa pliku APK</string>
+    <string name="appdetails_apk_path">ścieżka APK</string>
+    <string name="appdetails_data_path">Ścieżka danych</string>
+    <string name="appdetails_dev">Developer</string>
+    <string name="appdetails_proc_name">Nazwa procesu</string>
+    <string name="appdetails_uid">ID użytkownika</string>
+    <string name="appdetails_sdk">Wersja Docelowego SDK </string>
+    <string name="about_devs">Programiści</string>
+    <string name="about_devs_names">"Langer Hans
+Mikanoshi"</string>
+    <string name="about_thanks">Dziękuję</string>
+    <string name="about_sense">Sense 5</string>
+    <string name="about_toolbox">Toolbox</string>
+    <string name="about_thanks_data">"mike1986 - ARHD i platformy do wydania tej aplikacji
+
+descenpet - dla pierwszego pomysłu oraz kolejność zmian
+
+vomer - modyfikacje CleanBeam
+
+Dunc001 and LeSScro - for their APM icons
+
+Zespołów RU i AU (i kilka innych wczesnych beta testerów) - za badania i cenne informacje
+
+Użytkowników ARHD - za ich cierpliwość"</string>
+</resources>

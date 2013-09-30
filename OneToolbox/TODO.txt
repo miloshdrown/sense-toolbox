@@ -37,10 +37,12 @@ Kill app will give you feedback in form of a vibration, so you know that you act
 Killing launchers isn't possible anymore. That removes the corresponding dialog too.
 Transparency settings can now be enabled and disabled by a new checkbox in the settings dialog. Please re-set your transparency settings.
 Small UI tweaks
+Fixed Vol2Wake in deep sleep for some devices/kernels. Thanks to @luxandroid.
 Added MMS size mod. Sizes are 300k, 600k, 1000k. Network restrictions still apply ;)
-Added CleanBeam 4G, USB, Powersave and screenshot icon.
+Added CleanBeam 4G, USB, Powersave, NFC and screenshot icon.
 Added Sense launcher home screen popup menu. Acces via Menu, longpress Home or swipe up from launcher dock. Has some useful functions like access to settings, apps manager and APM.
 Added mod to force enable "Support SMS special accent characters". Helpful for some specific regions to show actual character count. Code donated by @rumil86 . Thx for that!
+Added polish tranlsation by @cvxcvx (Before you ask, I still have no idea how to handle translations in a way that doesn't consume all my time...)
 
 2.1.1
 Fix for Vol2Wake. After installation go into the settings, disable Vol2Wake, wait a sec, enable it again, full reboot to apply. You don't need to do it if you don't have problems.
