@@ -12,10 +12,10 @@
     <string name="warning">Ostrzeżenie!</string>
     <string name="xposed_not_installed">Xposed Framework nie jest prawidłowo zainstalowany, należy zainstalować app_process i XposedBridge.jar z Instalatora Xposed, a następnie włączyć Sense 5 Toolbox i ponownie uruchomić moduł.</string>
     <string name="welcome">Witaj w Sense 5 Toolbox!</string>
-    <string name="dragndrop">"Używaj przeciągnięć, aby zmieniać układ swoich szybkich ustawień."</string>
+    <string name="dragndrop">Używaj przeciągnięć, aby zmieniać układ swoich szybkich ustawień.</string>
     <string name="title_delete">Wystarczy dotknąć elementu, aby go usunąć..</string>
     <string name="plus_icon">"Użyj '+' ikony, aby dodać element."</string>
-    <string name="save_settings">"Nie zapomnij zapisać swoich ustawieni!"</string>
+    <string name="save_settings">Nie zapomnij zapisać swoich ustawieni!</string>
     <string name="restore_layout">Dotknij ikony przywracania aby przywrócić swój układ. To załaduje ostatnio zapisane konfiguracje.</string>
     <string name="xposed_mods">"Należy pamiętać, że modyfikacje w zakładce 'MODYFIKACJE' będą działać tylko wtedy, gdy masz zainstalowany Xposed!"</string>
     <string name="apm_title">Wybierz opcję restartu</string>
@@ -44,7 +44,7 @@ Prosimy pamiętać, że w tej zakładce modyfikacje działają tylko z Xposed!
 Xposed jest dostępny w instalatorze ARHD."</string>
     <string name="okay">W porządku</string>
     <string name="close_camera">Upewnij się, że kamera jest zamknięta i nie ma jej na liście ostatnio używanych aplikacji!</string>
-    <string name="remove_last">"Nie można usunąć ostatniego elementu!"</string>
+    <string name="remove_last">Nie można usunąć ostatniego elementu!</string>
     <string name="remove">Usuń</string>
     <string name="remove_tile_msg1">Czy chcesz usunąć</string>
     <string name="remove_tile_msg2">"element?
@@ -86,7 +86,7 @@ Możesz dodać go ponownie za pomocą ikony '+'."</string>
     <string name="transparency_msg">0 = przezroczysty, 100 = nieprzezroczysty</string>
     <string name="launch_app">Uruchom aplikację</string>
     <string name="toggle_settings">Przełącz ustawienia</string>
-    <string name="camera_mods">Modyfikacje aparatu </string>
+    <string name="camera_mods">Modyfikacje aparatu</string>
     <string name="camera_vol_up_title">Działanie klawisza podgłaśniania</string>
     <string name="camera_vol_up_summ">Akcja aparatu na zwiększanie głośności.</string>
     <string name="camera_vol_down_title">Działanie klawisza ściszania</string>
@@ -144,7 +144,7 @@ Możesz dodać go ponownie za pomocą ikony '+'."</string>
     <string name="cleanbeam_sunbeam_title">Zainstaluj Sunbeam</string>
     <string name="cleanbeam_sunbeam_summ">Zainstaluj żywe tapety Sunbeam.</string>
     <string name="cleanbeam_post_title">Odwiedź CleanBeam</string>
-    <string name="cleanbeam_post_summ">"Zobacz zapowiedź i listę zmian tutaj. Upewnij się, aby trafić w przycisk "Dzięki!"</string>
+    <string name="cleanbeam_post_summ">Zobacz zapowiedź i listę zmian tutaj. Upewnij się, aby trafić w przycisk Dzięki!</string>
     <string name="sense_mods">Modyfikacje Sense</string>
     <string name="sense_transparency">Przezroczystość</string>
     <string name="sense_homescreen">Ekran główny</string>
@@ -167,7 +167,7 @@ Możesz dodać go ponownie za pomocą ikony '+'."</string>
     <string name="sense_noblink_title">Usuń BlinkFeed</string>
     <string name="sense_noblink_summ">Działa tylko na Android 4.3: Zaznacz, aby wyłączyć BlinkFeed.</string>
     <string name="sense_infiniscroll_title">Nieskończone przewijanie ekranu głównego</string>
-    <string name="sense_infiniscroll_summ">Włącz dla nieskończone przewijania ekranu głównego.</string>
+    <string name="sense_infiniscroll_summ">Włącz dla nieskończonego przewijania ekranu głównego.</string>
     <string name="sense_gridtinyfont_title">Mała czcionka siatki dla szuflady aplikacji</string>
     <string name="sense_gridtinyfont_summ">Zmniejsz rozmiar czcionki tytułów dla 6-rzędowej siatki szuflady aplikacji</string>
     <string name="sense_swipedownaction_title">Działanie przesuń w dół</string>
@@ -175,18 +175,18 @@ Możesz dodać go ponownie za pomocą ikony '+'."</string>
     <string name="sense_swipeupaction_title">Działanie przesuń w górę</string>
     <string name="sense_swipeupaction_summ">Akcja dla gestu przesunięcia w górę na dowolnym ekranie głównym.</string>
     <string name="sense_swiperightaction_title">Działanie przesuń w prawo</string>
-    <string name="sense_swiperightaction_summ">Akcja dla gest przesunięcia w prawej dla stacji dokującej.</string>
+    <string name="sense_swiperightaction_summ">Akcja dla gestu przesunięcia w prawej dla stacji dokującej.</string>
     <string name="sense_swipeleftaction_title">Działanie przesuń w lewo</string>
-    <string name="sense_swipeleftaction_summ">Akcja dla gest przesunięcia w lewo dla stacji dokującej.</string>
+    <string name="sense_swipeleftaction_summ">Akcja dla gestu przesunięcia w lewo dla stacji dokującej.</string>
     <string name="notselected">Nie wybrano</string>
     <string name="loading_app_data">Ładowanie aplikacji…</string>
     <string name="message_mods">Modyfikacje wiadomości</string>
     <string name="message_smsmms_title">Wyłącz konwersje SMS -> MMS</string>
     <string name="message_smsmms_summ">Wyłącz przymusową konwersję SMS na MMS przez limit znaków. Nadal obowiązują ograniczenia sieci.</string>
-    <string name="message_smswake_title">Wyudzenie przez SMS</string>
+    <string name="message_smswake_title">Wybudzenie przez SMS</string>
     <string name="message_smswake_summ">Włącz ekran, po odebraniu wiadomości SMS.</string>
-    <string name="message_toast_title">Toast raportów doręczenia</string>
-    <string name="message_toast_summ">Wyświetl toast zamiast powiadomienia dla raportów doręczenia.</string>
+    <string name="message_toast_title">Raport doręczenia</string>
+    <string name="message_toast_summ">Pokaż komunikat na ekranie zamiast powiadomienia o raporcie doręczenia.</string>
     <string name="controls_mods">Modyfikacje sterowania</string>
     <string name="controls_mods_backlongpress">Długie naciśnięcie przycisku Wstecz</string>
     <string name="controls_backlongpressaction_title">Akcja</string>
@@ -195,7 +195,7 @@ Możesz dodać go ponownie za pomocą ikony '+'."</string>
     <string name="controls_homeassistaction_title">Akcja</string>
     <string name="controls_homeassistaction_summ">Zastępuje działanie pomocy(która jest domyślnie Google Now).</string>
     <string name="controls_vol2wake_title">Volume2Wake</string>
-    <string name="controls_vol2wake_summ">Wyudzenie telefonu klawiszami głośności. Wymagany root! Wykonaj pełny restart w celu zastosowania!</string>
+    <string name="controls_vol2wake_summ">Wybudzenie telefonu klawiszami głośności. Wymagany root! Wykonaj pełny restart w celu zastosowania!</string>
     <string name="kill_foreground">Zabij pierwszoplanowe aplikację</string>
     <string name="kill_foreground_warn">Próbujesz zabić launcher!</string>
     <string name="kill_foreground_yes">Wiem</string>
@@ -205,7 +205,7 @@ Możesz dodać go ponownie za pomocą ikony '+'."</string>
     <string name="various_apm_summ">"Włącz lub wyłącz Zaawansowane Menu Zasilania
 Jeśli masz natywny APM zainstalowany,  to lepiej mieć to wyłączone."</string>
     <string name="various_scron_title">"Włącz 'Zachowaj ekran włączony'"</string>
-    <string name="various_scron_summ">"Pokaż opcję "Zachowaj ekran włączony" w ustawienia wyświetlania i deweloperskich."</string>
+    <string name="various_scron_summ">Pokaż opcję Zachowaj ekran włączony w ustawienia wyświetlania i deweloperskich.</string>
     <string name="various_apps_title">Pokaż dodatkowe informacje aplikacji</string>
     <string name="various_apps_summ">"Dodaj nowe obszary do Ustawień > Aplikacje:
 - przycisk, aby uruchomić aplikację
@@ -243,7 +243,7 @@ Jeśli masz natywny APM zainstalowany,  to lepiej mieć to wyłączone."</string
     <string name="toggle_flash_high">Latarka: mocna</string>
     <string name="toggle_flash_off">Latarka: wyłączona</string>
     <string name="toggle_mobiledata_on">Transmisja danych włączona</string>
-    <string name="toggle_mobiledata_off">Transmisja danyc wyłączona </string>
+    <string name="toggle_mobiledata_off">Transmisja danyc wyłączona</string>
     <string name="appdetails_launch">Uruchom</string>
     <string name="appdetails_package">Pakiet</string>
     <string name="appdetails_apk_file">Nazwa pliku APK</string>
@@ -252,7 +252,7 @@ Jeśli masz natywny APM zainstalowany,  to lepiej mieć to wyłączone."</string
     <string name="appdetails_dev">Developer</string>
     <string name="appdetails_proc_name">Nazwa procesu</string>
     <string name="appdetails_uid">ID użytkownika</string>
-    <string name="appdetails_sdk">Wersja Docelowego SDK </string>
+    <string name="appdetails_sdk">Wersja Docelowego SDK</string>
     <string name="about_devs">Programiści</string>
     <string name="about_devs_names">"Langer Hans
 Mikanoshi"</string>
