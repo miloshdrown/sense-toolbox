@@ -498,14 +498,20 @@ public class PrismMods {
 	
 	// Listener for vertical swipe gestures
 	private static class SwipeListener extends GestureDetector.SimpleOnGestureListener {
-		private final int SWIPE_MIN_DISTANCE = 300;
-		private final int SWIPE_MAX_OFF_PATH = 250;
-		private final int SWIPE_THRESHOLD_VELOCITY = 200;
+		// For HTC One
+		private int SWIPE_MIN_DISTANCE = 300;
+		private int SWIPE_MAX_OFF_PATH = 250;
+		private int SWIPE_THRESHOLD_VELOCITY = 200;
 		
 		final Context helperContext;
 
 		public SwipeListener(Context context) {
 			helperContext = context;
+			float dHeight = helperContext.getResources().getDisplayMetrics().heightPixels;
+			float dWidth = helperContext.getResources().getDisplayMetrics().widthPixels;
+			SWIPE_MIN_DISTANCE = Math.round(0.15f * dHeight);
+			SWIPE_MAX_OFF_PATH = Math.round(0.23f * dWidth);
+			SWIPE_THRESHOLD_VELOCITY = Math.round(0.1f * dHeight);			
 		}
 		
 		@Override
@@ -639,16 +645,22 @@ public class PrismMods {
 	
 	// Listener for swipes on dock
 	private static class SwipeListenerDock extends GestureDetector.SimpleOnGestureListener {
-		private final int SWIPE_MIN_DISTANCE_HORIZ = 130;
-		private final int SWIPE_MIN_DISTANCE_VERT = 50;
-		private final int SWIPE_THRESHOLD_VELOCITY = 100;
+		// For HTC One
+		private int SWIPE_MIN_DISTANCE_HORIZ = 130;
+		private int SWIPE_MIN_DISTANCE_VERT = 50;
+		private int SWIPE_THRESHOLD_VELOCITY = 100;
 		
 		final Context helperContext;
 		final Object launcher;
 
 		public SwipeListenerDock(Object cellLayout) {
 			launcher = XposedHelpers.getObjectField(cellLayout, "m_launcher");
-			helperContext = ((ViewGroup)cellLayout).getContext();			
+			helperContext = ((ViewGroup)cellLayout).getContext();
+			float dHeight = helperContext.getResources().getDisplayMetrics().heightPixels;
+			float dWidth = helperContext.getResources().getDisplayMetrics().widthPixels;
+			SWIPE_MIN_DISTANCE_HORIZ = Math.round(0.12f * dWidth);
+			SWIPE_MIN_DISTANCE_VERT = Math.round(0.026f * dHeight);
+			SWIPE_THRESHOLD_VELOCITY = Math.round(0.09f * dWidth);
 		}
 		
 		@Override

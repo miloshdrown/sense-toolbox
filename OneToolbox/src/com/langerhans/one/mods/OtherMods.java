@@ -77,7 +77,7 @@ public class OtherMods{
 					float density = dlg.getContext().getResources().getDisplayMetrics().density;
 					int orientation = dlg.getContext().getResources().getConfiguration().orientation;
 					int bottomMargin = 75;
-					if (orientation == 2) bottomMargin = 10;
+					if (orientation == 2) bottomMargin = 40;
 					
 					Window dlgWin = dlg.getWindow();
 					Window dlgExWin = dlgEx.getWindow();

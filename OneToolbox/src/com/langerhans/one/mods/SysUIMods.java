@@ -698,8 +698,8 @@ public class SysUIMods {
 	    	killedEmAll = true;
 			try {
 				terminateAll(gridViewObject, gridViewContext, gridViewSelf, (ArrayList<?>)mTaskDescr.get(gridViewObject), 1);
-			} catch (Exception recentException) {
-				XposedBridge.log("[S5T] TerminateAll Error: " + recentException.getMessage());
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 	        return true;
 	    }
@@ -707,23 +707,33 @@ public class SysUIMods {
 
 	// Listener for swipe gestures
 	private static class SwipeListener extends GestureDetector.SimpleOnGestureListener {
-		private final int SWIPE_MIN_DISTANCE = 120;
-		private final int SWIPE_MIN_OFF_PATH = 250;
-		private final int SWIPE_THRESHOLD_VELOCITY = 200;	
+		// For HTC One
+		private int SWIPE_MIN_DISTANCE = 120;
+		private int SWIPE_MAX_OFF_PATH = 250;
+		private int SWIPE_THRESHOLD_VELOCITY = 200;
+		
+		final Context helperContext;
+		
+		public SwipeListener(Context context) {
+			helperContext = context;
+			float dHeight = helperContext.getResources().getDisplayMetrics().heightPixels;
+			float dWidth = helperContext.getResources().getDisplayMetrics().widthPixels;
+			SWIPE_MIN_DISTANCE = Math.round(0.0625f * dHeight);
+			SWIPE_MAX_OFF_PATH = Math.round(0.23f * dWidth);
+			SWIPE_THRESHOLD_VELOCITY = Math.round(0.1f * dHeight);
+		}
 		
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			try {
-				if (Math.abs(e1.getY() - e2.getY()) < SWIPE_MIN_OFF_PATH) return false;
+				if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH) return false;
 				if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 			    	killedEmAll = true;
-					try {
-						terminateAll(gridViewObject, gridViewContext, gridViewSelf, (ArrayList<?>)mTaskDescr.get(gridViewObject), 0);
-					} catch (Exception recentException) {
-						XposedBridge.log("[S5T] TerminateAll Error: " + recentException.getMessage());
-					}
+					terminateAll(gridViewObject, gridViewContext, gridViewSelf, (ArrayList<?>)mTaskDescr.get(gridViewObject), 0);
 				} 
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			return false;
 		}
 	}
@@ -731,7 +741,7 @@ public class SysUIMods {
 	private static void initDetectors(MethodHookParam param) throws Throwable {
     	final GridView recentGridView = (GridView)param.thisObject;
     	if (mScaleDetector == null) mScaleDetector = new ScaleGestureDetector(recentGridView.getContext(), new ScaleListener());
-    	if (mDetector == null) mDetector = new GestureDetector(recentGridView.getContext(), new SwipeListener());
+    	if (mDetector == null) mDetector = new GestureDetector(recentGridView.getContext(), new SwipeListener((recentGridView.getContext())));
 	}
 	
 	// Detect second finger and cancel action if some app thumbnail was pressed
@@ -790,8 +800,8 @@ public class SysUIMods {
 				onResume.invoke(termObj);
 			}
 			return;
-		} catch (Exception localException) {
-			XposedBridge.log("[S5T] Error on onResume: " + localException.getMessage());
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }
