@@ -50,30 +50,24 @@ public class GlobalActions {
 	private static BroadcastReceiver mBR = new BroadcastReceiver() {
 		public void onReceive(final Context context, Intent intent)
 		{
+			try {
+			
 			String action = intent.getAction();
 			// Actions
 			if (action.equals("com.langerhans.one.mods.action.GoToSleep")) {
 				((PowerManager)context.getSystemService(Context.POWER_SERVICE)).goToSleep(SystemClock.uptimeMillis());
 			}
 			if (action.equals("com.langerhans.one.mods.action.LockDevice")) {
-				try {
 					final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
 					Method lockNow = XposedHelpers.findMethodExact(clsPWM, "lockNow", Bundle.class);
 					Object[] params = new Object[1];
 					params[0] = null;
 					lockNow.invoke(mPWM, params);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 			if (action.equals("com.langerhans.one.mods.action.TakeScreenshot")) {
-				try {
 					final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
 					Method takeScreenshot = XposedHelpers.findMethodExact(clsPWM, "takeScreenshot");
 					takeScreenshot.invoke(mPWM);					
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
 			}
 			/*
 			if (action.equals("com.langerhans.one.mods.action.killForegroundAppShedule")) {
@@ -126,25 +120,21 @@ public class GlobalActions {
 			}
 			
 			if (action.equals("com.langerhans.one.mods.action.ToggleNFC")) {
-				try {
-					Class<?> clsNfcAdapter = XposedHelpers.findClass("android.nfc.NfcAdapter", null);
-					NfcAdapter mNfcAdapter = (NfcAdapter) XposedHelpers.callStaticMethod(clsNfcAdapter, "getNfcAdapter", context);
-					if (mNfcAdapter == null) return;
+				Class<?> clsNfcAdapter = XposedHelpers.findClass("android.nfc.NfcAdapter", null);
+				NfcAdapter mNfcAdapter = (NfcAdapter) XposedHelpers.callStaticMethod(clsNfcAdapter, "getNfcAdapter", context);
+				if (mNfcAdapter == null) return;
 
-					Method enableNFC = clsNfcAdapter.getDeclaredMethod("enable");
-					Method disableNFC = clsNfcAdapter.getDeclaredMethod("disable");
-					enableNFC.setAccessible(true);
-					disableNFC.setAccessible(true);
+				Method enableNFC = clsNfcAdapter.getDeclaredMethod("enable");
+				Method disableNFC = clsNfcAdapter.getDeclaredMethod("disable");
+				enableNFC.setAccessible(true);
+				disableNFC.setAccessible(true);
 				
-					if (mNfcAdapter.isEnabled()) {
-						disableNFC.invoke(mNfcAdapter);
-						Toast.makeText(context, modRes.getString(R.string.toggle_nfc_off), Toast.LENGTH_SHORT).show();
-					} else {
-						enableNFC.invoke(mNfcAdapter);
-						Toast.makeText(context, modRes.getString(R.string.toggle_nfc_on), Toast.LENGTH_SHORT).show();
-					}
-				} catch(Exception e) {
-					e.printStackTrace();
+				if (mNfcAdapter.isEnabled()) {
+					disableNFC.invoke(mNfcAdapter);
+					Toast.makeText(context, modRes.getString(R.string.toggle_nfc_off), Toast.LENGTH_SHORT).show();
+				} else {
+					enableNFC.invoke(mNfcAdapter);
+					Toast.makeText(context, modRes.getString(R.string.toggle_nfc_on), Toast.LENGTH_SHORT).show();
 				}
 			}
 			if (action.equals("com.langerhans.one.mods.action.ToggleSoundProfile")) {
@@ -183,24 +173,17 @@ public class GlobalActions {
 			if (action.equals("com.langerhans.one.mods.action.ToggleFlashlight")) {
 				Method setFlashlightBrightness = null;
 				Object svc = null;
+				Object HTCHW = Class.forName("android.os.ServiceManager").getMethod("getService", new Class[] { String.class }).invoke(null, new Object[] { "htchardware" });
+				Method HTCHWInterface = Class.forName("android.os.IHtcHardwareService$Stub").getMethod("asInterface", new Class[] { IBinder.class });
+				Object[] paramArr = new Object[1];
+				paramArr[0] = ((IBinder)HTCHW);
+				svc = HTCHWInterface.invoke(null, paramArr);
+				Class<?> svcClass = svc.getClass();
+				Class<?>[] paramArray2 = new Class[1];
+				paramArray2[0] = Integer.TYPE;
+				setFlashlightBrightness = svcClass.getMethod("setFlashlightBrightness", paramArray2);
 				
-				try {
-					Object HTCHW = Class.forName("android.os.ServiceManager").getMethod("getService", new Class[] { String.class }).invoke(null, new Object[] { "htchardware" });
-					Method HTCHWInterface = Class.forName("android.os.IHtcHardwareService$Stub").getMethod("asInterface", new Class[] { IBinder.class });
-					Object[] paramArray = new Object[1];
-					paramArray[0] = ((IBinder)HTCHW);
-					svc = HTCHWInterface.invoke(null, paramArray);
-					Class<?> svcClass = svc.getClass();
-					Class<?>[] paramArray2 = new Class[1];
-					paramArray2[0] = Integer.TYPE;
-					setFlashlightBrightness = svcClass.getMethod("setFlashlightBrightness", paramArray2);
-				} catch (Exception e) {
-					e.printStackTrace();
-					setFlashlightBrightness = null;
-				}
-				
-				if (setFlashlightBrightness != null)
-				try {
+				if (setFlashlightBrightness != null) {
 					Object[] paramArray = new Object[1];
 					if (mCurrentLEDLevel == 0) {
 						paramArray[0] = 125;
@@ -220,27 +203,21 @@ public class GlobalActions {
 						Toast.makeText(context, modRes.getString(R.string.toggle_flash_off), Toast.LENGTH_SHORT).show();
 					}
 					setFlashlightBrightness.invoke(svc, paramArray);
-				} catch (Exception e) {
-					e.printStackTrace();
 				}
 			}
 			if (action.equals("com.langerhans.one.mods.action.ToggleMobileData")) {
-				try {
-					ConnectivityManager dataManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-					Method setMTE = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", boolean.class);
-					Method getMTE = ConnectivityManager.class.getDeclaredMethod("getMobileDataEnabled");
-					setMTE.setAccessible(true);
-					getMTE.setAccessible(true);
+				ConnectivityManager dataManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+				Method setMTE = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", boolean.class);
+				Method getMTE = ConnectivityManager.class.getDeclaredMethod("getMobileDataEnabled");
+				setMTE.setAccessible(true);
+				getMTE.setAccessible(true);
 					
-					if ((Boolean)getMTE.invoke(dataManager)) {
-						setMTE.invoke(dataManager, false);
-						Toast.makeText(context, modRes.getString(R.string.toggle_mobiledata_off), Toast.LENGTH_SHORT).show();
-					} else {
-						setMTE.invoke(dataManager, true);
-						Toast.makeText(context, modRes.getString(R.string.toggle_mobiledata_on), Toast.LENGTH_SHORT).show();
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				if ((Boolean)getMTE.invoke(dataManager)) {
+					setMTE.invoke(dataManager, false);
+					Toast.makeText(context, modRes.getString(R.string.toggle_mobiledata_off), Toast.LENGTH_SHORT).show();
+				} else {
+					setMTE.invoke(dataManager, true);
+					Toast.makeText(context, modRes.getString(R.string.toggle_mobiledata_on), Toast.LENGTH_SHORT).show();
 				}
 			}
 			if (action.equals("com.langerhans.one.mods.action.APMReboot")) {
@@ -260,6 +237,10 @@ public class GlobalActions {
 				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mReboot", true);
 				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mRebootSafeMode", false);
 				callStaticMethod(findClass("com.android.server.power.ShutdownThread", null), "shutdownInner", context, false);
+			}
+			
+			} catch(Exception e) {
+				e.printStackTrace();
 			}
 		}
 	};
@@ -352,7 +333,6 @@ public class GlobalActions {
 	public static void setupPWM() {
 		try {
 			final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
-
 			findAndHookMethod(clsPWM, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
