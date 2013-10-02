@@ -38,8 +38,9 @@ Killing launchers isn't possible anymore. That removes the corresponding dialog 
 Transparency settings can now be enabled and disabled by a new checkbox in the settings dialog. Please re-set your transparency settings.
 Small UI tweaks
 Fixed Vol2Wake in deep sleep for some devices/kernels. Thanks to @luxandroid.
+Swipe sensitivity is now based on screen size. Makes swipes easier for low-res devices like the One S.
 Added MMS size mod. Sizes are 300k, 600k, 1000k. Network restrictions still apply ;)
-Added CleanBeam 4G, USB, Powersave, NFC and screenshot icon.
+Added CleanBeam 4G, USB, Powersave, NFC and screenshot icon. Also Airplane mode icon as part of the data icons.
 Added Sense launcher home screen popup menu. Acces via Menu, longpress Home or swipe up from launcher dock. Has some useful functions like access to settings, apps manager and APM.
 Added mod to force enable "Support SMS special accent characters". Helpful for some specific regions to show actual character count. Code donated by @rumil86 . Thx for that!
 Added polish tranlsation by @cvxcvx (Before you ask, I still have no idea how to handle translations in a way that doesn't consume all my time...)

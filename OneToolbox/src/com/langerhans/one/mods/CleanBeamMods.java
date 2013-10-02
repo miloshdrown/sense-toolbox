@@ -250,6 +250,13 @@ public class CleanBeamMods{
 				}	
 			});
 	    }
+	    
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_signal_flightmode", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_signal_flightmode);
+			}	
+		});
 	}
 	
 	public static void execHook_PowerSaveIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
