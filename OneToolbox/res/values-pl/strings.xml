@@ -270,4 +270,28 @@ Dunc001 and LeSScro - for their APM icons
 Zespołów RU i AU (i kilka innych wczesnych beta testerów) - za badania i cenne informacje
 
 Użytkowników ARHD - za ich cierpliwość"</string>
+
+    <string name="xposed_not_found">Nie znaleziono Xposed Instalator</string>
+    <string name="xposed_not_found_explain">Wygląda na to, że nie masz Xposed Instalator.\n\nNależy pamiętać, że modyfikacje w tej zakładce będą działać tylko z Xposed!\n\nXposed jest dostępny w instalatorze ARHD.</string>
+
+    <string name="transparency_enable">Włącz przezroczystość</string>
+
+    <string name="systemui_mods">Modyfikacje interfejsu</string>
+
+    <string name="cleanbeam_screenshot_title">Zrzut ekranu</string>
+    <string name="cleanbeam_screenshot_summ">Włącz ikonę CleanBeam zrzutu ekranu.</string>
+    <string name="cleanbeam_usb_title">USB</string>
+    <string name="cleanbeam_usb_summ">Włącz ikonę CleanBeam USB.</string>
+    <string name="cleanbeam_powersave_title">Oszczędzanie energii</string>
+    <string name="cleanbeam_powersave_summ">Włącz ikonę CleanBeam oszczędzania energii.</string>
+    <string name="cleanbeam_nfc_title">NFC</string>
+    <string name="cleanbeam_nfc_summ">Włącz ikonę CleanBeam NFC.</string>
+
+    <string name="sense_homemenu_title">Główne okno menu</string>
+    <string name="sense_homemenu_summ">Pokaż menu podręczne menu z przydatnymi poleceniami w Menu lub po długim przytrzymaniu na launcher.</string>
+
+    <string name="message_size_title">Zmień rozmiar MMS</string>
+    <string name="message_size_summ">Podnieś limitu rozmiaru wiadomości MMS do 300kb, 600kb, 1000kb.</string>
+    <string name="message_accents_title">Włącz obsługę akcentu</string>
+    <string name="message_accents_summ">Włącz opcje wsparcia akcentu w ustawieniach SMS.</string>
 </resources>
