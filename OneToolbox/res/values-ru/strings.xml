@@ -51,7 +51,7 @@
 	<string name="yes">Да</string>
 	<string name="no">Нет</string>
 	<string name="hotreboot_explain">Порядок элементов был сохранён! Быстрый перезапуск необходим для применения сделанных изменений. Хотите выполнить её прямо сейчас?</string>
-	<string name="hotreboot_explain_prefs">###TRANSLATE_ME###</string>
+	<string name="hotreboot_explain_prefs">Вы уверены, что хотите выполнить быстрый перезапуск?</string>
 	<string name="select_tile">Выберите какой элемент добавить</string>
 	<string name="success">Успешно</string>
 	<string name="backup_restored">Конфигурация успешно восстановлена! Нажмите иконку "Сохранить" чтобы применить изменения.</string>

@@ -395,7 +395,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		{
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
 			alert.setTitle(R.string.apm_hotreboot_title);
-			alert.setMessage(R.string.hotreboot_explain);
+			alert.setMessage(R.string.hotreboot_explain_prefs);
 			alert.setPositiveButton(getText(R.string.yes) + "!", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 			     try {

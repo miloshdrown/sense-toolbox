@@ -52,7 +52,7 @@ Możesz dodać go ponownie za pomocą ikony '+'."</string>
     <string name="yes">Tak</string>
     <string name="no">Nie</string>
     <string name="hotreboot_explain">Twoje ustawienia zostały zapisane! Szybki restart jest wymagany do tego, aby podjąć działanie. Czy chciałbyś zrobić to teraz?</string>
-    <string name="hotreboot_explain_prefs">###TRANSLATE_ME###</string>
+    <string name="hotreboot_explain_prefs">Tym wykonasz szybki restart urządzenia. Kontynuować?</string>
     <string name="select_tile">Wybierz element, aby go dodać</string>
     <string name="success">Sukces</string>
     <string name="backup_restored">Kopia pomyślnie przywrócona! Dotknij Zapisz, aby zastosować kolejność.</string>
