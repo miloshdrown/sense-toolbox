@@ -102,4 +102,12 @@
         <item>@drawable/c_stat_sys_battery_95</item>
         <item></item>
     </array>
+
+    <string-array name="home_menu">
+	    <item >Zarządzaj aplikacjami</item>
+	    <item >Personalizacja</item>
+	    <item >Ustawienia</item>
+	    <item >Wi-Fi</item>
+	    <item >APM</item>
+	</string-array>
 </resources>
