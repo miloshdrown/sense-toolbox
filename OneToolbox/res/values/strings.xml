@@ -200,7 +200,7 @@
 	
 	<string name="message_mods">Messaging Mods</string>
 	<string name="message_smsmms_title">Disable SMS -> MMS conversion</string>
-	<string name="message_smsmms_summ">Check do disable the forced SMS to MMS coversion by the character limit. Network limitations still apply.</string>
+	<string name="message_smsmms_summ">Check to disable the forced SMS to MMS conversion by the character limit. Network limitations still apply.</string>
 	<string name="message_smswake_title">Wake on SMS</string>
 	<string name="message_smswake_summ">Turn the screen on, when you receive a SMS.</string>
 	<string name="message_toast_title">Toast delivery reports</string>
