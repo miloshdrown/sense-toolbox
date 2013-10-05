@@ -51,6 +51,7 @@
 	<string name="yes">Ja</string>
 	<string name="no">Nein</string>
 	<string name="hotreboot_explain">Die Sortierung wurde gespeichert. Um sie anzuwenden ist ein schneller Neustart nötig. Willst dies jetzt tun?</string>
+	<string name="hotreboot_explain_prefs">Dies führt einen schnellen Neustart aus. Fortfahren?</string>
 	<string name="select_tile">Wähle eine Kachel</string>
 	<string name="success">Erfolg</string>
 	<string name="backup_restored">Sicherung wiederhergestellt. Tippe auf Speichern, um sie anzuwenden.</string>

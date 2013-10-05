@@ -51,6 +51,7 @@
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
 	<string name="hotreboot_explain">Your order has been saved! A hot reboot is required for this to take effect. Would you like to do this now?</string>
+	<string name="hotreboot_explain_prefs">This will soft reboot your device. Continue?</string>
 	<string name="select_tile">Select tile to add</string>
 	<string name="success">Success</string>
 	<string name="backup_restored">Backup successfully restored! Tap on "Save" to apply the order.</string>

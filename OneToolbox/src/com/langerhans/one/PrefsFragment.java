@@ -48,7 +48,6 @@ import com.langerhans.one.utils.DynamicPreference;
 import com.langerhans.one.utils.Helpers;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
-
 import com.langerhans.one.utils.HtcListPreferencePlus;
 
 public class PrefsFragment extends HtcPreferenceFragment {
@@ -394,13 +393,26 @@ public class PrefsFragment extends HtcPreferenceFragment {
 	public boolean onOptionsItemSelected(MenuItem item) {
 		if (item.getItemId() == R.id.softreboot)
 		{
-			getPreferenceManager().setSharedPreferencesMode(1);
-			try {
-				CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
-				RootTools.getShell(true).add(command).waitForFinish();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
+			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
+			alert.setTitle(R.string.apm_hotreboot_title);
+			alert.setMessage(R.string.hotreboot_explain);
+			alert.setPositiveButton(getText(R.string.yes) + "!", new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+			     try {
+					CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
+					RootTools.getShell(true).add(command).waitForFinish();
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			  }
+			});
+
+			alert.setNegativeButton(getText(R.string.no) + "!", new DialogInterface.OnClickListener() {
+			  public void onClick(DialogInterface dialog, int whichButton) {
+			    // Canceled.
+			  }
+			});
+			alert.show();
 			return true;
 		} else if (item.getItemId() == R.id.about) {
 			Intent intent = new Intent(getActivity(), AboutScreen.class);
