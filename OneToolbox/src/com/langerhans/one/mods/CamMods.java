@@ -31,7 +31,7 @@ public class CamMods{
     		@Override
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
     			KeyEvent key =  (KeyEvent) param.args[1];
-    			if (key.getKeyCode() == 25)
+    			if (key.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)
     			{
     				switch (voldown){
     				case 1:
@@ -55,7 +55,7 @@ public class CamMods{
         				
     				}
     			}
-    			if (key.getKeyCode() == 24)
+    			if (key.getKeyCode() == KeyEvent.KEYCODE_VOLUME_UP)
     			{
     				switch (volup){
     				case 1:
@@ -94,7 +94,7 @@ public class CamMods{
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
     			KeyEvent key =  (KeyEvent) param.args[1];
     			int keycode = key.getKeyCode();
-    			if (keycode == 25 || keycode == 24)
+    			if (keycode == KeyEvent.KEYCODE_VOLUME_DOWN || keycode == KeyEvent.KEYCODE_VOLUME_UP)
     			{
     				param.setResult(true);
     			}

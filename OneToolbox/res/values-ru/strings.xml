@@ -34,7 +34,6 @@
     <string name="eqs_reorder">Порядок EQS</string>
     <string name="eqs_reorder_explain">Настроить порядок EQS переключателей</string>
     <string name="no_root_access">Нет прав рута</string>
-    
     <string name="no_root_explain">Ваше устройство не рутовано, либо Вы не разрешили приложению доступ к руту.\nБез прав рута вы не сможете изменить порядок EQS, поэтому данная функция будет скрыта.\nВы можете закрыть данное сообщение один раз или навсегда. Проверка на рут будет происходить при каждом запуске приложения, чтобы вновь включить функцию, если Вы решите разрешить доступ позже.</string>
 	<string name="dismiss_once">Закрыть</string>
 	<string name="dismiss_forever">Закрыть навсегда</string>
@@ -123,6 +122,8 @@
 	<string name="systemui_brightslide_title">Регулировка яркости</string>
 	<string name="systemui_brightslide_summ">Добавить слайдер управления яркостью в панель уведомлений.</string>
 	<string name="systemui_brightslide_auto">Авто</string>
+	<string name="systemui_dataratestatus_title">Мониторинг трафика</string>
+	<string name="systemui_dataratestatus_summ">Добавить текущее значение скорости приёма+отдачи в статусбар. Показывается только при наличии подключения к сети.</string>
 	
 	<string name="cleanbeam_mods">Моды CleanBeam от vomer</string>
 	<string name="cleanbeam_battery_title">Иконка батареи</string>
@@ -176,7 +177,7 @@
 	<string name="sense_tfoldersbkg_title">Фон иконок папок</string>
 	<string name="sense_tfoldersbkg_summ">Настройка прозрачности фона иконок папок ланчера.</string>
 	<string name="sense_infini_title">Бесконечные папки</string>
-	<string name="sense_infini_summ">Снятие ограничение на количество приложений в папке.</string>
+	<string name="sense_infini_summ">Снятие ограничения на количество приложений в папке.</string>
 	<string name="sense_adnoclock_title">Убрать часы из списка приложений</string>
 	<string name="sense_adnoclock_summ">Скрывает виджет часов и погоды в списке приложений и сдвигает иконки наверх.</string>	
 	<string name="sense_noblink_title">Удаление BlinkFeed</string>

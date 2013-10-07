@@ -276,6 +276,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_sysui_brightslide", false))
 				SysUIMods.execHook_BrightnessSlider(lpparam, MODULE_PATH);
+			
+			if(pref.getBoolean("pref_key_sysui_dataratestatus", false))
+				SysUIMods.execHook_DataRateStatus(lpparam);
 		}
 		
 		if (lpparam.processName.equals("android"))

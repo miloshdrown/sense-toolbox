@@ -13,6 +13,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 
+import android.annotation.SuppressLint;
 import android.app.ActivityManager;
 import android.content.ContentResolver;
 import android.content.Context;
@@ -20,11 +21,17 @@ import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.database.ContentObserver;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.Handler;
 import android.provider.Settings.SettingNotFoundException;
+import android.text.method.SingleLineTransformationMethod;
+import android.util.TypedValue;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -491,6 +498,85 @@ public class SysUIMods {
 				SettingsObserver so = new SettingsObserver(new Handler());
 				so.setup(checkBox, cr);
 				cr.registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, so);
+			}
+		});
+	}
+	
+	private static ConnectivityManager connectivityManager = null;
+	private static TextView dataRate = null;
+	private static Handler mHandler = null;
+	private static Runnable mRunnable = null;
+	private static long bytesTotal = 0;
+	
+	@SuppressLint("DefaultLocale")
+	private static String humanReadableByteCount(long bytes) {
+	    if (bytes < 1024) return bytes + "B";
+	    int exp = (int) (Math.log(bytes) / Math.log(1024));
+	    char pre = "KMGTPE".charAt(exp-1);
+	    return String.format("%.1f%s", bytes / Math.pow(1024, exp), pre);
+	}
+	
+	public static void execHook_DataRateStatus(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook(){
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) {
+				if (dataRate != null) return;
+				
+				Context mContext = (Context)getObjectField(param.thisObject, "mContext");
+				connectivityManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+				
+				FrameLayout mStatusBarView = (FrameLayout)getObjectField(param.thisObject, "mStatusBarView");
+				LinearLayout systemIconArea = (LinearLayout)mStatusBarView.findViewById(mStatusBarView.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
+				
+				dataRate = new TextView(mContext);
+				dataRate.setVisibility(8);
+				dataRate.setTransformationMethod(SingleLineTransformationMethod.getInstance());
+				dataRate.setEllipsize(null);
+				dataRate.setGravity(Gravity.CENTER_VERTICAL);
+				dataRate.setTextColor(Color.WHITE);
+				dataRate.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+				dataRate.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 12.0f);
+				dataRate.setPadding(3, 0, 12, 0);
+				systemIconArea.addView(dataRate, 0);
+
+				mHandler = new Handler();
+				mRunnable = new Runnable() {
+		            public void run() {
+						try {
+							boolean isConnected = false;
+							if (connectivityManager != null && dataRate != null) {
+								NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+								if (activeNetworkInfo != null)
+								if (activeNetworkInfo.isConnected()) isConnected = true;
+								
+								if (isConnected) {
+									long rxBytes = TrafficStats.getTotalRxBytes();
+									long txBytes = TrafficStats.getTotalTxBytes();
+									long newBytes = 0;
+									if (rxBytes != -1L && txBytes != -1L) newBytes = rxBytes + txBytes;						
+									long newBytesFixed = newBytes - bytesTotal;
+									if (newBytesFixed < 0 || bytesTotal == 0) newBytesFixed = 0;
+									long speed = Math.round(newBytesFixed/3);
+									bytesTotal = newBytes;
+									dataRate.setText(humanReadableByteCount(speed) + "/s");
+									if (speed == 0)
+										dataRate.setAlpha(0.5f);
+									else
+										dataRate.setAlpha(1.0f);
+									dataRate.setVisibility(0);									
+								} else {
+									dataRate.setVisibility(8);
+								}
+							}
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+							
+						if (mHandler != null)
+						mHandler.postDelayed(mRunnable, 3000L);
+		            }
+		        };
+		        mHandler.post(mRunnable);
 			}
 		});
 	}

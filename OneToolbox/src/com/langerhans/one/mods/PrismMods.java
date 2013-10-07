@@ -708,27 +708,33 @@ public class PrismMods {
 		}
 	}
 	
+	private static HtcPopupWindow popup = null;
+	
 	public static void execHook_HomeMenu(final LoadPackageParam lpparam) {
 		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onKeyDown", int.class, KeyEvent.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				if ((Integer)param.args[0] == 82)
+				if ((Integer)param.args[0] == KeyEvent.KEYCODE_MENU)
 				createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_workspace"), (Activity)param.thisObject);
 			}
 		});
 	}
 	
 	public static void createAndShowPopup(ViewGroup m_workspace, final Activity launcher) {
-		final HtcPopupWindow popup = new HtcPopupWindow(m_workspace.getContext());
-		popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
-		popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
-		popup.setTouchable(true);
-        popup.setFocusable(true);
-		popup.setOutsideTouchable(true);
-		ListView options = new ListView(m_workspace.getContext());
+		if (popup == null) {
+			popup = new HtcPopupWindow(m_workspace.getContext());
+			popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
+			popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+			popup.setTouchable(true);
+			popup.setFocusable(true);
+			popup.setOutsideTouchable(true);
+		}
 		
+		// Update items and listeners. I doubt launcher contexts will change over time but just in case :) 
+		ListView options = new ListView(m_workspace.getContext());
 		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 		ListAdapter listAdapter = new PopupAdapter(options.getContext(), modRes.getStringArray(R.array.home_menu));
+		options.setFocusableInTouchMode(true);
 		options.setAdapter(listAdapter);
 		options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
@@ -746,6 +752,16 @@ public class PrismMods {
 					OtherMods.startAPM(launcher);
 				}
 			}						
+		});
+		options.setOnKeyListener(new View.OnKeyListener() {        
+		    @Override
+		    public boolean onKey(View v, int keyCode, KeyEvent event) {
+		        if (keyCode ==  KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0 && event.getAction() == KeyEvent.ACTION_DOWN) {
+		        	popup.dismiss();
+		            return true;
+		        }                
+		        return false;
+		    }
 		});
 		popup.setContentView(options);
 		popup.showAtLocation(m_workspace, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);

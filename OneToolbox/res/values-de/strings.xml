@@ -34,7 +34,6 @@
     <string name="eqs_reorder">EQS Sortierung</string>
     <string name="eqs_reorder_explain">Ermöglicht die Sortierung der Schnelleinstellungen</string>
     <string name="no_root_access">Kein root-Zugriff</string>
-    
     <string name="no_root_explain">Entweder hat dein Gerät kein root, oder du hast den Zugriff verweigert.\nOhne root kannst du die Schnelleinstellungen nicht umsortieren, deshalb wurde die Funktion deaktiviert\nDu kannst die Meldung einmalig oder für immer deaktivieren. Es wird bei jedem Start auf root geprüft, falls sich deine Meinung in Zukunft ändert.</string>
 	<string name="dismiss_once">Einmal schließen</string>
 	<string name="dismiss_forever">Dauerhaft schließen</string>
@@ -123,6 +122,8 @@
 	<string name="systemui_brightslide_title">Helligkeitsregler</string>
 	<string name="systemui_brightslide_summ">Fügt den Benachrichtigungen einen Helligkeitsregler hinzu.</string>
 	<string name="systemui_brightslide_auto">Auto</string>
+	<string name="systemui_dataratestatus_title">###TRANSLATE_ME###</string>
+	<string name="systemui_dataratestatus_summ">###TRANSLATE_ME###</string>
 	
 	<string name="cleanbeam_mods">CleanBeam Mods von vomer</string>
 	<string name="cleanbeam_battery_title">Akku Icon</string>

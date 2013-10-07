@@ -34,11 +34,11 @@ public class ControlsMods {
 					int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 						// Back long press
-						if (pref_backlongpress != 1 && keycode == 4) {
-							if (action == 0) {
+						if (pref_backlongpress != 1 && keycode == KeyEvent.KEYCODE_BACK) {
+							if (action == KeyEvent.ACTION_DOWN) {
 								isBackLongPressed = false;
 							}
-							if (action == 1 && isBackLongPressed == true) {
+							if (action == KeyEvent.ACTION_UP && isBackLongPressed == true) {
 								param.setResult(0);
 							}
 						}
@@ -60,8 +60,8 @@ public class ControlsMods {
 					int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 						// Back long press
-						if (pref_backlongpress != 1 && keycode == 4) {
-							if (action == 0 && repeats >= 5) {
+						if (pref_backlongpress != 1 && keycode == KeyEvent.KEYCODE_BACK) {
+							if (action == KeyEvent.ACTION_DOWN && repeats >= 5) {
 								if (isBackLongPressed == false) {
 									Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 									switch (pref_backlongpress) {
@@ -79,7 +79,7 @@ public class ControlsMods {
 								param.setResult(-1L);
 								return;
 							}
-							if (action == 1) {
+							if (action == KeyEvent.ACTION_UP) {
 								if (isBackLongPressed == true) {
 									isBackLongPressed = false;
 									param.setResult(-1L);
@@ -131,7 +131,7 @@ public class ControlsMods {
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				int keyCode = (Integer) param.args[0];
 				//XposedBridge.log("Pressed button! Keycode = " + String.valueOf(keyCode));
-				if (keyCode == 24 || keyCode == 25)
+				if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
 					param.setResult(true);
 			}
 		});
