@@ -122,8 +122,8 @@
 	<string name="systemui_brightslide_title">Helligkeitsregler</string>
 	<string name="systemui_brightslide_summ">Fügt den Benachrichtigungen einen Helligkeitsregler hinzu.</string>
 	<string name="systemui_brightslide_auto">Auto</string>
-	<string name="systemui_dataratestatus_title">###TRANSLATE_ME###</string>
-	<string name="systemui_dataratestatus_summ">###TRANSLATE_ME###</string>
+	<string name="systemui_dataratestatus_title">Datenrate-Anzeige</string>
+	<string name="systemui_dataratestatus_summ">Zeigt die aktuelle Datenrate (Upload+Download) in der Statusleiste an.</string>
 	
 	<string name="cleanbeam_mods">CleanBeam Mods von vomer</string>
 	<string name="cleanbeam_battery_title">Akku Icon</string>
@@ -196,6 +196,8 @@
 	<string name="sense_swiperightaction_summ">Aktion für ein Wischen nach rechts auf dem Launcher Dock.</string>
 	<string name="sense_swipeleftaction_title">Nach links Geste</string>
 	<string name="sense_swipeleftaction_summ">Aktion für ein Wischen nach links auf dem Launcher Dock.</string>
+	<string name="sense_sevenscreens_title">Sieben Home Screens</string>
+	<string name="sense_sevenscreens_summ">Erhöht die maximale Anzahl vom Home Screens auf Sieben.</string>
 	<string name="notselected">Keine ausgewählt</string>
 	<string name="loading_app_data">Lade Apps&#8230;</string>
 	

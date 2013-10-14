@@ -196,6 +196,8 @@
 	<string name="sense_swiperightaction_summ">Action for swipe right gesture on launcher dock.</string>
 	<string name="sense_swipeleftaction_title">Swipe left action</string>
 	<string name="sense_swipeleftaction_summ">Action for swipe left gesture on launcher dock.</string>
+	<string name="sense_sevenscreens_title">Seven home screens</string>
+	<string name="sense_sevenscreens_summ">Increase number of maximum home screens to seven.</string>
 	<string name="notselected">Not selected</string>
 	<string name="loading_app_data">Loading apps&#8230;</string>
 	

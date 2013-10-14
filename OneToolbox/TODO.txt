@@ -27,15 +27,27 @@
 - brightness slider design
 - Only one toast for group notifications
 - Small font also on home screens
+- 2 finger swipes
+- Soft reboot vs. hot reboot on dialog
+- switch to zoe on camera volume buttons
+- Camera: Press both buttons for an action
+- Auto detect ROM version for version dependent mods
+- EQS reorder description: Say what EQS is... (Oh man, just click it and see -.-)
 
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
+
+2.3:
+Added mod to display current data rate (upload+download) on the status bar. Will only be shown, when the device is connected to a network.
+Added mod to enable seven home screens on Sense launcher.
+Pressing menu key with open home popup menu will now close it.
 
 2.2:
 Kill app on long press back/home assist now kills the complete package including services.
 Kill app will give you feedback in form of a vibration, so you know that you actually killed the app and not just pressed back. Respects power saver settings for vibration.
 Killing launchers isn't possible anymore. That removes the corresponding dialog too.
 Transparency settings can now be enabled and disabled by a new checkbox in the settings dialog. Please re-set your transparency settings.
+Soft reboot icon changed again. It now asks for confirmation. I hope this will now clear up any confusion.
 Small UI tweaks
 Fixed Vol2Wake in deep sleep for some devices/kernels. Thanks to @luxandroid.
 Swipe sensitivity is now based on screen size. Makes swipes easier for low-res devices like the One S.

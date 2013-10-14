@@ -47,6 +47,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pref_backlongpress != 1 || pref_homeassist != 1)
 			ControlsMods.setupPWMKeys();
+		
+		//For CRT
+		//CrtTest.CrtAOSP(startupParam);
+		//XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", false);
 	}
 
 	@Override
@@ -231,6 +235,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_prism_homemenu", false))
 				PrismMods.execHook_HomeMenu(lpparam);
+			
+			if(pref.getBoolean("pref_key_prism_sevenscreens", false))
+				PrismMods.execHook_SevenScreens(lpparam);
 		}
 		
 		if (pkg.equals("com.htc.lockscreen")) {

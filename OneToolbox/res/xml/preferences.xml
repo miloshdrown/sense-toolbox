@@ -305,6 +305,11 @@
             android:summary="@string/sense_homemenu_summ"
             android:title="@string/sense_homemenu_title"
             android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_prism_sevenscreens"
+            android:summary="@string/sense_sevenscreens_summ"
+            android:title="@string/sense_sevenscreens_title"
+            android:defaultValue="false" />
         </com.htc.preference.HtcPreferenceCategory>
         
         <com.htc.preference.HtcPreferenceCategory
