@@ -317,4 +317,13 @@ public class Helpers {
 	    }
 	    return installed;
 	}
+	
+	/**
+	 * Gets the current Sense version as String
+	 * @return Current Sense version
+	 */
+	public static String getSenseVersion()
+	{
+		return String.valueOf(com.htc.util.phone.ProjectUtils.getSenseVersion());
+	}
 }

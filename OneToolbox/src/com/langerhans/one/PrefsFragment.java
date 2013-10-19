@@ -77,6 +77,10 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		HtcPreferenceManager.setDefaultValues(getActivity(), R.xml.preferences, false);
 		
 		addPreferencesFromResource(R.xml.preferences);
+
+		//Save current Sense version into the sharedprefs
+		SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
+		prefs.edit().putString("pref_sense_version", Helpers.getSenseVersion()).commit();
 		
 		if (findPreference("pref_key_eqs") != null && MainActivity.isRootAccessGiven == false)
 		findPreference("pref_key_eqs").setEnabled(false);
@@ -277,7 +281,6 @@ public class PrefsFragment extends HtcPreferenceFragment {
 	        }
 	    };
 		
-		SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
 		String not_selected = getResources().getString(R.string.notselected);
 		
 		launchAppsSwipeDown.setSummary(getAppName(prefs.getString("pref_key_prism_swipedown_app", not_selected)));

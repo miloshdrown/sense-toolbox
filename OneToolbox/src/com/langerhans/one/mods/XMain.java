@@ -20,12 +20,15 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	private static int pref_swipeleft = 1;
 	private static int pref_backlongpress = 1;
 	private static int pref_homeassist = 1;
+	public static String senseVersion;
 	
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
 		MODULE_PATH = startupParam.modulePath;
 
 		pref = new XSharedPreferences("com.langerhans.one", "one_toolbox_prefs");
+		
+		senseVersion = pref.getString("pref_sense_version", "5.0");
 		
 		if(pref.getBoolean("pref_key_cb_beats", false))
 			CleanBeamMods.execHook_BeatsIcon(MODULE_PATH);
