@@ -3,6 +3,9 @@ package com.langerhans.one.mods;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
+
+import com.langerhans.one.utils.Version;
+
 import android.content.Context;
 import android.net.Uri;
 import de.robv.android.xposed.XC_MethodHook;
@@ -70,8 +73,7 @@ public class SmsMods{
 					param.setResult(1024000);
 			}
 		});
-		if(XMain.senseVersion.equals("5.0"))
-		{
+		if (XMain.senseVersion.compareTo(new Version("5.5")) == -1) {
 			findAndHookMethod("com.android.mms.ui.MessagingPreferenceActivity", lpparam.classLoader, "convertMaxMmsSize", Context.class, String.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {

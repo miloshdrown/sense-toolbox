@@ -2,6 +2,7 @@ package com.langerhans.one.mods;
 
 import com.langerhans.one.utils.GlobalActions;
 import com.langerhans.one.utils.PackagePermissions;
+import com.langerhans.one.utils.Version;
 
 import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
@@ -20,7 +21,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	private static int pref_swipeleft = 1;
 	private static int pref_backlongpress = 1;
 	private static int pref_homeassist = 1;
-	public static String senseVersion;
+	public static Version senseVersion;
 	
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
@@ -28,7 +29,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 
 		pref = new XSharedPreferences("com.langerhans.one", "one_toolbox_prefs");
 		
-		senseVersion = pref.getString("pref_sense_version", "5.0");
+		senseVersion = new Version(pref.getString("pref_sense_version", "5.0"));
 		
 		if(pref.getBoolean("pref_key_cb_beats", false))
 			CleanBeamMods.execHook_BeatsIcon(MODULE_PATH);
@@ -303,5 +304,4 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				ControlsMods.execHook_Vol2Wake(lpparam);
 		}
 	}
-
 }

@@ -28,6 +28,7 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -41,6 +42,7 @@ import com.htc.widget.HtcPopupWindow;
 import com.langerhans.one.R;
 import com.langerhans.one.utils.GlobalActions;
 import com.langerhans.one.utils.PopupAdapter;
+import com.langerhans.one.utils.Version;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
@@ -51,6 +53,7 @@ import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.XposedHelpers.ClassNotFoundError;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
+import de.robv.android.xposed.callbacks.XC_LayoutInflated.LayoutInflatedParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class PrismMods {
@@ -62,15 +65,19 @@ public class PrismMods {
 	//private static GestureDetector mDetectorWP;
 	
 	public static void execHook_InvisiNav(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
-		resparam.res.setReplacement("com.htc.launcher", "drawable", "home_nav_bg", new XResources.DrawableLoader() {
-			@Override
-			public Drawable newDrawable(XResources res, int id) throws Throwable {
-				Drawable bg = modRes.getDrawable(R.drawable.home_nav_bg);
-				bg.setAlpha(transparency);
-				return bg;
-			}
-		});
+		try {
+			final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+			resparam.res.setReplacement("com.htc.launcher", "drawable", "home_nav_bg", new XResources.DrawableLoader() {
+				@Override
+				public Drawable newDrawable(XResources res, int id) throws Throwable {
+					Drawable bg = modRes.getDrawable(R.drawable.home_nav_bg);
+					bg.setAlpha(transparency);
+					return bg;
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void execHook_InvisiWidget(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
@@ -137,20 +144,43 @@ public class PrismMods {
 	}
 	
 	public static void execHook_InvisiFolder(final InitPackageResourcesParam resparam, final int transparency) {
-		resparam.res.hookLayout("com.htc.launcher", "layout", "user_folder", new XC_LayoutInflated() {
-			@Override
-			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-				RelativeLayout bg = (RelativeLayout)liparam.view;
-				bg.getBackground().setAlpha(transparency);
-				LinearLayout nameframe = (LinearLayout)liparam.view.findViewById(resparam.res.getIdentifier("folder_name_frame", "id", "com.htc.launcher"));
-				if (nameframe != null) {
-					RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)nameframe.getLayoutParams();
-					lp.rightMargin = 3;
-					nameframe.setLayoutParams(lp);
-					nameframe.setBackgroundColor(Color.argb(255, 20, 20, 20));
-				}
+		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
+			// 5.5
+			try {
+				resparam.res.hookLayout("com.htc.launcher", "layout", "specific_user_folder", new XC_LayoutInflated() {
+					@Override
+					public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+						InvisiFolder_Snippet(liparam, resparam, transparency);
+					}
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-		});
+		} else {
+			// 5.0
+			try {
+				resparam.res.hookLayout("com.htc.launcher", "layout", "user_folder", new XC_LayoutInflated() {
+					@Override
+					public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+						InvisiFolder_Snippet(liparam, resparam, transparency);
+					}
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+	}
+	
+	private static void InvisiFolder_Snippet(LayoutInflatedParam liparam, final InitPackageResourcesParam resparam, final int transparency) {
+		RelativeLayout bg = (RelativeLayout)liparam.view;
+		bg.getBackground().setAlpha(transparency);
+		LinearLayout nameframe = (LinearLayout)liparam.view.findViewById(resparam.res.getIdentifier("folder_name_frame", "id", "com.htc.launcher"));
+		if (nameframe != null) {
+			RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)nameframe.getLayoutParams();
+			lp.rightMargin = 3;
+			nameframe.setLayoutParams(lp);
+			nameframe.setBackgroundColor(Color.argb(255, 20, 20, 20));
+		}
 	}
 	
 	public static void execHook_InvisiFolderBkg(final InitPackageResourcesParam resparam, final int transparency,  String MODULE_PATH) {
@@ -177,8 +207,14 @@ public class PrismMods {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				ViewGroup m_PagedView = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "m_PagedView").get(param.thisObject);
-				if (m_PagedView.getParent() != null)
-				((RelativeLayout)m_PagedView.getParent()).getBackground().setAlpha(transparency);
+				ViewParent vp = m_PagedView.getParent();
+				if (vp != null) {
+					if (vp instanceof RelativeLayout) {
+						((RelativeLayout)vp).getBackground().setAlpha(transparency);
+					} else if (vp instanceof FrameLayout) {
+						((FrameLayout)vp).getBackground().setAlpha(transparency);						
+					}					
+				}
 			}
 		});
 		
@@ -581,17 +617,15 @@ public class PrismMods {
 	}*/
 
 	public static void execHook_BfRemove(LoadPackageParam lpparam) {
-		try{
+		try {
 			findAndHookMethod("com.htc.launcher.util.Protection", lpparam.classLoader, "isFeedEnabled", new XC_MethodHook() {
 				@Override
 	    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					param.setResult(false);
 				}
 			});
-		}
-		catch(Exception e)
-		{
-			//Probably on 4.2.2...
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 

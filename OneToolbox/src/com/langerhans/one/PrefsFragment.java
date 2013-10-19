@@ -46,6 +46,7 @@ import com.langerhans.one.mods.ControlsMods;
 import com.langerhans.one.utils.ApkInstaller;
 import com.langerhans.one.utils.DynamicPreference;
 import com.langerhans.one.utils.Helpers;
+import com.langerhans.one.utils.Version;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 import com.langerhans.one.utils.HtcListPreferencePlus;
@@ -80,10 +81,16 @@ public class PrefsFragment extends HtcPreferenceFragment {
 
 		//Save current Sense version into the sharedprefs
 		SharedPreferences prefs = getPreferenceManager().getSharedPreferences();
-		prefs.edit().putString("pref_sense_version", Helpers.getSenseVersion()).commit();
+		String senseVer = Helpers.getSenseVersion();
+		prefs.edit().putString("pref_sense_version", senseVer).commit();
 		
-		if (findPreference("pref_key_eqs") != null && MainActivity.isRootAccessGiven == false)
+		if (findPreference("pref_key_eqs") != null && (MainActivity.isRootAccessGiven == false))
 		findPreference("pref_key_eqs").setEnabled(false);
+		
+		if ((new Version(senseVer)).compareTo(new Version("5.5")) >= 0) {
+			if (findPreference("pref_key_eqs") != null) findPreference("pref_key_eqs").setEnabled(false);
+			if (findPreference("pref_key_prism_bfremove") != null) findPreference("pref_key_prism_bfremove").setEnabled(false);			
+		}
 		
 		//Add version name to support title
 		try {

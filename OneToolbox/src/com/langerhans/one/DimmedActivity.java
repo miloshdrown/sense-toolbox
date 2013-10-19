@@ -17,26 +17,7 @@ public class DimmedActivity extends Activity {
 		if (dialogType == 1) {
 			ApmDialog rebD = new ApmDialog(this);
 			rebD.show();
-		} /* else if (dialogType == 2) {
-			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(this);
-			DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-			    @Override
-			    public void onClick(DialogInterface dialog, int which) {
-			        switch (which){
-			        	case DialogInterface.BUTTON_POSITIVE:
-			        		Intent intent_kill = new Intent();
-			        		intent_kill.setAction("com.langerhans.one.mods.action.killForegroundAppShedule");
-			        		sendBroadcast(intent_kill);
-			        		break;
-
-			        	case DialogInterface.BUTTON_NEGATIVE:
-			        		break;
-			        }
-			        finish();
-			    }
-			};
-			builder.setMessage(R.string.kill_foreground_warn).setCancelable(false).setPositiveButton(R.string.kill_foreground_yes, dialogClickListener).setNegativeButton(R.string.kill_foreground_no, dialogClickListener).show();
-		} */ 
+		} 
 	}
 
 	@Override
