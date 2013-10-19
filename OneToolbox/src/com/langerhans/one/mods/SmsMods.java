@@ -70,18 +70,21 @@ public class SmsMods{
 					param.setResult(1024000);
 			}
 		});
-		findAndHookMethod("com.android.mms.ui.MessagingPreferenceActivity", lpparam.classLoader, "convertMaxMmsSize", Context.class, String.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				String s = (String) param.args[1];
-				if(s.equals("1"))
-					param.setResult(307200);
-				if(s.equals("2"))
-					param.setResult(614400);
-				if(s.equals("3"))
-					param.setResult(1024000);
-			}
-		});
+		if(XMain.senseVersion.equals("5.0"))
+		{
+			findAndHookMethod("com.android.mms.ui.MessagingPreferenceActivity", lpparam.classLoader, "convertMaxMmsSize", Context.class, String.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					String s = (String) param.args[1];
+					if(s.equals("1"))
+						param.setResult(307200);
+					if(s.equals("2"))
+						param.setResult(614400);
+					if(s.equals("3"))
+						param.setResult(1024000);
+				}
+			});
+		}
 		findAndHookMethod("com.android.mms.ui.MessageUtils", lpparam.classLoader, "getMMSLimit", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
