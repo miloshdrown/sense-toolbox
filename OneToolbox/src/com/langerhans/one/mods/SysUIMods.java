@@ -41,6 +41,7 @@ import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
 import android.view.animation.Animation;
@@ -62,6 +63,7 @@ import com.htc.widget.HtcCompoundButton;
 import com.htc.widget.HtcCompoundButton.OnCheckedChangeListener;
 import com.htc.widget.HtcSeekBar;
 import com.langerhans.one.R;
+import com.langerhans.one.utils.Version;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
@@ -113,15 +115,22 @@ public class SysUIMods {
 				String[] QS_MAPPING = (String[]) getStaticObjectField(param.thisObject.getClass(), "QS_MAPPING");
 				ArrayList<String> qsContent = new ArrayList<String>();
 				ArrayList<String> qsContent2 = new ArrayList<String>();
-				int[] paramArgs = (int[]) param.args[0];
+				int[] paramArgs;
 				Class<?> CustomizationUtil = findClass("com.android.systemui.CustomizationUtil", lpparam.classLoader);
 				Object hcr = callStaticMethod(CustomizationUtil, "getReader");
-				if(hcr == null)
-					paramArgs = QS_DEFAULT;
-				else
+				if(param.args[0] == null)
 				{
-					paramArgs = (int[]) callMethod(hcr, "readIntArray", "quick_setting_items", QS_DEFAULT);
+					if(hcr == null)
+						paramArgs = QS_DEFAULT;
+					else
+					{
+						paramArgs = (int[]) callMethod(hcr, "readIntArray", "quick_setting_items", QS_DEFAULT);
+					}
+				}else
+				{
+					 paramArgs = (int[]) param.args[0];
 				}
+				
 				if (paramArgs == null || paramArgs.length == 0)
 					paramArgs = QS_DEFAULT;
 				int i = QS_MAPPING.length;
@@ -145,10 +154,43 @@ public class SysUIMods {
 		            l++;
 		        } while (true);
 		        setObjectField(param.thisObject, "qsContent", qsContent);
-		        setObjectField(param.thisObject, "qsContent2", qsContent2);
+		        setObjectField(param.thisObject, "qsContent2", qsContent2);		        
 				return null;
 			}
 		});
+		
+		//Redraw the tile view because we have added or removed something... Sense 5.5 only.
+		if(XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
+		{
+			findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettings", lpparam.classLoader, "repositionQuickSettingTile", ViewGroup.class, ArrayList.class, boolean.class, new XC_MethodHook() {
+				@Override
+	    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					ViewGroup qsContainer = (ViewGroup) getObjectField(param.thisObject, "mContainerView2");
+					if(!param.args[0].equals(qsContainer))
+						return;
+					
+		        	WindowManager wm = (WindowManager) qsContainer.getContext().getSystemService(Context.WINDOW_SERVICE);
+					Display display = wm.getDefaultDisplay();
+					Point displaySize = new Point();
+					display.getSize(displaySize);
+					int displayWidth = displaySize.x;
+		        	for(int k = 0; k < qsContainer.getChildCount(); k++)
+					{
+						LinearLayout tmp = (LinearLayout) qsContainer.getChildAt(k);
+						LinearLayout.LayoutParams tmpParams = (LinearLayout.LayoutParams) tmp.getLayoutParams();
+						tmpParams.width = (int) Math.floor(displayWidth / 5);
+						tmp.setLayoutParams(tmpParams);
+						if(removeText)
+						{
+							tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_text", "id", "com.android.systemui")).setVisibility(View.GONE);;
+							ImageView qsImg = (ImageView) tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_image", "id", "com.android.systemui"));
+							qsImg.setPadding(0, 0, 0, 20);
+						}
+					}
+		        	qsContainer.invalidate();
+				}
+			});
+		}
 		
 		//Makes them scrolling. Showing 5 at once.
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook() {
