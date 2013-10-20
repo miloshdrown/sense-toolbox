@@ -646,15 +646,19 @@ public class PrismMods {
 	}*/
 
 	public static void execHook_BfRemove(LoadPackageParam lpparam) {
-		try {
-			findAndHookMethod("com.htc.launcher.util.Protection", lpparam.classLoader, "isFeedEnabled", new XC_MethodHook() {
-				@Override
-	    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					param.setResult(false);
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
+		//Still throws error in Xposed, so better check version to keep other mods running.
+		//People might have it enabled and can't disable it since we removed the preference.
+		if (XMain.senseVersion.compareTo(new Version("5.5")) == -1) {
+			try {
+				findAndHookMethod("com.htc.launcher.util.Protection", lpparam.classLoader, "isFeedEnabled", new XC_MethodHook() {
+					@Override
+		    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+						param.setResult(false);
+					}
+				});
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 		}
 	}
 
