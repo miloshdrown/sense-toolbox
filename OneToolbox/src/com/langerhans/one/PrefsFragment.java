@@ -89,7 +89,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		
 		if ((new Version(senseVer)).compareTo(new Version("5.5")) >= 0) {
 			if (findPreference("pref_key_eqs") != null) findPreference("pref_key_eqs").setEnabled(false);
-			if (findPreference("pref_key_prism_bfremove") != null) findPreference("pref_key_prism_bfremove").setEnabled(false);			
+			if (findPreference("pref_key_prism_bfremove") != null) findPreference("pref_key_prism_bfremove").setEnabled(false);
 		}
 		
 		//Add version name to support title
