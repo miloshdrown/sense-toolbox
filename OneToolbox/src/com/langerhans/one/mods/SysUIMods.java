@@ -14,9 +14,12 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.app.ActivityManager;
+import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
@@ -28,6 +31,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.provider.Settings.SettingNotFoundException;
 import android.text.method.SingleLineTransformationMethod;
@@ -254,13 +258,29 @@ public class SysUIMods {
 		});
 	}
 
-	public static void execHook_AospRecent(LoadPackageParam lpparam) {
+	public static void execHook_AospRecent(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.StatusBarFlag", lpparam.classLoader, "isHtcStyleRecentApp", new XC_MethodHook() {
 			@Override
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(false);
 			}
 		});
+		
+		//Fix for FC on Sense 5.5
+		if(XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
+		{
+			findAndHookMethod("com.android.systemui.recent.RecentsActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+				@Override
+	    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					BroadcastReceiver mIntentReceiver = (BroadcastReceiver) getObjectField(param.thisObject, "mIntentReceiver");
+					IntentFilter mIntentFilter = (IntentFilter) getObjectField(param.thisObject, "mIntentFilter");
+					if(mIntentReceiver != null && mIntentFilter != null) {
+						Activity thisActivity = (Activity) param.thisObject;
+						thisActivity.registerReceiver(mIntentReceiver, mIntentFilter);
+					}
+				}
+			});
+		}
 	}
 	
 	public static void execHook_CenterClockLayout(final InitPackageResourcesParam resparam, String MODULE_PATH) {

@@ -42,6 +42,12 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Added mod to display current data rate (upload+download) on the status bar. Will only be shown, when the device is connected to a network.
 Added mod to enable seven home screens on Sense launcher.
 Pressing menu key with open home popup menu will now close it.
+Sense 5.5 changes:
+	Removed EQS reorder. It is native now.
+	Horizontal EQS will use the native order.
+	Fixed the mods that were broken.
+	NOTE: App drawer transparency will set BlinkFeed transparency too. They are tied together in Sense 5.5!
+
 
 2.2:
 Kill app on long press back/home assist now kills the complete package including services.

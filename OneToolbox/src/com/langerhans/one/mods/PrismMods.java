@@ -203,20 +203,44 @@ public class PrismMods {
 	public static void execHook_InvisiDrawerCode(LoadPackageParam lpparam, final int transparency) {
 		execHook_PreserveWallpaper(lpparam);
 		
-		findAndHookMethod("com.htc.launcher.pageview.AllAppsPagedViewHost", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				ViewGroup m_PagedView = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "m_PagedView").get(param.thisObject);
-				ViewParent vp = m_PagedView.getParent();
-				if (vp != null) {
-					if (vp instanceof RelativeLayout) {
-						((RelativeLayout)vp).getBackground().setAlpha(transparency);
-					} else if (vp instanceof FrameLayout) {
-						((FrameLayout)vp).getBackground().setAlpha(transparency);						
-					}					
+		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
+			XposedBridge.hookAllConstructors(findClass("com.htc.launcher.pageview.AllAppsPagedViewHost", lpparam.classLoader), new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					((FrameLayout)param.thisObject).getBackground().setAlpha(transparency);
 				}
-			}
-		});
+			});
+			
+			findAndHookMethod("com.htc.launcher.DragLayer", lpparam.classLoader, "setBackgroundAlpha", float.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					if ((Float)param.args[0] > transparency/255.0f) param.args[0] = transparency/255.0f;
+				}
+			});
+			/*
+			findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "setBackgroundAlpha", float.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					if ((Float)param.args[0] > transparency/255.0f) param.args[0] = transparency/255.0f;
+				}
+			});
+			*/
+		} else { 
+			findAndHookMethod("com.htc.launcher.pageview.AllAppsPagedViewHost", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					ViewGroup m_PagedView = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "m_PagedView").get(param.thisObject);
+					ViewParent vp = m_PagedView.getParent();
+					if (vp != null) {
+						if (vp instanceof RelativeLayout) {
+							((RelativeLayout)vp).getBackground().setAlpha(transparency);
+						} else if (vp instanceof FrameLayout) {
+							((FrameLayout)vp).getBackground().setAlpha(transparency);
+						}					
+					}
+				}
+			});
+		}
 		
 		try {
 			// This will fail on 4.2.2, best version check ever!
@@ -239,7 +263,11 @@ public class PrismMods {
 			FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams)m_headerActionBar.getLayoutParams();
 			
 			Object container = ((FrameLayout)param.thisObject).getParent();
-			if (container.getClass().getCanonicalName().equalsIgnoreCase("com.htc.launcher.feeds.view.FeedScrollView")) {
+			String feedClass = "com.htc.launcher.feeds.view.FeedScrollView";
+			if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
+			feedClass = "com.htc.launcher.feeds.view.FeedScrollPageView";
+			
+			if (container.getClass().getCanonicalName().equalsIgnoreCase(feedClass)) {
 				Resources res = m_headerActionBar.getContext().getResources();
 				lp.topMargin = res.getDimensionPixelSize(res.getIdentifier("header_height", "dimen", "com.htc.launcher"));
 			} else {			
@@ -286,7 +314,8 @@ public class PrismMods {
 					m_headerContent.setVisibility(0);
 				}
 			});
-		} catch (NoSuchMethodError e) {
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		// Move first row up
