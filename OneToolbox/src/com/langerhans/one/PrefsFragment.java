@@ -37,7 +37,6 @@ import com.htc.preference.HtcPreference;
 import com.htc.preference.HtcPreference.OnPreferenceChangeListener;
 import com.htc.preference.HtcPreferenceCategory;
 import com.htc.preference.HtcPreferenceFragment;
-import com.htc.preference.HtcPreferenceGroup;
 import com.htc.preference.HtcPreferenceManager;
 import com.htc.preference.HtcPreferenceScreen;
 import com.htc.widget.ActionBarContainer;
@@ -90,7 +89,8 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		
 		if ((new Version(senseVer)).compareTo(new Version("5.5")) >= 0) {
 			if (findPreference("pref_key_eqs") != null) getPreferenceScreen().removePreference(findPreference("pref_key_eqs"));
-			if (findPreference("pref_key_prism_bfremove") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_homescreen")).removePreference(findPreference("pref_key_prism_bfremove"));			
+			if (findPreference("pref_key_prism_bfremove") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_homescreen")).removePreference(findPreference("pref_key_prism_bfremove"));
+			if (findPreference("pref_key_prism_invisiwidget") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_transparency")).removePreference(findPreference("pref_key_prism_invisiwidget"));			
 		}
 		
 		//Add version name to support title

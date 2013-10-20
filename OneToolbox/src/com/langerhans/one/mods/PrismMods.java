@@ -81,15 +81,17 @@ public class PrismMods {
 	}
 	
 	public static void execHook_InvisiWidget(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
-		resparam.res.setReplacement("com.htc.widget.weatherclock", "drawable", "clock_weather_panel", new XResources.DrawableLoader() {
-			@Override
-			public Drawable newDrawable(XResources res, int id) throws Throwable {
-				Drawable bg = modRes.getDrawable(R.drawable.clock_weather_panel);
-				bg.setAlpha(transparency);
-				return bg;
-			}
-		});
+		if (XMain.senseVersion.compareTo(new Version("5.5")) == -1) {
+			final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+			resparam.res.setReplacement("com.htc.widget.weatherclock", "drawable", "clock_weather_panel", new XResources.DrawableLoader() {
+				@Override
+				public Drawable newDrawable(XResources res, int id) throws Throwable {
+					Drawable bg = modRes.getDrawable(R.drawable.clock_weather_panel);
+					bg.setAlpha(transparency);
+					return bg;
+				}
+			});
+		}
 	}
 
 	public static void execHook_PreserveWallpaper(LoadPackageParam lpparam) {

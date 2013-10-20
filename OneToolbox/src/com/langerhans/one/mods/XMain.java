@@ -210,7 +210,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_sysui_invisibar_enable", false))
 				PrismMods.execHookTSBFix(lpparam);
 			
-			if(pref.getInt("pref_key_prism_invisidrawer", 100) != 100)
+			if(pref.getBoolean("pref_key_prism_invisidrawer_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_prism_invisidrawer", 100);
 				transparency = (int) Math.floor(transparency*2.55f);

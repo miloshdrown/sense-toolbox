@@ -234,7 +234,8 @@
         android:title="@string/sense_mods"
         android:key="pref_key_prism">
         <com.htc.preference.HtcPreferenceCategory
-        	android:title="@string/sense_transparency">
+        	android:title="@string/sense_transparency"
+        	android:key="pref_key_sense_transparency">
         <com.langerhans.one.utils.SeekBarPreference 
             android:key="pref_key_prism_invisinav_new"
     		android:title="@string/sense_td_title"
