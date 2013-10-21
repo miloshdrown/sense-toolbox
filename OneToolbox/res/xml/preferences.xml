@@ -89,20 +89,17 @@
             android:key="pref_key_sysui_minorqs"
             android:summary="@string/systemui_heqs_summ"
             android:title="@string/systemui_heqs_title"
-            android:defaultValue="false"
-            android:dependency="pref_key_sysui_noeqs" />
+            android:defaultValue="false" />
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_minorqs_notext"
             android:summary="@string/systemui_heqs_notext_summ"
             android:title="@string/systemui_heqs_notext_title"
-            android:defaultValue="false"
-            android:dependency="pref_key_sysui_noeqs" />
+            android:defaultValue="false" />
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_noeqs"
             android:summary="@string/systemui_noeqs_summ"
             android:title="@string/systemui_noeqs_title"
-            android:defaultValue="false"
-            android:disableDependentsState="true" />
+            android:defaultValue="false" />
         </com.htc.preference.HtcPreferenceCategory>
         
         <com.htc.preference.HtcPreferenceCategory

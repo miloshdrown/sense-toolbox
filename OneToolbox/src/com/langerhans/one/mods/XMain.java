@@ -138,9 +138,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 						
 			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockLayout(resparam, MODULE_PATH);
-			
-			if(pref.getBoolean("pref_key_sysui_noeqs", false))
-				SysUIMods.execHook_DisableEQS(resparam);
 		}
 		
 		if (pkg.equals("com.android.settings"))
@@ -268,6 +265,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.android.systemui"))
 		{
+			if(pref.getBoolean("pref_key_sysui_noeqs", false))
+				SysUIMods.execHook_DisableEQS(lpparam);
+			
 			if(pref.getBoolean("pref_key_sysui_minorqs", false))
 				SysUIMods.execHook_MinorEQS(lpparam, pref.getBoolean("pref_key_sysui_minorqs_notext", false));
 			

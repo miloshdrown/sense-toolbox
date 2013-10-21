@@ -19,6 +19,7 @@ import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
 import android.content.ContentResolver;
 import android.content.Context;
+import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
@@ -675,10 +676,34 @@ public class SysUIMods {
 			}
 		}		
 	}
-	
+	/*
 	public static void execHook_DisableEQS(final InitPackageResourcesParam resparam) {
 		resparam.res.setReplacement("com.android.systemui", "bool", "config_hasSettingsPanel", false);
 		resparam.res.setReplacement("com.android.systemui", "bool", "config_hasFlipSettingsPanel", false);
+	}
+	*/
+	public static void execHook_DisableEQS(final LoadPackageParam lpparam) {
+		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				View.OnClickListener newButtonOnClick = new View.OnClickListener() {
+		            public void onClick(View view) {
+		            	XposedHelpers.callMethod(param.thisObject, "startActivityDismissingKeyguard", new Intent("android.settings.SETTINGS"), true);
+	                    return;
+		            }
+		        };
+		        XposedHelpers.findField(param.thisObject.getClass(), "mSettingsButtonListener").set(param.thisObject, newButtonOnClick);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				ImageView mSettingsButton = (ImageView)XposedHelpers.findField(param.thisObject.getClass(), "mSettingsButton").get(param.thisObject);
+				XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+		        mSettingsButton.setImageDrawable(modRes.getDrawable(R.drawable.ic_sysbar_quicksettings));				
+			}
+		});
 	}
 	
 	// Pinch to clear all recent apps
