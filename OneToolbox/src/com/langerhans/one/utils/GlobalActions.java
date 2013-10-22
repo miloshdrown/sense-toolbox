@@ -266,6 +266,8 @@ public class GlobalActions {
 			
 			for (ResolveInfo launcher: launcherList)
 			if (launcher.activityInfo.packageName.equals(thisPkg)) isLauncher = true;
+
+			if (thisPkg.equalsIgnoreCase("com.htc.android.worldclock")) isLauncher = true;
 			
 			if (isLauncher) return;
 

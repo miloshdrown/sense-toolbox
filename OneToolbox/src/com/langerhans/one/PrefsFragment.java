@@ -405,7 +405,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		if (item.getItemId() == R.id.softreboot)
 		{
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-			alert.setTitle(R.string.apm_hotreboot_title);
+			alert.setTitle(R.string.soft_reboot);
 			alert.setMessage(R.string.hotreboot_explain_prefs);
 			alert.setPositiveButton(getText(R.string.yes) + "!", new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
