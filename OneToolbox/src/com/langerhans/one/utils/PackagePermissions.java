@@ -23,11 +23,13 @@ public class PackagePermissions {
 						ArrayList<String> requestedPermissions = (ArrayList<String>) getObjectField(param.args[0], "requestedPermissions");
 						param.setObjectExtra("orig_requested_permissions", requestedPermissions);
 						requestedPermissions.add("android.permission.EXPAND_STATUS_BAR");
+						requestedPermissions.add("com.htc.home.personalize.permission.LAUNCH_MAIN");
 						setObjectField(param.args[0], "requestedPermissions", requestedPermissions);
 						
 						try {
 							ArrayList<Boolean> requestedPermissionsRequired = (ArrayList<Boolean>) getObjectField(param.args[0], "requestedPermissionsRequired");
 							param.setObjectExtra("orig_requested_permissions_required", requestedPermissionsRequired);
+							requestedPermissionsRequired.add(true);
 							requestedPermissionsRequired.add(true);
 							setObjectField(param.args[0], "requestedPermissionsRequired", requestedPermissionsRequired);
 						} catch (Throwable e) {

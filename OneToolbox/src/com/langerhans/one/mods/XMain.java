@@ -44,7 +44,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		pref_backlongpress = Integer.parseInt(pref.getString("pref_key_controls_backlongpressaction", "1"));
 		pref_homeassist = Integer.parseInt(pref.getString("pref_key_controls_homeassistaction", "1"));
 		
-		if (pref.getBoolean("pref_key_other_apm", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1) {
+		if (pref.getBoolean("pref_key_other_apm", false) || pref.getBoolean("pref_key_prism_homemenu", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1) {
 			PackagePermissions.initHooks();
 			GlobalActions.setupPWM();
 		}
