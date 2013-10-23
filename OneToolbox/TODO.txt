@@ -1,4 +1,3 @@
-
 - beats toggle
 - torch toggle
 - prism bg, blinkfeed
@@ -34,13 +33,16 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
 2.3:
 Added mod to display current data rate (upload+download) on the status bar. Will only be shown, when the device is connected to a network.
-Added mod to enable seven home screens on Sense launcher.
+Added mod to enable seven home screens on Sense launcher. NOTE: On Sense 5.5 BlinkFeed is counted as a page!
+Minor EQS works with disabled EQS panel.
 Pressing menu key with open home popup menu will now close it.
 Horizontal EQS can now be used with disabled EQS panel.
 Sense 5.5 changes:
 	Removed EQS reorder and BlinkFeed disabling. They are native now.
 	Horizontal EQS will use the native order.
 	Fixed the mods that were broken.
+	Removed 4x1 widget transparency as it has some implications on transparency of other widgets too. May come back in the future.
+	Removed infinite home screen scrolling. With BF enabled it's useless due to the new menu, and with BF disabled, it is prone to errors due to BF handling.
 	NOTE: App drawer transparency will set BlinkFeed transparency too. They are tied together in Sense 5.5!
 
 

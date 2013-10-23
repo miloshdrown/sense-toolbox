@@ -90,6 +90,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		if ((new Version(senseVer)).compareTo(new Version("5.5")) >= 0) {
 			if (findPreference("pref_key_eqs") != null) getPreferenceScreen().removePreference(findPreference("pref_key_eqs"));
 			if (findPreference("pref_key_prism_bfremove") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_homescreen")).removePreference(findPreference("pref_key_prism_bfremove"));
+			if (findPreference("pref_key_prism_infiniscroll") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_homescreen")).removePreference(findPreference("pref_key_prism_infiniscroll"));
 			if (findPreference("pref_key_prism_invisiwidget") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_transparency")).removePreference(findPreference("pref_key_prism_invisiwidget"));			
 		}
 		

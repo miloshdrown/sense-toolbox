@@ -674,24 +674,25 @@ public class PrismMods {
 	}
 
 	public static void execHook_InfiniScroll(LoadPackageParam lpparam) {
-		
+		if (XMain.senseVersion.compareTo(new Version("5.5")) == -1) {
 			findAndHookMethod("com.htc.launcher.SmoothPagedView", lpparam.classLoader, "snapToDestination", new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param)	throws Throwable {
-				int i = (Integer) callMethod(param.thisObject, "getPageCount");
-				int j = (Integer) callMethod(param.thisObject, "getCurrentPage");
-				if(j == 0)
-				{
-					callMethod(param.thisObject, "snapToPage", i - 1, 550);
-					param.setResult(null);
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param)	throws Throwable {
+					int i = (Integer) callMethod(param.thisObject, "getPageCount");
+					int j = (Integer) callMethod(param.thisObject, "getCurrentPage");
+					if(j == 0)
+					{
+						callMethod(param.thisObject, "snapToPage", i - 1, 550);
+						param.setResult(null);
+					}
+					if(j == i - 1)
+					{
+						callMethod(param.thisObject, "snapToPage", 0, 550);
+						param.setResult(null);
+					}
 				}
-				if(j == i - 1)
-				{
-					callMethod(param.thisObject, "snapToPage", 0, 550);
-					param.setResult(null);
-				}
-			}
-		});
+			});
+		}
 	}
 
 	static FrameLayout hotSeat = null;
