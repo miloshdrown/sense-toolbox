@@ -10,6 +10,7 @@ import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListItemSeparator;
 import com.htc.widget.HtcRimButton;
 import com.langerhans.one.R;
+import com.langerhans.one.utils.Version;
 
 import android.content.Context;
 import android.content.Intent;
@@ -36,7 +37,9 @@ public class SettingsMods {
 				param.setResult(true);
 			}
 		});
-		// Some additional settings.
+	}
+	
+	public static void execHook_UnhidePrefs(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportROMVersion", new XC_MethodHook(){
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -44,6 +47,13 @@ public class SettingsMods {
 			}
 		});
 		findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportDistributionTime", new XC_MethodHook(){
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.setResult(true);
+			}
+		});
+		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
+		findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportHardwareInformation", new XC_MethodHook(){
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(true);

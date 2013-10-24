@@ -253,6 +253,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 
 			if(pref.getBoolean("pref_key_other_appdetails", false))
 				SettingsMods.execHook_Apps(lpparam);
+			
+			SettingsMods.execHook_UnhidePrefs(lpparam);
 		}
 		
 		if (pkg.equals("com.android.camera"))
