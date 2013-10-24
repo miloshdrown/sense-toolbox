@@ -105,14 +105,14 @@
     <string name="systemui_heqs_title">Poziomy EQS</string>
     <string name="systemui_heqs_summ">Włącz poziomy EQS. Twój normalny EQS będzie tam (przewijany).</string>
     <string name="systemui_heqs_notext_title">Poziomy mniejszy EQS</string>
-    <string name="systemui_heqs_notext_summ">Usunięcie tekstu z poziomego EQS.</string>
+    <string name="systemui_heqs_notext_summ">Usuwa tekst z poziomego EQS.</string>
     <string name="systemui_noeqs_title">Wyłącz panel EQS</string>
     <string name="systemui_noeqs_summ">Usuń panel EQS i przycisk przywracania ustawień.</string>
     <string name="systemui_recent">Ostatnie aplikacje</string>
     <string name="systemui_aosp_title">Ostatnie aplikacje AOSP</string>
     <string name="systemui_aosp_summ">Włącz styl AOSP Ostatnie aplikacje na ekranie.</string>
     <string name="systemui_recentclear_title">Zamknij wszystkie ostatnie aplikacje naraz</string>
-    <string name="systemui_recentclear_summ">Dodaj możliwość, aby usunąć listę ostatnich aplikacje, szczypiąc albo przesuwając w dół.</string>
+    <string name="systemui_recentclear_summ">Dodaj możliwość, aby usunąć listę ostatnich aplikacje, szczypiąc lub przesuwając w dół.</string>
     <string name="systemui_centerclock_title">Zegar w centrum</string>
     <string name="systemui_centerclock_summ">Włącz, przenieśenie zegar na pasku stanu do centrum.</string>
     <string name="systemui_ampmremove_title">Usuń AM/PM</string>
@@ -122,8 +122,8 @@
     <string name="systemui_brightslide_title">Suwak jasności</string>
     <string name="systemui_brightslide_summ">Dodaj suwak jasności w panelu powiadomień.</string>
     <string name="systemui_brightslide_auto">Automatyczne</string>
-    <string name="systemui_dataratestatus_title">###TRANSLATE_ME###</string>
-	<string name="systemui_dataratestatus_summ">###TRANSLATE_ME###</string>
+    <string name="systemui_dataratestatus_title">Licznik danych</string>
+	<string name="systemui_dataratestatus_summ">Dodaj licznik prędkości ściągania i wysyłania danych do paska statusu. Widoczny tylko w przypadku połączenia z siecią.</string>
     
     <string name="cleanbeam_mods">Modyfikacje CleanBeam od vomer</string>
     <string name="cleanbeam_battery_title">Ikona baterii</string>
@@ -156,6 +156,10 @@
     <string name="cleanbeam_powersave_summ">Włącz ikonę CleanBeam oszczędzania energii.</string>
     <string name="cleanbeam_nfc_title">NFC</string>
     <string name="cleanbeam_nfc_summ">Włącz ikonę CleanBeam NFC.</string>
+    <string name="cleanbeam_mtp_title">MTP</string>
+    <string name="cleanbeam_mtp_summ">Włącz ikonę CleanBeam MTP.</string>
+    <string name="cleanbeam_dnd_title">Nie przeszkadać</string>
+	<string name="cleanbeam_dnd_summ">Włącz ikonkę CleanBeam DND.</string>
     <string name="cleanbeam_sunbeam_title">Zainstaluj Sunbeam</string>
     <string name="cleanbeam_sunbeam_summ">Zainstaluj żywe tapety Sunbeam.</string>
     <string name="cleanbeam_post_title">Odwiedź CleanBeam</string>
@@ -196,8 +200,8 @@
     <string name="sense_swiperightaction_summ">Akcja dla gestu przesunięcia w prawej dla stacji dokującej.</string>
     <string name="sense_swipeleftaction_title">Działanie przesuń w lewo</string>
     <string name="sense_swipeleftaction_summ">Akcja dla gestu przesunięcia w lewo dla stacji dokującej.</string>
-	<string name="sense_sevenscreens_title">###TRANSLATE_ME###</string>
-	<string name="sense_sevenscreens_summ">###TRANSLATE_ME###</string>
+    <string name="sense_sevenscreens_title">Siedem pulpitów</string>
+	<string name="sense_sevenscreens_summ">Zwiększ liczbę dostępnych pulpitów do siedmiu.</string>
     <string name="notselected">Nie wybrano</string>
     <string name="loading_app_data">Ładowanie aplikacji&#8230;</string>
     
@@ -237,8 +241,8 @@
     <string name="various_apps_summ">Dodaj nowe obszary do Ustawień > Aplikacje:\n- przycisk, aby uruchomić aplikację\n- nazwa pliku apk i ścieżka\n- ścieżka danych\n- nazwa procesu\n- id użytkownika\n- wersja docelowego SDK</string>
     <string name="various_volsnd_title">Wyłącz dźwięk zmiany głośności</string>
     <string name="various_volsnd_summ">Zaznacz, aby wyłączyć dźwięk podczas zmiany głośności.</string>
-    <string name="various_movevol_title">###TRANSLATE_ME###</string>
-	<string name="various_movevol_summ">###TRANSLATE_ME###</string>
+	<string name="various_movevol_title">Pozycja paska głośności</string>
+	<string name="various_movevol_summ">Umieść pasek głośności na dole, żeby nie przysłaniał ekranu.</string>
     <string name="various_mtpnotif_title">Ukryj powiadomienia MTP</string>
     <string name="various_mtpnotif_summ">Dodaj usługę MTP w tłe i wyłącz powiadomienia. Mod jest na ROM oparty na przecieku 4.3.</string>
     
@@ -285,6 +289,6 @@
     <string name="about_thanks">Dziękuję</string>
     <string name="about_sense">Sense 5</string>
     <string name="about_toolbox">Toolbox</string>
-    <string name="about_thanks_data">mike1986 - ARHD i platformy do wydania tej aplikacji\n\ndescenpet - dla pierwszego pomysłu oraz kolejność zmian\n\nvomer - modyfikacje CleanBeam\n\nDunc001 and LeSScro - for their APM icons\n\nZespołów RU i AU (i kilka innych wczesnych beta testerów) - za badania i cenne informacje\n\nUżytkowników ARHD - za ich cierpliwość</string>
+    <string name="about_thanks_data">mike1986 - za ARHD i platformę do wydania tej aplikacji\n\ndescenpet - dla pierwszego pomysłu oraz kolejnych zmian\n\nvomer - modyfikacje CleanBeam\n\nDunc001 i LeSScro - za ich ikony APM\n\nZespołom RU i AU (i kilka innych wczesnych beta testerów) - za badania i cenne informacje\n\nUżytkownikom ARHD - za ich cierpliwość</string>
 
 </resources>

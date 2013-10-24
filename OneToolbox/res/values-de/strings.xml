@@ -156,6 +156,10 @@
 	<string name="cleanbeam_powersave_summ">Aktiviert das CleanBeam Energiesparen icon.</string>
 	<string name="cleanbeam_nfc_title">NFC</string>
 	<string name="cleanbeam_nfc_summ">Aktiviert das CleanBeam NFC icon.</string>
+	<string name="cleanbeam_dnd_title">Nicht stören</string>
+	<string name="cleanbeam_dnd_summ">Aktiviert das CleanBeam \'Nicht stören\' icon.</string>
+	<string name="cleanbeam_mtp_title">MTP</string>
+	<string name="cleanbeam_mtp_summ">Aktiviert das CleanBeam MTP icon.</string>
 	<string name="cleanbeam_sunbeam_title">Installiere Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Installiert das Sunbeam Live Wallpaper.</string>
 	<string name="cleanbeam_post_title">Besuche den CleanBeam Beitrag</string>

@@ -144,6 +144,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if(pref.getBoolean("pref_key_cb_usb", false))
 				CleanBeamMods.execHook_USBIcon(resparam, MODULE_PATH);
+			
+			if(pref.getBoolean("pref_key_cb_dnd", false))
+				CleanBeamMods.execHook_DNDIcon(resparam, MODULE_PATH);
 		}
 		
 		if (pkg.equals("com.htc.htcpowermanager"))
@@ -156,6 +159,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if(pref.getBoolean("pref_key_cb_nfc", false))
 				CleanBeamMods.execHook_NFCIcon(resparam, MODULE_PATH);
+		}
+		
+		if(pkg.equals("com.android.providers.media")) 
+		{
+			if(pref.getBoolean("pref_key_cb_mtp", false))
+				CleanBeamMods.execHook_MTPIcon(resparam, MODULE_PATH);
 		}
 		
 		if (pkg.equals("com.htc.widget.weatherclock"))

@@ -27,17 +27,19 @@
 - Auto detect ROM version for version dependent mods
 - EQS reorder description: Say what EQS is... (Oh man, just click it and see -.-)
 - Remove Sense lockscreen weather widget.
-
+- Remove clock in BF too
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
 2.3:
 Added mod to display current data rate (upload+download) on the status bar. Will only be shown, when the device is connected to a network.
 Added mod to enable seven home screens on Sense launcher. NOTE: On Sense 5.5 BlinkFeed is counted as a page!
+Added CleanBeam Do not disturb and MTP icons.
 Minor EQS works with disabled EQS panel.
 Pressing menu key with open home popup menu will now close it.
 Horizontal EQS can now be used with disabled EQS panel.
 Sense 5.5 changes:
+	Brought back Hardware info in Settings -> About.
 	Removed EQS reorder and BlinkFeed disabling. They are native now.
 	Horizontal EQS will use the native order.
 	Fixed the mods that were broken.

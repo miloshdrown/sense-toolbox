@@ -214,6 +214,18 @@
             android:title="@string/cleanbeam_nfc_title"
             android:icon="@drawable/stat_sys_nfc_vzw"
             android:defaultValue="false"/>
+        <com.htc.preference.HtcCheckBoxPreference 
+            android:key="pref_key_cb_mtp"
+            android:summary="@string/cleanbeam_mtp_summ"
+            android:title="@string/cleanbeam_mtp_title"
+            android:icon="@drawable/stat_notify_running_services"
+            android:defaultValue="false"/>
+        <com.htc.preference.HtcCheckBoxPreference 
+            android:key="pref_key_cb_dnd"
+            android:summary="@string/cleanbeam_dnd_summ"
+            android:title="@string/cleanbeam_dnd_title"
+            android:icon="@drawable/stat_notify_dnd"
+            android:defaultValue="false"/>
         <com.htc.preference.HtcPreference
             android:title="@string/cleanbeam_sunbeam_title"
             android:summary="@string/cleanbeam_sunbeam_summ"
