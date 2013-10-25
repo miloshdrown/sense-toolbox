@@ -32,6 +32,7 @@ import android.view.ViewParent;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -92,6 +93,22 @@ public class PrismMods {
 				}
 			});
 		}
+	}
+	
+	public static void execHook_InvisiWidgetSense55(LoadPackageParam lpparam, final int transparency) {
+		findAndHookMethod("com.htc.launcher.LauncherAppWidgetHostView", lpparam.classLoader, "onViewAdded", View.class, new XC_MethodHook() {
+			@Override
+			public void afterHookedMethod(MethodHookParam param) throws Throwable {
+				ViewGroup widgetView = (ViewGroup) param.args[0];
+				Resources viewRes = widgetView.getResources();
+				int bgId = viewRes.getIdentifier("background_panel", "id", "com.htc.widget.weatherclock");
+				if(bgId != 0)
+				{
+					ImageView bg = (ImageView) widgetView.findViewById(bgId);
+					bg.getBackground().setAlpha(transparency);
+				}
+			}
+		});
 	}
 
 	public static void execHook_PreserveWallpaper(LoadPackageParam lpparam) {

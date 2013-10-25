@@ -207,6 +207,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if(pkg.equals("com.htc.launcher"))
 		{
+			if(pref.getBoolean("pref_key_prism_invisiwidget_enable", false))
+			{
+				int transparency = pref.getInt("pref_key_prism_invisiwidget", 100);
+				transparency = (int) Math.floor(transparency*2.55f);
+				PrismMods.execHook_InvisiWidgetSense55(lpparam, transparency);
+			}
+			
 			if(pref.getBoolean("pref_key_prism_invisinav_enable", false))
 				PrismMods.execHook_PreserveWallpaper(lpparam);
 
