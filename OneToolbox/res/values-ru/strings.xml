@@ -200,8 +200,8 @@
 	<string name="sense_swiperightaction_summ">Присвоить действие жесту вправо на доке ланчера.</string>
 	<string name="sense_swipeleftaction_title">Действие на свайп влево</string>
 	<string name="sense_swipeleftaction_summ">Присвоить действие жесту влево на доке ланчера.</string>
-	<string name="sense_sevenscreens_title">###TRANSLATE_ME###</string>
-	<string name="sense_sevenscreens_summ">###TRANSLATE_ME###</string>
+	<string name="sense_sevenscreens_title">7 домашних экранов</string>
+	<string name="sense_sevenscreens_summ">Увеличить максимальное число домашних экранов до 7</string>
 	<string name="notselected">Не выбрано</string>
 	<string name="loading_app_data">Загрузка списка приложений&#8230;</string>
 	
