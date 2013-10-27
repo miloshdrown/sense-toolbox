@@ -3,5 +3,10 @@
     <!-- Default screen margins, per the Android Design guidelines. -->
     <dimen name="activity_horizontal_margin">5dp</dimen>
     <dimen name="activity_vertical_margin">0dp</dimen>
+    
+    <dimen name="workspace_top_padding_port">-10.0dip</dimen>
+    <dimen name="celllayout_top_padding_port">0.0dip</dimen>
+    <dimen name="celllayout_bottom_padding_port">-10.0dip</dimen>
+    <dimen name="workspace_height_gap_port">-10.0dip</dimen>
 
 </resources>

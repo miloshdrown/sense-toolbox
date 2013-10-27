@@ -541,6 +541,29 @@ public class PrismMods {
 			}
 		});
 	}
+
+	public static void execHook_HomeScreenGridSize(final InitPackageResourcesParam resparam, String MODULE_PATH) {
+		try {
+			XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+			
+			int cell_count_y = resparam.res.getIdentifier("cell_count_y", "integer", "com.htc.launcher");
+			resparam.res.setReplacement(cell_count_y, 5);
+			
+			int workspace_top_padding_port = resparam.res.getIdentifier("workspace_top_padding_port", "dimen", "com.htc.launcher");
+			resparam.res.setReplacement(workspace_top_padding_port, modRes.fwd(R.dimen.workspace_top_padding_port));
+			
+			int celllayout_top_padding_port = resparam.res.getIdentifier("celllayout_top_padding_port", "dimen", "com.htc.launcher");
+			resparam.res.setReplacement(celllayout_top_padding_port, modRes.fwd(R.dimen.celllayout_top_padding_port));
+			
+			int celllayout_bottom_padding_port = resparam.res.getIdentifier("celllayout_bottom_padding_port", "dimen", "com.htc.launcher");
+			resparam.res.setReplacement(celllayout_bottom_padding_port, modRes.fwd(R.dimen.celllayout_bottom_padding_port));
+			
+			int workspace_height_gap_port = resparam.res.getIdentifier("workspace_height_gap_port", "dimen", "com.htc.launcher");
+			resparam.res.setReplacement(workspace_height_gap_port, modRes.fwd(R.dimen.workspace_height_gap_port));
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public static void execHook_SwipeActions(final LoadPackageParam lpparam) {
 		// Detect vertical swipes

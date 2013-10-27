@@ -202,6 +202,8 @@
     <string name="sense_swipeleftaction_summ">Akcja dla gestu przesunięcia w lewo dla stacji dokującej.</string>
     <string name="sense_sevenscreens_title">Siedem pulpitów</string>
 	<string name="sense_sevenscreens_summ">Zwiększ liczbę dostępnych pulpitów do siedmiu.</string>
+	<string name="sense_4x5homescreen_title">###TRANSLATE_ME###</string>
+	<string name="sense_4x5homescreen_summ">###TRANSLATE_ME###</string>
     <string name="notselected">Nie wybrano</string>
     <string name="loading_app_data">Ładowanie aplikacji&#8230;</string>
     

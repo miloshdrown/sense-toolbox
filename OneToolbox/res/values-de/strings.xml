@@ -202,6 +202,8 @@
 	<string name="sense_swipeleftaction_summ">Aktion für ein Wischen nach links auf dem Launcher Dock.</string>
 	<string name="sense_sevenscreens_title">Sieben Home Screens</string>
 	<string name="sense_sevenscreens_summ">Erhöht die maximale Anzahl vom Home Screens auf Sieben.</string>
+	<string name="sense_4x5homescreen_title">###TRANSLATE_ME###</string>
+	<string name="sense_4x5homescreen_summ">###TRANSLATE_ME###</string>
 	<string name="notselected">Keine ausgewählt</string>
 	<string name="loading_app_data">Lade Apps&#8230;</string>
 	

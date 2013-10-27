@@ -84,6 +84,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				PrismMods.execHook_InvisiFolderBkg(resparam, transparency, MODULE_PATH);
 			}
 			
+			if(pref.getBoolean("pref_key_prism_4x5homescreen", false))
+				PrismMods.execHook_HomeScreenGridSize(resparam, MODULE_PATH);
+			
 			PrismMods.execHook_AppDrawerGridSizesLayout(resparam, MODULE_PATH);
 		}
 		
