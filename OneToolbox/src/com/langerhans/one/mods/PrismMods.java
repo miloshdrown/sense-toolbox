@@ -19,6 +19,7 @@ import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.TypedValue;
 import android.view.Display;
@@ -880,6 +881,32 @@ public class PrismMods {
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				setIntField(param.thisObject, "m_nPageCount", 6);
 				setStaticIntField(param.thisObject.getClass(), "DEFAULT_PAGE_COUNT_WIDGETHOME", 6);
+			}
+		});
+	}
+	
+	public static void execHook_BypassLockScreen(final LoadPackageParam lpparam) {
+		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
+		findAndHookMethod("com.htc.lockscreen.HtcKeyguardHostViewImpl", lpparam.classLoader, "updateScreen", boolean.class, "com.htc.lockscreen.HtcKeyguardSecurityModel.SecurityMode", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				if (mContext == null) return;
+				PowerManager powerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+				if (powerManager.isScreenOn()) {
+					Object mLSState = XposedHelpers.getObjectField(param.thisObject, "mLSState");
+					if (mLSState != null) {
+						Object settingobserver = XposedHelpers.getObjectField(mLSState, "mSettingObserver");
+						boolean doBypass = false;
+						if (settingobserver != null)
+						doBypass = (Boolean)XposedHelpers.callMethod(settingobserver, "isByPassLockscreen");
+				
+						@SuppressWarnings("rawtypes")
+						Enum mSecurityMode = (Enum)param.args[1];
+						if (doBypass && mSecurityMode.ordinal() == 1)
+						XposedHelpers.callMethod(param.thisObject, "dismiss", true);
+					}
+				}
 			}
 		});
 	}

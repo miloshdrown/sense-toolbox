@@ -6,6 +6,7 @@ import android.content.Context;
 import android.view.KeyEvent;
 
 import com.langerhans.one.utils.GlobalActions;
+import com.langerhans.one.utils.Version;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
@@ -116,13 +117,21 @@ public class ControlsMods {
 	}
 	
 	public static void execHook_dieGoogleNow(LoadPackageParam lpparam) {
-		final Class<?> clsHLS = findClass("com.htc.lockscreen.HtcLockScreen", lpparam.classLoader);
-		findAndHookMethod(clsHLS, "launchGoogleNow", new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				param.setResult(null);
-			}
-		});
+		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
+			findAndHookMethod("com.htc.lockscreen.HtcKeyguardHostViewImpl", lpparam.classLoader, "launchGoogleNow", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(null);
+				}
+			});
+		} else {
+			findAndHookMethod("com.htc.lockscreen.HtcLockScreen", lpparam.classLoader, "launchGoogleNow", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(null);
+				}
+			});
+		}
 	}
 
 	public static void execHook_Vol2Wake(final LoadPackageParam lpparam) {

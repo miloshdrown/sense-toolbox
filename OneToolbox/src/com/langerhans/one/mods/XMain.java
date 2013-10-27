@@ -161,7 +161,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				CleanBeamMods.execHook_NFCIcon(resparam, MODULE_PATH);
 		}
 		
-		if(pkg.equals("com.android.providers.media")) 
+		if (pkg.equals("com.android.providers.media")) 
 		{
 			if(pref.getBoolean("pref_key_cb_mtp", false))
 				CleanBeamMods.execHook_MTPIcon(resparam, MODULE_PATH);
@@ -260,6 +260,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pkg.equals("com.htc.lockscreen")) {
 			if (pref_homeassist != 1)
 				ControlsMods.execHook_dieGoogleNow(lpparam);
+			
+			PrismMods.execHook_BypassLockScreen(lpparam);
 		}		
 		
 		if (pkg.equals("com.android.settings"))
