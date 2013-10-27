@@ -29,6 +29,7 @@
 - Remove clock in BF too
 - long press hEQS to go to respective setting
 - Pageless BF scrolling
+- https://www.youtube.com/watch?v=HfCa3JtGpxc
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
@@ -36,6 +37,7 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Re-added 4x1 widget transparanecy fpr Sense 5.5
 "Bypass lock screen on wake" setting works also without screen lock.
 Sense launcher home screens grid 4x5
+Horizontal EQS are now long-clickable! Brings you to the respective settings. Works with APN, Autosync, Bluetooth, Brightness, DND, GPS, Mobile Data, Powersaver, Screenshot, WiFi, WiFi Hotspot.
 
 2.3:
 Added mod to display current data rate (upload+download) on the status bar. Will only be shown, when the device is connected to a network.

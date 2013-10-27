@@ -292,7 +292,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				SysUIMods.execHook_DisableEQS(lpparam);
 			
 			if(pref.getBoolean("pref_key_sysui_minorqs", false))
+			{
 				SysUIMods.execHook_MinorEQS(lpparam, pref.getBoolean("pref_key_sysui_minorqs_notext", false));
+				SysUIMods.execHook_hEQSLongClick(lpparam);
+			}
 			
 			if(pref.getBoolean("pref_key_sysui_aosprecent", false))
 				SysUIMods.execHook_AospRecent(lpparam);

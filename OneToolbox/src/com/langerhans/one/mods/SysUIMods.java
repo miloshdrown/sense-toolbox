@@ -8,6 +8,7 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
+import java.io.File;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -33,6 +34,7 @@ import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings.SettingNotFoundException;
 import android.text.method.SingleLineTransformationMethod;
@@ -45,6 +47,7 @@ import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
@@ -702,6 +705,63 @@ public class SysUIMods {
 				ImageView mSettingsButton = (ImageView)XposedHelpers.findField(param.thisObject.getClass(), "mSettingsButton").get(param.thisObject);
 				XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 		        mSettingsButton.setImageDrawable(modRes.getDrawable(R.drawable.ic_sysbar_quicksettings));				
+			}
+		});
+	}
+	
+	//hEQS LongClickListeners
+	public static void execHook_hEQSLongClick(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettingsTileView", lpparam.classLoader, "onAttachedToWindow", new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				final LinearLayout thisTile = (LinearLayout) param.thisObject;
+				thisTile.setLongClickable(true);
+				thisTile.setOnLongClickListener(new OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View v) {
+						String clickedTile = (String) getObjectField(thisTile, "tileLabel");
+						if (!clickedTile.equals("") && !(clickedTile == null))
+						{
+							String intentPkg = "";
+							String intentClass = "";
+							Intent settingIntent = null;
+							if (clickedTile.equals("apn")) {intentPkg = "com.android.settings"; intentClass = "com.android.settings.CdmaApnSettings";}
+							if (clickedTile.equals("auto_sync")) {intentClass = "android.settings.SYNC_SETTINGS";}
+							if (clickedTile.equals("bluetooth")) {intentClass = "android.settings.BLUETOOTH_SETTINGS";}
+							if (clickedTile.equals("brightness")) {settingIntent = new Intent("android.settings.DISPLAY_SETTINGS"); settingIntent.putExtra(":android:show_preference", "brightness");}
+							if (clickedTile.equals("do_not_disturb")) {intentClass = "com.htc.settings.DND_SETTINGS";}
+							if (clickedTile.equals("gps")) {intentClass = "android.settings.LOCATION_SOURCE_SETTINGS";}
+							if (clickedTile.equals("mobile_data")) {intentPkg = "com.android.phone"; intentClass = "com.android.phone.MobileNetworkSettings";}
+							if (clickedTile.equals("power_saver")) {intentPkg = "com.htc.htcpowermanager"; intentClass = "com.htc.htcpowermanager.powersaver.PowerSaverActivity";}
+							if (clickedTile.equals("screenshot")) {
+								int mBucketId = -1;
+								File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Screenshots");
+								if (file != null)
+								{
+		                        	mBucketId = file.getAbsolutePath().toLowerCase().hashCode();
+								}
+								settingIntent = new Intent("com.htc.album.action.VIEW_FOLDER_IN_THUMBNAIL");
+								settingIntent.putExtra("folder_type", (new StringBuilder()).append("collection_regular_bucket ").append(mBucketId).append(" Screenshots").toString());
+								settingIntent.putExtra("entry_from", "Screenshots");
+								settingIntent.setDataAndType(null, "image/*");
+								settingIntent.setFlags(0x14000000);
+							}
+							if (clickedTile.equals("wifi")) {intentClass = "android.settings.WIFI_SETTINGS";}
+							if (clickedTile.equals("wifi_hotspot")) {intentPkg = "com.htc.WifiRouter"; intentClass = "com.htc.WifiRouter.WifiRouter";}
+							Object viewTag = thisTile.getTag();
+							if (viewTag != null)
+							{
+								if (!intentPkg.equals(""))
+									callMethod(viewTag, "startSettingsActivity", intentPkg, intentClass);
+								else if (!(settingIntent == null))
+									callMethod(viewTag, "startSettingsActivity", settingIntent);
+								else 
+									callMethod(viewTag, "startSettingsActivity", intentClass);
+							}
+						}
+						return true;
+					}
+				});
 			}
 		});
 	}
