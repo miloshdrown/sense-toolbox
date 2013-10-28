@@ -10,6 +10,7 @@ import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
 import java.util.Arrays;
 
 import android.app.Activity;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -563,6 +564,23 @@ public class PrismMods {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	// Make all widgets resizable along both axis
+	public static void execHook_HomeScreenResizableWidgets(final LoadPackageParam lpparam) {
+		XposedHelpers.findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "isResizable", AppWidgetProviderInfo.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				param.setResult(true);
+			}
+		});
+		
+		XposedBridge.hookAllConstructors(findClass("com.htc.launcher.AppWidgetResizeFrame", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				XposedHelpers.setIntField(param.thisObject, "mResizeMode", 3);
+			}
+		});
 	}
 	
 	public static void execHook_SwipeActions(final LoadPackageParam lpparam) {
