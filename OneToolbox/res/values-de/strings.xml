@@ -202,8 +202,8 @@
 	<string name="sense_swipeleftaction_summ">Aktion für ein Wischen nach links auf dem Launcher Dock.</string>
 	<string name="sense_sevenscreens_title">Sieben Home Screens</string>
 	<string name="sense_sevenscreens_summ">Erhöht die maximale Anzahl vom Home Screens auf Sieben.</string>
-	<string name="sense_4x5homescreen_title">###TRANSLATE_ME###</string>
-	<string name="sense_4x5homescreen_summ">###TRANSLATE_ME###</string>
+	<string name="sense_4x5homescreen_title">4x5 Home Screen Raster</string>
+	<string name="sense_4x5homescreen_summ">Erhöht die Rastergröße der Home Screens aus 4x5</string>
 	<string name="notselected">Keine ausgewählt</string>
 	<string name="loading_app_data">Lade Apps&#8230;</string>
 	
@@ -235,11 +235,11 @@
 	<string name="kill_foreground_no">Abbrechen</string>
 	
 	<string name="various_mods">Verschiedene Mods</string>
-	<string name="various_mods_screenanim">###TRANSLATE_ME###</string>
-	<string name="various_screenon_title">###TRANSLATE_ME###</string>
-	<string name="various_screenon_summ">###TRANSLATE_ME###</string>
-	<string name="various_screenoff_title">###TRANSLATE_ME###</string>
-	<string name="various_screenoff_summ">###TRANSLATE_ME###</string>
+	<string name="various_mods_screenanim">Ein-/ Aus-Animationen</string>
+	<string name="various_screenon_title">Einschalt-Animation</string>
+	<string name="various_screenon_summ">Animation beim Einschalten des Displays</string>
+	<string name="various_screenoff_title">Ausschalt-Animation</string>
+	<string name="various_screenoff_summ">Animation beim Ausschalten des Displays</string>
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Aktiviert die erweiterten Startoptionen\nWenn du das native APM nutzt, deaktiviere die Option besser.</string>
 	<string name="various_scron_title">Aktiviere \'Aktiv lassen\'</string>
@@ -252,6 +252,8 @@
 	<string name="various_movevol_summ">Verschiebt den Dialog beim ändern der Lautstärke and den unteren Bildschirmrand.</string>
 	<string name="various_mtpnotif_title">Verstecke MTP-Benachrichtigung</string>
 	<string name="various_mtpnotif_summ">Versteckt die MTP-Benachrichtigung. Gedacht für geleakte 4.3 Versionen.</string>
+	<string name="various_fastunlock_title">Schnelles Entsperren</string>
+	<string name="various_fastunlock_summ">Entsperrt das Gerät sobald die richtige PIN eingegeben wurde. Nur mit HTC Lockscreen</string>
 	
 	<string name="support">Support</string>
 	<string name="support_s5t_title">Besuche den Sense 5 Toolbox Post</string>

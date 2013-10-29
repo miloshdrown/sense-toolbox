@@ -252,6 +252,8 @@
 	<string name="various_movevol_summ">Выравнивает окно по низу, чтобы оно не закрывало обзор.</string>
 	<string name="various_mtpnotif_title">Скрыть уведомление сервиса MTP</string>
 	<string name="various_mtpnotif_summ">Делает MTP сервис фоновым и скрывает уведомление. Мод предназначен для прошивок на основе утечки 4.3.</string>
+	<string name="various_fastunlock_title">###TRANSLATE_ME###</string>
+	<string name="various_fastunlock_summ">###TRANSLATE_ME###</string>
 	
 	<string name="support">Поддержка</string>
 	<string name="support_s5t_title">Открыть пост о Sense 5 Toolbox</string>

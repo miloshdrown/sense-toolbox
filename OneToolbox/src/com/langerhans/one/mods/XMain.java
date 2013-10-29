@@ -275,6 +275,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref_homeassist != 1)
 				ControlsMods.execHook_dieGoogleNow(lpparam);
 			
+			if(pref.getBoolean("pref_key_other_fastunlock", false))
+				OtherMods.execHook_fastUnlock(lpparam);
+				
 			PrismMods.execHook_BypassLockScreen(lpparam);
 		}		
 		

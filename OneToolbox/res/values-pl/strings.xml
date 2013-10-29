@@ -252,6 +252,8 @@
 	<string name="various_movevol_summ">Umieść pasek głośności na dole, żeby nie przysłaniał ekranu.</string>
     <string name="various_mtpnotif_title">Ukryj powiadomienia MTP</string>
     <string name="various_mtpnotif_summ">Dodaj usługę MTP w tłe i wyłącz powiadomienia. Mod jest na ROM oparty na przecieku 4.3.</string>
+	<string name="various_fastunlock_title">###TRANSLATE_ME###</string>
+	<string name="various_fastunlock_summ">###TRANSLATE_ME###</string>
     
     <string name="support">Wsparcie</string>
     <string name="support_s5t_title">Odwiedź Stronę Sense 5 Toolbox</string>

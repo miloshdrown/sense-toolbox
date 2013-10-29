@@ -107,16 +107,16 @@
         <item >APM (Neustart)</item>
     </string-array>
     <string-array name="various_screenonanim">
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
+        <item >Keine</item>
+        <item >Einblenden</item>
     </string-array>
     <string-array name="various_screenonanim_val">
         <item >0</item>
         <item >2</item>
     </string-array>
     <string-array name="various_screenoffanim">
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
+        <item >Keine</item>
+        <item >Ausblenden</item>
         <item >CRT</item>
     </string-array>
     <string-array name="various_screenoffanim_val">
