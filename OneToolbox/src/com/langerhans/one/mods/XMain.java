@@ -56,13 +56,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref_backlongpress != 1 || pref_homeassist != 1)
 			ControlsMods.setupPWMKeys();
 		
-		XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", false);
-		
 		pref_screenon = Integer.parseInt(pref.getString("pref_key_other_screenon", "0"));
 		pref_screenoff = Integer.parseInt(pref.getString("pref_key_other_screenoff", "0"));
 		
-		if (pref_screenon != 0 || pref_screenoff != 0)
+		if (pref_screenon != 0 || pref_screenoff != 0) {
+			XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", false);
 			OtherMods.ScreenAnim();
+		}
 	}
 
 	@Override
