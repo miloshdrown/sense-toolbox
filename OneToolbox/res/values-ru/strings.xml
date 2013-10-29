@@ -235,6 +235,11 @@
 	<string name="kill_foreground_no">Отмена!</string>
 	
 	<string name="various_mods">Различные моды</string>
+	<string name="various_mods_screenanim">Экранная анимация</string>
+	<string name="various_screenon_title">Включение экрана</string>
+	<string name="various_screenon_summ">Анимация при включении экрана</string>
+	<string name="various_screenoff_title">Выключение экрана</string>
+	<string name="various_screenoff_summ">Анимация при выключении экрана</string>
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Расширенное меню управления питанием\nЕсли у Вас установлено это меню с прошивкой, то тут следует его отключить.</string>
 	<string name="various_scron_title">Опция \'Не выключать экран\'</string>

@@ -2,6 +2,7 @@ package com.langerhans.one.mods;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
+import android.animation.ObjectAnimator;
 import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
@@ -95,58 +96,96 @@ public class OtherMods{
 			e.printStackTrace();
 		}
 	}
-	/*
-	public static void CRTOff() {
-        try {
-            final Class<?> clsDisplayPowerState = XposedHelpers.findClass("com.android.server.power.DisplayPowerState", null);
-            XposedBridge.hookAllConstructors(clsDisplayPowerState, new XC_MethodHook() {
-                @Override
-                protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-                	   XposedHelpers.setStaticBooleanField(param.thisObject.getClass(), "DEBUG_ON", true);
-                	   XposedHelpers.setStaticBooleanField(param.thisObject.getClass(), "DEBUG", true);
-                	   
-                	   //Object mElectronBeam = XposedHelpers.getObjectField(param.thisObject, "mElectronBeam");
-	                   //XposedHelpers.callMethod(param.thisObject, "prepareElectronBeam", 1);
-	                   //boolean res = (Boolean)XposedHelpers.callMethod(mElectronBeam, "draw", 0.7f);
-	                   //if (res) XposedBridge.log("draw!!!"); else XposedBridge.log("fuck no draw :(");
-	                   //param.args[0] = 1;
-	               }	               
-	           });
 
-            XposedHelpers.findAndHookMethod(clsDisplayPowerState, "setElectronBeamLevel", float.class, new XC_MethodHook() {
-                @Override
-                protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-                	XposedHelpers.callMethod(param.thisObject, "prepareElectronBeam", 1);
-                	XposedBridge.log("setElectronBeamLevel: " + String.valueOf(param.args[0]));
-                	boolean mScreenOn = (Boolean) XposedHelpers.getObjectField(param.thisObject, "mScreenOn");
-                	boolean mElectronBeamPrepared = (Boolean) XposedHelpers.getObjectField(param.thisObject, "mElectronBeamPrepared");
-                	if (mScreenOn) XposedBridge.log("mScreenOn = true"); else XposedBridge.log("mScreenOn = false");
-                	if (mElectronBeamPrepared) XposedBridge.log("mElectronBeamPrepared = true"); else XposedBridge.log("mElectronBeamPrepared = false");
-                    //param.setResult(null);
-                }
-            	
-            });
-            
-            final Class<?> clsDisplaPowerController = XposedHelpers.findClass("com.android.server.power.DisplayPowerController", null);
-            XposedHelpers.findAndHookMethod(clsDisplaPowerController, "initialize", new XC_MethodHook() {
-            	
-                @Override
-                protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-                	XposedBridge.log("initialize1");
-                    XposedHelpers.setStaticBooleanField(param.thisObject.getClass(), "DEBUG_ON", true);
-                }
-            	
-                @Override
-                protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-                	XposedBridge.log("initialize2");
-                    ObjectAnimator oa = (ObjectAnimator) XposedHelpers.getObjectField(param.thisObject, "mElectronBeamOffAnimator");
-                    if (oa != null) {
-                        oa.setDuration(400);
-                    }
-                }
-            });
-        } catch (Throwable t) {
-            XposedBridge.log(t);
+	private static boolean updateScreenOn = false;
+	private static boolean updateScreenOff = false;
+	
+	public static void ScreenAnim() {
+		try {
+			XposedHelpers.findAndHookMethod("com.android.server.power.DisplayPowerController", null, "setScreenOn", boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					if (updateScreenOff && XMain.pref_screenoff != 0) {
+						param.setResult(null);
+						updateScreenOff = false;
+						
+						ObjectAnimator mElectronBeamOffAnimator = (ObjectAnimator)XposedHelpers.getObjectField(param.thisObject, "mElectronBeamOffAnimator");
+						Object mPowerState = XposedHelpers.getObjectField(param.thisObject, "mPowerState");
+						
+						if (!mElectronBeamOffAnimator.isStarted()) {
+							float beamLvl = (Float)XposedHelpers.callMethod(mPowerState, "getElectronBeamLevel");
+							if (beamLvl == 0.0F) {
+								XposedHelpers.callMethod(param.thisObject, "setScreenOn", false);
+							} else {
+								Object displaypowerstate = mPowerState;
+									if ((Boolean)XposedHelpers.callMethod(displaypowerstate, "prepareElectronBeam", XMain.pref_screenoff) && (Boolean)XposedHelpers.callMethod(mPowerState, "isScreenOn"))
+									mElectronBeamOffAnimator.start();
+								else
+									mElectronBeamOffAnimator.end();
+							}
+						}
+					}
+				}
+				
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					if ((Boolean)param.args[0] && XMain.pref_screenon != 0) {
+						updateScreenOn = true;
+						
+						Object mPowerState = XposedHelpers.getObjectField(param.thisObject, "mPowerState");
+						ObjectAnimator mElectronBeamOnAnimator = (ObjectAnimator)XposedHelpers.getObjectField(param.thisObject, "mElectronBeamOnAnimator");
+					
+						if (!mElectronBeamOnAnimator.isStarted()) {
+							float beamLvl = (Float)XposedHelpers.callMethod(mPowerState, "getElectronBeamLevel");
+							if (beamLvl == 1.0F) {
+								XposedHelpers.callMethod(mPowerState, "dismissElectronBeam");
+							} else {
+								Object displaypowerstate = mPowerState;
+								if ((Boolean)XposedHelpers.callMethod(displaypowerstate, "prepareElectronBeam", XMain.pref_screenon) && (Boolean)XposedHelpers.callMethod(mPowerState, "isScreenOn"))
+									mElectronBeamOnAnimator.start();
+								else
+									mElectronBeamOnAnimator.end();
+							}
+						}
+					}
+				}
+			});
+			
+			if (XMain.pref_screenoff != 0)
+			XposedHelpers.findAndHookMethod("com.android.server.power.DisplayPowerController", null, "animateScreenBrightness", int.class, int.class, int.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					if ((Integer)param.args[0] == 0 && (Integer)param.args[1] == 0 && (Integer)param.args[2] == 0 && (Integer)param.args[3] == -1) {
+						updateScreenOff = true;
+						param.setResult(null);
+					}
+				}
+			});
+			
+			if (XMain.pref_screenon != 0) {
+				XposedHelpers.findAndHookMethod("com.android.server.power.DisplayPowerState", null, "dismissElectronBeam", new XC_MethodHook() {
+					@Override
+					protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+						if (updateScreenOn) param.setResult(null);
+					}
+				});
+				
+				XposedHelpers.findAndHookMethod("com.android.server.power.DisplayPowerController", null, "updatePowerState", new XC_MethodHook() {
+					@Override
+					protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+						updateScreenOn = false;
+	                }
+	            });
+			}
+			
+			XposedHelpers.findAndHookMethod("com.android.server.power.DisplayPowerState", null, "setElectronBeamLevel", float.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					if (updateScreenOn || updateScreenOff) param.setResult(null);
+				}
+			});
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-	} */
+	}
 }

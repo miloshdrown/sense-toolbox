@@ -235,6 +235,11 @@
 	<string name="kill_foreground_no">Abort!</string>
 	
 	<string name="various_mods">Various Mods</string>
+	<string name="various_mods_screenanim">Screen animations</string>
+	<string name="various_screenon_title">On animation</string>
+	<string name="various_screenon_summ">Animation for turning screen on</string>
+	<string name="various_screenoff_title">Off animation</string>
+	<string name="various_screenoff_summ">Animation for turning screen off</string>
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Enable or disable Advanced Power Menu\nIf you have the native APM installed, better keep this disabled.</string>
 	<string name="various_scron_title">Enable \'Keep screen on\'</string>

@@ -545,6 +545,24 @@
             android:summary="@string/various_mtpnotif_summ"
             android:title="@string/various_mtpnotif_title"
             android:defaultValue="false" />
+        
+        <com.htc.preference.HtcPreferenceCategory
+            android:title="@string/various_mods_screenanim" >
+            <com.htc.preference.HtcListPreference
+                android:key="pref_key_other_screenon"
+                android:summary="@string/various_screenon_summ"
+                android:title="@string/various_screenon_title"
+                android:entries="@array/various_screenonanim"
+                android:entryValues="@array/various_screenonanim_val"
+                android:defaultValue="1" />
+            <com.htc.preference.HtcListPreference
+                android:key="pref_key_other_screenoff"
+                android:summary="@string/various_screenoff_summ"
+                android:title="@string/various_screenoff_title"
+                android:entries="@array/various_screenoffanim"
+                android:entryValues="@array/various_screenoffanim_val"
+                android:defaultValue="1" />
+        </com.htc.preference.HtcPreferenceCategory>
     </com.htc.preference.HtcPreferenceScreen>
     </com.htc.preference.HtcPreferenceCategory>
     

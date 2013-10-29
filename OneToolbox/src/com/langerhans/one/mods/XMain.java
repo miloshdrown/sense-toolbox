@@ -1,5 +1,7 @@
 package com.langerhans.one.mods;
 
+import android.content.res.XResources;
+
 import com.langerhans.one.utils.GlobalActions;
 import com.langerhans.one.utils.PackagePermissions;
 import com.langerhans.one.utils.Version;
@@ -21,6 +23,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	private static int pref_swipeleft = 1;
 	private static int pref_backlongpress = 1;
 	private static int pref_homeassist = 1;
+	public static int pref_screenon = 0;
+	public static int pref_screenoff = 0;
 	public static Version senseVersion;
 	
 	@Override
@@ -52,9 +56,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref_backlongpress != 1 || pref_homeassist != 1)
 			ControlsMods.setupPWMKeys();
 		
-		//For CRT
-		//CrtTest.CrtAOSP(startupParam);
-		//XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", false);
+		XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", false);
+		
+		pref_screenon = Integer.parseInt(pref.getString("pref_key_other_screenon", "0"));
+		pref_screenoff = Integer.parseInt(pref.getString("pref_key_other_screenoff", "0"));
+		
+		if (pref_screenon != 0 || pref_screenoff != 0)
+			OtherMods.ScreenAnim();
 	}
 
 	@Override

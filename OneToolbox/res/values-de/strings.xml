@@ -235,6 +235,11 @@
 	<string name="kill_foreground_no">Abbrechen</string>
 	
 	<string name="various_mods">Verschiedene Mods</string>
+	<string name="various_mods_screenanim">###TRANSLATE_ME###</string>
+	<string name="various_screenon_title">###TRANSLATE_ME###</string>
+	<string name="various_screenon_summ">###TRANSLATE_ME###</string>
+	<string name="various_screenoff_title">###TRANSLATE_ME###</string>
+	<string name="various_screenoff_summ">###TRANSLATE_ME###</string>
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Aktiviert die erweiterten Startoptionen\nWenn du das native APM nutzt, deaktiviere die Option besser.</string>
 	<string name="various_scron_title">Aktiviere \'Aktiv lassen\'</string>

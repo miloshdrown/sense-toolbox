@@ -102,7 +102,6 @@
         <item>@drawable/c_stat_sys_battery_95</item>
         <item></item>
     </array>
-
     <string-array name="home_menu">
 	    <item >Zarządzaj aplikacjami</item>
 	    <item >Personalizacja</item>
@@ -110,4 +109,22 @@
 	    <item >Wi-Fi</item>
 	    <item >APM</item>
 	</string-array>
+	<string-array name="various_screenonanim">
+        <item >###TRANSLATE_ME###</item>
+        <item >###TRANSLATE_ME###</item>
+    </string-array>
+    <string-array name="various_screenonanim_val">
+        <item >0</item>
+        <item >2</item>
+    </string-array>
+    <string-array name="various_screenoffanim">
+        <item >###TRANSLATE_ME###</item>
+        <item >###TRANSLATE_ME###</item>
+        <item >CRT</item>
+    </string-array>
+    <string-array name="various_screenoffanim_val">
+        <item >0</item>
+        <item >2</item>
+        <item >1</item>
+    </string-array>
 </resources>
