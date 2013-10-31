@@ -107,8 +107,8 @@
         <item >APM (Neustart)</item>
     </string-array>
     <string-array name="recents_menu">
-        <item >###TRANSLATE_ME### 12 CHARS MAX!</item>
-        <item >###TRANSLATE_ME### 12 CHARS MAX!</item>
+        <item >Infos</item>
+        <item >Schließen</item>
     </string-array>
     <string-array name="various_screenonanim">
         <item >Keine</item>

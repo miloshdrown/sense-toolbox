@@ -10,7 +10,7 @@
     <string name="restore">Wiederherstellen</string>
     <string name="add">Hinzufügen</string>
     <string name="soft_reboot">Schneller Neustart</string>
-    <string name="ram_mb">###TRANSLATE_ME###</string>
+    <string name="ram_mb">MB</string>
     
     <string name="warning">Warnung!</string>
     <string name="xposed_not_installed">Xposed ist nicht vollständig installiert! Du musst im Xposed Installer Install/Update wählen, das Sense 5 Toolbox Modul aktivieren und dann das Handy neu starten.</string>
@@ -114,8 +114,8 @@
 	<string name="systemui_aosp_summ">Kürzlich genutzte Apps im AOSP-Stil.</string>
 	<string name="systemui_recentclear_title">Alle Apps schließen</string>
 	<string name="systemui_recentclear_summ">Alle kürzlich genutzten Apps durch zusammenschieben oder nach unten ziehen schließen.</string>
-	<string name="systemui_recentram_title">###TRANSLATE_ME###</string>
-	<string name="systemui_recentram_summ">###TRANSLATE_ME###</string>
+	<string name="systemui_recentram_title">RAM Verbrauch</string>
+	<string name="systemui_recentram_summ">Zeigt den genutzten Speicher der Apps im \'Kürzlich genutzte Apps\' Bildschirm.</string>
 	<string name="systemui_centerclock_title">Mittige Uhr</string>
 	<string name="systemui_centerclock_summ">Verschiebt die Uhr in der Statusleiste in die Mitte.</string>
 	<string name="systemui_ampmremove_title">Entferne AM/PM</string>
