@@ -23,6 +23,8 @@
         <item>Focus</item>
         <item>Focus, a następnie Migawka</item>
         <item>Nagrywanie wideo</item>
+        <item>###TRANSLATE_ME###</item>
+        <item>###TRANSLATE_ME###</item>
         <item>Bez zmian</item>
     </string-array>
     <string-array name="cam_actions_val">
@@ -30,6 +32,8 @@
         <item>2</item>
         <item>5</item>
         <item>3</item>
+        <item>6</item>
+        <item>7</item>
         <item>4</item>
     </string-array>
     <string-array name="batt_icon">

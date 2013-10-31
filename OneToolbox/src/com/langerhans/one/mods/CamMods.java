@@ -17,6 +17,7 @@ public class CamMods{
 	private static Method takeFocus;
 	private static Method takePicture;
 	private static Method triggerRecord;
+	private static Method changeZoom;
 	static LoadPackageParam lpparamF;
 
 	public static void execHook_VolKey(final LoadPackageParam lpparam, final int volup, final int voldown) {
@@ -24,6 +25,7 @@ public class CamMods{
 	    takePicture = findMethodExact("com.android.camera.HTCCamera", lpparamF.classLoader, "takePicture", String.class);
 	    takeFocus = findMethodExact("com.android.camera.HTCCamera", lpparamF.classLoader, "takeFocus", int.class, int.class);
 	    triggerRecord = findMethodExact("com.android.camera.HTCCamera", lpparamF.classLoader, "triggerRecord");
+	    changeZoom = findMethodExact("com.android.camera.HTCCamera", lpparamF.classLoader, "changeZoom", int.class);
 	    
 	    hookKeyUp();
 	    
@@ -31,6 +33,7 @@ public class CamMods{
     		@Override
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
     			KeyEvent key =  (KeyEvent) param.args[1];
+    			String currentZoom = "";
     			if (key.getKeyCode() == KeyEvent.KEYCODE_VOLUME_DOWN)
     			{
     				switch (voldown){
@@ -51,6 +54,16 @@ public class CamMods{
     					takePicture.invoke(param.thisObject, "HTCCamera");
         				param.setResult(true);
         				return;
+    				case 6:
+    					currentZoom = getObjectField(param.thisObject, "zoomValue").toString();
+    					changeZoom.invoke(param.thisObject, Integer.valueOf(currentZoom) + 12); //12 = 5 zoom steps from 0-60
+    					param.setResult(true);
+    					return;
+    				case 7:
+    					currentZoom = getObjectField(param.thisObject, "zoomValue").toString();
+    					changeZoom.invoke(param.thisObject, Integer.valueOf(currentZoom) - 12); //12 = 5 zoom steps from 0-60
+    					param.setResult(true);
+    					return;
         			default:
         				
     				}
@@ -75,6 +88,16 @@ public class CamMods{
     					takePicture.invoke(param.thisObject, "HTCCamera");
         				param.setResult(true);
         				return;
+    				case 6:
+    					currentZoom = getObjectField(param.thisObject, "zoomValue").toString();
+    					changeZoom.invoke(param.thisObject, Integer.valueOf(currentZoom) + 12); //12 = 5 zoom steps from 0-60
+    					param.setResult(true);
+    					return;
+    				case 7:
+    					currentZoom = getObjectField(param.thisObject, "zoomValue").toString();
+    					changeZoom.invoke(param.thisObject, Integer.valueOf(currentZoom) - 12); //12 = 5 zoom steps from 0-60
+    					param.setResult(true);
+    					return;
         			default:
         				
     				}

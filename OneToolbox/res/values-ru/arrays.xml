@@ -22,6 +22,8 @@
         <item >Фокусировка</item>
         <item >Фокусировка, затем затвор</item>
         <item >Запись видео</item>
+        <item>###TRANSLATE_ME###</item>
+        <item>###TRANSLATE_ME###</item>
         <item >Без изменений</item>
     </string-array>
     <string-array name="cam_actions_val">
@@ -29,6 +31,8 @@
         <item >2</item>
         <item >5</item>
         <item >3</item>
+        <item >6</item>
+        <item >7</item>
         <item >4</item>
     </string-array>
     

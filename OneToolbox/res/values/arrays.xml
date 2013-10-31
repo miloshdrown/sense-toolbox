@@ -22,6 +22,8 @@
         <item >Focus</item>
         <item >Force focus, then shutter</item>
         <item >Record Video</item>
+        <item >Zoom in</item>
+        <item >Zoom out</item>
         <item >No change</item>
     </string-array>
     <string-array name="cam_actions_val">
@@ -29,6 +31,8 @@
         <item >2</item>
         <item >5</item>
         <item >3</item>
+        <item >6</item>
+        <item >7</item>
         <item >4</item>
     </string-array>
     
