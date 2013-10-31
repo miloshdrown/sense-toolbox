@@ -10,6 +10,7 @@
     <string name="restore">Restore</string>
     <string name="add">Add</string>
     <string name="soft_reboot">Soft Reboot</string>
+    <string name="ram_mb">MB</string>
     
     <string name="warning">Warning!</string>
     <string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 5 Toolbox module there and reboot.</string>
@@ -113,6 +114,8 @@
 	<string name="systemui_aosp_summ">Enable AOSP style recent apps screen.</string>
 	<string name="systemui_recentclear_title">Close all recent apps at once</string>
 	<string name="systemui_recentclear_summ">Add ability to clear recent apps list by pinching or swiping down.</string>
+	<string name="systemui_recentram_title">RAM usage</string>
+	<string name="systemui_recentram_summ">Show the amount of RAM used by recent apps.</string>
 	<string name="systemui_centerclock_title">Center clock</string>
 	<string name="systemui_centerclock_summ">Enable to move the status bar clock to the center.</string>
 	<string name="systemui_ampmremove_title">Remove AM/PM</string>

@@ -116,6 +116,12 @@
             android:title="@string/systemui_recentclear_title"
             android:defaultValue="false"
             android:dependency="pref_key_sysui_aosprecent" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_recentram"
+            android:summary="@string/systemui_recentram_summ"
+            android:title="@string/systemui_recentram_title"
+            android:defaultValue="false"
+            android:dependency="pref_key_sysui_aosprecent" />
         </com.htc.preference.HtcPreferenceCategory>
     </com.htc.preference.HtcPreferenceScreen>
 

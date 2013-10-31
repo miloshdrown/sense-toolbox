@@ -13,6 +13,7 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.List;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -22,6 +23,7 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
@@ -33,10 +35,13 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Debug.MemoryInfo;
 import android.os.Environment;
 import android.os.Handler;
 import android.provider.Settings.SettingNotFoundException;
+import android.text.TextUtils.TruncateAt;
 import android.text.method.SingleLineTransformationMethod;
 import android.util.TypedValue;
 import android.view.Display;
@@ -718,6 +723,7 @@ public class SysUIMods {
 				thisTile.setLongClickable(true);
 				thisTile.setOnLongClickListener(new OnLongClickListener() {
 					@Override
+					@SuppressLint("DefaultLocale")
 					public boolean onLongClick(View v) {
 						String clickedTile = (String) getObjectField(thisTile, "tileLabel");
 						if (!clickedTile.equals("") && !(clickedTile == null))
@@ -1044,5 +1050,100 @@ public class SysUIMods {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+
+	private static int[] toIntArray(List<Integer> list)  {
+		int[] ret = new int[list.size()];
+		int i = 0;
+		for (Integer e : list) ret[i++] = e.intValue();
+		return ret;
+    }
+	
+	private static List<ActivityManager.RunningAppProcessInfo> procs = null;
+	private static String ramTAG = "RAMView";
+
+	private static class getRAMView extends AsyncTask<MethodHookParam, Void, Void> {
+		FrameLayout theView = null;
+		TextView ramView = null;
+		String ramText = null;
+		
+        @Override
+        protected Void doInBackground(final MethodHookParam... params) {
+        	try {
+        		final MethodHookParam param = params[0];
+        		theView = (FrameLayout)param.getResult();
+        		if (theView != null) {
+        			int pos = (Integer)param.args[0];
+        			Object viewholder = theView.getTag();
+        			
+        			ArrayList<?> mRecentTaskDescriptions = (ArrayList<?>)XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mRecentTaskDescriptions");
+        			if (mRecentTaskDescriptions == null) return null;
+        			Object taskdescription = mRecentTaskDescriptions.get(mRecentTaskDescriptions.size() - (Integer)param.args[0] - 1);
+        			if (taskdescription == null) return null;
+        			ResolveInfo resolveInfo = (ResolveInfo)XposedHelpers.getObjectField(taskdescription, "resolveInfo");
+        			
+        			final ActivityManager am = (ActivityManager)theView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+        			if (pos == 0 || procs == null) procs = am.getRunningAppProcesses();
+        			
+        			final List<Integer> pids_mem = new ArrayList<Integer>();
+        			for (ActivityManager.RunningAppProcessInfo process: procs)
+        			if (process.processName.equals(resolveInfo.activityInfo.processName))
+        			if (!pids_mem.contains(process.pid)) pids_mem.add(process.pid);
+        			
+        			MemoryInfo[] mi = am.getProcessMemoryInfo(toIntArray(pids_mem));
+        			int memTotal = 0;
+        			for (MemoryInfo memInfo: mi)
+        			memTotal += memInfo.getTotalPss();
+        			
+        			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+        			ramText = String.format("%.1f", (float)(memTotal / 1024.0f)) + modRes.getString(R.string.ram_mb);
+        			if (theView.findViewWithTag(ramTAG) == null) {
+        				ramView = new TextView(theView.getContext());
+        				ramView.setTag(ramTAG);
+        				ramView.setText(ramText);
+            			final TextView text1 = (TextView)XposedHelpers.getObjectField(viewholder, "text1");
+            			ramView.setBackground(text1.getBackground());									
+            			FrameLayout.LayoutParams p0 = (FrameLayout.LayoutParams)text1.getLayoutParams();
+            			ramView.setLayoutParams(p0);
+            			ramView.setTextSize(TypedValue.COMPLEX_UNIT_PX, text1.getTextSize());
+            			ramView.setTextColor(Color.argb(127, Color.red(text1.getCurrentTextColor()), Color.green(text1.getCurrentTextColor()), Color.blue(text1.getCurrentTextColor())));
+            			ramView.setPadding(text1.getPaddingLeft(), text1.getPaddingTop(), text1.getPaddingRight(), text1.getPaddingBottom());
+            			ramView.setTypeface(text1.getTypeface());
+            			ramView.setEllipsize(TruncateAt.END);
+            			ramView.setGravity(Gravity.CENTER_VERTICAL);
+            			ramView.setSingleLine();
+            			ramView.setTranslationY(-29.7f * theView.getContext().getResources().getDisplayMetrics().density);
+        			}
+        		}
+        	} catch (Exception e) {
+        		e.printStackTrace();
+        	}
+        	return null;        	
+        }
+
+        @Override
+        protected void onPostExecute(Void result) {
+        	if (theView != null)
+        	if (theView.findViewWithTag(ramTAG) == null) {
+        		if (ramView != null) theView.addView(ramView);
+        	} else {
+        		if (ramText != null)
+        		((TextView)theView.findViewWithTag(ramTAG)).setText(ramText);
+        	}
+        }
+    }
+	
+	public static void execHook_RAMInRecents(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity.RecentGridViewAdapter", lpparam.classLoader, "getView", int.class, View.class, ViewGroup.class, new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				// Text before actual data is available
+				FrameLayout theView = (FrameLayout)param.getResult();
+        		if (theView != null && theView.findViewWithTag(ramTAG) != null)
+       			((TextView)theView.findViewWithTag(ramTAG)).setText("...");
+        		// Get RAM usage for the task of this view
+				new getRAMView().execute(param);
+			}
+		});
 	}
 }

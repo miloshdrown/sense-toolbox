@@ -10,6 +10,7 @@
     <string name="restore">Восстановить</string>
     <string name="add">Добавить</string>
     <string name="soft_reboot">Быстрый перезапуск</string>
+    <string name="ram_mb">МБ</string>
     
     <string name="warning">Внимание!</string>
     <string name="xposed_not_installed">Xposed Framework установлен не полностью, Вы должны установить app_process и XposedBridge.jar в Xposed Installer, затем активировать модуль Sense 5 Toolbox и перезагрузиться.</string>
@@ -113,6 +114,8 @@
 	<string name="systemui_aosp_summ">Включить AOSP-стиль списка последних приложений.</string>
 	<string name="systemui_recentclear_title">Закрыть последние приложения</string>
 	<string name="systemui_recentclear_summ">Добавляет возможность закрыть все последние приложения pinch-жестом или swipe-жестом сверху вниз.</string>
+	<string name="systemui_recentram_title">Использование памяти</string>
+	<string name="systemui_recentram_summ">Отображать используемую память в списке последних приложений.</string>
 	<string name="systemui_centerclock_title">Часы по центру</string>
 	<string name="systemui_centerclock_summ">Перемещение часов в центр статусбара.</string>
 	<string name="systemui_ampmremove_title">Скрыть AM/PM</string>
@@ -252,8 +255,8 @@
 	<string name="various_movevol_summ">Выравнивает окно по низу, чтобы оно не закрывало обзор.</string>
 	<string name="various_mtpnotif_title">Скрыть уведомление сервиса MTP</string>
 	<string name="various_mtpnotif_summ">Делает MTP сервис фоновым и скрывает уведомление. Мод предназначен для прошивок на основе утечки 4.3.</string>
-	<string name="various_fastunlock_title">###TRANSLATE_ME###</string>
-	<string name="various_fastunlock_summ">###TRANSLATE_ME###</string>
+	<string name="various_fastunlock_title">Быстрая разблокировка</string>
+	<string name="various_fastunlock_summ">Позволяет разблокировать экран сразу после ввода правильного ПИНа. Долько для HTC локскрина.</string>
 	
 	<string name="support">Поддержка</string>
 	<string name="support_s5t_title">Открыть пост о Sense 5 Toolbox</string>

@@ -10,6 +10,7 @@
     <string name="restore">Przywróć</string>
     <string name="add">Dodaj</string>
     <string name="soft_reboot">Szybki restart</string>
+    <string name="ram_mb">###TRANSLATE_ME###</string>
     
     <string name="warning">Ostrzeżenie!</string>
     <string name="xposed_not_installed">Xposed Framework nie jest prawidłowo zainstalowany, należy zainstalować app_process i XposedBridge.jar z Instalatora Xposed, a następnie włączyć Sense 5 Toolbox i ponownie uruchomić moduł.</string>
@@ -113,6 +114,8 @@
     <string name="systemui_aosp_summ">Włącz styl AOSP Ostatnie aplikacje na ekranie.</string>
     <string name="systemui_recentclear_title">Zamknij wszystkie ostatnie aplikacje naraz</string>
     <string name="systemui_recentclear_summ">Dodaj możliwość, aby usunąć listę ostatnich aplikacje, szczypiąc lub przesuwając w dół.</string>
+    <string name="systemui_recentram_title">###TRANSLATE_ME###</string>
+	<string name="systemui_recentram_summ">###TRANSLATE_ME###</string>
     <string name="systemui_centerclock_title">Zegar w centrum</string>
     <string name="systemui_centerclock_summ">Włącz, przenieśenie zegar na pasku stanu do centrum.</string>
     <string name="systemui_ampmremove_title">Usuń AM/PM</string>

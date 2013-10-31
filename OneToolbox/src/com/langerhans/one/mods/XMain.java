@@ -330,6 +330,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_sysui_dataratestatus", false))
 				SysUIMods.execHook_DataRateStatus(lpparam);
+			
+			if(pref.getBoolean("pref_key_sysui_recentram", false))
+				SysUIMods.execHook_RAMInRecents(lpparam);
 		}
 		
 		if (lpparam.processName.equals("android"))
