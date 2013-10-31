@@ -871,7 +871,7 @@ public class PrismMods {
 		// Update items and listeners. I doubt launcher contexts will change over time but just in case :) 
 		ListView options = new ListView(m_workspace.getContext());
 		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-		ListAdapter listAdapter = new PopupAdapter(options.getContext(), modRes.getStringArray(R.array.home_menu));
+		ListAdapter listAdapter = new PopupAdapter(options.getContext(), modRes.getStringArray(R.array.home_menu), false);
 		options.setFocusableInTouchMode(true);
 		options.setAdapter(listAdapter);
 		options.setOnItemClickListener(new AdapterView.OnItemClickListener() {

@@ -109,6 +109,10 @@
 	    <item >Wi-Fi</item>
 	    <item >APM</item>
 	</string-array>
+	<string-array name="recents_menu">
+        <item >###TRANSLATE_ME### 12 CHARS MAX!</item>
+        <item >###TRANSLATE_ME### 12 CHARS MAX!</item>
+    </string-array>
 	<string-array name="various_screenonanim">
         <item >###TRANSLATE_ME###</item>
         <item >###TRANSLATE_ME###</item>

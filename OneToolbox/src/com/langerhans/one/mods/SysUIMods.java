@@ -40,6 +40,7 @@ import android.os.Bundle;
 import android.os.Debug.MemoryInfo;
 import android.os.Environment;
 import android.os.Handler;
+import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.text.TextUtils.TruncateAt;
 import android.text.method.SingleLineTransformationMethod;
@@ -62,20 +63,25 @@ import android.view.animation.AnimationSet;
 import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
+import android.widget.AdapterView;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListAdapter;
+import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
 import com.htc.widget.HtcCheckBox;
 import com.htc.widget.HtcCompoundButton;
+import com.htc.widget.HtcPopupWindow;
 import com.htc.widget.HtcCompoundButton.OnCheckedChangeListener;
 import com.htc.widget.HtcSeekBar;
 import com.langerhans.one.R;
+import com.langerhans.one.utils.PopupAdapter;
 import com.langerhans.one.utils.Version;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -1143,6 +1149,73 @@ public class SysUIMods {
        			((TextView)theView.findViewWithTag(ramTAG)).setText("...");
         		// Get RAM usage for the task of this view
 				new getRAMView().execute(param);
+			}
+		});
+	}
+	
+	static HtcPopupWindow popup = null;
+	
+	public static void execHook_RecentsLongTap(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity.RecentGridViewAdapter", lpparam.classLoader, "getView", int.class, View.class, ViewGroup.class, new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				final FrameLayout theView = (FrameLayout)param.getResult();
+        		if (theView != null) {
+        			theView.setOnLongClickListener(new OnLongClickListener() {
+						@Override
+						public boolean onLongClick(View v) {
+							try {
+								Activity FxRecent = (Activity)XposedHelpers.getSurroundingThis(param.thisObject);
+								
+								popup = new HtcPopupWindow(FxRecent);
+								float density = theView.getContext().getResources().getDisplayMetrics().density;
+								int theWidth = Math.round(theView.getContext().getResources().getDisplayMetrics().widthPixels / 3 + 20 * density);
+								popup.setWidth(theWidth);
+								popup.setHeight(-2);
+								popup.setTouchable(true);
+								popup.setFocusable(true);
+								popup.setOutsideTouchable(true);
+								
+								ListView options = new ListView(FxRecent);
+								XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+								ListAdapter listAdapter = new PopupAdapter(options.getContext(), modRes.getStringArray(R.array.recents_menu), true);
+								options.setAdapter(listAdapter);
+								options.setFocusableInTouchMode(true);								
+								options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+									@Override
+									public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+										popup.dismiss();
+										Object viewholder = theView.getTag();
+										Object taskdescription = XposedHelpers.getObjectField(viewholder, "td");
+										String packageName = (String)XposedHelpers.getObjectField(taskdescription, "packageName");
+										if (position == 0) {
+											Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null));
+											intent.setComponent(intent.resolveActivity(view.getContext().getPackageManager()));
+									        view.getContext().startActivity(intent);
+										} else {
+											XposedHelpers.callMethod(XposedHelpers.getSurroundingThis(param.thisObject), "handleSwipe", theView);
+										}
+									}
+								});
+								popup.setContentView(options);
+								
+								Object mRecentGridView = XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mRecentGridView");
+								XposedHelpers.setBooleanField(mRecentGridView, "isDragging", true);
+								popup.showAtLocation(theView, Gravity.TOP|Gravity.LEFT, Math.round(theView.getX() - theWidth/4), Math.round(theView.getY() - 20 * density));
+								return true;
+							} catch (Exception e) {
+								return false;
+							}
+						}
+        			});
+        		}
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "handleSwipe", View.class, new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				if (popup != null) popup.dismiss();
 			}
 		});
 	}

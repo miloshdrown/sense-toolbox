@@ -333,6 +333,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_sysui_recentram", false))
 				SysUIMods.execHook_RAMInRecents(lpparam);
+			
+			SysUIMods.execHook_RecentsLongTap(lpparam);
 		}
 		
 		if (lpparam.processName.equals("android"))

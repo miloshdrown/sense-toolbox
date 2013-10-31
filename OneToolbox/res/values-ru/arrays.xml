@@ -106,6 +106,10 @@
         <item >Wi-Fi</item>
         <item >APM</item>
     </string-array>
+    <string-array name="recents_menu">
+        <item >О приложении</item>
+        <item >Закрыть</item>
+    </string-array>
     <string-array name="various_screenonanim">
         <item >Без анимации</item>
         <item >Затухание</item>

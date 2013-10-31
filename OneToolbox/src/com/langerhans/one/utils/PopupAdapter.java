@@ -1,6 +1,11 @@
 package com.langerhans.one.utils;
 
+import com.langerhans.one.R;
+import com.langerhans.one.mods.XMain;
+
 import android.content.Context;
+import android.content.res.XModuleResources;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,12 +16,12 @@ public class PopupAdapter extends BaseAdapter {
 	
 	final String[] items;
 	private LayoutInflater mInflater;
-	Context mContext = null;
+	boolean isRecents;
 
-	public PopupAdapter(Context context, String[] objects) {
-		mContext = context;
+	public PopupAdapter(Context context, String[] objects, boolean recents) {
 		items = objects;
 		mInflater = LayoutInflater.from(context);
+		isRecents = recents;
 	}
 	
 	public int getCount() {
@@ -32,10 +37,27 @@ public class PopupAdapter extends BaseAdapter {
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
-		View row = mInflater.inflate(android.R.layout.simple_list_item_1, parent, false);
-		TextView itemTitle = (TextView)row.findViewById(android.R.id.text1);
+		TextView itemTitle;
+		if (convertView != null)
+			itemTitle = (TextView)convertView;
+		else {
+			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+			itemTitle = (TextView)mInflater.inflate(modRes.getLayout(R.layout.simple_list_item), parent, false);			
+		}
 		itemTitle.setText(getItem(position));
-		itemTitle.setWidth(parent.getWidth());
-		return row;
+		
+		float density = parent.getResources().getDisplayMetrics().density;
+		if (isRecents) {
+			int theWidth = Math.round(parent.getResources().getDisplayMetrics().widthPixels / 3 + 20 * density);
+			itemTitle.setSingleLine();
+			itemTitle.setWidth(theWidth);
+			itemTitle.setTextSize(17.0f);
+			itemTitle.setPadding(Math.round(5 * density), Math.round(5 * density), Math.round(5 * density), Math.round(5 * density));
+			itemTitle.setGravity(Gravity.LEFT);
+		} else {
+			itemTitle.setPadding(Math.round(10 * density), Math.round(8 * density), Math.round(5 * density), Math.round(8 * density));
+			itemTitle.setWidth(parent.getWidth());
+		}
+		return itemTitle;
 	}
 }
