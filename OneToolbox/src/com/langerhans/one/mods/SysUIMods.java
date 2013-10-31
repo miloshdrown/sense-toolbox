@@ -400,13 +400,18 @@ public class SysUIMods {
 			}
 		});
 		
-		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "refreshAllIconsForLayout", LinearLayout.class, new XC_MethodHook(){
-			@Override
-			protected void afterHookedMethod(MethodHookParam param)
-			{
-				updateFillView(0, param);
-			}
-		});
+		try {
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "refreshAllIconsForLayout", LinearLayout.class, new XC_MethodHook(){
+				@Override
+				protected void afterHookedMethod(MethodHookParam param)
+				{
+					updateFillView(0, param);
+				}
+			});
+		} catch (Throwable t) {
+			// TODO: handle exception
+			// ^YOU DON'T TELL ME WHAT I HAVE TO DO ECLIPSE!
+		}
 		
 		//Helper class to hold needed variables for later methods (because nested methods and final and blah blah... Couldn't think of a better solution)
 		class Stuff{
