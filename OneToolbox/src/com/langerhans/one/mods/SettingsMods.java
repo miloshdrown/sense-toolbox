@@ -75,10 +75,10 @@ public class SettingsMods {
 			}
 		});
 		*/
-		// Change elements dynamically
 		findAndHookMethod("com.android.settings.applications.InstalledAppDetails", lpparam.classLoader, "onHandleUiMessage", Message.class, new XC_MethodHook(){
 			@Override
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				// Change elements dynamically
 				Message msg = (Message)param.args[0];
 				if (msg == null) return;
 	            if (msg.what != 5 || apk_launch_btn == null) return;
@@ -122,13 +122,13 @@ public class SettingsMods {
 					e.printStackTrace();
 				}
 			}
-		});
-
-		// Add new options to App Details view
-		findAndHookMethod("com.android.settings.applications.InstalledAppDetails", lpparam.classLoader, "postResumeInBackground", new XC_MethodHook(){
+			
 			@Override
     		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				try {
+				// Add new options to App Details view
+				Message msg = (Message)param.args[0];
+				if (msg == null) return;
+				if (msg.what == 4) try {
 					ScrollView mRootView = (ScrollView)XposedHelpers.getObjectField(param.thisObject, "mRootView");
 					
 					Object mAppEntry = XposedHelpers.getObjectField(param.thisObject, "mAppEntry");
@@ -212,7 +212,7 @@ public class SettingsMods {
 					LinearLayout.LayoutParams htclp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
 					LinearLayout.LayoutParams htclp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
 					float density = theContext.getResources().getDisplayMetrics().density;
-				
+					
 					htclp1.setMargins(0, 0, Math.round(5.0f * density), 0);
 					htclp2.setMargins(Math.round(5.0f * density), 0, 0, 0);
 					uninstall_btn.setLayoutParams(htclp1);

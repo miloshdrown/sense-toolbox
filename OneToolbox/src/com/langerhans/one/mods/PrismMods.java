@@ -65,7 +65,6 @@ public class PrismMods {
 	public static int gridSizeVal = 0;
 	private static GestureDetector mDetector;
 	private static GestureDetector mDetectorDock;
-	//private static GestureDetector mDetectorWP;
 	
 	public static void execHook_InvisiNav(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
 		try {
@@ -598,38 +597,7 @@ public class PrismMods {
 				mDetector.onTouchEvent(ev);
 			}
 		});
-/*		
-		try {
-			XposedHelpers.findAndHookMethod("com.htc.launcher.scroller.PagedViewScroller", lpparam.classLoader, "handleOnTouchEvent", MotionEvent.class, new TouchListenerOnTouchWP(param.thisObject));
-		} catch (NoSuchMethodError e) {
-			//XposedBridge.log("No handleOnTouchEvent!");
-			//XposedHelpers.findAndHookMethod("com.htc.launcher.scroller.PagedViewScroller", lpparam.classLoader, "handleInterceptTouchEvet", MotionEvent.class, new TouchListenerOnTouch(param.thisObject));
-		}
-*/
 	}
-
-	// Detect horizontal swipes (blank for now)
-	/*
-	private static class TouchListenerOnTouchWP extends XC_MethodHook {
-		MotionEvent ev = null;
-		Context helperContext = null;
-		Object workspace = null;
-		
-		public TouchListenerOnTouchWP(Object wspace) {
-			helperContext = ((ViewGroup)wspace).getContext();
-			workspace = wspace;
-		}
-
-		@Override
-		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-			if (workspace == null || helperContext == null) return;
-			if (mDetectorWP == null) mDetectorWP = new GestureDetector(helperContext, new SwipeListenerWP(workspace));
-
-			ev = (MotionEvent)param.args[0];
-			if (ev == null) return;
-			mDetectorWP.onTouchEvent(ev);
-		}
-	} */
 	
 	// Listener for vertical swipe gestures
 	private static class SwipeListener extends GestureDetector.SimpleOnGestureListener {
@@ -689,32 +657,6 @@ public class PrismMods {
 		}
 	}
 	
-	// Listener for horizontal swipe gestures
-	/*
-	private static class SwipeListenerWP extends GestureDetector.SimpleOnGestureListener {
-		//private final int SWIPE_MIN_DISTANCE = 300;
-		//private final int SWIPE_MAX_OFF_PATH = 250;
-		//private final int SWIPE_THRESHOLD_VELOCITY = 200;
-		
-		final Object workspace;
-
-		public SwipeListenerWP(Object wspace) {
-			workspace = wspace;
-		}
-
-		@Override
-		public boolean onDown(MotionEvent e) {
-			return true;			
-		} 
-		
-		@Override
-		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
-			XposedBridge.log("Fling! " + workspace.getClass());
-			//ViewGroup ws = (ViewGroup)workspace;
-			return false;
-		}
-	}*/
-
 	public static void execHook_BfRemove(LoadPackageParam lpparam) {
 		//Still throws error in Xposed, so better check version to keep other mods running.
 		//People might have it enabled and can't disable it since we removed the preference.
@@ -736,7 +678,7 @@ public class PrismMods {
 		if (XMain.senseVersion.compareTo(new Version("5.5")) == -1) {
 			findAndHookMethod("com.htc.launcher.SmoothPagedView", lpparam.classLoader, "snapToDestination", new XC_MethodHook() {
 				@Override
-				protected void beforeHookedMethod(MethodHookParam param)	throws Throwable {
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					int i = (Integer) callMethod(param.thisObject, "getPageCount");
 					int j = (Integer) callMethod(param.thisObject, "getCurrentPage");
 					if(j == 0)

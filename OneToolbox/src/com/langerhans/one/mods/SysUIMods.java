@@ -1196,6 +1196,7 @@ public class SysUIMods {
 										if (position == 0) {
 											Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null));
 											intent.setComponent(intent.resolveActivity(view.getContext().getPackageManager()));
+											intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 									        view.getContext().startActivity(intent);
 										} else {
 											XposedHelpers.callMethod(XposedHelpers.getSurroundingThis(param.thisObject), "handleSwipe", theView);
