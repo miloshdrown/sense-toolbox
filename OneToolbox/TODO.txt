@@ -1,12 +1,10 @@
 - beats toggle
 - torch toggle
-- prism bg, blinkfeed
-- crt off animation,volume button controls for skipping tracks
+- volume button controls for skipping tracks
 - side way scrolling (Loads of work. probably not feasable...)
 - 4x2 widget bg (Needs way more replacements than I thought. Probably not ganna happen soon.)
 - auto brightness
 - ATT TMoUS Data Icon remove (Has more implications. Waiting till more people request it.)
-- Higher grid size in sense launcher (Already looked into this. needs many dimens.xml changes)
 - Limit number of loaded SMS in stock SMS app. One user said he has 10k SMS and it makes his phone slow... wtf?
 - "is it possible to get Always extended lockscreen widget like there is in Orio Rom?"
 - Other apps in HTC lock screen notifications
@@ -27,7 +25,6 @@
 - EQS reorder description: Say what EQS is... (Oh man, just click it and see -.-)
 - Remove Sense lockscreen weather widget.
 - Remove clock in BF too
-- long press hEQS to go to respective setting
 - Pageless BF scrolling
 - https://www.youtube.com/watch?v=HfCa3JtGpxc
 - Is it possible in next release you can add info line in notification panel like in venom that you can select to view cpu temp, cpu usage in mhz, ram usage etc...
@@ -44,6 +41,7 @@ Fast unlock for HTC lockscreen. No need to hit "Enter" key. Device will unlock a
 Display memory usage in recent apps list.
 Long press menu for apps in recent apps list. (Enabled by default)
 New options for volume bottons in camera: Zoom in and out.
+Option to remove icon labels on Sense launcher homescreens.
 
 2.3:
 Added mod to display current data rate (upload+download) on the status bar. Will only be shown, when the device is connected to a network.

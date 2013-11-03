@@ -3,6 +3,8 @@ package com.langerhans.one.mods;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
+import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 import static de.robv.android.xposed.XposedHelpers.setBooleanField;
 import static de.robv.android.xposed.XposedHelpers.setIntField;
 import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
@@ -892,6 +894,35 @@ public class PrismMods {
 						XposedHelpers.callMethod(param.thisObject, "dismiss", true);
 					}
 				}
+			}
+		});
+	}
+	
+	public static void execHook_invisiLabels(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.launcher.CellLayout", lpparam.classLoader, "addViewToCellLayout", View.class, int.class, int.class, "com.htc.launcher.CellLayout$LayoutParams", boolean.class, new XC_MethodHook() {
+			@Override
+			public void afterHookedMethod(MethodHookParam param) throws Throwable {
+				try {
+					callMethod(param.args[0], "hideText", true);
+				} catch (Throwable t) {
+					//Not an app icon
+				}
+				
+			}
+		});
+		
+		XposedBridge.hookAllConstructors(findClass("com.htc.launcher.folder.WorkspaceFolderIcon", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			public void afterHookedMethod(MethodHookParam param) throws Throwable {
+				setAdditionalInstanceField(param.thisObject, "workspaceFolder", true);
+			}
+		});
+		
+		findAndHookMethod("com.htc.launcher.folder.FolderIcon", lpparam.classLoader, "setTextVisible", boolean.class, new XC_MethodHook() {
+			@Override
+			public void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				if ((Boolean) getAdditionalInstanceField(param.thisObject, "workspaceFolder"))
+					param.args[0] = false;
 			}
 		});
 	}

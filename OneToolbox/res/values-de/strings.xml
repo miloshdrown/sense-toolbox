@@ -207,6 +207,8 @@
 	<string name="sense_sevenscreens_summ">Erhöht die maximale Anzahl vom Home Screens auf Sieben.</string>
 	<string name="sense_4x5homescreen_title">4x5 Home Screen Raster</string>
 	<string name="sense_4x5homescreen_summ">Erhöht die Rastergröße der Home Screens aus 4x5</string>
+	<string name="sense_invisilabels_title">Keine Icon-Beschriftung</string>
+	<string name="sense_invisilabels_summ">Entfernt die Icon-Beschriftungen von Apps und Ordnern auf dem Home Screens.</string>
 	<string name="notselected">Keine ausgewählt</string>
 	<string name="loading_app_data">Lade Apps&#8230;</string>
 	

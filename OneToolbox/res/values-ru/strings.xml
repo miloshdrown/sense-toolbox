@@ -207,6 +207,8 @@
 	<string name="sense_sevenscreens_summ">Увеличить максимальное число домашних экранов до 7</string>
 	<string name="sense_4x5homescreen_title">Сетка 4x5</string>
 	<string name="sense_4x5homescreen_summ">Добавляет ещё один ряд на каждом домашнем экране.</string>
+	<string name="sense_invisilabels_title">###TRANSLATE_ME###</string>
+	<string name="sense_invisilabels_summ">###TRANSLATE_ME###</string>
 	<string name="notselected">Не выбрано</string>
 	<string name="loading_app_data">Загрузка списка приложений&#8230;</string>
 	

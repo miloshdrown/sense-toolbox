@@ -269,6 +269,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_prism_4x5homescreen", false))
 				PrismMods.execHook_HomeScreenResizableWidgets(lpparam);
+			
+			if(pref.getBoolean("pref_key_prism_invisilabels", false))
+				PrismMods.execHook_invisiLabels(lpparam);
 		}
 		
 		if (pkg.equals("com.htc.lockscreen")) {
