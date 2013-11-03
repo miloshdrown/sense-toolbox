@@ -30,6 +30,7 @@ import android.content.res.XResources;
 import android.database.ContentObserver;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -71,6 +72,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -1074,7 +1076,7 @@ public class SysUIMods {
 	private static String ramTAG = "RAMView";
 
 	private static class getRAMView extends AsyncTask<MethodHookParam, Void, Void> {
-		FrameLayout theView = null;
+		ViewGroup theView = null;
 		TextView ramView = null;
 		String ramText = null;
 		
@@ -1082,7 +1084,7 @@ public class SysUIMods {
         protected Void doInBackground(final MethodHookParam... params) {
         	try {
         		final MethodHookParam param = params[0];
-        		theView = (FrameLayout)param.getResult();
+        		theView = (ViewGroup)param.getResult();
         		if (theView != null) {
         			int pos = (Integer)param.args[0];
         			Object viewholder = theView.getTag();
@@ -1112,18 +1114,28 @@ public class SysUIMods {
         				ramView = new TextView(theView.getContext());
         				ramView.setTag(ramTAG);
         				ramView.setText(ramText);
-            			final TextView text1 = (TextView)XposedHelpers.getObjectField(viewholder, "text1");
-            			ramView.setBackground(text1.getBackground());									
-            			FrameLayout.LayoutParams p0 = (FrameLayout.LayoutParams)text1.getLayoutParams();
-            			ramView.setLayoutParams(p0);
+            			final TextView text1 = (TextView)XposedHelpers.getObjectField(viewholder, "text1");		
             			ramView.setTextSize(TypedValue.COMPLEX_UNIT_PX, text1.getTextSize());
-            			ramView.setTextColor(Color.argb(127, Color.red(text1.getCurrentTextColor()), Color.green(text1.getCurrentTextColor()), Color.blue(text1.getCurrentTextColor())));
-            			ramView.setPadding(text1.getPaddingLeft(), text1.getPaddingTop(), text1.getPaddingRight(), text1.getPaddingBottom());
-            			ramView.setTypeface(text1.getTypeface());
             			ramView.setEllipsize(TruncateAt.END);
-            			ramView.setGravity(Gravity.CENTER_VERTICAL);
             			ramView.setSingleLine();
-            			ramView.setTranslationY(-29.7f * theView.getContext().getResources().getDisplayMetrics().density);
+            			ramView.setTypeface(text1.getTypeface());
+            			ramView.setTextColor(Color.argb(127, Color.red(text1.getCurrentTextColor()), Color.green(text1.getCurrentTextColor()), Color.blue(text1.getCurrentTextColor())));
+            			if (XMain.senseVersion.compareTo(new Version("5.5")) == -1) {
+            				RelativeLayout.LayoutParams p0 = (RelativeLayout.LayoutParams)text1.getLayoutParams();
+            				ImageView img = (ImageView)XposedHelpers.getObjectField(viewholder, "img");	
+            				p0.setMargins(img.getPaddingLeft(), p0.topMargin, img.getPaddingRight(), 0);
+            				ramView.setLayoutParams(p0);
+            				ramView.setGravity(Gravity.CENTER);
+            				ramView.setBackground(new ColorDrawable(Color.parseColor("#9F333333")));
+                			ramView.setTranslationY(-32f * theView.getContext().getResources().getDisplayMetrics().density);
+            			}else {
+            				FrameLayout.LayoutParams p0 = (FrameLayout.LayoutParams)text1.getLayoutParams();
+                			ramView.setLayoutParams(p0);
+                			ramView.setGravity(Gravity.CENTER_VERTICAL);
+                			ramView.setBackground(text1.getBackground());
+                			ramView.setPadding(text1.getPaddingLeft(), text1.getPaddingTop(), text1.getPaddingRight(), text1.getPaddingBottom());
+                			ramView.setTranslationY(-29.7f * theView.getContext().getResources().getDisplayMetrics().density);
+            			}
         			}
         		}
         	} catch (Exception e) {
@@ -1135,12 +1147,12 @@ public class SysUIMods {
         @Override
         protected void onPostExecute(Void result) {
         	if (theView != null)
-        	if (theView.findViewWithTag(ramTAG) == null) {
-        		if (ramView != null) theView.addView(ramView);
-        	} else {
-        		if (ramText != null)
-        		((TextView)theView.findViewWithTag(ramTAG)).setText(ramText);
-        	}
+            	if (theView.findViewWithTag(ramTAG) == null) {
+            		if (ramView != null) theView.addView(ramView);
+            	} else {
+            		if (ramText != null)
+            		((TextView)theView.findViewWithTag(ramTAG)).setText(ramText);
+            	}
         }
     }
 	
@@ -1149,9 +1161,9 @@ public class SysUIMods {
 			@Override
     		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				// Text before actual data is available
-				FrameLayout theView = (FrameLayout)param.getResult();
+				ViewGroup theView = (ViewGroup)param.getResult();
         		if (theView != null && theView.findViewWithTag(ramTAG) != null)
-       			((TextView)theView.findViewWithTag(ramTAG)).setText("...");
+        		((TextView)theView.findViewWithTag(ramTAG)).setText("...");
         		// Get RAM usage for the task of this view
 				new getRAMView().execute(param);
 			}
@@ -1164,7 +1176,7 @@ public class SysUIMods {
 		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity.RecentGridViewAdapter", lpparam.classLoader, "getView", int.class, View.class, ViewGroup.class, new XC_MethodHook() {
 			@Override
     		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				final FrameLayout theView = (FrameLayout)param.getResult();
+				final ViewGroup theView = (ViewGroup)param.getResult();
         		if (theView != null) {
         			theView.setOnLongClickListener(new OnLongClickListener() {
 						@Override
