@@ -23,8 +23,8 @@
         <item>Focus</item>
         <item>Focus, a następnie Migawka</item>
         <item>Nagrywanie wideo</item>
-        <item>###TRANSLATE_ME###</item>
-        <item>###TRANSLATE_ME###</item>
+	    <item >Powiększ</item>
+	    <item >Pomniejsz</item>
         <item>Bez zmian</item>
     </string-array>
     <string-array name="cam_actions_val">
@@ -49,9 +49,9 @@
         <item>4</item>
     </string-array>
     <string-array name="wifi_icon">
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
+	    <item >Domyślny</item>
+	    <item >Styl 1</item>
+	    <item >Styl 2</item>
     </string-array>
     <string-array name="wifi_icon_val">
         <item >1</item>
@@ -124,21 +124,21 @@
 	    <item >APM</item>
 	</string-array>
 	<string-array name="recents_menu">
-        <item >###TRANSLATE_ME### 12 CHARS MAX!</item>
-        <item >###TRANSLATE_ME### 12 CHARS MAX!</item>
+	    <item >Pokaż info</item>
+	    <item >Zamknij</item>
     </string-array>
 	<string-array name="various_screenonanim">
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
+	    <item >Nic</item>
+	    <item >Fade</item>
     </string-array>
     <string-array name="various_screenonanim_val">
         <item >0</item>
         <item >2</item>
     </string-array>
     <string-array name="various_screenoffanim">
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >CRT</item>
+	    <item >Nic</item>
+	    <item >Oddalanie</item>
+	    <item >CRT</item>
     </string-array>
     <string-array name="various_screenoffanim_val">
         <item >0</item>

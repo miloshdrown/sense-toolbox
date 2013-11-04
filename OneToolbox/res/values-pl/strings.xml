@@ -10,7 +10,7 @@
     <string name="restore">Przywróć</string>
     <string name="add">Dodaj</string>
     <string name="soft_reboot">Szybki restart</string>
-    <string name="ram_mb">###TRANSLATE_ME###</string>
+    <string name="ram_mb">MB</string>
     
     <string name="warning">Ostrzeżenie!</string>
     <string name="xposed_not_installed">Xposed Framework nie jest prawidłowo zainstalowany, należy zainstalować app_process i XposedBridge.jar z Instalatora Xposed, a następnie włączyć Sense 5 Toolbox i ponownie uruchomić moduł.</string>
@@ -114,8 +114,8 @@
     <string name="systemui_aosp_summ">Włącz styl AOSP Ostatnie aplikacje na ekranie.</string>
     <string name="systemui_recentclear_title">Zamknij wszystkie ostatnie aplikacje naraz</string>
     <string name="systemui_recentclear_summ">Dodaj możliwość, aby usunąć listę ostatnich aplikacje, szczypiąc lub przesuwając w dół.</string>
-    <string name="systemui_recentram_title">###TRANSLATE_ME###</string>
-	<string name="systemui_recentram_summ">###TRANSLATE_ME###</string>
+    <string name="systemui_recentram_title">Użycie RAMU</string>
+	<string name="systemui_recentram_summ">Pokaż ilość używanej pamięci RAM przez ostatnie aplikacje.</string>
     <string name="systemui_centerclock_title">Zegar w centrum</string>
     <string name="systemui_centerclock_summ">Włącz, przenieśenie zegar na pasku stanu do centrum.</string>
     <string name="systemui_ampmremove_title">Usuń AM/PM</string>
@@ -144,7 +144,7 @@
     <string name="cleanbeam_alarm_title">Alarm</string>
     <string name="cleanbeam_alarm_summ">Włącz ikonę CleanBeam alarmu.</string>
     <string name="cleanbeam_wifi_title">WiFi</string>
-    <string name="cleanbeam_wifi_summ">###TRANLATE_ME_AGAIN###</string>
+    <string name="cleanbeam_wifi_summ">Projekt zmiany ikony WiFi.</string>
     <string name="cleanbeam_sync_title">Synchronizacja</string>
     <string name="cleanbeam_sync_summ">Włącz ikonę CleanBeam synchronizacji.</string>
     <string name="cleanbeam_gps_title">GPS</string>
@@ -163,10 +163,10 @@
     <string name="cleanbeam_mtp_summ">Włącz ikonę CleanBeam MTP.</string>
     <string name="cleanbeam_dnd_title">Nie przeszkadać</string>
 	<string name="cleanbeam_dnd_summ">Włącz ikonkę CleanBeam DND.</string>
-	<string name="cleanbeam_phone_title">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_phone_summ">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_tv_title">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_tv_summ">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_phone_title">Telefon</string>
+	<string name="cleanbeam_phone_summ">Włącz ikonę CleanBeam telefonu.</string>
+	<string name="cleanbeam_tv_title">TV</string>
+	<string name="cleanbeam_tv_summ">Włącz ikonę CleanBeam pilota TV.</string>
     <string name="cleanbeam_sunbeam_title">Zainstaluj Sunbeam</string>
     <string name="cleanbeam_sunbeam_summ">Zainstaluj żywe tapety Sunbeam.</string>
     <string name="cleanbeam_post_title">Odwiedź CleanBeam</string>
@@ -209,10 +209,10 @@
     <string name="sense_swipeleftaction_summ">Akcja dla gestu przesunięcia w lewo dla stacji dokującej.</string>
     <string name="sense_sevenscreens_title">Siedem pulpitów</string>
 	<string name="sense_sevenscreens_summ">Zwiększ liczbę dostępnych pulpitów do siedmiu.</string>
-	<string name="sense_4x5homescreen_title">###TRANSLATE_ME###</string>
-	<string name="sense_4x5homescreen_summ">###TRANSLATE_ME###</string>
-	<string name="sense_invisilabels_title">###TRANSLATE_ME###</string>
-	<string name="sense_invisilabels_summ">###TRANSLATE_ME###</string>
+	<string name="sense_4x5homescreen_title">Siatka 4x5</string>
+	<string name="sense_4x5homescreen_summ">Dodaj kolejny wiersz do wszystkich ekranów głównych.</string>
+	<string name="sense_invisilabels_title">Usuń nazwy ikon</string>
+	<string name="sense_invisilabels_summ">Usuwa nazwy z aplikacji, ikony i folderów na ekranach głównych.</string>
     <string name="notselected">Nie wybrano</string>
     <string name="loading_app_data">Ładowanie aplikacji&#8230;</string>
     
@@ -244,11 +244,11 @@
     <string name="kill_foreground_no">Przerwij!</string>
     
     <string name="various_mods">Różne Modyfikacje</string>
-    <string name="various_mods_screenanim">###TRANSLATE_ME###</string>
-	<string name="various_screenon_title">###TRANSLATE_ME###</string>
-	<string name="various_screenon_summ">###TRANSLATE_ME###</string>
-	<string name="various_screenoff_title">###TRANSLATE_ME###</string>
-	<string name="various_screenoff_summ">###TRANSLATE_ME###</string>
+	<string name="various_mods_screenanim">Screen animations</string>
+	<string name="various_screenon_title">Włącz animację</string>
+	<string name="various_screenon_summ">Animation for turning screen on</string>
+	<string name="various_screenoff_title">Wyłącz animację</string>
+	<string name="various_screenoff_summ">Animation for turning screen off</string>
     <string name="various_apm_title">APM</string>
     <string name="various_apm_summ">Włącz lub wyłącz Zaawansowane Menu Zasilania\nJeśli masz natywny APM zainstalowany,  to lepiej mieć to wyłączone.</string>
     <string name="various_scron_title">Włącz \'Zachowaj ekran włączony\'</string>
@@ -261,8 +261,8 @@
 	<string name="various_movevol_summ">Umieść pasek głośności na dole, żeby nie przysłaniał ekranu.</string>
     <string name="various_mtpnotif_title">Ukryj powiadomienia MTP</string>
     <string name="various_mtpnotif_summ">Dodaj usługę MTP w tłe i wyłącz powiadomienia. Mod jest na ROM oparty na przecieku 4.3.</string>
-	<string name="various_fastunlock_title">###TRANSLATE_ME###</string>
-	<string name="various_fastunlock_summ">###TRANSLATE_ME###</string>
+	<string name="various_fastunlock_title">Szybkie odblokowanie</string>
+	<string name="various_fastunlock_summ">Odblokuj urządzenie gdy tylko poprawny numer PIN zostanie wprowadzony. Tylko ekran blokady HTC..</string>
     
     <string name="support">Wsparcie</string>
     <string name="support_s5t_title">Odwiedź Stronę Sense 5 Toolbox</string>
