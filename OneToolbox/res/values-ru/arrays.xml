@@ -50,9 +50,9 @@
     </string-array>
     
     <string-array name="wifi_icon">
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
+        <item >Стандартный</item>
+        <item >Стиль 1</item>
+        <item >Стиль 2</item>
     </string-array>
     <string-array name="wifi_icon_val">
         <item >1</item>
