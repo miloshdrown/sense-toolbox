@@ -903,7 +903,10 @@ public class PrismMods {
 			@Override
 			public void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
-					callMethod(param.args[0], "hideText", true);
+					if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
+						callMethod(param.args[0], "hideText", true);
+					else
+						callMethod(param.args[0], "setTextColor", Color.TRANSPARENT);
 				} catch (Throwable t) {
 					//Not an app icon
 				}

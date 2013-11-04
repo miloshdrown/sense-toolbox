@@ -28,6 +28,7 @@
 - Pageless BF scrolling
 - https://www.youtube.com/watch?v=HfCa3JtGpxc
 - Is it possible in next release you can add info line in notification panel like in venom that you can select to view cpu temp, cpu usage in mhz, ram usage etc...
+- Change carrier label on lockscreen and notification drawer
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
