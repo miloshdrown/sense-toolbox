@@ -16,6 +16,7 @@ import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResou
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 
 public class CleanBeamMods{
+	private static String wifiBase = "";
 
 	public static void execHook_BatteryIcon(InitPackageResourcesParam resparam, String MODULE_PATH, int battIcon) {
 		XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
@@ -123,37 +124,43 @@ public class CleanBeamMods{
 		});
 	}
 
-	public static void execHook_WiFiIcon(InitPackageResourcesParam resparam, String MODULE_PATH) {
+	public static void execHook_WiFiIcon(InitPackageResourcesParam resparam, String MODULE_PATH, int i) {
 		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		if (i==2)
+		{
+			wifiBase = "stat_sys_wifi_signal_";
+		} else if (i==3) {
+			wifiBase = "b_stat_sys_wifi_signal_";
+		}
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_wifi_signal_0", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_sys_wifi_signal_0);
+				return modRes.getDrawable(modRes.getIdentifier(wifiBase + "0", "drawable", "com.langerhans.one"));
 			}	
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_wifi_signal_1", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_sys_wifi_signal_1);
+				return modRes.getDrawable(modRes.getIdentifier(wifiBase + "1", "drawable", "com.langerhans.one"));
 			}	
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_wifi_signal_2", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_sys_wifi_signal_2);
+				return modRes.getDrawable(modRes.getIdentifier(wifiBase + "2", "drawable", "com.langerhans.one"));
 			}	
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_wifi_signal_3", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_sys_wifi_signal_3);
+				return modRes.getDrawable(modRes.getIdentifier(wifiBase + "3", "drawable", "com.langerhans.one"));
 			}	
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_wifi_signal_4", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_sys_wifi_signal_4);
-			}	
+				return modRes.getDrawable(modRes.getIdentifier(wifiBase + "4", "drawable", "com.langerhans.one"));
+			}
 		});
 	}
 
@@ -257,6 +264,43 @@ public class CleanBeamMods{
 				return modRes.getDrawable(R.drawable.stat_sys_signal_flightmode);
 			}	
 		});
+	    
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_0", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_0);
+			}	
+		});
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_1", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_1);
+			}	
+		});
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_2", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_2);
+			}	
+		});
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_3", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_3);
+			}	
+		});
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_4", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_4);
+			}	
+		});
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_5", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_5);
+			}	
+		});
 	}
 	
 	public static void execHook_PowerSaveIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
@@ -315,6 +359,32 @@ public class CleanBeamMods{
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return modRes.getDrawable(R.drawable.stat_notify_running_services);
+			}	
+		});
+	}
+
+	public static void execHook_PhoneIcons(InitPackageResourcesParam resparam,	String MODULE_PATH) {
+		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.android.phone", "drawable", "stat_sys_phone_call", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_phone_call);
+			}	
+		});
+		resparam.res.setReplacement("com.android.phone", "drawable", "stat_sys_speakerphone", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_speakerphone);
+			}	
+		});
+	}
+
+	public static void execHook_TvIcon(InitPackageResourcesParam resparam, String MODULE_PATH) {
+		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.htc.videohub.ui", "drawable", "stat_notify_tv", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_notify_tv);
 			}	
 		});
 	}

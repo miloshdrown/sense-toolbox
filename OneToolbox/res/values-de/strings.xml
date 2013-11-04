@@ -144,7 +144,7 @@
 	<string name="cleanbeam_alarm_title">Wecker</string>
 	<string name="cleanbeam_alarm_summ">Aktiviert die CleanBean Wecker-Icons.</string>
 	<string name="cleanbeam_wifi_title">WLAN</string>
-	<string name="cleanbeam_wifi_summ">Aktiviert die CleanBean WLAN-Icons.</string>
+	<string name="cleanbeam_wifi_summ">Ändert das WLAN-Icon Design.</string>
 	<string name="cleanbeam_sync_title">Sync</string>
 	<string name="cleanbeam_sync_summ">Aktiviert die CleanBeam Sync icons.</string>
 	<string name="cleanbeam_gps_title">GPS</string>
@@ -163,6 +163,10 @@
 	<string name="cleanbeam_dnd_summ">Aktiviert das CleanBeam \'Nicht stören\' icon.</string>
 	<string name="cleanbeam_mtp_title">MTP</string>
 	<string name="cleanbeam_mtp_summ">Aktiviert das CleanBeam MTP icon.</string>
+	<string name="cleanbeam_phone_title">Telefon</string>
+	<string name="cleanbeam_phone_summ">Aktiviert die CleanBeam Telefon icons.</string>
+	<string name="cleanbeam_tv_title">TV</string>
+	<string name="cleanbeam_tv_summ">Aktiviert das CleanBeam TV icon.</string>
 	<string name="cleanbeam_sunbeam_title">Installiere Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Installiert das Sunbeam Live Wallpaper.</string>
 	<string name="cleanbeam_post_title">Besuche den CleanBeam Beitrag</string>

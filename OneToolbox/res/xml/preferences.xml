@@ -136,6 +136,14 @@
             android:entryValues="@array/batt_icon_val"
 			android:defaultValue="1"
 			toolbox:entryImages="@array/battery_images" />
+        <com.langerhans.one.utils.ImageListPreference
+			android:key="pref_key_cb_wifi_multi"
+            android:summary="@string/cleanbeam_wifi_summ"
+            android:title="@string/cleanbeam_wifi_title"
+            android:entries="@array/wifi_icon"
+            android:entryValues="@array/wifi_icon_val"
+			android:defaultValue="1"
+			toolbox:entryImages="@array/wifi_images" />
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_signal"
             android:summary="@string/cleanbeam_signal_summ"
@@ -171,12 +179,6 @@
             android:summary="@string/cleanbeam_alarm_summ"
             android:title="@string/cleanbeam_alarm_title"
             android:icon="@drawable/stat_notify_alarm"
-            android:defaultValue="false"/>
-        <com.htc.preference.HtcCheckBoxPreference 
-            android:key="pref_key_cb_wifi"
-            android:summary="@string/cleanbeam_wifi_summ"
-            android:title="@string/cleanbeam_wifi_title"
-            android:icon="@drawable/stat_sys_wifi_signal_4"
             android:defaultValue="false"/>
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_sync"
@@ -231,6 +233,18 @@
             android:summary="@string/cleanbeam_dnd_summ"
             android:title="@string/cleanbeam_dnd_title"
             android:icon="@drawable/stat_notify_dnd"
+            android:defaultValue="false"/>
+        <com.htc.preference.HtcCheckBoxPreference 
+            android:key="pref_key_cb_phone"
+            android:summary="@string/cleanbeam_phone_summ"
+            android:title="@string/cleanbeam_phone_title"
+            android:icon="@drawable/stat_sys_phone_call"
+            android:defaultValue="false"/>
+        <com.htc.preference.HtcCheckBoxPreference 
+            android:key="pref_key_cb_tv"
+            android:summary="@string/cleanbeam_tv_summ"
+            android:title="@string/cleanbeam_tv_title"
+            android:icon="@drawable/stat_notify_tv"
             android:defaultValue="false"/>
         <com.htc.preference.HtcPreference
             android:title="@string/cleanbeam_sunbeam_title"

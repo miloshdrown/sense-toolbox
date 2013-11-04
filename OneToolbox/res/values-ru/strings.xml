@@ -144,7 +144,7 @@
 	<string name="cleanbeam_alarm_title">Будильник</string>
 	<string name="cleanbeam_alarm_summ">CleanBeam иконка будильника.</string>
 	<string name="cleanbeam_wifi_title">WiFi</string>
-	<string name="cleanbeam_wifi_summ">CleanBeam иконка WiFi.</string>
+	<string name="cleanbeam_wifi_summ">###TRANLATE_ME_AGAIN###</string>
 	<string name="cleanbeam_sync_title">Синхронизация</string>
 	<string name="cleanbeam_sync_summ">CleanBeam иконка синхронизации.</string>
 	<string name="cleanbeam_gps_title">GPS</string>
@@ -163,6 +163,10 @@
 	<string name="cleanbeam_mtp_summ">CleanBeam иконка MTP</string>	
 	<string name="cleanbeam_dnd_title">Не беспокоить</string>
 	<string name="cleanbeam_dnd_summ">CleanBeam иконка \'Не беспокоить\'.</string>
+	<string name="cleanbeam_phone_title">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_phone_summ">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_tv_title">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_tv_summ">###TRANSLATE_ME###</string>
 	<string name="cleanbeam_sunbeam_title">Установить Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Инсталяция анимированных обоев Sunbeam (Phase Beam).</string>
 	<string name="cleanbeam_post_title">Пост о CleanBeam на XDA</string>

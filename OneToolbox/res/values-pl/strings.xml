@@ -144,7 +144,7 @@
     <string name="cleanbeam_alarm_title">Alarm</string>
     <string name="cleanbeam_alarm_summ">Włącz ikonę CleanBeam alarmu.</string>
     <string name="cleanbeam_wifi_title">WiFi</string>
-    <string name="cleanbeam_wifi_summ">Włącz ikonę CleanBeam WiFi.</string>
+    <string name="cleanbeam_wifi_summ">###TRANLATE_ME_AGAIN###</string>
     <string name="cleanbeam_sync_title">Synchronizacja</string>
     <string name="cleanbeam_sync_summ">Włącz ikonę CleanBeam synchronizacji.</string>
     <string name="cleanbeam_gps_title">GPS</string>
@@ -163,6 +163,10 @@
     <string name="cleanbeam_mtp_summ">Włącz ikonę CleanBeam MTP.</string>
     <string name="cleanbeam_dnd_title">Nie przeszkadać</string>
 	<string name="cleanbeam_dnd_summ">Włącz ikonkę CleanBeam DND.</string>
+	<string name="cleanbeam_phone_title">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_phone_summ">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_tv_title">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_tv_summ">###TRANSLATE_ME###</string>
     <string name="cleanbeam_sunbeam_title">Zainstaluj Sunbeam</string>
     <string name="cleanbeam_sunbeam_summ">Zainstaluj żywe tapety Sunbeam.</string>
     <string name="cleanbeam_post_title">Odwiedź CleanBeam</string>

@@ -126,8 +126,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_cb_alarm", false))
 				CleanBeamMods.execHook_AlarmIcon(resparam, MODULE_PATH);
 
-			if(pref.getBoolean("pref_key_cb_wifi", false))
-				CleanBeamMods.execHook_WiFiIcon(resparam, MODULE_PATH);
+			if(Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")) != 1)
+				CleanBeamMods.execHook_WiFiIcon(resparam, MODULE_PATH, Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")));
 			
 			if(pref.getBoolean("pref_key_cb_profile", false))
 				CleanBeamMods.execHook_ProfileIcon(resparam, MODULE_PATH);
@@ -176,6 +176,18 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if(pref.getBoolean("pref_key_cb_mtp", false))
 				CleanBeamMods.execHook_MTPIcon(resparam, MODULE_PATH);
+		}
+		
+		if (pkg.equals("com.android.phone")) 
+		{
+			if(pref.getBoolean("pref_key_cb_phone", false))
+				CleanBeamMods.execHook_PhoneIcons(resparam, MODULE_PATH);
+		}
+		
+		if (pkg.equals("com.htc.videohub.ui")) 
+		{
+			if(pref.getBoolean("pref_key_cb_tv", false))
+				CleanBeamMods.execHook_TvIcon(resparam, MODULE_PATH);
 		}
 		
 		if (pkg.equals("com.htc.widget.weatherclock"))

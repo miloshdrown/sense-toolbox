@@ -49,6 +49,17 @@
         <item >4</item>
     </string-array>
     
+    <string-array name="wifi_icon">
+        <item >Standard</item>
+        <item >Stil 1</item>
+        <item >Stil 2</item>
+    </string-array>
+    <string-array name="wifi_icon_val">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+    </string-array>
+    
     <string-array name="clock_style">
         <item >Standard</item>
         <item >Mittige Uhr</item>
