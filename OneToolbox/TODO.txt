@@ -41,6 +41,7 @@ Screen on and off animations. Screen on: Fade. Screen off: Fade or CRT.
 Fast unlock for HTC lockscreen. No need to hit "Enter" key. Device will unlock as soon as correct PIN is entered.
 Display memory usage in recent apps list.
 Long press menu for apps in recent apps list. (Enabled by default)
+Display package version in title when installing or updating app. (Enabled by default)
 New options for volume bottons in camera: Zoom in and out.
 Option to remove icon labels on Sense launcher homescreens.
 

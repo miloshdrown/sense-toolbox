@@ -352,6 +352,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 		}
 		
+		if (pkg.equals("com.android.packageinstaller"))
+		{
+			OtherMods.execHook_EnhancedInstaller(lpparam);
+		}
+		
 		if (lpparam.processName.equals("android"))
 		{
 			if(pref.getBoolean("pref_key_other_apm", false))

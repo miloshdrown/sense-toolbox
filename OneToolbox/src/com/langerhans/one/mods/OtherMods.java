@@ -8,10 +8,12 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import java.lang.reflect.Method;
 
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageInfo;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -242,6 +244,77 @@ public class OtherMods{
 					});
 				}
             }
+		});
+	}
+	
+	public static void execHook_EnhancedInstaller(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.packageinstaller.PackageInstallerActivity", lpparam.classLoader, "startInstallConfirm", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				try {
+					Activity pia = (Activity)param.thisObject;
+					PackageInfo mPkgInfo = (PackageInfo)XposedHelpers.getObjectField(param.thisObject, "mPkgInfo");
+					if (mPkgInfo != null) {
+						TextView appName = (TextView)pia.findViewById(pia.getResources().getIdentifier("app_name", "id", "com.android.packageinstaller"));
+						if (appName != null) appName.setText(appName.getText() + " " + mPkgInfo.versionName);
+						
+						// Add new tab with package info when updating an app. Not really in place there. Kept for future mods.
+						/*
+						View pager = pia.findViewById(pia.getResources().getIdentifier("pager", "id", "com.android.packageinstaller"));
+						Object tabsAdapter = XposedHelpers.callMethod(pager, "getAdapter");
+						
+						TabHost tabhost = (TabHost)pia.findViewById(android.R.id.tabhost);
+						//final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+						TabSpec tabspec = tabhost.newTabSpec("info").setIndicator("Info"); //modRes.getString(R.string.installer_info)
+					
+						float density = pia.getResources().getDisplayMetrics().density;
+						LinearLayout newTab = new LinearLayout(pia);
+						newTab.setOrientation(LinearLayout.VERTICAL);
+						
+						LinearLayout container = new LinearLayout(pia);
+						container.setOrientation(LinearLayout.VERTICAL);
+						LinearLayout.LayoutParams lp = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+						lp.setMargins(Math.round(15.0f * density), Math.round(10.0f * density), Math.round(15.0f * density), Math.round(10.0f * density));
+						container.setLayoutParams(lp);
+						
+						TextView txt = new TextView(container.getContext());
+						txt.setText("PACKAGE");
+						txt.setTypeface(null, Typeface.BOLD);
+						txt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+						txt.setPadding(Math.round(10.0f * density), 0, Math.round(10.0f * density), Math.round(4.0f * density));
+						
+						TextView txt_divider = new TextView(container.getContext());
+						txt_divider.setBackgroundColor(Color.argb(255, 70, 70, 70));
+						txt_divider.setHeight(Math.round(2 * density));
+						
+						container.addView(txt);
+						container.addView(txt_divider);
+					
+						TextView info1 = new TextView(container.getContext());
+						info1.setText("Name: " + mPkgInfo.applicationInfo.packageName);
+						info1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+						info1.setPadding(Math.round(10.0f * density), Math.round(10.0f * density), Math.round(10.0f * density), Math.round(4.0f * density));
+						TextView info2 = new TextView(container.getContext());
+						info2.setText("Version: " + mPkgInfo.versionName);
+						info2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+						info2.setPadding(Math.round(10.0f * density), 0, Math.round(10.0f * density), Math.round(4.0f * density));
+						TextView info3 = new TextView(container.getContext());
+						info3.setText("Target SDK version: " + String.valueOf(mPkgInfo.applicationInfo.targetSdkVersion));
+						info3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+						info3.setPadding(Math.round(10.0f * density), 0, Math.round(10.0f * density), Math.round(4.0f * density));
+						
+						container.addView(info1);
+						container.addView(info2);
+						container.addView(info3);
+						
+						newTab.addView(container);
+						XposedHelpers.callMethod(tabsAdapter, "addTab", tabspec, newTab);
+						*/
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
 		});
 	}
 }
