@@ -5,7 +5,7 @@
     <string name="app_name">Sense 5 Toolbox</string>
     <string name="app_name_version">Sense 5 Toolbox (Wersja: %1$s)</string>
     <string name="app_about">O programie</string>
-    <string name="about_version">Wersja: %1$s</string>
+    <string name="about_version">Wersja: %1$s (\#JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Wsparcie (Wersja Aplikacji: %1$s)</string>
     <string name="restore">Przywróć</string>
     <string name="add">Dodaj</string>
