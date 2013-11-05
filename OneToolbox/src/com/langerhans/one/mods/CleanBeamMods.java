@@ -80,6 +80,44 @@ public class CleanBeamMods{
 				return modRes.getDrawable(R.drawable.stat_sys_5signal_5);
 			}	
 		});
+		
+		//Roaming
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_0", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_0);
+			}	
+		});
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_1", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_1);
+			}	
+		});
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_2", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_2);
+			}	
+		});
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_3", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_3);
+			}	
+		});
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_4", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_4);
+			}	
+		});
+	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_5", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_5);
+			}	
+		});
 	}
 
 	public static void execHook_HeadphoneIcon(InitPackageResourcesParam resparam, String MODULE_PATH) {
@@ -262,43 +300,6 @@ public class CleanBeamMods{
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return modRes.getDrawable(R.drawable.stat_sys_signal_flightmode);
-			}	
-		});
-	    
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_0", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_0);
-			}	
-		});
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_1", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_1);
-			}	
-		});
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_2", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_2);
-			}	
-		});
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_3", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_3);
-			}	
-		});
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_4", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_4);
-			}	
-		});
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_5", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_sys_r_5signal_5);
 			}	
 		});
 	}
