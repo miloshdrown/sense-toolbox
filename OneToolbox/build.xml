@@ -74,10 +74,10 @@
             </fileset>
         </copy>
         <property environment="env" /> 
-        <replace file="res/values/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace file="res/values-ru/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace file="res/values-de/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace file="res/values-pl/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
+        <replace encoding="utf-8" file="res/values/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
+        <replace encoding="utf-8" file="res/values-ru/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
+        <replace encoding="utf-8" file="res/values-de/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
+        <replace encoding="utf-8" file="res/values-pl/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
     </target>
     <target name="-post-compile">
         <path id="project.all.jars.path">
