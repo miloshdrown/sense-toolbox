@@ -30,12 +30,14 @@
 - Is it possible in next release you can add info line in notification panel like in venom that you can select to view cpu temp, cpu usage in mhz, ram usage etc...
 - Change carrier label on lockscreen and notification drawer
 - Get rid of some useless icons like Beats and Headphone...
+- Auto close EQS after setting changed
+- Go to recent apps as swipe action
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
 2.4.1:
 Fix for Bypass lockscreen option, doesn't dismiss lockscreen on incoming call and alarm ringer.
-Hide 7 homescreens mod on 4.2.2
+Added waring that 7 homescreen mod will not work on HTC One on Android 4.2.2. (Dual SIM One still has 4.2.2)
 
 2.4:
 Re-added 4x1 widget transparanecy for Sense 5.5

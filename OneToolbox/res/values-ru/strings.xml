@@ -208,7 +208,7 @@
 	<string name="sense_swipeleftaction_title">Действие на свайп влево</string>
 	<string name="sense_swipeleftaction_summ">Присвоить действие жесту влево на доке ланчера.</string>
 	<string name="sense_sevenscreens_title">7 домашних экранов</string>
-	<string name="sense_sevenscreens_summ">Увеличить максимальное число домашних экранов до 7</string>
+	<string name="sense_sevenscreens_summ">Увеличить максимальное число домашних экранов до 7. ВНИМАНИЕ: Не будет работать на HTC One 4.2.2!</string>
 	<string name="sense_4x5homescreen_title">Сетка 4x5</string>
 	<string name="sense_4x5homescreen_summ">Добавляет ещё один ряд на каждом домашнем экране.</string>
 	<string name="sense_invisilabels_title">Скрыть подписи</string>
