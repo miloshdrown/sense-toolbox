@@ -852,6 +852,8 @@ public class PrismMods {
 	}
 	
 	public static void execHook_SevenScreens(final LoadPackageParam lpparam) {
+		if (android.os.Build.VERSION.SDK_INT <= 17) return;
+			
 		findAndHookMethod("com.htc.launcher.model.PagesManager", lpparam.classLoader, "getMaxPageCount", XC_MethodReplacement.returnConstant(7));
 		
 		XposedBridge.hookAllConstructors(findClass("com.htc.launcher.model.PagesManager", lpparam.classLoader), new XC_MethodHook() {

@@ -87,6 +87,10 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		if (findPreference("pref_key_eqs") != null && (MainActivity.isRootAccessGiven == false))
 		findPreference("pref_key_eqs").setEnabled(false);
 		
+		if (android.os.Build.VERSION.SDK_INT <= 17) {
+			if (findPreference("pref_key_prism_sevenscreens") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_homescreen")).removePreference(findPreference("pref_key_prism_sevenscreens"));
+		}
+		
 		if ((new Version(senseVer)).compareTo(new Version("5.5")) >= 0) {
 			if (findPreference("pref_key_eqs") != null) getPreferenceScreen().removePreference(findPreference("pref_key_eqs"));
 			if (findPreference("pref_key_prism_bfremove") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_homescreen")).removePreference(findPreference("pref_key_prism_bfremove"));
