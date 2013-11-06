@@ -879,22 +879,28 @@ public class PrismMods {
 		findAndHookMethod("com.htc.lockscreen.HtcKeyguardHostViewImpl", lpparam.classLoader, "updateScreen", boolean.class, "com.htc.lockscreen.HtcKeyguardSecurityModel.SecurityMode", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-				if (mContext == null) return;
-				PowerManager powerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
-				if (powerManager.isScreenOn()) {
-					Object mLSState = XposedHelpers.getObjectField(param.thisObject, "mLSState");
-					if (mLSState != null) {
-						Object settingobserver = XposedHelpers.getObjectField(mLSState, "mSettingObserver");
-						boolean doBypass = false;
-						if (settingobserver != null)
-						doBypass = (Boolean)XposedHelpers.callMethod(settingobserver, "isByPassLockscreen");
+				try {
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					if (mContext == null) return;
+					PowerManager powerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+					if (powerManager.isScreenOn()) {
+						Object mLSState = XposedHelpers.getObjectField(param.thisObject, "mLSState");
+						boolean mInLockScreen = (Boolean)XposedHelpers.getObjectField(param.thisObject, "mInLockScreen");
+						boolean isNotAlarmOrIncomingCall = (Boolean)XposedHelpers.callMethod(param.thisObject, "needToHandleVolume");
+						if (mLSState != null && mInLockScreen && isNotAlarmOrIncomingCall) {
+							Object settingobserver = XposedHelpers.getObjectField(mLSState, "mSettingObserver");
+							boolean doBypass = false;
+							if (settingobserver != null)
+							doBypass = (Boolean)XposedHelpers.callMethod(settingobserver, "isByPassLockscreen");
 				
-						@SuppressWarnings("rawtypes")
-						Enum mSecurityMode = (Enum)param.args[1];
-						if (doBypass && mSecurityMode.ordinal() == 1)
-						XposedHelpers.callMethod(param.thisObject, "dismiss", true);
+							@SuppressWarnings("rawtypes")
+							Enum mSecurityMode = (Enum)param.args[1];
+							if (doBypass && mSecurityMode.ordinal() == 1)
+							XposedHelpers.callMethod(param.thisObject, "dismiss", false);
+						}
 					}
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
 			}
 		});
