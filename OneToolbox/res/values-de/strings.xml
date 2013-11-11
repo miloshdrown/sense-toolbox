@@ -129,8 +129,8 @@
 	<string name="systemui_dataratestatus_summ">Zeigt die aktuelle Datenrate (Upload+Download) in der Statusleiste an.</string>
 	
 	<string name="cleanbeam_mods">CleanBeam Mods von vomer</string>
-	<string name="cleanbeam_colortheme_title">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_colortheme_summ">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_colortheme_title">Farbschema</string>
+	<string name="cleanbeam_colortheme_summ">Globales Farbschema für alle CleanBeam Icons außer mehrfarbige.</string>
 	<string name="cleanbeam_battery_title">Akku Icon</string>
 	<string name="cleanbeam_battery_summ">Ändert das Akku-Icon Design.</string>
 	<string name="cleanbeam_signal_title">Netz-Anzeige</string>
@@ -254,7 +254,7 @@
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Aktiviert die erweiterten Startoptionen\nWenn du das native APM nutzt, deaktiviere die Option besser.</string>
 	<string name="various_scron_title">Aktiviere \'Aktiv lassen\'</string>
-	<string name="various_scron_summ">Zeige \'Aktiv lassen\' Option in in den Display- und den Entwicklereinstellungen.</string>
+	<string name="various_scron_summ">Zeige \'Aktiv lassen\' Option in den Display- und den Entwicklereinstellungen.</string>
 	<string name="various_apps_title">Zusätzliche App-Details</string>
 	<string name="various_apps_summ">Neue Felder für Apps unter Einstellungen > Apps:\n- Taste zum Starten\n- APK Name und Pfad\n- Daten-Pfad\n- Prozess\n- Benutzer ID\n- SDK Version</string>
 	<string name="various_volsnd_title">Deaktiviere Lautstärke-Töne</string>
@@ -266,17 +266,17 @@
 	<string name="various_fastunlock_title">Schnelles Entsperren</string>
 	<string name="various_fastunlock_summ">Entsperrt das Gerät sobald die richtige PIN eingegeben wurde. Nur mit HTC Lockscreen</string>
 	
-	<string name="persistent_mods">###TRANSLATE_ME###</string>
-	<string name="persist_adgrid_title">###TRANSLATE_ME###</string>
-	<string name="persist_adgrid_summ">###TRANSLATE_ME###</string>
-	<string name="persist_bypasslock_title">###TRANSLATE_ME###</string>
-	<string name="persist_bypasslock_summ">###TRANSLATE_ME###</string>
-	<string name="persist_unhideprefs_title">###TRANSLATE_ME###</string>
-	<string name="persist_unhideprefs_summ">###TRANSLATE_ME###</string>
-	<string name="persist_recentslongtap_title">###TRANSLATE_ME###</string>
-	<string name="persist_recentslongtap_summ">###TRANSLATE_ME###</string>
-	<string name="persist_installer_title">###TRANSLATE_ME###</string>
-	<string name="persist_installer_summ">###TRANSLATE_ME###</string>
+	<string name="persistent_mods">Dauerhaft aktive Mods</string>
+	<string name="persist_adgrid_title">Rastergöße in \'Alle Apps\'</string>
+	<string name="persist_adgrid_summ">Neue Rastergrößen: 5x5, 4x6 and 5x6. Auswählbar im Kontextmenü der \'Alle Apps\' Seite.</string>
+	<string name="persist_bypasslock_title">Bildschirmsperre umgehen</string>
+	<string name="persist_bypasslock_summ">\*Bildschirmsperre beim Aufwachen umgehen\' funktioniert auch wieder ohne Sperrbildschirm.</string>
+	<string name="persist_unhideprefs_title">Telefon-Info</string>
+	<string name="persist_unhideprefs_summ">\(Re-\)Aktiviert die Anzeige von \'ROM Version\', \'Verteilungszeit\' und \'Hardware-Informationen\' im Info-Menü.</string>
+	<string name="persist_recentslongtap_title">Kontextmenü in \'Letzte Apps\'</string>
+	<string name="persist_recentslongtap_summ">Ein Kontextmenü je App kann per Halten auf dem \'Letzte Apps\' Bildschirm aufgerufen werden.</string>
+	<string name="persist_installer_title">App-Version bei Installation</string>
+	<string name="persist_installer_summ">Fügt die Version einer App zum Titel des Installationsbildschirms hinzu.</string>
 	
 	<string name="support">Support</string>
 	<string name="support_s5t_title">Besuche den Sense 5 Toolbox Post</string>
