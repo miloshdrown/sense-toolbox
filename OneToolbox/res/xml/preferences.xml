@@ -128,6 +128,13 @@
     <com.htc.preference.HtcPreferenceScreen
         android:title="@string/cleanbeam_mods"
         android:key="pref_key_cb">
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_colortheme"
+            android:summary="@string/cleanbeam_colortheme_summ"
+            android:title="@string/cleanbeam_colortheme_title"
+            android:entries="@array/theme_colors"
+            android:entryValues="@array/theme_colors_val"
+            android:defaultValue="1" />
 		<com.langerhans.one.utils.ImageListPreference
 			android:key="pref_key_sysui_battery"
             android:summary="@string/cleanbeam_battery_summ"
@@ -143,7 +150,8 @@
             android:entries="@array/wifi_icon"
             android:entryValues="@array/wifi_icon_val"
 			android:defaultValue="1"
-			toolbox:entryImages="@array/wifi_images" />
+			toolbox:entryImages="@array/wifi_images"
+			toolbox:entryThemes="@array/wifi_themes" />
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_signal"
             android:summary="@string/cleanbeam_signal_summ"
@@ -593,6 +601,31 @@
                 android:entryValues="@array/various_screenoffanim_val"
                 android:defaultValue="0" />
         </com.htc.preference.HtcPreferenceCategory>
+    </com.htc.preference.HtcPreferenceScreen>
+    
+    <com.htc.preference.HtcPreferenceScreen
+        android:title="@string/persistent_mods"
+        android:key="pref_key_persist">
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_persist_appdrawer_grid"
+            android:summary="@string/persist_adgrid_summ"
+            android:title="@string/persist_adgrid_title" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_persist_bypasslock"
+            android:summary="@string/persist_bypasslock_summ"
+            android:title="@string/persist_bypasslock_title" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_persist_unhideprefs"
+            android:summary="@string/persist_unhideprefs_summ"
+            android:title="@string/persist_unhideprefs_title" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_persist_recentslongtap"
+            android:summary="@string/persist_recentslongtap_summ"
+            android:title="@string/persist_recentslongtap_title" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_persist_installer"
+            android:summary="@string/persist_installer_summ"
+            android:title="@string/persist_installer_title" />
     </com.htc.preference.HtcPreferenceScreen>
     </com.htc.preference.HtcPreferenceCategory>
     

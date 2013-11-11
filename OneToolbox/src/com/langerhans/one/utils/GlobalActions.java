@@ -20,6 +20,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
+import android.graphics.ColorFilter;
 import android.location.LocationManager;
 import android.media.AudioManager;
 import android.net.ConnectivityManager;
@@ -511,5 +512,15 @@ public class GlobalActions {
             e.printStackTrace();
             return false;
         }
+	}
+	
+	public static ColorFilter createColorFilter(int forTheme) {
+		switch (forTheme) {
+			case 2: return ColorFilterGenerator.adjustColor(0, 0, 15, -90);
+			case 3: return ColorFilterGenerator.adjustColor(-10, -10, 40, 160);
+			case 4: return ColorFilterGenerator.adjustColor(0, -20, 25, -175);
+			case 5: return ColorFilterGenerator.adjustColor(100, 0, -100, 180);
+		}
+		return null;
 	}
 }

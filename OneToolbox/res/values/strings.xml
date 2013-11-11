@@ -54,7 +54,7 @@
 	<string name="hotreboot_explain_prefs">This will soft reboot your device. Continue?</string>
 	<string name="select_tile">Select tile to add</string>
 	<string name="success">Success</string>
-	<string name="backup_restored">Backup successfully restored! Tap on "Save" to apply the order.</string>
+	<string name="backup_restored">Backup successfully restored! Tap on \'Save\' to apply the order.</string>
 	<string name="no_backup">No backup found</string>
 	<string name="no_backup_explain">Sorry, no backup was found. Did you wipe your storage?</string>
 	<string name="first_start">First start</string>
@@ -129,6 +129,8 @@
 	<string name="systemui_dataratestatus_summ">Add current download+upload speed to statusbar. Visible only when device is connected to any network.</string>
 	
 	<string name="cleanbeam_mods">CleanBeam Mods by vomer</string>
+	<string name="cleanbeam_colortheme_title">Color theme</string>
+	<string name="cleanbeam_colortheme_summ">Global theme for all icon sets excluding multicolor ones.</string>
 	<string name="cleanbeam_battery_title">Battery icon</string>
 	<string name="cleanbeam_battery_summ">Change battery icon design.</string>
 	<string name="cleanbeam_signal_title">Signal bar</string>
@@ -263,6 +265,18 @@
 	<string name="various_mtpnotif_summ">Make MTP service background and disable notification. Mod is for ROMs based on leaked 4.3.</string>
 	<string name="various_fastunlock_title">Fast unlock</string>
 	<string name="various_fastunlock_summ">Unlock device as soon as correct PIN is entered. HTC lockscreen only.</string>
+	
+	<string name="persistent_mods">Always active mods</string>
+	<string name="persist_adgrid_title">App drawer grid size</string>
+	<string name="persist_adgrid_summ">New grid sizes: 5x5, 4x6 and 5x6. You can select them from default app drawer menu.</string>
+	<string name="persist_bypasslock_title">Lockscreen bypass</string>
+	<string name="persist_bypasslock_summ">\'Bypass lock screen on wake\' setting works also without screen lock.</string>
+	<string name="persist_unhideprefs_title">Revealed settings</string>
+	<string name="persist_unhideprefs_summ">Show \'ROM version\', \'Distribution time\' and \'Hardware information\' (on Sense 5.5) in About section of Settings.</string>
+	<string name="persist_recentslongtap_title">Popup menu in recent apps list</string>
+	<string name="persist_recentslongtap_summ">Show popup menu on long press for every app in recents list.</string>
+	<string name="persist_installer_title">Display app version</string>
+	<string name="persist_installer_summ">Add package version to installer title when updating or installing an app.</string>
 	
 	<string name="support">Support</string>
 	<string name="support_s5t_title">Visit Sense 5 Toolbox Post</string>

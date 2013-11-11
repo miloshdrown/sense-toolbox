@@ -129,6 +129,8 @@
 	<string name="systemui_dataratestatus_summ">Zeigt die aktuelle Datenrate (Upload+Download) in der Statusleiste an.</string>
 	
 	<string name="cleanbeam_mods">CleanBeam Mods von vomer</string>
+	<string name="cleanbeam_colortheme_title">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_colortheme_summ">###TRANSLATE_ME###</string>
 	<string name="cleanbeam_battery_title">Akku Icon</string>
 	<string name="cleanbeam_battery_summ">Ändert das Akku-Icon Design.</string>
 	<string name="cleanbeam_signal_title">Netz-Anzeige</string>
@@ -263,6 +265,18 @@
 	<string name="various_mtpnotif_summ">Versteckt die MTP-Benachrichtigung. Gedacht für geleakte 4.3 Versionen.</string>
 	<string name="various_fastunlock_title">Schnelles Entsperren</string>
 	<string name="various_fastunlock_summ">Entsperrt das Gerät sobald die richtige PIN eingegeben wurde. Nur mit HTC Lockscreen</string>
+	
+	<string name="persistent_mods">###TRANSLATE_ME###</string>
+	<string name="persist_adgrid_title">###TRANSLATE_ME###</string>
+	<string name="persist_adgrid_summ">###TRANSLATE_ME###</string>
+	<string name="persist_bypasslock_title">###TRANSLATE_ME###</string>
+	<string name="persist_bypasslock_summ">###TRANSLATE_ME###</string>
+	<string name="persist_unhideprefs_title">###TRANSLATE_ME###</string>
+	<string name="persist_unhideprefs_summ">###TRANSLATE_ME###</string>
+	<string name="persist_recentslongtap_title">###TRANSLATE_ME###</string>
+	<string name="persist_recentslongtap_summ">###TRANSLATE_ME###</string>
+	<string name="persist_installer_title">###TRANSLATE_ME###</string>
+	<string name="persist_installer_summ">###TRANSLATE_ME###</string>
 	
 	<string name="support">Support</string>
 	<string name="support_s5t_title">Besuche den Sense 5 Toolbox Post</string>

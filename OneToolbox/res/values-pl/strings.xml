@@ -129,6 +129,8 @@
 	<string name="systemui_dataratestatus_summ">Dodaj licznik prędkości ściągania i wysyłania danych do paska statusu. Widoczny tylko w przypadku połączenia z siecią.</string>
     
     <string name="cleanbeam_mods">Modyfikacje CleanBeam od vomer</string>
+    <string name="cleanbeam_colortheme_title">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_colortheme_summ">###TRANSLATE_ME###</string>
     <string name="cleanbeam_battery_title">Ikona baterii</string>
     <string name="cleanbeam_battery_summ">Zmień styl ikony baterii.</string>
     <string name="cleanbeam_signal_title">Ikona sygnału</string>
@@ -263,6 +265,18 @@
     <string name="various_mtpnotif_summ">Dodaj usługę MTP w tłe i wyłącz powiadomienia. Mod jest na ROM oparty na przecieku 4.3.</string>
 	<string name="various_fastunlock_title">Szybkie odblokowanie</string>
 	<string name="various_fastunlock_summ">Odblokuj urządzenie gdy tylko poprawny numer PIN zostanie wprowadzony. Tylko ekran blokady HTC..</string>
+	
+	<string name="persistent_mods">###TRANSLATE_ME###</string>
+	<string name="persist_adgrid_title">###TRANSLATE_ME###</string>
+	<string name="persist_adgrid_summ">###TRANSLATE_ME###</string>
+	<string name="persist_bypasslock_title">###TRANSLATE_ME###</string>
+	<string name="persist_bypasslock_summ">###TRANSLATE_ME###</string>
+	<string name="persist_unhideprefs_title">###TRANSLATE_ME###</string>
+	<string name="persist_unhideprefs_summ">###TRANSLATE_ME###</string>
+	<string name="persist_recentslongtap_title">###TRANSLATE_ME###</string>
+	<string name="persist_recentslongtap_summ">###TRANSLATE_ME###</string>
+	<string name="persist_installer_title">###TRANSLATE_ME###</string>
+	<string name="persist_installer_summ">###TRANSLATE_ME###</string>
     
     <string name="support">Wsparcie</string>
     <string name="support_s5t_title">Odwiedź Stronę Sense 5 Toolbox</string>

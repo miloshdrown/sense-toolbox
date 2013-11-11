@@ -54,7 +54,7 @@
 	<string name="hotreboot_explain_prefs">Вы уверены, что хотите выполнить быстрый перезапуск?</string>
 	<string name="select_tile">Выберите какой элемент добавить</string>
 	<string name="success">Успешно</string>
-	<string name="backup_restored">Конфигурация успешно восстановлена! Нажмите иконку "Сохранить" чтобы применить изменения.</string>
+	<string name="backup_restored">Конфигурация успешно восстановлена! Нажмите иконку \'Сохранить\' чтобы применить изменения.</string>
 	<string name="no_backup">Не найдено</string>
 	<string name="no_backup_explain">Извините, резервная копия конфигурации не найдена. Вы делали вайп?</string>
 	<string name="first_start">Первый запуск</string>
@@ -66,7 +66,7 @@
 	<string name="eqs_settings">Настройки</string>
 	<string name="eqs_wifi">WiFi</string>
 	<string name="eqs_bluetooth">Bluetooth</string>
-	<string name="eqs_airplane">Режим "В самолёте"</string>
+	<string name="eqs_airplane">Режим \'В самолёте\'</string>
 	<string name="eqs_power_save">Энергосбережение</string>
 	<string name="eqs_rotation">Автоповорот</string>
 	<string name="eqs_mobile_data">Мобильный интернет</string>
@@ -75,7 +75,7 @@
 	<string name="eqs_screenshot">Снимок экрана</string>
 	<string name="eqs_gps">GPS</string>
 	<string name="eqs_roaming">Роаминг</string>
-	<string name="eqs_media_output">МедиаВыход</string>
+	<string name="eqs_media_output">Медиа выход</string>
 	<string name="eqs_auto_sync">Автосинхронизация</string>
 	<string name="eqs_roaming_setting">Настройки роуминга</string>
 	<string name="eqs_music_channel">Муз Канал</string>
@@ -101,10 +101,10 @@
 	<string name="systemui_tsb_title">Прозрачная строка состояния</string>
 	<string name="systemui_tsb_summ">Настройка прозрачности статусбара.</string>
 	<string name="systemui_tnb_title">Прозрачный фон панели уведомлений</string>
-	<string name="systemui_tnb_summ">Настройка прозрачности фона "шторки".</string>
+	<string name="systemui_tnb_summ">Настройка прозрачности фона \"шторки\".</string>
 	<string name="systemui_eqs">Расширенные Быстрые Настройки (EQS)</string>
 	<string name="systemui_heqs_title">Горизонтальные EQS</string>
-	<string name="systemui_heqs_summ">Включить горизонтальные быстрые настройки. В "шторке" будут показаны выбранные EQS с прокруткой.</string>
+	<string name="systemui_heqs_summ">Включить горизонтальные быстрые настройки. В \"шторке\" будут показаны выбранные EQS с прокруткой.</string>
 	<string name="systemui_heqs_notext_title">Компактные горизонтальные EQS</string>
 	<string name="systemui_heqs_notext_summ">Спрятать подписи к переключателям настроек в горизонтальных EQS</string>
 	<string name="systemui_noeqs_title">Отключить панель EQS</string>
@@ -129,6 +129,8 @@
 	<string name="systemui_dataratestatus_summ">Добавить текущее значение скорости приёма+отдачи в статусбар. Показывается только при наличии подключения к сети.</string>
 	
 	<string name="cleanbeam_mods">Моды CleanBeam от vomer</string>
+	<string name="cleanbeam_colortheme_title">Цветовая тема</string>
+	<string name="cleanbeam_colortheme_summ">Глобальный цвет для всех наборов иконок за исключением многоцветных.</string>
 	<string name="cleanbeam_battery_title">Иконка батареи</string>
 	<string name="cleanbeam_battery_summ">Смена дизайна иконки батареи.</string>
 	<string name="cleanbeam_signal_title">Сигнал сети</string>
@@ -263,6 +265,18 @@
 	<string name="various_mtpnotif_summ">Делает MTP сервис фоновым и скрывает уведомление. Мод предназначен для прошивок на основе утечки 4.3.</string>
 	<string name="various_fastunlock_title">Быстрая разблокировка</string>
 	<string name="various_fastunlock_summ">Позволяет разблокировать экран сразу после ввода правильного ПИНа. Только для HTC локскрина.</string>
+	
+	<string name="persistent_mods">Всегда активные моды</string>
+	<string name="persist_adgrid_title">Размер сетки списка приложений</string>
+	<string name="persist_adgrid_summ">Новые размеры: 5x5, 4x6 и 5x6. Вы можете выбрать их в стандартном меню списка приложений.</string>
+	<string name="persist_bypasslock_title">Пропуск экрана блокировки</string>
+	<string name="persist_bypasslock_summ">Опция \'Пропуск экрана блокировки\' работает также при выключенном локскрине.</string>
+	<string name="persist_unhideprefs_title">Новые настройки</string>
+	<string name="persist_unhideprefs_summ">Показывает поля \'Версия ПЗУ\', \'Время распространения\' и \'Техническая информация\' (для Sense 5.5) в Настройках в разделе \'О телефоне\'.</string>
+	<string name="persist_recentslongtap_title">Меню в списке последних приложений</string>
+	<string name="persist_recentslongtap_summ">Показывает всплывающее меню для каждого приложения в списке при долгом нажатии.</string>
+	<string name="persist_installer_title">Версия приложения</string>
+	<string name="persist_installer_summ">Добавляет версию пакета в заголовок при установке или обновлении приложения.</string>
 	
 	<string name="support">Поддержка</string>
 	<string name="support_s5t_title">Открыть пост о Sense 5 Toolbox</string>
