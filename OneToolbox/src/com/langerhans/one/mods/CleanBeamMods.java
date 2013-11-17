@@ -6,6 +6,7 @@ import java.util.Map.Entry;
 
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
+import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
@@ -20,9 +21,9 @@ public class CleanBeamMods{
 	private static String wifiBase = "";
 	
 	private static Drawable applyTheme(Drawable icon, boolean useOriginal) {
-		int theme = Integer.parseInt(XMain.pref.getString("pref_key_colortheme", "1"));
+		ColorFilter cf = GlobalActions.createColorFilter(true);
 		icon.clearColorFilter();
-		if (theme > 1 && !useOriginal) icon.setColorFilter(GlobalActions.createColorFilter(theme));
+		if (!useOriginal && cf != null) icon.setColorFilter(cf);
 		return icon;
 	}
 	

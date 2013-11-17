@@ -131,6 +131,10 @@
     <string name="cleanbeam_mods">Modyfikacje CleanBeam od vomer</string>
     <string name="cleanbeam_colortheme_title">###TRANSLATE_ME###</string>
 	<string name="cleanbeam_colortheme_summ">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_colortheme_hue">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_colortheme_sat">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_colortheme_bright">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_colortheme_preset">###TRANSLATE_ME###</string>
     <string name="cleanbeam_battery_title">Ikona baterii</string>
     <string name="cleanbeam_battery_summ">Zmień styl ikony baterii.</string>
     <string name="cleanbeam_signal_title">Ikona sygnału</string>

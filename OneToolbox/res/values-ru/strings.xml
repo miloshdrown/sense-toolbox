@@ -131,6 +131,10 @@
 	<string name="cleanbeam_mods">Моды CleanBeam от vomer</string>
 	<string name="cleanbeam_colortheme_title">Цветовая тема</string>
 	<string name="cleanbeam_colortheme_summ">Глобальный цвет для всех наборов иконок за исключением многоцветных.</string>
+	<string name="cleanbeam_colortheme_hue">Оттенок</string>
+	<string name="cleanbeam_colortheme_sat">Насыщенность</string>
+	<string name="cleanbeam_colortheme_bright">Яркость</string>
+	<string name="cleanbeam_colortheme_preset">Предустановки</string>
 	<string name="cleanbeam_battery_title">Иконка батареи</string>
 	<string name="cleanbeam_battery_summ">Смена дизайна иконки батареи.</string>
 	<string name="cleanbeam_signal_title">Сигнал сети</string>

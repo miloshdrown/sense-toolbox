@@ -35,6 +35,9 @@
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
+2.5:
+Fully customizable color themes for CleanBeam icons.
+
 2.4.1:
 Fix for Bypass lockscreen option, doesn't dismiss lockscreen on incoming call and alarm ringer.
 Added waring that 7 homescreen mod will not work on HTC One on Android 4.2.2. (Dual SIM One still has 4.2.2)

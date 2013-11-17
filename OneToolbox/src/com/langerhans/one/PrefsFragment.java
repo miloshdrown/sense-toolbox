@@ -44,8 +44,8 @@ import com.htc.widget.ActionBarExt;
 import com.htc.widget.HtcAlertDialog;
 import com.langerhans.one.mods.ControlsMods;
 import com.langerhans.one.utils.ApkInstaller;
+import com.langerhans.one.utils.ColorPreference;
 import com.langerhans.one.utils.DynamicPreference;
-import com.langerhans.one.utils.GlobalActions;
 import com.langerhans.one.utils.Helpers;
 import com.langerhans.one.utils.Version;
 import com.stericson.RootTools.RootTools;
@@ -59,14 +59,6 @@ public class PrefsFragment extends HtcPreferenceFragment {
 	static public List<Boolean> pkgAppsListSystem = new ArrayList<Boolean>();
 	static public SharedPreferences prefs = null;
 	
-	public static void applyTheme(Drawable icon, String themeStr) {
-		if (prefs == null) return;
-		int theme = Integer.parseInt(themeStr);
-		if (theme <= 0) theme = Integer.parseInt(prefs.getString("pref_key_colortheme", "1"));
-		icon.clearColorFilter();
-		if (theme > 1) icon.setColorFilter(GlobalActions.createColorFilter(theme));
-	}
-
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -113,30 +105,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			//Shouldn't happen...
 			e.printStackTrace();
 		}
-		
-		HtcPreference.OnPreferenceChangeListener changeTheme = new HtcPreference.OnPreferenceChangeListener() {
-			@Override
-			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-				applyTheme(findPreference("pref_key_cb_signal").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_data").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_headphone").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_profile").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_alarm").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_sync").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_gps").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_bt").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_screenshot").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_usb").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_powersave").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_nfc").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_mtp").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_dnd").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_phone").getIcon(), (String)newValue);
-				applyTheme(findPreference("pref_key_cb_tv").getIcon(), (String)newValue);
-				return true;
-			}
-		};
-		
+
 		HtcPreference.OnPreferenceChangeListener camChangeListener = new HtcPreference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
@@ -277,7 +246,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			}
 		};
 		
-		HtcListPreference themeChanger = (HtcListPreference) findPreference("pref_key_colortheme");
+		ColorPreference colorChanger = (ColorPreference) findPreference("pref_key_colorfilter");
 		HtcListPreference voldownPreference = (HtcListPreference) findPreference("pref_key_cam_voldown");
 		HtcListPreference volupPreference = (HtcListPreference) findPreference("pref_key_cam_volup");
 		HtcListPreference swipeDownActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipedownaction");
@@ -293,8 +262,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		homeAssistActionPreference.setEntries(addToArray(homeAssistActionPreference.getEntries(), 5, getResources().getString(R.string.kill_foreground)));
 		homeAssistActionPreference.setEntryValues(addToArray(homeAssistActionPreference.getEntryValues(), 5, "9"));
 		
-		themeChanger.setOnPreferenceChangeListener(changeTheme);
-		changeTheme.onPreferenceChange(themeChanger, themeChanger.getValue());
+		colorChanger.applyThemes();
 		voldownPreference.setOnPreferenceChangeListener(camChangeListener);
 		volupPreference.setOnPreferenceChangeListener(camChangeListener);
 		swipeDownActionPreference.setOnPreferenceChangeListener(chooseAction);

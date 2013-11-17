@@ -131,6 +131,10 @@
 	<string name="cleanbeam_mods">CleanBeam Mods by vomer</string>
 	<string name="cleanbeam_colortheme_title">Color theme</string>
 	<string name="cleanbeam_colortheme_summ">Global theme for all icon sets excluding multicolor ones.</string>
+	<string name="cleanbeam_colortheme_hue">Hue</string>
+	<string name="cleanbeam_colortheme_sat">Saturation</string>
+	<string name="cleanbeam_colortheme_bright">Brightness</string>
+	<string name="cleanbeam_colortheme_preset">Presets</string>
 	<string name="cleanbeam_battery_title">Battery icon</string>
 	<string name="cleanbeam_battery_summ">Change battery icon design.</string>
 	<string name="cleanbeam_signal_title">Signal bar</string>

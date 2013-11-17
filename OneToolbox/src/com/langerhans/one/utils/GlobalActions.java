@@ -36,6 +36,7 @@ import android.os.Vibrator;
 import android.provider.Settings;
 import android.widget.Toast;
 
+import com.langerhans.one.PrefsFragment;
 import com.langerhans.one.R;
 import com.langerhans.one.mods.XMain;
 
@@ -514,13 +515,30 @@ public class GlobalActions {
         }
 	}
 	
-	public static ColorFilter createColorFilter(int forTheme) {
-		switch (forTheme) {
-			case 2: return ColorFilterGenerator.adjustColor(0, 0, 15, -90);
-			case 3: return ColorFilterGenerator.adjustColor(-10, -10, 40, 160);
-			case 4: return ColorFilterGenerator.adjustColor(0, -20, 25, -175);
-			case 5: return ColorFilterGenerator.adjustColor(100, 0, -100, 180);
+	public static ColorFilter createColorFilter(boolean fromModule) {
+		int brightness = 0;
+		int saturation = 0;
+		int hue = 0;
+		
+		if (fromModule) {
+			if (XMain.pref != null) {
+				brightness = XMain.pref.getInt("pref_key_colorfilter_brightValue", 100) - 100;
+				saturation = XMain.pref.getInt("pref_key_colorfilter_satValue", 100) - 100;
+				hue = XMain.pref.getInt("pref_key_colorfilter_hueValue", 180) - 180;
+			}
+		} else {
+			if (PrefsFragment.prefs != null) {
+				brightness = PrefsFragment.prefs.getInt("pref_key_colorfilter_brightValue", 100) - 100;
+				saturation = PrefsFragment.prefs.getInt("pref_key_colorfilter_satValue", 100) - 100;
+				hue = PrefsFragment.prefs.getInt("pref_key_colorfilter_hueValue", 180) - 180;		
+			}
 		}
-		return null;
+		
+		if (brightness == 0 && saturation == 0 && hue == 0)
+			return null;
+		else if (brightness == 100 && saturation == -100)
+			return ColorFilterGenerator.adjustColor(100, 100, -100, -180);
+		else
+			return ColorFilterGenerator.adjustColor(brightness, 0, saturation, hue);
 	}
 }

@@ -5,7 +5,6 @@ import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListItemRadioButton;
 import com.htc.widget.HtcListItemTileImage;
-import com.langerhans.one.PrefsFragment;
 import com.langerhans.one.R;
 
 import android.content.Context;
@@ -75,9 +74,9 @@ public class ImageListPreference extends HtcListPreference {
 				img.setTileImageResource(resourceIds[position]);
 				if (imageThemes != null) {
 					if (imageThemes[position] == 1)
-						PrefsFragment.applyTheme(img.getTileImageDrawable(), "0");
+						img.getTileImageDrawable().setColorFilter(GlobalActions.createColorFilter(false));
 					else
-						PrefsFragment.applyTheme(img.getTileImageDrawable(), "1");
+						img.getTileImageDrawable().clearColorFilter();
 				}
 				img.setScaleX(0.55f);
 				img.setScaleY(0.55f);
