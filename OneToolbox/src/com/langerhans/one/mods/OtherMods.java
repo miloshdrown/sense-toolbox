@@ -13,9 +13,7 @@ import android.app.Dialog;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageInfo;
-import android.content.pm.PackageItemInfo;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -250,6 +248,7 @@ public class OtherMods{
 	}
 	
 	public static void execHook_EnhancedInstaller(final LoadPackageParam lpparam) {
+		/*
 		findAndHookMethod("com.android.packageinstaller.InstallAppProgress", lpparam.classLoader, "initView", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
@@ -259,14 +258,14 @@ public class OtherMods{
 					if (mAppInfo != null && install != null) {
 						PackageInfo mPkgInfo = install.getPackageManager().getPackageInfo(((PackageItemInfo)mAppInfo).packageName, 8192);
 						TextView appName = (TextView)install.findViewById(install.getResources().getIdentifier("app_name", "id", "com.android.packageinstaller"));
-						if (appName != null) appName.setText(appName.getText() + " " + mPkgInfo.versionName);
+						if (appName != null && mPkgInfo.versionName != null) appName.setText(appName.getText() + " " + mPkgInfo.versionName);
 					}
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
 			}
 		});
-		
+		*/
 		findAndHookMethod("com.android.packageinstaller.PackageInstallerActivity", lpparam.classLoader, "startInstallConfirm", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
@@ -275,7 +274,7 @@ public class OtherMods{
 					PackageInfo mPkgInfo = (PackageInfo)XposedHelpers.getObjectField(param.thisObject, "mPkgInfo");
 					if (mPkgInfo != null) {
 						TextView appName = (TextView)pia.findViewById(pia.getResources().getIdentifier("app_name", "id", "com.android.packageinstaller"));
-						if (appName != null) appName.setText(appName.getText() + " " + mPkgInfo.versionName);
+						if (appName != null && mPkgInfo.versionName != null) appName.setText(appName.getText() + " " + mPkgInfo.versionName);
 						
 						// Add new tab with package info when updating an app. Not really in place there. Kept for future mods.
 						/*

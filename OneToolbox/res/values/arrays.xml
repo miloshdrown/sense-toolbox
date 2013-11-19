@@ -140,6 +140,7 @@
     <string-array name="recents_menu">
         <item >Show info</item>
         <item >Close</item>
+        <item >Close others</item>
     </string-array>
     <string-array name="various_screenonanim">
         <item >None</item>

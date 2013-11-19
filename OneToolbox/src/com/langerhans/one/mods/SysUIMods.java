@@ -9,9 +9,7 @@ import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -824,12 +822,21 @@ public class SysUIMods {
 	}
 	
 	// Pinch to clear all recent apps
-	public static void execHook_RecentAppsClear(final LoadPackageParam lpparam) {
-    	Object[] callbackObj = new Object[2];
-        callbackObj[0] = "android.os.Bundle";
-        callbackObj[1] = new RecentsModifier();
-
-        findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "onCreate", callbackObj);
+	public static void execHook_RecentAppsInit(final LoadPackageParam lpparam) {
+        findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "onCreate", "android.os.Bundle", new XC_MethodHook(){
+    		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+    			final GridView recentGridView = (GridView)XposedHelpers.findField(param.thisObject.getClass(), "mRecentGridView").get(param.thisObject);
+    			
+    			killedEmAll = false;
+    			
+    			gridViewObject = param.thisObject;
+    			gridViewContext = recentGridView.getContext();
+    			gridViewSelf = recentGridView;
+    		}
+    	});
+	}
+	
+	public static void execHook_RecentAppsClearTouch(final LoadPackageParam lpparam) {
        	findAndHookMethod("com.android.systemui.recent.RecentsGridView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new TouchListenerOnTouch());
        	findAndHookMethod("com.android.systemui.recent.RecentsGridView", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouchIntercept());		
 	}
@@ -837,132 +844,88 @@ public class SysUIMods {
 	private static GridView gridViewSelf;
 	private static Object gridViewObject;
 	private static Context gridViewContext;
-	
 	private static ActivityManager am;
-	private static Field mTaskDescr;
-	private static Field pTaskId;
-	private static Field mFinished;
-	private static Field td;
-	private static Method onResume;
-	private static Method removeTask;
-	private static Method setDelPositionsList;
-    
+	
 	private static ScaleGestureDetector mScaleDetector;
 	private static GestureDetector mDetector;
 	static boolean killedEmAll = false;
 	
-	// Get RecentAppFxActivity elements
-	private static class RecentsModifier extends XC_MethodHook {
-		private RecentsModifier() {}
-
-		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-			if (onResume == null) onResume = XposedHelpers.findMethodExact(param.thisObject.getClass(), "onResume", new Class[0]);
-			if (mTaskDescr == null) mTaskDescr = XposedHelpers.findField(param.thisObject.getClass(), "mRecentTaskDescriptions");
-			if (mFinished == null) mFinished = XposedHelpers.findField(param.thisObject.getClass(), "mFinished");
-			final GridView recentGridView = (GridView)XposedHelpers.findField(param.thisObject.getClass(), "mRecentGridView").get(param.thisObject);
-			
-			killedEmAll = false;
-			
-			gridViewObject = param.thisObject;
-			gridViewContext = recentGridView.getContext();
-			gridViewSelf = recentGridView;
-		}
+	// Exterminate! © Daleks
+	private static void terminateAll(int animType) throws InvocationTargetException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
+		terminateAll(animType, null);
 	}
 	
-	// Exterminate! © Daleks
-	private static void terminateAll(Object termObj, Context termContext, GridView termGridView, ArrayList<?> taskDescriptionsArray, int animType) throws InvocationTargetException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
+	private static void terminateAll(int animType, final ViewGroup currApp) throws InvocationTargetException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
+		ArrayList<?> taskDescriptionsArray = (ArrayList<?>)XposedHelpers.getObjectField(gridViewObject, "mRecentTaskDescriptions");
 		if ((taskDescriptionsArray == null) || (taskDescriptionsArray.size() == 0))	{
 			// Recent array is empty, resuming last activity
-			sendOnResume(termObj);
+			sendOnResume();
 			return;
 		}
-		int i = termGridView.getChildCount();
+		int i = gridViewSelf.getChildCount();
 		int j = taskDescriptionsArray.size();
 		int cnt = 0;
 
 		// Go through all GridView items and get taskIds
 		while (cnt < i) {
 			View gridViewItem;
-			gridViewItem = termGridView.getChildAt(cnt);
-			if (gridViewItem != null) {
-				td = gridViewItem.getTag().getClass().getDeclaredField("td");
-				if (td != null) {
-					Object gridViewItemTag = td.get(gridViewItem.getTag());
-					if (gridViewItemTag != null) {
-						pTaskId = gridViewItemTag.getClass().getDeclaredField("persistentTaskId");
-						if (pTaskId != null) {
-							
-							// Recreate RecentAppFxActivity.handleSwipe() using hooked methods
-							int m = j - taskDescriptionsArray.indexOf(gridViewItemTag) - 1;
-							taskDescriptionsArray.remove(gridViewItemTag);
-							if (m != 0)
-							{
-								if (setDelPositionsList == null)
-								{
-									Class<?> termGridViewClass = termGridView.getClass();
-									Class<?>[] paramsTypesArray = new Class[1];
-									paramsTypesArray[0] = Integer.TYPE;
-									setDelPositionsList = termGridViewClass.getDeclaredMethod("setDelPositionsList", paramsTypesArray);
-								}
-								if (setDelPositionsList != null)
-								{
-									Method delPositionsListMethod = setDelPositionsList;
-									Object[] paramsArray = new Object[1];
-									paramsArray[0] = Integer.valueOf(m);
-									delPositionsListMethod.invoke(termGridView, paramsArray);
-								}
-							}
-						
-							if (am == null || removeTask == null)
-							{
-								am = ((ActivityManager)termContext.getSystemService("activity"));
-								Class<?> amClass = am.getClass();
-								Class<?>[] paramsAMTypesArray = new Class[2];
-								paramsAMTypesArray[0] = Integer.TYPE;
-								paramsAMTypesArray[1] = Integer.TYPE;
-								removeTask = amClass.getDeclaredMethod("removeTask", paramsAMTypesArray);
-							}
-							if ((pTaskId != null) && (removeTask != null) && (am != null))
-							{
-								Object[] paramsArray2 = new Object[2];
-								paramsArray2[0] = pTaskId.get(gridViewItemTag);
-								paramsArray2[1] = Integer.valueOf(1);
-								removeTask.invoke(am, paramsArray2);
-								pTaskId = null;
-							}
-							gridViewItem.startAnimation(terminateAnimation(termContext, i, cnt, animType, termObj));
-						}
-					}
+			gridViewItem = gridViewSelf.getChildAt(cnt);
+			if (gridViewItem != null && !gridViewItem.equals(currApp)) {
+				Object gridViewItemTag = XposedHelpers.getObjectField(gridViewItem.getTag(), "td");
+				if (gridViewItemTag != null) {
+					// Recreate RecentAppFxActivity.handleSwipe() using hooked methods
+					int m = j - taskDescriptionsArray.indexOf(gridViewItemTag) - 1;
+					taskDescriptionsArray.remove(gridViewItemTag);
+					if (m != 0) try {
+						XposedHelpers.callMethod(gridViewSelf, "setDelPositionsList", Integer.valueOf(m));
+					} catch (Exception e) {}
+				
+					if (am == null)
+					am = ((ActivityManager)gridViewContext.getSystemService("activity"));
+					if (am != null) 
+					XposedHelpers.callMethod(am, "removeTask", XposedHelpers.getIntField(gridViewItemTag, "persistentTaskId"), Integer.valueOf(1));
+					
+					gridViewItem.startAnimation(terminateAnimation(i, cnt, animType, currApp));
 				}
 			}
 			cnt++;
 		}
+		if (currApp != null) {
+			Handler handler = (Handler)XposedHelpers.getObjectField(gridViewObject, "handler");
+			Runnable runnable = new Runnable() {
+				public void run() {
+					XposedHelpers.callMethod(gridViewObject, "handleOnClick", currApp);
+				}
+			};
+			handler.postDelayed(runnable, 550l + (i - 1) * 50l);
+		}
 	}
 	
 	// Shrink to center and fade out animations
-	private static Animation terminateAnimation(Context paramContext, int i, int cnt, int animType, final Object paramObject) {
-		Animation fadeOut = AnimationUtils.loadAnimation(paramContext, android.R.anim.fade_out);
+	private static Animation terminateAnimation(int i, int cnt, int animType, final ViewGroup currApp) {
+		if (gridViewContext == null) return null;
+		Animation fadeOut = AnimationUtils.loadAnimation(gridViewContext, android.R.anim.fade_out);
 		AnimationSet localAnimationSet = new AnimationSet(true);
 		if (animType == 0)
 		{
 			fadeOut.setDuration(300l);
 			fadeOut.setStartOffset((i - cnt) * 70);
-			fadeOut.setInterpolator(AnimationUtils.loadInterpolator(paramContext, android.R.anim.linear_interpolator));
+			fadeOut.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
 			
 			TranslateAnimation drop = new TranslateAnimation(0.0F, 0.0F, 0.0F, 300.0f);
 			drop.setDuration(500l);
 			drop.setStartOffset((i - cnt) * 70);
-			drop.setInterpolator(AnimationUtils.loadInterpolator(paramContext, android.R.anim.linear_interpolator));
+			drop.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
 			localAnimationSet.addAnimation(drop);
 		} else {			
 			fadeOut.setDuration(500l);
 			fadeOut.setStartOffset(cnt * 50);
-			fadeOut.setInterpolator(AnimationUtils.loadInterpolator(paramContext, android.R.anim.accelerate_interpolator));
+			fadeOut.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.accelerate_interpolator));
 			
 			ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f); 
 			shrink.setDuration(500l);
 			shrink.setStartOffset(cnt * 50);
-			shrink.setInterpolator(AnimationUtils.loadInterpolator(paramContext, android.R.anim.accelerate_decelerate_interpolator));
+			shrink.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.accelerate_decelerate_interpolator));
 			localAnimationSet.addAnimation(shrink);
 		}
 
@@ -972,15 +935,11 @@ public class SysUIMods {
 		localAnimationSet.setAnimationListener(new Animation.AnimationListener() {
 			public void onAnimationEnd(Animation paramAnonymousAnimation) {
 				new Thread(new Runnable() {
-				    @Override
-				    public void run() {
-				        try {
-				            Thread.sleep(150);
-				        } catch (InterruptedException e) {
-				            e.printStackTrace();
-				        }
-				        sendOnResume(paramObject);
-				    }
+					@Override
+					public void run() {
+						try { Thread.sleep(150); } catch (Exception e) {}
+						if (currApp == null) sendOnResume();
+					}
 				}).start();				
 			}
 			public void onAnimationRepeat(Animation paramAnonymousAnimation) {}
@@ -995,7 +954,7 @@ public class SysUIMods {
 	    public boolean onScale(ScaleGestureDetector detector) {
 	    	killedEmAll = true;
 			try {
-				terminateAll(gridViewObject, gridViewContext, gridViewSelf, (ArrayList<?>)mTaskDescr.get(gridViewObject), 1);
+				terminateAll(1);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -1027,7 +986,7 @@ public class SysUIMods {
 				if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH) return false;
 				if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 			    	killedEmAll = true;
-					terminateAll(gridViewObject, gridViewContext, gridViewSelf, (ArrayList<?>)mTaskDescr.get(gridViewObject), 0);
+					terminateAll(0);
 				} 
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -1091,13 +1050,12 @@ public class SysUIMods {
 	}
 	
 	// Invoke RecentAppFxActivity.onResume() to close activity
-	private static void sendOnResume(Object termObj) {
+	private static void sendOnResume() {
 		try {
-			if ((mFinished != null) && (onResume != null)) {
-				mFinished.set(termObj, Boolean.valueOf(true));
-				onResume.invoke(termObj);
+			if (gridViewObject != null) {
+				XposedHelpers.setBooleanField(gridViewObject, "mFinished", Boolean.valueOf(true));
+				XposedHelpers.callMethod(gridViewObject, "onResume");
 			}
-			return;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -1224,7 +1182,7 @@ public class SysUIMods {
 								
 								popup = new HtcPopupWindow(FxRecent);
 								float density = theView.getContext().getResources().getDisplayMetrics().density;
-								int theWidth = Math.round(theView.getContext().getResources().getDisplayMetrics().widthPixels / 3 + 20 * density);
+								int theWidth = Math.round(theView.getContext().getResources().getDisplayMetrics().widthPixels / 3 + 30 * density);
 								popup.setWidth(theWidth);
 								popup.setHeight(-2);
 								popup.setTouchable(true);
@@ -1248,8 +1206,14 @@ public class SysUIMods {
 											intent.setComponent(intent.resolveActivity(view.getContext().getPackageManager()));
 											intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 									        view.getContext().startActivity(intent);
-										} else {
+										} else if (position == 1) {
 											XposedHelpers.callMethod(XposedHelpers.getSurroundingThis(param.thisObject), "handleSwipe", theView);
+										} else {
+											try {
+												terminateAll(1, theView);
+											} catch (Exception e) {
+												e.printStackTrace();
+											}
 										}
 									}
 								});

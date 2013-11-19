@@ -329,8 +329,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_sysui_aosprecent", false))
 				SysUIMods.execHook_AospRecent(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_recentappsclear", false))
-				SysUIMods.execHook_RecentAppsClear(lpparam);
+			SysUIMods.execHook_RecentAppsInit(lpparam);
+			
+			if(pref.getBoolean("pref_key_sysui_recentappsclear", false)) {
+				SysUIMods.execHook_RecentAppsClearTouch(lpparam);	
+			}
 			
 			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockAnimation(lpparam);
