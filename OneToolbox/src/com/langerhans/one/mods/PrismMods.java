@@ -31,6 +31,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.WindowManager;
@@ -614,11 +615,10 @@ public class PrismMods {
 
 		public SwipeListener(Context context) {
 			helperContext = context;
-			float dHeight = helperContext.getResources().getDisplayMetrics().heightPixels;
-			float dWidth = helperContext.getResources().getDisplayMetrics().widthPixels;
-			SWIPE_MIN_DISTANCE = Math.round(0.15f * dHeight);
-			SWIPE_MAX_OFF_PATH = Math.round(0.23f * dWidth);
-			SWIPE_THRESHOLD_VELOCITY = Math.round(0.1f * dHeight);			
+			float density = helperContext.getResources().getDisplayMetrics().density;
+			SWIPE_MIN_DISTANCE = Math.round(100 * density);
+			SWIPE_MAX_OFF_PATH = Math.round(85 * density);
+			SWIPE_THRESHOLD_VELOCITY = Math.round(65 * density);			
 		}
 		
 		@Override
@@ -730,7 +730,7 @@ public class PrismMods {
 	// Listener for swipes on dock
 	private static class SwipeListenerDock extends GestureDetector.SimpleOnGestureListener {
 		// For HTC One
-		private int SWIPE_MIN_DISTANCE_HORIZ = 130;
+		private int SWIPE_MIN_DISTANCE_HORIZ = 230;
 		private int SWIPE_MIN_DISTANCE_VERT = 50;
 		private int SWIPE_THRESHOLD_VELOCITY = 100;
 		
@@ -740,11 +740,10 @@ public class PrismMods {
 		public SwipeListenerDock(Object cellLayout) {
 			launcher = XposedHelpers.getObjectField(cellLayout, "m_launcher");
 			helperContext = ((ViewGroup)cellLayout).getContext();
-			float dHeight = helperContext.getResources().getDisplayMetrics().heightPixels;
-			float dWidth = helperContext.getResources().getDisplayMetrics().widthPixels;
-			SWIPE_MIN_DISTANCE_HORIZ = Math.round(0.12f * dWidth);
-			SWIPE_MIN_DISTANCE_VERT = Math.round(0.026f * dHeight);
-			SWIPE_THRESHOLD_VELOCITY = Math.round(0.09f * dWidth);
+			float density = helperContext.getResources().getDisplayMetrics().density;
+			SWIPE_MIN_DISTANCE_HORIZ = Math.round(75 * density);
+			SWIPE_MIN_DISTANCE_VERT = Math.round(17 * density);
+			SWIPE_THRESHOLD_VELOCITY = Math.round(33 * density);
 		}
 		
 		@Override
@@ -932,6 +931,28 @@ public class PrismMods {
 			public void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				if ((Boolean) getAdditionalInstanceField(param.thisObject, "workspaceFolder"))
 					param.args[0] = false;
+			}
+		});
+	}
+
+	// Long press on hotseat toggle button, no idea how to use it for now :D
+	public static void execHook_hotseatToggleBtn(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "resetLayout", new XC_MethodHook() {
+			@Override
+			public void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				TextView m_toggleButton = (TextView)XposedHelpers.getObjectField(param.thisObject, "m_toggleButton");
+				final Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
+				m_toggleButton.setOnLongClickListener(new OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View v) {
+						if ((Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown"))
+							XposedHelpers.callMethod(m_launcher, "showWorkspace", false);
+						else
+							XposedHelpers.callMethod(m_launcher, "showAllApps", false);
+						
+						return true;
+					}
+				});
 			}
 		});
 	}

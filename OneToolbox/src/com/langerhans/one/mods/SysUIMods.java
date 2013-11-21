@@ -973,11 +973,10 @@ public class SysUIMods {
 		
 		public SwipeListener(Context context) {
 			helperContext = context;
-			float dHeight = helperContext.getResources().getDisplayMetrics().heightPixels;
-			float dWidth = helperContext.getResources().getDisplayMetrics().widthPixels;
-			SWIPE_MIN_DISTANCE = Math.round(0.0625f * dHeight);
-			SWIPE_MAX_OFF_PATH = Math.round(0.23f * dWidth);
-			SWIPE_THRESHOLD_VELOCITY = Math.round(0.1f * dHeight);
+			float density = helperContext.getResources().getDisplayMetrics().density;
+			SWIPE_MIN_DISTANCE = Math.round(40 * density);
+			SWIPE_MAX_OFF_PATH = Math.round(85 * density);
+			SWIPE_THRESHOLD_VELOCITY = Math.round(66 * density);
 		}
 		
 		@Override

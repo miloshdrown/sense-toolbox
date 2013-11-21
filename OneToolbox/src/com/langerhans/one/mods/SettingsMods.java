@@ -1,8 +1,10 @@
 package com.langerhans.one.mods;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+import static de.robv.android.xposed.XposedHelpers.findClass;
 
 import java.io.File;
+import java.util.ArrayList;
 
 import com.htc.widget.HtcListItem;
 import com.htc.widget.HtcListItem2LineStamp;
@@ -20,6 +22,9 @@ import android.os.Bundle;
 import android.os.Message;
 import android.text.format.Formatter;
 import android.view.Gravity;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
@@ -65,16 +70,92 @@ public class SettingsMods {
 	static HtcListItem uninstall_start_item = null;
 	static ApplicationInfo appInfo = null;
 	static Context theContext = null;
+	static Boolean showDisabledOnly = false;
+	
+	public static void execHook_AppFilter(LoadPackageParam lpparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+		
+		XposedBridge.hookAllConstructors(findClass("com.android.settings.applications.ManageApplications", lpparam.classLoader), new XC_MethodHook(){
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				showDisabledOnly = false;
+			}
+		});
+
+		// Add and setup new menu item
+		findAndHookMethod("com.android.settings.applications.ManageApplicationsFragment", lpparam.classLoader, "onCreateOptionsMenu", Menu.class, MenuInflater.class, new XC_MethodHook(){
+			@Override
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Menu mOptionsMenu = (Menu)XposedHelpers.getObjectField(param.thisObject, "mOptionsMenu");
+				if (mOptionsMenu != null) {
+					int mCurView = XposedHelpers.getIntField(param.thisObject, "mCurView");
+					if (mCurView != 2)
+					if (showDisabledOnly)
+						mOptionsMenu.add(0, 31337, 2, modRes.getString(R.string.apps_all)).setShowAsAction(0);
+					else
+						mOptionsMenu.add(0, 31337, 2, modRes.getString(R.string.apps_disabled)).setShowAsAction(0);
+					XposedHelpers.callMethod(param.thisObject, "updateOptionsMenu");
+				}
+			}
+		});
+		
+		findAndHookMethod("com.android.settings.applications.ManageApplicationsFragment", lpparam.classLoader, "onOptionsItemSelected", MenuItem.class, new XC_MethodHook(){
+			@Override
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				int i = ((MenuItem)param.args[0]).getItemId();
+				if (i == 31337) {
+					showDisabledOnly = !showDisabledOnly;
+					int mCurView = XposedHelpers.getIntField(param.thisObject, "mCurView");
+					if (mCurView != 2) {
+						Object mApplicationsAdapter = XposedHelpers.getObjectField(param.thisObject, "mApplicationsAdapter");
+						XposedHelpers.callMethod(mApplicationsAdapter, "rebuild", true);
+					}
+					XposedHelpers.callMethod(param.thisObject, "updateOptionsMenu");
+				}
+			}
+		});
+		
+		findAndHookMethod("com.android.settings.applications.ManageApplicationsFragment", lpparam.classLoader, "updateOptionsMenu", new XC_MethodHook(){
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				int mCurView = XposedHelpers.getIntField(param.thisObject, "mCurView");
+				Menu mOptionsMenu = (Menu)XposedHelpers.getObjectField(param.thisObject, "mOptionsMenu");
+				if (mOptionsMenu != null && mOptionsMenu.size() > 0)
+				if (mCurView != 2) {
+					MenuItem eleetMenuItem = mOptionsMenu.findItem(31337);
+					if (eleetMenuItem != null) {
+						eleetMenuItem.setVisible(true);
+						if (showDisabledOnly)
+							eleetMenuItem.setTitle(modRes.getString(R.string.apps_all));
+						else
+							eleetMenuItem.setTitle(modRes.getString(R.string.apps_disabled));
+					}
+				}
+			}
+		});
+
+		// Apply custom filter after stock one
+		findAndHookMethod("com.android.settings.applications.ManageApplicationsFragment$ApplicationsAdapter", lpparam.classLoader, "applyPrefixFilter", CharSequence.class, ArrayList.class, new XC_MethodHook(){
+			@Override
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				@SuppressWarnings("unchecked")
+				ArrayList<Object> arraylist = (ArrayList<Object>)param.getResult();
+				ArrayList<Object> arraylist2 = new ArrayList<Object>();
+				if (showDisabledOnly) {
+					for (int i = 0; i < arraylist.size(); i++) {
+						Object entry = arraylist.get(i);
+						ApplicationInfo entryAppInfo = (ApplicationInfo)XposedHelpers.getObjectField(entry, "info");
+						if (!entryAppInfo.enabled) arraylist2.add(entry);
+					}
+				} else arraylist2 = arraylist;
+				param.setResult(arraylist2);
+			}
+		});
+	}
 	
 	public static void execHook_Apps(LoadPackageParam lpparam) {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-		/*
-		findAndHookMethod("com.android.settings.applications.ManageApplicationsFragment$ApplicationsAdapter", lpparam.classLoader, "getView", int.class, View.class, ViewGroup.class, new XC_MethodHook(){
-			@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-			}
-		});
-		*/
+		
 		findAndHookMethod("com.android.settings.applications.InstalledAppDetails", lpparam.classLoader, "onHandleUiMessage", Message.class, new XC_MethodHook(){
 			@Override
     		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {

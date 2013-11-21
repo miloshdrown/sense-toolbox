@@ -277,6 +277,8 @@
 	<string name="persist_bypasslock_summ">\*Bildschirmsperre beim Aufwachen umgehen\' funktioniert auch wieder ohne Sperrbildschirm.</string>
 	<string name="persist_unhideprefs_title">Telefon-Info</string>
 	<string name="persist_unhideprefs_summ">\(Re-\)Aktiviert die Anzeige von \'ROM Version\', \'Verteilungszeit\' und \'Hardware-Informationen\' im Info-Menü.</string>
+	<string name="persist_appfilter_title">###TRANSLATE_ME###</string>
+	<string name="persist_appfilter_summ">###TRANSLATE_ME###</string>
 	<string name="persist_recentslongtap_title">Kontextmenü in \'Letzte Apps\'</string>
 	<string name="persist_recentslongtap_summ">Ein Kontextmenü je App kann per Halten auf dem \'Letzte Apps\' Bildschirm aufgerufen werden.</string>
 	<string name="persist_installer_title">App-Version bei Installation</string>
@@ -319,5 +321,8 @@
 	<string name="appdetails_proc_name">Prozess</string>
 	<string name="appdetails_uid">User ID</string>
 	<string name="appdetails_sdk">SDK Version</string>
+	
+	<string name="apps_disabled">###TRANSLATE_ME###</string>
+	<string name="apps_all">###TRANSLATE_ME###</string>
 
 </resources>

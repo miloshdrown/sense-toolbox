@@ -277,6 +277,8 @@
 	<string name="persist_bypasslock_summ">###TRANSLATE_ME###</string>
 	<string name="persist_unhideprefs_title">###TRANSLATE_ME###</string>
 	<string name="persist_unhideprefs_summ">###TRANSLATE_ME###</string>
+	<string name="persist_appfilter_title">###TRANSLATE_ME###</string>
+	<string name="persist_appfilter_summ">###TRANSLATE_ME###</string>
 	<string name="persist_recentslongtap_title">###TRANSLATE_ME###</string>
 	<string name="persist_recentslongtap_summ">###TRANSLATE_ME###</string>
 	<string name="persist_installer_title">###TRANSLATE_ME###</string>
@@ -319,6 +321,9 @@
     <string name="appdetails_proc_name">Nazwa procesu</string>
     <string name="appdetails_uid">ID użytkownika</string>
     <string name="appdetails_sdk">Wersja Docelowego SDK</string>
+    
+    <string name="apps_disabled">###TRANSLATE_ME###</string>
+	<string name="apps_all">###TRANSLATE_ME###</string>
     
     <string name="about_devs">Programiści</string>
     <string name="about_devs_names">Langer Hans\nMikanoshi</string>

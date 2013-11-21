@@ -277,6 +277,8 @@
 	<string name="persist_bypasslock_summ">\'Bypass lock screen on wake\' setting works also without screen lock.</string>
 	<string name="persist_unhideprefs_title">Revealed settings</string>
 	<string name="persist_unhideprefs_summ">Show \'ROM version\', \'Distribution time\' and \'Hardware information\' (on Sense 5.5) in About section of Settings.</string>
+	<string name="persist_appfilter_title">Apps filter</string>
+	<string name="persist_appfilter_summ">Add an option to display only disabled packages in Apps.</string>
 	<string name="persist_recentslongtap_title">Popup menu in recent apps list</string>
 	<string name="persist_recentslongtap_summ">Show popup menu on long press for every app in recents list.</string>
 	<string name="persist_installer_title">Display app version</string>
@@ -319,6 +321,9 @@
 	<string name="appdetails_proc_name">Process name</string>
 	<string name="appdetails_uid">User ID</string>
 	<string name="appdetails_sdk">Target SDK Version</string>
+	
+	<string name="apps_disabled">Show disabled only</string>
+	<string name="apps_all">Show all</string>
 	
 	<string name="about_devs">Developers</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>

@@ -284,6 +284,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_prism_invisilabels", false))
 				PrismMods.execHook_invisiLabels(lpparam);
+			
+			//PrismMods.execHook_hotseatToggleBtn(lpparam);
 		}
 		
 		if (pkg.equals("com.htc.lockscreen")) {
@@ -304,6 +306,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_other_appdetails", false))
 				SettingsMods.execHook_Apps(lpparam);
 			
+			SettingsMods.execHook_AppFilter(lpparam);
 			SettingsMods.execHook_UnhidePrefs(lpparam);
 		}
 		

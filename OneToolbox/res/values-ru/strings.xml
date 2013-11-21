@@ -277,6 +277,8 @@
 	<string name="persist_bypasslock_summ">Опция \'Пропуск экрана блокировки\' работает также при выключенном локскрине.</string>
 	<string name="persist_unhideprefs_title">Новые настройки</string>
 	<string name="persist_unhideprefs_summ">Показывает поля \'Версия ПЗУ\', \'Время распространения\' и \'Техническая информация\' (для Sense 5.5) в Настройках в разделе \'О телефоне\'.</string>
+	<string name="persist_appfilter_title">Фильтр приложений</string>
+	<string name="persist_appfilter_summ">Добавляет возможность показывать только отключенные элементы в Приложениях.</string>
 	<string name="persist_recentslongtap_title">Меню в списке последних приложений</string>
 	<string name="persist_recentslongtap_summ">Показывает всплывающее меню для каждого приложения в списке при долгом нажатии.</string>
 	<string name="persist_installer_title">Версия приложения</string>
@@ -319,5 +321,8 @@
 	<string name="appdetails_proc_name">Имя процесса</string>
 	<string name="appdetails_uid">ID пользователя</string>
 	<string name="appdetails_sdk">Версия SDK</string>
+	
+	<string name="apps_disabled">Показывать только отключенные</string>
+	<string name="apps_all">Показывать все</string>
 
 </resources>
