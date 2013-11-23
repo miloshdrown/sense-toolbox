@@ -10,6 +10,7 @@ import static de.robv.android.xposed.XposedHelpers.setIntField;
 import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
 
 import java.util.Arrays;
+import java.util.EnumSet;
 
 import android.app.Activity;
 import android.appwidget.AppWidgetProviderInfo;
@@ -69,20 +70,25 @@ public class PrismMods {
 	private static GestureDetector mDetector;
 	private static GestureDetector mDetectorDock;
 	
-	public static void execHook_InvisiNav(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
-		try {
-			final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
-			resparam.res.setReplacement("com.htc.launcher", "drawable", "home_nav_bg", new XResources.DrawableLoader() {
-				@Override
-				public Drawable newDrawable(XResources res, int id) throws Throwable {
-					Drawable bg = modRes.getDrawable(R.drawable.home_nav_bg);
-					bg.setAlpha(transparency);
-					return bg;
-				}
-			});
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+	public static void execHook_InvisiDock(LoadPackageParam lpparam, final int transparency) {
+		findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "show", boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				boolean isAllAppsOpen = false;
+				Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
+				if (m_launcher != null)
+				isAllAppsOpen = (Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown");
+				
+				ImageView m_BackgroundImg = (ImageView)XposedHelpers.getObjectField(param.thisObject, "m_BackgroundImg");
+				float alphaDrawer = XMain.pref.getInt("pref_key_prism_invisidrawer", 100) / 100.0f;
+				if (isAllAppsOpen && alphaDrawer > transparency/255.0f) {
+					if (XMain.pref.getBoolean("pref_key_prism_invisidrawer_enable", false)) {
+						m_BackgroundImg.animate().alpha(alphaDrawer);
+					} else
+						m_BackgroundImg.animate().alpha(1.0f);
+				} else m_BackgroundImg.animate().alpha(transparency/255.0f);
+			}
+		});
 	}
 	
 	public static void execHook_InvisiWidget(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
@@ -179,7 +185,6 @@ public class PrismMods {
 	
 	public static void execHook_InvisiFolder(final InitPackageResourcesParam resparam, final int transparency) {
 		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
-			// 5.5
 			try {
 				resparam.res.hookLayout("com.htc.launcher", "layout", "specific_user_folder", new XC_LayoutInflated() {
 					@Override
@@ -191,7 +196,6 @@ public class PrismMods {
 				e.printStackTrace();
 			}
 		} else {
-			// 5.0
 			try {
 				resparam.res.hookLayout("com.htc.launcher", "layout", "user_folder", new XC_LayoutInflated() {
 					@Override
@@ -210,7 +214,7 @@ public class PrismMods {
 		bg.getBackground().setAlpha(transparency);
 		LinearLayout nameframe = (LinearLayout)liparam.view.findViewById(resparam.res.getIdentifier("folder_name_frame", "id", "com.htc.launcher"));
 		if (nameframe != null) {
-			RelativeLayout.LayoutParams lp =  (RelativeLayout.LayoutParams)nameframe.getLayoutParams();
+			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)nameframe.getLayoutParams();
 			lp.rightMargin = 3;
 			nameframe.setLayoutParams(lp);
 			nameframe.setBackgroundColor(Color.argb(255, 20, 20, 20));
@@ -234,6 +238,11 @@ public class PrismMods {
 		});
 	}
 	
+	public static void execHook_InvisiDrawerRes(InitPackageResourcesParam resparam) {
+		resparam.res.setReplacement("com.htc.launcher", "integer", "config_workspaceUnshrinkTime", 300);
+		resparam.res.setReplacement("com.htc.launcher", "integer", "config_appsCustomizeWorkspaceShrinkTime", 100);
+	}
+	
 	public static void execHook_InvisiDrawerCode(LoadPackageParam lpparam, final int transparency) {
 		execHook_PreserveWallpaper(lpparam);
 		
@@ -248,14 +257,53 @@ public class PrismMods {
 			findAndHookMethod("com.htc.launcher.DragLayer", lpparam.classLoader, "setBackgroundAlpha", float.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					if ((Float)param.args[0] > transparency/255.0f) param.args[0] = transparency/255.0f;
+					boolean isAllAppsOpen = false;
+					Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
+					if (m_launcher != null)
+					isAllAppsOpen = (Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown");	
+					
+					if (isAllAppsOpen)
+						param.args[0] = 0;
+					else if ((Float)param.args[0] > transparency/255.0f)
+						param.args[0] = transparency/255.0f;
 				}
 			});
+			
+			// Animate Workspace alpha during transition between Workspace and AllApps   
+			final Class<?> Properties = XposedHelpers.findClass("com.htc.launcher.LauncherViewPropertyAnimator.Properties", lpparam.classLoader);
+			findAndHookMethod("com.htc.launcher.LauncherViewPropertyAnimator", lpparam.classLoader, "start", new XC_MethodHook() {
+				@Override
+				@SuppressWarnings({ "rawtypes", "unchecked" })
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					EnumSet m_propertiesToSet = (EnumSet)XposedHelpers.getObjectField(param.thisObject, "m_propertiesToSet");
+					Enum SCALE_X = (Enum) XposedHelpers.getStaticObjectField(Properties, "SCALE_X");
+					Enum SCALE_Y = (Enum) XposedHelpers.getStaticObjectField(Properties, "SCALE_Y");
+					if (m_propertiesToSet.contains(SCALE_X) && m_propertiesToSet.contains(SCALE_Y)) {
+						float m_fScaleX = XposedHelpers.getFloatField(param.thisObject, "m_fScaleX");
+						float m_fScaleY = XposedHelpers.getFloatField(param.thisObject, "m_fScaleY");
+						
+						Enum ALPHA = (Enum)XposedHelpers.getStaticObjectField(Properties, "ALPHA");
+						if (m_fScaleX == 0.9f && m_fScaleY == 0.9f) {
+							m_propertiesToSet.add(ALPHA);
+							XposedHelpers.setFloatField(param.thisObject, "m_fAlpha", 0.0f);
+						} else if (m_fScaleX == 1.0f && m_fScaleY == 1.0f) {
+							m_propertiesToSet.add(ALPHA);
+							XposedHelpers.setFloatField(param.thisObject, "m_fAlpha", 1.0f);
+						}
+					}
+				}
+			});
+			
 			/*
 			findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "setBackgroundAlpha", float.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					if ((Float)param.args[0] > transparency/255.0f) param.args[0] = transparency/255.0f;
+				}
+			});
+			
+			findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAppsCustomizeHelper", "com.htc.launcher.Launcher.State", boolean.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				}
 			});
 			*/
@@ -263,7 +311,7 @@ public class PrismMods {
 			findAndHookMethod("com.htc.launcher.pageview.AllAppsPagedViewHost", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					ViewGroup m_PagedView = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "m_PagedView").get(param.thisObject);
+					ViewGroup m_PagedView = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_PagedView");
 					ViewParent vp = m_PagedView.getParent();
 					if (vp != null) {
 						if (vp instanceof RelativeLayout) {
@@ -283,7 +331,7 @@ public class PrismMods {
 			findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAllApps", boolean.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					ViewGroup m_workspace = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "m_workspace").get(param.thisObject);
+					ViewGroup m_workspace = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_workspace");
 					m_workspace.setVisibility(4);
 				}
 			});
@@ -292,7 +340,7 @@ public class PrismMods {
 	
 	// Move Action Bar
 	private static void moveAB(MethodHookParam param) throws Throwable {
-		FrameLayout m_headerActionBar = (FrameLayout)XposedHelpers.findField(param.thisObject.getClass(), "m_headerActionBar").get(param.thisObject);
+		FrameLayout m_headerActionBar = (FrameLayout)XposedHelpers.getObjectField(param.thisObject, "m_headerActionBar");
 		if (m_headerActionBar != null) {
 			FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams)m_headerActionBar.getLayoutParams();
 			
@@ -317,19 +365,19 @@ public class PrismMods {
 		findAndHookMethod("com.htc.launcher.pageview.AllAppsController", lpparam.classLoader, "attachMasthead", Masthead, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				int m_nControllerState = (Integer)XposedHelpers.findField(param.thisObject.getClass(), "m_nControllerState").get(param.thisObject);
-				Object m_AllAppsPagedView = XposedHelpers.findField(param.thisObject.getClass(), "m_AllAppsPagedView").get(param.thisObject);
-				View m_headerContent = (View)XposedHelpers.findField(param.args[0].getClass(), "m_headerContent").get(param.args[0]);
+				int m_nControllerState = XposedHelpers.getIntField(param.thisObject, "m_nControllerState");
+				Object m_AllAppsPagedView = XposedHelpers.getObjectField(param.thisObject, "m_AllAppsPagedView");
+				View m_headerContent = (View)XposedHelpers.getObjectField(param.args[0], "m_headerContent");
 				m_headerContent.setVisibility(8);				
 				if (m_nControllerState == 1) {
 					XposedHelpers.callMethod(param.args[0], "attachTo", m_AllAppsPagedView);
 					XposedHelpers.callMethod(param.thisObject, "addActionBarListenerToMasthead", param.args[0]);
-					Object m_masthead = XposedHelpers.findField(param.thisObject.getClass(), "m_masthead").get(param.thisObject);
+					Object m_masthead = XposedHelpers.getObjectField(param.thisObject, "m_masthead");
 					if (m_masthead == null && param.args[0] != null)
 					try {
 						XposedHelpers.callMethod(param.thisObject, "updateSortType", XposedHelpers.callMethod(param.args[0], "getActionBar"));
 					} catch (NoSuchMethodError e){
-						Object m_AllAppsDataManager = XposedHelpers.findField(param.thisObject.getClass(), "m_AllAppsDataManager").get(param.thisObject);
+						Object m_AllAppsDataManager = XposedHelpers.getObjectField(param.thisObject, "m_AllAppsDataManager");
 						XposedHelpers.callMethod(param.thisObject, "updateSortType", XposedHelpers.callMethod(param.args[0], "getActionBar"), XposedHelpers.callMethod(m_AllAppsDataManager, "getAppSort"));
 					}						
 				}
@@ -343,8 +391,8 @@ public class PrismMods {
 			findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showWorkspace", boolean.class, Runnable.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					Object m_masthead = XposedHelpers.findField(param.thisObject.getClass(), "m_masthead").get(param.thisObject);
-					View m_headerContent = (View)XposedHelpers.findField(m_masthead.getClass(), "m_headerContent").get(m_masthead);
+					Object m_masthead = XposedHelpers.getObjectField(param.thisObject, "m_masthead");
+					View m_headerContent = (View)XposedHelpers.getObjectField(m_masthead, "m_headerContent");
 					m_headerContent.setVisibility(0);
 				}
 			});
@@ -377,7 +425,7 @@ public class PrismMods {
 		findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "setupPaddings", Context.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				int m_nPageLayoutPaddingTop = (Integer)XposedHelpers.findField(param.thisObject.getClass(), "m_nPageLayoutPaddingTop").get(param.thisObject);
+				int m_nPageLayoutPaddingTop = XposedHelpers.getIntField(param.thisObject, "m_nPageLayoutPaddingTop");
 				XposedHelpers.setIntField(param.thisObject, "m_nPageLayoutPaddingTop", (int)Math.round((float)m_nPageLayoutPaddingTop/1.5));
 			}
 		});			
@@ -448,7 +496,7 @@ public class PrismMods {
 			findAndHookMethod("com.htc.launcher.pageview.AllAppsOptionsManager", lpparam.classLoader, "saveGridSize", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					Context m_Context = (Context)XposedHelpers.findField(param.thisObject.getClass(), "m_Context").get(param.thisObject);
+					Context m_Context = (Context)XposedHelpers.getObjectField(param.thisObject, "m_Context");
 					SharedPreferences.Editor editor = m_Context.getSharedPreferences("launcher.preferences", 0).edit();
 					editor.putInt("grid_size_override", gridSizeVal).commit();
 				}
@@ -469,7 +517,7 @@ public class PrismMods {
 			findAndHookMethod("com.htc.launcher.pageview.AllAppsOptionsManager", lpparam.classLoader, "loadGridSize", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					Context m_Context = (Context)XposedHelpers.findField(param.thisObject.getClass(), "m_Context").get(param.thisObject);
+					Context m_Context = (Context)XposedHelpers.getObjectField(param.thisObject, "m_Context");
 					SharedPreferences prefs = m_Context.getSharedPreferences("launcher.preferences", 0);
 					if (prefs.contains("grid_size_override")) gridSizeVal = prefs.getInt("grid_size_override", 0);
 				}
@@ -712,7 +760,7 @@ public class PrismMods {
 				if (helperContext == null) return;
 				if (mDetectorDock == null) mDetectorDock = new GestureDetector(helperContext, new SwipeListenerDock(param.thisObject));
 				
-				boolean m_bIsHotseat = (Boolean)XposedHelpers.getObjectField(param.thisObject, "m_bIsHotseat");
+				boolean m_bIsHotseat = XposedHelpers.getBooleanField(param.thisObject, "m_bIsHotseat");
 				if (m_bIsHotseat) {
 					if (hotSeat == null) {
 						Object hotSeatObj = ((ViewGroup)param.thisObject).getParent();
@@ -882,7 +930,7 @@ public class PrismMods {
 					PowerManager powerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 					if (powerManager.isScreenOn()) {
 						Object mLSState = XposedHelpers.getObjectField(param.thisObject, "mLSState");
-						boolean mInLockScreen = (Boolean)XposedHelpers.getObjectField(param.thisObject, "mInLockScreen");
+						boolean mInLockScreen = XposedHelpers.getBooleanField(param.thisObject, "mInLockScreen");
 						boolean isNotAlarmOrIncomingCall = (Boolean)XposedHelpers.callMethod(param.thisObject, "needToHandleVolume");
 						if (mLSState != null && mInLockScreen && isNotAlarmOrIncomingCall) {
 							Object settingobserver = XposedHelpers.getObjectField(mLSState, "mSettingObserver");

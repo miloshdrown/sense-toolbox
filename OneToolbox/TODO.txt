@@ -37,6 +37,12 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
 2.5:
 Fully customizable color themes for CleanBeam icons.
+More compact and responsive traffic meter
+"Close others" option in recent apps long press menu. Terminates all recent apps except the one you choose, then brings that app back to screen.
+Additional filter option for the Apps list, allows to display disabled apps only.
+Dock transparency is dynamic now, it will be lowered to match app drawer transparency when app drawer is opened.
+[Sense 5.5] App drawer transparency was made equal to BlinkFeed transparency, you may want to change its value after update.
+[Sense 5.5] Transitions between home screens and app drawer were modified to be very smooth, without any flashes or artifacts.
 
 2.4.1:
 Fix for Bypass lockscreen option, doesn't dismiss lockscreen on incoming call and alarm ringer.
