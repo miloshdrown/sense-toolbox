@@ -243,6 +243,8 @@
 	<string name="controls_homeassistaction_summ">Заменяет вызов ассистента (Google Now по умолчанию).</string>
 	<string name="controls_vol2wake_title">Пробуждение на клавиши громкости</string>
 	<string name="controls_vol2wake_summ">Выводит устройство из режима сна при нажатии на клавиши громкости. Обязателен root! Для включения нужна полная перезагрузка!</string>
+	<string name="controls_powerflash_title">Быстрый фонарик</string>
+	<string name="controls_powerflash_summ">Позволяет активировать фонарик при отключенном экране долгим нажатием на кнопку включения.</string>
 	
 	<string name="kill_foreground">Выгрузить текущее приложение</string>
 	<string name="kill_foreground_warn">Вы пытаетесь выгрузить ланчер!</string>

@@ -243,6 +243,8 @@
     <string name="controls_homeassistaction_summ">Zastępuje działanie pomocy(która jest domyślnie Google Now).</string>
     <string name="controls_vol2wake_title">Volume2Wake</string>
     <string name="controls_vol2wake_summ">Wybudzenie telefonu klawiszami głośności. Wymagany root! Wykonaj pełny restart w celu zastosowania!</string>
+    <string name="controls_powerflash_title">###TRANSLATE_ME###</string>
+	<string name="controls_powerflash_summ">###TRANSLATE_ME###</string>
     
     <string name="kill_foreground">Zabij pierwszoplanowe aplikację</string>
     <string name="kill_foreground_warn">Próbujesz zabić launcher!</string>

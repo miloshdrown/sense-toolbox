@@ -2,7 +2,10 @@ package com.langerhans.one.mods;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
+
 import android.content.Context;
+import android.os.Handler;
+import android.os.PowerManager;
 import android.view.KeyEvent;
 
 import com.langerhans.one.utils.GlobalActions;
@@ -17,6 +20,10 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class ControlsMods {
 	
 	private static boolean isBackLongPressed = false;
+	private static boolean isPowerPressed = false;
+	private static boolean isPowerLongPressed = false;
+	private static boolean isWaitingForPowerLongPressed = false;
+	private static int mFlashlightLevel = 0;
 	
 	public static void setupPWMKeys() {
 		try {
@@ -36,12 +43,8 @@ public class ControlsMods {
 					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 						// Back long press
 						if (pref_backlongpress != 1 && keycode == KeyEvent.KEYCODE_BACK) {
-							if (action == KeyEvent.ACTION_DOWN) {
-								isBackLongPressed = false;
-							}
-							if (action == KeyEvent.ACTION_UP && isBackLongPressed == true) {
-								param.setResult(0);
-							}
+							if (action == KeyEvent.ACTION_DOWN) isBackLongPressed = false;
+							if (action == KeyEvent.ACTION_UP && isBackLongPressed == true) param.setResult(0);
 						}
 					}
 				}
@@ -142,6 +145,61 @@ public class ControlsMods {
 				//XposedBridge.log("Pressed button! Keycode = " + String.valueOf(keyCode));
 				if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
 					param.setResult(true);
+			}
+		});
+	}
+	
+	public static void execHook_PowerFlash(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				KeyEvent keyEvent = (KeyEvent)param.args[0];
+				
+				int keycode = keyEvent.getKeyCode();
+				int action = keyEvent.getAction();
+				int flags = keyEvent.getFlags();
+				
+				// Ignore repeated KeyEvents simulated on Power Key Up
+				if ((flags & KeyEvent.FLAG_VIRTUAL_HARD_KEY) == KeyEvent.FLAG_VIRTUAL_HARD_KEY) return;
+				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
+					// Power long press
+					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+					if (keycode == KeyEvent.KEYCODE_POWER && !mPowerManager.isScreenOn()) {
+						//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
+						if (action == KeyEvent.ACTION_DOWN) {
+							isPowerPressed = true;
+							isPowerLongPressed = false;
+							
+							Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+							// Post only one delayed runnable that waits for long press timeout
+							if (!isWaitingForPowerLongPressed)
+							mHandler.postDelayed(new Runnable(){
+								@Override
+								public void run() {
+									if (isPowerPressed) {
+										isPowerLongPressed = true;
+										if (mFlashlightLevel == 0) mFlashlightLevel = 127; else mFlashlightLevel = 0;
+										GlobalActions.setFlashlight(mFlashlightLevel);
+									}
+									isPowerPressed = false;
+									isWaitingForPowerLongPressed = false;
+								}
+							}, 1000);
+							isWaitingForPowerLongPressed = true;
+							param.setResult(0);
+						}
+						if (action == KeyEvent.ACTION_UP) {
+							if (isPowerPressed && !isPowerLongPressed) {
+								mFlashlightLevel = 0;
+								GlobalActions.setFlashlight(0);
+								XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
+								XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
+								param.setResult(0);
+							}
+							isPowerPressed = false;
+						}
+					}
+				}
 			}
 		});
 	}

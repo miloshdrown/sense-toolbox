@@ -171,41 +171,21 @@ public class GlobalActions {
 					Toast.makeText(context, modRes.getString(R.string.toggle_autorotate_off), Toast.LENGTH_SHORT).show();
 				}
 			}
-			
 			if (action.equals("com.langerhans.one.mods.action.ToggleFlashlight")) {
-				Method setFlashlightBrightness = null;
-				Object svc = null;
-				Object HTCHW = Class.forName("android.os.ServiceManager").getMethod("getService", new Class[] { String.class }).invoke(null, new Object[] { "htchardware" });
-				Method HTCHWInterface = Class.forName("android.os.IHtcHardwareService$Stub").getMethod("asInterface", new Class[] { IBinder.class });
-				Object[] paramArr = new Object[1];
-				paramArr[0] = ((IBinder)HTCHW);
-				svc = HTCHWInterface.invoke(null, paramArr);
-				Class<?> svcClass = svc.getClass();
-				Class<?>[] paramArray2 = new Class[1];
-				paramArray2[0] = Integer.TYPE;
-				setFlashlightBrightness = svcClass.getMethod("setFlashlightBrightness", paramArray2);
-				
-				if (setFlashlightBrightness != null) {
-					Object[] paramArray = new Object[1];
-					if (mCurrentLEDLevel == 0) {
-						paramArray[0] = 125;
-						mCurrentLEDLevel = 125;
-						Toast.makeText(context, modRes.getString(R.string.toggle_flash_low), Toast.LENGTH_SHORT).show();
-					} else if (mCurrentLEDLevel == 125) {
-						paramArray[0] = 126;
-						mCurrentLEDLevel = 126;
-						Toast.makeText(context, modRes.getString(R.string.toggle_flash_med), Toast.LENGTH_SHORT).show();
-					} else if (mCurrentLEDLevel == 126) {
-						paramArray[0] = 127;
-						mCurrentLEDLevel = 127;
-						Toast.makeText(context, modRes.getString(R.string.toggle_flash_high), Toast.LENGTH_SHORT).show();
-					} else if (mCurrentLEDLevel == 127) {
-						paramArray[0] = 0;
-						mCurrentLEDLevel = 0;
-						Toast.makeText(context, modRes.getString(R.string.toggle_flash_off), Toast.LENGTH_SHORT).show();
-					}
-					setFlashlightBrightness.invoke(svc, paramArray);
+				if (mCurrentLEDLevel == 0) {
+					mCurrentLEDLevel = 125;
+					Toast.makeText(context, modRes.getString(R.string.toggle_flash_low), Toast.LENGTH_SHORT).show();
+				} else if (mCurrentLEDLevel == 125) {
+					mCurrentLEDLevel = 126;
+					Toast.makeText(context, modRes.getString(R.string.toggle_flash_med), Toast.LENGTH_SHORT).show();
+				} else if (mCurrentLEDLevel == 126) {
+					mCurrentLEDLevel = 127;
+					Toast.makeText(context, modRes.getString(R.string.toggle_flash_high), Toast.LENGTH_SHORT).show();
+				} else if (mCurrentLEDLevel == 127) {
+					mCurrentLEDLevel = 0;
+					Toast.makeText(context, modRes.getString(R.string.toggle_flash_off), Toast.LENGTH_SHORT).show();
 				}
+				setFlashlight(mCurrentLEDLevel);
 			}
 			if (action.equals("com.langerhans.one.mods.action.ToggleMobileData")) {
 				ConnectivityManager dataManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -246,6 +226,27 @@ public class GlobalActions {
 			}
 		}
 	};
+	
+	public static void setFlashlight(int level) {
+		try {
+			Method setFlashlightBrightness = null;
+			Object svc = null;
+			Object HTCHW = Class.forName("android.os.ServiceManager").getMethod("getService", new Class[] { String.class }).invoke(null, new Object[] { "htchardware" });
+			Method HTCHWInterface = Class.forName("android.os.IHtcHardwareService$Stub").getMethod("asInterface", new Class[] { IBinder.class });
+			Object[] paramArr = new Object[1];
+			paramArr[0] = ((IBinder)HTCHW);
+			svc = HTCHWInterface.invoke(null, paramArr);
+			Class<?> svcClass = svc.getClass();
+			Class<?>[] paramArray2 = new Class[1];
+			paramArray2[0] = Integer.TYPE;
+			setFlashlightBrightness = svcClass.getMethod("setFlashlightBrightness", paramArray2);
+			Object[] paramArray = new Object[1];
+			paramArray[0] = level;
+			setFlashlightBrightness.invoke(svc, paramArray);
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+	}
 	
 	private static String beforeEnable;
 	

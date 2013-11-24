@@ -491,6 +491,11 @@
             android:summary="@string/controls_vol2wake_summ"
             android:title="@string/controls_vol2wake_title"
             android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_controls_powerflash"
+            android:summary="@string/controls_powerflash_summ"
+            android:title="@string/controls_powerflash_title"
+            android:defaultValue="false" />
                 
         <com.htc.preference.HtcPreferenceCategory
     	    android:title="@string/controls_mods_backlongpress"
