@@ -364,12 +364,18 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			OtherMods.execHook_EnhancedInstaller(lpparam);
 		}
 		
+		if (pkg.equals("com.google.android.youtube"))
+		{
+			if (pref.getBoolean("pref_key_other_ytwatermark", false))
+				OtherMods.execHook_YouTubeNoWatermark(lpparam);
+		}
+		
 		if (lpparam.processName.equals("android"))
 		{
-			if(pref.getBoolean("pref_key_other_apm", false))
+			if (pref.getBoolean("pref_key_other_apm", false))
 				OtherMods.execHook_APM(lpparam);
 			
-			if(pref.getBoolean("pref_key_other_volsound", false))
+			if (pref.getBoolean("pref_key_other_volsound", false))
 				OtherMods.execHook_VolSound(lpparam);
 			
 			if (pref.getBoolean("pref_key_controls_vol2wake", false))

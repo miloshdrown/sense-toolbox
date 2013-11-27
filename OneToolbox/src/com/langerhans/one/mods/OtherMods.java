@@ -22,6 +22,7 @@ import android.view.KeyEvent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.ImageView;
 import android.widget.TextView;
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
 import de.robv.android.xposed.XC_MethodHook;
@@ -332,6 +333,16 @@ public class OtherMods{
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
+			}
+		});
+	}
+	
+	public static void execHook_YouTubeNoWatermark(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.google.android.apps.youtube.core.player.overlay.j", lpparam.classLoader, "d", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				ImageView g = (ImageView)XposedHelpers.getObjectField(param.thisObject, "g");
+				g.setVisibility(8);
 			}
 		});
 	}

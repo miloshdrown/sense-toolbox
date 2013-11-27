@@ -271,6 +271,8 @@
     <string name="various_mtpnotif_summ">Dodaj usługę MTP w tłe i wyłącz powiadomienia. Mod jest na ROM oparty na przecieku 4.3.</string>
 	<string name="various_fastunlock_title">Szybkie odblokowanie</string>
 	<string name="various_fastunlock_summ">Odblokuj urządzenie gdy tylko poprawny numer PIN zostanie wprowadzony. Tylko ekran blokady HTC..</string>
+	<string name="various_ytwatermark_title">###TRANSLATE_ME###</string>
+	<string name="various_ytwatermark_summ">###TRANSLATE_ME###</string>
 	
 	<string name="persistent_mods">###TRANSLATE_ME###</string>
 	<string name="persist_adgrid_title">###TRANSLATE_ME###</string>

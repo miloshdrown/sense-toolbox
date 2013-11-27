@@ -271,6 +271,8 @@
 	<string name="various_mtpnotif_summ">Make MTP service background and disable notification. Mod is for ROMs based on leaked 4.3.</string>
 	<string name="various_fastunlock_title">Fast unlock</string>
 	<string name="various_fastunlock_summ">Unlock device as soon as correct PIN is entered. HTC lockscreen only.</string>
+	<string name="various_ytwatermark_title">YouTube channel watermark</string>
+	<string name="various_ytwatermark_summ">Hide channel logo overlay on videos in YouTube app.</string>
 	
 	<string name="persistent_mods">Always active mods</string>
 	<string name="persist_adgrid_title">App drawer grid size</string>

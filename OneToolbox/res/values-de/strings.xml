@@ -271,6 +271,8 @@
 	<string name="various_mtpnotif_summ">Versteckt die MTP-Benachrichtigung. Gedacht für geleakte 4.3 Versionen.</string>
 	<string name="various_fastunlock_title">Schnelles Entsperren</string>
 	<string name="various_fastunlock_summ">Entsperrt das Gerät sobald die richtige PIN eingegeben wurde. Nur mit HTC Lockscreen</string>
+	<string name="various_ytwatermark_title">###TRANSLATE_ME###</string>
+	<string name="various_ytwatermark_summ">###TRANSLATE_ME###</string>
 	
 	<string name="persistent_mods">Dauerhaft aktive Mods</string>
 	<string name="persist_adgrid_title">Rastergöße in \'Alle Apps\'</string>

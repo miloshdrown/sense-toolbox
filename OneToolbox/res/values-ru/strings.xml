@@ -271,6 +271,8 @@
 	<string name="various_mtpnotif_summ">Делает MTP сервис фоновым и скрывает уведомление. Мод предназначен для прошивок на основе утечки 4.3.</string>
 	<string name="various_fastunlock_title">Быстрая разблокировка</string>
 	<string name="various_fastunlock_summ">Позволяет разблокировать экран сразу после ввода правильного ПИНа. Только для HTC локскрина.</string>
+	<string name="various_ytwatermark_title">Логотип канала YouTube</string>
+	<string name="various_ytwatermark_summ">Прячет лого канала при просмотре видео в приложении YouTube.</string>
 	
 	<string name="persistent_mods">Всегда активные моды</string>
 	<string name="persist_adgrid_title">Размер сетки списка приложений</string>
