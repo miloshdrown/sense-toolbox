@@ -195,6 +195,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				PrismMods.execHook_InvisiWidget(resparam, transparency, MODULE_PATH);
 			}
 		}
+		
+		if (pkg.equals("com.google.android.youtube"))
+		{
+			if (pref.getBoolean("pref_key_other_ytwatermark", false))
+				OtherMods.execHook_YouTubeNoWatermark(resparam);
+		}
 	}
 
 	@Override
@@ -362,12 +368,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pkg.equals("com.android.packageinstaller"))
 		{
 			OtherMods.execHook_EnhancedInstaller(lpparam);
-		}
-		
-		if (pkg.equals("com.google.android.youtube"))
-		{
-			if (pref.getBoolean("pref_key_other_ytwatermark", false))
-				OtherMods.execHook_YouTubeNoWatermark(lpparam);
 		}
 		
 		if (lpparam.processName.equals("android"))

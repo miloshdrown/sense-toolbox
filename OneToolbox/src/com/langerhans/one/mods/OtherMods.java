@@ -29,6 +29,8 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import de.robv.android.xposed.callbacks.XC_LayoutInflated;
+import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class OtherMods{
@@ -337,12 +339,12 @@ public class OtherMods{
 		});
 	}
 	
-	public static void execHook_YouTubeNoWatermark(final LoadPackageParam lpparam) {
-		findAndHookMethod("com.google.android.apps.youtube.core.player.overlay.j", lpparam.classLoader, "d", new XC_MethodHook() {
+	public static void execHook_YouTubeNoWatermark(final InitPackageResourcesParam resparam) {
+		resparam.res.hookLayout("com.google.android.youtube", "layout", "annotation_overlay", new XC_LayoutInflated() {
 			@Override
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				ImageView g = (ImageView)XposedHelpers.getObjectField(param.thisObject, "g");
-				g.setVisibility(8);
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				ImageView watermark = (ImageView)liparam.view.findViewById(resparam.res.getIdentifier("featured_channel_watermark", "id", "com.google.android.youtube"));
+				watermark.setAlpha(0f);
 			}
 		});
 	}
