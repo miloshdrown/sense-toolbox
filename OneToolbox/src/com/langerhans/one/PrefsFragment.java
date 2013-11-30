@@ -484,8 +484,8 @@ public class PrefsFragment extends HtcPreferenceFragment {
 	public static boolean isXposedInstalled = false;
 	private int lineCount = 0;
 	
-	public void checkForXposed() {
-		CommandCapture command = new CommandCapture(0, "/system/bin/app_process --xposedversion") {
+	public void checkForXposed() {		
+		CommandCapture command = new CommandCapture(0, "/system/bin/app_process --xposedversion 2>/dev/null") {
 			@Override
 			public void output(int id, String line)
 			{
