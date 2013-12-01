@@ -123,16 +123,16 @@
 	    <item >###TRANSLATEME###_MAX_13_CHARS</item>
     </string-array>
 	<string-array name="various_screenonanim">
-	    <item >Nic</item>
-	    <item >Fade</item>
+	    <item>Brak</item>
+        <item>Zanikanie</item>
     </string-array>
     <string-array name="various_screenonanim_val">
         <item >0</item>
         <item >2</item>
     </string-array>
     <string-array name="various_screenoffanim">
-	    <item >Nic</item>
-	    <item >Oddalanie</item>
+	    <item>Brak</item>
+        <item>Zanikanie</item>
 	    <item >CRT</item>
     </string-array>
     <string-array name="various_screenoffanim_val">

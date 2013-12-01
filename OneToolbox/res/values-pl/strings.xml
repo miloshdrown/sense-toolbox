@@ -76,7 +76,7 @@
     <string name="eqs_gps">GPS</string>
     <string name="eqs_roaming">Roaming</string>
     <string name="eqs_media_output">Wyjście mediów</string>
-    <string name="eqs_auto_sync">Auto Sync</string>
+    <string name="eqs_auto_sync">Autosynchronizacja</string>
     <string name="eqs_roaming_setting">Ustawienia roamingu</string>
     <string name="eqs_music_channel">Kanał muzyczny</string>
     <string name="eqs_ringtone">Dzwonek</string>
@@ -168,9 +168,9 @@
     <string name="cleanbeam_mtp_title">MTP</string>
     <string name="cleanbeam_mtp_summ">Włącz ikonę CleanBeam MTP.</string>
     <string name="cleanbeam_dnd_title">Nie przeszkadać</string>
-	<string name="cleanbeam_dnd_summ">Włącz ikonkę CleanBeam DND.</string>
+	<string name="cleanbeam_dnd_summ">Włącz ikonkę CleanBeam NP.</string>
 	<string name="cleanbeam_phone_title">Telefon</string>
-	<string name="cleanbeam_phone_summ">Włącz ikonę CleanBeam telefonu.</string>
+	<string name="cleanbeam_phone_summ">Włącz ikonę CleanBeam telefonowania.</string>
 	<string name="cleanbeam_tv_title">TV</string>
 	<string name="cleanbeam_tv_summ">Włącz ikonę CleanBeam pilota TV.</string>
     <string name="cleanbeam_sunbeam_title">Zainstaluj Sunbeam</string>
@@ -252,11 +252,11 @@
     <string name="kill_foreground_no">Przerwij!</string>
     
     <string name="various_mods">Różne Modyfikacje</string>
-	<string name="various_mods_screenanim">Screen animations</string>
+	<string name="various_mods_screenanim">Animacje ekranu</string>
 	<string name="various_screenon_title">Włącz animację</string>
-	<string name="various_screenon_summ">Animation for turning screen on</string>
+	<string name="various_screenon_summ">Animacja włączania ekranu</string>
 	<string name="various_screenoff_title">Wyłącz animację</string>
-	<string name="various_screenoff_summ">Animation for turning screen off</string>
+	<string name="various_screenoff_summ">Animacja wyłączenia ekranu</string>
     <string name="various_apm_title">APM</string>
     <string name="various_apm_summ">Włącz lub wyłącz Zaawansowane Menu Zasilania\nJeśli masz natywny APM zainstalowany,  to lepiej mieć to wyłączone.</string>
     <string name="various_scron_title">Włącz \'Zachowaj ekran włączony\'</string>
@@ -270,7 +270,7 @@
     <string name="various_mtpnotif_title">Ukryj powiadomienia MTP</string>
     <string name="various_mtpnotif_summ">Dodaj usługę MTP w tłe i wyłącz powiadomienia. Mod jest na ROM oparty na przecieku 4.3.</string>
 	<string name="various_fastunlock_title">Szybkie odblokowanie</string>
-	<string name="various_fastunlock_summ">Odblokuj urządzenie gdy tylko poprawny numer PIN zostanie wprowadzony. Tylko ekran blokady HTC..</string>
+	<string name="various_fastunlock_summ">Odblokuj urządzenie od razu gdy poprawny numer PIN zostanie wprowadzony. Tylko ekran blokady HTC.</string>
 	<string name="various_ytwatermark_title">###TRANSLATE_ME###</string>
 	<string name="various_ytwatermark_summ">###TRANSLATE_ME###</string>
 	
@@ -314,7 +314,7 @@
     <string name="toggle_flash_high">Latarka: mocna</string>
     <string name="toggle_flash_off">Latarka: wyłączona</string>
     <string name="toggle_mobiledata_on">Transmisja danych włączona</string>
-    <string name="toggle_mobiledata_off">Transmisja danyc wyłączona</string>
+    <string name="toggle_mobiledata_off">Transmisja danych wyłączona</string>
     
     <string name="appdetails_launch">Uruchom</string>
     <string name="appdetails_package">Pakiet</string>
