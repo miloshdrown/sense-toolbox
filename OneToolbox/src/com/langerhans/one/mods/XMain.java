@@ -1,6 +1,7 @@
 package com.langerhans.one.mods;
 
 import android.content.res.XResources;
+import android.os.Build;
 
 import com.langerhans.one.utils.GlobalActions;
 import com.langerhans.one.utils.PackagePermissions;
@@ -291,6 +292,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_prism_invisilabels", false))
 				PrismMods.execHook_invisiLabels(lpparam);
+			
+			if (Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false)) //Le KitKat
+			{
+				PrismMods.fixInvisibarKitKat(lpparam);
+			}
 			
 			//PrismMods.execHook_hotseatToggleBtn(lpparam);
 		}

@@ -50,6 +50,8 @@ Dock transparency is dynamic now, it will be lowered to match app drawer transpa
 [Sense 5.5] Transitions between home screens and app drawer were modified to be very smooth, without any flashes or artifacts.
 Added mod that implements quick flashlight activation by long pressing power button when screen is off.
 YouTube channel watermark can now be removed.
+[KitKat] Fix the "Xposed not installed" warning
+[KitKat] Fix transparent statusbar on Sense launcher
 
 2.4.1:
 Fix for Bypass lockscreen option, doesn't dismiss lockscreen on incoming call and alarm ringer.

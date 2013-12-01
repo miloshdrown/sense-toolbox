@@ -1004,4 +1004,8 @@ public class PrismMods {
 			}
 		});
 	}
+	
+	public static void fixInvisibarKitKat(LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "transparentStatusBarForKK", XC_MethodReplacement.DO_NOTHING);
+	}
 }
