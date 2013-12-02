@@ -129,12 +129,12 @@
 	<string name="systemui_dataratestatus_summ">Dodaj licznik prędkości ściągania i wysyłania danych do paska statusu. Widoczny tylko w przypadku połączenia z siecią.</string>
     
     <string name="cleanbeam_mods">Modyfikacje CleanBeam od vomer</string>
-    <string name="cleanbeam_colortheme_title">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_colortheme_summ">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_colortheme_hue">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_colortheme_sat">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_colortheme_bright">###TRANSLATE_ME###</string>
-	<string name="cleanbeam_colortheme_preset">###TRANSLATE_ME###</string>
+	<string name="cleanbeam_colortheme_title">Kolor motywu</string>
+	<string name="cleanbeam_colortheme_summ">Globalny motyw dla wszystkich zestawów ikon, z wyłączeniem tych, wielokolorowych.</string>
+	<string name="cleanbeam_colortheme_hue">Barwa</string>
+	<string name="cleanbeam_colortheme_sat">Nasycenie</string>
+	<string name="cleanbeam_colortheme_bright">Jasność</string>
+	<string name="cleanbeam_colortheme_preset">Wygląd</string>
     <string name="cleanbeam_battery_title">Ikona baterii</string>
     <string name="cleanbeam_battery_summ">Zmień styl ikony baterii.</string>
     <string name="cleanbeam_signal_title">Ikona sygnału</string>
@@ -243,8 +243,8 @@
     <string name="controls_homeassistaction_summ">Zastępuje działanie pomocy(która jest domyślnie Google Now).</string>
     <string name="controls_vol2wake_title">Volume2Wake</string>
     <string name="controls_vol2wake_summ">Wybudzenie telefonu klawiszami głośności. Wymagany root! Wykonaj pełny restart w celu zastosowania!</string>
-    <string name="controls_powerflash_title">###TRANSLATE_ME###</string>
-	<string name="controls_powerflash_summ">###TRANSLATE_ME###</string>
+	<string name="controls_powerflash_title">Szybka latarka</string>
+	<string name="controls_powerflash_summ">Długie naciśnięcie przycisku zasilania, gdy ekran jest wyłączony, aby włączyć i wyłączyć latarkę.</string>
     
     <string name="kill_foreground">Zabij pierwszoplanowe aplikację</string>
     <string name="kill_foreground_warn">Próbujesz zabić launcher!</string>
@@ -271,22 +271,22 @@
     <string name="various_mtpnotif_summ">Dodaj usługę MTP w tłe i wyłącz powiadomienia. Mod jest na ROM oparty na przecieku 4.3.</string>
 	<string name="various_fastunlock_title">Szybkie odblokowanie</string>
 	<string name="various_fastunlock_summ">Odblokuj urządzenie od razu gdy poprawny numer PIN zostanie wprowadzony. Tylko ekran blokady HTC.</string>
-	<string name="various_ytwatermark_title">###TRANSLATE_ME###</string>
-	<string name="various_ytwatermark_summ">###TRANSLATE_ME###</string>
+	<string name="various_ytwatermark_title">Znak wodny kanału YouTube</string>
+	<string name="various_ytwatermark_summ">Ukryj logo kanału nakładki wideo w aplikacji YouTube.</string>
 	
-	<string name="persistent_mods">###TRANSLATE_ME###</string>
-	<string name="persist_adgrid_title">###TRANSLATE_ME###</string>
-	<string name="persist_adgrid_summ">###TRANSLATE_ME###</string>
-	<string name="persist_bypasslock_title">###TRANSLATE_ME###</string>
-	<string name="persist_bypasslock_summ">###TRANSLATE_ME###</string>
-	<string name="persist_unhideprefs_title">###TRANSLATE_ME###</string>
-	<string name="persist_unhideprefs_summ">###TRANSLATE_ME###</string>
-	<string name="persist_appfilter_title">###TRANSLATE_ME###</string>
-	<string name="persist_appfilter_summ">###TRANSLATE_ME###</string>
-	<string name="persist_recentslongtap_title">###TRANSLATE_ME###</string>
-	<string name="persist_recentslongtap_summ">###TRANSLATE_ME###</string>
-	<string name="persist_installer_title">###TRANSLATE_ME###</string>
-	<string name="persist_installer_summ">###TRANSLATE_ME###</string>
+	<string name="persistent_mods">Zawsze aktywne mody</string>
+	<string name="persist_adgrid_title">Rozmiar siatki szuflady aplikacji</string>
+	<string name="persist_adgrid_summ">Nowy rozmiar siatki: 5x5, 4x6 i 5x6. Można je wybrać z menu aplikacji domyślnej szuflady.</string>
+	<string name="persist_bypasslock_title">Obejście blokady ekranu</string>
+	<string name="persist_bypasslock_summ">\"Obejście blokady ekranu na budzenie" \' ustawienie działa również bez blokady ekranu.</string>
+	<string name="persist_unhideprefs_title">Ujawnione ustawienia</string>
+	<string name="persist_unhideprefs_summ">Pokaż \'Wersja ROMU\', \'Czas dystrybucji\' oraz \'Informacje o sprzęcie\' (na Sense 5.5) w sekcji Ustawienia.</string>
+	<string name="persist_appfilter_title">Filtr aplikacji</string>
+	<string name="persist_appfilter_summ">Dodaj opcję wyświetlania tylko pakietów wyłączonych w Aplikacjach.</string>
+	<string name="persist_recentslongtap_title">Menu podręczne dla ostatnio używanych</string>
+	<string name="persist_recentslongtap_summ">Pokaż menu kontekstowe na przytrzymaniu dla każdej aplikacji na liście ostatnio używanych.</string>
+	<string name="persist_installer_title">Wyświetlanie wersji aplikacji</string>
+	<string name="persist_installer_summ">Dodaj wersję pakietu do tytułu instalatora podczas aktualizacji lub instalacji aplikacji.</string>
     
     <string name="support">Wsparcie</string>
     <string name="support_s5t_title">Odwiedź Stronę Sense 5 Toolbox</string>
@@ -326,8 +326,8 @@
     <string name="appdetails_uid">ID użytkownika</string>
     <string name="appdetails_sdk">Wersja Docelowego SDK</string>
     
-    <string name="apps_disabled">###TRANSLATE_ME###</string>
-	<string name="apps_all">###TRANSLATE_ME###</string>
+	<string name="apps_disabled">Pokaż tylko wyłączone</string>
+	<string name="apps_all">Pokaż wszystko</string>
     
     <string name="about_devs">Programiści</string>
     <string name="about_devs_names">Langer Hans\nMikanoshi</string>
