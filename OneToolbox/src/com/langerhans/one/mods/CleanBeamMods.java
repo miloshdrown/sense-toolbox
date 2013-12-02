@@ -43,6 +43,16 @@ public class CleanBeamMods{
 			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.c_stat_sys_battery));
 			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.c_stat_sys_battery_charge));
 		}
+		if (battIcon == 5) //5=kitkat_nopercent
+		{
+			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.d_stat_sys_battery));
+			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.d_stat_sys_battery_charge));
+		}
+		if (battIcon == 6) //5=kitkat_nopercent
+		{
+			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.e_stat_sys_battery));
+			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.e_stat_sys_battery_charge));
+		}
 		if (battIcon == 4) //No icon
 		{
 			resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {

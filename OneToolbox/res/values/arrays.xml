@@ -40,12 +40,16 @@
         <item >Default</item>
         <item >Percentage inside</item>
         <item >Circle with percentage</item>
+        <item >KitKat</item>
+        <item >KitKat with percentage</item>
         <item >No icon</item>
     </string-array>
     <string-array name="batt_icon_val">
         <item >1</item>
         <item >2</item>
         <item >3</item>
+        <item >5</item>
+        <item >6</item>
         <item >4</item>
     </string-array>
     
@@ -128,6 +132,8 @@
 		<item >@drawable/stat_sys_battery_100</item>
 		<item >@drawable/b_stat_sys_battery_95</item>
 		<item >@drawable/c_stat_sys_battery_95</item>
+		<item >@drawable/d_stat_sys_battery_preview</item>
+		<item >@drawable/e_stat_sys_battery_preview</item>
 		<item ></item>
 	</array>
 	<string-array name="home_menu">

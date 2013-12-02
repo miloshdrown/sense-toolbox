@@ -40,12 +40,16 @@
         <item >Стандартная</item>
         <item >С процентами внутри</item>
         <item >Круг с процентами</item>
+        <item >KitKat</item>
+        <item >KitKat с процентами</item>
         <item >Скрыть иконку</item>
     </string-array>
     <string-array name="batt_icon_val">
         <item >1</item>
         <item >2</item>
         <item >3</item>
+        <item >5</item>
+        <item >6</item>
         <item >4</item>
     </string-array>
     

@@ -40,12 +40,16 @@
         <item >Standard</item>
         <item >Prozent im Standard</item>
         <item >Prozent im Kreis</item>
+        <item >KitKat</item>
+        <item >KitKat mit Prozent</item>
         <item >Kein Icon</item>
     </string-array>
     <string-array name="batt_icon_val">
         <item >1</item>
         <item >2</item>
         <item >3</item>
+        <item >5</item>
+        <item >6</item>
         <item >4</item>
     </string-array>
     

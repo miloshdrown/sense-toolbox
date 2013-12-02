@@ -52,6 +52,7 @@ Added mod that implements quick flashlight activation by long pressing power but
 YouTube channel watermark can now be removed.
 [KitKat] Fix the "Xposed not installed" warning
 [KitKat] Fix transparent statusbar on Sense launcher
+Added KitKat style battery icons with and without percentage. Thanks to @skeleton1911 for the icons!
 
 2.4.1:
 Fix for Bypass lockscreen option, doesn't dismiss lockscreen on incoming call and alarm ringer.

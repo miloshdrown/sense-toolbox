@@ -40,13 +40,17 @@
         <item>Domyślnie</item>
         <item>Domyślnie z procentami</item>
         <item>Koło z procentami</item>
+        <item>KitKat</item>
+        <item>KitKat z procentami</item>
         <item>Brak ikony</item>
     </string-array>
     <string-array name="batt_icon_val">
-        <item>1</item>
-        <item>2</item>
-        <item>3</item>
-        <item>4</item>
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >5</item>
+        <item >6</item>
+        <item >4</item>
     </string-array>
     <string-array name="wifi_icon">
 	    <item >Domyślny</item>
