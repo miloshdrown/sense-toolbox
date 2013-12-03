@@ -75,6 +75,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_invisidrawer_enable", false))
 				PrismMods.execHook_InvisiDrawerRes(resparam);
 			
+			if(pref.getBoolean("pref_key_prism_invisinav_enable", false) && Build.VERSION.SDK_INT <= 17) {
+				int transparency = pref.getInt("pref_key_prism_invisinav_new", 100);
+				transparency = (int) Math.floor(transparency*2.55f);
+				PrismMods.execHook_InvisiDockRes(resparam, transparency);
+			}
+
 			if(pref.getBoolean("pref_key_prism_invisifolders_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_prism_invisifolders", 100);
@@ -235,9 +241,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if(pref.getBoolean("pref_key_prism_invisinav_enable", false))
 			{
-				int transparency = pref.getInt("pref_key_prism_invisinav_new", 100);
-				transparency = (int) Math.floor(transparency*2.55f);
-				PrismMods.execHook_InvisiDock(lpparam, transparency);
+				if (Build.VERSION.SDK_INT > 17) {
+					int transparency = pref.getInt("pref_key_prism_invisinav_new", 100);
+					transparency = (int) Math.floor(transparency*2.55f);
+					PrismMods.execHook_InvisiDock(lpparam, transparency);
+				}
 				PrismMods.execHook_PreserveWallpaper(lpparam);
 			}
 			

@@ -71,24 +71,44 @@ public class PrismMods {
 	private static GestureDetector mDetectorDock;
 	
 	public static void execHook_InvisiDock(LoadPackageParam lpparam, final int transparency) {
-		findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "show", boolean.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				boolean isAllAppsOpen = false;
-				Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
-				if (m_launcher != null)
-				isAllAppsOpen = (Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown");
+		try {
+			findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "show", boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					boolean isAllAppsOpen = false;
+					Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
+					if (m_launcher != null)
+						isAllAppsOpen = (Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown");
 				
-				ImageView m_BackgroundImg = (ImageView)XposedHelpers.getObjectField(param.thisObject, "m_BackgroundImg");
-				float alphaDrawer = XMain.pref.getInt("pref_key_prism_invisidrawer", 100) / 100.0f;
-				if (isAllAppsOpen && alphaDrawer > transparency/255.0f) {
-					if (XMain.pref.getBoolean("pref_key_prism_invisidrawer_enable", false)) {
-						m_BackgroundImg.animate().alpha(alphaDrawer);
-					} else
-						m_BackgroundImg.animate().alpha(1.0f);
-				} else m_BackgroundImg.animate().alpha(transparency/255.0f);
-			}
-		});
+					ImageView m_BackgroundImg = (ImageView)XposedHelpers.getObjectField(param.thisObject, "m_BackgroundImg");
+					float alphaDrawer = XMain.pref.getInt("pref_key_prism_invisidrawer", 100) / 100.0f;
+					if (isAllAppsOpen && alphaDrawer > transparency/255.0f) {
+						if (XMain.pref.getBoolean("pref_key_prism_invisidrawer_enable", false)) {
+							m_BackgroundImg.animate().alpha(alphaDrawer);
+						} else
+							m_BackgroundImg.animate().alpha(1.0f);
+					} else m_BackgroundImg.animate().alpha(transparency/255.0f);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void execHook_InvisiDockRes(InitPackageResourcesParam resparam, final int transparency) {
+		try {
+			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
+			resparam.res.setReplacement("com.htc.launcher", "drawable", "home_nav_bg", new XResources.DrawableLoader() {
+				@Override
+				public Drawable newDrawable(XResources res, int id) throws Throwable {
+					Drawable bg = modRes.getDrawable(R.drawable.home_nav_bg);
+					bg.setAlpha(transparency);
+					return bg;
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void execHook_InvisiWidget(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
@@ -239,8 +259,10 @@ public class PrismMods {
 	}
 	
 	public static void execHook_InvisiDrawerRes(InitPackageResourcesParam resparam) {
-		resparam.res.setReplacement("com.htc.launcher", "integer", "config_workspaceUnshrinkTime", 300);
-		resparam.res.setReplacement("com.htc.launcher", "integer", "config_appsCustomizeWorkspaceShrinkTime", 100);
+		try {
+			resparam.res.setReplacement("com.htc.launcher", "integer", "config_workspaceUnshrinkTime", 300);
+			resparam.res.setReplacement("com.htc.launcher", "integer", "config_appsCustomizeWorkspaceShrinkTime", 100);
+		} catch (Exception e) {}
 	}
 	
 	public static void execHook_InvisiDrawerCode(LoadPackageParam lpparam, final int transparency) {
