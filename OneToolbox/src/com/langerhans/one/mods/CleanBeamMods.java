@@ -374,7 +374,7 @@ public class CleanBeamMods{
 			resparam.res.setReplacement("com.android.settings", "drawable", "stat_notify_dnd", new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
-					return modRes.getDrawable(R.drawable.stat_notify_dnd);
+					return applyTheme(modRes.getDrawable(R.drawable.stat_notify_dnd));
 				}	
 			});
 		} catch(Throwable t) {}
@@ -386,7 +386,7 @@ public class CleanBeamMods{
 			resparam.res.setReplacement("com.android.providers.media", "drawable", "stat_notify_running_services", new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
-					return modRes.getDrawable(R.drawable.stat_notify_running_services);
+					return applyTheme(modRes.getDrawable(R.drawable.stat_notify_running_services));
 				}	
 			});
 		} catch(Throwable t) {}
