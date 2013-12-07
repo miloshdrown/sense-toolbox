@@ -34,6 +34,7 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.view.KeyEvent;
 import android.widget.Toast;
 
 import com.langerhans.one.PrefsFragment;
@@ -41,6 +42,7 @@ import com.langerhans.one.R;
 import com.langerhans.one.mods.XMain;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 
 public class GlobalActions {
@@ -541,5 +543,29 @@ public class GlobalActions {
 			return ColorFilterGenerator.adjustColor(100, 100, -100, -180);
 		else
 			return ColorFilterGenerator.adjustColor(brightness, 0, saturation, hue);
+	}
+	
+	public static void sendMediaButton(KeyEvent keyEvent)
+	{
+		try {
+
+	        // Get binder from ServiceManager.checkService(String)
+	        IBinder iBinder  = (IBinder) Class.forName("android.os.ServiceManager")
+	        .getDeclaredMethod("checkService",String.class)
+	        .invoke(null, Context.AUDIO_SERVICE);
+
+	        // get audioService from IAudioService.Stub.asInterface(IBinder)
+	        Object audioService  = Class.forName("android.media.IAudioService$Stub")
+	                .getDeclaredMethod("asInterface",IBinder.class)
+	                .invoke(null,iBinder);
+
+	        // Dispatch keyEvent using IAudioService.dispatchMediaKeyEvent(KeyEvent)
+	        Class.forName("android.media.IAudioService")
+	        .getDeclaredMethod("dispatchMediaKeyEvent",KeyEvent.class)
+	        .invoke(audioService, keyEvent);            
+
+	    }  catch (Exception e) {
+	        XposedBridge.log(e);
+	    }
 	}
 }

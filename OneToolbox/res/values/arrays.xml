@@ -180,4 +180,17 @@
         <item >4</item>
         <item >5</item>
     </string-array>
+    
+    <string-array name="media_action">
+        <item >No Change</item>
+        <item >Play/Pause</item>
+        <item >Next track</item>
+        <item >Previous track</item>
+    </string-array>
+    <string-array name="media_action_val">
+        <item >0</item>
+        <item >85</item>
+        <item >87</item>
+        <item >88</item>
+    </string-array>
 </resources>

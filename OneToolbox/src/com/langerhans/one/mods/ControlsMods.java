@@ -2,11 +2,11 @@ package com.langerhans.one.mods;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
-
 import android.content.Context;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.view.KeyEvent;
+import android.view.ViewConfiguration;
 
 import com.langerhans.one.utils.GlobalActions;
 import com.langerhans.one.utils.Version;
@@ -22,7 +22,10 @@ public class ControlsMods {
 	private static boolean isBackLongPressed = false;
 	private static boolean isPowerPressed = false;
 	private static boolean isPowerLongPressed = false;
+	private static boolean isVolumePressed = false;
+	private static boolean isVolumeLongPressed = false;
 	private static boolean isWaitingForPowerLongPressed = false;
+	private static boolean isWaitingForVolumeLongPressed = false;
 	private static int mFlashlightLevel = 0;
 	
 	public static void setupPWMKeys() {
@@ -197,6 +200,78 @@ public class ControlsMods {
 								param.setResult(0);
 							}
 							isPowerPressed = false;
+						}
+					}
+				}
+			}
+		});
+	}
+	
+	//Shameless copypasta ;)
+	public static void execHook_VolumeMediaButtons(LoadPackageParam lpparam, final int upAction, final int downAction, final boolean vol2wakeEnabled) {
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				final KeyEvent keyEvent = (KeyEvent)param.args[0];
+				
+				int keycode = keyEvent.getKeyCode();
+				int action = keyEvent.getAction();
+				int flags = keyEvent.getFlags();
+				
+				// Ignore repeated KeyEvents simulated on Power Key Up
+				if ((flags & KeyEvent.FLAG_VIRTUAL_HARD_KEY) == KeyEvent.FLAG_VIRTUAL_HARD_KEY) return;
+				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
+					// Power long press
+					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+					if ((keycode == KeyEvent.KEYCODE_VOLUME_UP || keycode == KeyEvent.KEYCODE_VOLUME_DOWN) && !mPowerManager.isScreenOn()) {
+						//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
+						if (action == KeyEvent.ACTION_DOWN) {
+							isVolumePressed = true;
+							isVolumeLongPressed = false;
+							
+							Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+							// Post only one delayed runnable that waits for long press timeout
+							if (!isWaitingForVolumeLongPressed)
+							mHandler.postDelayed(new Runnable(){
+								@Override
+								public void run() {
+									if (isVolumePressed) {
+										isVolumeLongPressed = true;
+										switch (keyEvent.getKeyCode()) {
+										case KeyEvent.KEYCODE_VOLUME_UP:
+											if (upAction == 0)
+												break;
+											GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, upAction));
+											GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, upAction));
+											break;
+										case KeyEvent.KEYCODE_VOLUME_DOWN:
+											if (downAction == 0)
+												break;
+											GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, downAction));
+											GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, downAction));
+											break;
+
+										default:
+											break;
+										}
+									}
+									isVolumePressed = false;
+									isWaitingForVolumeLongPressed = false;
+								}
+							}, ViewConfiguration.getLongPressTimeout());
+							isWaitingForVolumeLongPressed = true;
+							param.setResult(0);
+						}
+						if (action == KeyEvent.ACTION_UP) {
+							if (isVolumePressed && !isVolumeLongPressed) {
+								if (vol2wakeEnabled)
+								{
+									XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
+									XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
+								}
+								param.setResult(0);
+							}
+							isVolumePressed = false;
 						}
 					}
 				}

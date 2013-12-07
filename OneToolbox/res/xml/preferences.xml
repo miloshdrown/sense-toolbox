@@ -544,6 +544,25 @@
             android:entryValues="@array/global_toggles_val"
             android:icon="@drawable/right_arrow" />
         </com.htc.preference.HtcPreferenceCategory>
+        
+        <com.htc.preference.HtcPreferenceCategory
+    	    android:title="@string/controls_mods_media"
+    	    android:key="pref_key_controls_media">
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_controls_mediaupaction"
+            android:summary="@string/camera_vol_up_summ"
+            android:title="@string/camera_vol_up_title"
+            android:entries="@array/media_action"
+            android:entryValues="@array/media_action_val"
+            android:defaultValue="0" />
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_controls_mediadownaction"
+            android:summary="@string/camera_vol_down_summ"
+            android:title="@string/camera_vol_down_title"
+            android:entries="@array/media_action"
+            android:entryValues="@array/media_action_val"
+            android:defaultValue="0" />
+        </com.htc.preference.HtcPreferenceCategory>
     </com.htc.preference.HtcPreferenceScreen>
     
     

@@ -245,6 +245,7 @@
 	<string name="controls_vol2wake_summ">Wake your phone with the volume keys. Needs Root! Make a FULL reboot to apply!</string>
 	<string name="controls_powerflash_title">Quick flashlight</string>
 	<string name="controls_powerflash_summ">Long press power button while screen is off to turn flashlight on and off.</string>
+	<string name="controls_mods_media">Volume media keys</string>
 	
 	<string name="kill_foreground">Kill foreground app</string>
 	<string name="kill_foreground_warn">You are trying to kill the launcher!</string>

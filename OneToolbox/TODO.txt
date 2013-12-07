@@ -40,8 +40,14 @@
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
+2.6
+Fixed transparant dock for 4.2.2 devices.
+Fixed missing icon theming
+Volume media control mod.
+
 2.5:
 Fully customizable color themes for CleanBeam icons.
+Added a section listing always active mods
 More compact and responsive traffic meter.
 "Close others" option in recent apps long press menu. Terminates all recent apps except the one you choose, then brings that app back to screen.
 Additional filter option for the Apps list, allows to display disabled apps only.
@@ -53,6 +59,7 @@ YouTube channel watermark can now be removed.
 [KitKat] Fix the "Xposed not installed" warning
 [KitKat] Fix transparent statusbar on Sense launcher
 Added KitKat style battery icons with and without percentage. Thanks to @skeleton1911 for the icons!
+Some code optimizations
 
 2.4.1:
 Fix for Bypass lockscreen option, doesn't dismiss lockscreen on incoming call and alarm ringer.
