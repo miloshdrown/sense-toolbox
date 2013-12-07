@@ -333,8 +333,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.android.camera"))
 		{
-			int voldown = Integer.parseInt(pref.getString("pref_key_cam_voldown", "4"));
-		    int volup = Integer.parseInt(pref.getString("pref_key_cam_volup", "4"));
+			int voldown = Integer.parseInt(pref.getString("pref_key_controls_camdownaction", "4"));
+		    int volup = Integer.parseInt(pref.getString("pref_key_controls_camupaction", "4"));
 		    if (!(voldown == 4 && volup == 4))
 		    	CamMods.execHook_VolKey(lpparam, volup, voldown);
 		}

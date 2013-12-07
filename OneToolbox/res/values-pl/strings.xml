@@ -91,10 +91,6 @@
     <string name="toggle_settings">Przełącz ustawienia</string>
     
     <string name="camera_mods">Modyfikacje aparatu</string>
-    <string name="camera_vol_up_title">Działanie klawisza podgłaśniania</string>
-    <string name="camera_vol_up_summ">Akcja aparatu na zwiększanie głośności.</string>
-    <string name="camera_vol_down_title">Działanie klawisza ściszania</string>
-    <string name="camera_vol_down_summ">Akcja aparatu na zmniejszanie głośności.</string>
     
     <string name="systemui_mods">Modyfikacje interfejsu</string>
     <string name="systemui_statusbar">Pasek stanu oraz powiadomień</string>
@@ -245,7 +241,15 @@
     <string name="controls_vol2wake_summ">Wybudzenie telefonu klawiszami głośności. Wymagany root! Wykonaj pełny restart w celu zastosowania!</string>
 	<string name="controls_powerflash_title">Szybka latarka</string>
 	<string name="controls_powerflash_summ">Długie naciśnięcie przycisku zasilania, gdy ekran jest wyłączony, aby włączyć i wyłączyć latarkę.</string>
-	<string name="controls_mods_media">###TRANSLATE_ME###</string>
+	<string name="controls_mods_volume">###TRANSLATE_ME###</string>
+	<string name="controls_vol_up_cam_title">Działanie klawisza podgłaśniania</string>
+    <string name="controls_vol_up_cam_summ">Akcja aparatu na zwiększanie głośności.</string>
+    <string name="controls_vol_down_cam_title">Działanie klawisza ściszania</string>
+    <string name="controls_vol_down_cam_summ">Akcja aparatu na zmniejszanie głośności.</string>
+    <string name="controls_vol_up_media_title">###TRANSLATE_ME###</string>
+	<string name="controls_vol_up_media_summ">###TRANSLATE_ME###</string>
+	<string name="controls_vol_down_media_title">###TRANSLATE_ME###</string>	
+	<string name="controls_vol_down_media_summ">###TRANSLATE_ME###</string>
     
     <string name="kill_foreground">Zabij pierwszoplanowe aplikację</string>
     <string name="kill_foreground_warn">Próbujesz zabić launcher!</string>

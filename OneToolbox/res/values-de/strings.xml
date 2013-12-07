@@ -91,10 +91,6 @@
 	<string name="toggle_settings">Einstellung ändern</string>
 	
 	<string name="camera_mods">Kamera Mods</string>
-	<string name="camera_vol_up_title">Lauter-Taste</string>
-	<string name="camera_vol_up_summ">Aktion auf der Lauter-Taste.</string>
-	<string name="camera_vol_down_title">Leiser-Taste</string>	
-	<string name="camera_vol_down_summ">Aktion auf der Leiser-Taste.</string>
 	
 	<string name="systemui_mods">Interface Mods</string>
 	<string name="systemui_statusbar">Statusleiste und Benachrichtigungen</string>
@@ -245,7 +241,15 @@
 	<string name="controls_vol2wake_summ">Wecke das Handy mit den Lautstärketasten. Benötigt Root! Starte VOLLSTÄNDIG neu nach der Änderung!</string>
 	<string name="controls_powerflash_title">Schnelle Taschenlampe</string>
 	<string name="controls_powerflash_summ">Halten der Standby-Taste bei ausgeschaltetem Bildschirm schaltet die Taschenlampe ein.</string>
-	<string name="controls_mods_media">Lautstärke-Media-Tasten</string>
+	<string name="controls_mods_volume">Lautstärketasten</string>
+	<string name="controls_vol_up_cam_title">Lauter-Taste</string>
+	<string name="controls_vol_up_cam_summ">Aktion auf der Lauter-Taste.</string>
+	<string name="controls_vol_down_cam_title">Leiser-Taste</string>	
+	<string name="controls_vol_down_cam_summ">Aktion auf der Leiser-Taste.</string>
+	<string name="controls_vol_up_media_title">###TRANSLATE_ME###</string>
+	<string name="controls_vol_up_media_summ">###TRANSLATE_ME###</string>
+	<string name="controls_vol_down_media_title">###TRANSLATE_ME###</string>	
+	<string name="controls_vol_down_media_summ">###TRANSLATE_ME###</string>
 	
 	<string name="kill_foreground">Aktuelle App beenden</string>
 	<string name="kill_foreground_warn">Du versuchst den Launcher zu beenden!</string>

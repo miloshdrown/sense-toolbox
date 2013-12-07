@@ -247,8 +247,8 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		};
 		
 		ColorPreference colorChanger = (ColorPreference) findPreference("pref_key_colorfilter");
-		HtcListPreference voldownPreference = (HtcListPreference) findPreference("pref_key_cam_voldown");
-		HtcListPreference volupPreference = (HtcListPreference) findPreference("pref_key_cam_volup");
+		HtcListPreference voldownPreference = (HtcListPreference) findPreference("pref_key_controls_camdownaction");
+		HtcListPreference volupPreference = (HtcListPreference) findPreference("pref_key_controls_camupaction");
 		HtcListPreference swipeDownActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipedownaction");
 		HtcListPreference swipeUpActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipeupaction");
 		HtcListPreference swipeRightActionPreference = (HtcListPreference) findPreference("pref_key_prism_swiperightaction");

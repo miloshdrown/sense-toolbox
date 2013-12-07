@@ -548,7 +548,6 @@ public class GlobalActions {
 	public static void sendMediaButton(KeyEvent keyEvent)
 	{
 		try {
-
 	        // Get binder from ServiceManager.checkService(String)
 	        IBinder iBinder  = (IBinder) Class.forName("android.os.ServiceManager")
 	        .getDeclaredMethod("checkService",String.class)
@@ -563,7 +562,6 @@ public class GlobalActions {
 	        Class.forName("android.media.IAudioService")
 	        .getDeclaredMethod("dispatchMediaKeyEvent",KeyEvent.class)
 	        .invoke(audioService, keyEvent);            
-
 	    }  catch (Exception e) {
 	        XposedBridge.log(e);
 	    }

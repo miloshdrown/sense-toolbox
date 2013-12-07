@@ -17,25 +17,12 @@
 	
     <com.htc.preference.HtcPreferenceCategory
         android:title="@string/mods">
+    <!-- 
     <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/camera_mods"
         android:key="pref_key_cam">
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_cam_volup"
-            android:summary="@string/camera_vol_up_summ"
-            android:title="@string/camera_vol_up_title"
-            android:entries="@array/cam_actions"
-            android:entryValues="@array/cam_actions_val"
-            android:defaultValue="4"/>
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_cam_voldown"
-            android:summary="@string/camera_vol_down_summ"
-            android:title="@string/camera_vol_down_title"
-            android:entries="@array/cam_actions"
-            android:entryValues="@array/cam_actions_val"
-            android:defaultValue="4" />
     </com.htc.preference.HtcPreferenceScreen>
-    
+	-->
     <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/systemui_mods"
         android:key="pref_key_sysui">
@@ -546,19 +533,33 @@
         </com.htc.preference.HtcPreferenceCategory>
         
         <com.htc.preference.HtcPreferenceCategory
-    	    android:title="@string/controls_mods_media"
+    	    android:title="@string/controls_mods_volume"
     	    android:key="pref_key_controls_media">
+		<com.htc.preference.HtcListPreference
+            android:key="pref_key_controls_camupaction"
+            android:summary="@string/controls_vol_up_cam_summ"
+            android:title="@string/controls_vol_up_cam_title"
+            android:entries="@array/cam_actions"
+            android:entryValues="@array/cam_actions_val"
+            android:defaultValue="4"/>
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_controls_camdownaction"
+            android:summary="@string/controls_vol_down_cam_summ"
+            android:title="@string/controls_vol_down_cam_title"
+            android:entries="@array/cam_actions"
+            android:entryValues="@array/cam_actions_val"
+            android:defaultValue="4" />
         <com.htc.preference.HtcListPreference
             android:key="pref_key_controls_mediaupaction"
-            android:summary="@string/camera_vol_up_summ"
-            android:title="@string/camera_vol_up_title"
+            android:summary="@string/controls_vol_up_media_summ"
+            android:title="@string/controls_vol_up_media_title"
             android:entries="@array/media_action"
             android:entryValues="@array/media_action_val"
             android:defaultValue="0" />
         <com.htc.preference.HtcListPreference
             android:key="pref_key_controls_mediadownaction"
-            android:summary="@string/camera_vol_down_summ"
-            android:title="@string/camera_vol_down_title"
+            android:summary="@string/controls_vol_down_media_summ"
+            android:title="@string/controls_vol_down_media_title"
             android:entries="@array/media_action"
             android:entryValues="@array/media_action_val"
             android:defaultValue="0" />

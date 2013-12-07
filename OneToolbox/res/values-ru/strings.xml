@@ -91,10 +91,6 @@
 	<string name="toggle_settings">Переключить настройку</string>
 	
 	<string name="camera_mods">Моды камеры</string>
-	<string name="camera_vol_up_title">Повышение громкости</string>
-	<string name="camera_vol_up_summ">Действие на клавишу повыш. громкости в камере.</string>
-	<string name="camera_vol_down_title">Понижение громкости</string>	
-	<string name="camera_vol_down_summ">Действие на клавишу пониж. громкости в камере.</string>
 	
 	<string name="systemui_mods">Моды интерфейса</string>
 	<string name="systemui_statusbar">Строка состояния и панель уведомлений</string>
@@ -245,7 +241,15 @@
 	<string name="controls_vol2wake_summ">Выводит устройство из режима сна при нажатии на клавиши громкости. Обязателен root! Для включения нужна полная перезагрузка!</string>
 	<string name="controls_powerflash_title">Быстрый фонарик</string>
 	<string name="controls_powerflash_summ">Позволяет активировать фонарик при отключенном экране долгим нажатием на кнопку включения.</string>
-	<string name="controls_mods_media">###TRANSLATE_ME###</string>
+	<string name="controls_mods_volume">Кнопки громкости</string>
+	<string name="controls_vol_up_cam_title">Повышение громкости</string>
+	<string name="controls_vol_up_cam_summ">Действие на клавишу повыш. громкости в камере.</string>
+	<string name="controls_vol_down_cam_title">Понижение громкости</string>	
+	<string name="controls_vol_down_cam_summ">Действие на клавишу пониж. громкости в камере.</string>
+	<string name="controls_vol_up_media_title">Долгое нажание на Повышение громкости</string>
+	<string name="controls_vol_up_media_summ">Действие на долгое нажатие клавиши повышения громкости при выключенном экране.</string>
+	<string name="controls_vol_down_media_title">Долгое нажание на Понижение громкости</string>	
+	<string name="controls_vol_down_media_summ">Действие на долгое нажатие клавиши понижения громкости при выключенном экране.</string>
 	
 	<string name="kill_foreground">Выгрузить текущее приложение</string>
 	<string name="kill_foreground_warn">Вы пытаетесь выгрузить ланчер!</string>

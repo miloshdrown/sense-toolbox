@@ -2,9 +2,12 @@ package com.langerhans.one.mods;
 
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
+
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.view.KeyEvent;
 import android.view.ViewConfiguration;
 
@@ -152,6 +155,22 @@ public class ControlsMods {
 		});
 	}
 	
+	static Handler mHandler;
+	static WakeLock mWakeLock;
+	static PowerManager mPowerManager;
+	
+	// Release wakelock if screen is on but flashlight is still active
+	private static Runnable checkWakeLock = new Runnable() {
+		@Override
+		public void run() {
+			if (mPowerManager == null || mWakeLock == null) return;
+			if (mFlashlightLevel > 0 && mPowerManager.isScreenOn()) {
+				mFlashlightLevel = 0;
+				if (mWakeLock.isHeld()) mWakeLock.release();
+			} else mHandler.postDelayed(checkWakeLock, 5000);
+		}
+	};
+	
 	public static void execHook_PowerFlash(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
 			@Override
@@ -166,38 +185,55 @@ public class ControlsMods {
 				if ((flags & KeyEvent.FLAG_VIRTUAL_HARD_KEY) == KeyEvent.FLAG_VIRTUAL_HARD_KEY) return;
 				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 					// Power long press
-					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+					mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 					if (keycode == KeyEvent.KEYCODE_POWER && !mPowerManager.isScreenOn()) {
 						//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
 						if (action == KeyEvent.ACTION_DOWN) {
 							isPowerPressed = true;
 							isPowerLongPressed = false;
 							
-							Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+							mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 							// Post only one delayed runnable that waits for long press timeout
 							if (!isWaitingForPowerLongPressed)
 							mHandler.postDelayed(new Runnable(){
+								@SuppressLint("Wakelock")
 								@Override
 								public void run() {
 									if (isPowerPressed) {
 										isPowerLongPressed = true;
-										if (mFlashlightLevel == 0) mFlashlightLevel = 127; else mFlashlightLevel = 0;
+										
+										if (mWakeLock == null)
+										mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S5T PowerFlash");
+											
+										if (mFlashlightLevel == 0) {
+											mFlashlightLevel = 127;
+											if (!mWakeLock.isHeld()) mWakeLock.acquire();
+											mHandler.postDelayed(checkWakeLock, 5000);
+										} else {
+											mFlashlightLevel = 0;
+											if (mWakeLock.isHeld()) mWakeLock.release();
+										}
+										
 										GlobalActions.setFlashlight(mFlashlightLevel);
 									}
 									isPowerPressed = false;
 									isWaitingForPowerLongPressed = false;
 								}
-							}, 1000);
+							}, ViewConfiguration.getLongPressTimeout() + 200);
 							isWaitingForPowerLongPressed = true;
 							param.setResult(0);
 						}
 						if (action == KeyEvent.ACTION_UP) {
-							if (isPowerPressed && !isPowerLongPressed) {
+							if (isPowerPressed && !isPowerLongPressed) try {
 								mFlashlightLevel = 0;
 								GlobalActions.setFlashlight(0);
+								if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
+								if (mHandler != null) mHandler.removeCallbacks(checkWakeLock);
 								XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
 								XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
 								param.setResult(0);
+							} catch (Exception e) {
+								e.printStackTrace();
 							}
 							isPowerPressed = false;
 						}
@@ -222,7 +258,7 @@ public class ControlsMods {
 				if ((flags & KeyEvent.FLAG_VIRTUAL_HARD_KEY) == KeyEvent.FLAG_VIRTUAL_HARD_KEY) return;
 				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 					// Power long press
-					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+					mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 					if ((keycode == KeyEvent.KEYCODE_VOLUME_UP || keycode == KeyEvent.KEYCODE_VOLUME_DOWN) && !mPowerManager.isScreenOn()) {
 						//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
 						if (action == KeyEvent.ACTION_DOWN) {

@@ -91,10 +91,6 @@
 	<string name="toggle_settings">Toggle setting</string>
 	
 	<string name="camera_mods">Camera Mods</string>
-	<string name="camera_vol_up_title">Volume Up action</string>
-	<string name="camera_vol_up_summ">The action for Volume Up in camera.</string>
-	<string name="camera_vol_down_title">Volume Down action</string>	
-	<string name="camera_vol_down_summ">The action for Volume Down in camera.</string>
 	
 	<string name="systemui_mods">Interface Mods</string>
 	<string name="systemui_statusbar">Status Bar and Notification Drawer</string>
@@ -245,7 +241,15 @@
 	<string name="controls_vol2wake_summ">Wake your phone with the volume keys. Needs Root! Make a FULL reboot to apply!</string>
 	<string name="controls_powerflash_title">Quick flashlight</string>
 	<string name="controls_powerflash_summ">Long press power button while screen is off to turn flashlight on and off.</string>
-	<string name="controls_mods_media">Volume media keys</string>
+	<string name="controls_mods_volume">Volume keys</string>
+	<string name="controls_vol_up_cam_title">Volume Up action</string>
+	<string name="controls_vol_up_cam_summ">The action for Volume Up in camera.</string>
+	<string name="controls_vol_down_cam_title">Volume Down action</string>	
+	<string name="controls_vol_down_cam_summ">The action for Volume Down in camera.</string>
+	<string name="controls_vol_up_media_title">Volume Up long press action</string>
+	<string name="controls_vol_up_media_summ">The action for Volume Up long press when screen is off.</string>
+	<string name="controls_vol_down_media_title">Volume Down long press action</string>	
+	<string name="controls_vol_down_media_summ">The action for Volume Down long press when screen is off.</string>
 	
 	<string name="kill_foreground">Kill foreground app</string>
 	<string name="kill_foreground_warn">You are trying to kill the launcher!</string>
