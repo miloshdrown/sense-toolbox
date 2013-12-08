@@ -42,8 +42,9 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
 2.6
 Fixed transparant dock for 4.2.2 devices.
-Fixed missing icon theming
+Fixed missing icon theming.
 Volume media control mod.
+Fixed flashlight on power key timeout, now it's 10 minutes while on battery and infinite while on charger.
 
 2.5:
 Fully customizable color themes for CleanBeam icons.

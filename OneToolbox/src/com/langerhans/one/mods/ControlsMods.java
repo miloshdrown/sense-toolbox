@@ -4,7 +4,10 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.Intent;
+import android.content.IntentFilter;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
@@ -157,22 +160,29 @@ public class ControlsMods {
 	
 	static Handler mHandler;
 	static WakeLock mWakeLock;
-	static PowerManager mPowerManager;
 	
-	// Release wakelock if screen is on but flashlight is still active
-	private static Runnable checkWakeLock = new Runnable() {
-		@Override
-		public void run() {
-			if (mPowerManager == null || mWakeLock == null) return;
-			if (mFlashlightLevel > 0 && mPowerManager.isScreenOn()) {
+	// Release wakelock and turn off flashlight on screen on
+	private static BroadcastReceiver mScrOn = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			if (mFlashlightLevel > 0) {
 				mFlashlightLevel = 0;
-				if (mWakeLock.isHeld()) mWakeLock.release();
-			} else mHandler.postDelayed(checkWakeLock, 5000);
+				GlobalActions.setFlashlight(0);
+				if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
+			};
 		}
 	};
 	
 	public static void execHook_PowerFlash(LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
+	    final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
+		findAndHookMethod(clsPWM, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				mPWMContext.registerReceiver(mScrOn, new IntentFilter(Intent.ACTION_SCREEN_ON));
+			}
+		});
+	    
+		findAndHookMethod(clsPWM, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				KeyEvent keyEvent = (KeyEvent)param.args[0];
@@ -185,7 +195,7 @@ public class ControlsMods {
 				if ((flags & KeyEvent.FLAG_VIRTUAL_HARD_KEY) == KeyEvent.FLAG_VIRTUAL_HARD_KEY) return;
 				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 					// Power long press
-					mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+					final PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 					if (keycode == KeyEvent.KEYCODE_POWER && !mPowerManager.isScreenOn()) {
 						//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
 						if (action == KeyEvent.ACTION_DOWN) {
@@ -207,8 +217,7 @@ public class ControlsMods {
 											
 										if (mFlashlightLevel == 0) {
 											mFlashlightLevel = 127;
-											if (!mWakeLock.isHeld()) mWakeLock.acquire();
-											mHandler.postDelayed(checkWakeLock, 5000);
+											if (!mWakeLock.isHeld()) mWakeLock.acquire(600000);
 										} else {
 											mFlashlightLevel = 0;
 											if (mWakeLock.isHeld()) mWakeLock.release();
@@ -228,7 +237,6 @@ public class ControlsMods {
 								mFlashlightLevel = 0;
 								GlobalActions.setFlashlight(0);
 								if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
-								if (mHandler != null) mHandler.removeCallbacks(checkWakeLock);
 								XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
 								XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
 								param.setResult(0);
@@ -258,7 +266,7 @@ public class ControlsMods {
 				if ((flags & KeyEvent.FLAG_VIRTUAL_HARD_KEY) == KeyEvent.FLAG_VIRTUAL_HARD_KEY) return;
 				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 					// Power long press
-					mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 					if ((keycode == KeyEvent.KEYCODE_VOLUME_UP || keycode == KeyEvent.KEYCODE_VOLUME_DOWN) && !mPowerManager.isScreenOn()) {
 						//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
 						if (action == KeyEvent.ACTION_DOWN) {
