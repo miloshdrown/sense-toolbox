@@ -229,6 +229,8 @@
 	<string name="message_size_summ">Erhöht die MMS Größenbeschränkung auf 300k, 600k, 1000k.</string>
 	<string name="message_accents_title">Akzente in SMS</string>
 	<string name="message_accents_summ">Aktiviert Option für Akzente in SMS.</string>
+	<string name="message_eassecurity_title">Anti-Exchange-Admin</string>
+	<string name="message_eassecurity_summ">Entfernt Restriktionen durch Exchnage Server. Nur für neu hinzugefügte Accounts.</string>
 	
 	<string name="controls_mods">Tasten Mods</string>
 	<string name="controls_mods_backlongpress">Zurück halten</string>

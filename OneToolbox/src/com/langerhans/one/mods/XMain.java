@@ -222,19 +222,19 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if(pkg.equals("com.android.mms"))
 		{
 			if(pref.getBoolean("pref_key_other_smscreenon", false))
-				SmsMods.execHook_smsscreenon(lpparam);
+				MessagingMods.execHook_smsscreenon(lpparam);
 			
 			if(pref.getBoolean("pref_key_sms_smsmmsconv", false))
-				SmsMods.execHook_SmsMmsConv(lpparam);
+				MessagingMods.execHook_SmsMmsConv(lpparam);
 			
 			if(pref.getBoolean("pref_key_sms_toastnotification", false))
-				SmsMods.execHook_ToastNotification(lpparam);
+				MessagingMods.execHook_ToastNotification(lpparam);
 			
 			if(pref.getBoolean("pref_key_sms_mmssize", false))
-				SmsMods.execHook_MmsSize(lpparam);
+				MessagingMods.execHook_MmsSize(lpparam);
 			
 			if(pref.getBoolean("pref_key_sms_accents", false))
-				SmsMods.execHook_SmsAccents(lpparam);
+				MessagingMods.execHook_SmsAccents(lpparam);
 		}
 		
 		if(pkg.equals("com.htc.launcher"))
@@ -384,6 +384,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			OtherMods.execHook_EnhancedInstaller(lpparam);
 		}
 		
+		if(pkg.equals("com.htc.android.mail"))
+		{
+			if (pref.getBoolean("pref_key_messaging_eassecurity", false))
+		    	MessagingMods.execHook_EASSecurityPartTwo(lpparam);
+		}
+		
 		if (lpparam.processName.equals("android"))
 		{
 			if (pref.getBoolean("pref_key_other_apm", false))
@@ -403,6 +409,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		    int mediaUp = Integer.parseInt(pref.getString("pref_key_controls_mediaupaction", "0"));
 		    if (mediaDown != 0 && mediaUp != 0)
 		    	ControlsMods.execHook_VolumeMediaButtons(lpparam, mediaUp, mediaDown, vol2wakeEnabled);
+		    
+		    if (pref.getBoolean("pref_key_messaging_eassecurity", false))
+		    	MessagingMods.execHook_EASSecurityPartOne(lpparam);
 		}
 	}
 }

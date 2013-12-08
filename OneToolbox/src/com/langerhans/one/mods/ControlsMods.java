@@ -262,10 +262,10 @@ public class ControlsMods {
 				int action = keyEvent.getAction();
 				int flags = keyEvent.getFlags();
 				
-				// Ignore repeated KeyEvents simulated on Power Key Up
+				// Ignore repeated KeyEvents simulated on volume Key Up
 				if ((flags & KeyEvent.FLAG_VIRTUAL_HARD_KEY) == KeyEvent.FLAG_VIRTUAL_HARD_KEY) return;
 				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
-					// Power long press
+					// Volume long press
 					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 					if ((keycode == KeyEvent.KEYCODE_VOLUME_UP || keycode == KeyEvent.KEYCODE_VOLUME_DOWN) && !mPowerManager.isScreenOn()) {
 						//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));

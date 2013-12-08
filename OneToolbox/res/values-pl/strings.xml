@@ -229,6 +229,8 @@
     <string name="message_size_summ">Podnieś limitu rozmiaru wiadomości MMS do 300kb, 600kb, 1000kb.</string>
     <string name="message_accents_title">Włącz obsługę akcentu</string>
     <string name="message_accents_summ">Włącz opcje wsparcia akcentu w ustawieniach SMS.</string>
+    <string name="message_eassecurity_title">###TRANSLATE_ME###</string>
+	<string name="message_eassecurity_summ">###TRANSLATE_ME###</string>
     
     <string name="controls_mods">Modyfikacje sterowania</string>
     <string name="controls_mods_backlongpress">Długie naciśnięcie przycisku Wstecz</string>
