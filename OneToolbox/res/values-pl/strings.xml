@@ -272,6 +272,8 @@
     <string name="various_apps_summ">Dodaj nowe obszary do Ustawień > Aplikacje:\n- przycisk, aby uruchomić aplikację\n- nazwa pliku apk i ścieżka\n- ścieżka danych\n- nazwa procesu\n- id użytkownika\n- wersja docelowego SDK</string>
     <string name="various_volsnd_title">Wyłącz dźwięk zmiany głośności</string>
     <string name="various_volsnd_summ">Zaznacz, aby wyłączyć dźwięk podczas zmiany głośności.</string>
+    <string name="various_volsafe_title">###TRANSLATE_ME###</string>
+	<string name="various_volsafe_summ">###TRANSLATE_ME###</string>
 	<string name="various_movevol_title">Pozycja paska głośności</string>
 	<string name="various_movevol_summ">Umieść pasek głośności na dole, żeby nie przysłaniał ekranu.</string>
     <string name="various_mtpnotif_title">Ukryj powiadomienia MTP</string>

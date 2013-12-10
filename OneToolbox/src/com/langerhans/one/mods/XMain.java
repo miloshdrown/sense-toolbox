@@ -412,6 +412,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		    
 		    if (pref.getBoolean("pref_key_messaging_eassecurity", false))
 		    	MessagingMods.execHook_EASSecurityPartOne(lpparam);
+		    
+		    if (pref.getBoolean("pref_key_other_volsafe", false))
+		    	OtherMods.execHook_SafeVolume(lpparam);
 		}
 	}
 }

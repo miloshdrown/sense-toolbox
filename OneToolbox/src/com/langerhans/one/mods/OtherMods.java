@@ -348,4 +348,13 @@ public class OtherMods{
 			}
 		});
 	}
+	
+	public static void execHook_SafeVolume(final LoadPackageParam lpparam) {
+		findAndHookMethod("android.media.AudioService", lpparam.classLoader, "checkSafeMediaVolume", int.class, int.class, int.class, new XC_MethodHook() {
+			@Override
+			public void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				param.setResult(true);
+			}
+		});
+	}
 }

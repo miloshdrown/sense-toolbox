@@ -1,15 +1,12 @@
 - beats toggle
 - torch toggle
-- volume button controls for skipping tracks
 - side way scrolling (Loads of work. probably not feasable...)
-- 4x2 widget bg (Needs way more replacements than I thought. Probably not ganna happen soon.)
 - auto brightness
 - ATT TMoUS Data Icon remove (Has more implications. Waiting till more people request it.)
 - Limit number of loaded SMS in stock SMS app. One user said he has 10k SMS and it makes his phone slow... wtf?
 - "is it possible to get Always extended lockscreen widget like there is in Orio Rom?"
 - Other apps in HTC lock screen notifications
 - HDMI output with screen off (Don't have such an adapter...)
-- CM brightness bar mod. MOAR touch interceptors :D
 - Day of week next to clock (isn't the status bar crowded enough?
 - Battery bar
 - Action on notification drawer clock click
@@ -22,7 +19,6 @@
 - 2 finger swipes
 - switch to zoe on camera volume buttons
 - Camera: Press both buttons for an action
-- EQS reorder description: Say what EQS is... (Oh man, just click it and see -.-)
 - Remove Sense lockscreen weather widget.
 - Remove clock in BF too
 - Pageless BF scrolling
@@ -31,12 +27,11 @@
 - Change carrier label on lockscreen and notification drawer
 - Get rid of some useless icons like Beats and Headphone...
 - Auto close EQS after setting changed
-- Go to recent apps as swipe action
+- Go to recent apps as swipe action (swipe where? all Sense swipes are not going to work for foreground apps, obviously, might just remove this todo)
 - Custom graphics (CleanBeam-styled?) for EQS
-- Optional dock swipe to menu
-- Long press power for flashlight
+- Optional dock swipe to menu (I don't think so :D)
 - Scrollable wallpaper
-- Sound profile in APM
+- Sound profile in APM (not worth it)
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
@@ -44,6 +39,7 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Fixed transparant dock for 4.2.2 devices.
 Fixed missing icon theming.
 Volume media control mod.
+Disable safe volume warning mod.
 Fixed flashlight on power key timeout, now it's 10 minutes while on battery and infinite while on charger.
 
 2.5:

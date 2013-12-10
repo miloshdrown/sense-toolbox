@@ -272,6 +272,8 @@
 	<string name="various_apps_summ">Neue Felder für Apps unter Einstellungen > Apps:\n- Taste zum Starten\n- APK Name und Pfad\n- Daten-Pfad\n- Prozess\n- Benutzer ID\n- SDK Version</string>
 	<string name="various_volsnd_title">Deaktiviere Lautstärke-Töne</string>
 	<string name="various_volsnd_summ">Deaktviert die Töne beim Ändern der Lautstärke mit den Tasten.</string>
+	<string name="various_volsafe_title">###TRANSLATE_ME###</string>
+	<string name="various_volsafe_summ">###TRANSLATE_ME###</string>
 	<string name="various_movevol_title">Lautstärkendialog verschieben</string>
 	<string name="various_movevol_summ">Verschiebt den Dialog beim ändern der Lautstärke and den unteren Bildschirmrand.</string>
 	<string name="various_mtpnotif_title">Verstecke MTP-Benachrichtigung</string>
