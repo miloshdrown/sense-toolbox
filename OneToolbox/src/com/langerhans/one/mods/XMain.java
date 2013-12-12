@@ -64,6 +64,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", false);
 			OtherMods.ScreenAnim();
 		}
+		
+		if (pref.getBoolean("pref_key_other_volsafe", false))
+			XResources.setSystemWideReplacement("android", "bool", "config_safe_media_volume_enabled", false);
 	}
 
 	@Override
