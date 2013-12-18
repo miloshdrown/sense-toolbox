@@ -318,8 +318,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_other_fastunlock", false))
 				OtherMods.execHook_fastUnlock(lpparam);
-				
-			PrismMods.execHook_BypassLockScreen(lpparam);
 		}		
 		
 		if (pkg.equals("com.android.settings"))
@@ -332,6 +330,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			SettingsMods.execHook_AppFilter(lpparam);
 			SettingsMods.execHook_UnhidePrefs(lpparam);
+			PrismMods.execHook_BypassLockScreen(lpparam);
 		}
 		
 		if (pkg.equals("com.android.camera"))

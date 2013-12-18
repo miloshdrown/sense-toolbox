@@ -3,6 +3,7 @@ package com.langerhans.one.mods;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.findConstructorExact;
 import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
 import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 import static de.robv.android.xposed.XposedHelpers.setBooleanField;
@@ -23,7 +24,6 @@ import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.os.PowerManager;
 import android.provider.Settings;
 import android.util.TypedValue;
 import android.view.Display;
@@ -45,6 +45,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.htc.preference.HtcPreferenceFragment;
 import com.htc.widget.HtcPopupWindow;
 import com.langerhans.one.R;
 import com.langerhans.one.utils.GlobalActions;
@@ -941,36 +942,42 @@ public class PrismMods {
 		});
 	}
 	
-	public static void execHook_BypassLockScreen(final LoadPackageParam lpparam) {
-		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
-		findAndHookMethod("com.htc.lockscreen.HtcKeyguardHostViewImpl", lpparam.classLoader, "updateScreen", boolean.class, "com.htc.lockscreen.HtcKeyguardSecurityModel.SecurityMode", new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				try {
-					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-					if (mContext == null) return;
-					PowerManager powerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
-					if (powerManager.isScreenOn()) {
-						Object mLSState = XposedHelpers.getObjectField(param.thisObject, "mLSState");
-						boolean mInLockScreen = XposedHelpers.getBooleanField(param.thisObject, "mInLockScreen");
-						boolean isNotAlarmOrIncomingCall = (Boolean)XposedHelpers.callMethod(param.thisObject, "needToHandleVolume");
-						if (mLSState != null && mInLockScreen && isNotAlarmOrIncomingCall) {
-							Object settingobserver = XposedHelpers.getObjectField(mLSState, "mSettingObserver");
-							boolean doBypass = false;
-							if (settingobserver != null)
-							doBypass = (Boolean)XposedHelpers.callMethod(settingobserver, "isByPassLockscreen");
-				
-							@SuppressWarnings("rawtypes")
-							Enum mSecurityMode = (Enum)param.args[1];
-							if (doBypass && mSecurityMode.ordinal() == 1)
-							XposedHelpers.callMethod(param.thisObject, "dismiss", false);
-						}
-					}
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+	private static void applyLockScreenState(Context ctx) {
+		try {
+			Class<?> classLPU = findClass("com.android.internal.widget.LockPatternUtils", null);
+			Object LPU = findConstructorExact(classLPU, Context.class).newInstance(ctx);
+			if (android.provider.Settings.Secure.getInt(ctx.getContentResolver(), "lockscreen.htc.types.bypasslockscreen", 0) == 1) {
+				XposedHelpers.callMethod(LPU, "setLockScreenDisabled", true);
+			} else {
+				XposedHelpers.callMethod(LPU, "setLockScreenDisabled", false);
 			}
-		});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static void execHook_BypassLockScreen(final LoadPackageParam lpparam) {
+		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) try {
+			// Set lock screen according to bypass option when None is selected in Screen lock
+			findAndHookMethod("com.android.settings.ChooseLockGeneric.ChooseLockGenericFragment", lpparam.classLoader, "updateUnlockMethodAndFinish", int.class, boolean.class, new XC_MethodHook(){
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					if ((Integer)param.args[0] == 0 && (Boolean)param.args[1] == false) {
+						Context ctx = ((HtcPreferenceFragment)param.thisObject).getActivity();
+						applyLockScreenState(ctx);
+					}
+				}
+			});
+			// Set lock screen according to bypass option on that option change
+			findAndHookMethod("com.android.settings.framework.preference.security.HtcBypassLockScreenOnWakePreference", lpparam.classLoader, "onSetValueInBackground", Context.class, boolean.class, new XC_MethodHook(){
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					applyLockScreenState((Context)param.args[0]);
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void execHook_invisiLabels(final LoadPackageParam lpparam) {
