@@ -54,6 +54,11 @@
             android:entryValues="@array/clock_style_val"
             android:defaultValue="1"/>
 		<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_statusheaderclick"
+            android:summary="@string/systemui_statusheaderclick_summ"
+            android:title="@string/systemui_statusheaderclick_title"
+            android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_ampmremove"
             android:summary="@string/systemui_ampmremove_summ"
             android:title="@string/systemui_ampmremove_title"

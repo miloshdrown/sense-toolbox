@@ -118,6 +118,8 @@
 	<string name="systemui_ampmremove_summ">Позволяет удалить AM/PM, если часы в 12ч формате.</string>
 	<string name="systemui_clockstyle_title">Стиль часов</string>
 	<string name="systemui_clockstyle_summ">Изменить стиль часов в статусбаре.</string>
+	<string name="systemui_statusheaderclick_title">Быстрый запуск приложения Часы</string>
+	<string name="systemui_statusheaderclick_summ">Для запуска нужно тапнуть по заголовку панели уведомлений.</string>
 	<string name="systemui_brightslide_title">Регулировка яркости</string>
 	<string name="systemui_brightslide_summ">Добавить слайдер управления яркостью в панель уведомлений.</string>
 	<string name="systemui_brightslide_auto">Авто</string>

@@ -118,6 +118,8 @@
 	<string name="systemui_ampmremove_summ">Entfernt AM und PM im 12 Stunden Modus der Uhr in der Statusleiste.</string>
 	<string name="systemui_clockstyle_title">Uhr Stil</string>
 	<string name="systemui_clockstyle_summ">Ändert die Position der Uhr in der Statusleiste.</string>
+	<string name="systemui_statusheaderclick_title">###TRANSLATE_ME###</string>
+	<string name="systemui_statusheaderclick_summ">###TRANSLATE_ME###</string>
 	<string name="systemui_brightslide_title">Helligkeitsregler</string>
 	<string name="systemui_brightslide_summ">Fügt den Benachrichtigungen einen Helligkeitsregler hinzu.</string>
 	<string name="systemui_brightslide_auto">Auto</string>

@@ -10,6 +10,7 @@ import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -17,6 +18,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
@@ -35,6 +37,7 @@ import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Debug.MemoryInfo;
 import android.os.Environment;
@@ -902,7 +905,7 @@ public class SysUIMods {
 	}
 	
 	// Shrink to center and fade out animations
-	private static Animation terminateAnimation(int i, int cnt, int animType, final ViewGroup currApp) {
+	private static Animation terminateAnimation(final int i, int cnt, int animType, final ViewGroup currApp) {
 		if (gridViewContext == null) return null;
 		Animation fadeOut = AnimationUtils.loadAnimation(gridViewContext, android.R.anim.fade_out);
 		AnimationSet localAnimationSet = new AnimationSet(true);
@@ -937,7 +940,7 @@ public class SysUIMods {
 				new Thread(new Runnable() {
 					@Override
 					public void run() {
-						try { Thread.sleep(150); } catch (Exception e) {}
+						try { if (i > 3) Thread.sleep((i + 1) * 15); } catch (Exception e) {}
 						if (currApp == null) sendOnResume();
 					}
 				}).start();				
@@ -1235,6 +1238,43 @@ public class SysUIMods {
 			@Override
     		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				if (popup != null) popup.dismiss();
+			}
+		});
+	}
+	
+	public static void execHook_NotifDrawerHeader(final InitPackageResourcesParam resparam) {
+		resparam.res.hookLayout("com.android.systemui", "layout", "status_bar_expanded_header", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				View clock = liparam.view.findViewById(resparam.res.getIdentifier("clock", "id", "com.android.systemui"));
+				View date = liparam.view.findViewById(resparam.res.getIdentifier("date", "id", "com.android.systemui"));
+				final Intent clockIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
+				OnClickListener ocl = new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						ComponentName cn = new ComponentName("com.htc.android.worldclock", "com.htc.android.worldclock.WorldClockTabControl");
+						clockIntent.setComponent(cn);
+						clockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						v.getContext().startActivity(clockIntent);
+						
+						try {
+							Object sbservice = v.getContext().getSystemService("statusbar");
+							Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+							Method hidesb;
+							if (Build.VERSION.SDK_INT >= 17) {
+								hidesb = statusbarManager.getMethod("collapsePanels");
+							} else {
+								hidesb = statusbarManager.getMethod("collapse");
+							}
+							hidesb.setAccessible(true);
+							hidesb.invoke(sbservice);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					}
+				};
+				clock.setOnClickListener(ocl);
+				date.setOnClickListener(ocl);
 			}
 		});
 	}

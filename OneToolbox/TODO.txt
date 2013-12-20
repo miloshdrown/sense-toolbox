@@ -41,6 +41,7 @@ Fixed missing icon theming.
 Volume media control mod.
 Disable safe volume warning mod.
 Fixed flashlight on power key timeout, now it's 10 minutes while on battery and infinite while on charger.
+Launch Clock app by tapping on notification drawer header
 
 2.5:
 Fully customizable color themes for CleanBeam icons.

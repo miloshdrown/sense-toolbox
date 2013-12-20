@@ -118,6 +118,8 @@
 	<string name="systemui_ampmremove_summ">Enable to remove the AM/PM from the status bar clock in 12h mode.</string>
 	<string name="systemui_clockstyle_title">Clock style</string>
 	<string name="systemui_clockstyle_summ">Changes the style of the status bar clock.</string>
+	<string name="systemui_statusheaderclick_title">Fast Clock app launch</string>
+	<string name="systemui_statusheaderclick_summ">Tap on notification drawer header will open Clock app.</string>
 	<string name="systemui_brightslide_title">Brightness slider</string>
 	<string name="systemui_brightslide_summ">Add a brightness slider to the notification panel.</string>
 	<string name="systemui_brightslide_auto">Auto</string>
