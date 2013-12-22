@@ -118,8 +118,8 @@
     <string name="systemui_ampmremove_summ">Włącz, aby usunąć AM/PM na pasku stanu zegara w trybie 12h.</string>
     <string name="systemui_clockstyle_title">Styl zegara</string>
     <string name="systemui_clockstyle_summ">Zmiana stylu zegara na pasku stanu.</string>
-    <string name="systemui_statusheaderclick_title">###TRANSLATE_ME###</string>
-	<string name="systemui_statusheaderclick_summ">###TRANSLATE_ME###</string>
+	<string name="systemui_statusheaderclick_title">Szybki dostęp do zegara</string>
+	<string name="systemui_statusheaderclick_summ">Kliknięcie na zegar w obszarze powiadomień otworzy aplikację Zegar.</string>
     <string name="systemui_brightslide_title">Suwak jasności</string>
     <string name="systemui_brightslide_summ">Dodaj suwak jasności w panelu powiadomień.</string>
     <string name="systemui_brightslide_auto">Automatyczne</string>
@@ -231,8 +231,8 @@
     <string name="message_size_summ">Podnieś limitu rozmiaru wiadomości MMS do 300kb, 600kb, 1000kb.</string>
     <string name="message_accents_title">Włącz obsługę akcentu</string>
     <string name="message_accents_summ">Włącz opcje wsparcia akcentu w ustawieniach SMS.</string>
-    <string name="message_eassecurity_title">###TRANSLATE_ME###</string>
-	<string name="message_eassecurity_summ">###TRANSLATE_ME###</string>
+	<string name="message_eassecurity_title">Zabezpieczenia poczty MS Exchange</string>
+	<string name="message_eassecurity_summ">Usuwa zabezpieczenia poczty MS Exchange. Dotyczy wyłącznie nowych kont.</string>
     
     <string name="controls_mods">Modyfikacje sterowania</string>
     <string name="controls_mods_backlongpress">Długie naciśnięcie przycisku Wstecz</string>
@@ -245,15 +245,15 @@
     <string name="controls_vol2wake_summ">Wybudzenie telefonu klawiszami głośności. Wymagany root! Wykonaj pełny restart w celu zastosowania!</string>
 	<string name="controls_powerflash_title">Szybka latarka</string>
 	<string name="controls_powerflash_summ">Długie naciśnięcie przycisku zasilania, gdy ekran jest wyłączony, aby włączyć i wyłączyć latarkę.</string>
-	<string name="controls_mods_volume">###TRANSLATE_ME###</string>
-	<string name="controls_vol_up_cam_title">Działanie klawisza podgłaśniania</string>
-    <string name="controls_vol_up_cam_summ">Akcja aparatu na zwiększanie głośności.</string>
-    <string name="controls_vol_down_cam_title">Działanie klawisza ściszania</string>
-    <string name="controls_vol_down_cam_summ">Akcja aparatu na zmniejszanie głośności.</string>
-    <string name="controls_vol_up_media_title">###TRANSLATE_ME###</string>
-	<string name="controls_vol_up_media_summ">###TRANSLATE_ME###</string>
-	<string name="controls_vol_down_media_title">###TRANSLATE_ME###</string>	
-	<string name="controls_vol_down_media_summ">###TRANSLATE_ME###</string>
+	<string name="controls_mods_volume">Przyciski głośności</string>
+	<string name="controls_vol_up_cam_title">Akcja dla przycisku zgłośnienia</string>
+	<string name="controls_vol_up_cam_summ">Akcja dla przycisku zgłośnienia w trybie kamery.</string>
+	<string name="controls_vol_down_cam_title">Akcja dla przycisku ściszenia</string>	
+	<string name="controls_vol_down_cam_summ">Akcja dla przycisku ściszenia w trybie kamery.</string>
+	<string name="controls_vol_up_media_title">Akcja dla przytrzymania przycisku zgłośnienia</string>
+	<string name="controls_vol_up_media_summ">Akcja dla przytrzymania przycisku zgłośnienia gdy ekran jest wyłączony.</string>
+	<string name="controls_vol_down_media_title">Akcja dla przytrzymania przycisku ściszenia</string>	
+	<string name="controls_vol_down_media_summ">Akcja dla przytrzymania przycisku ściszenia gdy ekran jest wyłączony.</string>
     
     <string name="kill_foreground">Zabij pierwszoplanowe aplikację</string>
     <string name="kill_foreground_warn">Próbujesz zabić launcher!</string>
@@ -274,8 +274,8 @@
     <string name="various_apps_summ">Dodaj nowe obszary do Ustawień > Aplikacje:\n- przycisk, aby uruchomić aplikację\n- nazwa pliku apk i ścieżka\n- ścieżka danych\n- nazwa procesu\n- id użytkownika\n- wersja docelowego SDK</string>
     <string name="various_volsnd_title">Wyłącz dźwięk zmiany głośności</string>
     <string name="various_volsnd_summ">Zaznacz, aby wyłączyć dźwięk podczas zmiany głośności.</string>
-    <string name="various_volsafe_title">###TRANSLATE_ME###</string>
-	<string name="various_volsafe_summ">###TRANSLATE_ME###</string>
+	<string name="various_volsafe_title">Wyłączenie ostrzeżenia o poziomie głośności</string>
+	<string name="various_volsafe_summ">Usuń powiadomienie o niebezpiecznie wysokim poziomie głośności w trybie słuchawek.</string>
 	<string name="various_movevol_title">Pozycja paska głośności</string>
 	<string name="various_movevol_summ">Umieść pasek głośności na dole, żeby nie przysłaniał ekranu.</string>
     <string name="various_mtpnotif_title">Ukryj powiadomienia MTP</string>
@@ -284,6 +284,10 @@
 	<string name="various_fastunlock_summ">Odblokuj urządzenie od razu gdy poprawny numer PIN zostanie wprowadzony. Tylko ekran blokady HTC.</string>
 	<string name="various_ytwatermark_title">Znak wodny kanału YouTube</string>
 	<string name="various_ytwatermark_summ">Ukryj logo kanału nakładki wideo w aplikacji YouTube.</string>
+	<string name="various_oldtoasts_title">Styl tła powiadomień z Jelly Bean</string>
+	<string name="various_oldtoasts_summ">Przywróć sześcienny styl tła powiadomień.</string>
+	<string name="various_immersive_title">Tryb pełnoekranowy</string>
+	<string name="various_immersive_summ">Aktywuj tryb pełnoekranowy dla wszystkich aplikacji (z możliwością podglądu paska powiadomień).</string>
 	
 	<string name="persistent_mods">Zawsze aktywne mody</string>
 	<string name="persist_adgrid_title">Rozmiar siatki szuflady aplikacji</string>
