@@ -245,6 +245,8 @@
 	<string name="controls_vol2wake_summ">Wecke das Handy mit den Lautstärketasten. Benötigt Root! Starte VOLLSTÄNDIG neu nach der Änderung!</string>
 	<string name="controls_powerflash_title">Schnelle Taschenlampe</string>
 	<string name="controls_powerflash_summ">Halten der Standby-Taste bei ausgeschaltetem Bildschirm schaltet die Taschenlampe ein.</string>
+	<string name="controls_swapvolume_title">Lautstärke-Tasten tauschen</string>
+	<string name="controls_swapvolume_summ">Gleicht die Lautstärke-Tasten dem Regler auf dem Display an, wenn das Gerät gegen den Uhrzeigersinn horizontal gedreht wird.</string>
 	<string name="controls_mods_volume">Lautstärketasten</string>
 	<string name="controls_vol_up_cam_title">Kamera - Lauter</string>
 	<string name="controls_vol_up_cam_summ">Aktion auf der Lauter-Taste in der Kamera.</string>

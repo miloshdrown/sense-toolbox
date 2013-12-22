@@ -245,6 +245,8 @@
     <string name="controls_vol2wake_summ">Wybudzenie telefonu klawiszami głośności. Wymagany root! Wykonaj pełny restart w celu zastosowania!</string>
 	<string name="controls_powerflash_title">Szybka latarka</string>
 	<string name="controls_powerflash_summ">Długie naciśnięcie przycisku zasilania, gdy ekran jest wyłączony, aby włączyć i wyłączyć latarkę.</string>
+	<string name="controls_swapvolume_title">Zamień kierunek działania przycisków głośności w trybie landscape</string>
+	<string name="controls_swapvolume_summ">Odwróć działanie bocznych przycisków w trybie landscape - w "Lewo" ścisz, w "Prawo" podgłośnij</string>
 	<string name="controls_mods_volume">Przyciski głośności</string>
 	<string name="controls_vol_up_cam_title">Akcja dla przycisku zgłośnienia</string>
 	<string name="controls_vol_up_cam_summ">Akcja dla przycisku zgłośnienia w trybie kamery.</string>
