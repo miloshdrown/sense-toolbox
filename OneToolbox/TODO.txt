@@ -43,8 +43,9 @@ Volume media control mod. Control music players by long pressing volume buttons 
 Disable safe volume warning mod.
 Fixed flashlight on power key timeout, now it's 10 minutes while on battery and infinite while on charger.
 Launch Clock app by tapping on notification drawer header.
-Jelly Bean styled toasts. Bring back JB toast design on android 4.4 Kit Kat.
-Global immersive mode. Activate immersive mode for all apps (fullscreen with statusbar that can be pulled down)
+Swap volume keys in counterclockwise landscape.
+[Android 4.4] Jelly Bean styled toasts. Bring back JB toast design on android 4.4 Kit Kat.
+[Android 4.4] Global immersive mode. Activate immersive mode for all apps (fullscreen with statusbar that can be pulled down).
 
 2.5:
 Fully customizable color themes for CleanBeam icons.
