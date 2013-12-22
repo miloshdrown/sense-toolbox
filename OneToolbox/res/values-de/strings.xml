@@ -118,8 +118,8 @@
 	<string name="systemui_ampmremove_summ">Entfernt AM und PM im 12 Stunden Modus der Uhr in der Statusleiste.</string>
 	<string name="systemui_clockstyle_title">Uhr Stil</string>
 	<string name="systemui_clockstyle_summ">Ändert die Position der Uhr in der Statusleiste.</string>
-	<string name="systemui_statusheaderclick_title">###TRANSLATE_ME###</string>
-	<string name="systemui_statusheaderclick_summ">###TRANSLATE_ME###</string>
+	<string name="systemui_statusheaderclick_title">Uhr App Schnellstart</string>
+	<string name="systemui_statusheaderclick_summ">Starte die Uhr App via Tippen auf die Uhr in den Benachrichtigungen.</string>
 	<string name="systemui_brightslide_title">Helligkeitsregler</string>
 	<string name="systemui_brightslide_summ">Fügt den Benachrichtigungen einen Helligkeitsregler hinzu.</string>
 	<string name="systemui_brightslide_auto">Auto</string>
@@ -246,14 +246,14 @@
 	<string name="controls_powerflash_title">Schnelle Taschenlampe</string>
 	<string name="controls_powerflash_summ">Halten der Standby-Taste bei ausgeschaltetem Bildschirm schaltet die Taschenlampe ein.</string>
 	<string name="controls_mods_volume">Lautstärketasten</string>
-	<string name="controls_vol_up_cam_title">Lauter-Taste</string>
-	<string name="controls_vol_up_cam_summ">Aktion auf der Lauter-Taste.</string>
-	<string name="controls_vol_down_cam_title">Leiser-Taste</string>	
-	<string name="controls_vol_down_cam_summ">Aktion auf der Leiser-Taste.</string>
-	<string name="controls_vol_up_media_title">###TRANSLATE_ME###</string>
-	<string name="controls_vol_up_media_summ">###TRANSLATE_ME###</string>
-	<string name="controls_vol_down_media_title">###TRANSLATE_ME###</string>	
-	<string name="controls_vol_down_media_summ">###TRANSLATE_ME###</string>
+	<string name="controls_vol_up_cam_title">Kamera - Lauter</string>
+	<string name="controls_vol_up_cam_summ">Aktion auf der Lauter-Taste in der Kamera.</string>
+	<string name="controls_vol_down_cam_title">Kamera - Leiser</string>	
+	<string name="controls_vol_down_cam_summ">Aktion auf der Leiser-Taste in der Kamera.</string>
+	<string name="controls_vol_up_media_title">Media - Lauter</string>
+	<string name="controls_vol_up_media_summ">Aktion auf der Lauter-Taste während der Bildschirm aus ist.</string>
+	<string name="controls_vol_down_media_title">Media - Leiser</string>	
+	<string name="controls_vol_down_media_summ">Aktion auf der Lauter-Taste während der Bildschirm aus ist.</string>
 	
 	<string name="kill_foreground">Aktuelle App beenden</string>
 	<string name="kill_foreground_warn">Du versuchst den Launcher zu beenden!</string>
@@ -274,8 +274,8 @@
 	<string name="various_apps_summ">Neue Felder für Apps unter Einstellungen > Apps:\n- Taste zum Starten\n- APK Name und Pfad\n- Daten-Pfad\n- Prozess\n- Benutzer ID\n- SDK Version</string>
 	<string name="various_volsnd_title">Deaktiviere Lautstärke-Töne</string>
 	<string name="various_volsnd_summ">Deaktviert die Töne beim Ändern der Lautstärke mit den Tasten.</string>
-	<string name="various_volsafe_title">###TRANSLATE_ME###</string>
-	<string name="various_volsafe_summ">###TRANSLATE_ME###</string>
+	<string name="various_volsafe_title">Keine Warnung bei hohher Lautstärke</string>
+	<string name="various_volsafe_summ">Deaktiviert die Warnung bei zu hoher Lautstärke der Kopfhörer.</string>
 	<string name="various_movevol_title">Lautstärkendialog verschieben</string>
 	<string name="various_movevol_summ">Verschiebt den Dialog beim ändern der Lautstärke and den unteren Bildschirmrand.</string>
 	<string name="various_mtpnotif_title">Verstecke MTP-Benachrichtigung</string>
