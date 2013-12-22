@@ -8,11 +8,14 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.KeyEvent;
+import android.view.Surface;
 import android.view.ViewConfiguration;
+import android.view.WindowManager;
 
 import com.langerhans.one.utils.GlobalActions;
 import com.langerhans.one.utils.Version;
@@ -20,6 +23,7 @@ import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
@@ -355,6 +359,44 @@ public class ControlsMods {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+	}
+
+	public static void exec_SwapVolumeCCWLand(LoadPackageParam lpparam) {
+		try {
+			if (Build.VERSION.SDK_INT >= 19) {
+				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustMasterVolume", int.class, int.class, String.class, hook_adjustMasterVolume);
+				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustSuggestedStreamVolume", int.class, int.class, int.class, String.class, hook_adjustSuggestedStreamVolume);
+			} else {
+				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustMasterVolume", int.class, int.class, hook_adjustMasterVolume);
+				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustSuggestedStreamVolume", int.class, int.class, int.class, hook_adjustSuggestedStreamVolume);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static XC_MethodHook hook_adjustMasterVolume = new XC_MethodHook() {
+		@Override
+		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			hook_modifyOrientation(param);
+		}
+	};
+
+	public static XC_MethodHook hook_adjustSuggestedStreamVolume = new XC_MethodHook() {
+		@Override
+		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			hook_modifyOrientation(param);
+		}
+	};
+	
+	private static void hook_modifyOrientation(MethodHookParam param) {
+		if ((Integer)param.args[0] != 0) try {
+			Context context = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+			int rotation = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
+            if (rotation == Surface.ROTATION_90) param.args[0] = -1 * (Integer)param.args[0];
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 	}
 }

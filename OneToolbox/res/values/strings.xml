@@ -245,6 +245,8 @@
 	<string name="controls_vol2wake_summ">Wake your phone with the volume keys. Needs Root! Make a FULL reboot to apply!</string>
 	<string name="controls_powerflash_title">Quick flashlight</string>
 	<string name="controls_powerflash_summ">Long press power button while screen is off to turn flashlight on and off.</string>
+	<string name="controls_swapvolume_title">Swap volume buttons in CCW landscape</string>
+	<string name="controls_swapvolume_summ">Match volume up/down with slider movements to the right/left in counterclockwise landscape.</string>
 	<string name="controls_mods_volume">Volume keys</string>
 	<string name="controls_vol_up_cam_title">Volume Up action</string>
 	<string name="controls_vol_up_cam_summ">The action for Volume Up in camera.</string>
@@ -284,6 +286,10 @@
 	<string name="various_fastunlock_summ">Unlock device as soon as correct PIN is entered. HTC lockscreen only.</string>
 	<string name="various_ytwatermark_title">YouTube channel watermark</string>
 	<string name="various_ytwatermark_summ">Hide channel logo overlay on videos in YouTube app.</string>
+	<string name="various_oldtoasts_title">Jelly Bean styled toasts</string>
+	<string name="various_oldtoasts_summ">Bring back JB toast design on Android 4.4.</string>
+	<string name="various_immersive_title">Global immersive mode</string>
+	<string name="various_immersive_summ">Activate immersive mode for all apps (fullscreen with statusbar that can be pulled down).</string>
 	
 	<string name="persistent_mods">Always active mods</string>
 	<string name="persist_adgrid_title">App drawer grid size</string>

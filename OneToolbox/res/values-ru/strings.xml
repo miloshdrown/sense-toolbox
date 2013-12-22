@@ -245,6 +245,8 @@
 	<string name="controls_vol2wake_summ">Выводит устройство из режима сна при нажатии на клавиши громкости. Обязателен root! Для включения нужна полная перезагрузка!</string>
 	<string name="controls_powerflash_title">Быстрый фонарик</string>
 	<string name="controls_powerflash_summ">Позволяет активировать фонарик при отключенном экране долгим нажатием на кнопку включения.</string>
+	<string name="controls_swapvolume_title">Громоксть в ландшафтном режиме</string>
+	<string name="controls_swapvolume_summ">Меняет кнопки громкости так, чтобы они совпадали с движениями слайдера в ландшафтном режиме против часовой стрелки (увеличить громкость - вправо, уменьшить - влево).</string>
 	<string name="controls_mods_volume">Кнопки громкости</string>
 	<string name="controls_vol_up_cam_title">Повышение громкости</string>
 	<string name="controls_vol_up_cam_summ">Действие на клавишу повыш. громкости в камере.</string>
@@ -276,7 +278,7 @@
 	<string name="various_volsnd_summ">Отключает проверочный звук при изменении громкости.</string>
 	<string name="various_volsafe_title">Предупреждение о высокой громкости</string>
 	<string name="various_volsafe_summ">Отключает диалог подтверждения при изменении громкости в наушниках выше рекомендуемого уровня.</string>
-	<string name="various_movevol_title">Положение окна изменения громкости</string>
+	<string name="various_movevol_title">Положение окна громкости</string>
 	<string name="various_movevol_summ">Выравнивает окно по низу, чтобы оно не закрывало обзор.</string>
 	<string name="various_mtpnotif_title">Скрыть уведомление сервиса MTP</string>
 	<string name="various_mtpnotif_summ">Делает MTP сервис фоновым и скрывает уведомление. Мод предназначен для прошивок на основе утечки 4.3.</string>
@@ -284,6 +286,10 @@
 	<string name="various_fastunlock_summ">Позволяет разблокировать экран сразу после ввода правильного ПИНа. Только для HTC локскрина.</string>
 	<string name="various_ytwatermark_title">Логотип канала YouTube</string>
 	<string name="various_ytwatermark_summ">Прячет лого канала при просмотре видео в приложении YouTube.</string>
+	<string name="various_oldtoasts_title">Уведомления в стиле Jelly Bean</string>
+	<string name="various_oldtoasts_summ">Возвращает внешний вид всплывающих уведомлений из JB на Андроиде 4.4.</string>
+	<string name="various_immersive_title">Глобальный полноэкранный режим</string>
+	<string name="various_immersive_summ">Активирует "режим погружения" на Андроиде 4.4 для всех приложений (развёрнуты на весь экран, статусбар вызывается свайпом сверху экрана).</string>
 	
 	<string name="persistent_mods">Всегда активные моды</string>
 	<string name="persist_adgrid_title">Размер сетки списка приложений</string>

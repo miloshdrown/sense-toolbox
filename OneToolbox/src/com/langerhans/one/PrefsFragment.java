@@ -18,6 +18,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -95,6 +96,11 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			if (findPreference("pref_key_prism_infiniscroll") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_homescreen")).removePreference(findPreference("pref_key_prism_infiniscroll"));
 		} else {
 			if (findPreference("pref_key_persist_bypasslock") != null) ((HtcPreferenceScreen) findPreference("pref_key_persist")).removePreference(findPreference("pref_key_persist_bypasslock"));
+		}
+		
+		if (Build.VERSION.SDK_INT < 19) {
+			if (findPreference("pref_key_other_oldtoasts") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_oldtoasts"));
+			if (findPreference("pref_key_other_immersive") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_immersive"));
 		}
 		
 		//Add version name to support title
@@ -475,8 +481,8 @@ public class PrefsFragment extends HtcPreferenceFragment {
 					} else {
 						homeBtn.setOnClickListener(dismissDialogClickListener);
 					}
-				}    
-			}	        
+				}
+			}
 		}
 		return false;
 	}

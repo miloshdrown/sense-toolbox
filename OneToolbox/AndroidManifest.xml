@@ -40,7 +40,7 @@
 		<activity android:name="com.langerhans.one.AboutScreen" android:screenOrientation="portrait" />
 		<meta-data android:value="true" android:name="xposedmodule"/>
 		<meta-data android:value="42+" android:name="xposedminversion"/>
-		<meta-data android:value="Several Mods for Sense 5" android:name="xposeddescription"/>
+		<meta-data android:value="Mods for Sense 5 and 5.5 ROMs" android:name="xposeddescription"/>
 	</application>
 
 </manifest>

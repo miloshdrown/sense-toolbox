@@ -7,6 +7,8 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 import java.lang.reflect.Method;
 
+import com.langerhans.one.R;
+
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
@@ -14,15 +16,23 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
+import android.content.res.XModuleResources;
+import android.content.res.XResources;
+import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
 import de.robv.android.xposed.XC_MethodHook;
@@ -354,6 +364,72 @@ public class OtherMods{
 			@Override
 			public void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				param.setResult(true);
+			}
+		});
+	}
+	
+	public static void exec_OldStyleToasts(final String MODULE_PATH) {
+		XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, null);
+		final Drawable toastBkg = modRes.getDrawable(R.drawable.toast_frame_holo);
+		XResources.hookSystemWideLayout("android", "layout", "transient_notification", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				TextView toast = (TextView)liparam.view.findViewById(android.R.id.message);
+				toast.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+				toast.setTypeface(Typeface.DEFAULT);
+				LinearLayout toastLayout = (LinearLayout)liparam.view;
+				toastLayout.setBackground(toastBkg);
+			}
+		});
+	}
+	
+	public static void exec_TotallyImmersive_Init() {
+	XposedHelpers.findAndHookMethod(Activity.class, "onResume", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				try {
+					Activity activity = (Activity)param.thisObject;
+					if (!activity.getPackageName().equalsIgnoreCase("com.langerhans.one")) {
+						Window window = activity.getWindow();
+						window.addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
+						View decorView = window.getDecorView();
+						decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+			}
+		});
+	}
+
+	public static void exec_TotallyImmersive(final LoadPackageParam lpparam) {
+		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.ImmersiveModeConfirmation", lpparam.classLoader, "immersiveModeChanged", String.class, boolean.class, new XC_MethodReplacement() {
+			@Override
+			protected Object replaceHookedMethod(final MethodHookParam param) throws Throwable {
+				try {
+					final String pkg = (String)param.args[0];
+					boolean isImmersiveMode = (Boolean)param.args[1];
+					final Object confirmedPackages = XposedHelpers.getObjectField(param.thisObject, "mConfirmedPackages");
+					boolean packageConfirmed = (Boolean)XposedHelpers.callMethod(confirmedPackages, "contains", pkg);
+					Handler handler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+					if (isImmersiveMode) {
+						XposedHelpers.setObjectField(param.thisObject, "mLastPackage", pkg);
+						if (!packageConfirmed) {
+							handler.post(new Runnable() {
+								@Override
+								public void run() {
+									XposedHelpers.callMethod(confirmedPackages, "add", pkg);
+									XposedHelpers.callMethod(param.thisObject, "saveSetting");
+								}
+							});
+						}
+					} else {
+						XposedHelpers.setObjectField(param.thisObject, "mLastPackage", null);
+					}
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				return null;
 			}
 		});
 	}

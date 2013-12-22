@@ -295,6 +295,7 @@ public class GlobalActions {
 		}
 	}
 	
+	@SuppressWarnings("deprecation")
 	private static void turnGPSOn(Context context) {
 		beforeEnable = Settings.Secure.getString (context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 		String newSet;
@@ -310,6 +311,7 @@ public class GlobalActions {
 		}
 	}
 
+	@SuppressWarnings("deprecation")
 	private static void turnGPSOff(Context context) {
 		if (beforeEnable == null) {
 			String str = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);

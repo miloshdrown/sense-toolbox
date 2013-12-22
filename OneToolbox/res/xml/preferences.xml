@@ -494,6 +494,11 @@
             android:summary="@string/controls_powerflash_summ"
             android:title="@string/controls_powerflash_title"
             android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_controls_swapvolume"
+            android:summary="@string/controls_swapvolume_summ"
+            android:title="@string/controls_swapvolume_title"
+            android:defaultValue="false" />
                 
         <com.htc.preference.HtcPreferenceCategory
     	    android:title="@string/controls_mods_backlongpress"
@@ -625,6 +630,16 @@
             android:key="pref_key_other_ytwatermark"
             android:summary="@string/various_ytwatermark_summ"
             android:title="@string/various_ytwatermark_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_oldtoasts"
+            android:summary="@string/various_oldtoasts_summ"
+            android:title="@string/various_oldtoasts_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_immersive"
+            android:summary="@string/various_immersive_summ"
+            android:title="@string/various_immersive_title"
             android:defaultValue="false" />
         
         <com.htc.preference.HtcPreferenceCategory
