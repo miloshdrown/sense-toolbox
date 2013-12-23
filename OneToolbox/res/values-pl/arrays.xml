@@ -160,10 +160,10 @@
     </string-array>
     
     <string-array name="media_action">
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
+        <item >Bez zmian</item>
+        <item >Odtwórz/Pauza</item>
+        <item >Następny utwór</item>
+        <item >Poprzedni utwór</item>
     </string-array>
     <string-array name="media_action_val">
         <item >0</item>
