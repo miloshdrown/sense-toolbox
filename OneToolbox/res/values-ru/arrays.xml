@@ -164,10 +164,10 @@
     </string-array>
     
     <string-array name="media_action">
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
-        <item >###TRANSLATE_ME###</item>
+        <item >Действие не задано</item>
+        <item >Старт/Пауза</item>
+        <item >Следующий трек</item>
+        <item >Предыдущий трек</item>
     </string-array>
     <string-array name="media_action_val">
         <item >0</item>
