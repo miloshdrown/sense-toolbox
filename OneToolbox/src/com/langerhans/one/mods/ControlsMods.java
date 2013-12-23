@@ -19,8 +19,6 @@ import android.view.WindowManager;
 
 import com.langerhans.one.utils.GlobalActions;
 import com.langerhans.one.utils.Version;
-import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.execution.CommandCapture;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
@@ -327,41 +325,6 @@ public class ControlsMods {
 		});
 	}
 	
-	/**
-	 * Enables or diables the init script for vol2wake
-	 * @param newState true to enable, false to disable
-	 */
-	public static void initScriptHandler(Boolean newState)
-	{
-		if(newState)
-		{
-			CommandCapture command = new CommandCapture(0,
-					"mount -o rw,remount /system",
-					"echo \"#!/system/bin/sh\n\necho 1 > /sys/keyboard/vol_wakeup\nchmod 444 /sys/keyboard/vol_wakeup\" > /etc/init.d/89s5tvol2wake",
-					"chmod 755 /system/etc/init.d/89s5tvol2wake",
-					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)$\\)/\\1   WAKE_DROPPED/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",
-					"mount -o ro,remount /system");
-			try {
-				RootTools.getShell(true).add(command).waitForFinish();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-		else
-		{
-			CommandCapture command = new CommandCapture(0,
-					"mount -o rw,remount /system",
-					"rm -f /etc/init.d/89s5tvol2wake",
-					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)\\)\\s\\+WAKE_DROPPED/\\1/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",
-					"mount -o ro,remount /system");
-		    try {
-				RootTools.getShell(true).add(command).waitForFinish();
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	}
-
 	public static void exec_SwapVolumeCCWLand(LoadPackageParam lpparam) {
 		try {
 			if (Build.VERSION.SDK_INT >= 19) {

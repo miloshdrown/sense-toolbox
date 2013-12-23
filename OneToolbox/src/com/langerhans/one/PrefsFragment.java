@@ -43,7 +43,6 @@ import com.htc.preference.HtcPreferenceScreen;
 import com.htc.widget.ActionBarContainer;
 import com.htc.widget.ActionBarExt;
 import com.htc.widget.HtcAlertDialog;
-import com.langerhans.one.mods.ControlsMods;
 import com.langerhans.one.utils.ApkInstaller;
 import com.langerhans.one.utils.ColorPreference;
 import com.langerhans.one.utils.DynamicPreference;
@@ -359,10 +358,45 @@ public class PrefsFragment extends HtcPreferenceFragment {
         vol2wakePref.setOnPreferenceClickListener(new HtcPreference.OnPreferenceClickListener(){
 			@Override
 			public boolean onPreferenceClick(HtcPreference preference) {
-				ControlsMods.initScriptHandler(((HtcCheckBoxPreference) preference).isChecked());
+				initScriptHandler(((HtcCheckBoxPreference) preference).isChecked());
 				return true;
 			}
         });
+	}
+	
+	/**
+	 * Enables or diables the init script for vol2wake
+	 * @param newState true to enable, false to disable
+	 */
+	private static void initScriptHandler(Boolean newState)
+	{
+		if(newState)
+		{
+			CommandCapture command = new CommandCapture(0,
+					"mount -o rw,remount /system",
+					"echo \"#!/system/bin/sh\n\necho 1 > /sys/keyboard/vol_wakeup\nchmod 444 /sys/keyboard/vol_wakeup\" > /etc/init.d/89s5tvol2wake",
+					"chmod 755 /system/etc/init.d/89s5tvol2wake",
+					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)$\\)/\\1   WAKE_DROPPED/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",
+					"mount -o ro,remount /system");
+			try {
+				RootTools.getShell(true).add(command).waitForFinish();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
+		else
+		{
+			CommandCapture command = new CommandCapture(0,
+					"mount -o rw,remount /system",
+					"rm -f /etc/init.d/89s5tvol2wake",
+					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)\\)\\s\\+WAKE_DROPPED/\\1/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",
+					"mount -o ro,remount /system");
+		    try {
+				RootTools.getShell(true).add(command).waitForFinish();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 	
 	private CharSequence[] addToArray(CharSequence[] cs, int position, String toAdd) {
