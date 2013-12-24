@@ -107,7 +107,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="systemui_aosp_title">Aplicaciones recientes AOSP</string>
     <string name="systemui_aosp_summ">Habilita estili AOSP para aplicaciones recientes.</string>
     <string name="systemui_recentclear_title">Cerra todo en aplicaciones recientes</string>
-    <string name="systemui_recentclear_summ">Agrega la posibilidad de cerra todo en aplicaciones recientes tocando y enviando hacia abajo</string>
+    <string name="systemui_recentclear_summ">Agrega la posibilidad de cerra todo en aplicaciones recientes tocando y enviando hacia abajo.</string>
     <string name="systemui_recentram_title">Uso de RAM</string>
     <string name="systemui_recentram_summ">Mostrar la cantidad de memoria RAM usada en aplicaciones recientes.</string>
     <string name="systemui_centerclock_title">Reloj Centrado</string>
@@ -200,7 +200,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="sense_gridtinyfont_title">Fuente pequeña en cajon de aplicaciones</string>
     <string name="sense_gridtinyfont_summ">Reducir tamaño de titulos para cajon de aplicaciones con 6-filas</string>
     <string name="sense_swipedownaction_title">Accion gesto Abajo</string>
-    <string name="sense_swipedownaction_summ">Accion para el gesto hacia abajo en pantalla de inicio</string>
+    <string name="sense_swipedownaction_summ">Accion para el gesto hacia abajo en pantalla de inicio.</string>
     <string name="sense_swipeupaction_title">&gt;Accion gesto Arriba</string>
     <string name="sense_swipeupaction_summ">Accion para el gesto hacia arriba en pantalla de inicio.</string>
     <string name="sense_swiperightaction_title">Accion gesto derecha</string>
