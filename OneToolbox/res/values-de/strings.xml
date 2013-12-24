@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
 
     <string name="menu_save">Speichern</string>
@@ -15,7 +15,7 @@
     <string name="warning">Warnung!</string>
     <string name="xposed_not_installed">Xposed ist nicht vollständig installiert! Du musst im Xposed Installer Install/Update wählen, das Sense 5 Toolbox Modul aktivieren und dann das Handy neu starten.</string>
     <string name="welcome">Willkommen in Sense 5 Toolbox!</string>
-    <string name="dragndrop">Nutze Drag\'n\'Drop zum Anpassen der Schnelleinstellungen</string>
+    <string name="dragndrop">Nutze Drag\'n\'Drop zum Anpassen der Schnelleinstellungen.</string>
     <string name="title_delete">Tippe auf eine Kachel zum löschen.</string>
     <string name="plus_icon">Nutze das \'+\' Icon zum Hinzufügen.</string>
     <string name="save_settings">Vergiss das Speichern nicht!</string>
@@ -83,7 +83,7 @@
 	<string name="eqs_timeout">Bildschirm-Timeout</string>
 	<string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
 	<string name="eqs_apn">APN</string>
-	<string name="dummy"></string>
+	<string name="dummy">" "</string>
 	
 	<string name="transparency_msg">0 = transparent, 100 = undurchsichtig</string>
 	<string name="transparency_enable">Transparenz aktivieren</string>
@@ -100,7 +100,7 @@
 	<string name="systemui_tnb_summ">Macht den Hintergrund im Benachrichtigungsfenster transparent.</string>
 	<string name="systemui_eqs">Schnelleinstellungen</string>
 	<string name="systemui_heqs_title">Horizontale EQS</string>
-	<string name="systemui_heqs_summ">Aktiviere horizontale Schnelleinstellungen. Enthält die normalen EQS (scrollbar)</string>
+	<string name="systemui_heqs_summ">Aktiviere horizontale Schnelleinstellungen. Enthält die normalen EQS (scrollbar).</string>
 	<string name="systemui_heqs_notext_title">Kleine horizontale EQS</string>
 	<string name="systemui_heqs_notext_summ">Entfernt den Text der horizontalen EQS.</string>
 	<string name="systemui_noeqs_title">Deaktiviere EQS</string>
@@ -214,14 +214,14 @@
 	<string name="sense_sevenscreens_title">Sieben Home Screens</string>
 	<string name="sense_sevenscreens_summ">Erhöht die maximale Anzahl vom Home Screens auf Sieben. ACHTUNG: Funktioniert nicht auf HTC One 4.2.2!</string>
 	<string name="sense_4x5homescreen_title">4x5 Home Screen Raster</string>
-	<string name="sense_4x5homescreen_summ">Erhöht die Rastergröße der Home Screens aus 4x5</string>
+	<string name="sense_4x5homescreen_summ">Erhöht die Rastergröße der Home Screens aus 4x5.</string>
 	<string name="sense_invisilabels_title">Keine Icon-Beschriftung</string>
 	<string name="sense_invisilabels_summ">Entfernt die Icon-Beschriftungen von Apps und Ordnern auf dem Home Screens.</string>
 	<string name="notselected">Keine ausgewählt</string>
-	<string name="loading_app_data">Lade Apps&#8230;</string>
+	<string name="loading_app_data">Lade Apps…</string>
 	
 	<string name="message_mods">Nachrichten Mods</string>
-	<string name="message_smsmms_title">SMS->MMS Konvertierung verhindern.</string>
+	<string name="message_smsmms_title">SMS-&gt;MMS Konvertierung verhindern.</string>
 	<string name="message_smsmms_summ">Entfernt die erzwungene Umwandlung von SMS zu MMS auf Grund der Größe. Netzabhängig.</string>
 	<string name="message_smswake_title">Aufwachen bei SMS</string>
 	<string name="message_smswake_summ">Schaltet den Bildschirm bei SMS-Empfang ein.</string>
@@ -237,10 +237,10 @@
 	<string name="controls_mods">Tasten Mods</string>
 	<string name="controls_mods_backlongpress">Zurück halten</string>
 	<string name="controls_backlongpressaction_title">Aktion</string>
-	<string name="controls_backlongpressaction_summ">Aktion beim halten der Zurück-Taste</string>
+	<string name="controls_backlongpressaction_summ">Aktion beim halten der Zurück-Taste.</string>
 	<string name="controls_mods_homeassist">Home wischen</string>
 	<string name="controls_homeassistaction_title">Aktion</string>
-	<string name="controls_homeassistaction_summ">Aktion beim hochwischen von der Home Taste aus. (ersetzt Google Now)</string>
+	<string name="controls_homeassistaction_summ">Aktion beim hochwischen von der Home Taste aus. (ersetzt Google Now).</string>
 	<string name="controls_vol2wake_title">Volume2Wake</string>
 	<string name="controls_vol2wake_summ">Wecke das Handy mit den Lautstärketasten. Benötigt Root! Starte VOLLSTÄNDIG neu nach der Änderung!</string>
 	<string name="controls_powerflash_title">Schnelle Taschenlampe</string>
@@ -260,7 +260,7 @@
 	<string name="kill_foreground">Aktuelle App beenden</string>
 	<string name="kill_foreground_warn">Du versuchst den Launcher zu beenden!</string>
 	<string name="kill_foreground_yes">Okay</string>
-	<string name="kill_foreground_no">Abbrechen</string>
+	<string name="kill_foreground_no">Abbrechen!</string>
 	
 	<string name="various_mods">Verschiedene Mods</string>
 	<string name="various_mods_screenanim">Ein-/ Aus-Animationen</string>
@@ -273,7 +273,7 @@
 	<string name="various_scron_title">Aktiviere \'Aktiv lassen\'</string>
 	<string name="various_scron_summ">Zeige \'Aktiv lassen\' Option in den Display- und den Entwicklereinstellungen.</string>
 	<string name="various_apps_title">Zusätzliche App-Details</string>
-	<string name="various_apps_summ">Neue Felder für Apps unter Einstellungen > Apps:\n- Taste zum Starten\n- APK Name und Pfad\n- Daten-Pfad\n- Prozess\n- Benutzer ID\n- SDK Version</string>
+	<string name="various_apps_summ">Neue Felder für Apps unter Einstellungen &gt; Apps:\n- Taste zum Starten\n- APK Name und Pfad\n- Daten-Pfad\n- Prozess\n- Benutzer ID\n- SDK Version</string>
 	<string name="various_volsnd_title">Deaktiviere Lautstärke-Töne</string>
 	<string name="various_volsnd_summ">Deaktviert die Töne beim Ändern der Lautstärke mit den Tasten.</string>
 	<string name="various_volsafe_title">Keine Warnung bei hohher Lautstärke</string>
@@ -283,9 +283,9 @@
 	<string name="various_mtpnotif_title">Verstecke MTP-Benachrichtigung</string>
 	<string name="various_mtpnotif_summ">Versteckt die MTP-Benachrichtigung. Gedacht für geleakte 4.3 Versionen.</string>
 	<string name="various_fastunlock_title">Schnelles Entsperren</string>
-	<string name="various_fastunlock_summ">Entsperrt das Gerät sobald die richtige PIN eingegeben wurde. Nur mit HTC Lockscreen</string>
+	<string name="various_fastunlock_summ">Entsperrt das Gerät sobald die richtige PIN eingegeben wurde. Nur mit HTC Lockscreen.</string>
 	<string name="various_ytwatermark_title">Youtube Kanal-Wasserzeichen</string>
-	<string name="various_ytwatermark_summ">Entfernt das Kanal-Wasserzeichen in Youtube Videos</string>
+	<string name="various_ytwatermark_summ">Entfernt das Kanal-Wasserzeichen in Youtube Videos.</string>
 	<string name="various_oldtoasts_title">Jelly Bean Toast Benachrichtigungen</string>
 	<string name="various_oldtoasts_summ">Aktiviert den alten Stil für Toast-Benachrichtigungen auf Android 4.4.</string>
 	<string name="various_immersive_title">Globaler Vollbildmodus</string>
@@ -345,5 +345,12 @@
 	
 	<string name="apps_disabled">Nur deaktivierte anzeigen</string>
 	<string name="apps_all">Alle anzeigen</string>
+
+<string name="about_devs">Developers</string>
+	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
+	<string name="about_thanks">Thanks</string>
+	<string name="about_sense">Sense 5</string>
+	<string name="about_toolbox">Toolbox</string>
+	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nDunc001 and LeSScro - for their APM icons\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
 
 </resources>
