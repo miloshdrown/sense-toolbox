@@ -171,7 +171,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="cleanbeam_sunbeam_title">Instalar Sunbeam</string>
     <string name="cleanbeam_sunbeam_summ">Instalar el Sunbeam Live Wallpaper.</string>
     <string name="cleanbeam_post_title">Visitar el tema de CleanBeam</string>
-    <string name="cleanbeam_post_summ">"Vea una muestra y lista de cambios aqui. Este seguro de dar click en el boton 'Gracias'!"</string>
+    <string name="cleanbeam_post_summ">Vea una muestra y lista de cambios aqui. Recuerda dar clic en el boton \'Gracias\'!</string>
     <string name="sense_mods">Sense Mods</string>
     <string name="sense_transparency">Transparencia</string>
     <string name="sense_homescreen">Pantalla de Inicio</string>
@@ -179,7 +179,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="sense_gestures">Gestos</string>
     <string name="sense_td_title">Barra Aplicaciones</string>
     <string name="sense_td_summ">Hacer la barra de aplicaciones transparente.</string>
-    <string name="sense_twidget_title">4x1 widget dereloj</string>
+    <string name="sense_twidget_title">Widget de Reloj 4x1</string>
     <string name="sense_twidget_summ">Hacer transparente los widget 4x1 de Reloj + Clima.</string>
     <string name="sense_tappdrawer_title">Cajon de Aplicaciones</string>
     <string name="sense_tappdrawer_summ">Hacer el cajon de aplicaciones transparente.</string>
@@ -201,7 +201,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="sense_gridtinyfont_summ">Reducir tamaño de titulos para cajon de aplicaciones con 6-filas</string>
     <string name="sense_swipedownaction_title">Accion gesto Abajo</string>
     <string name="sense_swipedownaction_summ">Accion para el gesto hacia abajo en pantalla de inicio.</string>
-    <string name="sense_swipeupaction_title">&gt;Accion gesto Arriba</string>
+    <string name="sense_swipeupaction_title">Accion gesto Arriba</string>
     <string name="sense_swipeupaction_summ">Accion para el gesto hacia arriba en pantalla de inicio.</string>
     <string name="sense_swiperightaction_title">Accion gesto derecha</string>
     <string name="sense_swiperightaction_summ">Accion para el gesto a la derecha en la barra de aplicaciones.</string>
@@ -240,7 +240,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="controls_powerflash_title">Linterna Rapida</string>
     <string name="controls_powerflash_summ">Presion prolongada del boton de apagado mientras esta la pantalla apagada prende y apaga la Linterna.</string>
     <string name="controls_swapvolume_title">Cambiar botones de volumen en CCW paisaje</string>
-    <string name="controls_swapvolume_summ">Igual el volumen arriba/abajo con deslizador al mover derecha/izquierdaht/left en el cambio al modo paisaje.</string>
+    <string name="controls_swapvolume_summ">Iguala el volumen arriba/abajo con deslizador al mover derecha/izquierda al cambiar al modo paisaje.</string>
     <string name="controls_mods_volume">Teclas de Volumen</string>
     <string name="controls_vol_up_cam_title">Accion Volumen Arriba</string>
     <string name="controls_vol_up_cam_summ">Accion del Volumen Arriba en Camara.</string>
@@ -263,7 +263,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="various_apm_title">APM</string>
     <string name="various_apm_summ">"Activar o Desactivar Menu avanzado de Reinicio Si tiene instalado el APM de forma nativa, mejor mantenlo desactivado."</string>
     <string name="various_scron_title">"Habilitar 'Mantener encendido'"</string>
-    <string name="various_scron_summ">"Mostrar 'Mantener encendido' en opciones de pantalla en la cofiguracion de desarrollador."</string>
+    <string name="various_scron_summ">Mostrar \'Mantener encendido\' en opciones de pantalla en la configuracion de desarrollador.</string>
     <string name="various_apps_title">Mostrar detalles adicionales en Aplicaciones</string>
     <string name="various_apps_summ">"Agregar nuevos campos en la Configuracion &gt; Apps:
 - Boton para lanzar el App
@@ -272,14 +272,14 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
 - Nombre del Proceso
 - ID de Usuario
 - Version de SDK objetivo"</string>
-    <string name="various_volsnd_title">Desactivar cambio de volumen del sonido</string>
-    <string name="various_volsnd_summ">Selecciona para desactivar el cambio de volumen en sonidos.</string>
+    <string name="various_volsnd_title">Desactivar sonidos de cambio de volumen</string>
+    <string name="various_volsnd_summ">Selecciona para desactivar el sonido del cambio de volumen.</string>
     <string name="various_volsafe_title">Desactivar aviso de volumen recomendado</string>
     <string name="various_volsafe_summ">Apagar dialogo de confirmacion cuando el volumen pasa los rangos de volumen recomendados con audifonos.</string>
     <string name="various_movevol_title">Posicion del dialogo de volumen</string>
-    <string name="various_movevol_summ">"Hacer que el dieglo de volumen se aline Abajo esto no funciona en vistas bloqueadas."</string>
+    <string name="various_movevol_summ">Hacer que el dialogo de volumen se aline Abajo esto no funciona en vistas bloqueadas.</string>
     <string name="various_mtpnotif_title">Ocultar notificacion MTP</string>
-    <string name="various_mtpnotif_summ">Hacer servicio MTP correr de fondo y desactivar notificacion. Este Mod esta para ROms basadas en Android 4.3.</string>
+    <string name="various_mtpnotif_summ">Hacer servicio MTP correr de fondo y desactivar notificacion. Este Mod esta para ROMs basadas en Android 4.3.</string>
     <string name="various_fastunlock_title">Desbloqueo rapido</string>
     <string name="various_fastunlock_summ">Desbloquear tan pronto digite PIN correcto. Solo en bloqueo HTC.</string>
     <string name="various_ytwatermark_title">Marca de canales de YouTube</string>
@@ -287,7 +287,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="various_oldtoasts_title">Avisos estilo Jelly Bean</string>
     <string name="various_oldtoasts_summ">Volver al diseño de JB de avisos en Android 4.4.</string>
     <string name="various_immersive_title">Modo inmersivo global</string>
-    <string name="various_immersive_summ">Activar modo inmersivo para todas las aplicaciones (pantalal completa con barra de estado halando hacia abajo).</string>
+    <string name="various_immersive_summ">Activar modo inmersivo para todas las aplicaciones (pantalla completa con barra de estado halando hacia abajo).</string>
     <string name="persistent_mods">Modificaciones siempre activas</string>
     <string name="persist_adgrid_title">Tamaño del listadod de Apps</string>
     <string name="persist_adgrid_summ">Nuevos tamaños de Grillas: 5x5, 4x6 y 5x6. Puedes seleccionar desde el menu por defecto de las aplicaciones.</string>
@@ -298,7 +298,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="persist_appfilter_title">Filtro de Apps</string>
     <string name="persist_appfilter_summ">Agregar opcion para mostrar solo paquetes deshabilitados en Apps.</string>
     <string name="persist_recentslongtap_title">Menu emergente en aplicaciones recientes</string>
-    <string name="persist_recentslongtap_summ">Mostrar menu emergente cuando se presienta por largo tiempo una App en las aplicacioes recientes.</string>
+    <string name="persist_recentslongtap_summ">Mostrar menu emergente cuando se presiona prolongadamente una App en las aplicaciones recientes.</string>
     <string name="persist_installer_title">Mostrar version del App</string>
     <string name="persist_installer_summ">Agregar la version del paquete a instalar en el titulo al actualizar o instalar una aplicacion.</string>
     <string name="support">Apoyo</string>
