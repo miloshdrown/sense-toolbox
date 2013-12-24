@@ -105,7 +105,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="systemui_noeqs_summ">Quita el panel EQS y restaura el boton de Configuracion.</string>
     <string name="systemui_recent">Aplicaciones Recientes</string>
     <string name="systemui_aosp_title">Aplicaciones recientes AOSP</string>
-    <string name="systemui_aosp_summ">Habilita estili AOSP para aplicaciones recientes.</string>
+    <string name="systemui_aosp_summ">Habilita estilo AOSP para aplicaciones recientes.</string>
     <string name="systemui_recentclear_title">Cerra todo en aplicaciones recientes</string>
     <string name="systemui_recentclear_summ">Agrega la posibilidad de cerra todo en aplicaciones recientes tocando y enviando hacia abajo.</string>
     <string name="systemui_recentram_title">Uso de RAM</string>
@@ -113,7 +113,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="systemui_centerclock_title">Reloj Centrado</string>
     <string name="systemui_centerclock_summ">Habilita mover el reloj al centro de la barra de estado.</string>
     <string name="systemui_ampmremove_title">Quitar AM/PM</string>
-    <string name="systemui_ampmremove_summ">Habilitar quitar el AM/PM del reloj de la barra de estado en modo 12h.</string>
+    <string name="systemui_ampmremove_summ">Habilitar para quitar el AM/PM del reloj de la barra de estado en modo 12h.</string>
     <string name="systemui_clockstyle_title">Estilo Reloj</string>
     <string name="systemui_clockstyle_summ">Cambiar el estilo del reloj en la barra de estado.</string>
     <string name="systemui_statusheaderclick_title">Apertura rapida de Reloj</string>
@@ -180,7 +180,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="sense_td_title">Barra Aplicaciones</string>
     <string name="sense_td_summ">Hacer la barra de aplicaciones transparente.</string>
     <string name="sense_twidget_title">4x1 widget dereloj</string>
-    <string name="sense_twidget_summ">Make the default 4x1 clock + weather widget transparent.</string>
+    <string name="sense_twidget_summ">Hacer transparente los widget 4x1 de Reloj + Clima.</string>
     <string name="sense_tappdrawer_title">Cajon de Aplicaciones</string>
     <string name="sense_tappdrawer_summ">Hacer el cajon de aplicaciones transparente.</string>
     <string name="sense_tfolders_title">Carpetas</string>
@@ -216,8 +216,8 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="notselected">No seleccionada</string>
     <string name="loading_app_data">Cargando apps…</string>
     <string name="message_mods">Mods de Mensajeria</string>
-    <string name="message_smsmms_title">Disable SMS -&gt; MMS conversion</string>
-    <string name="message_smsmms_summ">Check to disable the forced SMS to MMS conversion by the character limit. Network limitations still apply.</string>
+    <string name="message_smsmms_title">Desactivar conversion SMS -&gt; MMS</string>
+    <string name="message_smsmms_summ">Selecciona para desactivar la conversion forzada de SMS a MMS por el limite de caracteres. Las limitaciones de red continuan ahi.</string>
     <string name="message_smswake_title">Encender con SMS</string>
     <string name="message_smswake_summ">Encender pantalla, cuando se recibe un SMS.</string>
     <string name="message_toast_title">Reporte emergente de entrega</string>
@@ -235,7 +235,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="controls_mods_homeassist">Inicio de Asistencia</string>
     <string name="controls_homeassistaction_title">Accion</string>
     <string name="controls_homeassistaction_summ">Sobreescribir acciones asistidas (Lanza Google Now por defecto).</string>
-    <string name="controls_vol2wake_title">Volume2Wake</string>
+    <string name="controls_vol2wake_title">Despertar con Volumen</string>
     <string name="controls_vol2wake_summ">Encender el telefono con las teclas de volumen. Necesita Root! Para aplicar debe Reinciar!</string>
     <string name="controls_powerflash_title">Linterna Rapida</string>
     <string name="controls_powerflash_summ">Presion prolongada del boton de apagado mientras esta la pantalla apagada prende y apaga la Linterna.</string>
@@ -303,7 +303,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="persist_installer_summ">Agregar la version del paquete a instalar en el titulo al actualizar o instalar una aplicacion.</string>
     <string name="support">Apoyo</string>
     <string name="support_s5t_title">Visita el tema de Sense 5</string>
-    <string name="support_s5t_summ">Encuentra inforamcion y cambios para la aplicacion aqui.</string>
+    <string name="support_s5t_summ">Encuentra informacion y cambios para la aplicacion aqui.</string>
     <string name="support_blog_title">Visita el Blog de ARHD</string>
     <string name="support_blog_summ">Obtiene las ultimas noticias y actualizaciones de tu ROM favorita aqui.</string>
     <string name="toggle_wifi_on">Wi-Fi activado</string>
