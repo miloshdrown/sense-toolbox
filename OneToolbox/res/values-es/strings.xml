@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="menu_save">Grabar</string>
     <string name="app_name">Sense 5 Toolbox</string>
@@ -84,7 +84,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="eqs_timeout">Tiempo de Espera</string>
     <string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
     <string name="eqs_apn">APN</string>
-    <string name="dummy" />
+    <string name="dummy">" "</string>
     <string name="transparency_msg">0 = transparente, 100 = opaco</string>
     <string name="transparency_enable">Habilitar transparencia</string>
     <string name="launch_app">Lanzar App</string>
@@ -201,7 +201,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="sense_gridtinyfont_summ">Reducir tamaño de titulos para cajon de aplicaciones con 6-filas</string>
     <string name="sense_swipedownaction_title">Accion gesto Abajo</string>
     <string name="sense_swipedownaction_summ">Accion para el gesto hacia abajo en pantalla de inicio</string>
-    <string name="sense_swipeupaction_title">>Accion gesto Arriba</string>
+    <string name="sense_swipeupaction_title">&gt;Accion gesto Arriba</string>
     <string name="sense_swipeupaction_summ">Accion para el gesto hacia arriba en pantalla de inicio.</string>
     <string name="sense_swiperightaction_title">Accion gesto derecha</string>
     <string name="sense_swiperightaction_summ">Accion para el gesto a la derecha en la barra de aplicaciones.</string>
@@ -216,7 +216,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="notselected">No seleccionada</string>
     <string name="loading_app_data">Cargando apps…</string>
     <string name="message_mods">Mods de Mensajeria</string>
-    <string name="message_smsmms_title">Disable SMS -> MMS conversion</string>
+    <string name="message_smsmms_title">Disable SMS -&gt; MMS conversion</string>
     <string name="message_smsmms_summ">Check to disable the forced SMS to MMS conversion by the character limit. Network limitations still apply.</string>
     <string name="message_smswake_title">Encender con SMS</string>
     <string name="message_smswake_summ">Encender pantalla, cuando se recibe un SMS.</string>
@@ -265,7 +265,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="various_scron_title">"Habilitar 'Mantener encendido'"</string>
     <string name="various_scron_summ">"Mostrar 'Mantener encendido' en opciones de pantalla en la cofiguracion de desarrollador."</string>
     <string name="various_apps_title">Mostrar detalles adicionales en Aplicaciones</string>
-    <string name="various_apps_summ">"Agregar nuevos campos en la Configuracion > Apps:
+    <string name="various_apps_summ">"Agregar nuevos campos en la Configuracion &gt; Apps:
 - Boton para lanzar el App
 - Nombre y ruta del Apk
 - Ruta de datos
