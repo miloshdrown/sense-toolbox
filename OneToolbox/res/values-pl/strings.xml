@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
 
     <string name="menu_save">Zapisz</string>
@@ -83,7 +83,7 @@
     <string name="eqs_timeout">Limit czasu</string>
     <string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
     <string name="eqs_apn">APN</string>
-    <string name="dummy"></string>
+    <string name="dummy">" "</string>
     
     <string name="transparency_msg">0 = przezroczysty, 100 = nieprzezroczysty</string>
     <string name="transparency_enable">Włącz przezroczystość</string>
@@ -218,10 +218,10 @@
 	<string name="sense_invisilabels_title">Usuń nazwy ikon</string>
 	<string name="sense_invisilabels_summ">Usuwa nazwy z aplikacji, ikony i folderów na ekranach głównych.</string>
     <string name="notselected">Nie wybrano</string>
-    <string name="loading_app_data">Ładowanie aplikacji&#8230;</string>
+    <string name="loading_app_data">Ładowanie aplikacji…</string>
     
     <string name="message_mods">Modyfikacje wiadomości</string>
-    <string name="message_smsmms_title">Wyłącz konwersje SMS -> MMS</string>
+    <string name="message_smsmms_title">Wyłącz konwersje SMS -&gt; MMS</string>
     <string name="message_smsmms_summ">Wyłącz przymusową konwersję SMS na MMS przez limit znaków. Nadal obowiązują ograniczenia sieci.</string>
     <string name="message_smswake_title">Wybudzenie przez SMS</string>
     <string name="message_smswake_summ">Włącz ekran, po odebraniu wiadomości SMS.</string>
@@ -246,7 +246,7 @@
 	<string name="controls_powerflash_title">Szybka latarka</string>
 	<string name="controls_powerflash_summ">Długie naciśnięcie przycisku zasilania, gdy ekran jest wyłączony, aby włączyć i wyłączyć latarkę.</string>
 	<string name="controls_swapvolume_title">Zamień kierunek działania przycisków głośności w trybie landscape</string>
-	<string name="controls_swapvolume_summ">Odwróć działanie bocznych przycisków w trybie landscape - w "Lewo" ścisz, w "Prawo" podgłośnij</string>
+	<string name="controls_swapvolume_summ">Odwróć działanie bocznych przycisków w trybie landscape - w Lewo ścisz, w Prawo podgłośnij.</string>
 	<string name="controls_mods_volume">Przyciski głośności</string>
 	<string name="controls_vol_up_cam_title">Akcja dla przycisku zgłośnienia</string>
 	<string name="controls_vol_up_cam_summ">Akcja dla przycisku zgłośnienia w trybie kamery.</string>
@@ -273,7 +273,7 @@
     <string name="various_scron_title">Włącz \'Zachowaj ekran włączony\'</string>
     <string name="various_scron_summ">Pokaż opcję Zachowaj ekran włączony w ustawienia wyświetlania i deweloperskich.</string>
     <string name="various_apps_title">Pokaż dodatkowe informacje aplikacji</string>
-    <string name="various_apps_summ">Dodaj nowe obszary do Ustawień > Aplikacje:\n- przycisk, aby uruchomić aplikację\n- nazwa pliku apk i ścieżka\n- ścieżka danych\n- nazwa procesu\n- id użytkownika\n- wersja docelowego SDK</string>
+    <string name="various_apps_summ">Dodaj nowe obszary do Ustawień &gt; Aplikacje:\n- przycisk, aby uruchomić aplikację\n- nazwa pliku apk i ścieżka\n- ścieżka danych\n- nazwa procesu\n- id użytkownika\n- wersja docelowego SDK</string>
     <string name="various_volsnd_title">Wyłącz dźwięk zmiany głośności</string>
     <string name="various_volsnd_summ">Zaznacz, aby wyłączyć dźwięk podczas zmiany głośności.</string>
 	<string name="various_volsafe_title">Wyłączenie ostrzeżenia o poziomie głośności</string>
