@@ -18,13 +18,13 @@
         <item >19</item>
     </string-array>
     <string-array name="cam_actions">
-        <item >Shutter</item>
-        <item >Focus</item>
-        <item >Force focus, then shutter</item>
-        <item >Record Video</item>
-        <item >Zoom in</item>
-        <item >Zoom out</item>
-        <item >No change</item>
+        <item >@string/array_cam_actions_shutter</item>
+        <item >@string/array_cam_actions_focus</item>
+        <item >@string/array_cam_actions_focusshutter</item>
+        <item >@string/array_cam_actions_video</item>
+        <item >@string/array_cam_actions_zoom_in</item>
+        <item >@string/array_cam_actions_zoom_out</item>
+        <item >@string/array_cam_actions_nothing</item>
     </string-array>
     <string-array name="cam_actions_val">
         <item >1</item>
@@ -37,12 +37,12 @@
     </string-array>
     
     <string-array name="batt_icon">
-        <item >Default</item>
-        <item >Percentage inside</item>
-        <item >Circle with percentage</item>
-        <item >KitKat</item>
-        <item >KitKat with percentage</item>
-        <item >No icon</item>
+        <item >@string/array_default</item>
+        <item >@string/array_batt_icon_percentage</item>
+        <item >@string/array_batt_icon_circle</item>
+        <item >@string/array_batt_icon_kitkat</item>
+        <item >@string/array_batt_icon_kitkat_p</item>
+        <item >@string/array_batt_icon_none</item>
     </string-array>
     <string-array name="batt_icon_val">
         <item >1</item>
@@ -54,9 +54,9 @@
     </string-array>
     
 	<string-array name="wifi_icon">
-        <item >Default</item>
-        <item >Style 1</item>
-        <item >Style 2</item>
+        <item >@string/array_default</item>
+        <item >@string/array_wifi_icon_style1</item>
+        <item >@string/array_wifi_icon_style2</item>
     </string-array>
     <string-array name="wifi_icon_val">
         <item >1</item>
@@ -75,9 +75,9 @@
 	</array>
     
     <string-array name="clock_style">
-        <item >Default</item>
-        <item >Center clock</item>
-        <item >No clock</item>
+        <item >@string/array_default</item>
+        <item >@string/array_clock_style_center</item>
+        <item >@string/array_clock_style_none</item>
     </string-array>
     <string-array name="clock_style_val">
         <item >1</item>
@@ -86,14 +86,14 @@
     </string-array>
 	
     <string-array name="global_actions">
-        <item >No action</item>
-        <item >Expand notifications drawer</item>
-        <item >Expand EQS panel</item>
-        <item >Lock device</item>
-        <item >Go to sleep</item>
-        <item >Take screenshot</item>
-        <item >Launch app</item>
-        <item >Toggle settings</item>
+        <item >@string/array_global_actions_none</item>
+        <item >@string/array_global_actions_notif</item>
+        <item >@string/array_global_actions_eqs</item>
+        <item >@string/array_global_actions_lock</item>
+        <item >@string/array_global_actions_sleep</item>
+        <item >@string/array_global_actions_screenshot</item>
+        <item >@string/array_global_actions_launch</item>
+        <item >@string/array_global_actions_toggle</item>
     </string-array>
     <string-array name="global_actions_val">
         <item >1</item>
@@ -107,15 +107,15 @@
     </string-array>
     
     <string-array name="global_toggles">
-        <item >Wi-Fi</item>
-        <item >Bluetooth</item>
-        <item >GPS</item>
-        <item >NFC</item>
-        <item >Sound profile</item>
-        <item >Auto brightness</item>
-        <item >Auto rotation</item>
-        <item >Flashlight</item>
-        <item >Mobile data</item>
+        <item >@string/array_global_toggle_wifi</item>
+        <item >@string/array_global_toggle_bt</item>
+        <item >@string/array_global_toggle_gps</item>
+        <item >@string/array_global_toggle_nfc</item>
+        <item >@string/array_global_toggle_sound</item>
+        <item >@string/array_global_toggle_brightness</item>
+        <item >@string/array_global_toggle_rotation</item>
+        <item >@string/array_global_toggle_torch</item>
+        <item >@string/array_global_toggle_mobiledata</item>
     </string-array>
     <string-array name="global_toggles_val">
         <item >1</item>
@@ -137,29 +137,29 @@
 		<item ></item>
 	</array>
 	<string-array name="home_menu">
-        <item >Manage apps</item>
-        <item >Personalize</item>
-        <item >Settings</item>
-        <item >Wi-Fi</item>
-        <item >APM</item>
+        <item >@string/array_home_menu_apps</item>
+        <item >@string/array_home_menu_personalize</item>
+        <item >@string/array_home_menu_settings</item>
+        <item >@string/array_home_menu_wifi</item>
+        <item >@string/array_home_menu_apm</item>
     </string-array>
     <string-array name="recents_menu">
-        <item >Show info</item>
-        <item >Close</item>
-        <item >Close others</item>
+        <item >@string/array_recents_menu_info</item>
+        <item >@string/array_recents_menu_close</item>
+        <item >@string/array_recents_menu_closeothers</item>
     </string-array>
     <string-array name="various_screenonanim">
-        <item >None</item>
-        <item >Fade</item>
+        <item >@string/array_screen_anim_none</item>
+        <item >@string/array_screen_anim_fade</item>
     </string-array>
     <string-array name="various_screenonanim_val">
         <item >0</item>
         <item >2</item>
     </string-array>
     <string-array name="various_screenoffanim">
-        <item >None</item>
-        <item >Fade</item>
-        <item >CRT</item>
+        <item >@string/array_screen_anim_none</item>
+        <item >@string/array_screen_anim_fade</item>
+        <item >@string/array_screen_anim_crt</item>
     </string-array>
     <string-array name="various_screenoffanim_val">
         <item >0</item>
@@ -167,11 +167,11 @@
         <item >1</item>
     </string-array>
     <string-array name="theme_colors">
-        <item >Blue</item>
-        <item >Green</item>
-        <item >Red</item>
-        <item >Orange</item>
-        <item >White</item>
+        <item >@string/array_color_blue</item>
+        <item >@string/array_color_green</item>
+        <item >@string/array_color_red</item>
+        <item >@string/array_color_orange</item>
+        <item >@string/array_color_white</item>
     </string-array>
     <string-array name="theme_colors_val">
         <item >1</item>
@@ -182,10 +182,10 @@
     </string-array>
     
     <string-array name="media_action">
-        <item >No Change</item>
-        <item >Play/Pause</item>
-        <item >Next track</item>
-        <item >Previous track</item>
+        <item >@string/array_media_none</item>
+        <item >@string/array_media_playpause</item>
+        <item >@string/array_media_next</item>
+        <item >@string/array_media_prev</item>
     </string-array>
     <string-array name="media_action_val">
         <item >0</item>

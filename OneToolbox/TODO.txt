@@ -36,6 +36,13 @@
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
+2.7
+Added Spanish translation
+
+2.6.1
+Fixed localization
+Fixed FC
+
 2.6
 Fixed transparant dock for 4.2.2 devices.
 Fixed missing icon theming.

@@ -354,4 +354,59 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     Equipos RU y AU (y  algunos otros beta testers) - por probar y dar retroalimentacion valiosa 
     
     usuarios ARHD - por su paciencia"</string>
+    
+    <string name="array_default">Defecto</string>
+	<string name="array_cam_actions_shutter">Obturador</string>
+	<string name="array_cam_actions_focus">Enfoque</string>
+	<string name="array_cam_actions_focusshutter">Forzar enfoque, luego obturador</string>
+	<string name="array_cam_actions_video">Grabar Video</string>
+	<string name="array_cam_actions_zoom_in">Acercar</string>
+	<string name="array_cam_actions_zoom_out">Alejar</string>
+	<string name="array_cam_actions_nothing">Sin Cambio</string>
+	<string name="array_batt_icon_percentage">Porcentaje dentro</string>
+	<string name="array_batt_icon_circle">Circular con porcentaje</string>
+	<string name="array_batt_icon_kitkat">KitKat</string>
+	<string name="array_batt_icon_kitkat_p">KitKat con porcentaje</string>
+	<string name="array_batt_icon_none">Sin icono</string>
+	<string name="array_wifi_icon_style1">Estilo 1</string>
+	<string name="array_wifi_icon_style2">Estilo 2</string>
+	<string name="array_clock_style_center">Reloj Central</string>
+	<string name="array_clock_style_none">Sin Reloj</string>
+	<string name="array_global_actions_none">Sin accion</string>
+	<string name="array_global_actions_notif">Expandir barra de notificacion</string>
+	<string name="array_global_actions_eqs">Expandir panel EQS</string>
+	<string name="array_global_actions_lock">Bloquear Equipo</string>
+	<string name="array_global_actions_sleep">Ir a dormir</string>
+	<string name="array_global_actions_screenshot">Tomar captura</string>
+	<string name="array_global_actions_launch">Lanzar App</string>
+	<string name="array_global_actions_toggle">Palanca de configuracion</string>
+	<string name="array_global_toggle_wifi">Wi-Fi</string>
+	<string name="array_global_toggle_bt">Bluetooth</string>
+	<string name="array_global_toggle_gps">GPS</string>
+	<string name="array_global_toggle_nfc">NFC</string>
+	<string name="array_global_toggle_sound">Perfil de Sonido</string>
+	<string name="array_global_toggle_brightness">Brillo Automatico</string>
+	<string name="array_global_toggle_rotation">Rotacion Automatica</string>
+	<string name="array_global_toggle_torch">Linterna</string>
+	<string name="array_global_toggle_mobiledata">Datos Moviles</string>
+	<string name="array_home_menu_apps">Administrar Apps</string>
+	<string name="array_home_menu_personalize">Personalizar</string>
+	<string name="array_home_menu_settings">Configuracion</string>
+	<string name="array_home_menu_wifi">Wi-Fi</string>
+	<string name="array_home_menu_apm">APM</string>
+	<string name="array_recents_menu_info">Mostrar info</string>
+	<string name="array_recents_menu_close">Cerrar</string>
+	<string name="array_recents_menu_closeothers">Cerrar otras</string>
+	<string name="array_screen_anim_none">Ninguna</string>
+	<string name="array_screen_anim_fade">Fade</string>
+	<string name="array_screen_anim_crt">CRT</string>
+	<string name="array_color_blue">Azul</string>
+	<string name="array_color_green">Verde</string>
+	<string name="array_color_red">Rojo</string>
+	<string name="array_color_orange">Naranja</string>
+	<string name="array_color_white">Blanco</string>
+	<string name="array_media_none" >Sin cambio</string>
+	<string name="array_media_playpause" >Play/Pause</string>
+	<string name="array_media_next" >Siguiente cancion</string>
+	<string name="array_media_prev" >Anterior cancion</string>
 </resources>
