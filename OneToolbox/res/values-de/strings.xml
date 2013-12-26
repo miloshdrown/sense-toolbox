@@ -404,7 +404,7 @@
 	<string name="array_color_orange">Orange</string>
 	<string name="array_color_white">Weiß</string>
 	<string name="array_media_none">Keine Änderung</string>
-	<string name="array_media_playpause">Старт/Пауза</string>
+	<string name="array_media_playpause">Wiedergabe/Pause</string>
 	<string name="array_media_next">Nächster Titel</string>
 	<string name="array_media_prev">Voriger Titel</string>
 </resources>
