@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
 
     <string name="menu_save">Сохранить</string>
@@ -83,7 +83,7 @@
 	<string name="eqs_timeout">Автооткл. экрана</string>
 	<string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
 	<string name="eqs_apn">APN</string>
-	<string name="dummy"></string>
+	<string name="dummy">" "</string>
 	
 	<string name="transparency_msg">0 = прозрачно, 100 = непрозрачно</string>
 	<string name="transparency_enable">Изменить прозрачность</string>
@@ -218,10 +218,10 @@
 	<string name="sense_invisilabels_title">Скрыть подписи</string>
 	<string name="sense_invisilabels_summ">Убирает подписи с названиями приложений и папок с домашних экранов.</string>
 	<string name="notselected">Не выбрано</string>
-	<string name="loading_app_data">Загрузка списка приложений&#8230;</string>
+	<string name="loading_app_data">Загрузка списка приложений…</string>
 	
 	<string name="message_mods">Моды сообщений</string>
-	<string name="message_smsmms_title">Отключение SMS -> MMS</string>
+	<string name="message_smsmms_title">Отключение SMS -&gt; MMS</string>
 	<string name="message_smsmms_summ">Отменяет преобразование SMS в MMS при превышении количества символов сверх лимита. Не влияет на ограничения самой сети.</string>
 	<string name="message_smswake_title">Пробуждение при SMS</string>
 	<string name="message_smswake_summ">Включение экрана при приходе SMS.</string>
@@ -273,7 +273,7 @@
 	<string name="various_scron_title">Опция \'Не выключать экран\'</string>
 	<string name="various_scron_summ">Добавляет пункт \'Не выключать экран\' в разделы \'Экран, кнопки и жесты\' и \'Для разработчиков\'.</string>
 	<string name="various_apps_title">Доп. сведения о приложении</string>
-	<string name="various_apps_summ">Добавляет новые элементы в Настройки > Приложения:\n- кнопку запуска приложения\n- имя и путь до apk\n- путь до данных\n- имя процесса\n- номер пользователя\n- версию SDK</string>
+	<string name="various_apps_summ">Добавляет новые элементы в Настройки &gt; Приложения:\n- кнопку запуска приложения\n- имя и путь до apk\n- путь до данных\n- имя процесса\n- номер пользователя\n- версию SDK</string>
 	<string name="various_volsnd_title">Нет звука при смене громкости</string>
 	<string name="various_volsnd_summ">Отключает проверочный звук при изменении громкости.</string>
 	<string name="various_volsafe_title">Предупреждение о высокой громкости</string>
@@ -396,9 +396,16 @@
 	<string name="array_color_red">Красная</string>
 	<string name="array_color_orange">Оранжевая</string>
 	<string name="array_color_white">Белая</string>
-	<string name="array_media_none" >Действие не задано</string>
-	<string name="array_media_playpause" >Старт/Пауза</string>
-	<string name="array_media_next" >Следующий трек</string>
-	<string name="array_media_prev" >Предыдущий трек</string>
+	<string name="array_media_none">Действие не задано</string>
+	<string name="array_media_playpause">Старт/Пауза</string>
+	<string name="array_media_next">Следующий трек</string>
+	<string name="array_media_prev">Предыдущий трек</string>
 
-</resources>
+<string name="about_devs">Разработчики</string>
+	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
+	<string name="about_thanks">Спасибо</string>
+	<string name="about_sense">Sense 5</string>
+	<string name="about_toolbox">Toolbox</string>
+	<string name="about_thanks_data">mike1986 - за ARHD и платформу для релиза данного приложения\n\ndescenpet - за первоначальную идею сортировки EQS\n\nvomer - за моды CleanBeam\n\nDunc001 и LeSScro - за их APM иконки\n\nКомандам RU и AU (и некоторым ранним тестерам) - за тестирование и полезные отзывы\n\nПользователям ARHD - за их терпение :)</string>
+
+	</resources>
