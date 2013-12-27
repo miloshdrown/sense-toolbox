@@ -18,7 +18,7 @@
     <string name="plus_icon">"Use el icono '+' para agregar nuevos titulos."</string>
     <string name="save_settings">"No olvides guardar tu configuracion!"</string>
     <string name="restore_layout">Toca el icono de restaurar para restaurar tu configuracion. Estos cargara las ultimas configuraciones guardadas.</string>
-    <string name="xposed_mods">"Porfavor ten en cuenta que las modificaciones en la seccion 'MODS' solo funcionan con Xposed instalado!"</string>
+    <string name="xposed_mods">Por favor ten en cuenta que las modificaciones en la sección \'MODS\' sólo funcionan con Xposed instalado!</string>
     <string name="apm_title">Selecciona Reinicio</string>
     <string name="apm_normal_title">Reinicio</string>
     <string name="apm_normal_summ">Cierra todo y reinicia el equipo</string>
@@ -405,8 +405,8 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
 	<string name="array_color_red">Rojo</string>
 	<string name="array_color_orange">Naranja</string>
 	<string name="array_color_white">Blanco</string>
-	<string name="array_media_none" >Sin cambio</string>
-	<string name="array_media_playpause" >Play/Pause</string>
-	<string name="array_media_next" >Siguiente cancion</string>
-	<string name="array_media_prev" >Anterior cancion</string>
+	<string name="array_media_none">Sin cambio</string>
+	<string name="array_media_playpause">Play/Pause</string>
+	<string name="array_media_next">Siguiente cancion</string>
+	<string name="array_media_prev">Anterior cancion</string>
 </resources>
