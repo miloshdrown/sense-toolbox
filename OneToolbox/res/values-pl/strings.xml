@@ -18,7 +18,7 @@
     <string name="dragndrop">Używaj przeciągnięć, aby zmieniać układ swoich szybkich ustawień.</string>
     <string name="title_delete">Wystarczy dotknąć elementu, aby go usunąć..</string>
     <string name="plus_icon">Użyj \'+\' ikony, aby dodać element.</string>
-    <string name="save_settings">Nie zapomnij zapisać swoich ustawieni!</string>
+    <string name="save_settings">Nie zapomnij zapisać swoich ustawień!</string>
     <string name="restore_layout">Dotknij ikony przywracania aby przywrócić swój układ. To załaduje ostatnio zapisane konfiguracje.</string>
     <string name="xposed_mods">Należy pamiętać, że modyfikacje w zakładce \'MODYFIKACJE\' będą działać tylko wtedy, gdy masz zainstalowany Xposed!</string>
     
@@ -34,7 +34,7 @@
     
     <string name="eqs_reorder">Zmiana kolejności EQS</string>
     <string name="eqs_reorder_explain">Ustaw własną kolejność elementów EQS</string>
-    <string name="no_root_access">Brak uprawnień roota</string>
+    <string name="no_root_access">Brak uprawnień root</string>
     <string name="no_root_explain">Albo twoje urządzenie nie jest zrotowane, albo nie pozwala aplikacji na dostęp do SuperUser.\nBez roota nie można zmienić kolejność elementów w EQS, dlatego, ta funkcja jest nie dostępna.\nMożesz odrzucić tę wiadomość raz, lub na zawsze. Sprawdzenie root zostanie wykonany po każdym uruchomieniu, aby funkcja była dostępna, jeśli zdecydujesz się później na udostąpienie roota.</string>
     <string name="dismiss_once">Odrzuć raz</string>
     <string name="dismiss_forever">Odrzuć na zawsze</string>
@@ -42,7 +42,7 @@
     
     <string name="xposed_not_found">Nie znaleziono Xposed Installer</string>
     <string name="xposed_not_found_explain">Wygląda na to, że nie masz Xposed Installed.\n\nProsimy pamiętać, że w tej zakładce modyfikacje działają tylko z Xposed!\n\nXposed jest dostępny w instalatorze ARHD.</string>
-    <string name="okay">W porządku</string>
+    <string name="okay">Okay</string>
     <string name="close_camera">Upewnij się, że kamera jest zamknięta i nie ma jej na liście ostatnio używanych aplikacji!</string>
     <string name="remove_last">Nie można usunąć ostatniego elementu!</string>
     <string name="remove">Usuń</string>
@@ -403,8 +403,8 @@
 	<string name="array_color_red">Czerwony</string>
 	<string name="array_color_orange">Pomarańczowy</string>
 	<string name="array_color_white">Biały</string>
-	<string name="array_media_none" >Bez zmian</string>
-	<string name="array_media_playpause" >Odtwórz/Pauza</string>
-	<string name="array_media_next" >Następny utwór</string>
-	<string name="array_media_prev" >Poprzedni utwór</string>
+	<string name="array_media_none">Bez zmian</string>
+	<string name="array_media_playpause">Odtwórz/Pauza</string>
+	<string name="array_media_next">Następny utwór</string>
+	<string name="array_media_prev">Poprzedni utwór</string>
 </resources>
