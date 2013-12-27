@@ -81,7 +81,7 @@
 	<string name="eqs_timeout">Time-out</string>
 	<string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
 	<string name="eqs_apn">APN</string>
-	<string name="dummy"/>
+	<string name="dummy">" "</string>
 	
 	<string name="transparency_msg">0 = transparant, 100 = dekkend</string>
 	<string name="transparency_enable">Transparantie inschakelen</string>
