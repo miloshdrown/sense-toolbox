@@ -403,4 +403,7 @@
 	<string name="array_media_prev">Traccia precedente</string>
 	
 <string name="about_version">Versione: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
-    </resources>
+    <string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
+	<string name="dummy">" "</string>
+	
+	</resources>
