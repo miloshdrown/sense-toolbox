@@ -223,8 +223,8 @@ public class GlobalActions {
 				callStaticMethod(findClass("com.android.server.power.ShutdownThread", null), "shutdownInner", context, false);
 			}
 			
-			} catch(Exception e) {
-				e.printStackTrace();
+			} catch(Throwable t) {
+				XposedBridge.log(t);
 			}
 		}
 	};
@@ -246,7 +246,7 @@ public class GlobalActions {
 			paramArray[0] = level;
 			setFlashlightBrightness.invoke(svc, paramArray);
 		} catch (Throwable t) {
-			t.printStackTrace();
+			XposedBridge.log(t);
 		}
 	}
 	
@@ -290,8 +290,8 @@ public class GlobalActions {
 				Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
 				vibe.vibrate(50);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	
@@ -306,8 +306,8 @@ public class GlobalActions {
 		
 		try {
 			Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet);	
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch(Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 
@@ -334,8 +334,8 @@ public class GlobalActions {
 		}
 		try {
 			Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, beforeEnable);
-		} catch(Exception e) {
-			e.printStackTrace();
+		} catch(Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	
@@ -376,8 +376,8 @@ public class GlobalActions {
 		            mPWMContext.registerReceiver(mBR, intentfilter);
 				}
 			});
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 
@@ -395,8 +395,8 @@ public class GlobalActions {
 			showsb.setAccessible(true);
 			showsb.invoke(sbservice);
 			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 			return false;
 		}
 	}
@@ -412,8 +412,8 @@ public class GlobalActions {
 				showeqs.invoke(sbservice);
 				return true;
 			} else return false;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 			return false;
 		}
 	}
@@ -424,8 +424,8 @@ public class GlobalActions {
             intent.setAction("com.langerhans.one.mods.action.LockDevice");
             context.sendBroadcast(intent);
 			return true;
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 			return false;
 		}
 	}
@@ -436,8 +436,8 @@ public class GlobalActions {
             intent.setAction("com.langerhans.one.mods.action.GoToSleep");
             context.sendBroadcast(intent);
         	return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable t) {
+        	XposedBridge.log(t);
             return false;
         }
 	}
@@ -465,8 +465,8 @@ public class GlobalActions {
         	context.startActivity(intent);
         	
         	return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable t) {
+        	XposedBridge.log(t);
             return false;
         }
 	}
@@ -477,8 +477,8 @@ public class GlobalActions {
             intent.setAction("com.langerhans.one.mods.action.TakeScreenshot");
             context.sendBroadcast(intent);
         	return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable t) {
+        	XposedBridge.log(t);
             return false;
         }
 	}
@@ -489,8 +489,8 @@ public class GlobalActions {
             intent.setAction("com.langerhans.one.mods.action.killForegroundApp");
             context.sendBroadcast(intent);
         	return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable t) {
+        	XposedBridge.log(t);
             return false;
         }
 	}
@@ -514,8 +514,8 @@ public class GlobalActions {
             intent.setAction("com.langerhans.one.mods.action.Toggle" + whatStr);
             context.sendBroadcast(intent);
         	return true;
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable t) {
+        	XposedBridge.log(t);
             return false;
         }
 	}
@@ -552,20 +552,20 @@ public class GlobalActions {
 		try {
 	        // Get binder from ServiceManager.checkService(String)
 	        IBinder iBinder  = (IBinder) Class.forName("android.os.ServiceManager")
-	        .getDeclaredMethod("checkService",String.class)
+	        .getDeclaredMethod("checkService", String.class)
 	        .invoke(null, Context.AUDIO_SERVICE);
 
 	        // get audioService from IAudioService.Stub.asInterface(IBinder)
 	        Object audioService  = Class.forName("android.media.IAudioService$Stub")
-	                .getDeclaredMethod("asInterface",IBinder.class)
-	                .invoke(null,iBinder);
+	        .getDeclaredMethod("asInterface", IBinder.class)
+	        .invoke(null, iBinder);
 
 	        // Dispatch keyEvent using IAudioService.dispatchMediaKeyEvent(KeyEvent)
 	        Class.forName("android.media.IAudioService")
-	        .getDeclaredMethod("dispatchMediaKeyEvent",KeyEvent.class)
+	        .getDeclaredMethod("dispatchMediaKeyEvent", KeyEvent.class)
 	        .invoke(audioService, keyEvent);            
-	    }  catch (Exception e) {
-	        XposedBridge.log(e);
+	    }  catch (Throwable t) {
+	        XposedBridge.log(t);
 	    }
 	}
 }

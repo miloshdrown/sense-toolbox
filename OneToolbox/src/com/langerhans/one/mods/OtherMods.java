@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import com.langerhans.one.R;
 
 import android.animation.ObjectAnimator;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.Dialog;
 import android.app.Service;
@@ -55,7 +56,7 @@ public class OtherMods{
 				}
 			});
 		} catch(Throwable t) {
-			t.printStackTrace();
+			XposedBridge.log(t);
 		}
 	}
 	
@@ -67,7 +68,7 @@ public class OtherMods{
 			intent.putExtra("dialogType", 1);
 			ctx.startActivity(intent);
 		} catch(Throwable t) {
-			t.printStackTrace();
+			XposedBridge.log(t);
 		}
 	}
 
@@ -88,8 +89,8 @@ public class OtherMods{
 					((Service)param.thisObject).stopForeground(true);
 				}
 			});
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	
@@ -119,8 +120,8 @@ public class OtherMods{
 					dlgExWin.setAttributes(dlgExWinAttrs);
 				}
 			});
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 
@@ -211,8 +212,8 @@ public class OtherMods{
 					if (updateScreenOn || updateScreenOff) param.setResult(null);
 				}
 			});
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (Throwable t) {
+        	XposedBridge.log(t);
         }
 	}
 	
@@ -243,8 +244,8 @@ public class OtherMods{
 									Method onEditorAction = findMethodExact("com.htc.lockscreen.unlockscreen.HtcKeyInputUnlockView", lpparam.classLoader, "onEditorAction", TextView.class, int.class, KeyEvent.class);
 									try {
 										onEditorAction.invoke(param.thisObject, null, 0, null);
-									} catch (Exception e) {
-										e.printStackTrace();
+									} catch (Throwable t) {
+										XposedBridge.log(t);
 									}
 								}
 							}
@@ -273,8 +274,8 @@ public class OtherMods{
 						TextView appName = (TextView)install.findViewById(install.getResources().getIdentifier("app_name", "id", "com.android.packageinstaller"));
 						if (appName != null && mPkgInfo.versionName != null) appName.setText(appName.getText() + " " + mPkgInfo.versionName);
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Throwable t) {
+					XposedBridge.log(t);
 				}
 			}
 		});
@@ -342,8 +343,8 @@ public class OtherMods{
 						XposedHelpers.callMethod(tabsAdapter, "addTab", tabspec, newTab);
 						*/
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Throwable t) {
+					XposedBridge.log(t);
 				}
 			}
 		});
@@ -383,8 +384,9 @@ public class OtherMods{
 		});
 	}
 	
+	@TargetApi(19)
 	public static void exec_TotallyImmersive_Init() {
-	XposedHelpers.findAndHookMethod(Activity.class, "onResume", new XC_MethodHook() {
+		XposedHelpers.findAndHookMethod(Activity.class, "onResume", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
@@ -395,8 +397,8 @@ public class OtherMods{
 						View decorView = window.getDecorView();
 						decorView.setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Throwable t) {
+					XposedBridge.log(t);
 				}
 			}
 		});
@@ -426,8 +428,8 @@ public class OtherMods{
 					} else {
 						XposedHelpers.setObjectField(param.thisObject, "mLastPackage", null);
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Throwable t) {
+					XposedBridge.log(t);
 				}
 				return null;
 			}

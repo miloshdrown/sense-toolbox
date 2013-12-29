@@ -8,6 +8,7 @@ import static de.robv.android.xposed.XposedHelpers.setObjectField;
 import java.util.ArrayList;
 import com.langerhans.one.mods.XMain;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 
 public class PackagePermissions {
 	public static void initHooks() {
@@ -46,8 +47,8 @@ public class PackagePermissions {
 					if (origRequestedPermissionsRequired != null) setObjectField(param.args[0], "requestedPermissionsRequired", origRequestedPermissionsRequired);
 				}
 			});
-		} catch (Throwable e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 }

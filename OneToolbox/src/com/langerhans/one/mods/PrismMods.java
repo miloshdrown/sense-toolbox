@@ -91,8 +91,8 @@ public class PrismMods {
 					} else m_BackgroundImg.animate().alpha(transparency/255.0f);
 				}
 			});
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	
@@ -107,8 +107,8 @@ public class PrismMods {
 					return bg;
 				}
 			});
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	
@@ -213,8 +213,8 @@ public class PrismMods {
 						InvisiFolder_Snippet(liparam, resparam, transparency);
 					}
 				});
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Throwable t) {
+				XposedBridge.log(t);
 			}
 		} else {
 			try {
@@ -224,8 +224,8 @@ public class PrismMods {
 						InvisiFolder_Snippet(liparam, resparam, transparency);
 					}
 				});
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Throwable t) {
+				XposedBridge.log(t);
 			}
 		}
 	}
@@ -419,8 +419,8 @@ public class PrismMods {
 					m_headerContent.setVisibility(0);
 				}
 			});
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 		
 		// Move first row up
@@ -611,8 +611,8 @@ public class PrismMods {
 						if (gridSizeVal == 3 || gridSizeVal == 4)
 							itemlabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, 0.73f * itemlabel.getTextSize());
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Throwable t) {
+					XposedBridge.log(t);
 				}
 			}
 		});
@@ -636,8 +636,8 @@ public class PrismMods {
 			
 			int workspace_height_gap_port = resparam.res.getIdentifier("workspace_height_gap_port", "dimen", "com.htc.launcher");
 			resparam.res.setReplacement(workspace_height_gap_port, modRes.fwd(R.dimen.workspace_height_gap_port));
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	
@@ -743,8 +743,8 @@ public class PrismMods {
 						param.setResult(false);
 					}
 				});
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Throwable t) {
+				XposedBridge.log(t);
 			}
 		}
 	}
@@ -951,8 +951,8 @@ public class PrismMods {
 			} else {
 				XposedHelpers.callMethod(LPU, "setLockScreenDisabled", false);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	
@@ -975,8 +975,8 @@ public class PrismMods {
 					applyLockScreenState((Context)param.args[0]);
 				}
 			});
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	

@@ -183,8 +183,8 @@ public class SettingsMods {
 							}
 						});
 					}
-	            } catch (Exception e) {
-	            	e.printStackTrace();
+	            } catch (Throwable t) {
+	            	XposedBridge.log(t);
 	            }
 	            
 	            if (i == 103)
@@ -199,8 +199,8 @@ public class SettingsMods {
 						if (!apk_launch_btn.isEnabled() && j != 0)
 						uninstall_start_item.setVisibility(8);
 					}
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Throwable t) {
+					XposedBridge.log(t);
 				}
 			}
 			
@@ -322,8 +322,8 @@ public class SettingsMods {
 					all_details.addView(toolbox_item_api, 25);
 					
 					XposedHelpers.callMethod(param.thisObject, "initUninstallButton");
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Throwable t) {
+					XposedBridge.log(t);
 				}
 			}
 		});

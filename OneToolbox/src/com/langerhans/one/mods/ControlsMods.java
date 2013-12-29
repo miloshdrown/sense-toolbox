@@ -8,6 +8,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -21,6 +22,7 @@ import com.langerhans.one.utils.GlobalActions;
 import com.langerhans.one.utils.Version;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
@@ -125,8 +127,8 @@ public class ControlsMods {
 					}
 				}
 			});
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	
@@ -242,8 +244,8 @@ public class ControlsMods {
 								XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
 								XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
 								param.setResult(0);
-							} catch (Exception e) {
-								e.printStackTrace();
+							} catch (Throwable t) {
+								XposedBridge.log(t);
 							}
 							isPowerPressed = false;
 						}
@@ -253,8 +255,7 @@ public class ControlsMods {
 		});
 	}
 	
-	//Shameless copypasta ;)
-	public static void execHook_VolumeMediaButtons(LoadPackageParam lpparam, final int upAction, final int downAction, final boolean vol2wakeEnabled) {
+	public static void execHook_VolumeMediaButtons(LoadPackageParam lpparam, final boolean vol2wakeEnabled) {
 		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
@@ -274,50 +275,55 @@ public class ControlsMods {
 						if (action == KeyEvent.ACTION_DOWN) {
 							isVolumePressed = true;
 							isVolumeLongPressed = false;
-							
-							Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+							mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 							// Post only one delayed runnable that waits for long press timeout
-							if (!isWaitingForVolumeLongPressed)
-							mHandler.postDelayed(new Runnable(){
-								@Override
-								public void run() {
-									if (isVolumePressed) {
-										isVolumeLongPressed = true;
-										switch (keyEvent.getKeyCode()) {
-										case KeyEvent.KEYCODE_VOLUME_UP:
-											if (upAction == 0)
-												break;
-											GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, upAction));
-											GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, upAction));
-											break;
-										case KeyEvent.KEYCODE_VOLUME_DOWN:
-											if (downAction == 0)
-												break;
-											GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, downAction));
-											GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, downAction));
-											break;
-
-										default:
-											break;
+							if (mHandler != null && !isWaitingForVolumeLongPressed) {
+								mHandler.postDelayed(new Runnable(){
+									public void run() {
+										if (isVolumePressed) {
+											isVolumeLongPressed = true;
+											switch (keyEvent.getKeyCode()) {
+												case KeyEvent.KEYCODE_VOLUME_UP:
+													if (XMain.pref_mediaUp == 0) break;
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, XMain.pref_mediaUp));
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, XMain.pref_mediaUp));
+													break;
+												case KeyEvent.KEYCODE_VOLUME_DOWN:
+													if (XMain.pref_mediaDown == 0) break;
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, XMain.pref_mediaDown));
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, XMain.pref_mediaDown));
+													break;
+												default:
+													break;
+											}
 										}
-									}
-									isVolumePressed = false;
-									isWaitingForVolumeLongPressed = false;
-								}
-							}, ViewConfiguration.getLongPressTimeout());
+										isVolumePressed = false;
+										isWaitingForVolumeLongPressed = false;
+							        }
+								}, ViewConfiguration.getLongPressTimeout());
+							}
 							isWaitingForVolumeLongPressed = true;
 							param.setResult(0);
 						}
 						if (action == KeyEvent.ACTION_UP) {
-							if (isVolumePressed && !isVolumeLongPressed) {
-								if (vol2wakeEnabled)
-								{
+							isVolumePressed = false;
+							// Kill all callbacks (removing only posted Runnable is not working... no idea)
+							if (mHandler != null) mHandler.removeCallbacksAndMessages(null);
+							if (!isVolumeLongPressed) {
+								boolean isMusicActive = (Boolean)XposedHelpers.callMethod(param.thisObject, "isMusicActive");
+								boolean isInCall = (Boolean)XposedHelpers.callMethod(param.thisObject, "isInCall");
+								// If music stream is playing, adjust its volume
+								if (isMusicActive) XposedHelpers.callMethod(param.thisObject, "handleVolumeKey", AudioManager.STREAM_MUSIC, keycode);
+								// If voice call is active while screen off by proximity sensor, adjust its volume
+								else if (isInCall) XposedHelpers.callMethod(param.thisObject, "handleVolumeKey", AudioManager.STREAM_VOICE_CALL, keycode);
+								// Use vol2wake in other cases 	
+								else if (vol2wakeEnabled) {
 									XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
 									XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
 								}
 								param.setResult(0);
 							}
-							isVolumePressed = false;
+							isWaitingForVolumeLongPressed = false;
 						}
 					}
 				}
@@ -334,8 +340,8 @@ public class ControlsMods {
 				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustMasterVolume", int.class, int.class, hook_adjustMasterVolume);
 				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustSuggestedStreamVolume", int.class, int.class, int.class, hook_adjustSuggestedStreamVolume);
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	
@@ -358,8 +364,8 @@ public class ControlsMods {
 			Context context = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 			int rotation = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
             if (rotation == Surface.ROTATION_90) param.args[0] = -1 * (Integer)param.args[0];
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 }

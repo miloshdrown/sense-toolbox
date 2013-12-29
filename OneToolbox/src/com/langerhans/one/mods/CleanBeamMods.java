@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import com.langerhans.one.R;
 import com.langerhans.one.utils.GlobalActions;
 
+import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 
@@ -304,8 +305,8 @@ public class CleanBeamMods{
 	        if (field.getName().startsWith("stat_sys_data_") && !field.getName().contains("bluetooth") && !field.getName().contains("usb")) { //Because bluetooth is seperate but also stat_sys_data_*. Meh!
 	            try {
 					dataIcons.put(field.getName(), field.getInt(null));
-				} catch (Exception e) {
-					e.printStackTrace();
+				} catch (Throwable t) {
+					XposedBridge.log(t);
 				}
 	        }
 	    }

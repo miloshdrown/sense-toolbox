@@ -699,8 +699,8 @@ public class SysUIMods {
 									dataRateUnits.setVisibility(8);
 								}
 							}
-						} catch (Exception e) {
-							e.printStackTrace();
+						} catch (Throwable t) {
+							XposedBridge.log(t);
 						}
 							
 						if (mHandler != null)
@@ -958,8 +958,8 @@ public class SysUIMods {
 	    	killedEmAll = true;
 			try {
 				terminateAll(1);
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Throwable t) {
+				XposedBridge.log(t);
 			}
 	        return true;
 	    }
@@ -990,8 +990,8 @@ public class SysUIMods {
 			    	killedEmAll = true;
 					terminateAll(0);
 				} 
-			} catch (Exception e) {
-				e.printStackTrace();
+			} catch (Throwable t) {
+				XposedBridge.log(t);
 			}
 			return false;
 		}
@@ -1058,8 +1058,8 @@ public class SysUIMods {
 				XposedHelpers.setBooleanField(gridViewObject, "mFinished", Boolean.valueOf(true));
 				XposedHelpers.callMethod(gridViewObject, "onResume");
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 
@@ -1136,8 +1136,8 @@ public class SysUIMods {
             			}
         			}
         		}
-        	} catch (Exception e) {
-        		e.printStackTrace();
+        	} catch (Throwable t) {
+        		XposedBridge.log(t);
         	}
         	return null;        	
         }
@@ -1213,8 +1213,8 @@ public class SysUIMods {
 										} else {
 											try {
 												terminateAll(1, theView);
-											} catch (Exception e) {
-												e.printStackTrace();
+											} catch (Throwable t) {
+												XposedBridge.log(t);
 											}
 										}
 									}
@@ -1268,8 +1268,8 @@ public class SysUIMods {
 							}
 							hidesb.setAccessible(true);
 							hidesb.invoke(sbservice);
-						} catch (Exception e) {
-							e.printStackTrace();
+						} catch (Throwable t) {
+							XposedBridge.log(t);
 						}
 					}
 				};
