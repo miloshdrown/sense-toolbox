@@ -81,7 +81,7 @@
 	<string name="eqs_timeout">Istek vremena</string>
 	<string name="eqs_syn_all_fake">Sinkroniziraj_Sve_Fake(?)</string>
 	<string name="eqs_apn">APN</string>
-	<string name="dummy"/>
+	<string name="dummy">" "</string>
 	
 	<string name="transparency_msg">0 = transparentno, 100 = tamno</string>
 	<string name="transparency_enable">Omogućiti transparentnost</string>
