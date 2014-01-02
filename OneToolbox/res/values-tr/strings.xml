@@ -34,7 +34,7 @@
     <string name="eqs_reorder_explain">EQS için özel sıralama ayarla</string>
     <string name="no_root_access">Root yetkisi yok</string>
     <string name="no_root_explain">Cihazınız rootlu değil ya da uygulamamımızın SuperUser yetkisi bulunmuyor. Root olmadan EQS sıralaması ayarlayamazsınız ve bu seçenek gözükmez.</string>
-	<string name="dismiss_once">Bir kereliğine yoksay.</string>
+	<string name="dismiss_once">Bir kereliğine yoksay</string>
 	<string name="dismiss_forever">Hep yoksay</string>
 	<string name="mods">Modlar</string>
 	
