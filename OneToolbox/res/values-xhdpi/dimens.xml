@@ -5,5 +5,7 @@
     <dimen name="photo_new_height_rect">720.0px</dimen>
     <dimen name="people_info_top_margin">727.0px</dimen>
     <dimen name="people_info_top_margin_rect">714.0px</dimen>
+    <dimen name="custom_15_font_size">54.0px</dimen>
+    <dimen name="text_size_custom_04">42.0px</dimen>
     
 </resources>
