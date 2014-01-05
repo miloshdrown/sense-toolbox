@@ -54,6 +54,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewParent;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
@@ -1277,5 +1278,172 @@ public class SysUIMods {
 				date.setOnClickListener(ocl);
 			}
 		});
+	}
+	
+	public static void execHook_LargePhoto(final InitPackageResourcesParam resparam, int photoSize) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
+		int resId = R.dimen.people_info_top_margin;
+		if (photoSize == 2) resId = R.dimen.people_info_top_margin_rect;
+		resparam.res.setReplacement("com.android.phone", "dimen", "photo_frame_height", modRes.fwd(resId));
+	}
+	
+	public static void execHook_LargePhotoCode(LoadPackageParam lpparam, final int photoSize) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+		findAndHookMethod("com.android.phone.widget.PhotoImageView", lpparam.classLoader, "setImageDrawable", Drawable.class, new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				ImageView mPhoto = (ImageView)param.thisObject;
+				ViewParent mPhotoParent = mPhoto.getParent();
+				int photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height);
+				if (photoSize == 2) photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_rect);
+				
+				if (mPhotoParent != null)
+				if (mPhotoParent instanceof RelativeLayout) {
+					RelativeLayout mPhotoFrame = (RelativeLayout)mPhotoParent;
+					RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams)mPhotoFrame.getLayoutParams();
+					params1.height = photoHeight;
+					mPhotoFrame.setLayoutParams(params1);
+				} else if (mPhotoParent instanceof FrameLayout) {
+					FrameLayout mPhotoFrame = (FrameLayout)mPhotoParent;
+					FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams)mPhotoFrame.getLayoutParams();
+					params1.height = photoHeight;
+					mPhotoFrame.setLayoutParams(params1);
+				}
+				
+				if (mPhoto != null) {
+					RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams)mPhoto.getLayoutParams();
+					params2.height = photoHeight;
+					mPhoto.setLayoutParams(params2);
+				}
+			}
+		});
+		
+		findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				TextView mName = (TextView)XposedHelpers.getObjectField(param.thisObject, "mName");
+				if (mName != null) mName.setSingleLine();
+			}
+		});
+		
+		findAndHookMethod("com.android.phone.InCallScreen", lpparam.classLoader, "initInCallScreen", new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				ViewGroup mInCallPanel = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "mInCallPanel");
+				if (mInCallPanel != null) {
+					RelativeLayout.LayoutParams params = (android.widget.RelativeLayout.LayoutParams)mInCallPanel.getLayoutParams();
+					params.removeRule(RelativeLayout.BELOW);
+					mInCallPanel.setLayoutParams(params);
+				}
+			}
+		});
+		
+		findAndHookMethod("com.android.phone.InCallScreen", lpparam.classLoader, "initActionBar", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				LinearLayout mActionBar = (LinearLayout)XposedHelpers.getObjectField(param.thisObject, "mActionBar");
+				if (mActionBar != null) {
+					RelativeLayout newLayout = new RelativeLayout(mActionBar.getContext());
+					ViewParent prnt = mActionBar.getParent();
+					if (prnt != null && prnt instanceof RelativeLayout) {
+						((RelativeLayout)prnt).removeView(mActionBar);
+						newLayout.addView(mActionBar);
+						((RelativeLayout)prnt).addView(newLayout);
+						newLayout.bringToFront();
+					}
+				}
+			}
+		});
+		
+		findAndHookMethod("com.android.phone.widget.PhoneActionBar", lpparam.classLoader, "applyStyleToViews", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				LinearLayout actionBar = (LinearLayout)param.thisObject;
+				if (actionBar != null) {
+					actionBar.setBackground(null);
+					actionBar.setBackgroundResource(0);
+					actionBar.setBackgroundColor(Color.argb(200, 22, 22, 22));
+				}
+			}
+		});
+		
+		if (photoSize == 3) {
+			findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "onOrientationChanged", new XC_MethodHook() {
+				@Override
+	    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					RelativeLayout callCard = (RelativeLayout)param.thisObject;
+					LinearLayout peopleInfoLayout = (LinearLayout)callCard.findViewById(callCard.getResources().getIdentifier("peopleInfoLayout", "id", "com.android.phone"));
+					peopleInfoLayout.setBackgroundColor(Color.argb(200, 22, 22, 22));
+					peopleInfoLayout.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+				}
+			});
+		}
+	}
+	
+	public static void execHook_LargePhotoLS(InitPackageResourcesParam resparam, int photoSize) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.htc.lockscreen", "dimen", "masthead_minHeight", modRes.fwd(R.dimen.masthead_minHeight));
+		if (photoSize == 3)
+		resparam.res.setReplacement("com.htc.lockscreen", "dimen", "incoming_call_call_id_height", modRes.fwd(R.dimen.incoming_call_call_id_height));
+	}
+
+	public static void execHook_LargePhotoLSCode(LoadPackageParam lpparam, final int photoSize) {
+		findAndHookMethod("com.htc.lockscreen.ui.MainContainAnimator", lpparam.classLoader, "doTileChange", new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				RelativeLayout mCurTile = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mCurTile");
+				if (mCurTile != null) {
+					FrameLayout mCallPhotoContainer = (FrameLayout)mCurTile.findViewById(mCurTile.getResources().getIdentifier("call_id", "id", "com.htc.lockscreen"));
+		        	if (mCallPhotoContainer != null) {
+		        		RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mCurTile.getLayoutParams();
+		        		params.removeRule(12);
+		        		if (photoSize == 3)
+		        			params.setMargins(0, 0, 0, 0);
+		        		else
+		        			params.setMargins(0, Math.round(mCurTile.getResources().getDisplayMetrics().density * 63), 0, 0);
+		        		mCurTile.setLayoutParams(params);
+		        	}
+				}
+			}
+		});
+
+		findAndHookMethod("com.htc.lockscreen.ui.HeadBar", lpparam.classLoader, "init", new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				RelativeLayout headBar = (RelativeLayout)param.thisObject;
+				if (headBar != null) headBar.bringToFront();
+			}
+		});
+		
+		if (photoSize == 3) {
+			findAndHookMethod("com.htc.lockscreen.ui.reminder.IncomingCallView", lpparam.classLoader, "init", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+
+					RelativeLayout mTile = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mTile");
+					RelativeLayout mCallPhotoRoot = (RelativeLayout)mTile.findViewById(mTile.getResources().getIdentifier("photo_view_root", "id", "com.htc.lockscreen"));
+		        	if (mCallPhotoRoot != null) {
+		        		LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mCallPhotoRoot.getLayoutParams();
+		        		params.height = modRes.getDimensionPixelSize(R.dimen.incoming_call_call_id_height);
+		        		mCallPhotoRoot.setLayoutParams(params);
+		        	}
+		        	
+					ImageView mCallPhoto = (ImageView)XposedHelpers.getObjectField(param.thisObject, "mCallPhoto");
+					if (mCallPhoto != null) {
+						FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams)mCallPhoto.getLayoutParams();
+						params2.height = modRes.getDimensionPixelSize(R.dimen.incoming_call_call_id_height);
+						mCallPhoto.setLayoutParams(params2);
+					}
+					
+					LinearLayout mContactPanel = (LinearLayout)XposedHelpers.getObjectField(param.thisObject, "mContactPanel");
+					if (mContactPanel != null) {
+						LinearLayout.LayoutParams params3 = (LinearLayout.LayoutParams)mContactPanel.getLayoutParams();
+						params3.setMargins(0, 0, 0, 0);
+						mContactPanel.setLayoutParams(params3);
+					}
+				}
+			});
+		}
 	}
 }
