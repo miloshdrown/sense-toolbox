@@ -18,7 +18,7 @@
     <string name="plus_icon">Başlık eklemek için \'+\' ikonunu kullanın.</string>
     <string name="save_settings">Ayarlarınızı kaydetmeyi unutmayın!</string>
     <string name="restore_layout">Düzeni geri yüklemek için geri yükle ikonunu kullanın. Bu seçenek en son olan yedeğinizi yükler.</string>
-    <string name="xposed_mods">Unutmayın Modlar seklemesindeki modlar sadece Xposed yüklü cihazlarda çalışır.</string>
+    <string name="xposed_mods">Unutmayın Modlar seklemesindeki modlar sadece Xposed yüklü cihazlarda çalışır!</string>
     
     <string name="apm_title">Reboot\'u opsiyonunu seçin</string>
     <string name="apm_normal_title">Reboot</string>
