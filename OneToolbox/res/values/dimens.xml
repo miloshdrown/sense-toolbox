@@ -8,5 +8,13 @@
     <dimen name="celllayout_top_padding_port">0.0dip</dimen>
     <dimen name="celllayout_bottom_padding_port">-10.0dip</dimen>
     <dimen name="workspace_height_gap_port">-10.0dip</dimen>
+    
+    <dimen name="photo_new_height">887.0px</dimen>
+    <dimen name="photo_new_height_rect">720.0px</dimen>
+    <dimen name="people_info_top_margin">727.0px</dimen>
+    <dimen name="people_info_top_margin_rect">714.0px</dimen>
+    
+    <dimen name="masthead_minHeight">-500px</dimen>
+	<dimen name="incoming_call_call_id_height">429.0dip</dimen>
 
 </resources>

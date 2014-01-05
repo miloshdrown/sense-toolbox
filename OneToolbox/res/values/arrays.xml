@@ -193,4 +193,15 @@
         <item >87</item>
         <item >88</item>
     </string-array>
+    
+    <string-array name="large_photo">
+        <item >@string/array_large_photo_default</item>
+        <item >@string/array_large_photo_rectangular</item>
+        <item >@string/array_large_photo_max</item>
+    </string-array>
+    <string-array name="large_photo_val">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+    </string-array>
 </resources>

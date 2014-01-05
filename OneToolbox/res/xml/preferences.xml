@@ -26,6 +26,13 @@
     <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/systemui_mods"
         android:key="pref_key_sysui">
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_sysui_largephoto"
+            android:summary="@string/systemui_largephoto_summ"
+            android:title="@string/systemui_largephoto_title"
+            android:entries="@array/large_photo"
+            android:entryValues="@array/large_photo_val"
+            android:defaultValue="1"/>
         <com.htc.preference.HtcPreferenceCategory
         	android:title="@string/systemui_statusbar">
         <com.langerhans.one.utils.SeekBarPreference 

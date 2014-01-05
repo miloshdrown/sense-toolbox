@@ -195,10 +195,14 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				CleanBeamMods.execHook_MTPIcon(resparam, MODULE_PATH);
 		}
 		
-		if (pkg.equals("com.android.phone")) 
+		if (pkg.equals("com.android.phone"))
 		{
 			if(pref.getBoolean("pref_key_cb_phone", false))
 				CleanBeamMods.execHook_PhoneIcons(resparam, MODULE_PATH);
+			
+			int largePhoto = Integer.parseInt(pref.getString("pref_key_sysui_largephoto", "1"));
+			if (largePhoto > 1)
+				SysUIMods.execHook_LargePhoto(resparam, largePhoto);
 		}
 		
 		if (pkg.equals("com.htc.videohub.ui")) 
@@ -221,6 +225,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if (pref.getBoolean("pref_key_other_ytwatermark", false))
 				OtherMods.execHook_YouTubeNoWatermark(resparam);
+		}
+		
+		if (pkg.equals("com.htc.lockscreen")) {
+			int largePhoto = Integer.parseInt(pref.getString("pref_key_sysui_largephoto", "1"));
+			if (largePhoto > 1)
+				SysUIMods.execHook_LargePhotoLS(resparam, largePhoto);
 		}
 	}
 
@@ -327,8 +337,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref_homeassist != 1)
 				ControlsMods.execHook_dieGoogleNow(lpparam);
 			
-			if(pref.getBoolean("pref_key_other_fastunlock", false))
+			if (pref.getBoolean("pref_key_other_fastunlock", false))
 				OtherMods.execHook_fastUnlock(lpparam);
+			
+			int largePhoto = Integer.parseInt(pref.getString("pref_key_sysui_largephoto", "1"));
+			if (largePhoto > 1)
+				SysUIMods.execHook_LargePhotoLSCode(lpparam, largePhoto);
 		}		
 		
 		if (pkg.equals("com.android.settings"))
@@ -401,6 +415,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if (pref.getBoolean("pref_key_messaging_eassecurity", false))
 		    	MessagingMods.execHook_EASSecurityPartTwo(lpparam);
+		}
+		
+		if (pkg.equals("com.android.phone")) {
+			int largePhoto = Integer.parseInt(pref.getString("pref_key_sysui_largephoto", "1"));
+			if (largePhoto > 1)
+				SysUIMods.execHook_LargePhotoCode(lpparam, largePhoto);
 		}
 		
 		if (lpparam.processName.equals("android"))

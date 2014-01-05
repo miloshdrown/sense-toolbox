@@ -93,6 +93,8 @@
 	<string name="camera_mods">Camera Mods</string>
 	
 	<string name="systemui_mods">Interface Mods</string>
+	<string name="systemui_largephoto_title">Сaller photo</string>
+	<string name="systemui_largephoto_summ">Change the size of the photo displayed during incoming and outgoing calls.</string>
 	<string name="systemui_statusbar">Status Bar and Notification Drawer</string>
 	<string name="systemui_tsb_title">Transparent status bar</string>
 	<string name="systemui_tsb_summ">Make the status bar transparent.</string>
@@ -403,9 +405,12 @@
 	<string name="array_color_red">Red</string>
 	<string name="array_color_orange">Orange</string>
 	<string name="array_color_white">White</string>
-	<string name="array_media_none" >No Change</string>
-	<string name="array_media_playpause" >Play/Pause</string>
-	<string name="array_media_next" >Next track</string>
-	<string name="array_media_prev" >Previous track</string>
+	<string name="array_media_none">No Change</string>
+	<string name="array_media_playpause">Play/Pause</string>
+	<string name="array_media_next">Next track</string>
+	<string name="array_media_prev">Previous track</string>
+	<string name="array_large_photo_default">Default</string>
+	<string name="array_large_photo_rectangular">Rectangular</string>
+	<string name="array_large_photo_max">Maximum</string>
 	
 </resources>

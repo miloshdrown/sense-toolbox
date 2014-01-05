@@ -93,6 +93,8 @@
 	<string name="camera_mods">Моды камеры</string>
 	
 	<string name="systemui_mods">Моды интерфейса</string>
+	<string name="systemui_largephoto_title">Фото при звонке</string>
+	<string name="systemui_largephoto_summ">Размер отображаемого фото при входящем и исходящем вызовах.</string>
 	<string name="systemui_statusbar">Строка состояния и панель уведомлений</string>
 	<string name="systemui_tsb_title">Прозрачная строка состояния</string>
 	<string name="systemui_tsb_summ">Настройка прозрачности статусбара.</string>
@@ -400,8 +402,11 @@
 	<string name="array_media_playpause">Старт/Пауза</string>
 	<string name="array_media_next">Следующий трек</string>
 	<string name="array_media_prev">Предыдущий трек</string>
+	<string name="array_large_photo_default">Стандартное</string>
+	<string name="array_large_photo_rectangular">Квадратное</string>
+	<string name="array_large_photo_max">Максимально большое</string>
 
-<string name="about_devs">Разработчики</string>
+	<string name="about_devs">Разработчики</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
 	<string name="about_thanks">Спасибо</string>
 	<string name="about_sense">Sense 5</string>
