@@ -409,7 +409,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
 	<string name="array_media_playpause">Play/Pause</string>
 	<string name="array_media_next">Siguiente cancion</string>
 	<string name="array_media_prev">Anterior cancion</string>
-<string name="systemui_largephoto_title">Foto de quien Llama</string>
+<string name="systemui_largephoto_title">Foto del Llamante</string>
 	<string name="systemui_largephoto_summ">Cambia el tamaño de la foto mostrada durante la llamada entrante o saliente.</string>
 	<string name="array_large_photo_default">Defecto</string>
 	<string name="array_large_photo_rectangular">Rectangular</string>
