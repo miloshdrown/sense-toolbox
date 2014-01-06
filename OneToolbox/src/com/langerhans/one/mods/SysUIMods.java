@@ -1332,7 +1332,7 @@ public class SysUIMods {
 			});
 			findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "setPhotoImageResource", int.class, Drawable.class, new XC_MethodHook() {
 				@Override
-	    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					ImageView mPhoto = (ImageView)XposedHelpers.getObjectField(param.thisObject, "mPhoto");
 					setPhotoHeight(mPhoto, photoSize);
 				}
@@ -1387,7 +1387,12 @@ public class SysUIMods {
 				if (actionBar != null) {
 					actionBar.setBackground(null);
 					actionBar.setBackgroundResource(0);
-					actionBar.setBackgroundColor(Color.argb(200, 22, 22, 22));
+					TextView mPrimaryText = (TextView)XposedHelpers.getObjectField(actionBar, "mPrimaryText");
+					TextView mSecondaryText = (TextView)XposedHelpers.getObjectField(actionBar, "mSecondaryText");
+					mPrimaryText.setShadowLayer(5.0f, 0, 0, Color.BLACK);
+					mSecondaryText.setShadowLayer(5.0f, 0, 0, Color.BLACK);
+					mSecondaryText.setTextColor(Color.argb(255, 255, 255, 255));
+					//actionBar.setBackgroundColor(Color.argb(200, 22, 22, 22));
 				}
 			}
 		});
