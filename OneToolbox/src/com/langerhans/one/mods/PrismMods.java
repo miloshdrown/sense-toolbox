@@ -16,6 +16,7 @@ import java.util.EnumSet;
 import android.app.Activity;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
@@ -24,6 +25,7 @@ import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.util.TypedValue;
 import android.view.Display;
@@ -46,6 +48,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.htc.preference.HtcPreferenceFragment;
+import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcPopupWindow;
 import com.langerhans.one.R;
 import com.langerhans.one.utils.GlobalActions;
@@ -509,9 +512,6 @@ public class PrismMods {
 					}
 				});
 			}
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-			}
 		});
 		
 		// Save grid size to Sense launcher preferences
@@ -904,6 +904,8 @@ public class PrismMods {
 					launcher.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
 				} else if (position == 4) {
 					OtherMods.startAPM(launcher);
+				} else if (position == 5) {
+					Settings.System.putString(view.getContext().getContentResolver(), "lock_homescreen_dragging", String.valueOf(!Boolean.parseBoolean(Settings.System.getString(view.getContext().getContentResolver(), "lock_homescreen_dragging"))));
 				}
 			}						
 		});
@@ -1036,5 +1038,71 @@ public class PrismMods {
 	
 	public static void fixInvisibarKitKat(LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "transparentStatusBarForKK", XC_MethodReplacement.DO_NOTHING);
+	}
+	
+	private static boolean isLauncherLocked(Context context) {
+		return Boolean.parseBoolean(Settings.System.getString(context.getContentResolver(), "lock_homescreen_dragging"));
+	}
+	
+	private static void showLockedWarning(final Activity act) {
+		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(act);
+		builder.setTitle(modRes.getString(R.string.warning));
+		builder.setMessage(modRes.getString(R.string.locked_warning));
+		builder.setIcon(android.R.drawable.ic_dialog_alert);
+		builder.setCancelable(false);
+		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton){
+				XposedHelpers.callMethod(act, "onBackPressed");
+			}
+		});
+		HtcAlertDialog dlg = builder.create();
+		dlg.show();
+	}
+	
+	public static void execHook_LauncherLock(final LoadPackageParam lpparam) {
+		// Disable dragging inside folders
+		XposedHelpers.findAndHookMethod("com.htc.launcher.folder.Folder.FolderDataManager", lpparam.classLoader, "allowedDrag", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				RelativeLayout folder = (RelativeLayout)XposedHelpers.getSurroundingThis(param.thisObject);
+				if (folder != null && isLauncherLocked(folder.getContext())) param.setResult(false);
+			}
+		});
+		
+		// Disable appdrawer dragging
+		XposedHelpers.findAndHookMethod("com.htc.launcher.pageview.AllAppsPagedView", lpparam.classLoader, "beginDragging", View.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				ViewGroup allApps = (ViewGroup)param.thisObject;
+				if (allApps != null && isLauncherLocked(allApps.getContext())) param.setResult(false);
+			}
+		});
+
+		// Disable other dragging
+		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "isDraggingEnabled", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				Activity launcher = (Activity)param.thisObject;
+				if (launcher != null && isLauncherLocked(launcher)) param.setResult(false);
+			}
+		});
+		
+		// Disable homescreen customization
+		XposedHelpers.findAndHookMethod("com.htc.launcher.pageview.activity.AddToHomeActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				Activity addToHome = (Activity)param.thisObject;
+				if (addToHome != null && isLauncherLocked(addToHome)) showLockedWarning(addToHome);
+			}			
+		});
+		
+		XposedHelpers.findAndHookMethod("com.htc.launcher.pageview.activity.AddToHomeActivity", lpparam.classLoader, "onNewIntent", Intent.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				Activity addToHome = (Activity)param.thisObject;
+				if (addToHome != null && isLauncherLocked(addToHome)) showLockedWarning(addToHome);
+			}
+		});
 	}
 }

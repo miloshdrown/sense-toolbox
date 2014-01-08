@@ -142,6 +142,7 @@
         <item >@string/array_home_menu_settings</item>
         <item >@string/array_home_menu_wifi</item>
         <item >@string/array_home_menu_apm</item>
+        <item >@string/array_home_menu_draglock</item>
     </string-array>
     <string-array name="recents_menu">
         <item >@string/array_recents_menu_info</item>
