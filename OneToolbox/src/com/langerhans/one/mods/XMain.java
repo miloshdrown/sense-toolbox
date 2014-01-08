@@ -313,8 +313,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref_swiperight != 1 || pref_swipeleft != 1 || pref.getBoolean("pref_key_prism_homemenu", false))
 				PrismMods.execHook_DockSwipe(lpparam);
 			
-			if(pref.getBoolean("pref_key_prism_homemenu", false))
+			if(pref.getBoolean("pref_key_prism_homemenu", false)) {
 				PrismMods.execHook_HomeMenu(lpparam);
+				PrismMods.execHook_LauncherLock(lpparam);
+			}
 			
 			if(pref.getBoolean("pref_key_prism_sevenscreens", false))
 				PrismMods.execHook_SevenScreens(lpparam);
@@ -326,10 +328,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				PrismMods.execHook_invisiLabels(lpparam);
 			
 			if (Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false)) //Le KitKat
-			{
 				PrismMods.fixInvisibarKitKat(lpparam);
-			}
-			
+
 			//PrismMods.execHook_hotseatToggleBtn(lpparam);
 		}
 		

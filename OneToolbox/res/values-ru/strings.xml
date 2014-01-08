@@ -221,6 +221,7 @@
 	<string name="sense_invisilabels_summ">Убирает подписи с названиями приложений и папок с домашних экранов.</string>
 	<string name="notselected">Не выбрано</string>
 	<string name="loading_app_data">Загрузка списка приложений…</string>
+	<string name="locked_warning">Сначала разблокируйте ланчер!</string>
 	
 	<string name="message_mods">Моды сообщений</string>
 	<string name="message_smsmms_title">Отключение SMS -&gt; MMS</string>
@@ -387,6 +388,8 @@
 	<string name="array_home_menu_settings">Настройки</string>
 	<string name="array_home_menu_wifi">Wi-Fi</string>
 	<string name="array_home_menu_apm">APM</string>
+	<string name="array_home_menu_draglock">Заблокировать ланчер</string>
+	<string name="array_home_menu_dragunlock">Разблокировать ланчер</string>
 	<string name="array_recents_menu_info">О приложении</string>
 	<string name="array_recents_menu_close">Закрыть</string>
 	<string name="array_recents_menu_closeothers">Закрыть другие</string>

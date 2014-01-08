@@ -5,6 +5,7 @@ import com.langerhans.one.mods.XMain;
 
 import android.content.Context;
 import android.content.res.XModuleResources;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,13 +38,13 @@ public class PopupAdapter extends BaseAdapter {
 	}
 
 	public View getView(int position, View convertView, ViewGroup parent) {
+		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 		TextView itemTitle;
 		if (convertView != null)
 			itemTitle = (TextView)convertView;
-		else {
-			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+		else
 			itemTitle = (TextView)mInflater.inflate(modRes.getLayout(R.layout.simple_list_item), parent, false);			
-		}
+
 		itemTitle.setText(getItem(position));
 		
 		float density = parent.getResources().getDisplayMetrics().density;
@@ -57,6 +58,11 @@ public class PopupAdapter extends BaseAdapter {
 		} else {
 			itemTitle.setPadding(Math.round(10 * density), Math.round(8 * density), Math.round(5 * density), Math.round(8 * density));
 			itemTitle.setWidth(parent.getWidth());
+			if (position == 5)
+				if (Boolean.parseBoolean(Settings.System.getString(itemTitle.getContext().getContentResolver(), "lock_homescreen_dragging")))
+					itemTitle.setText(modRes.getString(R.string.array_home_menu_dragunlock));
+				else
+					itemTitle.setText(modRes.getString(R.string.array_home_menu_draglock));
 		}
 		return itemTitle;
 	}
