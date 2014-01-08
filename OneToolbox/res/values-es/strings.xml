@@ -415,4 +415,8 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
 	<string name="array_large_photo_rectangular">Rectangular</string>
 	<string name="array_large_photo_max">Maximizada</string>
 	
-</resources>
+<string name="locked_warning">Por favor desbloquea el Launcher primero!</string>
+	
+	<string name="array_home_menu_draglock">Bloquear launcher</string>
+	<string name="array_home_menu_dragunlock">Desbloquear launcher</string>
+	</resources>
