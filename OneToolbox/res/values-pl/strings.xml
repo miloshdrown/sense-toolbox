@@ -413,4 +413,8 @@
 	<string name="array_large_photo_rectangular">Prostokątne</string>
 	<string name="array_large_photo_max">Maximum</string>
 	
-</resources>
+<string name="locked_warning">Proszę odblokować najpierw launcher!</string>
+	
+	<string name="array_home_menu_draglock">Blokada launchera</string>
+	<string name="array_home_menu_dragunlock">Odblokuj launcher</string>
+	</resources>
