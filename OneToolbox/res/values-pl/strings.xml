@@ -407,4 +407,10 @@
 	<string name="array_media_playpause">Odtwórz/Pauza</string>
 	<string name="array_media_next">Następny utwór</string>
 	<string name="array_media_prev">Poprzedni utwór</string>
+<string name="systemui_largephoto_title">Zdjęcie połączenia</string>
+	<string name="systemui_largephoto_summ">Zmień rozmiar zdjęcie wyświetlanego podczas połączeń wychodzących i przychodzących.</string>
+	<string name="array_large_photo_default">Domyślnie</string>
+	<string name="array_large_photo_rectangular">Prostokątne</string>
+	<string name="array_large_photo_max">Maximum</string>
+	
 </resources>
