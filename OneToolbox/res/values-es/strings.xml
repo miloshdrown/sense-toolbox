@@ -25,19 +25,17 @@
     <string name="apm_hotreboot_title">Reinicio Rapido</string>
     <string name="apm_hotreboot_summ">Reinicia interfaz</string>
     <string name="apm_recovery_title">Recuperacion</string>
-    <string name="apm_recovery_summ">Reincia directamente al Recovery</string>
+    <string name="apm_recovery_summ">Reinicia directamente al Recovery</string>
     <string name="apm_bootloader_title">Arranque</string>
-    <string name="apm_bootloader_summ">Reincia directamente al Bootloader</string>
+    <string name="apm_bootloader_summ">Reinicia directamente al Bootloader</string>
     <string name="eqs_reorder">Reordenar EQS</string>
     <string name="eqs_reorder_explain">Ajusta el orden de los titulos del EQS</string>
     <string name="no_root_access">Sin acceso Root</string>
-    <string name="no_root_explain">"Puede ser que su equipo no tiene root, o si usted no permitio que la aplicación acceda al SuperUser.
-Sin Root no se puede cambiar el orden de los titulos del EQS, Por lo tanto esta funcion no se muestra.
-Puede pasar por alto este mensaje de una vez, o para siempre. Revisa que el Root se realizo en cada arranque, para hacer que esta funcion este disponible si es que decide permitir el acceso al Superuser."</string>
+    <string name="no_root_explain">Puede ser que su equipo no tiene root, o si usted no permitio que la aplicación acceda al SuperUser.\nSin Root no se puede cambiar el orden de los titulos del EQS, Por lo tanto esta funcion no se muestra.\nPuede pasar por alto este mensaje de una vez, o para siempre. Revisa que el Root se realizo en cada arranque, para hacer que esta funcion este disponible si es que decide permitir el acceso al Superuser.</string>
     <string name="dismiss_once">Descartar una vez</string>
     <string name="dismiss_forever">Descartar para siempre</string>
     <string name="mods">Mods</string>
-    <string name="xposed_not_found">Instaldor de Xposed Installer no encontrado</string>
+    <string name="xposed_not_found">Instalador de Xposed Installer no encontrado</string>
     <string name="xposed_not_found_explain">"Parece que no tienes Xposed Instalado.
 
 Por favor, tenga en cuenta que los mods solo funcionara con Xposed!
@@ -48,8 +46,7 @@ Xposed esta disponible desde el instaldor de ARHD."</string>
     <string name="remove_last">"No se puede eliminar el ultimo elemento!"</string>
     <string name="remove">Eliminar</string>
     <string name="remove_tile_msg1">Quieres eliminar el</string>
-    <string name="remove_tile_msg2">"titulo?
-Podra agregar estos devuelta desde el menu de arriba."</string>
+    <string name="remove_tile_msg2">titulo?\nPodra agregar estos devuelta desde el menu de arriba.</string>
     <string name="yes">Si</string>
     <string name="no">No</string>
     <string name="hotreboot_explain">El orden a sido guardado! Un Reinicio Rapido es requerido para que tenga efecto el cambio. Desea hacerlo ahora?</string>
@@ -265,13 +262,7 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="various_scron_title">"Habilitar 'Mantener encendido'"</string>
     <string name="various_scron_summ">Mostrar \'Mantener encendido\' en opciones de pantalla en la configuracion de desarrollador.</string>
     <string name="various_apps_title">Mostrar detalles adicionales en Aplicaciones</string>
-    <string name="various_apps_summ">"Agregar nuevos campos en la Configuracion &gt; Apps:
-- Boton para lanzar el App
-- Nombre y ruta del Apk
-- Ruta de datos
-- Nombre del Proceso
-- ID de Usuario
-- Version de SDK objetivo"</string>
+    <string name="various_apps_summ">Agregar nuevos campos en la Configuracion &gt; Apps:\n- Boton para lanzar el App\n- Nombre y ruta del Apk\n- Ruta de datos\n- Nombre del Proceso\n- ID de Usuario\n- Version de SDK objetivo</string>
     <string name="various_volsnd_title">Desactivar sonidos de cambio de volumen</string>
     <string name="various_volsnd_summ">Selecciona para desactivar el sonido del cambio de volumen.</string>
     <string name="various_volsafe_title">Desactivar aviso de volumen recomendado</string>
@@ -343,17 +334,17 @@ Podra agregar estos devuelta desde el menu de arriba."</string>
     <string name="about_thanks">Gracias</string>
     <string name="about_sense">Sense 5</string>
     <string name="about_toolbox">Toolbox</string>
-    <string name="about_thanks_data">"mike1986 - por ARHD y la plataforma para  liberar esta aplicacion 
-    
-    descenpet - por la idea inicial de las ediciones 
-    
-    vomer - por los Mods CleanBeam 
-    
-    Dunc001 y LeSScro - por sus iconos del APM 
-    
-    Equipos RU y AU (y  algunos otros beta testers) - por probar y dar retroalimentacion valiosa 
-    
-    usuarios ARHD - por su paciencia"</string>
+    <string name="about_thanks_data">"mike1986 - por ARHD y la plataforma para  liberar esta aplicacion
+\n   
+\ndescenpet - por la idea inicial de las ediciones
+\n   
+\nvomer - por los Mods CleanBeam
+\n  
+\nDunc001 y LeSScro - por sus iconos del APM
+\n   
+\nEquipos RU y AU (y  algunos otros beta testers) - por probar y dar retroalimentacion valiosa
+\n   
+\nUsuarios ARHD - por su paciencia"</string>
     
     <string name="array_default">Defecto</string>
 	<string name="array_cam_actions_shutter">Obturador</string>
