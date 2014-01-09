@@ -82,6 +82,10 @@ public class PrismMods {
 						isAllAppsOpen = (Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown");
 				
 					ImageView m_BackgroundImg = (ImageView)XposedHelpers.getObjectField(param.thisObject, "m_BackgroundImg");
+					// Hack for Magio ROM
+					final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+					if (android.os.Build.FINGERPRINT.contains("magiorom"))
+						m_BackgroundImg.setImageDrawable(modRes.getDrawable(R.drawable.home_nav_bg_magio));
 					float alphaDrawer = XMain.pref.getInt("pref_key_prism_invisidrawer", 100) / 100.0f;
 					if (isAllAppsOpen && alphaDrawer > transparency/255.0f) {
 						if (XMain.pref.getBoolean("pref_key_prism_invisidrawer_enable", false)) {
@@ -102,7 +106,11 @@ public class PrismMods {
 			resparam.res.setReplacement("com.htc.launcher", "drawable", "home_nav_bg", new XResources.DrawableLoader() {
 				@Override
 				public Drawable newDrawable(XResources res, int id) throws Throwable {
-					Drawable bg = modRes.getDrawable(R.drawable.home_nav_bg);
+					Drawable bg;
+					if (android.os.Build.FINGERPRINT.contains("magiorom"))
+						bg = modRes.getDrawable(R.drawable.home_nav_bg_magio);
+					else
+						bg = modRes.getDrawable(R.drawable.home_nav_bg);
 					bg.setAlpha(transparency);
 					return bg;
 				}
