@@ -410,4 +410,8 @@ Xposed esta disponible desde el instaldor de ARHD."</string>
 	
 	<string name="array_home_menu_draglock">Bloquear launcher</string>
 	<string name="array_home_menu_dragunlock">Desbloquear launcher</string>
+	<string name="systemui_alarmnotify_title">Mostrar próxima alarma</string>
+	<string name="systemui_alarmnotify_summ">Muestra la próxima alarma en lugar del nombre de operador en la palanca de notificación.</string>
+	<string name="next_alarm">Próxima Alarma</string>
+	
 	</resources>
