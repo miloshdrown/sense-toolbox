@@ -407,4 +407,15 @@
 	<string name="array_media_playpause">Wiedergabe/Pause</string>
 	<string name="array_media_next">Nächster Titel</string>
 	<string name="array_media_prev">Voriger Titel</string>
-</resources>
+<string name="systemui_largephoto_title">Anruferfoto</string>
+	<string name="systemui_largephoto_summ">Ändert die Größe des bei Anrufen angezeigten Bildes.</string>
+	<string name="systemui_alarmnotify_title">Nächster Wecker</string>
+	<string name="systemui_alarmnotify_summ">Zeigt die nächste Weckzeit anstelle des Netzbetreibers im Benachrichtigungsfenster an.</string>
+	<string name="next_alarm">Nächster Wecker</string>
+	
+	<string name="locked_warning">Bitte zuerst Home Screen entsperren!</string>
+	
+	<string name="array_home_menu_draglock">Home Screen sperren</string>
+	<string name="array_home_menu_dragunlock">Home Screen entsperren</string>
+	<string name="array_large_photo_default">Standard</string>
+	</resources>
