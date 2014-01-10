@@ -33,11 +33,15 @@
 - Scrollable wallpaper
 - Sound profile in APM (not worth it)
 - Owner/carrier info on Lockscreen
+- Alarm time if active in notification drawer (at the bottom, instead of carrier name)
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
 2.7
-Added Spanish translation
+Large photo and 2-line caller name in dialer and lockscreen
+Ability to lock all elements on home screens and in app drawer from home popup menu
+Transparent dock was fixed for Android 4.3 + Sense 5.0
+Added translations: Croatian, Dutch, Italian, Spanish, Turkish
 
 2.6.1
 Fixed localization

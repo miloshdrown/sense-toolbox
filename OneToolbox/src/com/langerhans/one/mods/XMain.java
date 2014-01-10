@@ -229,8 +229,14 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.htc.lockscreen")) {
 			int largePhoto = Integer.parseInt(pref.getString("pref_key_sysui_largephoto", "1"));
-			if (largePhoto > 1)
-				SysUIMods.execHook_LargePhotoLS(resparam, largePhoto);
+			if (largePhoto > 1 && XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
+				SysUIMods.execHook_LargePhotoLS55(resparam, largePhoto);
+		}
+		
+		if (pkg.equals("com.htc.idlescreen.base")) {
+			int largePhoto = Integer.parseInt(pref.getString("pref_key_sysui_largephoto", "1"));
+			if (largePhoto > 1 && XMain.senseVersion.compareTo(new Version("5.5")) == -1)
+				SysUIMods.execHook_LargePhotoLS50(resparam, largePhoto);
 		}
 	}
 
@@ -341,9 +347,15 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				OtherMods.execHook_fastUnlock(lpparam);
 			
 			int largePhoto = Integer.parseInt(pref.getString("pref_key_sysui_largephoto", "1"));
-			if (largePhoto > 1)
-				SysUIMods.execHook_LargePhotoLSCode(lpparam, largePhoto);
-		}		
+			if (largePhoto > 1 && XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
+				SysUIMods.execHook_LargePhotoLSCode55(lpparam, largePhoto);
+		}
+		
+		if (pkg.equals("com.htc.idlescreen.base")) {
+			int largePhoto = Integer.parseInt(pref.getString("pref_key_sysui_largephoto", "1"));
+			if (largePhoto > 1 && XMain.senseVersion.compareTo(new Version("5.5")) == -1)
+				SysUIMods.execHook_LargePhotoLSCode50(lpparam, largePhoto);
+		}
 		
 		if (pkg.equals("com.android.settings"))
 		{
