@@ -25,7 +25,6 @@ import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
-import android.os.Bundle;
 import android.provider.Settings;
 import android.util.TypedValue;
 import android.view.Display;
@@ -73,6 +72,7 @@ public class PrismMods {
 	public static int gridSizeVal = 0;
 	private static GestureDetector mDetector;
 	private static GestureDetector mDetectorDock;
+	static HtcAlertDialog dlg = null;
 	
 	public static void execHook_InvisiDock(LoadPackageParam lpparam, final int transparency) {
 		try {
@@ -84,7 +84,8 @@ public class PrismMods {
 					if (m_launcher != null)
 						isAllAppsOpen = (Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown");
 				
-					ImageView m_BackgroundImg = (ImageView)XposedHelpers.getObjectField(param.thisObject, "m_BackgroundImg");
+					FrameLayout hotseat = (FrameLayout)param.thisObject;
+					ImageView m_BackgroundImg = (ImageView)hotseat.findViewById(android.R.id.background);
 					// Hack for Magio ROM
 					final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 					if (android.os.Build.FINGERPRINT.contains("magiorom"))
@@ -262,8 +263,8 @@ public class PrismMods {
 					Drawable bg = modRes.getDrawable(R.drawable.home_folder_base);
 					bg.setAlpha(transparency);
 					return bg;
-				} catch(Exception e){
-					//XposedBridge.log("[S5T] Resource loading bug... Need full restart");
+				} catch (Throwable t){
+					// Resource bug, full restart required
 					return null;
 				}
 			}
@@ -1053,19 +1054,19 @@ public class PrismMods {
 	}
 	
 	private static void showLockedWarning(final Activity act) {
-		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(act);
-		builder.setTitle(modRes.getString(R.string.warning));
-		builder.setMessage(modRes.getString(R.string.locked_warning));
-		builder.setIcon(android.R.drawable.ic_dialog_alert);
-		builder.setCancelable(false);
-		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton){
-				XposedHelpers.callMethod(act, "onBackPressed");
-			}
-		});
-		HtcAlertDialog dlg = builder.create();
-		dlg.show();
+		if (dlg == null) {
+			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(act);
+			builder.setTitle(modRes.getString(R.string.warning));
+			builder.setMessage(modRes.getString(R.string.locked_warning));
+			builder.setCancelable(false);
+			builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton){
+				}
+			});
+			dlg = builder.create();
+		}
+		if (!dlg.isShowing()) dlg.show();
 	}
 	
 	public static void execHook_LauncherLock(final LoadPackageParam lpparam) {
@@ -1097,19 +1098,49 @@ public class PrismMods {
 		});
 		
 		// Disable homescreen customization
-		XposedHelpers.findAndHookMethod("com.htc.launcher.pageview.activity.AddToHomeActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				Activity addToHome = (Activity)param.thisObject;
-				if (addToHome != null && isLauncherLocked(addToHome)) showLockedWarning(addToHome);
-			}			
-		});
+		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
+			XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAddToHome", boolean.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					Activity launcher = (Activity)param.thisObject;
+					if (launcher != null && isLauncherLocked(launcher)) {
+						showLockedWarning(launcher);
+						param.setResult(null);
+					}
+				}
+			});
+		} else {
+			XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAddToHome", boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					Activity launcher = (Activity)param.thisObject;
+					if (launcher != null && isLauncherLocked(launcher)) {
+						showLockedWarning(launcher);
+						param.setResult(null);
+					}
+				}
+			});
+		}
 		
-		XposedHelpers.findAndHookMethod("com.htc.launcher.pageview.activity.AddToHomeActivity", lpparam.classLoader, "onNewIntent", Intent.class, new XC_MethodHook() {
+		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onNewIntent", Intent.class, new XC_MethodHook() {
 			@Override
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				Activity addToHome = (Activity)param.thisObject;
-				if (addToHome != null && isLauncherLocked(addToHome)) showLockedWarning(addToHome);
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				try {
+					Intent intent = (Intent)param.args[0];
+					String s = intent.getAction();
+					if (s.equals("android.intent.action.MAIN")) {
+						boolean isAddToHome = intent.getBooleanExtra("personalize_add_to_home", false);
+						if (isAddToHome) {
+							Activity launcher = (Activity)param.thisObject;
+							if (launcher != null && isLauncherLocked(launcher)) {
+								showLockedWarning(launcher);
+								param.setResult(null);
+							}
+						}
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
 			}
 		});
 	}
