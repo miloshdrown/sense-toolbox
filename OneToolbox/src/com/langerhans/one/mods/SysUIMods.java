@@ -1609,4 +1609,93 @@ public class SysUIMods {
 			}
 		});
 	}
+	
+	// Listen for alarm changes and update label
+	static class SystemSettingsObserver extends ContentObserver {
+		Object thisObj = null;
+	    public SystemSettingsObserver(Handler h, Object paramThisObject) {
+	        super(h);
+	        thisObj = paramThisObject;
+	    }
+
+	    @Override
+	    public boolean deliverSelfNotifications() {
+	        return true;
+	    }
+
+	    @Override
+	    public void onChange(boolean selfChange, Uri uri) {
+	    	super.onChange(selfChange);
+	    	try {
+	    		String uriPart = uri.getLastPathSegment();
+	    		if (uriPart != null && uriPart.equals(Settings.System.NEXT_ALARM_FORMATTED));
+	    		if (thisObj != null) XposedHelpers.callMethod(thisObj, "triggerUpdate");
+	    	} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+	    }
+	}
+	
+	private static String getNextAlarm(Context ctx) {
+		return Settings.System.getString(ctx.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
+	}
+	
+	private static void updateLabel(Object paramThisObject) {
+		try {
+			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+			TextView mPlmnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mPlmnLabel");
+			TextView mSpnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mSpnLabel");
+			TextView mNetworkTextView = (TextView)XposedHelpers.getObjectField(paramThisObject, "mNetworkTextView");
+			if (mPlmnLabel != null) {
+				String txt = getNextAlarm(mPlmnLabel.getContext());
+				if (txt != null && !txt.equals("")) mPlmnLabel.setText(modRes.getString(R.string.next_alarm) + ": " + txt);
+			}
+			if (mSpnLabel != null) {
+				String txt = getNextAlarm(mSpnLabel.getContext());
+				if (txt != null && !txt.equals("")) mSpnLabel.setText(modRes.getString(R.string.next_alarm) + ": " + txt);
+			}
+			if (mNetworkTextView != null) {
+				String txt = getNextAlarm(mNetworkTextView.getContext());
+				if (txt != null && !txt.equals("")) mNetworkTextView.setText(modRes.getString(R.string.next_alarm) + ": " + txt);
+			}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_AlarmNotification(LoadPackageParam lpparam) {
+		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.phone.CarrierLabel", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				try {
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					if (mContext != null)
+					mContext.getContentResolver().registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, new SystemSettingsObserver(new Handler(), param.thisObject));
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.CarrierLabel", lpparam.classLoader, "updateAirplaneMode", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				updateLabel(param.thisObject);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.CarrierLabel", lpparam.classLoader, "updateNetworkName", boolean.class, String.class, boolean.class, String.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				updateLabel(param.thisObject);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.CarrierLabel", lpparam.classLoader, "updateNetworkNameExt", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				updateLabel(param.thisObject);
+			}
+		});
+	}
 }

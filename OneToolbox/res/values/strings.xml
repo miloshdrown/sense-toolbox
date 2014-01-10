@@ -127,6 +127,9 @@
 	<string name="systemui_brightslide_auto">Auto</string>
 	<string name="systemui_dataratestatus_title">Traffic meter</string>
 	<string name="systemui_dataratestatus_summ">Add current download+upload speed to statusbar. Visible only when device is connected to any network.</string>
+	<string name="systemui_alarmnotify_title">Display next alarm</string>
+	<string name="systemui_alarmnotify_summ">Show next alarm time instead of carrier name in notification drawer.</string>
+	<string name="next_alarm">Next alarm</string>
 	
 	<string name="cleanbeam_mods">CleanBeam Mods by vomer</string>
 	<string name="cleanbeam_colortheme_title">Color theme</string>

@@ -415,6 +415,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_sysui_recentram", false))
 				SysUIMods.execHook_RAMInRecents(lpparam);
 			
+			if(pref.getBoolean("pref_key_sysui_alarmnotify", false))
+				SysUIMods.execHook_AlarmNotification(lpparam);
+			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 		}
 		
