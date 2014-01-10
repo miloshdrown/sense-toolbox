@@ -80,6 +80,11 @@
             android:summary="@string/systemui_dataratestatus_summ"
             android:title="@string/systemui_dataratestatus_title"
             android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_alarmnotify"
+            android:summary="@string/systemui_alarmnotify_summ"
+            android:title="@string/systemui_alarmnotify_title"
+            android:defaultValue="false" />
         </com.htc.preference.HtcPreferenceCategory>
         
         <com.htc.preference.HtcPreferenceCategory

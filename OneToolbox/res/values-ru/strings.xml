@@ -127,6 +127,9 @@
 	<string name="systemui_brightslide_auto">Авто</string>
 	<string name="systemui_dataratestatus_title">Мониторинг трафика</string>
 	<string name="systemui_dataratestatus_summ">Добавить текущее значение скорости приёма+отдачи в статусбар. Показывается только при наличии подключения к сети.</string>
+	<string name="systemui_alarmnotify_title">Будильник в уведомлениях</string>
+	<string name="systemui_alarmnotify_summ">Отображать время следующего срабатывания будильника вместо названия оператора в панели уведомлений.</string>
+	<string name="next_alarm">След. будильник</string>
 	
 	<string name="cleanbeam_mods">Моды CleanBeam от vomer</string>
 	<string name="cleanbeam_colortheme_title">Цветовая тема</string>
