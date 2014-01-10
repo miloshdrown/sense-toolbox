@@ -406,5 +406,5 @@
     <string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
 	<string name="dummy">" "</string>
 	
-	<string name="systemui_largephoto_title">Сaller foto</string>
+	<string name="systemui_largephoto_title"></string>
 	</resources>
