@@ -1612,8 +1612,6 @@ public class SysUIMods {
 						if (mSlotName != null) {
 							RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams)mSlotName.getLayoutParams();
 							params3.setMargins(0, Math.round(modRes.getDisplayMetrics().density * 42), 0, 0);
-							mSlotName.setVisibility(0);
-							mSlotName.setText("mSlotName");
 							mSlotName.setLayoutParams(params3);
 							mSlotName.setBackground(null);
 							mSlotName.setBackgroundResource(0);
