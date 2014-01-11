@@ -93,8 +93,6 @@
 	<string name="camera_mods">Моды камеры</string>
 	
 	<string name="systemui_mods">Моды интерфейса</string>
-	<string name="systemui_largephoto_title">Фото при звонке</string>
-	<string name="systemui_largephoto_summ">Размер отображаемого фото при входящем и исходящем вызовах.</string>
 	<string name="systemui_statusbar">Строка состояния и панель уведомлений</string>
 	<string name="systemui_tsb_title">Прозрачная строка состояния</string>
 	<string name="systemui_tsb_summ">Настройка прозрачности статусбара.</string>
@@ -280,6 +278,12 @@
 	<string name="various_scron_summ">Добавляет пункт \'Не выключать экран\' в разделы \'Экран, кнопки и жесты\' и \'Для разработчиков\'.</string>
 	<string name="various_apps_title">Доп. сведения о приложении</string>
 	<string name="various_apps_summ">Добавляет новые элементы в Настройки &gt; Приложения:\n- кнопку запуска приложения\n- имя и путь до apk\n- путь до данных\n- имя процесса\n- номер пользователя\n- версию SDK</string>
+	<string name="various_mods_calls">Звонки</string>
+	<string name="various_largephoto_title">Фото при звонке</string>
+	<string name="various_largephoto_summ">Размер отображаемого фото при входящем и исходящем вызовах.</string>
+	<string name="various_rejectedcall_title">Отколнённые входящие вызовы</string>
+	<string name="various_rejectedcall_summ">Отключить уведомление о пропущенном звонке для входящих вызовов, которые были отклонены вручную. Они будут добавлены в список вызовов как обычные завершённые.</string>
+	<string name="various_mods_volume">Громкость</string>
 	<string name="various_volsnd_title">Нет звука при смене громкости</string>
 	<string name="various_volsnd_summ">Отключает проверочный звук при изменении громкости.</string>
 	<string name="various_volsafe_title">Предупреждение о высокой громкости</string>

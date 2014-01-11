@@ -93,8 +93,6 @@
 	<string name="camera_mods">Camera Mods</string>
 	
 	<string name="systemui_mods">Interface Mods</string>
-	<string name="systemui_largephoto_title">Caller photo</string>
-	<string name="systemui_largephoto_summ">Change the size of the photo displayed during incoming and outgoing calls.</string>
 	<string name="systemui_statusbar">Status Bar and Notification Drawer</string>
 	<string name="systemui_tsb_title">Transparent status bar</string>
 	<string name="systemui_tsb_summ">Make the status bar transparent.</string>
@@ -280,6 +278,12 @@
 	<string name="various_scron_summ">Show the \'Keep screen on\' option in display settings and development settings.</string>
 	<string name="various_apps_title">Show additional app details</string>
 	<string name="various_apps_summ">Add new fields to Settings > Apps:\n- button to launch an app\n- apk filename and path\n- data path\n- process name\n- user id\n- target SDK version</string>
+	<string name="various_mods_calls">Calls</string>
+	<string name="various_largephoto_title">Caller photo</string>
+	<string name="various_largephoto_summ">Change the size of the photo displayed during incoming and outgoing calls.</string>
+	<string name="various_rejectedcall_title">Disable rejected call reminder</string>
+	<string name="various_rejectedcall_summ">Don\'t show missed call notification for manually rejected incoming calls. They will be added to call history as normal finished calls.</string>
+	<string name="various_mods_volume">Volume</string>
 	<string name="various_volsnd_title">Disable volume change sound</string>
 	<string name="various_volsnd_summ">Check to disable the sound on volume change.</string>
 	<string name="various_volsafe_title">Disable safe volume warning</string>
