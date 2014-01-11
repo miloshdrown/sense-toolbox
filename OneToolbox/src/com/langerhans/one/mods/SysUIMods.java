@@ -1501,11 +1501,13 @@ public class SysUIMods {
 					
 					if (photoSize == 3) {
 						RelativeLayout mTile = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mTile");
-						RelativeLayout mCallPhotoRoot = (RelativeLayout)mTile.findViewById(mTile.getResources().getIdentifier("photo_view_root", "id", "com.htc.lockscreen"));
-						if (mCallPhotoRoot != null) {
-							LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mCallPhotoRoot.getLayoutParams();
-							params.height = modRes.getDimensionPixelSize(R.dimen.incoming_call_call_id_height);
-							mCallPhotoRoot.setLayoutParams(params);
+						if (mTile != null) {
+							RelativeLayout mCallPhotoRoot = (RelativeLayout)mTile.findViewById(mTile.getResources().getIdentifier("photo_view_root", "id", "com.htc.lockscreen"));
+							if (mCallPhotoRoot != null) {
+								LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mCallPhotoRoot.getLayoutParams();
+								params.height = modRes.getDimensionPixelSize(R.dimen.incoming_call_call_id_height);
+								mCallPhotoRoot.setLayoutParams(params);
+							}
 						}
 						
 						ImageView mCallPhoto = (ImageView)XposedHelpers.getObjectField(param.thisObject, "mCallPhoto");
@@ -1513,6 +1515,18 @@ public class SysUIMods {
 							FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams)mCallPhoto.getLayoutParams();
 							params2.height = modRes.getDimensionPixelSize(R.dimen.incoming_call_call_id_height);
 							mCallPhoto.setLayoutParams(params2);
+						}
+						
+						TextView mSlotName = (TextView)XposedHelpers.getObjectField(param.thisObject, "mSlotName");
+						if (mSlotName != null) {
+							RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams)mSlotName.getLayoutParams();
+							params3.setMargins(0, Math.round(modRes.getDisplayMetrics().density * 42), 0, 0);
+							mSlotName.setLayoutParams(params3);
+							mSlotName.setBackground(null);
+							mSlotName.setBackgroundResource(0);
+							mSlotName.setGravity(Gravity.CENTER_HORIZONTAL);
+							mSlotName.setShadowLayer(4.0f, 0, 3.0f, Color.argb(153, 0, 0, 0));
+							mSlotName.bringToFront();
 						}
 					}
 					
@@ -1577,19 +1591,36 @@ public class SysUIMods {
 					
 					if (photoSize == 3) {
 						RelativeLayout mTile = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mTile");
-						RelativeLayout mCallPhotoRoot = (RelativeLayout)mTile.findViewById(mTile.getResources().getIdentifier("photo_view_root", "id", "com.htc.idlescreen.base"));
-						if (mCallPhotoRoot != null) {
-							LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mCallPhotoRoot.getLayoutParams();
-							params.height = modRes.getDimensionPixelSize(R.dimen.incoming_call_call_id_height);
-							mCallPhotoRoot.setLayoutParams(params);
+						if (mTile != null) {
+							RelativeLayout mCallPhotoRoot = (RelativeLayout)mTile.findViewById(mTile.getResources().getIdentifier("photo_view_root", "id", "com.htc.idlescreen.base"));
+							if (mCallPhotoRoot != null) {
+								LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mCallPhotoRoot.getLayoutParams();
+								params.height = modRes.getDimensionPixelSize(R.dimen.incoming_call_call_id_height);
+								mCallPhotoRoot.setLayoutParams(params);
+							}
 						}
 						
 						ImageView mCallId = (ImageView)XposedHelpers.getObjectField(param.thisObject, "mCallId");
 						if (mCallId != null) {
 							RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams)mCallId.getLayoutParams();
 							params2.height = modRes.getDimensionPixelSize(R.dimen.incoming_call_call_id_height);
+							params2.removeRule(RelativeLayout.BELOW);
 							mCallId.setLayoutParams(params2);
 						}
+						
+						TextView mSlotName = (TextView)XposedHelpers.getObjectField(param.thisObject, "mSlotName");
+						if (mSlotName != null) {
+							RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams)mSlotName.getLayoutParams();
+							params3.setMargins(0, Math.round(modRes.getDisplayMetrics().density * 42), 0, 0);
+							mSlotName.setVisibility(0);
+							mSlotName.setText("mSlotName");
+							mSlotName.setLayoutParams(params3);
+							mSlotName.setBackground(null);
+							mSlotName.setBackgroundResource(0);
+							mSlotName.setGravity(Gravity.CENTER_HORIZONTAL);
+							mSlotName.setShadowLayer(4.0f, 0, 3.0f, Color.argb(153, 0, 0, 0));
+							mSlotName.bringToFront();
+						}						
 					}
 					
 					LinearLayout mContactPanel = (LinearLayout)XposedHelpers.getObjectField(param.thisObject, "mContactPanel");
