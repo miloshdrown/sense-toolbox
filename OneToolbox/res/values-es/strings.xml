@@ -410,4 +410,10 @@
 	<string name="systemui_alarmnotify_summ">Muestra la próxima alarma en lugar del nombre de operador en la palanca de notificación.</string>
 	<string name="next_alarm">Próxima Alarma</string>
 	
+	<string name="various_mods_calls">Llamadas</string>
+	<string name="various_largephoto_title">Foto del Llamante</string>
+	<string name="various_largephoto_summ">Cambiar el tamaño de la foto mostrada durante las llamadas entrantes y salientes.</string>
+	<string name="various_rejectedcall_title">Desactivar recordatorio al rechazar llamadas</string>
+	<string name="various_rejectedcall_summ">No mostrar notificación de llamadas perdidas o rechazadas. Estas serán agregadas al historial de llamadas.</string>
+	<string name="various_mods_volume">Volumen</string>
 	</resources>
