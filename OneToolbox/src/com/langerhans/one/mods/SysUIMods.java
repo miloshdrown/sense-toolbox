@@ -617,97 +617,125 @@ public class SysUIMods {
 	    return out;
 	}
 	
+	private static BroadcastReceiver connectChanged = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			try {
+				if (mRunnable == null || mHandler == null) return;
+				String action = intent.getAction();
+				if (action.equals("android.net.conn.CONNECTIVITY_CHANGE")) {
+					connectivityManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+					NetworkInfo ni = connectivityManager.getActiveNetworkInfo();
+					mHandler.removeCallbacks(mRunnable);
+					if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
+						mHandler.post(mRunnable);
+					} else if (dataRateVal != null && dataRateUnits != null) {
+						dataRateVal.setVisibility(8);
+						dataRateUnits.setVisibility(8);
+					}
+				}
+			} catch(Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	};
+			
 	public static void execHook_DataRateStatus(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook(){
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) {
 				if (dataRateVal != null && dataRateUnits != null) return;
-				
-				Context mContext = (Context)getObjectField(param.thisObject, "mContext");
-				connectivityManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-				
-				FrameLayout mStatusBarView = (FrameLayout)getObjectField(param.thisObject, "mStatusBarView");
-				LinearLayout systemIconArea = (LinearLayout)mStatusBarView.findViewById(mStatusBarView.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
-				
-				LinearLayout textFrame = new LinearLayout(mContext);
-				textFrame.setOrientation(LinearLayout.VERTICAL);
-				textFrame.setGravity(Gravity.CENTER_HORIZONTAL);
-				textFrame.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
-				
-				dataRateVal = new TextView(mContext);
-				dataRateVal.setVisibility(8);
-				dataRateVal.setTransformationMethod(SingleLineTransformationMethod.getInstance());
-				dataRateVal.setEllipsize(null);
-				dataRateVal.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-				dataRateVal.setTextColor(Color.WHITE);
-				dataRateVal.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-				dataRateVal.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13.0f);
-				dataRateVal.setIncludeFontPadding(false);
-				dataRateVal.setPadding(0, 1, 5, 0);
-				dataRateVal.setLineSpacing(0, 0.9f);
-				//dataRateVal.setTypeface(null, Typeface.BOLD);
-				
-				dataRateUnits = new TextView(mContext);
-				dataRateUnits.setVisibility(8);
-				dataRateUnits.setTransformationMethod(SingleLineTransformationMethod.getInstance());
-				dataRateUnits.setEllipsize(null);
-				dataRateUnits.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
-				dataRateUnits.setTextColor(Color.WHITE);
-				dataRateUnits.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-				dataRateUnits.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10.0f);
-				dataRateUnits.setIncludeFontPadding(false);
-				dataRateUnits.setPadding(0, 0, 5, 1);
-				dataRateUnits.setScaleY(0.9f);
-				
-				textFrame.addView(dataRateVal, 0);
-				textFrame.addView(dataRateUnits, 1);
-				systemIconArea.addView(textFrame, 0);
-
-				mHandler = new Handler();
-				mRunnable = new Runnable() {
-		            public void run() {
-						try {
-							boolean isConnected = false;
-							if (connectivityManager != null && dataRateVal != null && dataRateUnits != null) {
-								NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-								if (activeNetworkInfo != null)
-								if (activeNetworkInfo.isConnected()) isConnected = true;
-								
-								if (isConnected) {
-									long rxBytes = TrafficStats.getTotalRxBytes();
-									long txBytes = TrafficStats.getTotalTxBytes();
-									long newBytes = 0;
-									if (rxBytes != -1L && txBytes != -1L) newBytes = rxBytes + txBytes;						
-									long newBytesFixed = newBytes - bytesTotal;
-									if (newBytesFixed < 0 || bytesTotal == 0) newBytesFixed = 0;
-									long speed = Math.round(newBytesFixed/3);
-									bytesTotal = newBytes;
-									ArrayList<String> spd = humanReadableByteCount(speed);
-									dataRateVal.setText(spd.get(0));
-									dataRateUnits.setText(spd.get(1));
-									if (speed == 0) {
-										dataRateVal.setAlpha(0.3f);
-										dataRateUnits.setAlpha(0.3f);
+				try {
+					Context mContext = (Context)getObjectField(param.thisObject, "mContext");
+					connectivityManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+					
+					FrameLayout mStatusBarView = (FrameLayout)getObjectField(param.thisObject, "mStatusBarView");
+					LinearLayout systemIconArea = (LinearLayout)mStatusBarView.findViewById(mStatusBarView.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
+					
+					LinearLayout textFrame = new LinearLayout(mContext);
+					textFrame.setOrientation(LinearLayout.VERTICAL);
+					textFrame.setGravity(Gravity.CENTER_HORIZONTAL);
+					textFrame.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+					
+					dataRateVal = new TextView(mContext);
+					dataRateVal.setVisibility(8);
+					dataRateVal.setTransformationMethod(SingleLineTransformationMethod.getInstance());
+					dataRateVal.setEllipsize(null);
+					dataRateVal.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+					dataRateVal.setTextColor(Color.WHITE);
+					dataRateVal.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+					dataRateVal.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13.0f);
+					dataRateVal.setIncludeFontPadding(false);
+					dataRateVal.setPadding(0, 1, 5, 0);
+					dataRateVal.setLineSpacing(0, 0.9f);
+					//dataRateVal.setTypeface(null, Typeface.BOLD);
+					
+					dataRateUnits = new TextView(mContext);
+					dataRateUnits.setVisibility(8);
+					dataRateUnits.setTransformationMethod(SingleLineTransformationMethod.getInstance());
+					dataRateUnits.setEllipsize(null);
+					dataRateUnits.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+					dataRateUnits.setTextColor(Color.WHITE);
+					dataRateUnits.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+					dataRateUnits.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10.0f);
+					dataRateUnits.setIncludeFontPadding(false);
+					dataRateUnits.setPadding(0, 0, 5, 1);
+					dataRateUnits.setScaleY(0.9f);
+					
+					textFrame.addView(dataRateVal, 0);
+					textFrame.addView(dataRateUnits, 1);
+					systemIconArea.addView(textFrame, 0);
+					
+					mHandler = new Handler();
+					mRunnable = new Runnable() {
+						public void run() {
+							try {
+								boolean isConnected = false;
+								if (connectivityManager != null && dataRateVal != null && dataRateUnits != null) {
+									NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+									if (activeNetworkInfo != null)
+									if (activeNetworkInfo.isConnected()) isConnected = true;
+									
+									if (isConnected) {
+										long rxBytes = TrafficStats.getTotalRxBytes();
+										long txBytes = TrafficStats.getTotalTxBytes();
+										long newBytes = 0;
+										if (rxBytes != -1L && txBytes != -1L) newBytes = rxBytes + txBytes;						
+										long newBytesFixed = newBytes - bytesTotal;
+										if (newBytesFixed < 0 || bytesTotal == 0) newBytesFixed = 0;
+										long speed = Math.round(newBytesFixed/3);
+										bytesTotal = newBytes;
+										ArrayList<String> spd = humanReadableByteCount(speed);
+										dataRateVal.setText(spd.get(0));
+										dataRateUnits.setText(spd.get(1));
+										if (speed == 0) {
+											dataRateVal.setAlpha(0.3f);
+											dataRateUnits.setAlpha(0.3f);
+										} else {
+											dataRateVal.setAlpha(1.0f);
+											dataRateUnits.setAlpha(1.0f);
+										}
+										dataRateVal.setVisibility(0);
+										dataRateUnits.setVisibility(0);
 									} else {
-										dataRateVal.setAlpha(1.0f);
-										dataRateUnits.setAlpha(1.0f);
+										dataRateVal.setVisibility(8);
+										dataRateUnits.setVisibility(8);
 									}
-									dataRateVal.setVisibility(0);
-									dataRateUnits.setVisibility(0);
-								} else {
-									dataRateVal.setVisibility(8);
-									dataRateUnits.setVisibility(8);
 								}
+							} catch (Throwable t) {
+								XposedBridge.log(t);
 							}
-						} catch (Throwable t) {
-							XposedBridge.log(t);
-						}
 							
-						if (mHandler != null)
-						mHandler.postDelayed(mRunnable, 2000L);
-		            }
-		        };
-		        mHandler.post(mRunnable);
+							if (mHandler != null)
+							mHandler.postDelayed(mRunnable, 2000L);
+						}
+					};
+					
+					IntentFilter intentfilter = new IntentFilter();
+					intentfilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
+					mContext.registerReceiver(connectChanged, intentfilter);
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
 			}
 		});
 	}

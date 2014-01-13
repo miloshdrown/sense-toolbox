@@ -42,6 +42,7 @@ Ability to lock all elements on home screens and in app drawer from home popup m
 Transparent dock was fixed for Sense 5.0 on Android 4.3
 Mod to show next alarm time instead of carrier name in notification drawer
 Mod to disable missed call notification if you rejected incoming call manually
+More efficient traffic meter code
 Added translations: Croatian, Dutch, Italian, Spanish, Turkish(?)
 
 2.6.1
