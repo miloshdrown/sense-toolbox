@@ -417,4 +417,14 @@
 	
 	<string name="array_home_menu_draglock">Zablokuj launcher</string>
 	<string name="array_home_menu_dragunlock">Odblokuj launcher</string>
+	<string name="systemui_alarmnotify_title">Wyświetl następny alarm</string>
+	<string name="systemui_alarmnotify_summ">Pokaż następną godzinę alarmu zamiast nazwy operatora w szufladzie powiadomień.</string>
+	<string name="next_alarm">Następny alarm</string>
+	
+	<string name="various_mods_calls">Połączenia</string>
+	<string name="various_largephoto_title">Zdjęcie podczas rozmowy</string>
+	<string name="various_largephoto_summ">Zmień rozmiar wyświetlanego zdjęcia podczas połączeń wychodzących i przychodzących.</string>
+	<string name="various_rejectedcall_title">Wyłącz przypomnienie odrzucenia połączenia</string>
+	<string name="various_rejectedcall_summ">Nie pokazuj powiadomienia o nieodebranym połączeniu dla ręcznie odrzuconych połączeń przychodzących. Zostaną one dodane do historii połączeń, jak zwykłe zakończone połączenia.</string>
+	<string name="various_mods_volume">Głośność</string>
 	</resources>
