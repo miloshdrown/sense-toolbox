@@ -24,6 +24,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	private static int pref_swipeleft = 1;
 	private static int pref_backlongpress = 1;
 	private static int pref_homeassist = 1;
+	private static int pref_shake = 1;
 	public static int pref_screenon = 0;
 	public static int pref_screenoff = 0;
 	public static int pref_mediaDown = 0;
@@ -50,8 +51,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		pref_swipeleft = Integer.parseInt(pref.getString("pref_key_prism_swipeleftaction", "1"));
 		pref_backlongpress = Integer.parseInt(pref.getString("pref_key_controls_backlongpressaction", "1"));
 		pref_homeassist = Integer.parseInt(pref.getString("pref_key_controls_homeassistaction", "1"));
+		pref_shake = Integer.parseInt(pref.getString("pref_key_prism_shakeaction", "1"));
 		
-		if (pref.getBoolean("pref_key_other_apm", false) || pref.getBoolean("pref_key_prism_homemenu", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1) {
+		if (pref.getBoolean("pref_key_other_apm", false) || pref.getBoolean("pref_key_prism_homemenu", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1) {
 			PackagePermissions.initHooks();
 			GlobalActions.setupPWM();
 		}
@@ -335,6 +337,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false)) //Le KitKat
 				PrismMods.fixInvisibarKitKat(lpparam);
+			
+			if(pref_shake != 1)
+				PrismMods.execHook_ShakeAction(lpparam);
 
 			//PrismMods.execHook_hotseatToggleBtn(lpparam);
 		}

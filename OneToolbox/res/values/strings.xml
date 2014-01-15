@@ -214,6 +214,8 @@
 	<string name="sense_swiperightaction_summ">Action for swipe right gesture on launcher dock.</string>
 	<string name="sense_swipeleftaction_title">Swipe left action</string>
 	<string name="sense_swipeleftaction_summ">Action for swipe left gesture on launcher dock.</string>
+	<string name="sense_shakeaction_title">Shake action</string>
+	<string name="sense_shakeaction_summ">Action for shaking the device on any home screen.</string>
 	<string name="sense_sevenscreens_title">Seven home screens</string>
 	<string name="sense_sevenscreens_summ">Increase maximum number of home screens to seven. NOTE: Will not work on HTC One 4.2.2!</string>
 	<string name="sense_4x5homescreen_title">Grid 4x5</string>

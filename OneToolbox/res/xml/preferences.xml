@@ -447,6 +447,25 @@
             android:entries="@array/global_toggles"
             android:entryValues="@array/global_toggles_val"
             android:icon="@drawable/right_arrow" />
+		<com.htc.preference.HtcListPreference
+            android:key="pref_key_prism_shakeaction"
+            android:summary="@string/sense_shakeaction_summ"
+            android:title="@string/sense_shakeaction_title"
+            android:entries="@array/global_actions"
+            android:entryValues="@array/global_actions_val"
+            android:defaultValue="1" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_prism_shake_app"
+			android:summary="@string/notselected"
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
+        <com.langerhans.one.utils.HtcListPreferencePlus
+            android:key="pref_key_prism_shake_toggle"
+			android:summary="@string/notselected"
+            android:title="@string/toggle_settings"
+            android:entries="@array/global_toggles"
+            android:entryValues="@array/global_toggles_val"
+            android:icon="@drawable/right_arrow" />
 		</com.htc.preference.HtcPreferenceCategory>
     </com.htc.preference.HtcPreferenceScreen>
     
