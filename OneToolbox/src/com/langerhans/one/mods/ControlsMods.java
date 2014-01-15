@@ -334,36 +334,38 @@ public class ControlsMods {
 	public static void exec_SwapVolumeCCWLand(LoadPackageParam lpparam) {
 		try {
 			if (Build.VERSION.SDK_INT >= 19) {
-				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustMasterVolume", int.class, int.class, String.class, hook_adjustMasterVolume);
-				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustSuggestedStreamVolume", int.class, int.class, int.class, String.class, hook_adjustSuggestedStreamVolume);
+				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustMasterVolume", int.class, int.class, String.class, hook_adjustVolumeParam0);
+				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustSuggestedStreamVolume", int.class, int.class, int.class, String.class, hook_adjustVolumeParam0);
+				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustLocalOrRemoteStreamVolume", int.class, int.class, String.class, hook_adjustVolumeParam1);
 			} else {
-				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustMasterVolume", int.class, int.class, hook_adjustMasterVolume);
-				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustSuggestedStreamVolume", int.class, int.class, int.class, hook_adjustSuggestedStreamVolume);
+				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustMasterVolume", int.class, int.class, hook_adjustVolumeParam0);
+				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustSuggestedStreamVolume", int.class, int.class, int.class, hook_adjustVolumeParam0);
+				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustLocalOrRemoteStreamVolume", int.class, int.class, hook_adjustVolumeParam1);
 			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
 	}
 	
-	public static XC_MethodHook hook_adjustMasterVolume = new XC_MethodHook() {
+	public static XC_MethodHook hook_adjustVolumeParam0 = new XC_MethodHook() {
 		@Override
 		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-			hook_modifyOrientation(param);
+			hook_modifyOrientation(param, 0);
 		}
 	};
 
-	public static XC_MethodHook hook_adjustSuggestedStreamVolume = new XC_MethodHook() {
+	public static XC_MethodHook hook_adjustVolumeParam1 = new XC_MethodHook() {
 		@Override
 		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-			hook_modifyOrientation(param);
+			hook_modifyOrientation(param, 1);
 		}
 	};
 	
-	private static void hook_modifyOrientation(MethodHookParam param) {
-		if ((Integer)param.args[0] != 0) try {
+	private static void hook_modifyOrientation(MethodHookParam param, int paramNum) {
+		if ((Integer)param.args[paramNum] != 0) try {
 			Context context = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 			int rotation = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
-            if (rotation == Surface.ROTATION_90) param.args[0] = -1 * (Integer)param.args[0];
+            if (rotation == Surface.ROTATION_90) param.args[paramNum] = -1 * (Integer)param.args[paramNum];
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
