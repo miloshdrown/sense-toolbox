@@ -1117,7 +1117,9 @@ public class SysUIMods {
         			
         			ArrayList<?> mRecentTaskDescriptions = (ArrayList<?>)XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mRecentTaskDescriptions");
         			if (mRecentTaskDescriptions == null) return null;
-        			Object taskdescription = mRecentTaskDescriptions.get(mRecentTaskDescriptions.size() - (Integer)param.args[0] - 1);
+        			int taskPos = mRecentTaskDescriptions.size() - pos - 1;
+        			if (taskPos < 0) return null;
+        			Object taskdescription = mRecentTaskDescriptions.get(taskPos);
         			if (taskdescription == null) return null;
         			ResolveInfo resolveInfo = (ResolveInfo)XposedHelpers.getObjectField(taskdescription, "resolveInfo");
         			
