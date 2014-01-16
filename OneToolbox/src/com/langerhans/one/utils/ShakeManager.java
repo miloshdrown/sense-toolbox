@@ -2,11 +2,12 @@ package com.langerhans.one.utils;
 
 import com.langerhans.one.mods.XMain;
 
+import de.robv.android.xposed.XposedBridge;
+
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
-import android.util.Log;
 
 public class ShakeManager implements SensorEventListener {
 	
@@ -32,6 +33,17 @@ public class ShakeManager implements SensorEventListener {
 	public ShakeManager(Context helpercontext) {
 		this.helperContext = helpercontext;
 	}
+	
+	public void reset() {
+		xAccel = 0;
+		yAccel = 0;
+		zAccel = 0;
+		xPreviousAccel = 0;
+		yPreviousAccel = 0;
+		zPreviousAccel = 0;
+		firstUpdate = true;
+		shakeInitiated = false;
+	}
 
 	@Override
 	public void onAccuracyChanged(Sensor sensor, int accuracy) {
@@ -41,7 +53,7 @@ public class ShakeManager implements SensorEventListener {
 	@Override
 	public void onSensorChanged(SensorEvent se) {
 		updateAccelParameters(se.values[0], se.values[1], se.values[2]);
-        if ((!shakeInitiated) && isAccelerationChanged()) 
+        if ((!shakeInitiated) && isAccelerationChanged())
 		    shakeInitiated = true; 
 		else if ((shakeInitiated) && isAccelerationChanged())
 		    executeShakeActionDelayed();
@@ -92,7 +104,7 @@ public class ShakeManager implements SensorEventListener {
 			case 6: GlobalActions.takeScreenshot(helperContext); return;
 			case 7: GlobalActions.launchApp(helperContext, 7); return;
 			case 8: GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_shake_toggle", "0"))); return;
-		default: return;
-	}
+			default: return;
+		}
 	}
 }
