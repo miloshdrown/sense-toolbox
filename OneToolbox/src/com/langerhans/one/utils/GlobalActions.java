@@ -455,6 +455,7 @@ public class GlobalActions {
         	else if (action == 4) pkgAppName = XMain.pref.getString("pref_key_controls_homeassist_app", not_selected);
         	else if (action == 5) pkgAppName = XMain.pref.getString("pref_key_prism_swiperight_app", not_selected);
         	else if (action == 6) pkgAppName = XMain.pref.getString("pref_key_prism_swipeleft_app", not_selected);
+        	else if (action == 7) pkgAppName = XMain.pref.getString("pref_key_prism_shake_app", not_selected);
         	String[] pkgAppArray = pkgAppName.split("\\|");
         	
         	ComponentName name = new ComponentName(pkgAppArray[0], pkgAppArray[1]);

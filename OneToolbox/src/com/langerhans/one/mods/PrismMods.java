@@ -25,6 +25,8 @@ import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.provider.Settings;
 import android.util.TypedValue;
 import android.view.Display;
@@ -52,6 +54,7 @@ import com.htc.widget.HtcPopupWindow;
 import com.langerhans.one.R;
 import com.langerhans.one.utils.GlobalActions;
 import com.langerhans.one.utils.PopupAdapter;
+import com.langerhans.one.utils.ShakeManager;
 import com.langerhans.one.utils.Version;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -1141,6 +1144,37 @@ public class PrismMods {
 				} catch (Throwable t) {
 					XposedBridge.log(t);
 				}
+			}
+		});
+	}
+	
+	public static void execHook_ShakeAction(final LoadPackageParam lpparam)
+	{
+		final String shakeMgrKey = "S5T_SHAKE_MGR";
+		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onResume", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				ShakeManager shakeMgr = (ShakeManager) getAdditionalInstanceField(param.thisObject, shakeMgrKey);
+				if(shakeMgr == null)
+				{
+					shakeMgr = new ShakeManager((Context) param.thisObject);
+					setAdditionalInstanceField(param.thisObject, shakeMgrKey, shakeMgr);
+				}
+				Activity launcherActivity = (Activity) param.thisObject;
+				SensorManager sensorMgr = (SensorManager) launcherActivity.getSystemService(Context.SENSOR_SERVICE);
+				shakeMgr.reset();
+				sensorMgr.registerListener(shakeMgr, sensorMgr.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), SensorManager.SENSOR_DELAY_NORMAL);
+			}
+		});
+		
+		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onPause", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				if(getAdditionalInstanceField(param.thisObject, shakeMgrKey) == null)
+					return;
+				Activity launcherActivity = (Activity) param.thisObject;
+				SensorManager sensorMgr = (SensorManager) launcherActivity.getSystemService(Context.SENSOR_SERVICE);
+				sensorMgr.unregisterListener((ShakeManager) getAdditionalInstanceField(param.thisObject, shakeMgrKey));
 			}
 		});
 	}

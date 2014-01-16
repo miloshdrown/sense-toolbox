@@ -211,6 +211,8 @@
 	<string name="sense_swiperightaction_summ">Aktion für ein Wischen nach rechts auf dem Launcher Dock.</string>
 	<string name="sense_swipeleftaction_title">Nach links Geste</string>
 	<string name="sense_swipeleftaction_summ">Aktion für ein Wischen nach links auf dem Launcher Dock.</string>
+	<string name="sense_shakeaction_title">Schütteln</string>
+	<string name="sense_shakeaction_summ">Aktion für Schütteln des Handys auf dem Home Screen.</string>
 	<string name="sense_sevenscreens_title">Sieben Home Screens</string>
 	<string name="sense_sevenscreens_summ">Erhöht die maximale Anzahl vom Home Screens auf Sieben. ACHTUNG: Funktioniert nicht auf HTC One 4.2.2!</string>
 	<string name="sense_4x5homescreen_title">4x5 Home Screen Raster</string>
