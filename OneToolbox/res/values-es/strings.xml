@@ -416,4 +416,6 @@
 	<string name="various_rejectedcall_title">Desactivar recordatorio al rechazar llamadas</string>
 	<string name="various_rejectedcall_summ">No mostrar notificación de llamadas perdidas o rechazadas. Estas serán agregadas al historial de llamadas.</string>
 	<string name="various_mods_volume">Volumen</string>
+	<string name="sense_shakeaction_title">Acción al Sacudir</string>
+	<string name="sense_shakeaction_summ">Acción al sacudir el equipo en cualquier pantalla de inicio.</string>
 	</resources>
