@@ -427,4 +427,6 @@
 	<string name="various_rejectedcall_title">Wyłącz przypomnienie odrzucenia połączenia</string>
 	<string name="various_rejectedcall_summ">Nie pokazuj powiadomienia o nieodebranym połączeniu dla ręcznie odrzuconych połączeń przychodzących. Zostaną one dodane do historii połączeń, jak zwykłe zakończone połączenia.</string>
 	<string name="various_mods_volume">Głośność</string>
+	<string name="sense_shakeaction_title">Działanie potrząśnięcia</string>
+	<string name="sense_shakeaction_summ">Działanie dla potrząsania urządzenia na dowolnym ekranie głównym.</string>
 	</resources>
