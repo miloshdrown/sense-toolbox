@@ -2,8 +2,6 @@ package com.langerhans.one.utils;
 
 import com.langerhans.one.mods.XMain;
 
-import de.robv.android.xposed.XposedBridge;
-
 import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
@@ -21,7 +19,9 @@ public class ShakeManager implements SensorEventListener {
 
 	private boolean firstUpdate = true;
 
-	private final float shakeThreshold = 5f;
+	private final float shakeThresholdX = 7.5f;
+	private final float shakeThresholdY = 7.5f;
+	private final float shakeThresholdZ = 10f;
 	
 	private boolean shakeInitiated = false;
 	
@@ -81,9 +81,9 @@ public class ShakeManager implements SensorEventListener {
 		float deltaX = Math.abs(xPreviousAccel - xAccel);
 		float deltaY = Math.abs(yPreviousAccel - yAccel);
 		float deltaZ = Math.abs(zPreviousAccel - zAccel);
-		return (deltaX > shakeThreshold && deltaY > shakeThreshold)
-				|| (deltaX > shakeThreshold && deltaZ > shakeThreshold)
-				|| (deltaY > shakeThreshold && deltaZ > shakeThreshold);
+		return (deltaX > shakeThresholdX && deltaY > shakeThresholdY)
+				|| (deltaX > shakeThresholdX && deltaZ > shakeThresholdZ)
+				|| (deltaY > shakeThresholdY && deltaZ > shakeThresholdZ);
 	}
 	
 	private void executeShakeActionDelayed() {
