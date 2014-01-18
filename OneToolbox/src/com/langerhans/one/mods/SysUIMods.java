@@ -8,7 +8,9 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.getStaticObjectField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
@@ -1279,22 +1281,109 @@ public class SysUIMods {
 		});
 	}
 	
-	public static void execHook_NotifDrawerHeader(final InitPackageResourcesParam resparam) {
+	private static Thread cpuThread = null;
+	private static boolean isThreadActive = false;;
+	private static long workLast, totalLast, workC, totalC = 0;
+	private static int curFreq;
+	private static void readCPU() {
+		BufferedReader readStream;
+		String[] a;
+		long work, total;
+
+		try {
+			readStream = new BufferedReader(new FileReader("/proc/stat"));
+			a = readStream.readLine().split("[ ]+", 9);
+			work = Long.parseLong(a[1]) + Long.parseLong(a[2]) + Long.parseLong(a[3]);
+			total = work + Long.parseLong(a[4]) + Long.parseLong(a[5]) + Long.parseLong(a[6]) + Long.parseLong(a[7]);
+			if (totalLast != 0) {
+				workC = work - workLast;
+				totalC = total - totalLast;
+			}
+			workLast = work;
+			totalLast = total;                
+			readStream.close();
+			
+			readStream = new BufferedReader(new FileReader("/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq"));
+			curFreq = Math.round((Integer.valueOf(readStream.readLine()) / 1000));
+			readStream.close();
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
+	}
+	
+	public static void execHook_NotifDrawerHeaderSysInfo(final LoadPackageParam lpparam) {
+		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.policy.DateView", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				final TextView date = (TextView)param.thisObject;
+				OnClickListener ocl = new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						if (cpuThread != null && cpuThread.isAlive()) {
+							Thread tmpThread = cpuThread;
+							cpuThread = null;
+							tmpThread.interrupt();
+							isThreadActive = false;
+							XposedHelpers.callMethod(param.thisObject, "updateClock");
+						} else {
+							cpuThread = new Thread(new Runnable() {
+								public void run() {
+									try {
+										while (Thread.currentThread() == cpuThread) {
+											readCPU();
+											date.getHandler().post(new Runnable() {
+												@Override
+												public void run() {
+													ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+													ActivityManager activityManager = (ActivityManager)date.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+													activityManager.getMemoryInfo(mi);
+													long availableMegs = mi.availMem / 1048576L;
+													long totalMegs = mi.totalMem / 1048576L;
+													
+													XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+													String MB = modRes.getString(R.string.ram_mb);
+													String MHz = modRes.getString(R.string.cpu_mhz);
+													date.setText("CPU " + String.valueOf(Math.round(workC * 100 / (float)totalC)) + "% " + String.valueOf(curFreq) + MHz + "\n" + "RAM " + String.valueOf(availableMegs) + MB + " / " + String.valueOf(totalMegs) + MB);
+												}
+											});
+											Thread.sleep(1000);
+										}
+									} catch (Throwable t) {}
+								}
+							});
+							cpuThread.start();
+							isThreadActive = true;
+						}
+					}
+				};
+				date.setOnClickListener(ocl);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.policy.DateView", lpparam.classLoader, "updateClock", new XC_MethodHook() {
+			@Override
+    		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				if (isThreadActive) param.setResult(null);
+			}
+		});
+	}
+	
+	public static void execHook_NotifDrawerHeaderClock(final InitPackageResourcesParam resparam, final int headerClock) {
 		resparam.res.hookLayout("com.android.systemui", "layout", "status_bar_expanded_header", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
 				View clock = liparam.view.findViewById(resparam.res.getIdentifier("clock", "id", "com.android.systemui"));
-				View date = liparam.view.findViewById(resparam.res.getIdentifier("date", "id", "com.android.systemui"));
+				View date = (TextView)liparam.view.findViewById(resparam.res.getIdentifier("date", "id", "com.android.systemui"));
 				final Intent clockIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
 				OnClickListener ocl = new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						ComponentName cn = new ComponentName("com.htc.android.worldclock", "com.htc.android.worldclock.WorldClockTabControl");
-						clockIntent.setComponent(cn);
-						clockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-						v.getContext().startActivity(clockIntent);
-						
 						try {
+							ComponentName cn = new ComponentName("com.htc.android.worldclock", "com.htc.android.worldclock.WorldClockTabControl");
+							clockIntent.setComponent(cn);
+							clockIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							v.getContext().startActivity(clockIntent);
+							
 							Object sbservice = v.getContext().getSystemService("statusbar");
 							Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
 							Method hidesb;
@@ -1311,7 +1400,7 @@ public class SysUIMods {
 					}
 				};
 				clock.setOnClickListener(ocl);
-				date.setOnClickListener(ocl);
+				if (headerClock == 2) date.setOnClickListener(ocl);
 			}
 		});
 	}

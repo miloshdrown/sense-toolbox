@@ -11,6 +11,7 @@
     <string name="add">Add</string>
     <string name="soft_reboot">Soft Reboot</string>
     <string name="ram_mb">MB</string>
+    <string name="cpu_mhz">MHz</string>
     
     <string name="warning">Warning!</string>
     <string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 5 Toolbox module there and reboot.</string>
@@ -118,8 +119,8 @@
 	<string name="systemui_ampmremove_summ">Enable to remove the AM/PM from the status bar clock in 12h mode.</string>
 	<string name="systemui_clockstyle_title">Clock style</string>
 	<string name="systemui_clockstyle_summ">Changes the style of the status bar clock.</string>
-	<string name="systemui_statusheaderclick_title">Fast Clock app launch</string>
-	<string name="systemui_statusheaderclick_summ">Tap on notification drawer header will open Clock app.</string>
+	<string name="systemui_statusheaderclick_title">Header click</string>
+	<string name="systemui_statusheaderclick_summ">Action for tap on notification drawer header.</string>
 	<string name="systemui_brightslide_title">Brightness slider</string>
 	<string name="systemui_brightslide_summ">Add a brightness slider to the notification panel.</string>
 	<string name="systemui_brightslide_auto">Auto</string>
@@ -424,5 +425,7 @@
 	<string name="array_large_photo_default">Default</string>
 	<string name="array_large_photo_rectangular">Rectangular</string>
 	<string name="array_large_photo_max">Maximum</string>
+	<string name="array_header_click_clock">Open Clock app</string>
+	<string name="array_header_click_sysinfo">Show/hide CPU and RAM info, open Clock app by tapping on current time.</string>
 	
 </resources>

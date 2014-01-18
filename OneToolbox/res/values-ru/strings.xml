@@ -11,6 +11,7 @@
     <string name="add">Добавить</string>
     <string name="soft_reboot">Быстрый перезапуск</string>
     <string name="ram_mb">МБ</string>
+    <string name="cpu_mhz">МГц</string>
     
     <string name="warning">Внимание!</string>
     <string name="xposed_not_installed">Xposed Framework установлен не полностью, Вы должны установить app_process и XposedBridge.jar в Xposed Installer, затем активировать модуль Sense 5 Toolbox и перезагрузиться.</string>
@@ -118,8 +119,8 @@
 	<string name="systemui_ampmremove_summ">Позволяет удалить AM/PM, если часы в 12ч формате.</string>
 	<string name="systemui_clockstyle_title">Стиль часов</string>
 	<string name="systemui_clockstyle_summ">Изменить стиль часов в статусбаре.</string>
-	<string name="systemui_statusheaderclick_title">Быстрый запуск приложения Часы</string>
-	<string name="systemui_statusheaderclick_summ">Для запуска нужно тапнуть по заголовку панели уведомлений.</string>
+	<string name="systemui_statusheaderclick_title">Тап по заголовку</string>
+	<string name="systemui_statusheaderclick_summ">Действие на тап по заголовку панели уведомлений.</string>
 	<string name="systemui_brightslide_title">Регулировка яркости</string>
 	<string name="systemui_brightslide_summ">Добавить слайдер управления яркостью в панель уведомлений.</string>
 	<string name="systemui_brightslide_auto">Авто</string>
@@ -417,6 +418,8 @@
 	<string name="array_large_photo_default">Стандартное</string>
 	<string name="array_large_photo_rectangular">Квадратное</string>
 	<string name="array_large_photo_max">Максимально большое</string>
+	<string name="array_header_click_clock">Открыть приложение Часы</string>
+	<string name="array_header_click_sysinfo">Показать/скрыть инфу о CPU и RAM, Часы по тапу на времени.</string>
 
 	<string name="about_devs">Разработчики</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>

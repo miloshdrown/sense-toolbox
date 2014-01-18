@@ -205,4 +205,15 @@
         <item >2</item>
         <item >3</item>
     </string-array>
+    
+    <string-array name="header_click_action">
+        <item >@string/array_global_actions_none</item>
+        <item >@string/array_header_click_clock</item>
+        <item >@string/array_header_click_sysinfo</item>
+    </string-array>
+    <string-array name="header_click_action_val">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+    </string-array>
 </resources>
