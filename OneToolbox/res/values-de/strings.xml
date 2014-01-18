@@ -423,4 +423,10 @@
 	<string name="array_large_photo_rectangular">Rechteckig</string>
 	<string name="array_large_photo_max">Maximiert</string>
 	
-</resources>
+<string name="various_mods_calls">Anrufe</string>
+	<string name="various_largephoto_title">Anruferfoto</string>
+	<string name="various_largephoto_summ">Ändert die Größe des Anruferfotos währen ein- und ausgehenden Gesprächen.</string>
+	<string name="various_rejectedcall_title">Verpasster Anruf-Benachrichtigung</string>
+	<string name="various_rejectedcall_summ">Versteckt die Benachrichtigung für Anrufe, die manuell abgelehnt wurden. Anrufe erscheinen in der Anruferliste als normale Anrufe.</string>
+	<string name="various_mods_volume">Lautstärke</string>
+	</resources>
