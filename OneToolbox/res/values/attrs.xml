@@ -2,9 +2,6 @@
 <resources>
 	<declare-styleable name="ImageListPreference">
 		<attr name="entryImages" format="reference" />
-	</declare-styleable>
-	
-	<declare-styleable name="ImageListPreference">
 		<attr name="entryThemes" format="reference" />
 	</declare-styleable>
 	
