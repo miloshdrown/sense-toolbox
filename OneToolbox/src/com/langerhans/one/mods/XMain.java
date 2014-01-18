@@ -423,6 +423,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_sysui_alarmnotify", false))
 				SysUIMods.execHook_AlarmNotification(lpparam);
 			
+			if (Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false))
+				SysUIMods.execHookTSB442Fix(lpparam);
+			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 		}
 		

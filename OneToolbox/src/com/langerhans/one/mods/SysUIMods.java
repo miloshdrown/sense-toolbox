@@ -99,14 +99,6 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class SysUIMods {
 
 	public static void execHook_InvisiBar(final InitPackageResourcesParam resparam, final String MODULE_PATH, final int transparency) {
-//		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
-//			@Override
-//			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-//				View bg = liparam.view.findViewById(resparam.res.getIdentifier("status_bar", "id", "com.android.systemui"));
-//				bg.getBackground().setAlpha(transparency);
-//			}
-//		});
-		
 		resparam.res.setReplacement("com.android.systemui", "drawable", "status_bar_background", new XResources.DrawableLoader() {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -118,6 +110,21 @@ public class SysUIMods {
 				} else return null;
 			}
 		});
+		
+		//For 4.4.2 builds try to replace second drawable. Silently fail on older version
+		try {
+			resparam.res.setReplacement("com.android.systemui", "drawable", "status_bar_background_launcher", new XResources.DrawableLoader() {
+				@Override
+				public Drawable newDrawable(XResources res, int id)	throws Throwable {
+					XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+					if (modRes.getIdentifier("status_bar_background", "drawable", "com.langerhans.one") != 0) {
+						Drawable sb = modRes.getDrawable(R.drawable.status_bar_background);
+						sb.setAlpha(transparency);
+						return sb;
+					} else return null;
+				}
+			});
+		} catch (Throwable ignore){}
 	}
 
 	public static void execHook_MinorEQS(final LoadPackageParam lpparam, final boolean removeText) {
@@ -1396,5 +1403,16 @@ public class SysUIMods {
 				updateLabel(param.thisObject);
 			}
 		});
+	}
+
+	public static void execHookTSB442Fix(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBarTransitions", lpparam.classLoader, "transitionTo", int.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.args[0] = 2;
+				}
+			});
+		} catch (Throwable ignore) {}
 	}
 }
