@@ -166,8 +166,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockLayout(resparam, MODULE_PATH);
 			
-			if(pref.getBoolean("pref_key_sysui_statusheaderclick", false))
-				SysUIMods.execHook_NotifDrawerHeader(resparam);
+			int headerClock = Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1"));
+			if(headerClock >= 2)
+				SysUIMods.execHook_NotifDrawerHeaderClock(resparam, headerClock);
 		}
 		
 		if (pkg.equals("com.android.settings"))
@@ -425,6 +426,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false))
 				SysUIMods.execHookTSB442Fix(lpparam);
+
+			if(Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1")) == 3)
+				SysUIMods.execHook_NotifDrawerHeaderSysInfo(lpparam);
 			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 		}
