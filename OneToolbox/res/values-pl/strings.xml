@@ -118,7 +118,7 @@
     <string name="systemui_ampmremove_summ">Włącz, aby usunąć AM/PM na pasku stanu zegara w trybie 12h.</string>
     <string name="systemui_clockstyle_title">Styl zegara</string>
     <string name="systemui_clockstyle_summ">Zmiana stylu zegara na pasku stanu.</string>
-	<string name="systemui_statusheaderclick_title">Szybki dostęp do zegara</string>
+	<string name="systemui_statusheaderclick_title">Kliknięcie nagłówka</string>
 	<string name="systemui_statusheaderclick_summ">Akcja dla kliknięcie w obszarze powiadomień.</string>
     <string name="systemui_brightslide_title">Suwak jasności</string>
     <string name="systemui_brightslide_summ">Dodaj suwak jasności w panelu powiadomień.</string>
