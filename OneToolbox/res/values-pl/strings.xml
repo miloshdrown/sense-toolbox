@@ -119,7 +119,7 @@
     <string name="systemui_clockstyle_title">Styl zegara</string>
     <string name="systemui_clockstyle_summ">Zmiana stylu zegara na pasku stanu.</string>
 	<string name="systemui_statusheaderclick_title">Szybki dostęp do zegara</string>
-	<string name="systemui_statusheaderclick_summ">Kliknięcie na zegar w obszarze powiadomień otworzy aplikację Zegar.</string>
+	<string name="systemui_statusheaderclick_summ">Akcja dla kliknięcie w obszarze powiadomień.</string>
     <string name="systemui_brightslide_title">Suwak jasności</string>
     <string name="systemui_brightslide_summ">Dodaj suwak jasności w panelu powiadomień.</string>
     <string name="systemui_brightslide_auto">Automatyczne</string>
@@ -429,4 +429,9 @@
 	<string name="various_mods_volume">Głośność</string>
 	<string name="sense_shakeaction_title">Działanie potrząśnięcia</string>
 	<string name="sense_shakeaction_summ">Działanie dla potrząsania urządzenia na dowolnym ekranie głównym.</string>
-	</resources>
+	<string name="cpu_mhz">MHz</string>
+    
+    <string name="array_header_click_clock">Otwórz aplikację zegar</string>
+	<string name="array_header_click_sysinfo">Pokaż / ukryj informacje o procesorze i pamięci RAM, otwórz aplikację zegar naciskając na bieżący czas.</string>
+	
+</resources>
