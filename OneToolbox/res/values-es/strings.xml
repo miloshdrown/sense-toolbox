@@ -418,4 +418,9 @@
 	<string name="various_mods_volume">Volumen</string>
 	<string name="sense_shakeaction_title">Acción al Sacudir</string>
 	<string name="sense_shakeaction_summ">Acción al sacudir el equipo en cualquier pantalla de inicio.</string>
-	</resources>
+	<string name="cpu_mhz">Mhz</string>
+    
+    <string name="array_header_click_clock">Abrir Reloj</string>
+	<string name="array_header_click_sysinfo">Mostrar/Ocultar información de CPU y RAM, abrir Reloj presionando la hora actual.</string>
+	
+</resources>
