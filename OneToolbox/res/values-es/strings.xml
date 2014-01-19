@@ -109,8 +109,8 @@
     <string name="systemui_ampmremove_summ">Habilitar para quitar el AM/PM del reloj de la barra de estado en modo 12h.</string>
     <string name="systemui_clockstyle_title">Estilo del Reloj</string>
     <string name="systemui_clockstyle_summ">Cambiar el estilo del reloj en la barra de estado.</string>
-    <string name="systemui_statusheaderclick_title">Apertura rapida de Reloj</string>
-    <string name="systemui_statusheaderclick_summ">Tocar la cabecera en el panel de notificación para abrir el Reloj.</string>
+    <string name="systemui_statusheaderclick_title">Clic en cabecera</string>
+    <string name="systemui_statusheaderclick_summ">Acción al tocar la cabecera del cajón de notificaciones.</string>
     <string name="systemui_brightslide_title">Deslizador de brillo</string>
     <string name="systemui_brightslide_summ">Agregar deslizador de brillo al panel de notificación.</string>
     <string name="systemui_brightslide_auto">Auto</string>
