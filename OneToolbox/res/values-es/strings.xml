@@ -423,4 +423,8 @@
     <string name="array_header_click_clock">Abrir Reloj</string>
 	<string name="array_header_click_sysinfo">Mostrar/Ocultar información de CPU y RAM, abrir Reloj presionando la hora actual.</string>
 	
-</resources>
+<string name="about_l10n">Traducción</string>
+	<string name="about_l10n_data_left">Croata\nHolandés\nItaliano\nEspañol\nTurco</string>
+	<string name="about_l10n_data_right">ico86\ntomasz\nSeyaru\nomercance</string>
+	
+	</resources>
