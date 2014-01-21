@@ -286,9 +286,6 @@
 	<string name="various_ytwatermark_summ">Sakriti logo programa u videima u YouTube aplikaciji.</string>
 	<string name="various_oldtoasts_title">Jelly Bean stil toasta</string>
 	<string name="various_oldtoasts_summ">Vratiti nazad JB toast dizajn na Android 4.4.</string>
-	<string name="various_immersive_title">Globalni immersive mode</string>
-	<string name="various_immersive_summ">Aktivirati immersive mod za sve aplikacije (fullscreen sa statusnom trakom koja se može povući dolje).</string>
-	
 	<string name="persistent_mods">Uvijek aktivni modovi</string>
 	<string name="persist_adgrid_title">Veličina rastera u ladici s aplikacijama</string>
 	<string name="persist_adgrid_summ">Nova veličina rastera: 5x5, 4x6 i 5x6. Možete ih odabrati iz defaultnog izbornik u ladici s aplikacijama.</string>
