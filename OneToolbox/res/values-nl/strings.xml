@@ -286,8 +286,6 @@
 	<string name="various_ytwatermark_summ">Verberg kanaallogo\'s in video\'s in de YouTube app.</string>
 	<string name="various_oldtoasts_title">Toasts in Jelly Bean stijl</string>
 	<string name="various_oldtoasts_summ">Breng de JB stijl terug in Android 4.4 toasts.</string>
-	<string name="various_immersive_title">Altijd immersive mode</string>
-	<string name="various_immersive_summ">Activeer immersive modus voor alle apps (volledig scherm met een statusbalk die ol=mlaag kan worden getrokken).</string>
 	
 	<string name="persistent_mods">Altijd actieve aanpassingen</string>
 	<string name="persist_adgrid_title">Rastergrootte applicatie overzicht</string>

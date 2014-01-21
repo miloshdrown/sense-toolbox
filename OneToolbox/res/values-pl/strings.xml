@@ -288,8 +288,6 @@
 	<string name="various_ytwatermark_summ">Ukryj logo kanału nakładki wideo w aplikacji YouTube.</string>
 	<string name="various_oldtoasts_title">Styl tła powiadomień z Jelly Bean</string>
 	<string name="various_oldtoasts_summ">Przywróć sześcienny styl tła powiadomień.</string>
-	<string name="various_immersive_title">Tryb pełnoekranowy</string>
-	<string name="various_immersive_summ">Aktywuj tryb pełnoekranowy dla wszystkich aplikacji (z możliwością podglądu paska powiadomień).</string>
 	
 	<string name="persistent_mods">Zawsze aktywne mody</string>
 	<string name="persist_adgrid_title">Rozmiar siatki szuflady aplikacji</string>

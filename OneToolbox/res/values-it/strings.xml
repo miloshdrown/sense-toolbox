@@ -282,8 +282,6 @@
 	<string name="various_ytwatermark_summ">Nasconde il logo del canale in sovrimpressione sui video nella app YouTube.</string>
 	<string name="various_oldtoasts_title">Toast in stile Jelly Bean</string>
 	<string name="various_oldtoasts_summ">Riabilita l\'aspetto dei toast di Android 4.3 in Android 4.4.</string>
-	<string name="various_immersive_title">Immersive Mode globale</string>
-	<string name="various_immersive_summ">Abilita l\'Immersive Mode per tutte le app (schermo intero con la barra di stato abbassabile).</string>
 	
 	<string name="persistent_mods">Mod sempre attive</string>
 	<string name="persist_adgrid_title">Dimensioni griglia elenco app</string>

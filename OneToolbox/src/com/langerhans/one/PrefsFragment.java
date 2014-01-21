@@ -99,7 +99,6 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		
 		if (Build.VERSION.SDK_INT < 19) {
 			if (findPreference("pref_key_other_oldtoasts") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_oldtoasts"));
-			if (findPreference("pref_key_other_immersive") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_immersive"));
 		}
 		
 		//Add version name to support title
