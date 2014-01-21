@@ -429,4 +429,9 @@
 	<string name="various_rejectedcall_title">Verpasster Anruf-Benachrichtigung</string>
 	<string name="various_rejectedcall_summ">Versteckt die Benachrichtigung für Anrufe, die manuell abgelehnt wurden. Anrufe erscheinen in der Anruferliste als normale Anrufe.</string>
 	<string name="various_mods_volume">Lautstärke</string>
-	</resources>
+	<string name="cpu_mhz">MHz</string>
+    
+    <string name="array_header_click_clock">Uhr-App öffnen</string>
+	<string name="array_header_click_sysinfo">CPU/RAM Info anzeigen/verstecken. Uhr-App per tap auf die Uhrzeit öffnen.</string>
+	
+</resources>
