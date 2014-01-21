@@ -434,4 +434,6 @@
     <string name="array_header_click_clock">Otwórz aplikację zegar</string>
 	<string name="array_header_click_sysinfo">Pokaż / ukryj informacje o procesorze i pamięci RAM, otwórz aplikację zegar naciskając na bieżący czas.</string>
 	
-</resources>
+<string name="about_l10n_data_right">ico86\ntomasz\nteorouge\ncvxcvx\nSeyaru\nomercance</string>
+	
+	</resources>
