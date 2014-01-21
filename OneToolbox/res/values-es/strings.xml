@@ -273,8 +273,6 @@
     <string name="various_ytwatermark_summ">Ocultar marca de canales en los vídeos de YouTube.</string>
     <string name="various_oldtoasts_title">Avisos estilo Jelly Bean</string>
     <string name="various_oldtoasts_summ">Volver al diseño de JB de avisos en Android 4.4.</string>
-    <string name="various_immersive_title"/>
-    <string name="various_immersive_summ"></string>
     <string name="persistent_mods">Modificaciones siempre activas</string>
     <string name="persist_adgrid_title">Tamaño del listado de Apps</string>
     <string name="persist_adgrid_summ">Nuevos tamaños de Grillas: 5x5, 4x6 y 5x6. Puedes seleccionar desde el menú por defecto de las aplicaciones.</string>

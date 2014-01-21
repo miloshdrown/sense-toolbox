@@ -301,8 +301,6 @@
 	<string name="various_ytwatermark_summ">Hide channel logo overlay on videos in YouTube app.</string>
 	<string name="various_oldtoasts_title">Jelly Bean styled toasts</string>
 	<string name="various_oldtoasts_summ">Bring back JB toast design on Android 4.4.</string>
-	<string name="various_immersive_title">Global immersive mode</string>
-	<string name="various_immersive_summ">Activate immersive mode for all apps (fullscreen with statusbar that can be pulled down).</string>
 	
 	<string name="persistent_mods">Always active mods</string>
 	<string name="persist_adgrid_title">App drawer grid size</string>

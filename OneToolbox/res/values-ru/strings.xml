@@ -301,8 +301,6 @@
 	<string name="various_ytwatermark_summ">Прячет лого канала при просмотре видео в приложении YouTube.</string>
 	<string name="various_oldtoasts_title">Уведомления в стиле Jelly Bean</string>
 	<string name="various_oldtoasts_summ">Возвращает внешний вид всплывающих уведомлений из JB на Андроиде 4.4.</string>
-	<string name="various_immersive_title">Глобальный полноэкранный режим</string>
-	<string name="various_immersive_summ">Активирует "режим погружения" на Андроиде 4.4 для всех приложений (развёрнуты на весь экран, статусбар вызывается свайпом сверху экрана).</string>
 	
 	<string name="persistent_mods">Всегда активные моды</string>
 	<string name="persist_adgrid_title">Размер сетки списка приложений</string>

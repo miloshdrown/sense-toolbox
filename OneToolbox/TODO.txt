@@ -52,6 +52,7 @@ Actions for tap on notification drawer header:
 Shake actions: Shake your phone on Sense launcher to execute one of the actions you can also do with swipes.
 More efficient traffic meter code
 Fixed volume button media control killing volume control.
+Removed Global Immersive Mode mod, because a better implementation exists in App Settings Xposed module.
 Added translations: Croatian, Dutch, Italian, Spanish, Turkish(?). Thanks for your help. Credits are on the "About" page.
 
 ===========

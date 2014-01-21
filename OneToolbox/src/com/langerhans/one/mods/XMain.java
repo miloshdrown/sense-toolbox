@@ -74,9 +74,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pref.getBoolean("pref_key_other_oldtoasts", false))
 			OtherMods.exec_OldStyleToasts(MODULE_PATH);
-		
-		if (pref.getBoolean("pref_key_other_immersive", false))
-			OtherMods.exec_TotallyImmersive_Init();
 	}
 
 	@Override
@@ -478,9 +475,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		    
 		    if (pref.getBoolean("pref_key_other_volsafe", false))
 		    	OtherMods.execHook_SafeVolume(lpparam);
-		    
-		    if (pref.getBoolean("pref_key_other_immersive", false))
-				OtherMods.exec_TotallyImmersive(lpparam);
 		    
 		    if (pref.getBoolean("pref_key_controls_swapvolume", false))
 		    	ControlsMods.exec_SwapVolumeCCWLand(lpparam);
