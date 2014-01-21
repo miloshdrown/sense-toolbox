@@ -1285,6 +1285,7 @@ public class SysUIMods {
 	private static boolean isThreadActive = false;;
 	private static long workLast, totalLast, workC, totalC = 0;
 	private static int curFreq;
+	private static String curTemp;
 	private static void readCPU() {
 		BufferedReader readStream;
 		String[] a;
@@ -1305,6 +1306,10 @@ public class SysUIMods {
 			
 			readStream = new BufferedReader(new FileReader("/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq"));
 			curFreq = Math.round((Integer.valueOf(readStream.readLine()) / 1000));
+			readStream.close();
+			
+			readStream = new BufferedReader(new FileReader("/sys/class/thermal/thermal_zone0/temp"));
+			curTemp = readStream.readLine().trim();
 			readStream.close();
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -1343,7 +1348,7 @@ public class SysUIMods {
 													XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 													String MB = modRes.getString(R.string.ram_mb);
 													String MHz = modRes.getString(R.string.cpu_mhz);
-													date.setText("CPU " + String.valueOf(Math.round(workC * 100 / (float)totalC)) + "% " + String.valueOf(curFreq) + MHz + "\n" + "RAM " + String.valueOf(availableMegs) + MB + " / " + String.valueOf(totalMegs) + MB);
+													date.setText("CPU " + String.valueOf(Math.round(workC * 100 / (float)totalC)) + "% " + String.valueOf(curFreq) + MHz + " " + curTemp + "°C" + "\n" + "RAM " + String.valueOf(availableMegs) + MB + " / " + String.valueOf(totalMegs) + MB);
 												}
 											});
 											Thread.sleep(1000);
@@ -1373,7 +1378,7 @@ public class SysUIMods {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
 				View clock = liparam.view.findViewById(resparam.res.getIdentifier("clock", "id", "com.android.systemui"));
-				View date = (TextView)liparam.view.findViewById(resparam.res.getIdentifier("date", "id", "com.android.systemui"));
+				View date = liparam.view.findViewById(resparam.res.getIdentifier("date", "id", "com.android.systemui"));
 				final Intent clockIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
 				OnClickListener ocl = new OnClickListener() {
 					@Override
