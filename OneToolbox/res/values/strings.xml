@@ -365,7 +365,10 @@
 	<string name="about_sense">Sense 5</string>
 	<string name="about_toolbox">Toolbox</string>
 	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nDunc001 and LeSScro - for their APM icons\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
-
+	<string name="about_l10n">Translation</string>
+	<string name="about_l10n_data_left">Croatian\nDutch\nItalian\nSpanish\nTurkish</string>
+	<string name="about_l10n_data_right">ico86\ntomasz\nteorouge\nSeyaru\nomercance</string>
+	
 	<string name="array_default">Default</string>
 	<string name="array_cam_actions_shutter">Shutter</string>
 	<string name="array_cam_actions_focus">Focus</string>

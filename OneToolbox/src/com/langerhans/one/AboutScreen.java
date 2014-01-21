@@ -32,6 +32,14 @@ public class AboutScreen extends Activity {
 		TextView iv03 = (TextView)findViewById(R.id.TextView03);
 		iv03.setTypeface(face);
 		
+		TextView iv04 = (TextView)findViewById(R.id.TextView04);
+		iv04.setPaintFlags(iv02.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+		iv04.setTypeface(face);
+		TextView iv4 = (TextView)findViewById(R.id.TextView4);
+		iv4.setTypeface(face);
+		TextView iv5 = (TextView)findViewById(R.id.TextView5);
+		iv5.setTypeface(face);
+		
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
         ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
         ActionBarText actionBarText = new ActionBarText(this);    		        

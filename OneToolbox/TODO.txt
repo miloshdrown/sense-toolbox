@@ -1,15 +1,14 @@
+=====
+Ideas
+=====
+
 - beats toggle
-- torch toggle
 - side way scrolling (Loads of work. probably not feasable...)
-- auto brightness
-- ATT TMoUS Data Icon remove (Has more implications. Waiting till more people request it.)
-- Limit number of loaded SMS in stock SMS app. One user said he has 10k SMS and it makes his phone slow... wtf?
 - "is it possible to get Always extended lockscreen widget like there is in Orio Rom?"
 - Other apps in HTC lock screen notifications
 - HDMI output with screen off (Don't have such an adapter...)
 - Day of week next to clock (isn't the status bar crowded enough?
 - Battery bar
-- Action on notification drawer clock click
 - Exchange security mod
 - More options for brightnes slider
 - gallery statusbar transparency. (Saw today that's an issue with all components using SurfaceView. Saw it in FourSquare map view)
@@ -23,7 +22,6 @@
 - Remove clock in BF too
 - Pageless BF scrolling
 - https://www.youtube.com/watch?v=HfCa3JtGpxc
-- Is it possible in next release you can add info line in notification panel like in venom that you can select to view cpu temp, cpu usage in mhz, ram usage etc...
 - Change carrier label on lockscreen and notification drawer
 - Get rid of some useless icons like Beats and Headphone...
 - Auto close EQS after setting changed
@@ -33,8 +31,13 @@
 - Scrollable wallpaper
 - Sound profile in APM (not worth it)
 - Owner/carrier info on Lockscreen
+- LED Notification thing: http://forum.xda-developers.com/showthread.php?p=49535219
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
+
+=================
+Current changelog
+=================
 
 2.7
 Large photo and 2-line caller name in dialer and lockscreen
@@ -45,8 +48,29 @@ Mod to disable missed call notification if you rejected incoming call manually
 Actions for tap on notification drawer header:
  - Open Clock app
  - Show/hide CPU usage, frequency and free RAM. Open Clock by tapping on current time label
+Shake actions: Shake your phone on Sense launcher to execute one of the actions you can also do with swipes.
 More efficient traffic meter code
-Added translations: Croatian, Dutch, Italian, Spanish, Turkish(?)
+Fixed volume button media control killing volume control.
+Added translations: Croatian, Dutch, Italian, Spanish, Turkish(?). Thanks for your help. Credits are on the "About" page.
+
+===========
+Translators
+===========
+
+Spanish: Seyaru
+http://forum.xda-developers.com/member.php?u=1917665
+Dutch: tomasz
+http://forum.xda-developers.com/member.php?u=273596
+Turkish: omercance
+http://forum.xda-developers.com/member.php?u=5390625
+Italian: teorouge
+http://forum.xda-developers.com/member.php?u=1113480
+Croatian: ico86
+http://forum.xda-developers.com/member.php?u=2027432
+
+==============
+Old Changelogs
+==============
 
 2.6.1
 Fixed localization
