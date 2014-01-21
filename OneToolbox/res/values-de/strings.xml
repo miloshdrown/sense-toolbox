@@ -435,7 +435,7 @@
 	<string name="array_header_click_sysinfo">CPU/RAM Info anzeigen/verstecken. Uhr-App per tap auf die Uhrzeit öffnen.</string>
 	
 <string name="about_l10n">Translation</string>
-	<string name="about_l10n_data_left">Croatian\nDutch\nItalian\nSpanish\nTurkish</string>
-	<string name="about_l10n_data_right">ico86\ntomasz\nteorouge\nSeyaru\nomercance</string>
+	<string name="about_l10n_data_left">Croatian\nDutch\nItalian\nPolish\nSpanish\nTurkish</string>
+	<string name="about_l10n_data_right">ico86\ntomasz\nteorouge\ncvxcvx\nSeyaru\nomercance</string>
 	
 	</resources>
