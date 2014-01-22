@@ -408,4 +408,29 @@
 	<string name="about_l10n_data_right">ico86\ntomasz\nteorouge\ncvxcvx\nSeyaru\nomercance</string>
 	
 	<string name="array_large_photo_default">Default</string>
-	</resources>
+	<string name="array_large_photo_rectangular">Rettangolare</string>
+	<string name="array_large_photo_max">Massimizzato</string>
+	<string name="cpu_mhz">MHz</string>
+    
+    <string name="systemui_alarmnotify_title">Mostra prossima sveglia</string>
+	<string name="systemui_alarmnotify_summ">Mostra l\'orario della prossima sveglia al posto del nome del provider nel menu notifiche.</string>
+	<string name="next_alarm">Prossima sveglia</string>
+	
+	<string name="sense_shakeaction_title">Movimento scuoti</string>
+	<string name="sense_shakeaction_summ">Cosa eseguire in caso di scuotimento del dispositivo nelle schermate Home.</string>
+	<string name="locked_warning">Prima sblocca il launcher!</string>
+	
+	<string name="various_mods_calls">Chiamate</string>
+	<string name="various_largephoto_title">Foto chiamante</string>
+	<string name="various_largephoto_summ">Cambia la dimensione dell\'immagine mostrata durante le chiamate in ingresso e in uscita.</string>
+	<string name="various_rejectedcall_title">Disattiva notifica su chiamata rifiutata</string>
+	<string name="various_rejectedcall_summ">Non mostrare la notifica della chiamata se questa viene manualmente rifiutata; verrà aggiunta allo storico chiamate come quelle terminate regolarmente.</string>
+	<string name="various_mods_volume">Volume</string>
+	<string name="about_l10n">Traduzione</string>
+	<string name="about_l10n_data_left">Croato\nOlandese\nItaliano\nPolacco\nSpagnolo\nTurco</string>
+	<string name="array_home_menu_draglock">Blocca launcher</string>
+	<string name="array_home_menu_dragunlock">Sblocca launcher</string>
+	<string name="array_header_click_clock">Apri app Orologio</string>
+	<string name="array_header_click_sysinfo">Mostra/nascondi info CPU e RAM, apri l\'app Orologio premendo l\'ora.</string>
+	
+</resources>
