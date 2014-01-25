@@ -116,8 +116,8 @@
 	<string name="systemui_ampmremove_summ">Omogućiti micanje AM/PM iz sata u stausnoj traci u 12h modu.</string>
 	<string name="systemui_clockstyle_title">Stil sata</string>
 	<string name="systemui_clockstyle_summ">Mijenja stil sata na statusnoj traci.</string>
-	<string name="systemui_statusheaderclick_title">Aplikacija pokretanja brzog sata</string>
-	<string name="systemui_statusheaderclick_summ">Pritisak na vrh ladice obavijesti otvara aplikaciju sat.</string>
+	<string name="systemui_statusheaderclick_title">Pritisak na vrh (ladica za obavijesti)</string>
+	<string name="systemui_statusheaderclick_summ">Akcija za pritisak na vrh ladice obavijesti.</string>
 	<string name="systemui_brightslide_title">Klizač osvijetljenosti</string>
 	<string name="systemui_brightslide_summ">Dodati klizač osvijetljenosti u obaviještajni panel.</string>
 	<string name="systemui_brightslide_auto">Auto</string>
@@ -402,5 +402,33 @@
 	<string name="array_media_playpause">Play/Pause</string>
 	<string name="array_media_next">Iduća pjesma</string>
 	<string name="array_media_prev">Prethodna pjesma</string>
+	
+<string name="cpu_mhz">MHz</string>
+    
+    <string name="systemui_alarmnotify_title">Prikaži slijedeći alarm</string>
+	<string name="systemui_alarmnotify_summ">Prikaži slijedeće vreme alarma umesto imena mreže.</string>
+	<string name="next_alarm">Slijedeći alarm</string>
+	
+	<string name="sense_shakeaction_title">Akcija kada protresete mob</string>
+	<string name="sense_shakeaction_summ">Akcija kada protresete mobitel na bilo kojem početnom ekranu.</string>
+	<string name="locked_warning">Molimo prvo otključaj launcher!</string>
+	
+	<string name="various_mods_calls">Pozivi</string>
+	<string name="various_largephoto_title">Slika pozivatelja</string>
+	<string name="various_largephoto_summ">Promjeni veličinu prikazane slike tijekom nadolazećih i odlazećih poziva.</string>
+	<string name="various_rejectedcall_title">Onemogući podsjetnik odbijenih poziva</string>
+	<string name="various_rejectedcall_summ">Nemoj prikazivati obavijest ručno odbijenih poziva. Oni će biti dodani u povijet kao normalno završeni razgovori.</string>
+	<string name="various_mods_volume">Glasnoća</string>
+	<string name="about_l10n">Prijevod</string>
+	<string name="about_l10n_data_left">Hrvatski\nNizozemski\nTalijanski\nPoljski\nŠpanjolski\nTurski</string>
+	<string name="about_l10n_data_right">ico86\ntomasz\nteorouge\ncvxcvx\nSeyaru\nomercance</string>
+	
+	<string name="array_home_menu_draglock">Zaključaj launcher</string>
+	<string name="array_home_menu_dragunlock">Otključaj launcher</string>
+	<string name="array_large_photo_default">Zadano</string>
+	<string name="array_large_photo_rectangular">Pravokutan</string>
+	<string name="array_large_photo_max">Maksimum</string>
+	<string name="array_header_click_clock">Otvori aplikaciju Sat</string>
+	<string name="array_header_click_sysinfo">Prikaži/sakrij CPU i RAM informacije, otvori aplikaciju Sat pritiskom na tretnutno vrijeme.</string>
 	
 </resources>
