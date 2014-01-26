@@ -124,9 +124,9 @@
 	<string name="systemui_dataratestatus_title">Verkeer meter</string>
 	<string name="systemui_dataratestatus_summ">Voeg huidige down- en uploadsnelheid toe aan de statusbalk. Alleen zichtbaar wanneer het apparaat is verbonden met een netwerk.</string>
 	
-	<string name="cleanbeam_mods">CleanBeam Aanpassingen door vomer</string>
+	<string name="cleanbeam_mods">CleanBeam modificaties door Vomer</string>
 	<string name="cleanbeam_colortheme_title">Kleur thema</string>
-	<string name="cleanbeam_colortheme_summ">Globaal thema voor alle iconen sets (Multicolor sets uitgezonderd).</string>
+	<string name="cleanbeam_colortheme_summ">"Globaal thema voor alle iconen sets behalve multicolor iconen "</string>
 	<string name="cleanbeam_colortheme_hue">Tint</string>
 	<string name="cleanbeam_colortheme_sat">Verzadiging</string>
 	<string name="cleanbeam_colortheme_bright">Helderheid</string>
@@ -410,4 +410,6 @@
     
     <string name="systemui_alarmnotify_title">Toon volgend alarm</string>
 	<string name="systemui_alarmnotify_summ">Geef volgend alarm weer in plaats van de tijd in de notificatie balk.</string>
+	<string name="next_alarm">Volgend alarm</string>
+	
 	</resources>
