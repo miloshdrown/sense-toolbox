@@ -117,7 +117,7 @@
 	<string name="systemui_clockstyle_title">Klok stijl</string>
 	<string name="systemui_clockstyle_summ">Wijzig de stijl van de statusbalk klok.</string>
 	<string name="systemui_statusheaderclick_title">Header klik</string>
-	<string name="systemui_statusheaderclick_summ">Acie bij tikken op de header van het natificatiepaneel</string>
+	<string name="systemui_statusheaderclick_summ">Actie bij tikken op de header van het natificatie paneel.</string>
 	<string name="systemui_brightslide_title">Helderheid slider</string>
 	<string name="systemui_brightslide_summ">Voeg een helderheid slider toe aan het notificatiepaneel.</string>
 	<string name="systemui_brightslide_auto">Automatisch</string>
