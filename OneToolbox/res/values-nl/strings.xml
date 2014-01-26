@@ -7,13 +7,13 @@
     <string name="support_version">Ondersteuning (App Versie: %1$s)</string>
     <string name="restore">Herstellen</string>
     <string name="add">Toevoegen</string>
-    <string name="soft_reboot">Soft Reboot</string>
+    <string name="soft_reboot">Zachte herstart</string>
     <string name="warning">Waarschuwing!</string>
     <string name="xposed_not_installed">Xposed Framework is niet juist geïnstalleerd. Installeer App_process en XposedBridge.jar vanuit Xposed Installer. Activeer daarna de Sense 5 Toolbox module en herstart het toestel.</string>
     <string name="welcome">Welkom bij Sense 5 Toolbox!</string>
     <string name="ram_mb">MB</string>
     
-    <string name="dragndrop">Gebruik slepen en neerzetten om de snelinstellingen te ordenen.</string>
+    <string name="dragndrop">Gebruik slepen en neerzetten om de snelle instellingen te ordenen.</string>
     <string name="title_delete">Tik op de tegel om deze te verwijderen.</string>
     <string name="plus_icon">Gebruik het \'+\' icoon om tegels toe te voegen.</string>
     <string name="save_settings">Vergeet niet om uw instellingen op te slaan!</string>
@@ -116,8 +116,8 @@
 	<string name="systemui_ampmremove_summ">De mogelijkheid om AM/PM van de statusbalk klok te verwijderen in 12h modus inschakelen.</string>
 	<string name="systemui_clockstyle_title">Klok stijl</string>
 	<string name="systemui_clockstyle_summ">Wijzig de stijl van de statusbalk klok.</string>
-	<string name="systemui_statusheaderclick_title">Snelstarten van klok app</string>
-	<string name="systemui_statusheaderclick_summ">Tikken op de header van het notificatiepaneel opent de klok-app.</string>
+	<string name="systemui_statusheaderclick_title">Header klik</string>
+	<string name="systemui_statusheaderclick_summ">Acie bij tikken op de header van het natificatiepaneel</string>
 	<string name="systemui_brightslide_title">Helderheid slider</string>
 	<string name="systemui_brightslide_summ">Voeg een helderheid slider toe aan het notificatiepaneel.</string>
 	<string name="systemui_brightslide_auto">Automatisch</string>
@@ -406,4 +406,6 @@
 	
 <string name="about_l10n_data_right">ico86\ntomasz\nteorouge\ncvxcvx\nSeyaru\nomercance</string>
 	
-	</resources>
+	<string name="cpu_mhz">MHz</string>
+    
+    </resources>
