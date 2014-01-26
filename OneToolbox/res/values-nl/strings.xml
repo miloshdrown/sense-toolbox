@@ -132,7 +132,7 @@
 	<string name="cleanbeam_colortheme_bright">Helderheid</string>
 	<string name="cleanbeam_colortheme_preset">Voorinstellingen</string>
 	<string name="cleanbeam_battery_title">Batterij icoon</string>
-	<string name="cleanbeam_battery_summ">Wijzig design batterij icoon</string>
+	<string name="cleanbeam_battery_summ">Wijzig design batterij icoon.</string>
 	<string name="cleanbeam_signal_title">Signaal balk</string>
 	<string name="cleanbeam_signal_summ">CleanBeam signaal iconen inschakelen.</string>
 	<string name="cleanbeam_data_title">Mobiele gegevens</string>
@@ -412,4 +412,24 @@
 	<string name="systemui_alarmnotify_summ">Geef volgend alarm weer in plaats van de tijd in de notificatie balk.</string>
 	<string name="next_alarm">Volgend alarm</string>
 	
-	</resources>
+	<string name="sense_shakeaction_title">Actie bij schudden</string>
+	<string name="sense_shakeaction_summ">Actie voor schudden op elk willekeurig thuisscherm.</string>
+	<string name="locked_warning">Ontgrendelen alstublieft eerst de launcher!</string>
+	
+	<string name="various_mods_calls">Oproepen</string>
+	<string name="various_largephoto_title">Oproep foto</string>
+	<string name="various_largephoto_summ">Verander de grote van de foto die verschijnt tijdens inkomende en uitgaande oproepen.</string>
+	<string name="various_rejectedcall_title">Schakel geweigerde oproep herinnering uit</string>
+	<string name="various_rejectedcall_summ">Laat gemiste oproep notificaties voor handmatig geweigerde inkomende oproepen. Ze zullen worden toegevoegd aan de oproep geschiedenis als normale beantwoorde oproepen.</string>
+	<string name="various_mods_volume">Volume</string>
+	<string name="about_l10n">Vertaling</string>
+	<string name="about_l10n_data_left">Kroatisch\nNederlands\nItaliaans\nPools\nSpaans\nTurks</string>
+	<string name="array_home_menu_draglock">Ontgrendel launcher</string>
+	<string name="array_home_menu_dragunlock">Ontgrendel launcher</string>
+	<string name="array_large_photo_default">Standaard</string>
+	<string name="array_large_photo_rectangular">Rechthoekig</string>
+	<string name="array_large_photo_max">Maximum</string>
+	<string name="array_header_click_clock">Open Klok app</string>
+	<string name="array_header_click_sysinfo">Laat zien/verberg CPU en RAM info, open Klok app door te drukken op actuele tijd.</string>
+	
+</resources>
