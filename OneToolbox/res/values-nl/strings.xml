@@ -33,9 +33,9 @@
     <string name="eqs_reorder">EQS ordenen</string>
     <string name="eqs_reorder_explain">Stel een aangepaste volgorde in voor EQ tegels</string>
     <string name="no_root_access">Geen root toegang</string>
-    <string name="no_root_explain">Het apparaat is niet voorzien van root toegang, of u heeft de app geen toestemming gegeven op SuperUser te benaderen.\nZonder root toegang kunt u de EQ tegels niet ordenen, deze optie wordt daarom niet getoond.\nU kunt ervoor kiezen deze melding eenmalig of permanent niet meer te tonen. Bij elke start wordt gecontroleerd of root-toegang aanwezig is. Als dat het geval is wordt de functie alsnog beschikbaar gemaakt.</string>
-	<string name="dismiss_once">Niet meer tonen (eenmalig)</string>
-	<string name="dismiss_forever">Niet meer tonen</string>
+    <string name="no_root_explain">Het apparaat is niet voorzien van root toegang, of u heeft de app geen toestemming gegeven om SuperUser te benaderen.\nZonder root toegang kunt u de EQS tegels niet ordenen, deze optie wordt daarom niet getoond.\nU kunt ervoor kiezen deze melding eenmalig of permanent te sluiten. Bij elke start wordt gecontroleerd of root-toegang aanwezig is. Als dat het geval is wordt de functie alsnog beschikbaar gemaakt.</string>
+	<string name="dismiss_once">Sluit melding eenmalig</string>
+	<string name="dismiss_forever">Sluit melding voorgoed</string>
 	<string name="mods">Aanpassingen</string>
 	
 	<string name="xposed_not_found">Xposed installatiepakket niet gevonden</string>
