@@ -126,7 +126,7 @@
 	
 	<string name="cleanbeam_mods">CleanBeam modificaties door Vomer</string>
 	<string name="cleanbeam_colortheme_title">Kleur thema</string>
-	<string name="cleanbeam_colortheme_summ">"Globaal thema voor alle iconen sets behalve multicolor iconen "</string>
+	<string name="cleanbeam_colortheme_summ">Globaal thema voor alle iconen sets behalve multicolor iconen.</string>
 	<string name="cleanbeam_colortheme_hue">Tint</string>
 	<string name="cleanbeam_colortheme_sat">Verzadiging</string>
 	<string name="cleanbeam_colortheme_bright">Helderheid</string>
