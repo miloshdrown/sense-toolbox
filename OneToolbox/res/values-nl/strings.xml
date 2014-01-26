@@ -52,13 +52,13 @@
 	<string name="hotreboot_explain_prefs">Uw apparaat zal worden herstart. Doorgaan?</string>
 	<string name="select_tile">Selecteer tegel om toe te voegen</string>
 	<string name="success">Succes</string>
-	<string name="backup_restored">Backup succesvol hersteld! Tik op \'Opslaan\' om de ordening toe te passen.</string>
+	<string name="backup_restored">Backup succesvol hersteld! Tik op \'Opslaan\' om de volgorde toe te passen.</string>
 	<string name="no_backup">Geen backup gevonden</string>
 	<string name="no_backup_explain">Helaas, er is geen backup gevonden. Heeft u uw telefoongeheugen gewist?</string>
 	<string name="first_start">Eerste start</string>
-	<string name="close_forever">Dialoog niet meer tonen!</string>
+	<string name="close_forever">Sluit dialoog voorgoed!</string>
 	
-	<string name="sunbeam_installed">SunBeam is geïnstallerd. Herstart het apparaat om de wijzigingen te effectueren. SunBeam moet na elke ROM flash opniew worden geïnstalleerd.</string>
+	<string name="sunbeam_installed">SunBeam is geïnstallerd. Herstart het apparaat om de wijzigingen toe te passen. SunBeam moet na elke ROM flash opniew worden geïnstalleerd.</string>
 	<string name="eqs_user_card">Gebruiker Kaart</string>
 	<string name="eqs_brightness">Helderheid</string>
 	<string name="eqs_settings">Instellingen</string>
