@@ -132,7 +132,7 @@
 	<string name="cleanbeam_colortheme_bright">Helderheid</string>
 	<string name="cleanbeam_colortheme_preset">Voorinstellingen</string>
 	<string name="cleanbeam_battery_title">Batterij icoon</string>
-	<string name="cleanbeam_battery_summ">Wijzig batterij icoon.</string>
+	<string name="cleanbeam_battery_summ">Wijzig design batterij icoon</string>
 	<string name="cleanbeam_signal_title">Signaal balk</string>
 	<string name="cleanbeam_signal_summ">CleanBeam signaal iconen inschakelen.</string>
 	<string name="cleanbeam_data_title">Mobiele gegevens</string>
