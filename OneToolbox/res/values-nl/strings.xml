@@ -59,7 +59,7 @@
 	<string name="close_forever">Sluit dialoog voorgoed!</string>
 	
 	<string name="sunbeam_installed">SunBeam is geïnstalleerd. Herstart het apparaat om de wijzigingen toe te passen. SunBeam moet na elke ROM flash opnieuw worden geïnstalleerd.</string>
-	<string name="eqs_user_card">Gebruiker Kaart</string>
+	<string name="eqs_user_card">Gebruikerskaart</string>
 	<string name="eqs_brightness">Helderheid</string>
 	<string name="eqs_settings">Instellingen</string>
 	<string name="eqs_wifi">WiFi</string>
@@ -86,7 +86,7 @@
 	<string name="transparency_msg">0 = transparant, 100 = dekkend</string>
 	<string name="transparency_enable">Transparantie inschakelen</string>
 	<string name="launch_app">App starten</string>
-	<string name="toggle_settings">Instellingen wijzigen</string>
+	<string name="toggle_settings">Schakelaar instellingen</string>
 	
 	<string name="camera_mods">Camera aanpassingen</string>
 	
@@ -98,7 +98,7 @@
 	<string name="systemui_tnb_summ">Maak de achtergrond van het notificatiepaneel transparant.</string>
 	<string name="systemui_eqs">Uitgebreide snelinstellingen</string>
 	<string name="systemui_heqs_title">Horizontale EQS</string>
-	<string name="systemui_heqs_summ">Horizontale EQS inschakelen. De normale EQS worden horizontaal getoond (scrollbaar).</string>
+	<string name="systemui_heqs_summ">Horizontale EQS inschakelen. De normale EQS worden getoond (scrollbaar).</string>
 	<string name="systemui_heqs_notext_title">Kleinere horizontale EQS</string>
 	<string name="systemui_heqs_notext_summ">Verwijder tekst van horizontale EQS.</string>
 	<string name="systemui_noeqs_title">EQS paneel uitschakelen</string>
@@ -109,18 +109,18 @@
 	<string name="systemui_recentclear_title">Sluit alle recente apps ineens</string>
 	<string name="systemui_recentclear_summ">De mogelijkheid om alle recente apps te sluiten door te pinchen of swipen inschakelen.</string>
 	<string name="systemui_recentram_title">RAM gebruik</string>
-	<string name="systemui_recentram_summ">Toon de hoeveelheid RAM die wordt gebruikt door recente apps.</string>
+	<string name="systemui_recentram_summ">Toon de hoeveelheid RAM dat wordt gebruikt door recente apps.</string>
 	<string name="systemui_centerclock_title">Gecentreerde klok</string>
-	<string name="systemui_centerclock_summ">De mogelijkheid om de statusbalk klok te centreren inschakelen.</string>
-	<string name="systemui_ampmremove_title">AM/PM verwijderen</string>
-	<string name="systemui_ampmremove_summ">De mogelijkheid om AM/PM van de statusbalk klok te verwijderen in 12h modus inschakelen.</string>
+	<string name="systemui_centerclock_summ">Schakel in om de statusbalk klok te centreren.</string>
+	<string name="systemui_ampmremove_title">Verwijder AM/PM</string>
+	<string name="systemui_ampmremove_summ">Schakel in om AM/PM van de statusbalk klok te verwijderen in 12h modus.</string>
 	<string name="systemui_clockstyle_title">Klok stijl</string>
-	<string name="systemui_clockstyle_summ">Wijzig de stijl van de statusbalk klok.</string>
+	<string name="systemui_clockstyle_summ">Wijzigt de stijl van de statusbalk klok.</string>
 	<string name="systemui_statusheaderclick_title">Header klik</string>
-	<string name="systemui_statusheaderclick_summ">Actie bij tikken op de header van het natificatie paneel.</string>
+	<string name="systemui_statusheaderclick_summ">Actie bij tik op de header van het notificatie paneel.</string>
 	<string name="systemui_brightslide_title">Helderheid slider</string>
 	<string name="systemui_brightslide_summ">Voeg een helderheid slider toe aan het notificatiepaneel.</string>
-	<string name="systemui_brightslide_auto">Automatisch</string>
+	<string name="systemui_brightslide_auto">Auto</string>
 	<string name="systemui_dataratestatus_title">Verkeer meter</string>
 	<string name="systemui_dataratestatus_summ">Voeg huidige down- en uploadsnelheid toe aan de statusbalk. Alleen zichtbaar wanneer het apparaat is verbonden met een netwerk.</string>
 	
@@ -146,9 +146,9 @@
 	<string name="cleanbeam_alarm_title">Alarm</string>
 	<string name="cleanbeam_alarm_summ">CleanBeam alarm icoon inschakelen.</string>
 	<string name="cleanbeam_wifi_title">WiFi</string>
-	<string name="cleanbeam_wifi_summ">Wijzig WiFi icoon.</string>
-	<string name="cleanbeam_sync_title">Synchroniseren</string>
-	<string name="cleanbeam_sync_summ">CleanBeam synchronisatie iconen inschakelen.</string>
+	<string name="cleanbeam_wifi_summ">Wijzig WiFi icoon design.</string>
+	<string name="cleanbeam_sync_title">Sync</string>
+	<string name="cleanbeam_sync_summ">CleanBeam sync iconen inschakelen.</string>
 	<string name="cleanbeam_gps_title">GPS</string>
 	<string name="cleanbeam_gps_summ">CleanBeam GPS iconen inschakelen.</string>
 	<string name="cleanbeam_bt_title">Bluetooth</string>
@@ -187,8 +187,8 @@
 	<string name="sense_tappdrawer_summ">Maak het applicatie overzicht in Sense transparant.</string>
 	<string name="sense_tfolders_title">Mappen</string>
 	<string name="sense_tfolders_summ">Maak de achtergrond van mappen transparant.</string>
-	<string name="sense_tfoldersbkg_title">Mapiconen</string>
-	<string name="sense_tfoldersbkg_summ">Maak de achtergrond van mapiconen transparant.</string>
+	<string name="sense_tfoldersbkg_title">Map iconen</string>
+	<string name="sense_tfoldersbkg_summ">Maak de achtergrond van map iconen transparant.</string>
 	<string name="sense_infini_title">Oneindige mappen</string>
 	<string name="sense_infini_summ">Verwijder de restrictie op het aantal iconen per map.</string>
 	<string name="sense_adnoclock_title">Verwijder klok uit app overzicht</string>
@@ -204,7 +204,7 @@
 	<string name="sense_swipedownaction_title">Actie bij omlaag slepen</string>
 	<string name="sense_swipedownaction_summ">Actie bij omlaag slepen op willekeurig thuisscherm.</string>
 	<string name="sense_swipeupaction_title">Actie bij omhoog slepen</string>
-	<string name="sense_swipeupaction_summ">Actie bij omhoog slepen op een willekeurig thuisscherm.</string>
+	<string name="sense_swipeupaction_summ">Actie bij omhoog slepen op willekeurig thuisscherm.</string>
 	<string name="sense_swiperightaction_title">Actie bij naar rechts slepen</string>
 	<string name="sense_swiperightaction_summ">Actie bij naar rechts slepen op het dock.</string>
 	<string name="sense_swipeleftaction_title">Actie bij naar links slepen</string>
@@ -277,7 +277,7 @@
 	<string name="various_volsafe_title">Veilig volume waarschuwing uitschakelen</string>
 	<string name="various_volsafe_summ">Schakel de bevestigingsdialoog uit die wordt getoond als het volume boven de aangeraden waarde komt bij gebruik van de hoofdtelefoon.</string>
 	<string name="various_movevol_title">Positie van de volume-popup</string>
-	<string name="various_movevol_summ">Toon volume popup onderaan, zodat deze niet in de weg staat.</string>
+	<string name="various_movevol_summ">Toon volume-popup onderaan, zodat deze niet in de weg staat.</string>
 	<string name="various_mtpnotif_title">MTP notificatie verbergen</string>
 	<string name="various_mtpnotif_summ">Schakel de MTP service naar de achtergrond en schakel de notificatie uit. Aanpassing is voor ROMs gebaseerd op gelekte 4.3.</string>
 	<string name="various_fastunlock_title">Snel ontgrendelen</string>
@@ -293,7 +293,7 @@
 	<string name="persist_bypasslock_title">Vergrendelingsscherm overslaan</string>
 	<string name="persist_bypasslock_summ">\'Vergrendelscherm bij ontwaken negeren\' instelling werkt ook zonder beveiligingsscherm.</string>
 	<string name="persist_unhideprefs_title">Extra info in \'Over\'</string>
-	<string name="persist_unhideprefs_summ">Toon \'ROM Versie\', \'Distriubutie tijd\' en \'Hardware informatie\' (in Sense 5.5) in de \'Over\'sectie in instellingen.</string>
+	<string name="persist_unhideprefs_summ">Toon \'ROM Versie\', \'Distriubutie tijd\' en \'Hardware informatie\' (in Sense 5.5) in de \'Over\' sectie in instellingen.</string>
 	<string name="persist_appfilter_title">Apps filteren</string>
 	<string name="persist_appfilter_summ">Voeg een optie toe om alleen uitgeschakelde pakketten te tonen in Apps.</string>
 	<string name="persist_recentslongtap_title">Popup menu in lijst recente applicaties</string>
@@ -359,7 +359,7 @@
 	<string name="array_cam_actions_nothing">Geen wijziging</string>
 	<string name="array_batt_icon_percentage">Percentage binnenin</string>
 	<string name="array_batt_icon_circle">Cirkel met percentage</string>
-	<string name="array_batt_icon_kitkat">Kitkat</string>
+	<string name="array_batt_icon_kitkat">KitKat</string>
 	<string name="array_batt_icon_kitkat_p">KitKat met percentage</string>
 	<string name="array_batt_icon_none">Geen icoon</string>
 	<string name="array_wifi_icon_style1">Stijl 1</string>
@@ -413,7 +413,7 @@
 	<string name="next_alarm">Volgend alarm</string>
 	
 	<string name="sense_shakeaction_title">Actie bij schudden</string>
-	<string name="sense_shakeaction_summ">Actie voor schudden op elk willekeurig thuisscherm.</string>
+	<string name="sense_shakeaction_summ">Actie voor schudden op willekeurig thuisscherm.</string>
 	<string name="locked_warning">Ontgrendelen alstublieft eerst de launcher!</string>
 	
 	<string name="various_mods_calls">Oproepen</string>
