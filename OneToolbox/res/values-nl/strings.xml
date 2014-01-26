@@ -48,7 +48,7 @@
 	<string name="remove_tile_msg2">tegel verwijderen?\nU kunt de tegel weer toevoegen via het menu bovenin.</string>
 	<string name="yes">Ja</string>
 	<string name="no">Nee</string>
-	<string name="hotreboot_explain">Uw volgorde is opgeslagen! Een hot reboot is nodig om dit te actauliseren. Wilt u nu herstarten?</string>
+	<string name="hotreboot_explain">Uw volgorde is opgeslagen! Een hot reboot is nodig om dit te actualiseren. Wilt u nu herstarten?</string>
 	<string name="hotreboot_explain_prefs">Uw apparaat zal worden herstart. Doorgaan?</string>
 	<string name="select_tile">Selecteer tegel om toe te voegen</string>
 	<string name="success">Succes</string>
