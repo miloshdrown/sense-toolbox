@@ -409,5 +409,5 @@
 	<string name="cpu_mhz">MHz</string>
     
     <string name="systemui_alarmnotify_title">Toon volgend alarm</string>
-	<string name="systemui_alarmnotify_summ">Geef volgend alarm weer in plaats van de tijd in de notificatie balk</string>
+	<string name="systemui_alarmnotify_summ">Geef volgend alarm weer in plaats van de tijd in de notificatie balk.</string>
 	</resources>
