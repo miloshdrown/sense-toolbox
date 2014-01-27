@@ -1,3 +1,4 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources><string name="menu_save">Αποθήκευση</string>
+    <string name="app_name">Sense 5 Toolbox</string>
     </resources>
