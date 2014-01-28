@@ -428,6 +428,6 @@
 
 	<string name="about_l10n">Локализации</string>
 	<string name="about_l10n_data_left">Хорватский\nГолландский\nИтальянский\nПольский\nИспанский\nТурецкий</string>
-	<string name="about_l10n_data_right">ico86\ntomasz\nteorouge\ncvxcvx\nSeyaru\nomercance</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nomercance</string>
 	
 	</resources>
