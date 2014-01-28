@@ -78,6 +78,11 @@
         <replace encoding="utf-8" file="res/values-ru/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
         <replace encoding="utf-8" file="res/values-de/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
         <replace encoding="utf-8" file="res/values-pl/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
+        
+        <!-- Exclude Turkish, Greek and Hebrew until fully translated. -->
+        <delete dir="res/values-tr" quiet="true"/>
+        <delete dir="res/values-el" quiet="true"/>
+        <delete dir="res/values-he" quiet="true"/>
     </target>
     <target name="-post-compile">
         <path id="project.all.jars.path">
