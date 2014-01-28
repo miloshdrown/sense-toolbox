@@ -899,7 +899,7 @@ public class SysUIMods {
 		ArrayList<?> taskDescriptionsArray = (ArrayList<?>)XposedHelpers.getObjectField(gridViewObject, "mRecentTaskDescriptions");
 		if ((taskDescriptionsArray == null) || (taskDescriptionsArray.size() == 0))	{
 			// Recent array is empty, resuming last activity
-			sendOnResume();
+			closeRecents();
 			return;
 		}
 		int i = gridViewSelf.getChildCount();
@@ -978,7 +978,7 @@ public class SysUIMods {
 					@Override
 					public void run() {
 						try { if (i > 3) Thread.sleep((i + 1) * 15); } catch (Exception e) {}
-						if (currApp == null) sendOnResume();
+						if (currApp == null) closeRecents();
 					}
 				}).start();				
 			}
@@ -1088,12 +1088,12 @@ public class SysUIMods {
 		}
 	}
 	
-	// Invoke RecentAppFxActivity.onResume() to close activity
-	private static void sendOnResume() {
+	// Close activity
+	private static void closeRecents() {
 		try {
 			if (gridViewObject != null) {
 				XposedHelpers.setBooleanField(gridViewObject, "mFinished", Boolean.valueOf(true));
-				XposedHelpers.callMethod(gridViewObject, "onResume");
+				((Activity)gridViewObject).finish();
 			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
@@ -1165,7 +1165,7 @@ public class SysUIMods {
             				ramView.setGravity(Gravity.CENTER);
             				ramView.setBackground(new ColorDrawable(Color.parseColor("#9F333333")));
                 			ramView.setTranslationY(-32f * theView.getContext().getResources().getDisplayMetrics().density);
-            			}else {
+            			} else {
             				FrameLayout.LayoutParams p0 = (FrameLayout.LayoutParams)text1.getLayoutParams();
                 			ramView.setLayoutParams(p0);
                 			ramView.setGravity(Gravity.CENTER_VERTICAL);
