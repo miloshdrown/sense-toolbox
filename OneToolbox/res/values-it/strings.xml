@@ -405,7 +405,7 @@
 	<string name="dummy">" "</string>
 	
 	<string name="systemui_largephoto_title"/>
-	<string name="about_l10n_data_right">ico86\ntomasz\nteorouge\ncvxcvx\nSeyaru\nomercance</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nomercance</string>
 	
 	<string name="array_large_photo_default">Default</string>
 	<string name="array_large_photo_rectangular">Rettangolare</string>
