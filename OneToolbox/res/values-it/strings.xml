@@ -405,7 +405,7 @@
 	<string name="dummy">" "</string>
 	
 	<string name="systemui_largephoto_title"/>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nomercance</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
 	
 	<string name="array_large_photo_default">Default</string>
 	<string name="array_large_photo_rectangular">Rettangolare</string>
@@ -427,7 +427,7 @@
 	<string name="various_rejectedcall_summ">Non mostrare la notifica della chiamata se questa viene manualmente rifiutata; verrà aggiunta allo storico chiamate come quelle terminate regolarmente.</string>
 	<string name="various_mods_volume">Volume</string>
 	<string name="about_l10n">Traduzione</string>
-	<string name="about_l10n_data_left">Croato\nOlandese\nItaliano\nPolacco\nSpagnolo\nTurco</string>
+	<string name="about_l10n_data_left">Croato\nOlandese\nItaliano\nPolacco\nSpagnolo</string>
 	<string name="array_home_menu_draglock">Blocca launcher</string>
 	<string name="array_home_menu_dragunlock">Sblocca launcher</string>
 	<string name="array_header_click_clock">Apri app Orologio</string>

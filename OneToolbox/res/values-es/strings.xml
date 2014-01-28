@@ -8,7 +8,7 @@
     <string name="support_version">Soporte (App Versión: %1$s)</string>
     <string name="restore">Restaurar</string>
     <string name="add">Agregar</string>
-    <string name="soft_reboot">Reinicio Rapido</string>
+    <string name="soft_reboot">Reinicio Rápido</string>
     <string name="ram_mb">MB</string>
     <string name="warning">Advertencia!</string>
     <string name="xposed_not_installed">Xposed Framework no esta correctamente instalado, debe instalar el app_process y XposedBridge.jar desde el Instalador Xposed, luego activar el modulo Sense 5 Toolbox y Reiniciar.</string>
@@ -22,7 +22,7 @@
     <string name="apm_title">Selección de Reinicio</string>
     <string name="apm_normal_title">Reinicio</string>
     <string name="apm_normal_summ">Cierra todo y reinicia el equipo</string>
-    <string name="apm_hotreboot_title">Reinicio Rapido</string>
+    <string name="apm_hotreboot_title">Reinicio Rápido</string>
     <string name="apm_hotreboot_summ">Reinicia interfaz</string>
     <string name="apm_recovery_title">Recuperación</string>
     <string name="apm_recovery_summ">Reinicia directamente al Recovery</string>
@@ -39,7 +39,7 @@
     <string name="xposed_not_found_explain">Parece que no tienes Xposed instalado.\n\nPor favor, tenga en cuenta que los mods solo funcionara con Xposed!\n\nXposed esta disponible desde el instalador de ARHD.</string>
     <string name="okay">Ok</string>
     <string name="close_camera">Asegúrese de cerrar la cámara en aplicaciones recientes!</string>
-    <string name="remove_last">No puede eliminar el ultimo elemento!</string>
+    <string name="remove_last">No puede eliminar el último elemento!</string>
     <string name="remove">Eliminar</string>
     <string name="remove_tile_msg1">Quieres eliminar el</string>
     <string name="remove_tile_msg2">titulo?\nPodrá agregar estos devuelta desde el menú de arriba.</string>
@@ -422,7 +422,7 @@
 	<string name="array_header_click_sysinfo">Mostrar/Ocultar información de CPU y RAM, abrir Reloj presionando la hora actual.</string>
 	
 <string name="about_l10n">Traducción</string>
-	<string name="about_l10n_data_left">Croata\nHolandés\nItaliano\nPolaco\nEspañol\nTurco</string>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nomercance</string>
+	<string name="about_l10n_data_left">Croata\nHolandés\nItaliano\nPolaco\nEspañol</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
 	
 	</resources>

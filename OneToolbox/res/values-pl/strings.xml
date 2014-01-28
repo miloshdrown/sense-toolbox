@@ -432,8 +432,8 @@
     <string name="array_header_click_clock">Otwórz aplikację zegar</string>
 	<string name="array_header_click_sysinfo">Pokaż / ukryj informacje o procesorze i pamięci RAM, otwórz aplikację zegar naciskając na bieżący czas.</string>
 	
-<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nomercance</string>
+<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
 	
 	<string name="about_l10n">Tłumaczenia</string>
-	<string name="about_l10n_data_left">Chorwacki↵\nHolenderski↵\nWłoski↵\nPolski↵\nHiszpański↵\nTurecki</string>
+	<string name="about_l10n_data_left">Chorwacki↵\nHolenderski↵\nWłoski↵\nPolski↵\nHiszpański↵</string>
 	</resources>
