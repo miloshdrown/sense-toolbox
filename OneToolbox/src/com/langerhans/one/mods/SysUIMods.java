@@ -1092,6 +1092,7 @@ public class SysUIMods {
 	private static void closeRecents() {
 		try {
 			if (gridViewObject != null) {
+				if (XposedHelpers.getObjectField(gridViewObject, "mFinished") != null)
 				XposedHelpers.setBooleanField(gridViewObject, "mFinished", Boolean.valueOf(true));
 				((Activity)gridViewObject).finish();
 			}
