@@ -58,6 +58,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 	static public List<Drawable> pkgAppsListIcons = new ArrayList<Drawable>();
 	static public List<Boolean> pkgAppsListSystem = new ArrayList<Boolean>();
 	static public SharedPreferences prefs = null;
+	private boolean toolboxModuleActive = false;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -556,12 +557,19 @@ public class PrefsFragment extends HtcPreferenceFragment {
 						e.printStackTrace();
 					}
 				}
-				if (!isXposedInstalled)					
-				getActivity().runOnUiThread(new Runnable() {
-					public void run() {
-						showXposedDialog();
-					}
-				});
+				if (!isXposedInstalled) {					
+					getActivity().runOnUiThread(new Runnable() {
+						public void run() {
+							showXposedDialog();
+						}
+					});
+				} else if (!toolboxModuleActive) {
+					getActivity().runOnUiThread(new Runnable() {
+						public void run() {
+							showXposedDialog2();
+						}
+					});
+				}
 				lineCount++;
 			}
 		};
@@ -577,6 +585,20 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
 		builder.setTitle(R.string.warning);
 		builder.setMessage(R.string.xposed_not_installed);
+		builder.setIcon(android.R.drawable.ic_dialog_alert);
+		builder.setCancelable(true);
+		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton){}
+		});
+		HtcAlertDialog dlg = builder.create();
+		dlg.show();
+	}
+	
+	public void showXposedDialog2()
+	{
+		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
+		builder.setTitle(R.string.warning);
+		builder.setMessage(R.string.module_not_active);
 		builder.setIcon(android.R.drawable.ic_dialog_alert);
 		builder.setCancelable(true);
 		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {

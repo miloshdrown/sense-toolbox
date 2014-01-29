@@ -15,6 +15,7 @@
     
     <string name="warning">Внимание!</string>
     <string name="xposed_not_installed">Xposed Framework установлен не полностью, Вы должны установить app_process и XposedBridge.jar в Xposed Installer, затем активировать модуль Sense 5 Toolbox и перезагрузиться.</string>
+    <string name="module_not_active">Модуль Sense 5 Toolbox не активен! Откройте Xposed Installer, активируйте модуль и перезагрузитесь.</string>
     <string name="welcome">Добро пожаловать в Sense 5 Toolbox!</string>
     <string name="dragndrop">Порядок элементов можно задать перетаскивая их.</string>
     <string name="title_delete">Нажмите на элемент для его удаления.</string>
@@ -252,7 +253,7 @@
 	<string name="controls_vol2wake_summ">Выводит устройство из режима сна при нажатии на клавиши громкости. Обязателен root! Для включения нужна полная перезагрузка!</string>
 	<string name="controls_powerflash_title">Быстрый фонарик</string>
 	<string name="controls_powerflash_summ">Позволяет активировать фонарик при отключенном экране долгим нажатием на кнопку включения.</string>
-	<string name="controls_swapvolume_title">Громоксть в ландшафтном режиме</string>
+	<string name="controls_swapvolume_title">Громкость в ландшафтном режиме</string>
 	<string name="controls_swapvolume_summ">Меняет кнопки громкости так, чтобы они совпадали с движениями слайдера в ландшафтном режиме против часовой стрелки (увеличить громкость - вправо, уменьшить - влево).</string>
 	<string name="controls_mods_volume">Кнопки громкости</string>
 	<string name="controls_vol_up_cam_title">Повышение громкости</string>

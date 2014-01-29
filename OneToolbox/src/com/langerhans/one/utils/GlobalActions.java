@@ -44,6 +44,7 @@ import com.langerhans.one.mods.XMain;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class GlobalActions {
 
@@ -335,6 +336,19 @@ public class GlobalActions {
 		try {
 			Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, beforeEnable);
 		} catch(Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void toolboxInit(LoadPackageParam lpparam) {
+		try {
+			XposedHelpers.findAndHookMethod("com.langerhans.one.PrefsFragment", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					XposedHelpers.setBooleanField(param.thisObject, "toolboxModuleActive", true);
+				}
+			});
+		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
 	}

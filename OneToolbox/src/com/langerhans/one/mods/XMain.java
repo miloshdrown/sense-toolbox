@@ -244,6 +244,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
 		String pkg = lpparam.packageName;
 		
+		if(pkg.equals("com.langerhans.one")) {
+			GlobalActions.toolboxInit(lpparam);
+		}
+		
 		if(pkg.equals("com.android.providers.media")) {
 			if(pref.getBoolean("pref_key_other_mtpnotif", false))
 				OtherMods.execHook_MTPNotif(lpparam);
