@@ -1349,7 +1349,7 @@ public class SysUIMods {
 													XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 													String MB = modRes.getString(R.string.ram_mb);
 													String MHz = modRes.getString(R.string.cpu_mhz);
-													date.setText("CPU " + String.valueOf(Math.round(workC * 100 / (float)totalC)) + "% " + String.valueOf(curFreq) + MHz + " " + curTemp + "°C" + "\n" + "RAM " + String.valueOf(availableMegs) + MB + " / " + String.valueOf(totalMegs) + MB);
+													date.setText("CPU " + String.valueOf(Math.round(workC * 100 / (float)totalC)) + "% " + String.valueOf(curFreq) + MHz + " " + curTemp + "\u00B0C" + "\n" + "RAM " + String.valueOf(availableMegs) + MB + " / " + String.valueOf(totalMegs) + MB);
 												}
 											});
 											Thread.sleep(1000);
