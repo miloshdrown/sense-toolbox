@@ -436,4 +436,5 @@
 	
 	<string name="about_l10n">Tłumaczenia</string>
 	<string name="about_l10n_data_left">Chorwacki↵\nHolenderski↵\nWłoski↵\nPolski↵\nHiszpański↵</string>
-	</resources>
+	<string name="module_not_active">Sense 5 Toolbox nie jest aktywny! Otwórz Xposed Instalator, aktywuj moduł i wykonaj restart.</string>
+    </resources>
