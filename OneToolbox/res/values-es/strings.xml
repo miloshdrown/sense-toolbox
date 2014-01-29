@@ -425,4 +425,5 @@
 	<string name="about_l10n_data_left">Croata\nHolandés\nItaliano\nPolaco\nEspañol</string>
 	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
 	
-	</resources>
+	<string name="module_not_active">El modulo Sense 5 Toolbox no esta activo! Abre el Instalador Xposed, activa el modulo y reinicia.</string>
+    </resources>
