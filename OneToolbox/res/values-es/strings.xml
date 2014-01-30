@@ -426,4 +426,10 @@
 	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
 	
 	<string name="module_not_active">El modulo Sense 5 Toolbox no esta activo! Abre el Instalador Xposed, activa el modulo y reinicia.</string>
-    </resources>
+    <string name="cleanbeam_mods_credits_head">Creditos</string>
+	<string name="cleanbeam_hd2o_title">HD2Owner</string>
+	<string name="cleanbeam_hd2o_summ">Para iconos de batería adicionales.</string>
+	
+	<string name="array_batt_icon_white">HD2O Blanco</string>
+	<string name="array_batt_icon_white_percent">HD2O Blanco y Porcentaje</string>
+	</resources>
