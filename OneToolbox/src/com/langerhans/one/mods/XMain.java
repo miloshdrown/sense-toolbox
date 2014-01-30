@@ -431,6 +431,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1")) == 3)
 				SysUIMods.execHook_NotifDrawerHeaderSysInfo(lpparam);
 			
+			if (pref_homeassist != 1)
+				SysUIMods.execHook_OverrideAssist(lpparam);
+			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 		}
 		

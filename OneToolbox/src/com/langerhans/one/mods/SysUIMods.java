@@ -1510,4 +1510,17 @@ public class SysUIMods {
 			});
 		} catch (Throwable ignore) {}
 	}
+
+	//On 4.4.2 (and maybe 4.4 too) Assist is handled by SystemUI. Try to patch it, silently fail otherwise.
+	public static void execHook_OverrideAssist(LoadPackageParam lpparam) {
+		// TODO Auto-generated method stub
+		try {
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "showSearchPanel", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					ControlsMods.assistAndSearchPanelOverride(param);
+				}
+			});
+		} catch (Throwable ignore) {}
+	}
 }
