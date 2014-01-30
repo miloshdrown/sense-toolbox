@@ -126,7 +126,7 @@
 	<string name="systemui_dataratestatus_title">Datenrate-Anzeige</string>
 	<string name="systemui_dataratestatus_summ">Zeigt die aktuelle Datenrate (Upload+Download) in der Statusleiste an.</string>
 	
-	<string name="cleanbeam_mods">CleanBeam Mods von vomer</string>
+	<string name="cleanbeam_mods">Statusleistenicons</string>
 	<string name="cleanbeam_colortheme_title">Farbschema</string>
 	<string name="cleanbeam_colortheme_summ">Globales Farbschema für alle CleanBeam Icons außer mehrfarbige.</string>
 	<string name="cleanbeam_colortheme_hue">Farbton</string>
@@ -173,8 +173,11 @@
 	<string name="cleanbeam_tv_summ">Aktiviert das CleanBeam TV icon.</string>
 	<string name="cleanbeam_sunbeam_title">Installiere Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Installiert das Sunbeam Live Wallpaper.</string>
-	<string name="cleanbeam_post_title">Besuche den CleanBeam Beitrag</string>
-	<string name="cleanbeam_post_summ">Vorschau und Änderungen hier. Denke dran \'Thanks\' zu klicken!</string>
+	<string name="cleanbeam_mods_credits_head">Danke</string>
+	<string name="cleanbeam_post_title">Vomer</string>
+	<string name="cleanbeam_post_summ">Für die CleanBeam Icons und das Sunbeam Wallpaper.</string>
+	<string name="cleanbeam_hd2o_title">HD2Owner</string>
+	<string name="cleanbeam_hd2o_summ">Für zusätzliche Batterieicon Sets.</string>
 	
 	<string name="sense_mods">Sense Mods</string>
 	<string name="sense_transparency">Transparenz</string>
@@ -361,7 +364,9 @@
 	<string name="array_cam_actions_zoom_in">Hereinzoomen</string>
 	<string name="array_cam_actions_zoom_out">Herauszoomen</string>
 	<string name="array_cam_actions_nothing">Keine Änderung</string>
-	<string name="array_batt_icon_percentage">Prozent im Standard</string>
+	<string name="array_batt_icon_percentage">hd2o Sense 5 Prozent</string>
+	<string name="array_batt_icon_white">hd2o Weiß</string>
+	<string name="array_batt_icon_white_percent">hd2o Weiß Prozent</string>
 	<string name="array_batt_icon_circle">Prozent im Kreis</string>
 	<string name="array_batt_icon_kitkat">KitKat</string>
 	<string name="array_batt_icon_kitkat_p">KitKat mit Prozent</string>

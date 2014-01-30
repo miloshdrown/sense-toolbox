@@ -41,8 +41,10 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Current changelog
 =================
 
-2.8 (?)
+2.7.1
 Fixed CPU temperature display issue.
+Fixed "Swipe up from home button" action.
+Updated and new battery Icons by HD2Owner: Sense 5 with percentage and white style with and without percentage. Shoutout to HD2Owner for providing these. 
 
 ===========
 Translators

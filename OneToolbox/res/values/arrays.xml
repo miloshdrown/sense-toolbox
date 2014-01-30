@@ -39,6 +39,8 @@
     <string-array name="batt_icon">
         <item >@string/array_default</item>
         <item >@string/array_batt_icon_percentage</item>
+        <item >@string/array_batt_icon_white</item>
+        <item >@string/array_batt_icon_white_percent</item>
         <item >@string/array_batt_icon_circle</item>
         <item >@string/array_batt_icon_kitkat</item>
         <item >@string/array_batt_icon_kitkat_p</item>
@@ -47,6 +49,8 @@
     <string-array name="batt_icon_val">
         <item >1</item>
         <item >2</item>
+        <item >7</item>
+        <item >8</item>
         <item >3</item>
         <item >5</item>
         <item >6</item>
@@ -131,6 +135,8 @@
 	<array name="battery_images">
 		<item >@drawable/stat_sys_battery_100</item>
 		<item >@drawable/b_stat_sys_battery_95</item>
+		<item >@drawable/f_stat_sys_battery_preview</item>
+		<item >@drawable/g_stat_sys_battery_preview</item>
 		<item >@drawable/c_stat_sys_battery_95</item>
 		<item >@drawable/d_stat_sys_battery_preview</item>
 		<item >@drawable/e_stat_sys_battery_preview</item>

@@ -131,7 +131,7 @@
 	<string name="systemui_alarmnotify_summ">Show next alarm time instead of carrier name in notification drawer.</string>
 	<string name="next_alarm">Next alarm</string>
 	
-	<string name="cleanbeam_mods">CleanBeam Mods by vomer</string>
+	<string name="cleanbeam_mods">Statusbar icons</string>
 	<string name="cleanbeam_colortheme_title">Color theme</string>
 	<string name="cleanbeam_colortheme_summ">Global theme for all icon sets excluding multicolor ones.</string>
 	<string name="cleanbeam_colortheme_hue">Hue</string>
@@ -178,8 +178,11 @@
 	<string name="cleanbeam_tv_summ">Enable CleanBeam TV remote icon.</string>
 	<string name="cleanbeam_sunbeam_title">Install Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Install the Sunbeam Live Wallpaper.</string>
-	<string name="cleanbeam_post_title">Visit CleanBeam post</string>
-	<string name="cleanbeam_post_summ">See a preview and changelog here. Make sure to hit the \'Thanks\' button!</string>
+	<string name="cleanbeam_mods_credits_head">Credits</string>
+	<string name="cleanbeam_post_title">Vomer</string>
+	<string name="cleanbeam_post_summ">For the CleanBeam icon set and the SunBeam wallpaper.</string>
+	<string name="cleanbeam_hd2o_title">HD2Owner</string>
+	<string name="cleanbeam_hd20_summ">For additional battery icon sets.</string>
 	
 	<string name="sense_mods">Sense Mods</string>
 	<string name="sense_transparency">Transparency</string>
@@ -376,7 +379,9 @@
 	<string name="array_cam_actions_zoom_in">Zoom in</string>
 	<string name="array_cam_actions_zoom_out">Zoom out</string>
 	<string name="array_cam_actions_nothing">No change</string>
-	<string name="array_batt_icon_percentage">Percentage inside</string>
+	<string name="array_batt_icon_percentage">hd2o Sense 5 percent</string>
+	<string name="array_batt_icon_white">hd2o white</string>
+	<string name="array_batt_icon_white_percent">hd2o white percent</string>
 	<string name="array_batt_icon_circle">Circle with percentage</string>
 	<string name="array_batt_icon_kitkat">KitKat</string>
 	<string name="array_batt_icon_kitkat_p">KitKat with percentage</string>
