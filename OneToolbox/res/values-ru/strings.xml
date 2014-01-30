@@ -131,7 +131,7 @@
 	<string name="systemui_alarmnotify_summ">Отображать время следующего срабатывания будильника вместо названия оператора в панели уведомлений.</string>
 	<string name="next_alarm">След. будильник</string>
 	
-	<string name="cleanbeam_mods">Моды CleanBeam от vomer</string>
+	<string name="cleanbeam_mods">Моды статусбара</string>
 	<string name="cleanbeam_colortheme_title">Цветовая тема</string>
 	<string name="cleanbeam_colortheme_summ">Глобальный цвет для всех наборов иконок за исключением многоцветных.</string>
 	<string name="cleanbeam_colortheme_hue">Оттенок</string>
@@ -178,8 +178,8 @@
 	<string name="cleanbeam_tv_summ">CleanBeam иконка ТВ.</string>
 	<string name="cleanbeam_sunbeam_title">Установить Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Инсталяция анимированных обоев Sunbeam (Phase Beam).</string>
-	<string name="cleanbeam_post_title">Пост о CleanBeam на XDA</string>
-	<string name="cleanbeam_post_summ">Примеры иконок и список изменений. Не забудьте нажать кнопку \'Thanks\'!</string>
+	<string name="cleanbeam_post_title">Vomer</string>
+	<string name="cleanbeam_post_summ">За CleanBeam иконки и обои SunBeam.</string>
 	
 	<string name="sense_mods">Моды Sense</string>
 	<string name="sense_transparency">Прозрачность</string>
@@ -366,7 +366,7 @@
 	<string name="array_cam_actions_zoom_in">Приблизить</string>
 	<string name="array_cam_actions_zoom_out">Отдалить</string>
 	<string name="array_cam_actions_nothing">Без изменений</string>
-	<string name="array_batt_icon_percentage">С процентами внутри</string>
+	<string name="array_batt_icon_percentage">hd2o Sense 5 с процентами</string>
 	<string name="array_batt_icon_circle">Круг с процентами</string>
 	<string name="array_batt_icon_kitkat">KitKat</string>
 	<string name="array_batt_icon_kitkat_p">KitKat с процентами</string>
