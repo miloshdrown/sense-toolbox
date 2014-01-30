@@ -101,5 +101,5 @@
     <item android:drawable="@drawable/b_stat_sys_battery_97" android:maxLevel="97" />
     <item android:drawable="@drawable/b_stat_sys_battery_98" android:maxLevel="98" />
     <item android:drawable="@drawable/b_stat_sys_battery_99" android:maxLevel="99" />
-    <item android:drawable="@drawable/b_stat_sys_battery_100" android:maxLevel="101" />
+    <item android:drawable="@drawable/b_stat_sys_battery_100" android:maxLevel="100" />
 </level-list>

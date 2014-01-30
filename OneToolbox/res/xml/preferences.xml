@@ -255,11 +255,17 @@
             android:summary="@string/cleanbeam_sunbeam_summ"
             android:key="pref_key_cb_sunbeam">
 		</com.htc.preference.HtcPreference>
+		<com.htc.preference.HtcPreferenceCategory
+        	android:title="@string/cleanbeam_mods_credits_head"
+        	android:key="pref_key_cb_credits">
+        </com.htc.preference.HtcPreferenceCategory>
         <com.htc.preference.HtcPreference
             android:title="@string/cleanbeam_post_title"
             android:summary="@string/cleanbeam_post_summ">
-			<intent android:action="android.intent.action.VIEW"
-            android:data="http://forum.xda-developers.com/showpost.php?p=45123557&#038;postcount=44952" />
+		</com.htc.preference.HtcPreference>
+		<com.htc.preference.HtcPreference
+            android:title="@string/cleanbeam_hd2o_title"
+            android:summary="@string/cleanbeam_hd2o_summ">
 		</com.htc.preference.HtcPreference>
     </com.htc.preference.HtcPreferenceScreen>
     

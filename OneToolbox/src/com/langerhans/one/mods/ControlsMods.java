@@ -110,25 +110,29 @@ public class ControlsMods {
 			findAndHookMethod(clsPWM, "launchAssistAction", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-					int pref_homeassist = Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassistaction", "1"));
-					if (pref_homeassist != 1) {
-						Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-						param.setResult(null);
-						switch (pref_homeassist) {
-							case 2: GlobalActions.expandNotifications(mContext); break;
-							case 3: GlobalActions.expandEQS(mContext); break;
-							case 4: GlobalActions.lockDevice(mContext); break;
-							case 5: GlobalActions.goToSleep(mContext); break;
-							case 6: GlobalActions.takeScreenshot(mContext); break;
-							case 7: XposedHelpers.callMethod(param.thisObject, "dismissKeyguardLw"); GlobalActions.launchApp(mContext, 4); break;
-							case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassist_toggle", "0"))); break;
-							case 9: GlobalActions.killForegroundApp(mContext); break;
-						}
-					}
+					assistAndSearchPanelOverride(param);
 				}
 			});
 		} catch (Throwable t) {
 			XposedBridge.log(t);
+		}
+	}
+	
+	public static void assistAndSearchPanelOverride (final MethodHookParam param) {
+		int pref_homeassist = Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassistaction", "1"));
+		if (pref_homeassist != 1) {
+			Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+			param.setResult(null);
+			switch (pref_homeassist) {
+				case 2: GlobalActions.expandNotifications(mContext); break;
+				case 3: GlobalActions.expandEQS(mContext); break;
+				case 4: GlobalActions.lockDevice(mContext); break;
+				case 5: GlobalActions.goToSleep(mContext); break;
+				case 6: GlobalActions.takeScreenshot(mContext); break;
+				case 7: XposedHelpers.callMethod(param.thisObject, "dismissKeyguardLw"); GlobalActions.launchApp(mContext, 4); break;
+				case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassist_toggle", "0"))); break;
+				case 9: GlobalActions.killForegroundApp(mContext); break;
+			}
 		}
 	}
 	
