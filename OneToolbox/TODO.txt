@@ -44,7 +44,8 @@ Current changelog
 2.7.1
 Fixed CPU temperature display issue.
 Fixed "Swipe up from home button" action.
-Updated and new battery Icons by HD2Owner: Sense 5 with percentage and white style with and without percentage. Shoutout to HD2Owner for providing these. 
+Removing statusbar clock doesn't affect clock in notification drawer anymore.
+Updated and new battery Icons by HD2Owner: Sense 5 with percentage and white style with and without percentage. Shoutout to HD2Owner for providing these.
 
 ===========
 Translators

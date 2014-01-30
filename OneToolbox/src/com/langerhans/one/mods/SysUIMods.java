@@ -496,21 +496,18 @@ public class SysUIMods {
 	}
 	
 	public static void execHook_ClockRemove(LoadPackageParam lpparam) {
-		//Make clock invisible
-		findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook(){
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "showClock", boolean.class, new XC_MethodHook() {
 			@Override
-			protected void afterHookedMethod(MethodHookParam param)
-			{
-				((TextView)param.thisObject).setVisibility(View.GONE);
+			protected void beforeHookedMethod(MethodHookParam param) {
+				if ((Boolean)param.args[0]) param.setResult(null);
 			}
 		});
-		//Prevent clock to be shown after phone unlock
-		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "showClock", boolean.class, new XC_MethodHook(){
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateClockTime", new XC_MethodHook() {
 			@Override
-			protected void beforeHookedMethod(MethodHookParam param)
-			{
-				if((Boolean) param.args[0])
-					param.setResult(null);
+			protected void beforeHookedMethod(MethodHookParam param) {
+				ArrayList<?> mClockSet = (ArrayList<?>)XposedHelpers.getObjectField(param.thisObject, "mClockSet");
+				if (mClockSet != null && mClockSet.size() > 0) ((TextView)mClockSet.get(0)).setVisibility(8);
 			}
 		});
 	}
