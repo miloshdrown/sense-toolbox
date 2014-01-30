@@ -116,7 +116,7 @@
     <string name="systemui_brightslide_auto">Auto</string>
     <string name="systemui_dataratestatus_title">Medidor de Trafico</string>
     <string name="systemui_dataratestatus_summ">Agregar velocidad actual de subida+bajada en barra de estado. Visible solo cuando estas conectado a una red.</string>
-    <string name="cleanbeam_mods">CleanBeam Mods por vomer</string>
+    <string name="cleanbeam_mods">Iconos de Barra de Estado</string>
     <string name="cleanbeam_colortheme_title">Color del Tema</string>
     <string name="cleanbeam_colortheme_summ">Tema global para todos los conjuntos de iconos con exclusión de los multicolores.</string>
     <string name="cleanbeam_colortheme_hue">Matiz</string>
@@ -163,8 +163,8 @@
     <string name="cleanbeam_tv_summ">Habilitar icono de TV remoto CleanBeam.</string>
     <string name="cleanbeam_sunbeam_title">Instalar Sunbeam</string>
     <string name="cleanbeam_sunbeam_summ">Instalar el Sunbeam Live Wallpaper.</string>
-    <string name="cleanbeam_post_title">Visitar el tema de CleanBeam</string>
-    <string name="cleanbeam_post_summ">Vea una muestra y lista de cambios aquí. Recuerda dar clic en el botón \'Gracias\'!</string>
+    <string name="cleanbeam_post_title">Vomer</string>
+    <string name="cleanbeam_post_summ">Para los iconos CleanBeam y fondo de pantalla SunBeam.</string>
     <string name="sense_mods">Sense Mods</string>
     <string name="sense_transparency">Transparencia</string>
     <string name="sense_homescreen">Pantalla de Inicio</string>
@@ -348,7 +348,7 @@
 	<string name="array_cam_actions_zoom_in">Acercar</string>
 	<string name="array_cam_actions_zoom_out">Alejar</string>
 	<string name="array_cam_actions_nothing">Sin Cambio</string>
-	<string name="array_batt_icon_percentage">Porcentaje adentro</string>
+	<string name="array_batt_icon_percentage">HD2O Sense 5 con Porcentaje</string>
 	<string name="array_batt_icon_circle">Circular con porcentaje</string>
 	<string name="array_batt_icon_kitkat">KitKat</string>
 	<string name="array_batt_icon_kitkat_p">KitKat con porcentaje</string>
