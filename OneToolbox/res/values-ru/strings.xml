@@ -431,4 +431,10 @@
 	<string name="about_l10n_data_left">Хорватский\nГолландский\nИтальянский\nПольский\nИспанский</string>
 	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
 	
+	<string name="cleanbeam_mods_credits_head">Благодарности</string>
+	<string name="cleanbeam_hd2o_title">HD2Owner</string>
+	<string name="cleanbeam_hd2o_summ">За дополнительные наборы иконок батареи.</string>
+	
+	<string name="array_batt_icon_white">hd2o белая</string>
+	<string name="array_batt_icon_white_percent">hd2o белая с процентами</string>
 	</resources>
