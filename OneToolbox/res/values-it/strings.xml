@@ -433,4 +433,5 @@
 	<string name="array_header_click_clock">Apri app Orologio</string>
 	<string name="array_header_click_sysinfo">Mostra/nascondi info CPU e RAM, apri l\'app Orologio premendo l\'ora.</string>
 	
-</resources>
+<string name="cleanbeam_hd2o_title">HD2Owner</string>
+	</resources>
