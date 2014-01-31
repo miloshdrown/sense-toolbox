@@ -434,4 +434,9 @@
 	
 <string name="module_not_active">Sense 5 Toolbox module is niet actief! Open Xposed Installer, activeer de module en herstart het toestel.</string>
     <string name="cleanbeam_hd2o_title">HD2Owner</string>
+	<string name="cleanbeam_mods_credits_head">Credits</string>
+	<string name="cleanbeam_hd2o_summ">Voor additionele batterij-icoon sets.</string>
+	
+	<string name="array_batt_icon_white">hd2o wit</string>
+	<string name="array_batt_icon_white_percent">hd2o wit procent</string>
 	</resources>
