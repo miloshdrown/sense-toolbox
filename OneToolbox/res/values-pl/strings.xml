@@ -126,7 +126,7 @@
     <string name="systemui_dataratestatus_title">Licznik danych</string>
 	<string name="systemui_dataratestatus_summ">Dodaj licznik prędkości ściągania i wysyłania danych do paska statusu. Widoczny tylko w przypadku połączenia z siecią.</string>
     
-    <string name="cleanbeam_mods">Modyfikacje CleanBeam od vomer</string>
+    <string name="cleanbeam_mods">Ikony paska stanu</string>
 	<string name="cleanbeam_colortheme_title">Kolor motywu</string>
 	<string name="cleanbeam_colortheme_summ">Globalny motyw dla wszystkich zestawów ikon, z wyłączeniem tych, wielokolorowych.</string>
 	<string name="cleanbeam_colortheme_hue">Barwa</string>
@@ -173,8 +173,8 @@
 	<string name="cleanbeam_tv_summ">Włącz ikonę CleanBeam pilota TV.</string>
     <string name="cleanbeam_sunbeam_title">Zainstaluj Sunbeam</string>
     <string name="cleanbeam_sunbeam_summ">Zainstaluj żywe tapety Sunbeam.</string>
-    <string name="cleanbeam_post_title">Odwiedź CleanBeam</string>
-    <string name="cleanbeam_post_summ">Zobacz zapowiedź i listę zmian tutaj. Upewnij się, aby trafić w przycisk Dzięki!</string>
+    <string name="cleanbeam_post_title">Vomer</string>
+    <string name="cleanbeam_post_summ">Dla zestawu ikon CleanBeam i tapet Sunbeam.</string>
     
     <string name="sense_mods">Modyfikacje Sense</string>
     <string name="sense_transparency">Przezroczystość</string>
@@ -359,7 +359,7 @@
 	<string name="array_cam_actions_zoom_in">Powiększ</string>
 	<string name="array_cam_actions_zoom_out">Pomniejsz</string>
 	<string name="array_cam_actions_nothing">Bez zmian</string>
-	<string name="array_batt_icon_percentage">Domyślnie z procentami</string>
+	<string name="array_batt_icon_percentage">hd2o Sense 5 procent</string>
 	<string name="array_batt_icon_circle">Koło z procentami</string>
 	<string name="array_batt_icon_kitkat">KitKat</string>
 	<string name="array_batt_icon_kitkat_p">KitKat z procentami</string>
@@ -437,4 +437,9 @@
 	<string name="about_l10n">Tłumaczenia</string>
 	<string name="about_l10n_data_left">Chorwacki↵\nHolenderski↵\nWłoski↵\nPolski↵\nHiszpański↵</string>
 	<string name="module_not_active">Sense 5 Toolbox nie jest aktywny! Otwórz Xposed Instalator, aktywuj moduł i wykonaj restart.</string>
-    </resources>
+    <string name="array_batt_icon_white_percent">hd2o biały procent</string>
+	<string name="cleanbeam_mods_credits_head">Autor</string>
+	<string name="cleanbeam_hd2o_summ">Dodatkowe zestawy ikon baterii.</string>
+	
+	<string name="array_batt_icon_white">hd2o biały</string>
+	</resources>
