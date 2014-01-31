@@ -441,4 +441,5 @@
 	<string name="about_l10n_data_left">Croatian\nDutch\nItalian\nPolish\nSpanish</string>
 	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
 	
-	</resources>
+	<string name="module_not_active">Das Sense 5 Toolbox Xposed Modul ist nicht aktiv. Bitte aktiviere es im Xposed Installer und starte das Handy neu.</string>
+    </resources>
