@@ -431,4 +431,5 @@
 	<string name="array_header_click_clock">Otvori aplikaciju Sat</string>
 	<string name="array_header_click_sysinfo">Prikaži/sakrij CPU i RAM informacije, otvori aplikaciju Sat pritiskom na tretnutno vrijeme.</string>
 	
-</resources>
+<string name="cleanbeam_hd2o_title">HD2Owner</string>
+	</resources>
