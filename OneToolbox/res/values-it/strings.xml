@@ -139,8 +139,8 @@
 	<string name="cleanbeam_beats_summ">Abilita le icone CleanBeam per Beats.</string>
 	<string name="cleanbeam_profile_title">Profilo audio</string>
 	<string name="cleanbeam_profile_summ">Abilita le icone CleanBeam per i profili audio.</string>
-	<string name="cleanbeam_alarm_title">Sveglia</string>
-	<string name="cleanbeam_alarm_summ">Abilita le icone CleanBeam per la sveglia.</string>
+	<string name="cleanbeam_alarm_title">Allarme</string>
+	<string name="cleanbeam_alarm_summ">Abilita le icone CleanBeam per l\'allarme.</string>
 	<string name="cleanbeam_wifi_title">Wi-Fi</string>
 	<string name="cleanbeam_wifi_summ">Cambia l\'aspetto dell\'icona WiFi.</string>
 	<string name="cleanbeam_sync_title">Sincronizzazione</string>
@@ -170,7 +170,7 @@
 	<string name="cleanbeam_post_title">Vomer</string>
 	<string name="cleanbeam_post_summ">Per le icone CleanBeam e lo sfondo SunBeam.</string>
 	
-	<string name="sense_mods">Modifiche Sense</string>
+	<string name="sense_mods">Mod Sense</string>
 	<string name="sense_transparency">Trasparenza</string>
 	<string name="sense_homescreen">Schermata Home</string>
 	<string name="sense_appdrawer">Elenco app</string>
@@ -412,9 +412,9 @@
 	<string name="array_large_photo_max">Massimizzato</string>
 	<string name="cpu_mhz">MHz</string>
     
-    <string name="systemui_alarmnotify_title">Mostra prossima sveglia</string>
-	<string name="systemui_alarmnotify_summ">Mostra l\'orario della prossima sveglia al posto del nome del provider nel menu notifiche.</string>
-	<string name="next_alarm">Prossima sveglia</string>
+    <string name="systemui_alarmnotify_title">Mostra prossimo allarme</string>
+	<string name="systemui_alarmnotify_summ">Mostra l\'orario del prossimo allarme al posto del nome del provider nel menu notifiche.</string>
+	<string name="next_alarm">Prossimo allarme</string>
 	
 	<string name="sense_shakeaction_title">Movimento scuoti</string>
 	<string name="sense_shakeaction_summ">Cosa eseguire in caso di scuotimento del dispositivo nelle schermate Home.</string>
