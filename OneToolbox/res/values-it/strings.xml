@@ -120,7 +120,7 @@
 	<string name="systemui_dataratestatus_title">Controllo traffico dati</string>
 	<string name="systemui_dataratestatus_summ">Visualizza la velocità di download+upload nella barra di stato. Sarà visibile solo se il dispositivo è connesso ad una rete.</string>
 	
-	<string name="cleanbeam_mods">CleanBeam Mods by vomer</string>
+	<string name="cleanbeam_mods">Icone della barra di stato</string>
 	<string name="cleanbeam_colortheme_title">Tema colore</string>
 	<string name="cleanbeam_colortheme_summ">Tema globale per tutti i set di icone, tranne quelli multicolore.</string>
 	<string name="cleanbeam_colortheme_hue">Tonalità</string>
@@ -167,10 +167,10 @@
 	<string name="cleanbeam_tv_summ">Abilita le icone CleanBeam per il telecomando.</string>
 	<string name="cleanbeam_sunbeam_title">Installa Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Installa lo sfondo live Sunbeam.</string>
-	<string name="cleanbeam_post_title">Vai al post CleanBeam</string>
-	<string name="cleanbeam_post_summ">Qui puoi vedere un\'anteprima e il changelog. Ricordati di premere il tasto \'Grazie\'!</string>
+	<string name="cleanbeam_post_title">Vomer</string>
+	<string name="cleanbeam_post_summ">Per le icone CleanBeam e lo sfondo SunBeam.</string>
 	
-	<string name="sense_mods">Mod Sense</string>
+	<string name="sense_mods">Modifiche Sense</string>
 	<string name="sense_transparency">Trasparenza</string>
 	<string name="sense_homescreen">Schermata Home</string>
 	<string name="sense_appdrawer">Elenco app</string>
@@ -353,7 +353,7 @@
 	<string name="array_cam_actions_zoom_in">Zoom in</string>
 	<string name="array_cam_actions_zoom_out">Zoom out</string>
 	<string name="array_cam_actions_nothing">Nessuna modifica</string>
-	<string name="array_batt_icon_percentage">Percentuale all\'interno</string>
+	<string name="array_batt_icon_percentage">hd2o Sense 5 percentuale</string>
 	<string name="array_batt_icon_circle">Circolare con percentuale</string>
 	<string name="array_batt_icon_kitkat">KitKat</string>
 	<string name="array_batt_icon_kitkat_p">KitKat con percentuale</string>
@@ -434,4 +434,10 @@
 	<string name="array_header_click_sysinfo">Mostra/nascondi info CPU e RAM, apri l\'app Orologio premendo l\'ora.</string>
 	
 <string name="cleanbeam_hd2o_title">HD2Owner</string>
+	<string name="cleanbeam_mods_credits_head">Ringraziamenti</string>
+	<string name="cleanbeam_hd2o_summ">Per set aggiuntivi di icone della batteria.</string>
+	
+	<string name="module_not_active">Il modulo Sense 5 Toolbox non è attivo! Apri Xposed Installer, attiva il modulo e riavvia il dispositivo.</string>
+    <string name="array_batt_icon_white">hd2o bianco</string>
+	<string name="array_batt_icon_white_percent">hd2o bianco percentuale</string>
 	</resources>
