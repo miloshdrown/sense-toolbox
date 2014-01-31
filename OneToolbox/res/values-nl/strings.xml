@@ -432,4 +432,5 @@
 	<string name="array_header_click_clock">Open Klok app</string>
 	<string name="array_header_click_sysinfo">Laat zien/verberg CPU en RAM info, open Klok app door te drukken op actuele tijd.</string>
 	
-</resources>
+<string name="module_not_active">Sense 5 Toolbox module is niet actief! Open Xposed Installer, activeer de module en herstart het toestel.</string>
+    </resources>
