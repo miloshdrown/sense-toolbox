@@ -485,6 +485,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		    
 		    if (pref.getBoolean("pref_key_controls_swapvolume", false))
 		    	ControlsMods.exec_SwapVolumeCCWLand(lpparam);
+		    
+		    if (pref.getBoolean("pref_key_sysui_invisibar_enable", false) && Build.VERSION.SDK_INT >= 19)
+		    	SysUIMods.execHook_anotherTSB44Fix(lpparam);
 		}
 	}
 }

@@ -1507,6 +1507,19 @@ public class SysUIMods {
 			});
 		} catch (Throwable ignore) {}
 	}
+	
+	public static void execHook_anotherTSB44Fix(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.internal.policy.impl.BarController", lpparam.classLoader, "applyTranslucentFlagLw", findClass("android.view.WindowManagerPolicy.WindowState", lpparam.classLoader), int.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					String window = param.args[0].toString();
+					if (window.contains("Keyguard"))
+						param.setResult(param.args[2]);
+				}
+			});
+		} catch (Throwable ignore) {}
+	}
 
 	//On 4.4.2 (and maybe 4.4 too) Assist is handled by SystemUI. Try to patch it, silently fail otherwise.
 	public static void execHook_OverrideAssist(LoadPackageParam lpparam) {
