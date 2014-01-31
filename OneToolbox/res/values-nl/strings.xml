@@ -124,7 +124,7 @@
 	<string name="systemui_dataratestatus_title">Verkeer meter</string>
 	<string name="systemui_dataratestatus_summ">Voeg huidige down- en uploadsnelheid toe aan de statusbalk. Alleen zichtbaar wanneer het apparaat is verbonden met een netwerk.</string>
 	
-	<string name="cleanbeam_mods">CleanBeam modificaties door Vomer</string>
+	<string name="cleanbeam_mods">Statusbalk iconen</string>
 	<string name="cleanbeam_colortheme_title">Kleur thema</string>
 	<string name="cleanbeam_colortheme_summ">Globaal thema voor alle iconen sets behalve multicolor iconen.</string>
 	<string name="cleanbeam_colortheme_hue">Tint</string>
@@ -171,8 +171,8 @@
 	<string name="cleanbeam_tv_summ">CleanBeam TV icoon inschakelen.</string>
 	<string name="cleanbeam_sunbeam_title">Sunbeam installeren</string>
 	<string name="cleanbeam_sunbeam_summ">Installeer Sunbeam Live Achtergrond.</string>
-	<string name="cleanbeam_post_title">Bezoek CleanBeam post</string>
-	<string name="cleanbeam_post_summ">Bekijk hier een preview en de changelog. Vergeet niet op de \'Thanks\' knop te drukken!</string>
+	<string name="cleanbeam_post_title">Vomer</string>
+	<string name="cleanbeam_post_summ">Voor de CleanBeam iconen set en de SunBeam achtergrond afbeelding.</string>
 	
 	<string name="sense_mods">Sense Aanpassingen</string>
 	<string name="sense_transparency">Transparantie</string>
@@ -357,7 +357,7 @@
 	<string name="array_cam_actions_zoom_in">Inzoomen</string>
 	<string name="array_cam_actions_zoom_out">Uitzoomen</string>
 	<string name="array_cam_actions_nothing">Geen wijziging</string>
-	<string name="array_batt_icon_percentage">Percentage binnenin</string>
+	<string name="array_batt_icon_percentage">hd2o Sense 5 procent</string>
 	<string name="array_batt_icon_circle">Cirkel met percentage</string>
 	<string name="array_batt_icon_kitkat">KitKat</string>
 	<string name="array_batt_icon_kitkat_p">KitKat met percentage</string>
