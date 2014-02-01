@@ -262,7 +262,7 @@
     <string name="kill_foreground_yes">Wiem</string>
     <string name="kill_foreground_no">Przerwij!</string>
     
-    <string name="various_mods">Różne Modyfikacje</string>
+    <string name="various_mods">Różne modyfikacje</string>
 	<string name="various_mods_screenanim">Animacje ekranu</string>
 	<string name="various_screenon_title">Włącz animację</string>
 	<string name="various_screenon_summ">Animacja włączania ekranu</string>
