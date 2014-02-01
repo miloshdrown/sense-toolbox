@@ -174,7 +174,7 @@
 	<string name="cleanbeam_post_title">Vomer</string>
 	<string name="cleanbeam_post_summ">Voor de CleanBeam iconen set en de SunBeam achtergrond afbeelding.</string>
 	
-	<string name="sense_mods">Sense Aanpassingen</string>
+	<string name="sense_mods">Sense aanpassingen</string>
 	<string name="sense_transparency">Transparantie</string>
 	<string name="sense_homescreen">Thuisscherm</string>
 	<string name="sense_appdrawer">App overzicht</string>
@@ -218,7 +218,7 @@
 	<string name="notselected">Niet geselecteerd</string>
 	<string name="loading_app_data">Apps worden geladen…</string>
 	
-	<string name="message_mods">Berichten Aanpassingen</string>
+	<string name="message_mods">Berichten aanpassingen</string>
 	<string name="message_smsmms_title">SMS -&gt; MMS conversie uitschakelen</string>
 	<string name="message_smsmms_summ">Aanvinken om te voorkomen dat o.b.v. karakter limiet SMS wordt geconverteerd naar MMS. Eventuele limieten van het netwerk blijven bestaan.</string>
 	<string name="message_smswake_title">Ontwaken bij SMS</string>
@@ -232,7 +232,7 @@
 	<string name="message_eassecurity_title">Exchange beveiliging aanpassing</string>
 	<string name="message_eassecurity_summ">Verwijder Exchange policies. Alleen voor nieuw toegevoegde accounts.</string>
 	
-	<string name="controls_mods">Besturing Aanpassingen</string>
+	<string name="controls_mods">Besturing aanpassingen</string>
 	<string name="controls_mods_backlongpress">Terugknop lang indrukken</string>
 	<string name="controls_backlongpressaction_title">Actie</string>
 	<string name="controls_backlongpressaction_summ">Actie bij lang indrukken van de terugknop.</string>
@@ -260,7 +260,7 @@
 	<string name="kill_foreground_yes">Dat weet ik</string>
 	<string name="kill_foreground_no">Afbreken!</string>
 	
-	<string name="various_mods">Overige Aanpassingen</string>
+	<string name="various_mods">Overige aanpassingen</string>
 	<string name="various_mods_screenanim">Schermanimaties</string>
 	<string name="various_screenon_title">Aan animatie</string>
 	<string name="various_screenon_summ">Animatie bij inschakelen van het scherm</string>
