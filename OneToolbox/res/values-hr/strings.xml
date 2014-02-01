@@ -432,4 +432,10 @@
 	<string name="array_header_click_sysinfo">Prikaži/sakrij CPU i RAM informacije, otvori aplikaciju Sat pritiskom na tretnutno vrijeme.</string>
 	
 <string name="cleanbeam_hd2o_title">HD2Owner</string>
+	<string name="module_not_active">Sense 5 Toolbox nije aktivan! Otvoreite Xposed Installer, aktivirajte modul i ponovno pokrenite uređaj.</string>
+    <string name="cleanbeam_mods_credits_head">Zasluge</string>
+	<string name="cleanbeam_hd2o_summ">Za dodatni set ikona baterije.</string>
+	
+	<string name="array_batt_icon_white">hd2o bijelo</string>
+	<string name="array_batt_icon_white_percent">hd2o bijelo postotak</string>
 	</resources>
