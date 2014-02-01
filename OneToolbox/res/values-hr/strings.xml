@@ -124,7 +124,7 @@
 	<string name="systemui_dataratestatus_title">Brojilo prometa</string>
 	<string name="systemui_dataratestatus_summ">Dodati trenutnu brzinu za download+upload u statusnu traku. Vidljivo samo kada je uređaj spojen na bilo koju mrežu.</string>
 	
-	<string name="cleanbeam_mods">CleanBeam Modovi od vomer-a</string>
+	<string name="cleanbeam_mods">Ikone statusne trake</string>
 	<string name="cleanbeam_colortheme_title">Boja teme</string>
 	<string name="cleanbeam_colortheme_summ">Globalna tema za sve setove ikona osim onih u multikoloru.</string>
 	<string name="cleanbeam_colortheme_hue">Nijansa</string>
@@ -171,8 +171,8 @@
 	<string name="cleanbeam_tv_summ">Omogućiti CleanBeam ikonu daljinskog za TV.</string>
 	<string name="cleanbeam_sunbeam_title">Instaliraj Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Instaliraj SunBeam živu pozadinu.</string>
-	<string name="cleanbeam_post_title">Posjeti CelanBeam post</string>
-	<string name="cleanbeam_post_summ">Vidi pregled i popis izmjena ovdje. Stisnite \"Thanks\" gumb!</string>
+	<string name="cleanbeam_post_title">Vomer</string>
+	<string name="cleanbeam_post_summ">Za set CleanBeam ikona i SunBeam pozadinu.</string>
 	
 	<string name="sense_mods">Sense Modovi (prilagodba)</string>
 	<string name="sense_transparency">Transparentnost</string>
@@ -356,7 +356,7 @@
 	<string name="array_cam_actions_zoom_in">Zumirati</string>
 	<string name="array_cam_actions_zoom_out">Odzumirati</string>
 	<string name="array_cam_actions_nothing">Bez promjene</string>
-	<string name="array_batt_icon_percentage">Postotak unutra</string>
+	<string name="array_batt_icon_percentage">hd20 Sense 5 postotak</string>
 	<string name="array_batt_icon_circle">Krug sa postotkom</string>
 	<string name="array_batt_icon_kitkat">KitKat</string>
 	<string name="array_batt_icon_kitkat_p">KitKat sa postotkom</string>
@@ -432,7 +432,7 @@
 	<string name="array_header_click_sysinfo">Prikaži/sakrij CPU i RAM informacije, otvori aplikaciju Sat pritiskom na tretnutno vrijeme.</string>
 	
 <string name="cleanbeam_hd2o_title">HD2Owner</string>
-	<string name="module_not_active">Sense 5 Toolbox nije aktivan! Otvoreite Xposed Installer, aktivirajte modul i ponovno pokrenite uređaj.</string>
+	<string name="module_not_active">Sense 5 Toolbox nije aktivan! Otvorite Xposed Installer, aktivirajte modul i ponovno pokrenite uređaj.</string>
     <string name="cleanbeam_mods_credits_head">Zasluge</string>
 	<string name="cleanbeam_hd2o_summ">Za dodatni set ikona baterije.</string>
 	
