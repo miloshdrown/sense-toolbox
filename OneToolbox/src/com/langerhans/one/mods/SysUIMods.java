@@ -1510,12 +1510,14 @@ public class SysUIMods {
 	
 	public static void execHook_anotherTSB44Fix(LoadPackageParam lpparam) {
 		try {
-			findAndHookMethod("com.android.internal.policy.impl.BarController", lpparam.classLoader, "applyTranslucentFlagLw", findClass("android.view.WindowManagerPolicy.WindowState", lpparam.classLoader), int.class, int.class, new XC_MethodHook() {
+			findAndHookMethod("com.android.internal.policy.impl.BarController", lpparam.classLoader, "applyTranslucentFlagLw", "android.view.WindowManagerPolicy.WindowState", int.class, int.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-					String window = param.args[0].toString();
-					if (window.contains("Keyguard"))
-						param.setResult(param.args[2]);
+					Object win = param.args[0];
+					if (win != null) {
+						if (win.toString().contains("Keyguard"))
+							param.setResult(param.args[2]);
+					}
 				}
 			});
 		} catch (Throwable ignore) {}

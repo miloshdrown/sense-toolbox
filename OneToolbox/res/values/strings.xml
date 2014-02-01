@@ -92,9 +92,9 @@
 	<string name="launch_app">Launch app</string>
 	<string name="toggle_settings">Toggle setting</string>
 	
-	<string name="camera_mods">Camera Mods</string>
+	<string name="camera_mods">Camera mods</string>
 	
-	<string name="systemui_mods">Interface Mods</string>
+	<string name="systemui_mods">Interface mods</string>
 	<string name="systemui_statusbar">Status Bar and Notification Drawer</string>
 	<string name="systemui_tsb_title">Transparent status bar</string>
 	<string name="systemui_tsb_summ">Make the status bar transparent.</string>
@@ -184,7 +184,7 @@
 	<string name="cleanbeam_hd2o_title">HD2Owner</string>
 	<string name="cleanbeam_hd2o_summ">For additional battery icon sets.</string>
 	
-	<string name="sense_mods">Sense Mods</string>
+	<string name="sense_mods">Sense mods</string>
 	<string name="sense_transparency">Transparency</string>
 	<string name="sense_homescreen">Home screen</string>
 	<string name="sense_appdrawer">App drawer</string>
@@ -231,7 +231,7 @@
 	<string name="loading_app_data">Loading apps&#8230;</string>
 	<string name="locked_warning">Please unlock launcher first!</string>
 	
-	<string name="message_mods">Messaging Mods</string>
+	<string name="message_mods">Messaging mods</string>
 	<string name="message_smsmms_title">Disable SMS -> MMS conversion</string>
 	<string name="message_smsmms_summ">Check to disable the forced SMS to MMS conversion by the character limit. Network limitations still apply.</string>
 	<string name="message_smswake_title">Wake on SMS</string>
@@ -245,7 +245,7 @@
 	<string name="message_eassecurity_title">Exchange security mod</string>
 	<string name="message_eassecurity_summ">Removes Exchange security policies. Only for newly added accounts.</string>
 	
-	<string name="controls_mods">Controls Mods</string>
+	<string name="controls_mods">Controls mods</string>
 	<string name="controls_mods_backlongpress">Back button long press</string>
 	<string name="controls_backlongpressaction_title">Action</string>
 	<string name="controls_backlongpressaction_summ">Action for back button long press.</string>
@@ -273,7 +273,7 @@
 	<string name="kill_foreground_yes">I know</string>
 	<string name="kill_foreground_no">Abort!</string>
 	
-	<string name="various_mods">Various Mods</string>
+	<string name="various_mods">Various mods</string>
 	<string name="various_mods_screenanim">Screen animations</string>
 	<string name="various_screenon_title">On animation</string>
 	<string name="various_screenon_summ">Animation for turning screen on</string>
