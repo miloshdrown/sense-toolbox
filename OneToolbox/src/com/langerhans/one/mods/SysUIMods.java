@@ -1514,10 +1514,8 @@ public class SysUIMods {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 					Object win = param.args[0];
-					if (win != null) {
-						if (win.toString().contains("Keyguard"))
-							param.setResult(param.args[2]);
-					}
+					if (win != null && win.toString().contains("Keyguard"))
+						param.setResult(param.args[2]);
 				}
 			});
 		} catch (Throwable ignore) {}
