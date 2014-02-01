@@ -45,6 +45,7 @@ Current changelog
 Fixed CPU temperature display issue.
 Fixed "Swipe up from home button" action.
 Removing statusbar clock doesn't affect clock in notification drawer anymore.
+Fixed statusbar turning white after unlock if an app is running.
 Updated and new battery Icons by HD2Owner: Sense 5 with percentage and white style with and without percentage. Shoutout to HD2Owner for providing these.
 
 ===========
