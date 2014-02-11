@@ -40,12 +40,9 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Current changelog
 =================
 
-2.7.1
-Fixed CPU temperature display issue.
-Fixed "Swipe up from home button" action.
-Removing statusbar clock doesn't affect clock in notification drawer anymore.
-Fixed statusbar turning white after unlock if an app is running.
-Updated and new battery Icons by HD2Owner: Sense 5 with percentage and white style with and without percentage. Shoutout to HD2Owner for providing these.
+2.8
+Mod to block hardreset toast and power menu when device is locked
+Added French transaltion by @Hsuan24
 
 ===========
 Translators
@@ -63,10 +60,19 @@ Italian: teorouge
 http://forum.xda-developers.com/member.php?u=1113480
 Croatian: ico86
 http://forum.xda-developers.com/member.php?u=2027432
+French: Hsuan24
+http://forum.xda-developers.com/member.php?u=5379502
 
 ==============
 Old Changelogs
 ==============
+
+2.7.1
+Fixed CPU temperature display issue.
+Fixed "Swipe up from home button" action.
+Removing statusbar clock doesn't affect clock in notification drawer anymore.
+Fixed statusbar turning white after unlock if an app is running.
+Updated and new battery Icons by HD2Owner: Sense 5 with percentage and white style with and without percentage. Shoutout to HD2Owner for providing these.
 
 2.7
 Large photo and 2-line caller name in dialer and lockscreen
