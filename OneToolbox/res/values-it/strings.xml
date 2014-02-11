@@ -440,4 +440,7 @@
 	<string name="module_not_active">Il modulo Sense 5 Toolbox non è attivo! Apri Xposed Installer, attiva il modulo e riavvia il dispositivo.</string>
     <string name="array_batt_icon_white">hd2o bianco</string>
 	<string name="array_batt_icon_white_percent">hd2o bianco percentuale</string>
+	<string name="various_securelock_title">Modifica blocca schermo</string>
+	<string name="various_securelock_summ">Disabilita il menu di spegnimento e la notifica di reset hardware quando il blocca schermo è attivo.</string>
+	
 	</resources>
