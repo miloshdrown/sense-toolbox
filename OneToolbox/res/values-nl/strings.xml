@@ -281,7 +281,7 @@
 	<string name="various_mtpnotif_title">MTP notificatie verbergen</string>
 	<string name="various_mtpnotif_summ">Schakel de MTP service naar de achtergrond en schakel de notificatie uit. Aanpassing is voor ROMs gebaseerd op gelekte 4.3.</string>
 	<string name="various_fastunlock_title">Snel ontgrendelen</string>
-	<string name="various_fastunlock_summ">Ontgrendel het apparaat zodra de juiste PIN is ingevoerd. Alleen voor HTC vergrendelingsscherm.</string>
+	<string name="various_fastunlock_summ">Ontgrendel het apparaat zodra de juiste PIN is ingevoerd. Alleen voor HTC vergrendelscherm.</string>
 	<string name="various_ytwatermark_title">Youtube kanaal watermerk</string>
 	<string name="various_ytwatermark_summ">Verberg kanaallogo\'s in video\'s in de YouTube app.</string>
 	<string name="various_oldtoasts_title">Toasts in Jelly Bean stijl</string>
