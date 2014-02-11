@@ -268,7 +268,7 @@
     <string name="various_mtpnotif_title">Ocultar notificación MTP</string>
     <string name="various_mtpnotif_summ">Hacer servicio MTP correr de fondo y desactivar notificación. Este Mod esta para ROMs basadas en Android 4.3.</string>
     <string name="various_fastunlock_title">Desbloqueo rápido</string>
-    <string name="various_fastunlock_summ">Desbloquear tan pronto digite PIN correcto. Solo en bloqueo HTC.</string>
+    <string name="various_fastunlock_summ">Desbloquear cuando digite PIN o contraseña correcta. Solo en bloqueo HTC.</string>
     <string name="various_ytwatermark_title">Marca de canales de YouTube</string>
     <string name="various_ytwatermark_summ">Ocultar marca de canales en los vídeos de YouTube.</string>
     <string name="various_oldtoasts_title">Avisos estilo Jelly Bean</string>
@@ -432,4 +432,7 @@
 	
 	<string name="array_batt_icon_white">HD2O Blanco</string>
 	<string name="array_batt_icon_white_percent">HD2O Blanco y Porcentaje</string>
+	<string name="various_securelock_title">Mejorar pantalla de bloqueo</string>
+	<string name="various_securelock_summ">Desactivar menú de apagado y aviso de reinicio forzado mientras el bloqueo este activo.</string>
+	
 	</resources>
