@@ -439,4 +439,7 @@
 	
 	<string name="array_batt_icon_white">hd2o wit</string>
 	<string name="array_batt_icon_white_percent">hd2o wit procent</string>
+	<string name="various_securelock_title">Verbeterde schermvergrendeling</string>
+	<string name="various_securelock_summ">Power menu en hardware reset melding uitschakelen indien de schermvergrendeling actief is.</string>
+	
 	</resources>
