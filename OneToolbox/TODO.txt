@@ -33,7 +33,6 @@ Ideas
 - Owner/carrier info on Lockscreen
 - LED Notification thing: http://forum.xda-developers.com/showthread.php?p=49535219
 - Xposed Preference Injector: http://forum.xda-developers.com/showthread.php?t=2615647
-- Block HW reset toast and Power Menu when device is locked
 
 http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 

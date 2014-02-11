@@ -74,6 +74,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pref.getBoolean("pref_key_other_oldtoasts", false))
 			OtherMods.exec_OldStyleToasts(MODULE_PATH);
+		
+		if (pref.getBoolean("pref_key_other_securelock", false))
+			OtherMods.execHook_EnhancedSecurity();
 	}
 
 	@Override
