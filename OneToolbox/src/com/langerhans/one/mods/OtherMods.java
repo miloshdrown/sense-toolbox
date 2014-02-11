@@ -14,6 +14,7 @@ import com.langerhans.one.utils.Version;
 import android.animation.ObjectAnimator;
 import android.app.Activity;
 import android.app.Dialog;
+import android.app.KeyguardManager;
 import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
@@ -229,7 +230,6 @@ public class OtherMods{
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				final Object mLockPatternUtils = getObjectField(param.thisObject, "mLockPatternUtils");
 				final AutoCompleteTextView mPasswordEntry = (AutoCompleteTextView) getObjectField(param.thisObject, "mPasswordEntry");
-				XposedBridge.log(mLockPatternUtils.toString() + mPasswordEntry.toString());
 				if (mLockPatternUtils != null && mPasswordEntry != null)
 				{
 					mPasswordEntry.removeTextChangedListener((TextWatcher) getObjectField(param.thisObject, "mTextChangeListener"));
@@ -763,6 +763,26 @@ public class OtherMods{
 					Enum<?> disconnectcause = (Enum<?>)param.args[1];
 					if (disconnectcause.ordinal() == 16)
 					param.args[1] = XposedHelpers.getStaticObjectField(findClass("com.android.internal.telephony.Connection.DisconnectCause", null), "NORMAL");
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+	}
+	
+	public static void execHook_EnhancedSecurity() {
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptPowerKeyDown", boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				try {
+					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					KeyguardManager kgMgr = (KeyguardManager)mPWMContext.getSystemService(Context.KEYGUARD_SERVICE);
+					if (kgMgr.isKeyguardLocked() && kgMgr.isKeyguardSecure()) {
+						XposedHelpers.setObjectField(param.thisObject, "mPowerKeyHandled", true);
+						XposedHelpers.setObjectField(param.thisObject, "mPowerKeyPressed", true);
+						XposedHelpers.setObjectField(param.thisObject, "mShouldTurnOffOnKeyUp", false);
+						param.setResult(null);
+					}
 				} catch (Throwable t) {
 					XposedBridge.log(t);
 				}
