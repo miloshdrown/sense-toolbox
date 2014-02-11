@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="menu_save">Sauvegarder</string>
     <string name="app_name">Sense 5 Toolbox</string>
@@ -11,16 +11,16 @@
     <string name="soft_reboot">Redémarrage doux</string>
     <string name="ram_mb">MB</string>
     <string name="cpu_mhz">MHz</string>
-    <string name="warning">Attention!</string>
+    <string name="warning">Attention !</string>
     <string name="xposed_not_installed">Xposed Framework n'est pas proprement installé, vous devez installer app_process et XposedBridge.jar de Xposed Installer, puis activer le module Sense 5 Toolbox et redémarrer.</string>
     <string name="module_not_active">Le module Sense 5 Toolbox n'est pas activé! Ouvrez Xposed Installer, activer le module et redémarrer.</string>
-    <string name="welcome">Bienvenue à Sense 5 Toolbox!</string>
+    <string name="welcome">Bienvenue à Sense 5 Toolbox !</string>
     <string name="dragndrop">Ulisez glisser-déposer pour réarranger vos paramètres rapides.</string>
     <string name="title_delete">Tappez juste sur la tuile pour la supprimer.</string>
     <string name="plus_icon">Utilisez l'icône '+' pour ajouter des tuiles.</string>
-    <string name="save_settings">N'oubliez pas d'enregistrer vos paramètres!</string>
+    <string name="save_settings">N\'oubliez pas d\'enregistrer vos paramètres !</string>
     <string name="restore_layout">Tappez l'icône restauré pour rétablir votre disposition. Cela chargera la dernière configuration enregistrée.</string>
-    <string name="xposed_mods">S'il vous plaît, notez que les mods dans la table 'MODS' fonctionnent seulement si vous avez Xposed installé!</string>
+    <string name="xposed_mods">S\'il vous plaît, notez que les mods dans la table \'MODS\' fonctionnent seulement si vous avez Xposed installé !</string>
     <string name="apm_title">Choisir l'option de redémarrage</string>
     <string name="apm_normal_title">Redémarrer</string>
     <string name="apm_normal_summ">Ferme toutes les app et redémarre l'appareil</string>
@@ -41,22 +41,22 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n'es
     <string name="xposed_not_found">Xposed Installer n'a pas trouvé</string>
     <string name="xposed_not_found_explain">Il semble que vous n'avez pas Xposed Installed.\nS'il vous plaît, notez que les mods de cette page fonctionneront seulement avec Xposed!\nXposed est disponible dans l'installeur ARHD.</string>
     <string name="okay">Ok</string>
-    <string name="close_camera">S'assurer de fermer la caméra des app récentes!</string>
-    <string name="remove_last">Vous ne pouvez pas supprimer le dernier élément!</string>
+    <string name="close_camera">S\'assurer de fermer la caméra des app récentes !</string>
+    <string name="remove_last">Vous ne pouvez pas supprimer le dernier élément !</string>
     <string name="remove">Supprimer</string>
     <string name="remove_tile_msg1">Voulez-vous supprimer la</string>
     <string name="remove_tile_msg2">tuile?\nVous pouvez l'ajouter en retour via le menu du haut.</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
-    <string name="hotreboot_explain">Votre ordre a été enregistré! Un redémarrage à chaud est requis pour prendre effet. Aimeriez-vous le faire maintenant?</string>
-    <string name="hotreboot_explain_prefs">Cela redémarrera votre appareil à chaud. Continuer?</string>
+    <string name="hotreboot_explain">Votre ordre a été enregistré! Un redémarrage à chaud est requis pour prendre effet. Aimeriez-vous le faire maintenant ?</string>
+    <string name="hotreboot_explain_prefs">Cela redémarrera votre appareil à chaud. Continuer ?</string>
     <string name="select_tile">Sélectionner une tuile à ajouter</string>
     <string name="success">Succès</string>
     <string name="backup_restored">La sauvegarde est rétablie avec succès! Tappez sur 'Sauvegarder' pour appliquer l'ordre.</string>
     <string name="no_backup">Aucune sauvegarde trouvée</string>
-    <string name="no_backup_explain">Désolé, aucune sauvegarde a été trouvée. Avez-vous effacé votre stockage?</string>
+    <string name="no_backup_explain">Désolé, aucune sauvegarde a été trouvée. Avez-vous effacé votre stockage ?</string>
     <string name="first_start">Premier lancement</string>
-    <string name="close_forever">Fermer dialogue pour toujours!</string>
+    <string name="close_forever">Fermer dialogue pour toujours !</string>
     <string name="sunbeam_installed">SunBeam a été installé. Assurez-vous de redémmarer à chaud pour appliquer les changements.the changes. Rappelez-vous que vous avez besoin de réinstaller SunBeam après chaque flash de ROM.</string>
     <string name="eqs_user_card">Carte de profil</string>
     <string name="eqs_brightness">Luminosité</string>
@@ -80,7 +80,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n'es
     <string name="eqs_timeout">Pause</string>
     <string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
     <string name="eqs_apn">APN</string>
-    <string name="dummy" />
+    <string name="dummy"/>
     <string name="transparency_msg">0 = transparence, 100 = opacité</string>
     <string name="transparency_enable">Activer la transparence</string>
     <string name="launch_app">Lancement d'app</string>
@@ -200,7 +200,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n'es
     <string name="sense_infiniscroll_title">Défilement à l'inifinie</string>
     <string name="sense_infiniscroll_summ">Active le défilement à l'infinie de l'écran d'accueil.</string>
     <string name="sense_gridtinyfont_title">Petite police de la grille</string>
-    <string name="sense_gridtinyfont_summ">Réduit la taille de la police des titres pour la grille de 6 rangées du tiroir d'apps.</string>
+    <string name="sense_gridtinyfont_summ">Réduit la taille de la police des titres pour la grille de 6 rangées du tiroir d\'apps</string>
     <string name="sense_swipedownaction_title">Action du glissement vers le bas</string>
     <string name="sense_swipedownaction_summ">Action pour le geste de glisser vers le bas à l'écran d'accueil.</string>
     <string name="sense_swipeupaction_title">Action du glissement vers le haut</string>
@@ -212,16 +212,16 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n'es
     <string name="sense_shakeaction_title">Action de secouer</string>
     <string name="sense_shakeaction_summ">Action pour secouer l'appareil à l'écran d'accueil.</string>
     <string name="sense_sevenscreens_title">Sept écrans d'accueil</string>
-    <string name="sense_sevenscreens_summ">Augmente le nombre maximal d'écrans d'accueil à sept. Ne fonctionnera pas sur HTC One 4.2.2!</string>
+    <string name="sense_sevenscreens_summ">Augmente le nombre maximal d\'écrans d\'accueil à sept. Ne fonctionnera pas sur HTC One 4.2.2 !</string>
     <string name="sense_4x5homescreen_title">Grille 4x5</string>
     <string name="sense_4x5homescreen_summ">Ajoute une autre rangée à tous les écrans d'accueil.</string>
     <string name="sense_invisilabels_title">Enlever le nom des icônes</string>
     <string name="sense_invisilabels_summ">Enlève le nom à l'icône de l'app et du dossier sur l'écran d'accueil.</string>
     <string name="notselected">Non-sélectionné</string>
-    <string name="loading_app_data">Chargement d'apps...</string>
-    <string name="locked_warning">S'il vous plaît, déverrouillez le lanceur en premier!</string>
+    <string name="loading_app_data">Chargement d\'apps…</string>
+    <string name="locked_warning">S\'il vous plaît, déverrouillez le lanceur en premier !</string>
     <string name="message_mods">Mods de messagerie</string>
-    <string name="message_smsmms_title">Activer la conversion SMS -> MMS</string>
+    <string name="message_smsmms_title">Activer la conversion SMS -&gt; MMS</string>
     <string name="message_smsmms_summ">Vérifie de désactiver la conversion SMS à MMS forcée par une limite de caractères. Les limites du réseau sont encore appliquées.</string>
     <string name="message_smswake_title">Réveille SMS</string>
     <string name="message_smswake_summ">Ouvre l'écran, lorsque l'appareil reçoit un SMS.</string>
@@ -241,7 +241,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n'es
     <string name="controls_homeassistaction_title">Action</string>
     <string name="controls_homeassistaction_summ">Annule l'action d'assistance (qui est Google Now par défaut).</string>
     <string name="controls_vol2wake_title">Volume2Wake</string>
-    <string name="controls_vol2wake_summ">Réveille votre téléphone avec les boutons de volume. Besoin d'être rooté! Faire un redémarrage COMPLET pour appliquer!</string>
+    <string name="controls_vol2wake_summ">Réveille votre téléphone avec les boutons de volume. Besoin d\'être rooté! Faire un redémarrage COMPLET pour appliquer !</string>
     <string name="controls_powerflash_title">Lampe de poche rapide</string>
     <string name="controls_powerflash_summ">Appuie long du bouton ON/OFF lorsque l'écran est fermé pour ouvrir et fermer la lampe de poche.</string>
     <string name="controls_swapvolume_title">Glissement bouton volume paysage CCW</string>
@@ -256,9 +256,9 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n'es
     <string name="controls_vol_down_media_title">Action d'appuie long de volume -</string>
     <string name="controls_vol_down_media_summ">L'action pour l'appuie long du bouton de volume du bas, lorsque l'écran est éteint.</string>
     <string name="kill_foreground">Tuer l'app</string>
-    <string name="kill_foreground_warn">Vous essayez de tuer le lanceur!</string>
+    <string name="kill_foreground_warn">Vous essayez de tuer le lanceur !</string>
     <string name="kill_foreground_yes">Je sais</string>
-    <string name="kill_foreground_no">Avorter!</string>
+    <string name="kill_foreground_no">Avorter !</string>
     <string name="various_mods">Mods variés</string>
     <string name="various_mods_screenanim">Animations d'écran</string>
     <string name="various_screenon_title">Animation on</string>
