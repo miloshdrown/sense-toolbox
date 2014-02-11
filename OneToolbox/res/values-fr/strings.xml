@@ -80,7 +80,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="eqs_timeout">Pause</string>
     <string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
     <string name="eqs_apn">APN</string>
-    <string name="dummy"/>
+    <string name="dummy">" "</string>
     <string name="transparency_msg">0 = transparence, 100 = opacité</string>
     <string name="transparency_enable">Activer la transparence</string>
     <string name="launch_app">Lancement d\'app</string>
