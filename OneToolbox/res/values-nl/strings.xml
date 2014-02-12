@@ -410,11 +410,11 @@
     
     <string name="systemui_alarmnotify_title">Toon volgend alarm</string>
 	<string name="systemui_alarmnotify_summ">Geef volgend alarm weer in plaats van de tijd in de notificatie balk.</string>
-	<string name="next_alarm">Volgend alarm</string>
+	<string name="next_alarm">Volgende alarm</string>
 	
 	<string name="sense_shakeaction_title">Actie bij schudden</string>
 	<string name="sense_shakeaction_summ">Actie voor schudden op willekeurig thuisscherm.</string>
-	<string name="locked_warning">Ontgrendelen alstublieft eerst de launcher!</string>
+	<string name="locked_warning">Ontgrendel alstublieft eerst de launcher!</string>
 	
 	<string name="various_mods_calls">Oproepen</string>
 	<string name="various_largephoto_title">Oproep foto</string>
@@ -440,6 +440,6 @@
 	<string name="array_batt_icon_white">hd2o wit</string>
 	<string name="array_batt_icon_white_percent">hd2o wit procent</string>
 	<string name="various_securelock_title">Verbeterde schermvergrendeling</string>
-	<string name="various_securelock_summ">Power menu en hardware reset melding uitschakelen indien de schermvergrendeling actief is.</string>
+	<string name="various_securelock_summ">Powermenu en hardware reset melding uitschakelen indien de schermvergrendeling actief is.</string>
 	
 	</resources>
