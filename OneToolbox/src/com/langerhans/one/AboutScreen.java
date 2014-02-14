@@ -1,11 +1,13 @@
 package com.langerhans.one;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.widget.TextView;
 
 import com.htc.widget.ActionBarContainer;
@@ -68,6 +70,15 @@ public class AboutScreen extends Activity {
 			versionTv.setText(getString(R.string.about_version, getPackageManager().getPackageInfo(getPackageName(), 0).versionName));
 			versionTv.setTypeface(face);
 			versionTv.setPaintFlags(iv02.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
+			versionTv.setLongClickable(true);
+			versionTv.setOnLongClickListener(new OnLongClickListener(){
+			    public boolean onLongClick(View v) {
+			    	Intent intent = new Intent();
+		            intent.setAction("com.langerhans.one.mods.action.StartEasterEgg");
+		            sendBroadcast(intent);
+			    	return true;
+			    }
+			});
 		} catch (NameNotFoundException e) {
 			//Shouldn't happen...
 			e.printStackTrace();

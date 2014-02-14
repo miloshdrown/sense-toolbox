@@ -353,6 +353,38 @@ public class GlobalActions {
 		}
 	}
 	
+	private static BroadcastReceiver mBREgg = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			try {
+				Intent intentEgg = new Intent(Intent.ACTION_MAIN);
+				intentEgg.setClassName("android", "com.android.internal.app.PlatLogoActivity");
+				intentEgg.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+				context.startActivity(intentEgg);
+			} catch(Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	};
+			
+	public static void easterEgg() {
+		try {
+			final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
+			findAndHookMethod(clsPWM, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					mPWM = param.thisObject;
+					mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+		            IntentFilter intentfilter = new IntentFilter();
+		            intentfilter.addAction("com.langerhans.one.mods.action.StartEasterEgg");
+		            mPWMContext.registerReceiver(mBREgg, intentfilter);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
 	public static void setupPWM() {
 		try {
 			final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
