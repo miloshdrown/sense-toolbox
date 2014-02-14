@@ -28,7 +28,6 @@ import android.net.wifi.WifiManager;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
@@ -49,7 +48,7 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class GlobalActions {
 
 	public static Object mPWM = null;
-	public static Handler mHandler = null;
+	//public static Handler mHandler = null;
 	private static int mCurrentLEDLevel = 0;
 	
 	private static BroadcastReceiver mBR = new BroadcastReceiver() {
@@ -372,8 +371,6 @@ public class GlobalActions {
 			findAndHookMethod(clsPWM, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					mPWM = param.thisObject;
-					mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 		            IntentFilter intentfilter = new IntentFilter();
 		            intentfilter.addAction("com.langerhans.one.mods.action.StartEasterEgg");
@@ -392,7 +389,7 @@ public class GlobalActions {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					mPWM = param.thisObject;
-					mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+					//mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 		            IntentFilter intentfilter = new IntentFilter();
 		            
