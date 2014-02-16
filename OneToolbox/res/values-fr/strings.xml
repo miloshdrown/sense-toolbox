@@ -200,7 +200,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="sense_infiniscroll_title">Défilement à l\'inifinie</string>
     <string name="sense_infiniscroll_summ">Active le défilement à l\'infinie de l\'écran d\'accueil.</string>
     <string name="sense_gridtinyfont_title">Petite police de la grille</string>
-    <string name="sense_gridtinyfont_summ">Réduit la taille de la police des titres pour la grille de 6 rangées du tiroir d\'apps</string>
+    <string name="sense_gridtinyfont_summ">Réduit la taille de police des titres de la grille à 6 rangées du tiroir d\'apps</string>
     <string name="sense_swipedownaction_title">Action du glissement vers le bas</string>
     <string name="sense_swipedownaction_summ">Action pour le geste de glisser vers le bas à l\'écran d\'accueil.</string>
     <string name="sense_swipeupaction_title">Action du glissement vers le haut</string>
@@ -219,7 +219,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="sense_invisilabels_summ">Enlève le nom à l\'icône de l\'app et du dossier sur l\'écran d\'accueil.</string>
     <string name="notselected">Non-sélectionné</string>
     <string name="loading_app_data">Chargement d\'apps…</string>
-    <string name="locked_warning">S\'il vous plaît, déverrouillez le lanceur en premier !</string>
+    <string name="locked_warning">Veuillez d\'abord déverrouillez le lanceur !</string>
     <string name="message_mods">Mods de messagerie</string>
     <string name="message_smsmms_title">Activer la conversion SMS -&gt; MMS</string>
     <string name="message_smsmms_summ">Vérifie de désactiver la conversion SMS à MMS forcée par une limite de caractères. Les limites du réseau sont encore appliquées.</string>
@@ -241,7 +241,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="controls_homeassistaction_title">Action</string>
     <string name="controls_homeassistaction_summ">Annule l\'action d\'assistance (qui est Google Now par défaut).</string>
     <string name="controls_vol2wake_title">Volume2Wake</string>
-    <string name="controls_vol2wake_summ">Réveille votre téléphone avec les boutons de volume. Besoin d\'être rooté! Faire un redémarrage COMPLET pour appliquer !</string>
+    <string name="controls_vol2wake_summ">Réveille votre téléphone avec les boutons de volume. Doit être rooté! Faites redémarrer au complet pour appliquer !</string>
     <string name="controls_powerflash_title">Lampe de poche rapide</string>
     <string name="controls_powerflash_summ">Appuie long du bouton ON/OFF lorsque l\'écran est fermé pour ouvrir et fermer la lampe de poche.</string>
     <string name="controls_swapvolume_title">Glissement bouton volume paysage CCW</string>
