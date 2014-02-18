@@ -283,7 +283,7 @@
     <string name="various_mtpnotif_title">Ukryj powiadomienia MTP</string>
     <string name="various_mtpnotif_summ">Dodaj usługę MTP w tłe i wyłącz powiadomienia. Mod jest na ROM oparty na przecieku 4.3.</string>
 	<string name="various_fastunlock_title">Szybkie odblokowanie</string>
-	<string name="various_fastunlock_summ">Odblokuj urządzenie od razu gdy poprawny numer PIN zostanie wprowadzony. Tylko ekran blokady HTC.</string>
+	<string name="various_fastunlock_summ">"Odblokuj urządzenie od razu gdy poprawny numer PIN  lub hasło zostanie wprowadzony. Tylko ekran blokady HTC."</string>
 	<string name="various_ytwatermark_title">Znak wodny kanału YouTube</string>
 	<string name="various_ytwatermark_summ">Ukryj logo kanału nakładki wideo w aplikacji YouTube.</string>
 	<string name="various_oldtoasts_title">Styl tła powiadomień z Jelly Bean</string>
