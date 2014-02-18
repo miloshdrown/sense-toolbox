@@ -443,4 +443,7 @@
 	
 	<string name="array_batt_icon_white">hd2o biały</string>
 	<string name="cleanbeam_hd2o_title">HD2Owner</string>
+	<string name="various_securelock_title">Ulepszona blokada ekranu</string>
+	<string name="various_securelock_summ">Wyłącz menu zasilania i wykonanie resetu, gdy powiadomienie blokady ekranu jest aktywny.</string>
+	
 	</resources>
