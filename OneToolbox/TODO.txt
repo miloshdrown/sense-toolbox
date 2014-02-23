@@ -42,6 +42,7 @@ Current changelog
 
 2.8
 Mod to block hardreset toast and power menu when device is locked
+Option to hide statusbar icons
 Added French transaltion by @Hsuan24
 
 ===========

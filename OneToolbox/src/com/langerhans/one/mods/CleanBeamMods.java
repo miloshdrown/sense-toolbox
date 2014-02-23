@@ -3,6 +3,7 @@ package com.langerhans.one.mods;
 import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
@@ -10,13 +11,18 @@ import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import com.langerhans.one.R;
 import com.langerhans.one.utils.GlobalActions;
 
+import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
+import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class CleanBeamMods{
 	private static String wifiBase = "";
@@ -426,6 +432,65 @@ public class CleanBeamMods{
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_notify_tv));
 			}	
+		});
+	}
+	
+	private static void hideSystemIcons(MethodHookParam param, Set<String> iconsToHide) {
+		LinearLayout mStatusIcons = (LinearLayout)XposedHelpers.getObjectField(param.thisObject, "mStatusIcons");
+		if (mStatusIcons == null) return;
+		
+		for (int i = 0; i < mStatusIcons.getChildCount(); i++) {
+			View statusIcon = mStatusIcons.getChildAt(i);
+			if (statusIcon != null) {
+				String mSlot = (String)XposedHelpers.getObjectField(statusIcon, "mSlot"); 
+				if (mSlot != null) {
+					if (iconsToHide.contains("1") && mSlot.equals("headset_plug") ||
+						iconsToHide.contains("2") && mSlot.equals("beats_effect") ||
+						iconsToHide.contains("3") && mSlot.equals("alarm_clock") ||
+						iconsToHide.contains("4") && mSlot.equals("sync_active") ||
+						iconsToHide.contains("5") && mSlot.equals("gps") ||
+						iconsToHide.contains("6") && mSlot.equals("bluetooth") ||
+						iconsToHide.contains("10") && mSlot.equals("nfc")) statusIcon.setVisibility(View.GONE);
+				}
+			}
+		}
+	}
+	
+	public static void execHook_HideIcons(LoadPackageParam lpparam) {
+		final Set<String> iconsToHide = XMain.pref.getStringSet("pref_key_hide_icons", null);
+		if (iconsToHide == null || iconsToHide.isEmpty()) return;
+		
+		XposedHelpers.findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "addIcon", String.class, int.class, int.class, "com.android.internal.statusbar.StatusBarIcon", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				hideSystemIcons(param, iconsToHide);
+			}
+		});
+		
+		XposedHelpers.findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateIcon", String.class, int.class, int.class, "com.android.internal.statusbar.StatusBarIcon", "com.android.internal.statusbar.StatusBarIcon", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				hideSystemIcons(param, iconsToHide);
+			}
+		});
+		
+		XposedHelpers.findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateNotificationIcons", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				LinearLayout mNotificationIcons = (LinearLayout)XposedHelpers.getObjectField(param.thisObject, "mNotificationIcons");
+				for (int i = 0; i < mNotificationIcons.getChildCount(); i++) {
+					View notifIcon = mNotificationIcons.getChildAt(i);
+					if (notifIcon != null) {
+						String mSlot = (String)XposedHelpers.getObjectField(notifIcon, "mSlot");
+						if (mSlot != null && iconsToHide != null) {
+							if (iconsToHide.contains("7") && mSlot.equals("com.android.systemui/0x315") ||
+								iconsToHide.contains("8") && mSlot.equals("com.android.settings/0x7f0201b4") ||
+								iconsToHide.contains("9") && mSlot.equals("com.htc.htcpowermanager/0x3e8") ||
+								iconsToHide.contains("11") && mSlot.equals("com.android.settings/0x1")) notifIcon.setVisibility(View.GONE);
+						}
+					}
+				}
+			}
 		});
 	}
 }

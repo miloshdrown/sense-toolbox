@@ -8,6 +8,7 @@ import android.graphics.Typeface;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnLongClickListener;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.htc.widget.ActionBarContainer;
@@ -66,23 +67,32 @@ public class AboutScreen extends Activity {
 		
 		//Add version name
         try {
-        	TextView versionTv = (TextView) findViewById(R.id.textViewVersion);
+        	TextView versionTv = (TextView)findViewById(R.id.textViewVersion);
 			versionTv.setText(getString(R.string.about_version, getPackageManager().getPackageInfo(getPackageName(), 0).versionName));
 			versionTv.setTypeface(face);
 			versionTv.setPaintFlags(iv02.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
-			versionTv.setLongClickable(true);
-			versionTv.setOnLongClickListener(new OnLongClickListener(){
+			OnLongClickListener olcl = new OnLongClickListener(){
 			    public boolean onLongClick(View v) {
 			    	Intent intent = new Intent();
-		            intent.setAction("com.langerhans.one.mods.action.StartEasterEgg");
-		            sendBroadcast(intent);
+			        intent.setAction("com.langerhans.one.mods.action.StartEasterEgg");
+			        sendBroadcast(intent);
 			    	return true;
 			    }
-			});
+			};
+			versionTv.setLongClickable(true);
+			versionTv.setOnLongClickListener(olcl);
+			ImageView logo = (ImageView)findViewById(R.id.imageView1);
+			logo.setLongClickable(true);
+			logo.setOnLongClickListener(olcl);
+			TextView title1 = (TextView)findViewById(R.id.textView1);
+			title1.setLongClickable(true);
+			title1.setOnLongClickListener(olcl);
+			TextView title2 = (TextView)findViewById(R.id.TextView01);
+			title2.setLongClickable(true);
+			title2.setOnLongClickListener(olcl);
 		} catch (NameNotFoundException e) {
 			//Shouldn't happen...
 			e.printStackTrace();
 		}
 	}
-
 }

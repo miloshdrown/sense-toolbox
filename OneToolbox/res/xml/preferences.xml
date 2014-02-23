@@ -250,6 +250,12 @@
             android:title="@string/cleanbeam_tv_title"
             android:icon="@drawable/stat_notify_tv"
             android:defaultValue="false"/>
+        <com.htc.preference.HtcMultiSelectListPreference
+            android:title="@string/hideicons_title"
+            android:summary="@string/hideicons_summ"
+            android:key="pref_key_hide_icons"
+            android:entries="@array/icons_to_hide"
+            android:entryValues="@array/icons_to_hide_val" />
         <com.htc.preference.HtcPreference
             android:title="@string/cleanbeam_sunbeam_title"
             android:summary="@string/cleanbeam_sunbeam_summ"

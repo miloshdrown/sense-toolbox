@@ -176,6 +176,8 @@
 	<string name="cleanbeam_phone_summ">Enable CleanBeam phone icons.</string>
 	<string name="cleanbeam_tv_title">TV</string>
 	<string name="cleanbeam_tv_summ">Enable CleanBeam TV remote icon.</string>
+	<string name="hideicons_title">Hide statusbar icons</string>
+	<string name="hideicons_summ">Select icons you want to prevent from showing.</string>
 	<string name="cleanbeam_sunbeam_title">Install Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Install the Sunbeam Live Wallpaper.</string>
 	<string name="cleanbeam_mods_credits_head">Credits</string>
