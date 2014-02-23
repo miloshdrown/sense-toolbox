@@ -435,4 +435,6 @@
 	<string name="various_securelock_title">Mejorar pantalla de bloqueo</string>
 	<string name="various_securelock_summ">Desactivar menú de apagado y aviso de reinicio forzado mientras el bloqueo este activo.</string>
 	
+	<string name="hideicons_title">Ocultar iconos de barra de estado</string>
+	<string name="hideicons_summ">Selecciona los iconos que quieres ocultar.</string>
 	</resources>
