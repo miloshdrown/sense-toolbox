@@ -176,6 +176,8 @@
 	<string name="cleanbeam_phone_summ">CleanBeam иконка телефона.</string>
 	<string name="cleanbeam_tv_title">ТВ</string>
 	<string name="cleanbeam_tv_summ">CleanBeam иконка ТВ.</string>
+	<string name="hideicons_title">Спрятать иконки</string>
+	<string name="hideicons_summ">Выберите иконки которые следует скрыть.</string>
 	<string name="cleanbeam_sunbeam_title">Установить Sunbeam</string>
 	<string name="cleanbeam_sunbeam_summ">Инсталяция анимированных обоев Sunbeam (Phase Beam).</string>
 	<string name="cleanbeam_post_title">Vomer</string>

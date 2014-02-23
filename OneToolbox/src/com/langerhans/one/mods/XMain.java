@@ -440,6 +440,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				SysUIMods.execHook_OverrideAssist(lpparam);
 			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
+			CleanBeamMods.execHook_HideIcons(lpparam);
 		}
 		
 		if (pkg.equals("com.android.packageinstaller"))
