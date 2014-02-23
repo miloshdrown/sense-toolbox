@@ -442,4 +442,6 @@
 	<string name="various_securelock_title">Verbeterde schermvergrendeling</string>
 	<string name="various_securelock_summ">Powermenu en hardware reset melding uitschakelen indien de schermvergrendeling actief is.</string>
 	
+	<string name="hideicons_title">Verberg statusbalk iconen</string>
+	<string name="hideicons_summ">Selecteer de iconen die verborgen moeten worden.</string>
 	</resources>
