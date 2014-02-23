@@ -443,4 +443,6 @@
 	<string name="various_securelock_title">Modifica blocca schermo</string>
 	<string name="various_securelock_summ">Disabilita il menu di spegnimento e la notifica di reset hardware quando il blocca schermo è attivo.</string>
 	
+	<string name="hideicons_title">Nascondi icone della barra di stato</string>
+	<string name="hideicons_summ">Scegli quali icone nascondere.</string>
 	</resources>
