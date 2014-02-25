@@ -30,6 +30,7 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
@@ -41,6 +42,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -374,19 +376,38 @@ public class OtherMods{
 		});
 	}
 	
+	private static void changeToast(View toastView) {
+		try {
+			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+			TextView toast = (TextView)toastView.findViewById(android.R.id.message);
+			toast.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+			toast.setTypeface(Typeface.DEFAULT);
+			LinearLayout toastLayout = (LinearLayout)toastView;
+			toastLayout.setBackground(modRes.getDrawable(R.drawable.toast_frame_holo));
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
 	public static void exec_OldStyleToasts(final String MODULE_PATH) {
-		XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, null);
-		final Drawable toastBkg = modRes.getDrawable(R.drawable.toast_frame_holo);
-		XResources.hookSystemWideLayout("android", "layout", "transient_notification", new XC_LayoutInflated() {
-			@Override
-			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-				TextView toast = (TextView)liparam.view.findViewById(android.R.id.message);
-				toast.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-				toast.setTypeface(Typeface.DEFAULT);
-				LinearLayout toastLayout = (LinearLayout)liparam.view;
-				toastLayout.setBackground(toastBkg);
-			}
-		});
+		try {
+			XResources.hookSystemWideLayout("android", "layout", "transient_notification", new XC_LayoutInflated() {
+				@Override
+				public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+					changeToast(liparam.view);
+				}
+			});
+			
+			findAndHookMethod("android.widget.Toast", null, "makeText", Context.class, CharSequence.class, int.class, new XC_MethodHook() {
+				@Override
+				public void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					Toast tst = (Toast)param.getResult();
+					if (tst != null) changeToast(tst.getView());
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 	
 	public static void execHook_LargePhoto(final InitPackageResourcesParam resparam, int photoSize) {
