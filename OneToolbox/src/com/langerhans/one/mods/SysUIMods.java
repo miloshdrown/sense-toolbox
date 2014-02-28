@@ -1246,6 +1246,12 @@ public class SysUIMods {
 											intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
 									        view.getContext().startActivity(intent);
 										} else if (position == 1) {
+											try {
+												theView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
+											} catch (android.content.ActivityNotFoundException anfe) {
+												theView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)));
+											}
+										} else if (position == 2) {
 											XposedHelpers.callMethod(XposedHelpers.getSurroundingThis(param.thisObject), "handleSwipe", theView);
 										} else {
 											try {

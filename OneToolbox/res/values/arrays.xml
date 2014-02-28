@@ -152,6 +152,7 @@
     </string-array>
     <string-array name="recents_menu">
         <item >@string/array_recents_menu_info</item>
+        <item >@string/array_recents_menu_playstore</item>
         <item >@string/array_recents_menu_close</item>
         <item >@string/array_recents_menu_closeothers</item>
     </string-array>
