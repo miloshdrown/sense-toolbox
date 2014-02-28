@@ -404,6 +404,7 @@
 	<string name="array_home_menu_draglock">Заблокировать ланчер</string>
 	<string name="array_home_menu_dragunlock">Разблокировать ланчер</string>
 	<string name="array_recents_menu_info">О приложении</string>
+	<string name="array_recents_menu_playstore">Play Store</string>
 	<string name="array_recents_menu_close">Закрыть</string>
 	<string name="array_recents_menu_closeothers">Закрыть другие</string>
 	<string name="array_screen_anim_none">Без анимации</string>

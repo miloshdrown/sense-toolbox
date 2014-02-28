@@ -419,6 +419,7 @@
 	<string name="array_home_menu_draglock">Lock launcher</string>
 	<string name="array_home_menu_dragunlock">Unlock launcher</string>
 	<string name="array_recents_menu_info">Show info</string>
+	<string name="array_recents_menu_playstore">Play Store</string>
 	<string name="array_recents_menu_close">Close</string>
 	<string name="array_recents_menu_closeothers">Close others</string>
 	<string name="array_screen_anim_none">None</string>
