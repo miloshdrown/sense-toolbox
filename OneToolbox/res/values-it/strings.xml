@@ -445,4 +445,5 @@
 	
 	<string name="hideicons_title">Nascondi icone della barra di stato</string>
 	<string name="hideicons_summ">Scegli quali icone nascondere.</string>
+	<string name="array_recents_menu_playstore">Play Store</string>
 	</resources>
