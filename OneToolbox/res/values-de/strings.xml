@@ -442,4 +442,5 @@
 	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
 	
 	<string name="module_not_active">Das Sense 5 Toolbox Xposed Modul ist nicht aktiv. Bitte aktiviere es im Xposed Installer und starte das Handy neu.</string>
-    </resources>
+    <string name="array_recents_menu_playstore">Play Store</string>
+	</resources>
