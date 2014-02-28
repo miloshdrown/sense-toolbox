@@ -446,4 +446,5 @@
 	<string name="various_securelock_title">Ulepszona blokada ekranu</string>
 	<string name="various_securelock_summ">Wyłącz menu zasilania i wykonanie resetu, gdy powiadomienie blokady ekranu jest aktywny.</string>
 	
+	<string name="array_recents_menu_playstore">Play Store</string>
 	</resources>
