@@ -413,4 +413,5 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="array_large_photo_max">Maximum</string>
     <string name="array_header_click_clock">Ouvrir l\'app de l\'horloge</string>
     <string name="array_header_click_sysinfo">Afficher/cacher les infos du CPU et du RAM info, ouvrir l\'app horloge en tappant sur l\'heure actuel.</string>
-</resources>
+<string name="array_recents_menu_playstore">Play Store</string>
+	</resources>
