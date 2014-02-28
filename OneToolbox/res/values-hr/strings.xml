@@ -438,4 +438,5 @@
 	
 	<string name="array_batt_icon_white">hd2o bijelo</string>
 	<string name="array_batt_icon_white_percent">hd2o bijelo postotak</string>
+	<string name="array_recents_menu_playstore">Play Store</string>
 	</resources>
