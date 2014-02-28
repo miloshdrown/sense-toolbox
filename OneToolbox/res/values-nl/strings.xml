@@ -444,4 +444,5 @@
 	
 	<string name="hideicons_title">Verberg statusbalk iconen</string>
 	<string name="hideicons_summ">Selecteer de iconen die verborgen moeten worden.</string>
+	<string name="array_recents_menu_playstore">Play Store</string>
 	</resources>
