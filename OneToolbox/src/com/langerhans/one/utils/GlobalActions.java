@@ -35,6 +35,8 @@ import android.os.Vibrator;
 import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.langerhans.one.PrefsFragment;
@@ -619,17 +621,36 @@ public class GlobalActions {
 			findAndHookMethod("com.android.server.wm.WindowManagerService", null, "statusBarVisibilityChanged", int.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 					Intent intent = new Intent();
 			        intent.setAction("com.langerhans.one.UPDATEBACKLIGHT");
 			        
 					int sysUiVis = (Integer)param.args[0];
-					if ((sysUiVis & View.SYSTEM_UI_FLAG_FULLSCREEN) == View.SYSTEM_UI_FLAG_FULLSCREEN
+					XposedBridge.log("sysUiVis:" + String.valueOf(sysUiVis));
+					if (sysUiVis != 0 && ((sysUiVis & View.SYSTEM_UI_FLAG_FULLSCREEN) == View.SYSTEM_UI_FLAG_FULLSCREEN
 						|| (sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE) == View.SYSTEM_UI_FLAG_IMMERSIVE
-						|| (sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+						|| (sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+						|| (sysUiVis & View.SYSTEM_UI_FLAG_LOW_PROFILE) == View.SYSTEM_UI_FLAG_LOW_PROFILE))
 						intent.putExtra("forceDisableBacklight", true);
 					
-			        mPWMContext.sendBroadcast(intent);
+					mContext.sendBroadcast(intent);
+				}
+			});
+			
+			findAndHookMethod("android.view.Window", null, "setFlags", int.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					int newFlags = (Integer)param.args[0];
+					if (newFlags != 0 && (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN) {
+						Window wnd = (Window)param.thisObject;
+						if (wnd != null && wnd.getContext().getPackageName().equals("com.android.systemui")) return;
+						XposedBridge.log("newFlags: " + String.valueOf(newFlags) + " / " + wnd.getContext().getPackageName());
+						Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+						Intent intent = new Intent();
+				        intent.setAction("com.langerhans.one.UPDATEBACKLIGHT");
+						intent.putExtra("forceDisableBacklight", true);
+						mContext.sendBroadcast(intent);
+					}
 				}
 			});
 		} catch (Throwable t) {

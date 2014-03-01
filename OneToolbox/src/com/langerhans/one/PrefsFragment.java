@@ -427,7 +427,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 					lineCnt++;
 				}
 			};
-		    RootTools.getShell(false).add(command);
+			RootTools.getShell(false).add(command);
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
