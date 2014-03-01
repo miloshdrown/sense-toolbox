@@ -78,6 +78,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_other_securelock", false))
 			OtherMods.execHook_EnhancedSecurity();
 		
+		GlobalActions.buttonBacklight();
 		GlobalActions.easterEgg();
 	}
 

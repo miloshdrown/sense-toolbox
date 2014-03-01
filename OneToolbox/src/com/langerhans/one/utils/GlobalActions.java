@@ -34,6 +34,7 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.Settings;
 import android.view.KeyEvent;
+import android.view.View;
 import android.widget.Toast;
 
 import com.langerhans.one.PrefsFragment;
@@ -359,12 +360,12 @@ public class GlobalActions {
 				intentEgg.setClassName("android", "com.android.internal.app.PlatLogoActivity");
 				intentEgg.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
 				context.startActivity(intentEgg);
-			} catch(Throwable t) {
+			} catch (Throwable t) {
 				XposedBridge.log(t);
 			}
 		}
 	};
-			
+	
 	public static void easterEgg() {
 		try {
 			final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
@@ -611,5 +612,28 @@ public class GlobalActions {
 	    }  catch (Throwable t) {
 	        XposedBridge.log(t);
 	    }
+	}
+	
+	public static void buttonBacklight(){
+		try {
+			findAndHookMethod("com.android.server.wm.WindowManagerService", null, "statusBarVisibilityChanged", int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					Intent intent = new Intent();
+			        intent.setAction("com.langerhans.one.UPDATEBACKLIGHT");
+			        
+					int sysUiVis = (Integer)param.args[0];
+					if ((sysUiVis & View.SYSTEM_UI_FLAG_FULLSCREEN) == View.SYSTEM_UI_FLAG_FULLSCREEN
+						|| (sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE) == View.SYSTEM_UI_FLAG_IMMERSIVE
+						|| (sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+						intent.putExtra("forceDisableBacklight", true);
+					
+			        mPWMContext.sendBroadcast(intent);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 }

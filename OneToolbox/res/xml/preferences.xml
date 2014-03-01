@@ -663,6 +663,13 @@
             android:summary="@string/various_securelock_summ"
             android:title="@string/various_securelock_title"
             android:defaultValue="false" />
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_other_keyslight"
+            android:summary="@string/various_keyslight_summ"
+            android:title="@string/various_keyslight_title"
+            android:entries="@array/keys_light"
+            android:entryValues="@array/keys_light_val"
+            android:defaultValue="1"/>
         
         <com.htc.preference.HtcPreferenceCategory
             android:title="@string/various_mods_calls" >

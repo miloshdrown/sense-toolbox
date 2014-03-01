@@ -306,6 +306,8 @@
 	<string name="various_oldtoasts_summ">Возвращает внешний вид всплывающих уведомлений из JB на Андроиде 4.4.</string>
 	<string name="various_securelock_title">Улучшенная блокировка</string>
 	<string name="various_securelock_summ">Отключает меню управления питанием и уведомление об аппаратном сбросе во время блокировки.</string>
+	<string name="various_keyslight_title">Подсветка клавиш</string>
+	<string name="various_keyslight_summ">Настройка яркости подсветки клавиш управления.</string>
 	
 	<string name="persistent_mods">Всегда активные моды</string>
 	<string name="persist_adgrid_title">Размер сетки списка приложений</string>
@@ -424,6 +426,9 @@
 	<string name="array_large_photo_max">Максимально большое</string>
 	<string name="array_header_click_clock">Открыть приложение Часы</string>
 	<string name="array_header_click_sysinfo">Показать/скрыть инфу о CPU и RAM, Часы по тапу на времени.</string>
+	<string name="array_keyslight_dim">Более тусклая</string>
+	<string name="array_keyslight_extradim">Очень тусклая</string>
+	<string name="array_keyslight_alwaysoff">Всегда выключена</string>
 
 	<string name="about_devs">Разработчики</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
