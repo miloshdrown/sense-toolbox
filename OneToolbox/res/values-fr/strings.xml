@@ -219,7 +219,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="sense_invisilabels_summ">Enlève le nom à l\'icône de l\'app et du dossier sur l\'écran d\'accueil.</string>
     <string name="notselected">Non-sélectionné</string>
     <string name="loading_app_data">Chargement d\'apps…</string>
-    <string name="locked_warning">Veuillez d\'abord déverrouillez le lanceur !</string>
+    <string name="locked_warning">Veuillez d\'abord déverrouiller le lanceur !</string>
     <string name="message_mods">Mods de messagerie</string>
     <string name="message_smsmms_title">Activer la conversion SMS -&gt; MMS</string>
     <string name="message_smsmms_summ">Vérifie de désactiver la conversion SMS à MMS forcée par une limite de caractères. Les limites du réseau sont encore appliquées.</string>
@@ -414,4 +414,15 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="array_header_click_clock">Ouvrir l\'app de l\'horloge</string>
     <string name="array_header_click_sysinfo">Afficher/cacher les infos du CPU et du RAM info, ouvrir l\'app horloge en tappant sur l\'heure actuel.</string>
 <string name="array_recents_menu_playstore">Play Store</string>
+	<string name="hideicons_title">Cacher les icônes de la barre d\'état</string>
+	<string name="hideicons_summ">Sélectionnez les icônes que vous voulez empêcher d\'afficher.</string>
+	<string name="various_keyslight_title">Rétroéclairage des boutons</string>
+	<string name="various_keyslight_summ">Change la luminosité du rétroéclairage des boutons.</string>
+	
+	<string name="various_securelock_title">Écran de verrouillage amélioré</string>
+	<string name="array_keyslight_dim">Faible</string>
+	<string name="array_keyslight_extradim">Très faible</string>
+	<string name="array_keyslight_alwaysoff">Toujours éteint</string>
+	
+<string name="various_securelock_summ">Désactive le menu et la réinitialisation de notification du matériel quand l\'écran de verrouillage est actif.</string>
 	</resources>
