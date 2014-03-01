@@ -309,6 +309,8 @@
 	<string name="various_oldtoasts_summ">Bring back JB toast design on Android 4.4.</string>
 	<string name="various_securelock_title">Enhanced screen lock</string>
 	<string name="various_securelock_summ">Disable power menu and hardware reset notification while screen lock is active.</string>
+	<string name="various_keyslight_title">Hardware buttons backlight</string>
+	<string name="various_keyslight_summ">Change backlight brightness for buttons.</string>
 	
 	<string name="persistent_mods">Always active mods</string>
 	<string name="persist_adgrid_title">App drawer grid size</string>
@@ -439,5 +441,8 @@
 	<string name="array_large_photo_max">Maximum</string>
 	<string name="array_header_click_clock">Open Clock app</string>
 	<string name="array_header_click_sysinfo">Show/hide CPU and RAM info, open Clock app by tapping on current time.</string>
+	<string name="array_keyslight_dim">Dim</string>
+	<string name="array_keyslight_extradim">Extra dim</string>
+	<string name="array_keyslight_alwaysoff">Always off</string>
 	
 </resources>

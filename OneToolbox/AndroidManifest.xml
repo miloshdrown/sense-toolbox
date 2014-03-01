@@ -8,6 +8,7 @@
 		android:targetSdkVersion="19" />
 	<uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 	<uses-permission android:name="android.permission.ACCESS_SUPERUSER"/>
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 
 	<application
 		android:allowBackup="true"
@@ -38,6 +39,13 @@
 		</activity>
 		<activity android:theme="@style/Invisible" android:name="com.langerhans.one.DimmedActivity" android:exported="true" android:launchMode="singleInstance" android:excludeFromRecents="true" />
 		<activity android:name="com.langerhans.one.AboutScreen" android:screenOrientation="portrait" />
+		<receiver android:name="com.langerhans.one.PrefsFragment$SetButtonBacklight" android:exported="true">
+			<intent-filter>
+			    <action android:name="com.langerhans.one.UPDATEBACKLIGHT" />
+				<action android:name="android.intent.action.BOOT_COMPLETED" />
+				<category android:name="android.intent.category.DEFAULT" />
+			</intent-filter>
+		</receiver>
 		<meta-data android:value="true" android:name="xposedmodule"/>
 		<meta-data android:value="42+" android:name="xposedminversion"/>
 		<meta-data android:value="Mods for Sense 5 and 5.5 ROMs" android:name="xposeddescription"/>

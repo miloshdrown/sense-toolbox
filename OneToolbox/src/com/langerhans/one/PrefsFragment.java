@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import android.app.ActionBar;
 import android.app.Dialog;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -20,6 +21,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -179,6 +181,13 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			}
 		};
 		
+		HtcListPreference.OnPreferenceChangeListener applyButtonsLight = new HtcListPreference.OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
+				return setButtonBacklightTo(Integer.parseInt((String)newValue));
+			}
+		};
+		
 		final HtcPreference.OnPreferenceChangeListener fillSummary = new HtcPreference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
@@ -266,6 +275,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		HtcListPreference backLongPressActionPreference = (HtcListPreference) findPreference("pref_key_controls_backlongpressaction");
 		HtcListPreference homeAssistActionPreference = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
 		HtcListPreference shakeActionPreference = (HtcListPreference) findPreference("pref_key_prism_shakeaction");
+		HtcListPreference keysLightPreference = (HtcListPreference) findPreference("pref_key_other_keyslight");
 		
 		// Insert new option to controls listprefs
 		backLongPressActionPreference.setEntries(addToArray(backLongPressActionPreference.getEntries(), 5, getResources().getString(R.string.kill_foreground)));
@@ -283,6 +293,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		backLongPressActionPreference.setOnPreferenceChangeListener(chooseAction);
 		homeAssistActionPreference.setOnPreferenceChangeListener(chooseAction);
 		shakeActionPreference.setOnPreferenceChangeListener(chooseAction);
+		keysLightPreference.setOnPreferenceChangeListener(applyButtonsLight);
 		
 		HtcPreference launchAppsSwipeDown = findPreference("pref_key_prism_swipedown_app");
 		HtcPreference launchAppsSwipeUp = findPreference("pref_key_prism_swipeup_app");
@@ -378,6 +389,67 @@ public class PrefsFragment extends HtcPreferenceFragment {
 				return true;
 			}
         });
+	}
+	
+	static boolean setButtonBacklightTo(final int pref_keyslight) {
+		try {
+			final String currents = "/sys/class/leds/button-backlight/currents";
+			CommandCapture command = new CommandCapture(0, "cat " + currents) {
+				int lineCnt = 0;
+				
+				@Override
+				public void output(int id, String line) {
+					if (lineCnt > 0) return;
+					
+					String level = "20";
+					if (pref_keyslight == 2) level = "5";
+					else if (pref_keyslight == 3) level = "2";
+					else if (pref_keyslight == 4) level = "0";
+					//Log.e(null, String.valueOf(lineCnt) + ": " + line + " <> " + level);
+					
+					if (!line.equals(level)) {
+						String[] cmds = {
+							"chown " + String.valueOf(android.os.Process.myUid()) + " " + currents,
+							"chmod 666 " + currents,
+							"echo " + level + " > " + currents,
+							"chmod 444 " + currents
+						};
+
+						try {
+							RootTools.sendShell(cmds, 0, null, 3000);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+						
+						Log.e(null, "setButtonBacklightTo: " + level);
+					}
+					
+					lineCnt++;
+				}
+			};
+		    RootTools.getShell(false).add(command);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return false;
+		}
+	}
+	
+	static class SetButtonBacklight extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction() != null) {
+				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
+					setButtonBacklightTo(Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1")));
+				else if (intent.getAction().equals("com.langerhans.one.UPDATEBACKLIGHT")) {
+					boolean forceDisableBacklight = intent.getBooleanExtra("forceDisableBacklight", false);
+					if (forceDisableBacklight)
+						setButtonBacklightTo(4);
+					else
+						setButtonBacklightTo(Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1")));
+				}
+			}
+		}
 	}
 	
 	/**

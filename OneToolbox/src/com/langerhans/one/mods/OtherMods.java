@@ -24,6 +24,7 @@ import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -794,15 +795,22 @@ public class OtherMods{
 	public static void execHook_EnhancedSecurity() {
 		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptPowerKeyDown", boolean.class, new XC_MethodHook() {
 			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
 					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 					KeyguardManager kgMgr = (KeyguardManager)mPWMContext.getSystemService(Context.KEYGUARD_SERVICE);
 					if (kgMgr.isKeyguardLocked() && kgMgr.isKeyguardSecure()) {
-						XposedHelpers.setObjectField(param.thisObject, "mPowerKeyHandled", true);
-						XposedHelpers.setObjectField(param.thisObject, "mPowerKeyPressed", true);
-						XposedHelpers.setObjectField(param.thisObject, "mShouldTurnOffOnKeyUp", false);
-						param.setResult(null);
+						Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+						if (mHandler != null) {
+							Runnable mPowerLongPress = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mPowerLongPress");
+							Runnable mPowerLongPress_Toast = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mPowerLongPress_Toast");
+							Runnable mPowerLongPress_Toast_2KeyHWResetHint = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mPowerLongPress_Toast_2KeyHWResetHint");
+							Runnable mPowerLongPress_Toast_2KeyHWResetIndicator = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mPowerLongPress_Toast_2KeyHWResetIndicator");
+							if (mPowerLongPress != null) mHandler.removeCallbacks(mPowerLongPress);
+							if (mPowerLongPress_Toast != null) mHandler.removeCallbacks(mPowerLongPress_Toast);
+							if (mPowerLongPress_Toast_2KeyHWResetHint != null) mHandler.removeCallbacks(mPowerLongPress_Toast_2KeyHWResetHint);
+							if (mPowerLongPress_Toast_2KeyHWResetIndicator != null) mHandler.removeCallbacks(mPowerLongPress_Toast_2KeyHWResetIndicator);
+						}
 					}
 				} catch (Throwable t) {
 					XposedBridge.log(t);
