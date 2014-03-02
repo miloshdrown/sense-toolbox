@@ -446,4 +446,11 @@
 	<string name="hideicons_title">Nascondi icone della barra di stato</string>
 	<string name="hideicons_summ">Scegli quali icone nascondere.</string>
 	<string name="array_recents_menu_playstore">Play Store</string>
-	</resources>
+	<string name="various_keyslight_title">Illuminazione tasti hardware</string>
+	<string name="various_keyslight_summ">Modifica la luminosità dei tasti.</string>
+	
+	<string name="array_keyslight_dim">Bassa</string>
+	<string name="array_keyslight_extradim">Molto bassa</string>
+	<string name="array_keyslight_alwaysoff">Spegni sempre</string>
+	
+</resources>
