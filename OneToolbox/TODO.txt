@@ -42,6 +42,8 @@ Current changelog
 
 2.8
 Mod to block hardreset toast and power menu when device is locked
+Mod to set brightness of hardware buttons backlight
+Mod that turns off button backlight dynamically in fullscreen apps
 Option to hide statusbar icons
 New item in recent apps popup menu - open Play Store page for selcted app
 Fix for JB styled toasts
