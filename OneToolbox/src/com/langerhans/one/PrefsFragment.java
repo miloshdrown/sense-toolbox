@@ -21,7 +21,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -391,13 +390,25 @@ public class PrefsFragment extends HtcPreferenceFragment {
         });
 	}
 	
+	
+	static String currentsOwner;
 	static boolean setButtonBacklightTo(final int pref_keyslight) {
 		try {
 			final String currents = "/sys/class/leds/button-backlight/currents";
+			currentsOwner = "";
+			CommandCapture commandOwner = new CommandCapture(0, "stat -c '%u' " + currents) {
+				@Override
+				public void output(int id, String line) {
+					currentsOwner = line;
+				}
+			};
+			RootTools.getShell(false).add(commandOwner).waitForFinish();
+			
 			CommandCapture command = new CommandCapture(0, "cat " + currents) {
 				int lineCnt = 0;
 				
 				@Override
+				@SuppressWarnings("deprecation")
 				public void output(int id, String line) {
 					if (lineCnt > 0) return;
 					
@@ -405,23 +416,34 @@ public class PrefsFragment extends HtcPreferenceFragment {
 					if (pref_keyslight == 2) level = "5";
 					else if (pref_keyslight == 3) level = "2";
 					else if (pref_keyslight == 4) level = "0";
-					//Log.e(null, String.valueOf(lineCnt) + ": " + line + " <> " + level);
-					
+					/*
+					String[] cmdsDefault = {
+						"chown 1000 " + currents,
+						"chmod 644 " + currents,
+						"echo 20 > " + currents
+					};
+					*/
 					if (!line.equals(level)) {
-						String[] cmds = {
+						String[] cmdsPerm = {
 							"chown " + String.valueOf(android.os.Process.myUid()) + " " + currents,
-							"chmod 666 " + currents,
+							"chmod 644 " + currents,
 							"echo " + level + " > " + currents,
 							"chmod 444 " + currents
 						};
-
+						String[] cmds = {
+							"chmod 644 " + currents,
+							"echo " + level + " > " + currents,
+							"chmod 444 " + currents
+						};
+						
 						try {
-							RootTools.sendShell(cmds, 0, null, 3000);
+							if (currentsOwner.trim().equals("0") || currentsOwner.trim().equals("1000")) {
+								RootTools.sendShell(cmdsPerm, 0, null, 3000);
+							} else
+								RootTools.sendShell(cmds, 0, null, false, 3000);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						
-						Log.e(null, "setButtonBacklightTo: " + level);
 					}
 					
 					lineCnt++;
@@ -439,14 +461,16 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction() != null) {
+				int thepref = Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
+				if (thepref == 1) return;
 				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
-					setButtonBacklightTo(Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1")));
+					setButtonBacklightTo(thepref);
 				else if (intent.getAction().equals("com.langerhans.one.UPDATEBACKLIGHT")) {
 					boolean forceDisableBacklight = intent.getBooleanExtra("forceDisableBacklight", false);
 					if (forceDisableBacklight)
 						setButtonBacklightTo(4);
 					else
-						setButtonBacklightTo(Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1")));
+						setButtonBacklightTo(thepref);
 				}
 			}
 		}

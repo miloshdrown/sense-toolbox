@@ -626,9 +626,7 @@ public class GlobalActions {
 			        intent.setAction("com.langerhans.one.UPDATEBACKLIGHT");
 			        
 					int sysUiVis = (Integer)param.args[0];
-					XposedBridge.log("sysUiVis:" + String.valueOf(sysUiVis));
 					if (sysUiVis != 0 && ((sysUiVis & View.SYSTEM_UI_FLAG_FULLSCREEN) == View.SYSTEM_UI_FLAG_FULLSCREEN
-						|| (sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE) == View.SYSTEM_UI_FLAG_IMMERSIVE
 						|| (sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 						|| (sysUiVis & View.SYSTEM_UI_FLAG_LOW_PROFILE) == View.SYSTEM_UI_FLAG_LOW_PROFILE))
 						intent.putExtra("forceDisableBacklight", true);
@@ -644,7 +642,6 @@ public class GlobalActions {
 					if (newFlags != 0 && (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN) {
 						Window wnd = (Window)param.thisObject;
 						if (wnd != null && wnd.getContext().getPackageName().equals("com.android.systemui")) return;
-						XposedBridge.log("newFlags: " + String.valueOf(newFlags) + " / " + wnd.getContext().getPackageName());
 						Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 						Intent intent = new Intent();
 				        intent.setAction("com.langerhans.one.UPDATEBACKLIGHT");

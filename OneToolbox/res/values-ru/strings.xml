@@ -308,6 +308,8 @@
 	<string name="various_securelock_summ">Отключает меню управления питанием и уведомление об аппаратном сбросе во время блокировки.</string>
 	<string name="various_keyslight_title">Подсветка клавиш</string>
 	<string name="various_keyslight_summ">Настройка яркости подсветки клавиш управления.</string>
+	<string name="various_keyslight_auto_title">Динамическая подсветка</string>
+	<string name="various_keyslight_auto_summ">Отключает подсветку клавиш в полноэкранных приложениях.</string>
 	
 	<string name="persistent_mods">Всегда активные моды</string>
 	<string name="persist_adgrid_title">Размер сетки списка приложений</string>
