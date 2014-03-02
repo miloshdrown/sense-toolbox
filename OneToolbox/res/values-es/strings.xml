@@ -438,4 +438,13 @@
 	<string name="hideicons_title">Ocultar iconos de barra de estado</string>
 	<string name="hideicons_summ">Selecciona los iconos que quieres ocultar.</string>
 	<string name="array_recents_menu_playstore">Play Store</string>
-	</resources>
+	<string name="various_keyslight_title">Luz de botones físicos</string>
+	<string name="various_keyslight_summ">Cambiar el brillo de la luz de fondo de botones.</string>
+	<string name="various_keyslight_auto_title">Luz de fondo dinámica</string>
+	<string name="various_keyslight_auto_summ">Apagar luz de botones en app pantalla completa.</string>
+	
+	<string name="array_keyslight_dim">Oscurecer</string>
+	<string name="array_keyslight_extradim">Extra oscuro</string>
+	<string name="array_keyslight_alwaysoff">Siempre apagado</string>
+	
+</resources>
