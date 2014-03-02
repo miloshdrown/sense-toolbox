@@ -445,11 +445,14 @@
 	<string name="hideicons_title">Verberg statusbalk iconen</string>
 	<string name="hideicons_summ">Selecteer de iconen die verborgen moeten worden.</string>
 	<string name="array_recents_menu_playstore">Play Store</string>
-	<string name="various_keyslight_title">Capacitieve knoppen verlichting</string>
-	<string name="various_keyslight_summ">Wijzig helderheid van de knoppen.</string>
+	<string name="various_keyslight_title">Achtergrondverlichting capacitieve knoppen</string>
+	<string name="various_keyslight_summ">Wijzig lichthelderheid van de knoppen.</string>
 	
 	<string name="array_keyslight_dim">Dimmen</string>
 	<string name="array_keyslight_extradim">Extra dimmen</string>
 	<string name="array_keyslight_alwaysoff">Altijd uit</string>
 	
-</resources>
+<string name="various_keyslight_auto_title">Dynamische achtergrondverlichting</string>
+	<string name="various_keyslight_auto_summ">Schakel knopverlichting uit bij applicaties met volledig scherm.</string>
+	
+	</resources>
