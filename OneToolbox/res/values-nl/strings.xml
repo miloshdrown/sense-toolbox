@@ -455,4 +455,6 @@
 <string name="various_keyslight_auto_title">Dynamische achtergrondverlichting</string>
 	<string name="various_keyslight_auto_summ">Schakel knopverlichting uit bij applicaties met volledig scherm.</string>
 	
-	</resources>
+	<string name="no_currents">Beheer voor achtergrondverlichting van de knoppen niet gevonden. Wellicht is deze aanpassing op uw toestel niet mogelijk.</string>
+    
+    </resources>
