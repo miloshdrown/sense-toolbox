@@ -1,5 +1,6 @@
 package com.langerhans.one;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -88,19 +89,22 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		String senseVer = Helpers.getSenseVersion();
 		prefs.edit().putString("pref_sense_version", senseVer).commit();
 		
-		if (findPreference("pref_key_eqs") != null && (MainActivity.isRootAccessGiven == false))
-		findPreference("pref_key_eqs").setEnabled(false);
-		
 		if ((new Version(senseVer)).compareTo(new Version("5.5")) >= 0) {
 			if (findPreference("pref_key_eqs") != null) getPreferenceScreen().removePreference(findPreference("pref_key_eqs"));
 			if (findPreference("pref_key_prism_bfremove") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_homescreen")).removePreference(findPreference("pref_key_prism_bfremove"));
 			if (findPreference("pref_key_prism_infiniscroll") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_homescreen")).removePreference(findPreference("pref_key_prism_infiniscroll"));
 		} else {
+			if (findPreference("pref_key_eqs") != null && (MainActivity.isRootAccessGiven == false)) findPreference("pref_key_eqs").setEnabled(false);
 			if (findPreference("pref_key_persist_bypasslock") != null) ((HtcPreferenceScreen) findPreference("pref_key_persist")).removePreference(findPreference("pref_key_persist_bypasslock"));
 		}
 		
 		if (Build.VERSION.SDK_INT < 19) {
 			if (findPreference("pref_key_other_oldtoasts") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_oldtoasts"));
+		}
+		
+		if (!Build.DEVICE.equalsIgnoreCase("m7")) {
+			if (findPreference("pref_key_other_keyslight") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_keyslight"));
+			if (findPreference("pref_key_other_keyslight_auto") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_keyslight_auto"));
 		}
 		
 		//Add version name to support title
@@ -183,7 +187,11 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		HtcListPreference.OnPreferenceChangeListener applyButtonsLight = new HtcListPreference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-				return setButtonBacklightTo(Integer.parseInt((String)newValue));
+				if (!(new File("/sys/class/leds/button-backlight/currents")).isFile()) {
+					Toast.makeText(getActivity(), R.string.no_currents, Toast.LENGTH_LONG).show();
+					return false;
+				} else
+					return setButtonBacklightTo(getActivity(), Integer.parseInt((String)newValue));
 			}
 		};
 		
@@ -292,7 +300,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		backLongPressActionPreference.setOnPreferenceChangeListener(chooseAction);
 		homeAssistActionPreference.setOnPreferenceChangeListener(chooseAction);
 		shakeActionPreference.setOnPreferenceChangeListener(chooseAction);
-		keysLightPreference.setOnPreferenceChangeListener(applyButtonsLight);
+		if (keysLightPreference != null) keysLightPreference.setOnPreferenceChangeListener(applyButtonsLight);
 		
 		HtcPreference launchAppsSwipeDown = findPreference("pref_key_prism_swipedown_app");
 		HtcPreference launchAppsSwipeUp = findPreference("pref_key_prism_swipeup_app");
@@ -390,9 +398,8 @@ public class PrefsFragment extends HtcPreferenceFragment {
         });
 	}
 	
-	
 	static String currentsOwner;
-	static boolean setButtonBacklightTo(final int pref_keyslight) {
+	static boolean setButtonBacklightTo(Context ctx, final int pref_keyslight) {
 		try {
 			final String currents = "/sys/class/leds/button-backlight/currents";
 			currentsOwner = "";
@@ -464,13 +471,13 @@ public class PrefsFragment extends HtcPreferenceFragment {
 				int thepref = Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
 				if (thepref == 1) return;
 				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
-					setButtonBacklightTo(thepref);
+					setButtonBacklightTo(context, thepref);
 				else if (intent.getAction().equals("com.langerhans.one.UPDATEBACKLIGHT")) {
 					boolean forceDisableBacklight = intent.getBooleanExtra("forceDisableBacklight", false);
 					if (forceDisableBacklight)
-						setButtonBacklightTo(4);
+						setButtonBacklightTo(context, 4);
 					else
-						setButtonBacklightTo(thepref);
+						setButtonBacklightTo(context, thepref);
 				}
 			}
 		}

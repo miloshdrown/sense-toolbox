@@ -12,6 +12,8 @@ import com.htc.widget.ActionBarContainer;
 import com.htc.widget.ActionBarExt;
 import com.htc.widget.ActionBarText;
 import com.htc.widget.HtcAlertDialog;
+import com.langerhans.one.utils.Helpers;
+import com.langerhans.one.utils.Version;
 import com.stericson.RootTools.RootTools;
 
 public class MainActivity extends HtcPreferenceActivity {
@@ -32,6 +34,7 @@ public class MainActivity extends HtcPreferenceActivity {
 		actionBarContainer.setRightDividerEnabled(true);
 		actionBarContainer.setBackUpEnabled(false);
 
+		if ((new Version(Helpers.getSenseVersion())).compareTo(new Version("5.5")) < 0)
 		if (RootTools.isAccessGiven()) {
 			isRootAccessGiven = true;
 		} else {

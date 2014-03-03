@@ -23,6 +23,7 @@
     <string name="save_settings">Не забудьте сохранить Ваши настройки!</string>
     <string name="restore_layout">Для восстановления порядка элементов нажмите на иконку Восстановить. При этом будет загружена последняя сохранённая конфигурация.</string>
     <string name="xposed_mods">Все моды на вкладке \'МОДЫ\' работают только при наличии установленного Xposed Framework!</string>
+    <string name="no_currents">Не найдено управление подсветкой клавиш. Возможно, Ваше устройство не совместимо с данным модом.</string>
     
     <string name="apm_title">Выберите действие</string>
     <string name="apm_normal_title">Перезапуск</string>
