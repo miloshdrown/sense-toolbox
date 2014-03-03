@@ -447,4 +447,6 @@
 	<string name="array_keyslight_extradim">Extra oscuro</string>
 	<string name="array_keyslight_alwaysoff">Siempre apagado</string>
 	
-</resources>
+<string name="no_currents">No se encontró el control de luz de botones. Su equipo no es compatible con este mod.</string>
+    
+    </resources>
