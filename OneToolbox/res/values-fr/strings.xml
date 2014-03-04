@@ -425,4 +425,9 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
 	<string name="array_keyslight_alwaysoff">Toujours éteint</string>
 	
 <string name="various_securelock_summ">Désactive le menu et la réinitialisation de notification du matériel quand l\'écran de verrouillage est actif.</string>
+	<string name="no_currents">Le contrôle du rétroéclairage des boutons n\'a pas été trouvé. Votre appareil peut être incompatible avec ce mod.</string>
+    
+    <string name="various_keyslight_auto_title">Rétroéclairage dynamique</string>
+	<string name="various_keyslight_auto_summ">Éteint le rétroéclairage des boutons dans les applis en plein écran.</string>
+	
 	</resources>
