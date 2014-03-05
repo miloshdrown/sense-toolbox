@@ -4,7 +4,7 @@
     <string name="app_name">Sense 5 Toolbox</string>
     <string name="app_name_version">Sense 5 Toolbox (Versión: %1$s)</string>
     <string name="app_about">Acerca de</string>
-    <string name="about_version">Versión: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
+    <string name="about_version">Versión: %1$s</string>
     <string name="support_version">Soporte (App Versión: %1$s)</string>
     <string name="restore">Restaurar</string>
     <string name="add">Agregar</string>
@@ -328,17 +328,8 @@
     <string name="about_thanks">Gracias</string>
     <string name="about_sense">Sense 5</string>
     <string name="about_toolbox">Toolbox</string>
-    <string name="about_thanks_data">"mike1986 - por ARHD y la plataforma para  liberar esta aplicacion
-\n   
-\ndescenpet - por la idea inicial de las ediciones
-\n   
-\nvomer - por los Mods CleanBeam
-\n  
-\nDunc001 y LeSScro - por sus iconos del APM
-\n   
-\nEquipos RU y AU (y  algunos otros beta testers) - por probar y dar retroalimentacion valiosa
-\n   
-\nUsuarios ARHD - por su paciencia"</string>
+    <string name="about_thanks_data">"mike1986 - por ARHD y la plataforma para  liberar esta aplicacion\n\ndescenpet - por la idea inicial de las ediciones\n\nvomer - por los Mods CleanBeam\n\nDunc001 y LeSScro - por sus iconos del APM\n\nEquipos RU y AU (y  algunos otros beta testers) - por probar y dar retroalimentacion valiosa
+\n\nUsuarios ARHD - por su paciencia"</string>
     
     <string name="array_default">Defecto</string>
 	<string name="array_cam_actions_shutter">Obturador</string>
