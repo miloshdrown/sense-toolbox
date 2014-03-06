@@ -447,4 +447,17 @@
 	<string name="various_securelock_summ">Wyłącz menu zasilania i wykonanie resetu, gdy powiadomienie blokady ekranu jest aktywny.</string>
 	
 	<string name="array_recents_menu_playstore">Play Store</string>
+	<string name="no_currents">Nie znaleziono przycisków sterowania podświetleniem. Urządzenie może być niezgodne z tym modem.</string>
+    
+    <string name="hideicons_title">Ukryj ikony paska stanu</string>
+	<string name="various_keyslight_title">Podświetlenie przycisków sprzętowych</string>
+	<string name="various_keyslight_summ">Zmień jasność podświetlenia przycisków.</string>
+	<string name="various_keyslight_auto_title">Dynamiczne podświetlenie</string>
+	<string name="various_keyslight_auto_summ">Wyłącz podświetlenie przycisków w pełnoekranowej aplikacji.</string>
+	
+	<string name="array_keyslight_alwaysoff">Zawsze wyłączone</string>
+	
+<string name="hideicons_summ">Wybierz ikony, które mają być ukryte.</string>
+	<string name="array_keyslight_dim">Ściemniacz</string>
+	<string name="array_keyslight_extradim">Bardzo słabe</string>
 	</resources>
