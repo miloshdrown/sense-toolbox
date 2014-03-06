@@ -457,7 +457,7 @@
 	
 	<string name="array_keyslight_alwaysoff">Zawsze wyłączone</string>
 	
-<string name="hideicons_summ">Wybierz ikony, które mają być ukryte.</string>
-	<string name="array_keyslight_dim">Ściemniacz</string>
+<string name="hideicons_summ">Wybierz ikony, które chcesz ukryć.</string>
+	<string name="array_keyslight_dim">Przyciemnienie</string>
 	<string name="array_keyslight_extradim">Bardzo słabe</string>
 	</resources>
