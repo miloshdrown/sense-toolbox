@@ -457,4 +457,7 @@
 	
 	<string name="no_currents">Beheer voor achtergrondverlichting van de knoppen niet gevonden. Wellicht is deze aanpassing op uw toestel niet mogelijk.</string>
     
-    </resources>
+    <string name="open_menu">Menu openen</string>
+	<string name="open_recents">Toon recente applicaties</string>
+	
+	</resources>
