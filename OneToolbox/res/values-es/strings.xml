@@ -440,4 +440,7 @@
 	
 <string name="no_currents">No se encontró el control de luz de botones. Su equipo no es compatible con este mod.</string>
     
-    </resources>
+    <string name="open_menu">Menú abrir</string>
+	<string name="open_recents">Mostrar aplicaciones recientes</string>
+	
+	</resources>
