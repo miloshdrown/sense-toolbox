@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.List;
 
 import android.app.ActivityManager;
+import android.app.Instrumentation;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -65,16 +66,10 @@ public class GlobalActions {
 				((PowerManager)context.getSystemService(Context.POWER_SERVICE)).goToSleep(SystemClock.uptimeMillis());
 			}
 			if (action.equals("com.langerhans.one.mods.action.LockDevice")) {
-					final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
-					Method lockNow = XposedHelpers.findMethodExact(clsPWM, "lockNow", Bundle.class);
-					Object[] params = new Object[1];
-					params[0] = null;
-					lockNow.invoke(mPWM, params);
+				if (mPWM != null) XposedHelpers.callMethod(mPWM, "lockNow", new Object[]{ null });
 			}
 			if (action.equals("com.langerhans.one.mods.action.TakeScreenshot")) {
-					final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
-					Method takeScreenshot = XposedHelpers.findMethodExact(clsPWM, "takeScreenshot");
-					takeScreenshot.invoke(mPWM);					
+				if (mPWM != null) XposedHelpers.callMethod(mPWM, "takeScreenshot");
 			}
 			/*
 			if (action.equals("com.langerhans.one.mods.action.killForegroundAppShedule")) {
@@ -89,6 +84,19 @@ public class GlobalActions {
 			*/
 			if (action.equals("com.langerhans.one.mods.action.killForegroundApp")) {
 				removeTask(context);
+			}
+			
+			if (action.equals("com.langerhans.one.mods.action.SimulateMenu")) {
+				new Thread(new Runnable() {         
+			        public void run() {
+			            Instrumentation inst = new Instrumentation();  
+			            inst.sendKeyDownUpSync(KeyEvent.KEYCODE_MENU);
+			        }   
+			    }).start();
+			}
+			
+			if (action.equals("com.langerhans.one.mods.action.OpenRecents")) {
+				if (mPWM != null) XposedHelpers.callMethod(mPWM, "toggleRecentApps");
 			}
 			
 			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
@@ -402,6 +410,8 @@ public class GlobalActions {
 		            intentfilter.addAction("com.langerhans.one.mods.action.TakeScreenshot");
 		            intentfilter.addAction("com.langerhans.one.mods.action.killForegroundApp");
 		            //intentfilter.addAction("com.langerhans.one.mods.action.killForegroundAppShedule");
+		            intentfilter.addAction("com.langerhans.one.mods.action.SimulateMenu");
+		            intentfilter.addAction("com.langerhans.one.mods.action.OpenRecents");
 		            
 		            // Toggles
 		            intentfilter.addAction("com.langerhans.one.mods.action.ToggleWiFi");
@@ -534,6 +544,30 @@ public class GlobalActions {
         try {
         	Intent intent = new Intent();
             intent.setAction("com.langerhans.one.mods.action.killForegroundApp");
+            context.sendBroadcast(intent);
+        	return true;
+        } catch (Throwable t) {
+        	XposedBridge.log(t);
+            return false;
+        }
+	}
+	
+	public static boolean simulateMenu(Context context) {
+        try {
+        	Intent intent = new Intent();
+            intent.setAction("com.langerhans.one.mods.action.SimulateMenu");
+            context.sendBroadcast(intent);
+        	return true;
+        } catch (Throwable t) {
+        	XposedBridge.log(t);
+            return false;
+        }
+	}
+	
+	public static boolean openRecents(Context context) {
+        try {
+        	Intent intent = new Intent();
+            intent.setAction("com.langerhans.one.mods.action.OpenRecents");
             context.sendBroadcast(intent);
         	return true;
         } catch (Throwable t) {

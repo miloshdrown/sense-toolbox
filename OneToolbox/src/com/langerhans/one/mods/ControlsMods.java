@@ -90,6 +90,8 @@ public class ControlsMods {
 										case 7: XposedHelpers.callMethod(param.thisObject, "dismissKeyguardLw"); GlobalActions.launchApp(mContext, 3); break;
 										case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpress_toggle", "0"))); break;
 										case 9: GlobalActions.killForegroundApp(mContext); break;
+										case 10: GlobalActions.simulateMenu(mContext); break;
+										case 11: GlobalActions.openRecents(mContext); break;
 									}
 								}
 								isBackLongPressed = true;

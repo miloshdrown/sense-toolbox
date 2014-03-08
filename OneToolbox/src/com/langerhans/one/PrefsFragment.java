@@ -285,10 +285,18 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		HtcListPreference keysLightPreference = (HtcListPreference) findPreference("pref_key_other_keyslight");
 		
 		// Insert new option to controls listprefs
-		backLongPressActionPreference.setEntries(addToArray(backLongPressActionPreference.getEntries(), 5, getResources().getString(R.string.kill_foreground)));
-		backLongPressActionPreference.setEntryValues(addToArray(backLongPressActionPreference.getEntryValues(), 5, "9"));
-		homeAssistActionPreference.setEntries(addToArray(homeAssistActionPreference.getEntries(), 5, getResources().getString(R.string.kill_foreground)));
-		homeAssistActionPreference.setEntryValues(addToArray(homeAssistActionPreference.getEntryValues(), 5, "9"));
+		CharSequence[] entries = backLongPressActionPreference.getEntries();
+		entries = addToArray(entries, 5, getResources().getString(R.string.kill_foreground));
+		entries = addToArray(entries, 6, getResources().getString(R.string.open_menu));
+		entries = addToArray(entries, 7, getResources().getString(R.string.open_recents));
+		CharSequence[] entryVals = backLongPressActionPreference.getEntryValues();
+		entryVals = addToArray(entryVals, 5, "9");
+		entryVals = addToArray(entryVals, 6, "10");
+		entryVals = addToArray(entryVals, 7, "11");
+		backLongPressActionPreference.setEntries(entries);
+		backLongPressActionPreference.setEntryValues(entryVals);
+		homeAssistActionPreference.setEntries(entries);
+		homeAssistActionPreference.setEntryValues(entryVals);
 		
 		colorChanger.applyThemes();
 		voldownPreference.setOnPreferenceChangeListener(camChangeListener);
