@@ -460,4 +460,6 @@
     <string name="open_menu">Menu openen</string>
 	<string name="open_recents">Toon recente applicaties</string>
 	
-	</resources>
+	<string name="backup_restore_info">Je instellingen zijn hersteld via Google Cloud Backup. Als je Vol2wake ingeschakeld had, schakel het dan nogmaals handmatig in. Voer een volledige herstart uit na het inschakelen van de Toolbox Xposed module.</string>
+    
+    </resources>
