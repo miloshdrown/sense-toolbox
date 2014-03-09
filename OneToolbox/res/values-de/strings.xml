@@ -21,6 +21,7 @@
     <string name="save_settings">Vergiss das Speichern nicht!</string>
     <string name="restore_layout">Tippe auf das Wiederherstellungs-Icon um deine Sicherung zu laden.</string>
     <string name="xposed_mods">Beachte, dass die Einstellungen im \'MODS\' tab nur mit Xposed funktionieren!</string>
+    <string name="backup_restore_info">Deine Einstellungen wurden von Google Cloud Backup wiederhergestellt. Falls du Vol2Wake aktiviert hattes, reaktiviere es bitte. Führe einen vollständigen Neustart nach dem Aktiveren des Toolbox Xposed Moduls aus.</string>
     
     <string name="apm_title">Neustart-Optionen</string>
     <string name="apm_normal_title">Neustart</string>
