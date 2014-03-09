@@ -24,6 +24,7 @@
     <string name="restore_layout">Tap the restore icon to restore your layout. That will load the last saved config.</string>
     <string name="xposed_mods">Please note that the mods in the \'MODS\' tab only work if you have Xposed installed!</string>
     <string name="no_currents">Buttons backlight control not found. Your device may be uncompatible with this mod.</string>
+    <string name="backup_restore_info">Your settings have been restored via Google Cloud Backup. If you had Vol2wake enabled, please re-enable it manually. Please do afull reboot after enabling the Toolbox Xposed module.</string>
     
     <string name="apm_title">Choose reboot option</string>
     <string name="apm_normal_title">Reboot</string>

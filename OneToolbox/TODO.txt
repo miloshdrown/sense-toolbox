@@ -47,6 +47,7 @@ Mod to block hardreset toast and power menu when device is locked
 Option to hide statusbar icons
 New item in recent apps popup menu - open Play Store page for selcted app
 New actions for back longpress and assist: Open menu and Open recent apps
+Added Google Cloud Backup. Saves your Toolbox settings automatically and restores them after you reinstalled the Toolbox.
 Fix for JB styled toasts
 Added French transaltion by @Hsuan24
 

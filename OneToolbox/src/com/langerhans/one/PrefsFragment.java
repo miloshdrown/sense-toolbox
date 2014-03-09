@@ -89,6 +89,12 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		String senseVer = Helpers.getSenseVersion();
 		prefs.edit().putString("pref_sense_version", senseVer).commit();
 		
+		if (prefs.getBoolean("pref_key_was_restore", false))
+		{
+			prefs.edit().putBoolean("pref_key_was_restore", false).commit();
+			showRestoreInfoDialog();
+		}
+		
 		if ((new Version(senseVer)).compareTo(new Version("5.5")) >= 0) {
 			if (findPreference("pref_key_eqs") != null) getPreferenceScreen().removePreference(findPreference("pref_key_eqs"));
 			if (findPreference("pref_key_prism_bfremove") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_homescreen")).removePreference(findPreference("pref_key_prism_bfremove"));
@@ -710,6 +716,20 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
 		builder.setTitle(R.string.warning);
 		builder.setMessage(R.string.module_not_active);
+		builder.setIcon(android.R.drawable.ic_dialog_alert);
+		builder.setCancelable(true);
+		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton){}
+		});
+		HtcAlertDialog dlg = builder.create();
+		dlg.show();
+	}
+	
+	private void showRestoreInfoDialog()
+	{
+		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
+		builder.setTitle(R.string.warning);
+		builder.setMessage(R.string.backup_restore_info);
 		builder.setIcon(android.R.drawable.ic_dialog_alert);
 		builder.setCancelable(true);
 		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
