@@ -430,4 +430,9 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="various_keyslight_auto_title">Rétroéclairage dynamique</string>
 	<string name="various_keyslight_auto_summ">Éteint le rétroéclairage des boutons dans les applis en plein écran.</string>
 	
+	<string name="backup_restore_info">Vos paramètres ont été restauré par Google Cloud Backup. Si vous avez activé le Vol2Wake, veuillez le réactiver manuellement. Faites un redémarrage complet après l\'activation du module Toolbox Xposed.</string>
+    
+    <string name="open_menu">Ouvrir le menu</string>
+	<string name="open_recents">Afficher les applis récentes</string>
+	
 	</resources>
