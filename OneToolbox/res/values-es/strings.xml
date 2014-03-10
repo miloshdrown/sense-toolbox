@@ -443,4 +443,6 @@
     <string name="open_menu">Menú abrir</string>
 	<string name="open_recents">Mostrar aplicaciones recientes</string>
 	
-	</resources>
+	<string name="backup_restore_info">Tus ajustes se restauraron vía Google Cloud Backup. Si usas Vol2wake, por favor re-activalo manualmente. Ten encuenta que es necesario reiniciar luego de activar el modulo Toolbox.</string>
+    
+    </resources>
