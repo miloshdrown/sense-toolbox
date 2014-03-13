@@ -460,14 +460,14 @@ public class OtherMods{
 		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
 			findAndHookMethod("com.android.phone.widget.PhotoImageView", lpparam.classLoader, "setImageDrawable", Drawable.class, new XC_MethodHook() {
 				@Override
-	    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					setPhotoHeight((ImageView)param.thisObject, photoSize);
 				}
 			});
 		} else {
 			findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "setPhotoImageDrawable", Drawable.class, Drawable.class, new XC_MethodHook() {
 				@Override
-	    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					ImageView mPhoto = (ImageView)XposedHelpers.getObjectField(param.thisObject, "mPhoto");
 					setPhotoHeight(mPhoto, photoSize);
 				}

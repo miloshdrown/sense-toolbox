@@ -4,8 +4,6 @@ import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.View;
-import android.widget.Toast;
 
 import com.htc.preference.HtcPreferenceActivity;
 import com.htc.widget.ActionBarContainer;
@@ -59,9 +57,4 @@ public class MainActivity extends HtcPreferenceActivity {
 		
 		getFragmentManager().beginTransaction().replace(android.R.id.content, new PrefsFragment()).commit();
     }
-
-	public void showEasterEgg(View view)
-	{
-		Toast.makeText(view.getContext(), "You can kill a man, but a man you will lose - Matt", Toast.LENGTH_SHORT).show();
-	}
 }

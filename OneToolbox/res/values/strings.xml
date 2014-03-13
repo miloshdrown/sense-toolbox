@@ -12,6 +12,17 @@
     <string name="soft_reboot">Soft Reboot</string>
     <string name="ram_mb">MB</string>
     <string name="cpu_mhz">MHz</string>
+    <string name="backup_restore">Settings management</string>
+    <string name="backup_restore_choose">Choose the desired routine</string>
+    <string name="do_backup">Backup</string>
+    <string name="do_restore">Restore</string>
+    <string name="storage_read_only">Your external storage is read-only</string>
+    <string name="storage_unavailable">Unable to get access to any suitable storage</string>
+    <string name="storage_cannot_mkdir">Failed to create backup directory</string>
+    <string name="storage_cannot_backup">Failed to create backup file</string>
+    <string name="storage_cannot_restore">No settings backup found</string>
+    <string name="backup_ok">Settings were backed up successfully!</string>
+    <string name="restore_ok">Settings were successfully restored!</string>
     
     <string name="warning">Warning!</string>
     <string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 5 Toolbox module there and reboot.</string>
@@ -24,7 +35,7 @@
     <string name="restore_layout">Tap the restore icon to restore your layout. That will load the last saved config.</string>
     <string name="xposed_mods">Please note that the mods in the \'MODS\' tab only work if you have Xposed installed!</string>
     <string name="no_currents">Buttons backlight control not found. Your device may be uncompatible with this mod.</string>
-    <string name="backup_restore_info">Your settings have been restored via Google Cloud Backup. If you had Vol2wake enabled, please re-enable it manually. Please do afull reboot after enabling the Toolbox Xposed module.</string>
+    <string name="backup_restore_info">Your settings have been restored via Google Cloud Backup. If you had Vol2wake enabled, please re-enable it manually. Please do a full reboot after enabling the Toolbox Xposed module.</string>
     
     <string name="apm_title">Choose reboot option</string>
     <string name="apm_normal_title">Reboot</string>
@@ -380,8 +391,8 @@
 	<string name="about_toolbox">Toolbox</string>
 	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nDunc001 and LeSScro - for their APM icons\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
 	<string name="about_l10n">Translation</string>
-	<string name="about_l10n_data_left">Croatian\nDutch\nItalian\nPolish\nSpanish</string>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
+	<string name="about_l10n_data_left">Croatian\nDutch\nItalian\nPolish\nSpanish\nFrench</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
 	
 	<string name="array_default">Default</string>
 	<string name="array_cam_actions_shutter">Shutter</string>

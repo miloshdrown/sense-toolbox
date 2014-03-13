@@ -371,4 +371,8 @@ public class ReorderActivity extends Activity {
 		HtcAlertDialog alert = builder.create();
 		alert.show();
 	}
+	
+	public void showEasterEgg(View view) {
+		Toast.makeText(view.getContext(), "You can kill a man, but a man you will lose - Matt", Toast.LENGTH_SHORT).show();
+	}
 }
