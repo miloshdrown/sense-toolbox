@@ -11,7 +11,7 @@
     <string name="soft_reboot">Redémarrage doux</string>
     <string name="ram_mb">MB</string>
     <string name="cpu_mhz">MHz</string>
-    <string name="warning">Attention !</string>
+    <string name="warning">Attention!</string>
     <string name="xposed_not_installed">Xposed Framework n\'est pas proprement installé, vous devez installer app_process et XposedBridge.jar de Xposed Installer, puis activer le module Sense 5 Toolbox et redémarrer.</string>
     <string name="module_not_active">Le module Sense 5 Toolbox n\'est pas activé! Ouvrez Xposed Installer, activez le module et redémarrez.</string>
     <string name="welcome">Bienvenue à Sense 5 Toolbox !</string>
@@ -425,14 +425,26 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
 	<string name="array_keyslight_alwaysoff">Toujours éteint</string>
 	
 <string name="various_securelock_summ">Désactive le menu et la réinitialisation de notification du matériel quand l\'écran de verrouillage est actif.</string>
-	<string name="no_currents">Le contrôle du rétroéclairage des boutons n\'a pas été trouvé. Votre appareil peut être incompatible avec ce mod.</string>
+	<string name="no_currents">Les boutons de contrôle du rétroéclairage n\'ont pas été trouvés. Votre appareil peut être incompatible à ce mod.</string>
     
     <string name="various_keyslight_auto_title">Rétroéclairage dynamique</string>
 	<string name="various_keyslight_auto_summ">Éteint le rétroéclairage des boutons dans les applis en plein écran.</string>
 	
-	<string name="backup_restore_info">Vos paramètres ont été restauré via Google Cloud Backup. Si vous avez activé Vol2Wake, veuillez le réactiver manuellement. Faites un redémarrage complet après l\'activation du module Toolbox Xposed.</string>
+	<string name="backup_restore_info">Vos paramètres ont été restaurés via Google Cloud Backup. Si vous avez activé Vol2Wake, veuillez le réactiver manuellement. Redémarrez complètement après l\'activation du module Toolbox Xposed.</string>
     
     <string name="open_menu">Ouvrir le menu</string>
 	<string name="open_recents">Afficher les applis récentes</string>
 	
-	</resources>
+	<string name="backup_restore">Gestion des paramètres</string>
+    <string name="backup_restore_choose">Choisissez la routine désirée</string>
+    <string name="do_backup">Sauvegarde</string>
+    <string name="do_restore">Rétablir</string>
+    <string name="storage_read_only">Votre stockage est en lecture seule</string>
+    <string name="storage_unavailable">Impossible d\'accéder à un stockage approprié</string>
+    <string name="storage_cannot_mkdir">Échec de création du dossier de sauvegarde</string>
+    <string name="storage_cannot_backup">Échec de création du fichier de sauvegarde</string>
+    <string name="storage_cannot_restore">Aucune sauvegarde des paramètres n\'a été trouvée</string>
+    <string name="backup_ok">Les paramètres ont été sauvegardés avec succès !</string>
+    <string name="restore_ok">Les paramètres ont été rétablis avec succès!</string>
+    
+    </resources>
