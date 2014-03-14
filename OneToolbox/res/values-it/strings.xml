@@ -405,7 +405,7 @@
 	<string name="dummy">" "</string>
 	
 	<string name="systemui_largephoto_title"/>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
 	
 	<string name="array_large_photo_default">Default</string>
 	<string name="array_large_photo_rectangular">Rettangolare</string>
@@ -427,7 +427,7 @@
 	<string name="various_rejectedcall_summ">Non mostrare la notifica della chiamata se questa viene manualmente rifiutata; verrà aggiunta allo storico chiamate come quelle terminate regolarmente.</string>
 	<string name="various_mods_volume">Volume</string>
 	<string name="about_l10n">Traduzione</string>
-	<string name="about_l10n_data_left">Croato\nOlandese\nItaliano\nPolacco\nSpagnolo</string>
+	<string name="about_l10n_data_left">Croato\nOlandese\nItaliano\nPolacco\nSpagnolo\nFrancese</string>
 	<string name="array_home_menu_draglock">Blocca launcher</string>
 	<string name="array_home_menu_dragunlock">Sblocca launcher</string>
 	<string name="array_header_click_clock">Apri app Orologio</string>
@@ -453,4 +453,25 @@
 	<string name="array_keyslight_extradim">Molto bassa</string>
 	<string name="array_keyslight_alwaysoff">Spegni sempre</string>
 	
-</resources>
+<string name="backup_restore">Gestione impostazioni</string>
+    <string name="backup_restore_choose">Scegli l\'opzione desiderata</string>
+    <string name="do_backup">Backup</string>
+    <string name="do_restore">Ripristina</string>
+    <string name="storage_read_only">La tua memoria esterna è in sola lettura</string>
+    <string name="storage_unavailable">Impossibile accedere a qualsiasi partizione</string>
+    <string name="storage_cannot_mkdir">Errore nella crezione della cartella di backup</string>
+    <string name="storage_cannot_backup">Errore nella creazione del file di backup</string>
+    <string name="storage_cannot_restore">Nessun backup delle impostazioni trovato</string>
+    <string name="backup_ok">Le impostazioni sono state salvate con successo!</string>
+    <string name="restore_ok">Le impostazioni sono state correttamente ripristinate!</string>
+    
+    <string name="no_currents">Gestione illuminazione tasti non disponibile. Il dispositivo potrebbe non essere compatibile con questa mod.</string>
+    <string name="backup_restore_info">Le tue impostazioni sono state ripristinate tramite Google Cloud Backup.Se Vol2wake era abilitato, ri-abilitarlo manualmente. Esegui infine un riavvio completo dopo aver attivato il modulo Sense 5 Toolbox in Xposed.</string>
+    
+    <string name="open_menu">Apri menu</string>
+	<string name="open_recents">Mostra app recenti</string>
+	
+	<string name="various_keyslight_auto_title">Illuminazione dinamica</string>
+	<string name="various_keyslight_auto_summ">Spegni l\'illuminazione dei tasti per le app a schermo intero.</string>
+	
+	</resources>
