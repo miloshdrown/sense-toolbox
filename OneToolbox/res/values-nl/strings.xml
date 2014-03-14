@@ -404,7 +404,7 @@
 	<string name="array_media_next">Volgend nummer</string>
 	<string name="array_media_prev">Vorig nummer</string>
 	
-<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
+<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
 	
 	<string name="cpu_mhz">MHz</string>
     
@@ -423,7 +423,7 @@
 	<string name="various_rejectedcall_summ">Laat gemiste oproep notificaties voor handmatig geweigerde inkomende oproepen niet zien. Ze zullen worden toegevoegd aan de oproep geschiedenis als normaal beantwoorde oproepen.</string>
 	<string name="various_mods_volume">Volume</string>
 	<string name="about_l10n">Vertaling</string>
-	<string name="about_l10n_data_left">Kroatisch\nNederlands\nItaliaans\nPools\nSpaans</string>
+	<string name="about_l10n_data_left">Kroatisch\nNederlands\nItaliaans\nPools\nSpaans\nFrans</string>
 	<string name="array_home_menu_draglock">Ontgrendel launcher</string>
 	<string name="array_home_menu_dragunlock">Ontgrendel launcher</string>
 	<string name="array_large_photo_default">Standaard</string>
@@ -464,7 +464,7 @@
     
     <string name="backup_restore">Instellingen beheer</string>
     <string name="backup_restore_choose">Kies de gewenste routine</string>
-    <string name="do_backup">Backup</string>
+    <string name="do_backup">Maak backup</string>
     <string name="do_restore">Herstellen</string>
     <string name="storage_read_only">Het externe geheugen is alleen-lezen</string>
     <string name="storage_unavailable">Kan geen toegang krijgen tot een geschikte opslag</string>
