@@ -462,4 +462,16 @@
 	
 	<string name="backup_restore_info">Je instellingen zijn hersteld via Google Cloud Backup. Als je Vol2wake ingeschakeld had, schakel het dan nogmaals handmatig in. Voer een volledige herstart uit na het inschakelen van de Toolbox Xposed module.</string>
     
+    <string name="backup_restore">Instellingen beheer</string>
+    <string name="backup_restore_choose">Kies de gewenste routine</string>
+    <string name="do_backup">Backup</string>
+    <string name="do_restore">Herstellen</string>
+    <string name="storage_read_only">Het externe geheugen is alleen-lezen</string>
+    <string name="storage_unavailable">Kan geen toegang krijgen tot een geschikte opslag</string>
+    <string name="storage_cannot_mkdir">Backup map maken is mislukt</string>
+    <string name="storage_cannot_backup">Backup bestand maken is mislukt</string>
+    <string name="storage_cannot_restore">Geen instellingen backup gevonden</string>
+    <string name="backup_ok">Backup maken van de instellingen is gelukt!</string>
+    <string name="restore_ok">Herstellen van de instellingen is gelukt!</string>
+    
     </resources>
