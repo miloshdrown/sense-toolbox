@@ -11,7 +11,7 @@
     <string name="soft_reboot">Redémarrage doux</string>
     <string name="ram_mb">MB</string>
     <string name="cpu_mhz">MHz</string>
-    <string name="warning">Attention!</string>
+    <string name="warning">Attention !</string>
     <string name="xposed_not_installed">Xposed Framework n\'est pas proprement installé, vous devez installer app_process et XposedBridge.jar de Xposed Installer, puis activer le module Sense 5 Toolbox et redémarrer.</string>
     <string name="module_not_active">Le module Sense 5 Toolbox n\'est pas activé! Ouvrez Xposed Installer, activez le module et redémarrez.</string>
     <string name="welcome">Bienvenue à Sense 5 Toolbox !</string>
@@ -445,6 +445,6 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="storage_cannot_backup">Échec de création du fichier de sauvegarde</string>
     <string name="storage_cannot_restore">Aucune sauvegarde des paramètres n\'a été trouvée</string>
     <string name="backup_ok">Les paramètres ont été sauvegardés avec succès !</string>
-    <string name="restore_ok">Les paramètres ont été rétablis avec succès!</string>
+    <string name="restore_ok">Les paramètres ont été rétablis avec succès !</string>
     
     </resources>
