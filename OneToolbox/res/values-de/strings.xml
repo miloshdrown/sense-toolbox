@@ -21,7 +21,7 @@
     <string name="save_settings">Vergiss das Speichern nicht!</string>
     <string name="restore_layout">Tippe auf das Wiederherstellungs-Icon um deine Sicherung zu laden.</string>
     <string name="xposed_mods">Beachte, dass die Einstellungen im \'MODS\' tab nur mit Xposed funktionieren!</string>
-    <string name="backup_restore_info">Deine Einstellungen wurden von Google Cloud Backup wiederhergestellt. Falls du Vol2Wake aktiviert hattes, reaktiviere es bitte. Führe einen vollständigen Neustart nach dem Aktiveren des Toolbox Xposed Moduls aus.</string>
+    <string name="backup_restore_info">Deine Einstellungen wurden von Google Cloud Backup wiederhergestellt. Falls du Vol2Wake aktiviert hattest, reaktiviere es bitte. Führe einen vollständigen Neustart nach dem Aktiveren des Toolbox Xposed Moduls aus.</string>
     
     <string name="apm_title">Neustart-Optionen</string>
     <string name="apm_normal_title">Neustart</string>
@@ -439,9 +439,38 @@
 	<string name="array_header_click_sysinfo">CPU/RAM Info anzeigen/verstecken. Uhr-App per tap auf die Uhrzeit öffnen.</string>
 	
 <string name="about_l10n">Translation</string>
-	<string name="about_l10n_data_left">Croatian\nDutch\nItalian\nPolish\nSpanish</string>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
+	<string name="about_l10n_data_left">Kroatisch\nHolländisch\nItalienisch\nPolnisch\nSpanisch\nFanzösisch</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
 	
 	<string name="module_not_active">Das Sense 5 Toolbox Xposed Modul ist nicht aktiv. Bitte aktiviere es im Xposed Installer und starte das Handy neu.</string>
     <string name="array_recents_menu_playstore">Play Store</string>
-	</resources>
+	<string name="backup_restore">Verwaltung der Einstellungen</string>
+    <string name="backup_restore_choose">Was möchtest du tun?</string>
+    <string name="do_backup">Sicherung</string>
+    <string name="do_restore">Wiederherstellung</string>
+    <string name="storage_read_only">Dein Speicher ist nicht beschreibbar</string>
+    <string name="storage_unavailable">Keinen passenden Speicherort gefunden</string>
+    <string name="storage_cannot_mkdir">Sicherungsverzeichnis konnte nicht erstellt werden</string>
+    <string name="storage_cannot_backup">Sicherungsdatei konnte nicht erstellt werden</string>
+    <string name="storage_cannot_restore">Keine Sicherung gefunden</string>
+    <string name="backup_ok">Einstellungen wurden gesichert!</string>
+    <string name="restore_ok">Einstellungen wurden wiederhergestellt!</string>
+    
+    <string name="no_currents">Konnte Beleuchtung der Testen nicht steuern. Eventuell ist dein Gerät nicht kompatibel.</string>
+    <string name="hideicons_title">Verstecke Statusleisten-Icons</string>
+	<string name="hideicons_summ">Wähle Icons zum Verstecken.</string>
+	<string name="open_menu">Menü öffnen</string>
+	<string name="open_recents">Letzte Apps anzeigen</string>
+	
+	<string name="various_securelock_title">Erweiterter Sperrbildschirm</string>
+	<string name="various_securelock_summ">Deaktiviert Ausschalt-Menü und Reset-Benachrichtigung während der Bildschirm gesperrt ist.</string>
+	<string name="various_keyslight_title">Tastenbeleuchtung</string>
+	<string name="various_keyslight_summ">Ändert die Helligkeit der Tastenbeleuchtung.</string>
+	<string name="various_keyslight_auto_title">Dynamische Tastenbeleuchtung</string>
+	<string name="various_keyslight_auto_summ">Schaltet die Tastenbeleuchtung in Vollbild-Apps ab.</string>
+	
+	<string name="array_keyslight_dim">Verdunkelt</string>
+	<string name="array_keyslight_extradim">Extra verdunkelt</string>
+	<string name="array_keyslight_alwaysoff">Immer aus</string>
+	
+</resources>
