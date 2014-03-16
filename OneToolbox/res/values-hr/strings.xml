@@ -439,4 +439,35 @@
 	<string name="array_batt_icon_white">hd2o bijelo</string>
 	<string name="array_batt_icon_white_percent">hd2o bijelo postotak</string>
 	<string name="array_recents_menu_playstore">Play Store</string>
-	</resources>
+	<string name="backup_restore">Management postavki</string>
+    <string name="backup_restore_choose">Odaberite željenu rutinu</string>
+    <string name="do_backup">Backup</string>
+    <string name="do_restore">Vraćanje (Restore)</string>
+    <string name="storage_read_only">Vaše eksterno spremište je read-only</string>
+    <string name="storage_unavailable">Nemože se dobiti pristup potrebnim spremištima</string>
+    <string name="storage_cannot_mkdir">Neuspjelo otvaranje direktorija za backup</string>
+    <string name="storage_cannot_backup">Neuspjelo kreiranje backup fajla</string>
+    <string name="storage_cannot_restore">Nije pronađen backup postavki</string>
+    <string name="backup_ok">Uspješno je napravljen backup postavki!</string>
+    <string name="restore_ok">Postavke su uspješno vraćene!</string>
+    
+    <string name="no_currents">Nije pronađena kontrola pozadinskog osvjetljenja tipki. Vaš uređaj možda nije kompatibilan sa ovom funkcijom.</string>
+    <string name="backup_restore_info">Vaše postavke su vraćen putem Google Cloud Backup. Ako ste imali Vol2Wake omogućen, molimo da ga ručno opet uključite. Napravite puni reboot nakon uključenja Toolbox Xposed modula.</string>
+    
+    <string name="hideicons_title">Sakriti ikone u statusnoj traci</string>
+	<string name="hideicons_summ">Odaberite ikone koje ne želiti da se prikazuju.</string>
+	<string name="open_menu">Otvori izbornik (menu)</string>
+	<string name="open_recents">Prikaži nedavne aplikacije</string>
+	
+	<string name="various_securelock_title">Poboljšano zaključavanje ekrana</string>
+	<string name="various_securelock_summ">Onemogućiti Power izbornik i hardware reset obavijest dok je aktivno zaključavanje ekrana.</string>
+	<string name="various_keyslight_title">Osvjetljenje hardverskih tipki</string>
+	<string name="various_keyslight_summ">Promijeniti jačinu pozadinskog osvjetljenja za tipke.</string>
+	<string name="various_keyslight_auto_title">Dinamičko pozadinsko osvjetljenje</string>
+	<string name="various_keyslight_auto_summ">Izgasi pozadinsko osvjetljenje tipki u fullscreen aplikacijama.</string>
+	
+	<string name="array_keyslight_dim">Prigušenje (Dimanje)</string>
+	<string name="array_keyslight_extradim">Extra prigušenje (dimanje)</string>
+	<string name="array_keyslight_alwaysoff">Uvijek isključeno</string>
+	
+</resources>
