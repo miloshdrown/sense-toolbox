@@ -45,7 +45,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="remove_last">Vous ne pouvez pas supprimer le dernier élément !</string>
     <string name="remove">Supprimer</string>
     <string name="remove_tile_msg1">Voulez-vous supprimer la tuile</string>
-    <string name="remove_tile_msg2">\nVous pouvez l\'ajouter en retour via le menu du haut.</string>
+    <string name="remove_tile_msg2">\?\nVous pouvez l\'ajouter en retour via le menu du haut.</string>
     <string name="yes">Oui</string>
     <string name="no">Non</string>
     <string name="hotreboot_explain">Votre ordre a été enregistré! Un redémarrage du logiciel est requis pour prendre effet. Voudriez-vous le faire maintenant ?</string>
