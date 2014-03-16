@@ -281,7 +281,7 @@
 	<string name="various_mtpnotif_title">Sakriti MTP obavijesti</string>
 	<string name="various_mtpnotif_summ">Učiniti MTP usluge u pozadini i onemogućiti obavijesti. Ovaj mod je za ROM-ove bazirane na leakanom 4.3.</string>
 	<string name="various_fastunlock_title">Brzo otključavanje</string>
-	<string name="various_fastunlock_summ">Otključavanje uređaja odmah kad se unese točan PIN. Samo HTC lockscreen.</string>
+	<string name="various_fastunlock_summ">Otključavanje uređaja odmah kad se unese točan PIN ili šifru. Samo HTC lockscreen.</string>
 	<string name="various_ytwatermark_title">Vodeni žig YouTube programa</string>
 	<string name="various_ytwatermark_summ">Sakriti logo programa u videima u YouTube aplikaciji.</string>
 	<string name="various_oldtoasts_title">Jelly Bean stil toasta</string>
@@ -420,8 +420,8 @@
 	<string name="various_rejectedcall_summ">Nemoj prikazivati obavijest ručno odbijenih poziva. Oni će biti dodani u povijet kao normalno završeni razgovori.</string>
 	<string name="various_mods_volume">Glasnoća</string>
 	<string name="about_l10n">Prijevod</string>
-	<string name="about_l10n_data_left">Hrvatski\nNizozemski\nTalijanski\nPoljski\nŠpanjolski</string>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru</string>
+	<string name="about_l10n_data_left">Hrvatski\nNizozemski\nTalijanski\nPoljski\nŠpanjolski\nFrancuski</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
 	
 	<string name="array_home_menu_draglock">Zaključaj launcher</string>
 	<string name="array_home_menu_dragunlock">Otključaj launcher</string>
