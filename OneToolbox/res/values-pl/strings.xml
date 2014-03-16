@@ -460,4 +460,21 @@
 <string name="hideicons_summ">Wybierz ikony, które chcesz ukryć.</string>
 	<string name="array_keyslight_dim">Przyciemnienie</string>
 	<string name="array_keyslight_extradim">Bardzo słabe</string>
+	<string name="backup_restore">Zarządzanie ustawieniami</string>
+    <string name="backup_restore_choose">Wybierz żądaną procedurę</string>
+    <string name="do_backup">Kopia zapasowa</string>
+    <string name="do_restore">Przywracanie kopii</string>
+    <string name="storage_read_only">Twoja pamięć zewnętrzna jest tylko do odczytu</string>
+    <string name="storage_unavailable">Nie można uzyskać dostępu do jakiejkolwiek odpowiedniej pamięci</string>
+    <string name="storage_cannot_mkdir">Nie udało się utworzyć katalogu kopii zapasowej</string>
+    <string name="storage_cannot_backup">Nie udało się utworzyć pliku kopii zapasowej</string>
+    <string name="storage_cannot_restore">Nie znaleziono kopii zapasowych ustawień</string>
+    <string name="backup_ok">Ustawienia zostały pomyślnie skopiowane!</string>
+    <string name="restore_ok">Ustawienia zostały pomyślnie przywrócone!</string>
+    
+    <string name="backup_restore_info">Twoje ustawienia zostały przywrócone przez Google Cloud Backup. Jeśli miałeś włączony Vol2wake, należy ponownie włączyć go ręcznie. Proszę zrobić pełny restart po włączeniu modułu Toolbox Xposed.</string>
+    
+    <string name="open_menu">Otwórz menu</string>
+	<string name="open_recents">Pokaż nowe aplikacje</string>
+	
 	</resources>
