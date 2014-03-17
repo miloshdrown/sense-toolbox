@@ -424,19 +424,11 @@ public class PrefsFragment extends HtcPreferenceFragment {
         });
 	}
 	
-	static String currentsOwner;
+	static boolean isWaitingForCmd = false;
 	static boolean setButtonBacklightTo(Context ctx, final int pref_keyslight) {
-		try {
+		if (isWaitingForCmd) return false; else try {
+			isWaitingForCmd = true;
 			final String currents = "/sys/class/leds/button-backlight/currents";
-			currentsOwner = "";
-			CommandCapture commandOwner = new CommandCapture(0, "stat -c '%u' " + currents) {
-				@Override
-				public void output(int id, String line) {
-					currentsOwner = line;
-				}
-			};
-			RootTools.getShell(false).add(commandOwner).waitForFinish();
-			
 			CommandCapture command = new CommandCapture(0, "cat " + currents) {
 				int lineCnt = 0;
 				
@@ -449,36 +441,62 @@ public class PrefsFragment extends HtcPreferenceFragment {
 					if (pref_keyslight == 2) level = "5";
 					else if (pref_keyslight == 3) level = "2";
 					else if (pref_keyslight == 4) level = "0";
-					/*
-					String[] cmdsDefault = {
-						"chown 1000 " + currents,
-						"chmod 644 " + currents,
-						"echo 20 > " + currents
-					};
-					*/
-					if (!line.equals(level)) {
-						String[] cmdsPerm = {
+					
+					if (!line.trim().equals(level)) {
+						/*
+						final String[] cmdsDefault = {
+							"chown 1000 " + currents,
+							"chmod 644 " + currents,
+							"echo 20 > " + currents
+						};
+						*/
+						final String[] cmdsPerm = {
 							"chown " + String.valueOf(android.os.Process.myUid()) + " " + currents,
 							"chmod 644 " + currents,
 							"echo " + level + " > " + currents,
 							"chmod 444 " + currents
 						};
-						String[] cmds = {
+						final String[] cmds = {
 							"chmod 644 " + currents,
 							"echo " + level + " > " + currents,
 							"chmod 444 " + currents
 						};
 						
 						try {
-							if (currentsOwner.trim().equals("0") || currentsOwner.trim().equals("1000")) {
-								RootTools.sendShell(cmdsPerm, 0, null, 3000);
-							} else
-								RootTools.sendShell(cmds, 0, null, false, 3000);
+							CommandCapture commandOwner = new CommandCapture(0, "stat -c '%u' " + currents) {
+								int lineCnt2 = 0;
+								
+								@Override
+								public void output(int id, String line) {
+									if (lineCnt2 == 0) try {
+										if (line.trim().equals("0") || line.trim().equals("1000")) {
+											RootTools.sendShell(cmdsPerm, 0, null, 3000);
+										} else
+											RootTools.sendShell(cmds, 0, null, false, 3000);
+
+										// 500ms interval between backlight updates
+										new Thread() {
+											@Override
+											public void run() {
+												try {
+													sleep(500);
+													isWaitingForCmd = false;
+												} catch (Exception e) {
+													e.printStackTrace();
+												}
+											}
+										}.start();
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									lineCnt2++;
+								}
+							};
+							RootTools.getShell(false).add(commandOwner);
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-					}
-					
+					} else isWaitingForCmd = false;
 					lineCnt++;
 				}
 			};
@@ -486,6 +504,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			return true;
 		} catch (Exception e) {
 			e.printStackTrace();
+			isWaitingForCmd = false;
 			return false;
 		}
 	}
