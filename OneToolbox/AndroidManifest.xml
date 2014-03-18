@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.langerhans.one"
-	android:versionCode="23"
-	android:versionName="2.8" >
+	android:versionCode="24"
+	android:versionName="2.8.1" >
 
 	<uses-sdk
 		android:minSdkVersion="17"

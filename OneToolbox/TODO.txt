@@ -40,6 +40,10 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Current changelog
 =================
 
+2.8.1
+Fixed Fast Unlock mod for Sense 5.0
+Fixed Dynamic Buttons Backlight mod
+
 2.8
 [HTC One] Mod to set brightness of hardware buttons backlight
 [HTC One] Mod that turns off button backlight dynamically in fullscreen apps

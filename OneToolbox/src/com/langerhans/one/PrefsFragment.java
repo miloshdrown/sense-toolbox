@@ -514,10 +514,9 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction() != null) {
 				int thepref = Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
-				if (thepref == 1) return;
-				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED"))
-					setButtonBacklightTo(context, thepref);
-				else if (intent.getAction().equals("com.langerhans.one.UPDATEBACKLIGHT")) {
+				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+					if (thepref > 1) setButtonBacklightTo(context, thepref);
+				} else if (intent.getAction().equals("com.langerhans.one.UPDATEBACKLIGHT")) {
 					boolean forceDisableBacklight = intent.getBooleanExtra("forceDisableBacklight", false);
 					if (forceDisableBacklight)
 						setButtonBacklightTo(context, 4);
