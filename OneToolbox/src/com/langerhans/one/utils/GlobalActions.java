@@ -9,6 +9,7 @@ import static de.robv.android.xposed.XposedHelpers.setStaticObjectField;
 import java.lang.reflect.Method;
 import java.util.List;
 
+import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Instrumentation;
 import android.bluetooth.BluetoothAdapter;
@@ -36,7 +37,6 @@ import android.os.Vibrator;
 import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
-import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -650,8 +650,24 @@ public class GlobalActions {
 	    }
 	}
 	
+	private static BroadcastReceiver mScrOff = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			Intent intent2 = new Intent();
+	        intent2.setAction("com.langerhans.one.UPDATEBACKLIGHT");
+			intent2.putExtra("forceDisableBacklight", true);
+		}
+	};
+	
 	public static void buttonBacklight(){
 		try {
+			findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					mPWMContext.registerReceiver(mScrOff, new IntentFilter(Intent.ACTION_SCREEN_OFF));
+				}
+			});
+			
 			findAndHookMethod("com.android.server.wm.WindowManagerService", null, "statusBarVisibilityChanged", int.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -660,6 +676,7 @@ public class GlobalActions {
 			        intent.setAction("com.langerhans.one.UPDATEBACKLIGHT");
 			        
 					int sysUiVis = (Integer)param.args[0];
+					//XposedBridge.log("statusBarVisibilityChanged: " + String.valueOf(sysUiVis));
 					if (sysUiVis != 0 && ((sysUiVis & View.SYSTEM_UI_FLAG_FULLSCREEN) == View.SYSTEM_UI_FLAG_FULLSCREEN
 						|| (sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
 						|| (sysUiVis & View.SYSTEM_UI_FLAG_LOW_PROFILE) == View.SYSTEM_UI_FLAG_LOW_PROFILE))
@@ -668,11 +685,17 @@ public class GlobalActions {
 					mContext.sendBroadcast(intent);
 				}
 			});
-			
+			/*
 			findAndHookMethod("android.view.Window", null, "setFlags", int.class, int.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					int newFlags = (Integer)param.args[0];
+					WindowManager.LayoutParams mWindowAttributes = (WindowManager.LayoutParams)XposedHelpers.getObjectField(param.thisObject, "mWindowAttributes");
+					if (mWindowAttributes == null) return;
+					int i = (Integer)param.args[0];
+					int j = (Integer)param.args[1];
+					int newFlags = mWindowAttributes.flags & ~j | i & j;
+					
+					XposedBridge.log("setFlags: " + String.valueOf(newFlags));
 					if (newFlags != 0 && (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN) {
 						Window wnd = (Window)param.thisObject;
 						if (wnd != null && wnd.getContext().getPackageName().equals("com.android.systemui")) return;
@@ -682,6 +705,21 @@ public class GlobalActions {
 						intent.putExtra("forceDisableBacklight", true);
 						mContext.sendBroadcast(intent);
 					}
+				}
+			});
+			*/
+			findAndHookMethod("android.app.Activity", null, "onResume", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Activity act = (Activity)param.thisObject;
+					if (act == null) return;
+					int newFlags = act.getWindow().getAttributes().flags;
+					//XposedBridge.log("onResume flags: " + String.valueOf(newFlags));
+					Intent intent = new Intent();
+			        intent.setAction("com.langerhans.one.UPDATEBACKLIGHT");
+			        if (newFlags != 0 && (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN && !act.getPackageName().equals("com.android.systemui"))
+					intent.putExtra("forceDisableBacklight", true);
+					act.sendBroadcast(intent);
 				}
 			});
 		} catch (Throwable t) {
