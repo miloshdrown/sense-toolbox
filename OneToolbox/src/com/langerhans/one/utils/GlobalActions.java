@@ -676,6 +676,7 @@ public class GlobalActions {
 			        intent.setAction("com.langerhans.one.UPDATEBACKLIGHT");
 			        
 					int sysUiVis = (Integer)param.args[0];
+					if (sysUiVis == 67108864 || sysUiVis == 0) return;
 					//XposedBridge.log("statusBarVisibilityChanged: " + String.valueOf(sysUiVis));
 					if (sysUiVis != 0 && ((sysUiVis & View.SYSTEM_UI_FLAG_FULLSCREEN) == View.SYSTEM_UI_FLAG_FULLSCREEN
 						|| (sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
@@ -696,6 +697,7 @@ public class GlobalActions {
 					int newFlags = mWindowAttributes.flags & ~j | i & j;
 					
 					XposedBridge.log("setFlags: " + String.valueOf(newFlags));
+					
 					if (newFlags != 0 && (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN) {
 						Window wnd = (Window)param.thisObject;
 						if (wnd != null && wnd.getContext().getPackageName().equals("com.android.systemui")) return;
