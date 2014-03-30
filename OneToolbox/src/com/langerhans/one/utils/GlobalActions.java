@@ -37,6 +37,7 @@ import android.os.Vibrator;
 import android.provider.Settings;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
@@ -686,30 +687,32 @@ public class GlobalActions {
 					mContext.sendBroadcast(intent);
 				}
 			});
-			/*
+			
 			findAndHookMethod("android.view.Window", null, "setFlags", int.class, int.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					WindowManager.LayoutParams mWindowAttributes = (WindowManager.LayoutParams)XposedHelpers.getObjectField(param.thisObject, "mWindowAttributes");
-					if (mWindowAttributes == null) return;
-					int i = (Integer)param.args[0];
-					int j = (Integer)param.args[1];
-					int newFlags = mWindowAttributes.flags & ~j | i & j;
-					
-					XposedBridge.log("setFlags: " + String.valueOf(newFlags));
-					
-					if (newFlags != 0 && (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN) {
-						Window wnd = (Window)param.thisObject;
-						if (wnd != null && wnd.getContext().getPackageName().equals("com.android.systemui")) return;
-						Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-						Intent intent = new Intent();
-				        intent.setAction("com.langerhans.one.UPDATEBACKLIGHT");
-						intent.putExtra("forceDisableBacklight", true);
-						mContext.sendBroadcast(intent);
+					Window wnd = (Window)param.thisObject;
+					if (wnd != null && wnd.getContext().getPackageName().equals("com.google.android.youtube")) {
+						WindowManager.LayoutParams mWindowAttributes = (WindowManager.LayoutParams)XposedHelpers.getObjectField(param.thisObject, "mWindowAttributes");
+						if (mWindowAttributes == null) return;
+						int i = (Integer)param.args[0];
+						int j = (Integer)param.args[1];
+						int newFlags = mWindowAttributes.flags & ~j | i & j;
+						
+						if (newFlags != 0 &&
+						   (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != WindowManager.LayoutParams.FLAG_FULLSCREEN &&
+						   (newFlags & WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN) == WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN &&
+						   (newFlags & WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR) == WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR) {
+								//XposedBridge.log("setFlags FLAG_LAYOUT_*: " + String.valueOf(newFlags));
+								Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+								Intent intent = new Intent();
+								intent.setAction("com.langerhans.one.UPDATEBACKLIGHT");
+								mContext.sendBroadcast(intent);
+						}
 					}
 				}
 			});
-			*/
+			
 			findAndHookMethod("android.app.Activity", null, "onResume", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
