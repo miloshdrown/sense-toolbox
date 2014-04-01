@@ -7,6 +7,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -18,6 +19,7 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -600,6 +602,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 				ActionBarExt actionBarExt = new ActionBarExt(this.getActivity(), ab);
 		        ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
 		        actionBarContainer.setBackUpEnabled(true);
+		        actionBarContainer.setBackgroundColor(Color.BLACK);
 				
 		        View homeBtn = actionBarContainer.getChildAt(0);
 				if (homeBtn != null) {
