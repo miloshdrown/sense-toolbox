@@ -29,15 +29,6 @@
 			<meta-data android:name="plugAnchorItem" android:value="personalize"/>
 			<meta-data android:name="plugAnchorShift" android:value="-1.0"/>
 		</activity>
-		<activity
-			android:name="com.langerhans.one.ReorderActivity"
-			android:label="@string/eqs_reorder"
-			android:configChanges="keyboardHidden|orientation|screenSize" >
-			<intent-filter>
-				<action android:name="android.intent.action.VIEW" />
-				<category android:name="android.intent.category.PREFERENCE" />
-			</intent-filter>
-		</activity>
 		<activity android:theme="@style/Invisible" android:name="com.langerhans.one.DimmedActivity" android:exported="true" android:launchMode="singleInstance" android:excludeFromRecents="true" />
 		<activity android:name="com.langerhans.one.AboutScreen" android:screenOrientation="portrait" />
 		<receiver android:name="com.langerhans.one.PrefsFragment$SetButtonBacklight" android:exported="true">

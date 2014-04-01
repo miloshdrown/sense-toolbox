@@ -4,16 +4,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:key="prefs" >
-
-	<com.htc.preference.HtcPreference
-		android:title="@string/eqs_reorder"
-		android:summary="@string/eqs_reorder_explain"
-		android:key="pref_key_eqs">
-		<intent
-			android:action="android.intent.action.VIEW"
-			android:targetPackage="com.langerhans.one"
-			android:targetClass="com.langerhans.one.ReorderActivity" />
-	</com.htc.preference.HtcPreference>
 	
     <com.htc.preference.HtcPreferenceCategory
         android:title="@string/mods">
