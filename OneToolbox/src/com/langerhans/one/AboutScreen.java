@@ -3,6 +3,7 @@ package com.langerhans.one;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
@@ -49,10 +50,9 @@ public class AboutScreen extends Activity {
 	    actionBarText.setPrimaryText(R.string.app_about);
 	    actionBarContainer.addCenterView(actionBarText);
 
-        actionBarExt.enableHTCLandscape(false);
-		actionBarExt.setShowHideAnimationEnabled(true);
-        actionBarContainer.setRightDividerEnabled(true);
 		actionBarContainer.setBackUpEnabled(true);
+		
+		actionBarContainer.setBackgroundColor(Color.BLACK);
 		
         View homeBtn = actionBarContainer.getChildAt(0);
 		if (homeBtn != null) {
