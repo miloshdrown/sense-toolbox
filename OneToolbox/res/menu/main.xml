@@ -1,8 +1,0 @@
-<menu xmlns:android="http://schemas.android.com/apk/res/android" >
-
-    <item android:id="@+id/menu_restore" android:icon="@android:drawable/ic_menu_recent_history" android:title="@string/restore" android:showAsAction="always|withText"></item>
-    <item android:id="@+id/menu_save" android:title="@string/menu_save" android:showAsAction="always|withText" android:icon="@android:drawable/ic_menu_save" />
-    <item android:id="@+id/menu_add" android:icon="@android:drawable/ic_menu_add" android:title="@string/add" android:showAsAction="always|withText"></item>
-    
-
-</menu>

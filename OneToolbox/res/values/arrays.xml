@@ -1,22 +1,4 @@
 <resources>
-    <string-array name="availTiles">
-        <item >0</item>
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-        <item >4</item>
-        <item >5</item>
-        <item >6</item>
-        <item >7</item>
-        <item >8</item>
-        <item >9</item>
-        <item >10</item>
-        <item >11</item>
-        <item >12</item>
-        <item >15</item>
-        <item >18</item>
-        <item >19</item>
-    </string-array>
     <string-array name="cam_actions">
         <item >@string/array_cam_actions_shutter</item>
         <item >@string/array_cam_actions_focus</item>
