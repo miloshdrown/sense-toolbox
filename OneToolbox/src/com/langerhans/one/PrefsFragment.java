@@ -1,20 +1,12 @@
 package com.langerhans.one;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-import java.util.Set;
-
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
@@ -22,27 +14,19 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.SharedPreferences.Editor;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
-import android.view.Gravity;
-import android.view.Menu;
-import android.view.MenuInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.htc.app.HtcProgressDialog;
@@ -601,213 +585,6 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		    ai = null;
 		}
 		return (ai != null ? pm.getApplicationLabel(ai) : not_selected);
-	}
-	
-	@Override
-	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		// Inflate the menu; this adds items to the action bar if it is present.
-		inflater.inflate(R.menu.manu_mods, menu);
-	}
-	
-	private TextView createCenteredText(int resId) {
-		TextView centerMsg = new TextView(getActivity());
-		centerMsg.setText(resId);
-		centerMsg.setGravity(Gravity.CENTER_HORIZONTAL);
-		centerMsg.setPadding(0, 60, 0, 60);
-		centerMsg.setTextSize(18.0f);
-		centerMsg.setTextColor(Color.LTGRAY);
-		return centerMsg; 
-	}
-	
-	private boolean checkStorageReadable() {
-		String state = Environment.getExternalStorageState();
-		if (state.equals(Environment.MEDIA_MOUNTED_READ_ONLY) || state.equals(Environment.MEDIA_MOUNTED)) {
-			return true;
-		} else {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-			alert.setTitle(R.string.warning);
-			alert.setView(createCenteredText(R.string.storage_unavailable));
-			alert.setNeutralButton(getText(android.R.string.ok), new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {}
-			});
-			alert.show();
-			return false;
-		}
-	}
-	
-	private boolean preparePathForBackup(String path) {
-		String state = Environment.getExternalStorageState();
-		if (state.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-			alert.setTitle(R.string.warning);
-			alert.setView(createCenteredText(R.string.storage_read_only));
-			alert.setNeutralButton(getText(android.R.string.ok), new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {}
-			});
-			alert.show();
-			return false;
-		} else if (state.equals(Environment.MEDIA_MOUNTED)) {
-			File file = new File(path);
-			if (!file.exists() && !file.mkdirs()) {
-	        	HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-				alert.setTitle(R.string.warning);
-				alert.setView(createCenteredText(R.string.storage_cannot_mkdir));
-				alert.setNeutralButton(getText(android.R.string.ok), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {}
-				});
-				alert.show();
-				return false;
-		    }
-			return true;
-		} else {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-			alert.setTitle(R.string.warning);
-			alert.setView(createCenteredText(R.string.storage_unavailable));
-			alert.setNeutralButton(getText(android.R.string.ok), new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {}
-			});
-			alert.show();
-			return false;
-		}
-	}
-	
-	@Override
-	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.softreboot)
-		{
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-			alert.setTitle(R.string.soft_reboot);
-			alert.setView(createCenteredText(R.string.hotreboot_explain_prefs));
-			alert.setPositiveButton(getText(R.string.yes) + "!", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {
-					try {
-						CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
-						RootTools.getShell(true).add(command).waitForFinish();
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			});
-			alert.setNegativeButton(getText(R.string.no) + "!", new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {
-					//Canceled
-				}
-			});
-			alert.show();
-			return true;
-		} else if (item.getItemId() == R.id.backuprestore) {
-			final String backupPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SenseToolbox/";
-			final String backupFile = "settings_backup";
-			
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-			alert.setTitle(R.string.backup_restore);
-			alert.setView(createCenteredText(R.string.backup_restore_choose));
-			alert.setPositiveButton(getText(R.string.do_restore), new DialogInterface.OnClickListener() {
-				@SuppressWarnings("unchecked")
-				public void onClick(DialogInterface dialog, int whichButton) {
-					if (!checkStorageReadable()) return;
-					ObjectInputStream input = null;
-					try {
-						input = new ObjectInputStream(new FileInputStream(backupPath + backupFile));
-						Map<String, ?> entries = (Map<String, ?>)input.readObject();
-						if (entries == null || entries.isEmpty()) throw new Exception("Cannot read entries");
-							
-						Editor prefEdit = prefs.edit();
-						prefEdit.clear();
-						for (Entry<String, ?> entry: entries.entrySet()) {
-							Object val = entry.getValue();
-							String key = entry.getKey();
-
-							if (val instanceof Boolean)
-								prefEdit.putBoolean(key, ((Boolean)val).booleanValue());
-							else if (val instanceof Float)
-								prefEdit.putFloat(key, ((Float)val).floatValue());
-							else if (val instanceof Integer)
-								prefEdit.putInt(key, ((Integer)val).intValue());
-							else if (val instanceof Long)
-								prefEdit.putLong(key, ((Long)val).longValue());
-							else if (val instanceof String)
-								prefEdit.putString(key, ((String)val));
-							else if (val instanceof Set<?>)
-								prefEdit.putStringSet(key, ((Set<String>)val));
-						}
-						prefEdit.commit();
-						
-						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-						alert.setTitle(R.string.do_restore);
-						alert.setView(createCenteredText(R.string.restore_ok));
-						alert.setCancelable(false);
-						alert.setNeutralButton(getText(android.R.string.ok), new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-								getActivity().finish();
-								startActivity(getActivity().getIntent());
-							}
-						});
-						alert.show();
-					} catch (Exception e) {
-						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-						alert.setTitle(R.string.warning);
-						alert.setView(createCenteredText(R.string.storage_cannot_restore));
-						alert.setNeutralButton(getText(android.R.string.ok), new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {}
-						});
-						alert.show();
-					} finally {
-						try {
-							if (input != null) input.close();
-						} catch (Exception ex) {
-							ex.printStackTrace();
-						}
-					}
-				}
-			});
-			alert.setNegativeButton(getText(R.string.do_backup), new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {
-					if (!preparePathForBackup(backupPath)) return;
-					ObjectOutputStream output = null;
-					try {
-						output = new ObjectOutputStream(new FileOutputStream(backupPath + backupFile));
-						output.writeObject(prefs.getAll());
-						
-						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-						alert.setTitle(R.string.do_backup);
-						alert.setView(createCenteredText(R.string.backup_ok));
-						alert.setNeutralButton(getText(android.R.string.ok), new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {}
-						});
-						alert.show();
-					} catch (Exception e) {
-						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-						alert.setTitle(R.string.warning);
-						alert.setView(createCenteredText(R.string.storage_cannot_backup));
-						alert.setNeutralButton(getText(android.R.string.ok), new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {}
-						});
-						alert.show();
-						
-						e.printStackTrace();
-					} finally {
-						try {
-							if (output != null) {
-								output.flush();
-								output.close();
-							}
-						} catch (Exception ex) {
-							ex.printStackTrace();
-						}
-					}
-				}
-			});
-			alert.setNeutralButton(getText(android.R.string.cancel), new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {}
-			});
-			alert.show();
-			return true;
-		} else if (item.getItemId() == R.id.about) {
-			Intent intent = new Intent(getActivity(), AboutScreen.class);
-			startActivity(intent);
-		}
-		return true;
 	}
 	
 	// Fix for the sub HtcPreferenceScreens HomeBackUp
