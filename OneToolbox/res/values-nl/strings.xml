@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources><string name="menu_save">Opslaan</string>
-    <string name="app_name">Sense 5 Toolbox</string>
-    <string name="app_name_version">Sense 5 Toolbox (Versie: %1$s)</string>
+    <string name="app_name">Sense 6 Toolbox</string>
+    <string name="app_name_version">Sense 6 Toolbox (Versie: %1$s)</string>
     <string name="app_about">Over</string>
     <string name="about_version">Versie: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Ondersteuning (App Versie: %1$s)</string>
@@ -9,8 +9,8 @@
     <string name="add">Toevoegen</string>
     <string name="soft_reboot">Zachte herstart</string>
     <string name="warning">Waarschuwing!</string>
-    <string name="xposed_not_installed">Xposed Framework is niet juist geïnstalleerd. Installeer App_process en XposedBridge.jar vanuit Xposed Installer. Activeer daarna de Sense 5 Toolbox module en herstart het toestel.</string>
-    <string name="welcome">Welkom bij Sense 5 Toolbox!</string>
+    <string name="xposed_not_installed">Xposed Framework is niet juist geïnstalleerd. Installeer App_process en XposedBridge.jar vanuit Xposed Installer. Activeer daarna de Sense 6 Toolbox module en herstart het toestel.</string>
+    <string name="welcome">Welkom bij Sense 6 Toolbox!</string>
     <string name="ram_mb">MB</string>
     
     <string name="dragndrop">Gebruik slepen en neerzetten om de snelle instellingen te ordenen.</string>
@@ -302,7 +302,7 @@
 	<string name="persist_installer_summ">Voeg pakketversie toe aan de titel van de installer bij updaten of installeren van een app.</string>
 	
 	<string name="support">Ondersteuning</string>
-	<string name="support_s5t_title">Bezoek de Sense 5 Toolbox Post</string>
+	<string name="support_s5t_title">Bezoek de Sense 6 Toolbox Post</string>
 	<string name="support_s5t_summ">U vindt hier informatie over en de changelogs van de app.</string>
 	<string name="support_blog_title">Bezoek het ARHD Blog</string>
 	<string name="support_blog_summ">Ontvang hier het laatste nieuws en updates over je favoriete ROM.</string>
@@ -432,7 +432,7 @@
 	<string name="array_header_click_clock">Open Klok app</string>
 	<string name="array_header_click_sysinfo">Laat zien/verberg CPU en RAM info, open Klok app door te drukken op actuele tijd.</string>
 	
-<string name="module_not_active">Sense 5 Toolbox module is niet actief! Open Xposed Installer, activeer de module en herstart het toestel.</string>
+<string name="module_not_active">Sense 6 Toolbox module is niet actief! Open Xposed Installer, activeer de module en herstart het toestel.</string>
     <string name="cleanbeam_hd2o_title">HD2Owner</string>
 	<string name="cleanbeam_mods_credits_head">Credits</string>
 	<string name="cleanbeam_hd2o_summ">Voor additionele batterij-icoon sets.</string>

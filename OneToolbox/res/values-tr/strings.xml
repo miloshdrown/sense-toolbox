@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources><string name="menu_save">Kaydet</string>
-    <string name="app_name">Sense 5 Toolbox</string>
-    <string name="app_name_version">Sense 5 Toolbox (Versiyon: %1$s)</string>
+    <string name="app_name">Sense 6 Toolbox</string>
+    <string name="app_name_version">Sense 6 Toolbox (Versiyon: %1$s)</string>
     <string name="app_about">Hakkında</string>
     <string name="about_version">Versiyon: %1$s</string>
     <string name="support_version">Destek (Uygulama Versiyonu: %1$s)</string>
@@ -11,8 +11,8 @@
     <string name="ram_mb">MB</string>
     
     <string name="warning">Uyarı!</string>
-    <string name="xposed_not_installed">Xposed Framework düzgün yüklenmemiş, app_process ve XposedBridge.jar dosyalarını Xposed Installer\'dan yüklemelisiniz. Sense 5 Toolbox modülünü aktive edip cihazınızı reboot edin.</string>
-    <string name="welcome">Sense 5 Toolbox\'a hoş geldiniz!</string>
+    <string name="xposed_not_installed">Xposed Framework düzgün yüklenmemiş, app_process ve XposedBridge.jar dosyalarını Xposed Installer\'dan yüklemelisiniz. Sense 6 Toolbox modülünü aktive edip cihazınızı reboot edin.</string>
+    <string name="welcome">Sense 6 Toolbox\'a hoş geldiniz!</string>
     <string name="dragndrop">Çabuk ayarları ayarlamak için sürükleyip bırakın.</string>
     <string name="title_delete">Silmek için başlığa dokunun.</string>
     <string name="plus_icon">Başlık eklemek için \'+\' ikonunu kullanın.</string>

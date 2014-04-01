@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="menu_save">Guardar</string>
-    <string name="app_name">Sense 5 Toolbox</string>
-    <string name="app_name_version">Sense 5 Toolbox (Versión: %1$s)</string>
+    <string name="app_name">Sense 6 Toolbox</string>
+    <string name="app_name_version">Sense 6 Toolbox (Versión: %1$s)</string>
     <string name="app_about">Acerca de</string>
     <string name="about_version">Versión: %1$s</string>
     <string name="support_version">Soporte (App Versión: %1$s)</string>
@@ -11,8 +11,8 @@
     <string name="soft_reboot">Reinicio Rápido</string>
     <string name="ram_mb">MB</string>
     <string name="warning">Advertencia!</string>
-    <string name="xposed_not_installed">Xposed Framework no esta correctamente instalado, debe instalar el app_process y XposedBridge.jar desde el Instalador Xposed, luego activar el modulo Sense 5 Toolbox y Reiniciar.</string>
-    <string name="welcome">Bienvenido a Sense 5 Toolbox!</string>
+    <string name="xposed_not_installed">Xposed Framework no esta correctamente instalado, debe instalar el app_process y XposedBridge.jar desde el Instalador Xposed, luego activar el modulo Sense 6 Toolbox y Reiniciar.</string>
+    <string name="welcome">Bienvenido a Sense 6 Toolbox!</string>
     <string name="dragndrop">Use el arrastrar y soltar para re ordenar tus atajos de configuración.</string>
     <string name="title_delete">Solo toca el titulo para borrarlo.</string>
     <string name="plus_icon">Use el icono \'+\' para agregar nuevos títulos.</string>
@@ -416,7 +416,7 @@
 	<string name="about_l10n_data_left">Croata\nHolandés\nItaliano\nPolaco\nEspañol\nFrances</string>
 	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
 	
-	<string name="module_not_active">El modulo Sense 5 Toolbox no esta activo! Abre el Instalador Xposed, activa el modulo y reinicia.</string>
+	<string name="module_not_active">El modulo Sense 6 Toolbox no esta activo! Abre el Instalador Xposed, activa el modulo y reinicia.</string>
     <string name="cleanbeam_mods_credits_head">Creditos</string>
 	<string name="cleanbeam_hd2o_title">HD2Owner</string>
 	<string name="cleanbeam_hd2o_summ">Para iconos de batería adicionales.</string>

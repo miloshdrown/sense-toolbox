@@ -2,8 +2,8 @@
 <resources>
 
     <string name="menu_save">Speichern</string>
-    <string name="app_name">Sense 5 Toolbox</string>
-    <string name="app_name_version">Sense 5 Toolbox (Version: %1$s)</string>
+    <string name="app_name">Sense 6 Toolbox</string>
+    <string name="app_name_version">Sense 6 Toolbox (Version: %1$s)</string>
     <string name="app_about">Info</string>
     <string name="about_version">Version: %1$s (\#JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Support (App Version: %1$s)</string>
@@ -13,8 +13,8 @@
     <string name="ram_mb">MB</string>
     
     <string name="warning">Warnung!</string>
-    <string name="xposed_not_installed">Xposed ist nicht vollständig installiert! Du musst im Xposed Installer Install/Update wählen, das Sense 5 Toolbox Modul aktivieren und dann das Handy neu starten.</string>
-    <string name="welcome">Willkommen in Sense 5 Toolbox!</string>
+    <string name="xposed_not_installed">Xposed ist nicht vollständig installiert! Du musst im Xposed Installer Install/Update wählen, das Sense 6 Toolbox Modul aktivieren und dann das Handy neu starten.</string>
+    <string name="welcome">Willkommen in Sense 6 Toolbox!</string>
     <string name="dragndrop">Nutze Drag\'n\'Drop zum Anpassen der Schnelleinstellungen.</string>
     <string name="title_delete">Tippe auf eine Kachel zum löschen.</string>
     <string name="plus_icon">Nutze das \'+\' Icon zum Hinzufügen.</string>
@@ -310,7 +310,7 @@
 	<string name="persist_installer_summ">Fügt die Version einer App zum Titel des Installationsbildschirms hinzu.</string>
 	
 	<string name="support">Support</string>
-	<string name="support_s5t_title">Besuche den Sense 5 Toolbox Post</string>
+	<string name="support_s5t_title">Besuche den Sense 6 Toolbox Post</string>
 	<string name="support_s5t_summ">Alle Infos und Änderungen hier.</string>
 	<string name="support_blog_title">Besuche den ARHD Blog</string>
 	<string name="support_blog_summ">Alle Updates und neusten Infos über ARHD.</string>
@@ -442,7 +442,7 @@
 	<string name="about_l10n_data_left">Kroatisch\nHolländisch\nItalienisch\nPolnisch\nSpanisch\nFanzösisch</string>
 	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
 	
-	<string name="module_not_active">Das Sense 5 Toolbox Xposed Modul ist nicht aktiv. Bitte aktiviere es im Xposed Installer und starte das Handy neu.</string>
+	<string name="module_not_active">Das Sense 6 Toolbox Xposed Modul ist nicht aktiv. Bitte aktiviere es im Xposed Installer und starte das Handy neu.</string>
     <string name="array_recents_menu_playstore">Play Store</string>
 	<string name="backup_restore">Verwaltung der Einstellungen</string>
     <string name="backup_restore_choose">Was möchtest du tun?</string>

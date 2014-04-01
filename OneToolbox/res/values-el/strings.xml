@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources><string name="menu_save">Αποθήκευση</string>
-    <string name="app_name">Sense 5 Toolbox</string>
-    <string name="app_name_version">Sense 5 Toolbox (Έκδοση: %1$s)</string>
+    <string name="app_name">Sense 6 Toolbox</string>
+    <string name="app_name_version">Sense 6 Toolbox (Έκδοση: %1$s)</string>
     <string name="app_about">Περί</string>
     <string name="about_version">Έκδοση: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Υποστήριξη (Έκδοση εφαρμογής: %1$s)</string>

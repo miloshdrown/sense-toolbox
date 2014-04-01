@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources><string name="menu_save">Salva</string>
-    <string name="app_name">Sense 5 Toolbox</string>
-    <string name="app_name_version">Sense 5 Toolbox (Versione: %1$s)</string>
+    <string name="app_name">Sense 6 Toolbox</string>
+    <string name="app_name_version">Sense 6 Toolbox (Versione: %1$s)</string>
     <string name="app_about">Informazioni</string>
     <string name="support_version">Supporto (Versione App: %1$s)</string>
     <string name="restore">Ripristina</string>
@@ -10,8 +10,8 @@
     <string name="ram_mb">MB</string>
     
     <string name="warning">Attenzione!</string>
-    <string name="xposed_not_installed">Il Framework Xposed non è installato correttamente: è necessario installare app_process e XposedBridge.jar in Xposed Installer, attivare quindi il modulo Sense 5 Toolbox e riavviare.</string>
-    <string name="welcome">Benvenuto in Sense 5 Toolbox!</string>
+    <string name="xposed_not_installed">Il Framework Xposed non è installato correttamente: è necessario installare app_process e XposedBridge.jar in Xposed Installer, attivare quindi il modulo Sense 6 Toolbox e riavviare.</string>
+    <string name="welcome">Benvenuto in Sense 6 Toolbox!</string>
     <string name="dragndrop">Riordina le scelte veloci tramite drag\'n\'drop.</string>
     <string name="title_delete">Tocca una casella per eliminarla.</string>
     <string name="plus_icon">Premi l\'icona \'+\' per aggiungere caselle.</string>
@@ -298,7 +298,7 @@
 	<string name="persist_installer_summ">Aggiunge la versione del pacchetto alla schermata dell\'installer quando si aggiorna o si installa una app.</string>
 	
 	<string name="support">Supporto</string>
-	<string name="support_s5t_title">Visita il post di Sense 5 Toolbox</string>
+	<string name="support_s5t_title">Visita il post di Sense 6 Toolbox</string>
 	<string name="support_s5t_summ">Qua potrai trovare informazioni e changelog della app.</string>
 	<string name="support_blog_title">Visita blog ARHD</string>
 	<string name="support_blog_summ">Qua troverai le ultime notizie e gli aggiornamenti della tua ROM preferita.</string>
@@ -437,7 +437,7 @@
 	<string name="cleanbeam_mods_credits_head">Ringraziamenti</string>
 	<string name="cleanbeam_hd2o_summ">Per set aggiuntivi di icone della batteria.</string>
 	
-	<string name="module_not_active">Il modulo Sense 5 Toolbox non è attivo! Apri Xposed Installer, attiva il modulo e riavvia il dispositivo.</string>
+	<string name="module_not_active">Il modulo Sense 6 Toolbox non è attivo! Apri Xposed Installer, attiva il modulo e riavvia il dispositivo.</string>
     <string name="array_batt_icon_white">hd2o bianco</string>
 	<string name="array_batt_icon_white_percent">hd2o bianco percentuale</string>
 	<string name="various_securelock_title">Modifica blocca schermo</string>
@@ -466,7 +466,7 @@
     <string name="restore_ok">Le impostazioni sono state correttamente ripristinate!</string>
     
     <string name="no_currents">Gestione illuminazione tasti non disponibile. Il dispositivo potrebbe non essere compatibile con questa mod.</string>
-    <string name="backup_restore_info">Le tue impostazioni sono state ripristinate tramite Google Cloud Backup.Se Vol2wake era abilitato, ri-abilitarlo manualmente. Esegui infine un riavvio completo dopo aver attivato il modulo Sense 5 Toolbox in Xposed.</string>
+    <string name="backup_restore_info">Le tue impostazioni sono state ripristinate tramite Google Cloud Backup.Se Vol2wake era abilitato, ri-abilitarlo manualmente. Esegui infine un riavvio completo dopo aver attivato il modulo Sense 6 Toolbox in Xposed.</string>
     
     <string name="open_menu">Apri menu</string>
 	<string name="open_recents">Mostra app recenti</string>

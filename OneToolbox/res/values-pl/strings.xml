@@ -2,8 +2,8 @@
 <resources>
 
     <string name="menu_save">Zapisz</string>
-    <string name="app_name">Sense 5 Toolbox</string>
-    <string name="app_name_version">Sense 5 Toolbox (Wersja: %1$s)</string>
+    <string name="app_name">Sense 6 Toolbox</string>
+    <string name="app_name_version">Sense 6 Toolbox (Wersja: %1$s)</string>
     <string name="app_about">O programie</string>
     <string name="about_version">Wersja: %1$s (\#JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Wsparcie (Wersja Aplikacji: %1$s)</string>
@@ -13,8 +13,8 @@
     <string name="ram_mb">MB</string>
     
     <string name="warning">Ostrzeżenie!</string>
-    <string name="xposed_not_installed">Xposed Framework nie jest prawidłowo zainstalowany, należy zainstalować app_process i XposedBridge.jar z Instalatora Xposed, a następnie włączyć Sense 5 Toolbox i ponownie uruchomić moduł.</string>
-    <string name="welcome">Witaj w Sense 5 Toolbox!</string>
+    <string name="xposed_not_installed">Xposed Framework nie jest prawidłowo zainstalowany, należy zainstalować app_process i XposedBridge.jar z Instalatora Xposed, a następnie włączyć Sense 6 Toolbox i ponownie uruchomić moduł.</string>
+    <string name="welcome">Witaj w Sense 6 Toolbox!</string>
     <string name="dragndrop">Używaj przeciągnięć, aby zmieniać układ swoich szybkich ustawień.</string>
     <string name="title_delete">Wystarczy dotknąć elementu, aby go usunąć..</string>
     <string name="plus_icon">Użyj \'+\' ikony, aby dodać element.</string>
@@ -304,7 +304,7 @@
 	<string name="persist_installer_summ">Dodaj wersję pakietu do tytułu instalatora podczas aktualizacji lub instalacji aplikacji.</string>
     
     <string name="support">Wsparcie</string>
-    <string name="support_s5t_title">Odwiedź Stronę Sense 5 Toolbox</string>
+    <string name="support_s5t_title">Odwiedź Stronę Sense 6 Toolbox</string>
     <string name="support_s5t_summ">Znajdź tutaj informacje o aplikacji i listę zmian.</string>
     <string name="support_blog_title">Odwiedź blog ARHD</string>
     <string name="support_blog_summ">Poznaj najnowsze wiadomości i aktualizacje dla swojego ulubionego ROMU.</string>
@@ -436,7 +436,7 @@
 	
 	<string name="about_l10n">Tłumaczenia</string>
 	<string name="about_l10n_data_left">Chorwacki↵\nHolenderski↵\nWłoski↵\nPolski↵\nHiszpański↵\nFrancuski</string>
-	<string name="module_not_active">Sense 5 Toolbox nie jest aktywny! Otwórz Xposed Instalator, aktywuj moduł i wykonaj restart.</string>
+	<string name="module_not_active">Sense 6 Toolbox nie jest aktywny! Otwórz Xposed Instalator, aktywuj moduł i wykonaj restart.</string>
     <string name="array_batt_icon_white_percent">hd2o biały procent</string>
 	<string name="cleanbeam_mods_credits_head">Autor</string>
 	<string name="cleanbeam_hd2o_summ">Dodatkowe zestawy ikon baterii.</string>

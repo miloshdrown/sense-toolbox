@@ -2,8 +2,8 @@
 <resources>
 
     <string name="menu_save">Сохранить</string>
-    <string name="app_name">Sense 5 Toolbox</string>
-    <string name="app_name_version">Sense 5 Toolbox (Версия: %1$s)</string>
+    <string name="app_name">Sense 6 Toolbox</string>
+    <string name="app_name_version">Sense 6 Toolbox (Версия: %1$s)</string>
     <string name="app_about">О приложении</string>
     <string name="about_version">Версия: %1$s (\#JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Поддержка (Версия: %1$s)</string>
@@ -25,9 +25,9 @@
     <string name="restore_ok">Настройки успешно восстановлены!</string>
     
     <string name="warning">Внимание!</string>
-    <string name="xposed_not_installed">Xposed Framework установлен не полностью, Вы должны установить app_process и XposedBridge.jar в Xposed Installer, затем активировать модуль Sense 5 Toolbox и перезагрузиться.</string>
-    <string name="module_not_active">Модуль Sense 5 Toolbox не активен! Откройте Xposed Installer, активируйте модуль и перезагрузитесь.</string>
-    <string name="welcome">Добро пожаловать в Sense 5 Toolbox!</string>
+    <string name="xposed_not_installed">Xposed Framework установлен не полностью, Вы должны установить app_process и XposedBridge.jar в Xposed Installer, затем активировать модуль Sense 6 Toolbox и перезагрузиться.</string>
+    <string name="module_not_active">Модуль Sense 6 Toolbox не активен! Откройте Xposed Installer, активируйте модуль и перезагрузитесь.</string>
+    <string name="welcome">Добро пожаловать в Sense 6 Toolbox!</string>
     <string name="dragndrop">Порядок элементов можно задать перетаскивая их.</string>
     <string name="title_delete">Нажмите на элемент для его удаления.</string>
     <string name="plus_icon">Используйте иконку \'+\' для добавления элементов.</string>
@@ -341,7 +341,7 @@
 	<string name="persist_installer_summ">Добавляет версию пакета в заголовок при установке или обновлении приложения.</string>
 	
 	<string name="support">Поддержка</string>
-	<string name="support_s5t_title">Открыть пост о Sense 5 Toolbox</string>
+	<string name="support_s5t_title">Открыть пост о Sense 6 Toolbox</string>
 	<string name="support_s5t_summ">Тут Вы найдёте информацию о приложении и список изменений.</string>
 	<string name="support_blog_title">Посетить блог ARHD</string>
 	<string name="support_blog_summ">Узнайте о последних новостях и обновлениях этой отличной прошивки :)</string>

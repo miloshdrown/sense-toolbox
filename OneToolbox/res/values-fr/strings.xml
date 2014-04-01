@@ -1,8 +1,8 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="menu_save">Sauvegarder</string>
-    <string name="app_name">Sense 5 Toolbox</string>
-    <string name="app_name_version">Sense 5 Toolbox (Version: %1$s)</string>
+    <string name="app_name">Sense 6 Toolbox</string>
+    <string name="app_name_version">Sense 6 Toolbox (Version: %1$s)</string>
     <string name="app_about">À propos</string>
     <string name="about_version">Version: %1$s (\#JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Support (App Version: %1$s)</string>
@@ -12,9 +12,9 @@
     <string name="ram_mb">MB</string>
     <string name="cpu_mhz">MHz</string>
     <string name="warning">Attention !</string>
-    <string name="xposed_not_installed">Xposed Framework n\'est pas proprement installé, vous devez installer app_process et XposedBridge.jar de Xposed Installer, puis activer le module Sense 5 Toolbox et redémarrer.</string>
-    <string name="module_not_active">Le module Sense 5 Toolbox n\'est pas activé! Ouvrez Xposed Installer, activez le module et redémarrez.</string>
-    <string name="welcome">Bienvenue à Sense 5 Toolbox !</string>
+    <string name="xposed_not_installed">Xposed Framework n\'est pas proprement installé, vous devez installer app_process et XposedBridge.jar de Xposed Installer, puis activer le module Sense 6 Toolbox et redémarrer.</string>
+    <string name="module_not_active">Le module Sense 6 Toolbox n\'est pas activé! Ouvrez Xposed Installer, activez le module et redémarrez.</string>
+    <string name="welcome">Bienvenue à Sense 6 Toolbox !</string>
     <string name="dragndrop">Utilisez le glisser-déposer pour réorganiser vos paramètres rapides.</string>
     <string name="title_delete">Appuyez sur la tuile pour la supprimer.</string>
     <string name="plus_icon">Utilisez l\'icône \'+\' pour ajouter des tuiles.</string>
@@ -305,7 +305,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="persist_installer_title">Afficher la version de l\'app</string>
     <string name="persist_installer_summ">Ajoute la version du paquet au titre d\'installeur quand il y a mise à jour ou installation d\'une app.</string>
     <string name="support">Support</string>
-    <string name="support_s5t_title">Visiter le poste Sense 5 Toolbox</string>
+    <string name="support_s5t_title">Visiter le poste Sense 6 Toolbox</string>
     <string name="support_s5t_summ">Trouver ici les informations et le changelog de l\'application.</string>
     <string name="support_blog_title">Visiter le blog ARHD </string>
     <string name="support_blog_summ">Obtener les dernières nouvelles et mises à jour de vos ROMs préférés ici.</string>

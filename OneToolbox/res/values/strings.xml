@@ -2,8 +2,8 @@
 <resources>
 
     <string name="menu_save">Save</string>
-    <string name="app_name">Sense 5 Toolbox</string>
-    <string name="app_name_version">Sense 5 Toolbox (Version: %1$s)</string>
+    <string name="app_name">Sense 6 Toolbox</string>
+    <string name="app_name_version">Sense 6 Toolbox (Version: %1$s)</string>
     <string name="app_about">About</string>
     <string name="about_version">Version: %1$s (\#JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Support (App Version: %1$s)</string>
@@ -25,9 +25,9 @@
     <string name="restore_ok">Settings were successfully restored!</string>
     
     <string name="warning">Warning!</string>
-    <string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 5 Toolbox module there and reboot.</string>
-    <string name="module_not_active">Sense 5 Toolbox module is not active! Open Xposed Installer, activate module and reboot.</string>
-    <string name="welcome">Welcome to Sense 5 Toolbox!</string>
+    <string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 6 Toolbox module there and reboot.</string>
+    <string name="module_not_active">Sense 6 Toolbox module is not active! Open Xposed Installer, activate module and reboot.</string>
+    <string name="welcome">Welcome to Sense 6 Toolbox!</string>
     <string name="dragndrop">Use drag\'n\'drop to rearrange your quick settings.</string>
     <string name="title_delete">Just tap on tile to delete it.</string>
     <string name="plus_icon">Use the \'+\' icon to add tiles.</string>
@@ -344,7 +344,7 @@
 	<string name="persist_installer_summ">Add package version to installer title when updating or installing an app.</string>
 	
 	<string name="support">Support</string>
-	<string name="support_s5t_title">Visit Sense 5 Toolbox Post</string>
+	<string name="support_s5t_title">Visit Sense 6 Toolbox Post</string>
 	<string name="support_s5t_summ">Find infos and changelog for the app here.</string>
 	<string name="support_blog_title">Visit ARHD Blog</string>
 	<string name="support_blog_summ">Get the latest news and updates for your favorite ROM here.</string>

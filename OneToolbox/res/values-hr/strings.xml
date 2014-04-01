@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources><string name="menu_save">Spremi</string>
-    <string name="app_name">Sense 5 Toolbox</string>
-    <string name="app_name_version">Sense 5 Toolbox (Verzija: %1$s)</string>
+    <string name="app_name">Sense 6 Toolbox</string>
+    <string name="app_name_version">Sense 6 Toolbox (Verzija: %1$s)</string>
     <string name="app_about">O</string>
     <string name="about_version">Verzija: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Podrška (Verzija Aplikacije: %1$s)</string>
@@ -11,8 +11,8 @@
     <string name="ram_mb">MB</string>
     
     <string name="warning">Upozorenje!</string>
-    <string name="xposed_not_installed">Xposed Framework nije ispravno instaliran, morate instalirati app_process i XposedBridge.jar u Xposed Installeru, nakon toga aktivirati Sense 5 Toolbox modul tamo i ponovno pokrenuti.</string>
-    <string name="welcome">Dobro došli u Sense 5 Toolbox!</string>
+    <string name="xposed_not_installed">Xposed Framework nije ispravno instaliran, morate instalirati app_process i XposedBridge.jar u Xposed Installeru, nakon toga aktivirati Sense 6 Toolbox modul tamo i ponovno pokrenuti.</string>
+    <string name="welcome">Dobro došli u Sense 6 Toolbox!</string>
     <string name="dragndrop">Koristite drag\'n\'drop za razmještenja vaših brzih postavki.</string>
     <string name="title_delete">Samo stisnite na pločicu da ju izbrišete.</string>
     <string name="plus_icon">Koristite \"+\" ikonu za dodavanje pločica.</string>
@@ -301,7 +301,7 @@
 	<string name="persist_installer_summ">Dodaje paket verzije u naslov installera kada se aplikacija updatea ili instalira.</string>
 	
 	<string name="support">Podrška</string>
-	<string name="support_s5t_title">Posjetite Sense 5 Toolbox Post</string>
+	<string name="support_s5t_title">Posjetite Sense 6 Toolbox Post</string>
 	<string name="support_s5t_summ">Naći informacije i listu promjene za aplikaciju ovdje.</string>
 	<string name="support_blog_title">Posjetite ARHD blog</string>
 	<string name="support_blog_summ">Vidite najnovije vijesti i update-ove za vaš omiljeni ROM ovdje.</string>
@@ -432,7 +432,7 @@
 	<string name="array_header_click_sysinfo">Prikaži/sakrij CPU i RAM informacije, otvori aplikaciju Sat pritiskom na tretnutno vrijeme.</string>
 	
 <string name="cleanbeam_hd2o_title">HD2Owner</string>
-	<string name="module_not_active">Sense 5 Toolbox nije aktivan! Otvorite Xposed Installer, aktivirajte modul i ponovno pokrenite uređaj.</string>
+	<string name="module_not_active">Sense 6 Toolbox nije aktivan! Otvorite Xposed Installer, aktivirajte modul i ponovno pokrenite uređaj.</string>
     <string name="cleanbeam_mods_credits_head">Zasluge</string>
 	<string name="cleanbeam_hd2o_summ">Za dodatni set ikona baterije.</string>
 	
