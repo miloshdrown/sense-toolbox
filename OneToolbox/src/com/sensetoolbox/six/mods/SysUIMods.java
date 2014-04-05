@@ -269,18 +269,37 @@ public class SysUIMods {
 		});
 	}
 
-	public static void execHook_InvisiNotify(final InitPackageResourcesParam resparam, String MODULE_PATH, final int transparency) {
+	public static void execHook_InvisiNotify(final InitPackageResourcesParam resparam, final int transparency) {
 		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
 				View bg = liparam.view.findViewById(resparam.res.getIdentifier("notification_panel", "id", "com.android.systemui"));
-				bg.getBackground().setAlpha(transparency);
+				bg.getBackground().setAlpha(transparency + (255 - transparency)/4);
 			}
 		});
-		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
+	}
+	
+	public static void execHook_InvisiNotifyCode(final LoadPackageParam lpparam, final int transparency) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBarView", lpparam.classLoader, "panelExpansionChanged", "com.android.systemui.statusbar.phone.PanelView", float.class, new XC_MethodHook() {
 			@Override
-			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-				
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				try {
+					FrameLayout panelview = (FrameLayout)param.args[0];
+					FrameLayout mFadingPanel= (FrameLayout)XposedHelpers.getObjectField(param.thisObject, "mFadingPanel");
+					int mScrimColor = (Integer)XposedHelpers.getObjectField(param.thisObject, "mScrimColor");
+					boolean mShouldFade = (Boolean)XposedHelpers.getObjectField(param.thisObject, "mShouldFade");
+					
+					if (panelview == mFadingPanel && mScrimColor != 0 && mShouldFade) {
+						Object mBar = XposedHelpers.getObjectField(param.thisObject, "mBar");
+						if (mBar != null) {
+							FrameLayout mStatusBarWindow = (FrameLayout)XposedHelpers.getObjectField(mBar, "mStatusBarWindow");
+							if (mStatusBarWindow != null && mStatusBarWindow.getBackground() != null)
+							mStatusBarWindow.getBackground().setAlpha(Math.round(mStatusBarWindow.getBackground().getAlpha() * (transparency + 64)/319));
+						}
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
 			}
 		});
 	}

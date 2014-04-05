@@ -403,7 +403,7 @@ public class OtherMods{
 			LinearLayout toastLayout = (LinearLayout)toastView;
 			toastLayout.setBackground(modRes.getDrawable(R.drawable.toast_frame_holo));
 		} catch (Throwable t) {
-			XposedBridge.log(t);
+			//XposedBridge.log(t);
 		}
 	}
 	
@@ -424,7 +424,7 @@ public class OtherMods{
 				}
 			});
 		} catch (Throwable t) {
-			XposedBridge.log(t);
+			//XposedBridge.log(t);
 		}
 	}
 	

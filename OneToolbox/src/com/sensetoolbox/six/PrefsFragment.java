@@ -31,7 +31,6 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -433,7 +432,6 @@ public class PrefsFragment extends HtcPreferenceFragment {
 	
 	static boolean isWaitingForCmd = false;
 	static boolean setButtonBacklightTo(Context ctx, final int pref_keyslight) {
-		Log.e(null, "setButtonBacklightTo");
 		if (isWaitingForCmd) return false; else try {
 			isWaitingForCmd = true;
 			final String currents = "/sys/class/leds/button-backlight/currents";
@@ -697,7 +695,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			alert.setPositiveButton(getText(R.string.do_restore), new DialogInterface.OnClickListener() {
 				@SuppressWarnings("unchecked")
 				public void onClick(DialogInterface dialog, int whichButton) {
-					if (checkStorageReadable()) return;
+					if (!checkStorageReadable()) return;
 					ObjectInputStream input = null;
 					try {
 						input = new ObjectInputStream(new FileInputStream(backupPath + backupFile));

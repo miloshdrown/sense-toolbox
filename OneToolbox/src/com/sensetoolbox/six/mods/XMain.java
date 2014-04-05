@@ -121,18 +121,18 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.android.systemui"))
 		{
+			if(pref.getBoolean("pref_key_sysui_invisinotify_enable", false))
+			{
+				int transparency = pref.getInt("pref_key_sysui_invisinotify", 100);
+				transparency = (int) Math.floor(transparency*2.55f);
+				SysUIMods.execHook_InvisiNotify(resparam, transparency);
+			}
+			
 			if(pref.getBoolean("pref_key_sysui_invisibar_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_sysui_invisibar_new", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				SysUIMods.execHook_InvisiBar(resparam, MODULE_PATH, transparency);
-			}
-			
-			if(pref.getBoolean("pref_key_sysui_invisinotify_enable", false))
-			{
-				int transparency = pref.getInt("pref_key_sysui_invisinotify", 100);
-				transparency = (int) Math.floor(transparency*2.55f);
-				SysUIMods.execHook_InvisiNotify(resparam, MODULE_PATH, transparency);
 			}
 			
 			if(Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")) != 1)
@@ -395,6 +395,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.android.systemui"))
 		{
+			if(pref.getBoolean("pref_key_sysui_invisinotify_enable", false))
+			{
+				int transparency = pref.getInt("pref_key_sysui_invisinotify", 100);
+				transparency = (int) Math.floor(transparency*2.55f);
+				SysUIMods.execHook_InvisiNotifyCode(lpparam, transparency);
+			}
+			
 			if(pref.getBoolean("pref_key_sysui_noeqs", false))
 				SysUIMods.execHook_DisableEQS(lpparam);
 			
