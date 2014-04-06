@@ -3,7 +3,6 @@ package com.sensetoolbox.six.mods;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
-import static de.robv.android.xposed.XposedHelpers.findConstructorExact;
 import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
 import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 import static de.robv.android.xposed.XposedHelpers.setBooleanField;
@@ -22,7 +21,6 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
-import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
@@ -37,7 +35,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
-import android.view.ViewParent;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -48,17 +45,14 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.htc.preference.HtcPreferenceFragment;
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcPopupWindow;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.PopupAdapter;
 import com.sensetoolbox.six.utils.ShakeManager;
-import com.sensetoolbox.six.utils.Version;
 
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodHook.Unhook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
@@ -77,86 +71,20 @@ public class PrismMods {
 	private static GestureDetector mDetectorDock;
 	static HtcAlertDialog dlg = null;
 	
-	public static void execHook_InvisiDock(LoadPackageParam lpparam, final int transparency) {
-		try {
-			findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "show", boolean.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					boolean isAllAppsOpen = false;
-					Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
-					if (m_launcher != null)
-						isAllAppsOpen = (Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown");
-				
-					FrameLayout hotseat = (FrameLayout)param.thisObject;
-					ImageView m_BackgroundImg = (ImageView)hotseat.findViewById(android.R.id.background);
-					// Hack for Magio ROM
-					final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-					if (android.os.Build.FINGERPRINT.contains("magiorom"))
-						m_BackgroundImg.setImageDrawable(modRes.getDrawable(R.drawable.home_nav_bg_magio));
-					float alphaDrawer = XMain.pref.getInt("pref_key_prism_invisidrawer", 100) / 100.0f;
-					if (isAllAppsOpen && alphaDrawer > transparency/255.0f) {
-						if (XMain.pref.getBoolean("pref_key_prism_invisidrawer_enable", false)) {
-							m_BackgroundImg.animate().alpha(alphaDrawer);
-						} else
-							m_BackgroundImg.animate().alpha(1.0f);
-					} else m_BackgroundImg.animate().alpha(transparency/255.0f);
-				}
-			});
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-	}
-	
-	public static void execHook_InvisiDockRes(InitPackageResourcesParam resparam, final int transparency) {
-		try {
-			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
-			resparam.res.setReplacement("com.htc.launcher", "drawable", "home_nav_bg", new XResources.DrawableLoader() {
-				@Override
-				public Drawable newDrawable(XResources res, int id) throws Throwable {
-					Drawable bg;
-					if (android.os.Build.FINGERPRINT.contains("magiorom"))
-						bg = modRes.getDrawable(R.drawable.home_nav_bg_magio);
-					else
-						bg = modRes.getDrawable(R.drawable.home_nav_bg);
-					bg.setAlpha(transparency);
-					return bg;
-				}
-			});
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-	}
-	
-	public static void execHook_InvisiWidget(final InitPackageResourcesParam resparam, final int transparency, String MODULE_PATH) {
-		if (XMain.senseVersion.compareTo(new Version("5.5")) == -1) {
-			final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
-			resparam.res.setReplacement("com.htc.widget.weatherclock", "drawable", "clock_weather_panel", new XResources.DrawableLoader() {
-				@Override
-				public Drawable newDrawable(XResources res, int id) throws Throwable {
-					Drawable bg = modRes.getDrawable(R.drawable.clock_weather_panel);
-					bg.setAlpha(transparency);
-					return bg;
-				}
-			});
-		}
-	}
-	
 	public static void execHook_InvisiWidgetSense55(LoadPackageParam lpparam, final int transparency) {
-		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
-			findAndHookMethod("com.htc.launcher.LauncherAppWidgetHostView", lpparam.classLoader, "onViewAdded", View.class, new XC_MethodHook() {
-				@Override
-				public void afterHookedMethod(MethodHookParam param) throws Throwable {
-					ViewGroup widgetView = (ViewGroup) param.args[0];
-					Resources viewRes = widgetView.getResources();
-					int bgId = viewRes.getIdentifier("background_panel", "id", "com.htc.widget.weatherclock");
-					if(bgId != 0)
-					{
-						ImageView bg = (ImageView) widgetView.findViewById(bgId);
-						bg.getBackground().setAlpha(transparency);
-					}
+		findAndHookMethod("com.htc.launcher.LauncherAppWidgetHostView", lpparam.classLoader, "onViewAdded", View.class, new XC_MethodHook() {
+			@Override
+			public void afterHookedMethod(MethodHookParam param) throws Throwable {
+				ViewGroup widgetView = (ViewGroup) param.args[0];
+				Resources viewRes = widgetView.getResources();
+				int bgId = viewRes.getIdentifier("background_panel", "id", "com.htc.widget.weatherclock");
+				if(bgId != 0)
+				{
+					ImageView bg = (ImageView) widgetView.findViewById(bgId);
+					bg.getBackground().setAlpha(transparency);
 				}
-			});
-		}
+			}
+		});
 	}
 
 	public static void execHook_PreserveWallpaper(LoadPackageParam lpparam) {
@@ -202,59 +130,30 @@ public class PrismMods {
 	}
 
 	public static void execHookTSBFix(LoadPackageParam lpparam) {
-		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
-			findAndHookMethod("com.htc.launcher.bar.BarController", lpparam.classLoader, "setStatusBarTransparent", Context.class, boolean.class, new XC_MethodHook() {
-				@Override
-	    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					param.setResult(null);
-				}
-			});
-		}else {
-			findAndHookMethod("com.htc.launcher.bar.BarController", lpparam.classLoader, "setStatusBarTransparent", boolean.class, new XC_MethodHook() {
-				@Override
-	    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					param.setResult(null);
-				}
-			});
-		}
+		findAndHookMethod("com.htc.launcher.bar.BarController", lpparam.classLoader, "setStatusBarTransparent", Context.class, boolean.class, new XC_MethodHook() {
+			@Override
+    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.setResult(null);
+			}
+		});
 	}
 	
 	public static void execHook_InvisiFolder(final InitPackageResourcesParam resparam, final int transparency) {
-		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
-			try {
-				resparam.res.hookLayout("com.htc.launcher", "layout", "specific_user_folder", new XC_LayoutInflated() {
-					@Override
-					public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-						InvisiFolder_Snippet(liparam, resparam, transparency);
-					}
-				});
-			} catch (Throwable t) {
-				XposedBridge.log(t);
-			}
-		} else {
-			try {
-				resparam.res.hookLayout("com.htc.launcher", "layout", "user_folder", new XC_LayoutInflated() {
-					@Override
-					public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-						InvisiFolder_Snippet(liparam, resparam, transparency);
-					}
-				});
-			} catch (Throwable t) {
-				XposedBridge.log(t);
-			}
+		try {
+			resparam.res.hookLayout("com.htc.launcher", "layout", "specific_user_folder", new XC_LayoutInflated() {
+				@Override
+				public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+					InvisiFolder_Snippet(liparam, resparam, transparency);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	
 	private static void InvisiFolder_Snippet(LayoutInflatedParam liparam, final InitPackageResourcesParam resparam, final int transparency) {
 		RelativeLayout bg = (RelativeLayout)liparam.view;
 		bg.getBackground().setAlpha(transparency);
-		LinearLayout nameframe = (LinearLayout)liparam.view.findViewById(resparam.res.getIdentifier("folder_name_frame", "id", "com.htc.launcher"));
-		if (nameframe != null) {
-			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)nameframe.getLayoutParams();
-			lp.rightMargin = 3;
-			nameframe.setLayoutParams(lp);
-			nameframe.setBackgroundColor(Color.argb(255, 20, 20, 20));
-		}
 	}
 	
 	public static void execHook_InvisiFolderBkg(final InitPackageResourcesParam resparam, final int transparency,  String MODULE_PATH) {
@@ -267,7 +166,6 @@ public class PrismMods {
 					bg.setAlpha(transparency);
 					return bg;
 				} catch (Throwable t){
-					// Resource bug, full restart required
 					return null;
 				}
 			}
@@ -284,83 +182,66 @@ public class PrismMods {
 	public static void execHook_InvisiDrawerCode(LoadPackageParam lpparam, final int transparency) {
 		execHook_PreserveWallpaper(lpparam);
 		
-		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
-			XposedBridge.hookAllConstructors(findClass("com.htc.launcher.pageview.AllAppsPagedViewHost", lpparam.classLoader), new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					((FrameLayout)param.thisObject).getBackground().setAlpha(transparency);
-				}
-			});
-			
-			findAndHookMethod("com.htc.launcher.DragLayer", lpparam.classLoader, "setBackgroundAlpha", float.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					boolean isAllAppsOpen = false;
-					Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
-					if (m_launcher != null)
-					isAllAppsOpen = (Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown");	
+		XposedBridge.hookAllConstructors(findClass("com.htc.launcher.pageview.AllAppsPagedViewHost", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				((FrameLayout)param.thisObject).getBackground().setAlpha(transparency);
+			}
+		});
+		
+		findAndHookMethod("com.htc.launcher.DragLayer", lpparam.classLoader, "setBackgroundAlpha", float.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				boolean isAllAppsOpen = false;
+				Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
+				if (m_launcher != null)
+				isAllAppsOpen = (Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown");	
+				
+				if (isAllAppsOpen)
+					param.args[0] = 0;
+				else if ((Float)param.args[0] > transparency/255.0f)
+					param.args[0] = transparency/255.0f;
+			}
+		});
+		
+		// Animate Workspace alpha during transition between Workspace and AllApps   
+		final Class<?> Properties = XposedHelpers.findClass("com.htc.launcher.LauncherViewPropertyAnimator.Properties", lpparam.classLoader);
+		findAndHookMethod("com.htc.launcher.LauncherViewPropertyAnimator", lpparam.classLoader, "start", new XC_MethodHook() {
+			@Override
+			@SuppressWarnings({ "rawtypes", "unchecked" })
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				EnumSet m_propertiesToSet = (EnumSet)XposedHelpers.getObjectField(param.thisObject, "m_propertiesToSet");
+				Enum SCALE_X = (Enum) XposedHelpers.getStaticObjectField(Properties, "SCALE_X");
+				Enum SCALE_Y = (Enum) XposedHelpers.getStaticObjectField(Properties, "SCALE_Y");
+				if (m_propertiesToSet.contains(SCALE_X) && m_propertiesToSet.contains(SCALE_Y)) {
+					float m_fScaleX = XposedHelpers.getFloatField(param.thisObject, "m_fScaleX");
+					float m_fScaleY = XposedHelpers.getFloatField(param.thisObject, "m_fScaleY");
 					
-					if (isAllAppsOpen)
-						param.args[0] = 0;
-					else if ((Float)param.args[0] > transparency/255.0f)
-						param.args[0] = transparency/255.0f;
-				}
-			});
-			
-			// Animate Workspace alpha during transition between Workspace and AllApps   
-			final Class<?> Properties = XposedHelpers.findClass("com.htc.launcher.LauncherViewPropertyAnimator.Properties", lpparam.classLoader);
-			findAndHookMethod("com.htc.launcher.LauncherViewPropertyAnimator", lpparam.classLoader, "start", new XC_MethodHook() {
-				@Override
-				@SuppressWarnings({ "rawtypes", "unchecked" })
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					EnumSet m_propertiesToSet = (EnumSet)XposedHelpers.getObjectField(param.thisObject, "m_propertiesToSet");
-					Enum SCALE_X = (Enum) XposedHelpers.getStaticObjectField(Properties, "SCALE_X");
-					Enum SCALE_Y = (Enum) XposedHelpers.getStaticObjectField(Properties, "SCALE_Y");
-					if (m_propertiesToSet.contains(SCALE_X) && m_propertiesToSet.contains(SCALE_Y)) {
-						float m_fScaleX = XposedHelpers.getFloatField(param.thisObject, "m_fScaleX");
-						float m_fScaleY = XposedHelpers.getFloatField(param.thisObject, "m_fScaleY");
-						
-						Enum ALPHA = (Enum)XposedHelpers.getStaticObjectField(Properties, "ALPHA");
-						if (m_fScaleX == 0.9f && m_fScaleY == 0.9f) {
-							m_propertiesToSet.add(ALPHA);
-							XposedHelpers.setFloatField(param.thisObject, "m_fAlpha", 0.0f);
-						} else if (m_fScaleX == 1.0f && m_fScaleY == 1.0f) {
-							m_propertiesToSet.add(ALPHA);
-							XposedHelpers.setFloatField(param.thisObject, "m_fAlpha", 1.0f);
-						}
+					Enum ALPHA = (Enum)XposedHelpers.getStaticObjectField(Properties, "ALPHA");
+					if (m_fScaleX == 0.9f && m_fScaleY == 0.9f) {
+						m_propertiesToSet.add(ALPHA);
+						XposedHelpers.setFloatField(param.thisObject, "m_fAlpha", 0.0f);
+					} else if (m_fScaleX == 1.0f && m_fScaleY == 1.0f) {
+						m_propertiesToSet.add(ALPHA);
+						XposedHelpers.setFloatField(param.thisObject, "m_fAlpha", 1.0f);
 					}
 				}
-			});
-			
-			/*
-			findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "setBackgroundAlpha", float.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				}
-			});
-			
-			findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAppsCustomizeHelper", "com.htc.launcher.Launcher.State", boolean.class, boolean.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				}
-			});
-			*/
-		} else { 
-			findAndHookMethod("com.htc.launcher.pageview.AllAppsPagedViewHost", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					ViewGroup m_PagedView = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_PagedView");
-					ViewParent vp = m_PagedView.getParent();
-					if (vp != null) {
-						if (vp instanceof RelativeLayout) {
-							((RelativeLayout)vp).getBackground().setAlpha(transparency);
-						} else if (vp instanceof FrameLayout) {
-							((FrameLayout)vp).getBackground().setAlpha(transparency);
-						}					
-					}
-				}
-			});
-		}
+			}
+		});
+		
+		/*
+		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "setBackgroundAlpha", float.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			}
+		});
+		
+		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAppsCustomizeHelper", "com.htc.launcher.Launcher.State", boolean.class, boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			}
+		});
+		*/
 		
 		try {
 			// This will fail on 4.2.2, best version check ever!
@@ -376,99 +257,6 @@ public class PrismMods {
 		}						
 	}
 	
-	// Move Action Bar
-	private static void moveAB(MethodHookParam param) throws Throwable {
-		FrameLayout m_headerActionBar = (FrameLayout)XposedHelpers.getObjectField(param.thisObject, "m_headerActionBar");
-		if (m_headerActionBar != null) {
-			FrameLayout.LayoutParams lp = (FrameLayout.LayoutParams)m_headerActionBar.getLayoutParams();
-			
-			Object container = ((FrameLayout)param.thisObject).getParent();
-			String feedClass = "com.htc.launcher.feeds.view.FeedScrollView";
-			if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
-			feedClass = "com.htc.launcher.feeds.view.FeedScrollPageView";
-			
-			if (container.getClass().getCanonicalName().equalsIgnoreCase(feedClass)) {
-				Resources res = m_headerActionBar.getContext().getResources();
-				lp.topMargin = res.getDimensionPixelSize(res.getIdentifier("header_height", "dimen", "com.htc.launcher"));
-			} else {			
-				lp.topMargin = 0;
-			}
-			m_headerActionBar.setLayoutParams(lp);
-		}
-	}
-
-	public static void execHook_AppDrawerNoClock(final LoadPackageParam lpparam) {
-		// Remove header clocks
-		final Class<?> Masthead = XposedHelpers.findClass("com.htc.launcher.masthead.Masthead", lpparam.classLoader);
-		findAndHookMethod("com.htc.launcher.pageview.AllAppsController", lpparam.classLoader, "attachMasthead", Masthead, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				int m_nControllerState = XposedHelpers.getIntField(param.thisObject, "m_nControllerState");
-				Object m_AllAppsPagedView = XposedHelpers.getObjectField(param.thisObject, "m_AllAppsPagedView");
-				View m_headerContent = (View)XposedHelpers.getObjectField(param.args[0], "m_headerContent");
-				m_headerContent.setVisibility(8);				
-				if (m_nControllerState == 1) {
-					XposedHelpers.callMethod(param.args[0], "attachTo", m_AllAppsPagedView);
-					XposedHelpers.callMethod(param.thisObject, "addActionBarListenerToMasthead", param.args[0]);
-					Object m_masthead = XposedHelpers.getObjectField(param.thisObject, "m_masthead");
-					if (m_masthead == null && param.args[0] != null)
-					try {
-						XposedHelpers.callMethod(param.thisObject, "updateSortType", XposedHelpers.callMethod(param.args[0], "getActionBar"));
-					} catch (NoSuchMethodError e){
-						Object m_AllAppsDataManager = XposedHelpers.getObjectField(param.thisObject, "m_AllAppsDataManager");
-						XposedHelpers.callMethod(param.thisObject, "updateSortType", XposedHelpers.callMethod(param.args[0], "getActionBar"), XposedHelpers.callMethod(m_AllAppsDataManager, "getAppSort"));
-					}						
-				}
-				XposedHelpers.findField(param.thisObject.getClass(), "m_masthead").set(param.thisObject, param.args[0]);
-				param.setResult(null);
-			}
-		});
-		
-		// Restore clocks on BlinkFeed page
-		try {
-			findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showWorkspace", boolean.class, Runnable.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					Object m_masthead = XposedHelpers.getObjectField(param.thisObject, "m_masthead");
-					View m_headerContent = (View)XposedHelpers.getObjectField(m_masthead, "m_headerContent");
-					m_headerContent.setVisibility(0);
-				}
-			});
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-		
-		// Move first row up
-		findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "getRowOffsets", XC_MethodReplacement.returnConstant(0));
-	
-		// Move ActionBar up
-		try {
-			findAndHookMethod("com.htc.launcher.masthead.Masthead", lpparam.classLoader, "updateActionbarPosition", new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					moveAB(param);
-					param.setResult(null);
-				}
-			});
-		} catch (NoSuchMethodError e) {
-			findAndHookMethod("com.htc.launcher.masthead.Masthead", lpparam.classLoader, "setActionBar", int.class, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					moveAB(param);
-				}
-			});
-		}
-
-		// AppDrawer top padding fine tune
-		findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "setupPaddings", Context.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				int m_nPageLayoutPaddingTop = XposedHelpers.getIntField(param.thisObject, "m_nPageLayoutPaddingTop");
-				XposedHelpers.setIntField(param.thisObject, "m_nPageLayoutPaddingTop", (int)Math.round((float)m_nPageLayoutPaddingTop/1.5));
-			}
-		});			
-	}
-
 	public static void execHook_AppDrawerGridSizes(LoadPackageParam lpparam) {
 		// Override grid size with current value
 		findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "setupGrid", Context.class, new XC_MethodHook() {
@@ -748,45 +536,6 @@ public class PrismMods {
 		}
 	}
 	
-	public static void execHook_BfRemove(LoadPackageParam lpparam) {
-		//Still throws error in Xposed, so better check version to keep other mods running.
-		//People might have it enabled and can't disable it since we removed the preference.
-		if (XMain.senseVersion.compareTo(new Version("5.5")) == -1) {
-			try {
-				findAndHookMethod("com.htc.launcher.util.Protection", lpparam.classLoader, "isFeedEnabled", new XC_MethodHook() {
-					@Override
-		    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-						param.setResult(false);
-					}
-				});
-			} catch (Throwable t) {
-				XposedBridge.log(t);
-			}
-		}
-	}
-
-	public static void execHook_InfiniScroll(LoadPackageParam lpparam) {
-		if (XMain.senseVersion.compareTo(new Version("5.5")) == -1) {
-			findAndHookMethod("com.htc.launcher.SmoothPagedView", lpparam.classLoader, "snapToDestination", new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					int i = (Integer) callMethod(param.thisObject, "getPageCount");
-					int j = (Integer) callMethod(param.thisObject, "getCurrentPage");
-					if(j == 0)
-					{
-						callMethod(param.thisObject, "snapToPage", i - 1, 550);
-						param.setResult(null);
-					}
-					if(j == i - 1)
-					{
-						callMethod(param.thisObject, "snapToPage", 0, 550);
-						param.setResult(null);
-					}
-				}
-			});
-		}
-	}
-
 	static FrameLayout hotSeat = null;
 	static int x_start = 0;
 	static int y_start = 0;
@@ -960,53 +709,12 @@ public class PrismMods {
 		});
 	}
 	
-	private static void applyLockScreenState(Context ctx) {
-		try {
-			Class<?> classLPU = findClass("com.android.internal.widget.LockPatternUtils", null);
-			Object LPU = findConstructorExact(classLPU, Context.class).newInstance(ctx);
-			if (android.provider.Settings.Secure.getInt(ctx.getContentResolver(), "lockscreen.htc.types.bypasslockscreen", 0) == 1) {
-				XposedHelpers.callMethod(LPU, "setLockScreenDisabled", true);
-			} else {
-				XposedHelpers.callMethod(LPU, "setLockScreenDisabled", false);
-			}
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-	}
-	
-	public static void execHook_BypassLockScreen(final LoadPackageParam lpparam) {
-		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) try {
-			// Set lock screen according to bypass option when None is selected in Screen lock
-			findAndHookMethod("com.android.settings.ChooseLockGeneric.ChooseLockGenericFragment", lpparam.classLoader, "updateUnlockMethodAndFinish", int.class, boolean.class, new XC_MethodHook(){
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					if ((Integer)param.args[0] == 0 && (Boolean)param.args[1] == false) {
-						Context ctx = ((HtcPreferenceFragment)param.thisObject).getActivity();
-						applyLockScreenState(ctx);
-					}
-				}
-			});
-			// Set lock screen according to bypass option on that option change
-			findAndHookMethod("com.android.settings.framework.preference.security.HtcBypassLockScreenOnWakePreference", lpparam.classLoader, "onSetValueInBackground", Context.class, boolean.class, new XC_MethodHook(){
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					applyLockScreenState((Context)param.args[0]);
-				}
-			});
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-	}
-	
 	public static void execHook_invisiLabels(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.CellLayout", lpparam.classLoader, "addViewToCellLayout", View.class, int.class, int.class, "com.htc.launcher.CellLayout$LayoutParams", boolean.class, new XC_MethodHook() {
 			@Override
 			public void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
-					if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
-						callMethod(param.args[0], "hideText", true);
-					else
-						callMethod(param.args[0], "setTextColor", Color.TRANSPARENT);
+					callMethod(param.args[0], "hideText", true);
 				} catch (Throwable t) {
 					//Not an app icon
 				}
@@ -1105,29 +813,16 @@ public class PrismMods {
 		});
 		
 		// Disable homescreen customization
-		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
-			XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAddToHome", boolean.class, boolean.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-					Activity launcher = (Activity)param.thisObject;
-					if (launcher != null && isLauncherLocked(launcher)) {
-						showLockedWarning(launcher);
-						param.setResult(null);
-					}
+		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAddToHome", boolean.class, boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				Activity launcher = (Activity)param.thisObject;
+				if (launcher != null && isLauncherLocked(launcher)) {
+					showLockedWarning(launcher);
+					param.setResult(null);
 				}
-			});
-		} else {
-			XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAddToHome", boolean.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-					Activity launcher = (Activity)param.thisObject;
-					if (launcher != null && isLauncherLocked(launcher)) {
-						showLockedWarning(launcher);
-						param.setResult(null);
-					}
-				}
-			});
-		}
+			}
+		});
 		
 		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onNewIntent", Intent.class, new XC_MethodHook() {
 			@Override

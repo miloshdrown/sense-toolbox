@@ -93,12 +93,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_invisidrawer_enable", false))
 				PrismMods.execHook_InvisiDrawerRes(resparam);
 			
-			if(pref.getBoolean("pref_key_prism_invisinav_enable", false) && Build.VERSION.SDK_INT <= 17) {
-				int transparency = pref.getInt("pref_key_prism_invisinav_new", 100);
-				transparency = (int) Math.floor(transparency*2.55f);
-				PrismMods.execHook_InvisiDockRes(resparam, transparency);
-			}
-
 			if(pref.getBoolean("pref_key_prism_invisifolders_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_prism_invisifolders", 100);
@@ -219,16 +213,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				CleanBeamMods.execHook_TvIcon(resparam, MODULE_PATH);
 		}
 		
-		if (pkg.equals("com.htc.widget.weatherclock"))
-		{
-			if(pref.getBoolean("pref_key_prism_invisiwidget_enable", false))
-			{
-				int transparency = pref.getInt("pref_key_prism_invisiwidget", 100);
-				transparency = (int) Math.floor(transparency*2.55f);
-				PrismMods.execHook_InvisiWidget(resparam, transparency, MODULE_PATH);
-			}
-		}
-		
 		if (pkg.equals("com.google.android.youtube"))
 		{
 			if (pref.getBoolean("pref_key_other_ytwatermark", false))
@@ -237,14 +221,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.htc.lockscreen")) {
 			int largePhoto = Integer.parseInt(pref.getString("pref_key_other_largephoto", "1"));
-			if (largePhoto > 1 && XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
+			if (largePhoto > 1)
 				OtherMods.execHook_LargePhotoLS55(resparam, largePhoto);
-		}
-		
-		if (pkg.equals("com.htc.idlescreen.base")) {
-			int largePhoto = Integer.parseInt(pref.getString("pref_key_other_largephoto", "1"));
-			if (largePhoto > 1 && XMain.senseVersion.compareTo(new Version("5.5")) == -1)
-				OtherMods.execHook_LargePhotoLS50(resparam, largePhoto);
 		}
 	}
 
@@ -281,16 +259,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if(pkg.equals("com.htc.launcher"))
 		{
-			if(pref.getBoolean("pref_key_prism_invisinav_enable", false))
-			{
-				if (Build.VERSION.SDK_INT > 17) {
-					int transparency = pref.getInt("pref_key_prism_invisinav_new", 100);
-					transparency = (int) Math.floor(transparency*2.55f);
-					PrismMods.execHook_InvisiDock(lpparam, transparency);
-				}
-				PrismMods.execHook_PreserveWallpaper(lpparam);
-			}
-			
 			if(pref.getBoolean("pref_key_prism_invisiwidget_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_prism_invisiwidget", 100);
@@ -310,15 +278,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiDrawerCode(lpparam, transparency);
 			}
-			
-			if(pref.getBoolean("pref_key_prism_bfremove", false))
-				PrismMods.execHook_BfRemove(lpparam);
-			
-			if(pref.getBoolean("pref_key_prism_infiniscroll", false))
-				PrismMods.execHook_InfiniScroll(lpparam);
-			
-			if(pref.getBoolean("pref_key_prism_adnoclock", false))
-				PrismMods.execHook_AppDrawerNoClock(lpparam);
 			
 			if (pref_swipedown != 1 || pref_swipeup != 1)
 				PrismMods.execHook_SwipeActions(lpparam);
@@ -362,14 +321,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				OtherMods.execHook_fastUnlock(lpparam);
 			
 			int largePhoto = Integer.parseInt(pref.getString("pref_key_other_largephoto", "1"));
-			if (largePhoto > 1 && XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
+			if (largePhoto > 1)
 				OtherMods.execHook_LargePhotoLSCode55(lpparam, largePhoto);
-		}
-		
-		if (pkg.equals("com.htc.idlescreen.base")) {
-			int largePhoto = Integer.parseInt(pref.getString("pref_key_other_largephoto", "1"));
-			if (largePhoto > 1 && XMain.senseVersion.compareTo(new Version("5.5")) == -1)
-				OtherMods.execHook_LargePhotoLSCode50(lpparam, largePhoto);
 		}
 		
 		if (pkg.equals("com.android.settings"))
@@ -382,7 +335,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			SettingsMods.execHook_AppFilter(lpparam);
 			SettingsMods.execHook_UnhidePrefs(lpparam);
-			PrismMods.execHook_BypassLockScreen(lpparam);
 		}
 		
 		if (pkg.equals("com.android.camera"))

@@ -32,7 +32,6 @@ import android.content.res.XResources;
 import android.database.ContentObserver;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -75,7 +74,6 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -87,7 +85,6 @@ import com.htc.widget.HtcCompoundButton.OnCheckedChangeListener;
 import com.htc.widget.HtcSeekBar;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.PopupAdapter;
-import com.sensetoolbox.six.utils.Version;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
@@ -191,37 +188,34 @@ public class SysUIMods {
 		});
 		
 		//Redraw the tile view because we have added or removed something... Sense 5.5 only.
-		if(XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
-		{
-			findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettings", lpparam.classLoader, "repositionQuickSettingTile", ViewGroup.class, ArrayList.class, boolean.class, new XC_MethodHook() {
-				@Override
-	    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					ViewGroup qsContainer = (ViewGroup) getObjectField(param.thisObject, "mContainerView2");
-					if(!param.args[0].equals(qsContainer))
-						return;
-					
-		        	WindowManager wm = (WindowManager) qsContainer.getContext().getSystemService(Context.WINDOW_SERVICE);
-					Display display = wm.getDefaultDisplay();
-					Point displaySize = new Point();
-					display.getSize(displaySize);
-					int displayWidth = displaySize.x;
-		        	for(int k = 0; k < qsContainer.getChildCount(); k++)
+		findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettings", lpparam.classLoader, "repositionQuickSettingTile", ViewGroup.class, ArrayList.class, boolean.class, new XC_MethodHook() {
+			@Override
+    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				ViewGroup qsContainer = (ViewGroup) getObjectField(param.thisObject, "mContainerView2");
+				if(!param.args[0].equals(qsContainer))
+					return;
+				
+	        	WindowManager wm = (WindowManager) qsContainer.getContext().getSystemService(Context.WINDOW_SERVICE);
+				Display display = wm.getDefaultDisplay();
+				Point displaySize = new Point();
+				display.getSize(displaySize);
+				int displayWidth = displaySize.x;
+	        	for(int k = 0; k < qsContainer.getChildCount(); k++)
+				{
+					LinearLayout tmp = (LinearLayout) qsContainer.getChildAt(k);
+					LinearLayout.LayoutParams tmpParams = (LinearLayout.LayoutParams) tmp.getLayoutParams();
+					tmpParams.width = (int) Math.floor(displayWidth / 5);
+					tmp.setLayoutParams(tmpParams);
+					if(removeText)
 					{
-						LinearLayout tmp = (LinearLayout) qsContainer.getChildAt(k);
-						LinearLayout.LayoutParams tmpParams = (LinearLayout.LayoutParams) tmp.getLayoutParams();
-						tmpParams.width = (int) Math.floor(displayWidth / 5);
-						tmp.setLayoutParams(tmpParams);
-						if(removeText)
-						{
-							tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_text", "id", "com.android.systemui")).setVisibility(View.GONE);;
-							ImageView qsImg = (ImageView) tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_image", "id", "com.android.systemui"));
-							qsImg.setPadding(0, 0, 0, 20);
-						}
+						tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_text", "id", "com.android.systemui")).setVisibility(View.GONE);;
+						ImageView qsImg = (ImageView) tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_image", "id", "com.android.systemui"));
+						qsImg.setPadding(0, 0, 0, 20);
 					}
-		        	qsContainer.invalidate();
 				}
-			});
-		}
+	        	qsContainer.invalidate();
+			}
+		});
 		
 		//Makes them scrolling. Showing 5 at once.
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook() {
@@ -274,7 +268,7 @@ public class SysUIMods {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
 				View bg = liparam.view.findViewById(resparam.res.getIdentifier("notification_panel", "id", "com.android.systemui"));
-				bg.getBackground().setAlpha(transparency + (255 - transparency)/4);
+				bg.getBackground().setAlpha(transparency);
 			}
 		});
 	}
@@ -294,7 +288,7 @@ public class SysUIMods {
 						if (mBar != null) {
 							FrameLayout mStatusBarWindow = (FrameLayout)XposedHelpers.getObjectField(mBar, "mStatusBarWindow");
 							if (mStatusBarWindow != null && mStatusBarWindow.getBackground() != null)
-							mStatusBarWindow.getBackground().setAlpha(Math.round(mStatusBarWindow.getBackground().getAlpha() * (transparency + 64)/319));
+							mStatusBarWindow.getBackground().setAlpha(Math.round(mStatusBarWindow.getBackground().getAlpha() * (transparency + 191)/446));
 						}
 					}
 				} catch (Throwable t) {
@@ -313,20 +307,17 @@ public class SysUIMods {
 		});
 		
 		//Fix for FC on Sense 5.5
-		if(XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
-		{
-			findAndHookMethod("com.android.systemui.recent.RecentsActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
-				@Override
-	    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					BroadcastReceiver mIntentReceiver = (BroadcastReceiver) getObjectField(param.thisObject, "mIntentReceiver");
-					IntentFilter mIntentFilter = (IntentFilter) getObjectField(param.thisObject, "mIntentFilter");
-					if(mIntentReceiver != null && mIntentFilter != null) {
-						Activity thisActivity = (Activity) param.thisObject;
-						thisActivity.registerReceiver(mIntentReceiver, mIntentFilter);
-					}
+		findAndHookMethod("com.android.systemui.recent.RecentsActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+			@Override
+	    	protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				BroadcastReceiver mIntentReceiver = (BroadcastReceiver) getObjectField(param.thisObject, "mIntentReceiver");
+				IntentFilter mIntentFilter = (IntentFilter) getObjectField(param.thisObject, "mIntentFilter");
+				if(mIntentReceiver != null && mIntentFilter != null) {
+					Activity thisActivity = (Activity) param.thisObject;
+					thisActivity.registerReceiver(mIntentReceiver, mIntentFilter);
 				}
-			});
-		}
+			}
+		});
 	}
 	
 	public static void execHook_CenterClockLayout(final InitPackageResourcesParam resparam, String MODULE_PATH) {
@@ -1174,22 +1165,12 @@ public class SysUIMods {
             			ramView.setSingleLine();
             			ramView.setTypeface(text1.getTypeface());
             			ramView.setTextColor(Color.argb(127, Color.red(text1.getCurrentTextColor()), Color.green(text1.getCurrentTextColor()), Color.blue(text1.getCurrentTextColor())));
-            			if (XMain.senseVersion.compareTo(new Version("5.5")) == -1) {
-            				RelativeLayout.LayoutParams p0 = (RelativeLayout.LayoutParams)text1.getLayoutParams();
-            				ImageView img = (ImageView)XposedHelpers.getObjectField(viewholder, "img");	
-            				p0.setMargins(img.getPaddingLeft(), p0.topMargin, img.getPaddingRight(), 0);
-            				ramView.setLayoutParams(p0);
-            				ramView.setGravity(Gravity.CENTER);
-            				ramView.setBackground(new ColorDrawable(Color.parseColor("#9F333333")));
-                			ramView.setTranslationY(-32f * theView.getContext().getResources().getDisplayMetrics().density);
-            			} else {
-            				FrameLayout.LayoutParams p0 = (FrameLayout.LayoutParams)text1.getLayoutParams();
-                			ramView.setLayoutParams(p0);
-                			ramView.setGravity(Gravity.CENTER_VERTICAL);
-                			ramView.setBackground(text1.getBackground());
-                			ramView.setPadding(text1.getPaddingLeft(), text1.getPaddingTop(), text1.getPaddingRight(), text1.getPaddingBottom());
-                			ramView.setTranslationY(-29.7f * theView.getContext().getResources().getDisplayMetrics().density);
-            			}
+           				FrameLayout.LayoutParams p0 = (FrameLayout.LayoutParams)text1.getLayoutParams();
+               			ramView.setLayoutParams(p0);
+               			ramView.setGravity(Gravity.CENTER_VERTICAL);
+               			ramView.setBackground(text1.getBackground());
+               			ramView.setPadding(text1.getPaddingLeft(), text1.getPaddingTop(), text1.getPaddingRight(), text1.getPaddingBottom());
+               			ramView.setTranslationY(-29.7f * theView.getContext().getResources().getDisplayMetrics().density);
         			}
         		}
         	} catch (Throwable t) {

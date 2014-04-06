@@ -272,15 +272,6 @@
         	android:title="@string/sense_transparency"
         	android:key="pref_key_sense_transparency">
         <com.sensetoolbox.six.utils.SeekBarPreference 
-            android:key="pref_key_prism_invisinav_new"
-    		android:title="@string/sense_td_title"
-    		android:summary="@string/sense_td_summ"
-    		android:dialogMessage="@string/transparency_msg"
-    		android:defaultValue="100"
-    		android:text=" %"
-    		android:max="100"
-    		toolbox:enableKey="pref_key_prism_invisinav_enable"/>
-        <com.sensetoolbox.six.utils.SeekBarPreference 
             android:key="pref_key_prism_invisiwidget"
     		android:title="@string/sense_twidget_title"
     		android:summary="@string/sense_twidget_summ"
@@ -327,16 +318,6 @@
             android:title="@string/sense_infini_title"
             android:defaultValue="false" />
         <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_infiniscroll"
-            android:summary="@string/sense_infiniscroll_summ"
-            android:title="@string/sense_infiniscroll_title"
-            android:defaultValue="false" />
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_bfremove"
-            android:summary="@string/sense_noblink_summ"
-            android:title="@string/sense_noblink_title"
-            android:defaultValue="false" />
-        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_homemenu"
             android:summary="@string/sense_homemenu_summ"
             android:title="@string/sense_homemenu_title"
@@ -365,11 +346,6 @@
             android:summary="@string/sense_gridtinyfont_summ"
             android:title="@string/sense_gridtinyfont_title"
             android:defaultValue="true" />
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_adnoclock"
-            android:summary="@string/sense_adnoclock_summ"
-            android:title="@string/sense_adnoclock_title"
-            android:defaultValue="false" />
         </com.htc.preference.HtcPreferenceCategory>
 
         <com.htc.preference.HtcPreferenceCategory
@@ -727,10 +703,6 @@
             android:key="pref_key_persist_appdrawer_grid"
             android:summary="@string/persist_adgrid_summ"
             android:title="@string/persist_adgrid_title" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_persist_bypasslock"
-            android:summary="@string/persist_bypasslock_summ"
-            android:title="@string/persist_bypasslock_title" />
         <com.htc.preference.HtcPreference
             android:key="pref_key_persist_unhideprefs"
             android:summary="@string/persist_unhideprefs_summ"

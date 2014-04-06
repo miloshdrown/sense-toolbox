@@ -204,8 +204,6 @@
 	<string name="sense_homescreen">Home screen</string>
 	<string name="sense_appdrawer">App drawer</string>
 	<string name="sense_gestures">Gestures</string>
-	<string name="sense_td_title">Dock</string>
-	<string name="sense_td_summ">Make the Sense launcher dock transparent.</string>
 	<string name="sense_twidget_title">4x1 clock widget</string>
 	<string name="sense_twidget_summ">Make the default 4x1 clock + weather widget transparent.</string>
 	<string name="sense_tappdrawer_title">App drawer</string>
@@ -216,14 +214,8 @@
 	<string name="sense_tfoldersbkg_summ">Make folder icons background transparent.</string>
 	<string name="sense_infini_title">Infinifolders</string>
 	<string name="sense_infini_summ">Enable to have infinite icons per folder.</string>
-	<string name="sense_adnoclock_title">Remove app drawer clock</string>
-	<string name="sense_adnoclock_summ">Hides clock and weather widget in app drawer.</string>	
-	<string name="sense_noblink_title">Remove BlinkFeed</string>
-	<string name="sense_noblink_summ">Only on Android 4.3: Tick to disable BlinkFeed.</string>
 	<string name="sense_homemenu_title">Home popup menu</string>
 	<string name="sense_homemenu_summ">Show popup menu with useful commands on Menu press or Home longpress in launcher.</string>
-	<string name="sense_infiniscroll_title">Infinite home screen scroll</string>
-	<string name="sense_infiniscroll_summ">Enable for infinitely scrollable home screens.</string>
 	<string name="sense_gridtinyfont_title">Small app drawer grid font</string>
 	<string name="sense_gridtinyfont_summ">Reduce titles font size for 6-row app drawer grids</string>
 	<string name="sense_swipedownaction_title">Swipe down action</string>
@@ -299,7 +291,7 @@
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Enable or disable Advanced Power Menu\nIf you have the native APM installed, better keep this disabled.</string>
 	<string name="various_scron_title">Enable \'Keep screen on\'</string>
-	<string name="various_scron_summ">Show the \'Keep screen on\' option in display settings and development settings.</string>
+	<string name="various_scron_summ">Show the \'Keep screen on\' option in development settings.</string>
 	<string name="various_apps_title">Show additional app details</string>
 	<string name="various_apps_summ">Add new fields to Settings > Apps:\n- button to launch an app\n- apk filename and path\n- data path\n- process name\n- user id\n- target SDK version</string>
 	<string name="various_mods_calls">Calls</string>
@@ -315,7 +307,7 @@
 	<string name="various_movevol_title">Volume dialog position</string>
 	<string name="various_movevol_summ">Make volume dialog bottom aligned so it won\'t block the view.</string>
 	<string name="various_mtpnotif_title">Hide MTP notification</string>
-	<string name="various_mtpnotif_summ">Make MTP service background and disable notification. Mod is for ROMs based on leaked 4.3.</string>
+	<string name="various_mtpnotif_summ">Make MTP service background and disable notification.</string>
 	<string name="various_fastunlock_title">Fast unlock</string>
 	<string name="various_fastunlock_summ">Unlock device as soon as correct PIN or password are entered. HTC lockscreen only.</string>
 	<string name="various_ytwatermark_title">YouTube channel watermark</string>
@@ -332,8 +324,6 @@
 	<string name="persistent_mods">Always active mods</string>
 	<string name="persist_adgrid_title">App drawer grid size</string>
 	<string name="persist_adgrid_summ">New grid sizes: 5x5, 4x6 and 5x6. You can select them from default app drawer menu.</string>
-	<string name="persist_bypasslock_title">Lockscreen bypass</string>
-	<string name="persist_bypasslock_summ">\'Bypass lock screen on wake\' setting works also without screen lock.</string>
 	<string name="persist_unhideprefs_title">Revealed settings</string>
 	<string name="persist_unhideprefs_summ">Show \'ROM version\', \'Distribution time\' and \'Hardware information\' (on Sense 5.5) in About section of Settings.</string>
 	<string name="persist_appfilter_title">Apps filter</string>

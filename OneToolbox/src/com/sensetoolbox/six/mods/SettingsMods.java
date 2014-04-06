@@ -12,7 +12,6 @@ import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListItemSeparator;
 import com.htc.widget.HtcRimButton;
 import com.sensetoolbox.six.R;
-import com.sensetoolbox.six.utils.Version;
 
 import android.content.Context;
 import android.content.Intent;
@@ -57,7 +56,6 @@ public class SettingsMods {
 				param.setResult(true);
 			}
 		});
-		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
 		findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportHardwareInformation", new XC_MethodHook(){
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {

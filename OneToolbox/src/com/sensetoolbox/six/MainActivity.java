@@ -1,8 +1,5 @@
 package com.sensetoolbox.six;
 
-import android.content.DialogInterface;
-import android.content.DialogInterface.OnClickListener;
-import android.content.SharedPreferences;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
@@ -10,14 +7,10 @@ import com.htc.preference.HtcPreferenceActivity;
 import com.htc.widget.ActionBarContainer;
 import com.htc.widget.ActionBarExt;
 import com.htc.widget.ActionBarText;
-import com.htc.widget.HtcAlertDialog;
-import com.sensetoolbox.six.utils.Helpers;
-import com.sensetoolbox.six.utils.Version;
-import com.stericson.RootTools.RootTools;
 
 public class MainActivity extends HtcPreferenceActivity {
 
-	public static boolean isRootAccessGiven = false;
+	//public static boolean isRootAccessGiven = false;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -30,7 +23,7 @@ public class MainActivity extends HtcPreferenceActivity {
 		actionBarContainer.setBackUpEnabled(false);
 		getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionbar_color)));
 		
-		if ((new Version(Helpers.getSenseVersion())).compareTo(new Version("5.5")) < 0)
+		/*
 		if (RootTools.isAccessGiven()) {
 			isRootAccessGiven = true;
 		} else {
@@ -52,6 +45,7 @@ public class MainActivity extends HtcPreferenceActivity {
 				dlg.show();
 			}
 		}
+		*/
 		getFragmentManager().beginTransaction().replace(android.R.id.content, new PrefsFragment()).commit();
     }
 }

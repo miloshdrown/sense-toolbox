@@ -8,7 +8,6 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import java.lang.reflect.Method;
 
 import com.sensetoolbox.six.R;
-import com.sensetoolbox.six.utils.Version;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
@@ -253,15 +252,9 @@ public class OtherMods{
 						}
 						if (!mPasswordEntry.isEnabled() && !TextUtils.isEmpty(mPasswordEntry.getText()))
 							mPasswordEntry.setText("");
-						if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
-							Object mCallback = getObjectField(param.thisObject, "mCallback");
-							if (mCallback != null)
-								callMethod(mCallback, "userActivity", 0L);
-						} else {
-							Object LSStateInst = XposedHelpers.callStaticMethod(findClass("com.htc.lockscreen.app.LSState", lpparam.classLoader), "getInstance");
-							if (LSStateInst != null)
-								callMethod(LSStateInst, "keepScreenOn");
-						}
+						Object mCallback = getObjectField(param.thisObject, "mCallback");
+						if (mCallback != null)
+							callMethod(mCallback, "userActivity", 0L);
 					}
 				}
 			});
@@ -270,20 +263,12 @@ public class OtherMods{
 	
 	public static void execHook_fastUnlock(final LoadPackageParam lpparam)
 	{
-		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
-			findAndHookMethod("com.htc.lockscreen.unlockscreen.HtcKeyInputUnlockView", lpparam.classLoader, "initView", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-					applyFastUnlock(lpparam, param, "com.htc.lockscreen.unlockscreen.HtcKeyInputUnlockView");
-				}
-			});
-		else
-			findAndHookMethod("com.htc.lockscreen.app.unlockview.PasswordUnlockView", lpparam.classLoader, "init", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-					applyFastUnlock(lpparam, param, "com.htc.lockscreen.app.unlockview.PasswordUnlockView");
-				}
-			});
+		findAndHookMethod("com.htc.lockscreen.unlockscreen.HtcKeyInputUnlockView", lpparam.classLoader, "initView", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				applyFastUnlock(lpparam, param, "com.htc.lockscreen.unlockscreen.HtcKeyInputUnlockView");
+			}
+		});
 	}
 	
 	public static void execHook_EnhancedInstaller(final LoadPackageParam lpparam) {
@@ -434,10 +419,7 @@ public class OtherMods{
 			int resId = R.dimen.people_info_top_margin;
 			if (photoSize == 2) resId = R.dimen.people_info_top_margin_rect;
 			resparam.res.setReplacement("com.android.phone", "dimen", "photo_frame_height", modRes.fwd(resId));
-			if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0)
-				resparam.res.setReplacement("com.android.phone", "dimen", "custom_15_font_size", modRes.fwd(R.dimen.custom_15_font_size));
-			else
-				resparam.res.setReplacement("com.android.phone", "dimen", "call_card_person_info_name_font_size", modRes.fwd(R.dimen.custom_15_font_size));
+			resparam.res.setReplacement("com.android.phone", "dimen", "custom_15_font_size", modRes.fwd(R.dimen.custom_15_font_size));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -474,29 +456,12 @@ public class OtherMods{
 	}
 	
 	public static void execHook_LargePhotoCode(LoadPackageParam lpparam, final int photoSize) {
-		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
-			findAndHookMethod("com.android.phone.widget.PhotoImageView", lpparam.classLoader, "setImageDrawable", Drawable.class, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					setPhotoHeight((ImageView)param.thisObject, photoSize);
-				}
-			});
-		} else {
-			findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "setPhotoImageDrawable", Drawable.class, Drawable.class, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					ImageView mPhoto = (ImageView)XposedHelpers.getObjectField(param.thisObject, "mPhoto");
-					setPhotoHeight(mPhoto, photoSize);
-				}
-			});
-			findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "setPhotoImageResource", int.class, Drawable.class, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					ImageView mPhoto = (ImageView)XposedHelpers.getObjectField(param.thisObject, "mPhoto");
-					setPhotoHeight(mPhoto, photoSize);
-				}
-			});
-		}
+		findAndHookMethod("com.android.phone.widget.PhotoImageView", lpparam.classLoader, "setImageDrawable", Drawable.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				setPhotoHeight((ImageView)param.thisObject, photoSize);
+			}
+		});
 		
 		findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
 			@Override
@@ -599,16 +564,6 @@ public class OtherMods{
 		}
 	}
 	
-	public static void execHook_LargePhotoLS50(InitPackageResourcesParam resparam, int photoSize) {
-		try {
-			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
-			resparam.res.setReplacement("com.htc.idlescreen.base", "dimen", "masthead_minHeight", modRes.fwd(R.dimen.masthead_minHeight));
-			resparam.res.setReplacement("com.htc.idlescreen.base", "dimen", "text_size_darklist_primary_m", modRes.fwd(R.dimen.text_size_custom_04));
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-	}
-
 	public static void execHook_LargePhotoLSCode55(LoadPackageParam lpparam, final int photoSize) {
 		findAndHookMethod("com.htc.lockscreen.ui.MainContainAnimator", lpparam.classLoader, "doTileChange", new XC_MethodHook() {
 			@Override
@@ -703,97 +658,6 @@ public class OtherMods{
 		});
 	}
 		
-	public static void execHook_LargePhotoLSCode50(LoadPackageParam lpparam, final int photoSize) {
-		findAndHookMethod("com.htc.idlescreen.base.ui.MainContainAnimator", lpparam.classLoader, "doTileChange", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				try {
-					RelativeLayout mCurTile = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mCurTile");
-					if (mCurTile != null) {
-						ImageView mCallPhoto = (ImageView)mCurTile.findViewById(mCurTile.getResources().getIdentifier("call_id", "id", "com.htc.idlescreen.base"));
-						if (mCallPhoto != null) {
-							RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mCurTile.getLayoutParams();
-							params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-							if (photoSize == 3)
-								params.setMargins(0, 0, 0, 0);
-							else
-								params.setMargins(0, Math.round(mCurTile.getResources().getDisplayMetrics().density * 48), 0, 0);
-							mCurTile.setLayoutParams(params);
-							
-							RelativeLayout mCurTileContainer = (RelativeLayout)mCurTile.getParent();
-							if (mCurTileContainer != null) mCurTileContainer.setGravity(Gravity.TOP);
-						}
-					}
-				} catch (Throwable t) {
-					XposedBridge.log(t);
-				}
-			}
-		});
-		
-		findAndHookMethod("com.htc.idlescreen.base.ui.HeadBar", lpparam.classLoader, "init", "com.htc.idlescreen.base.widget.WorkspaceCtrl", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				RelativeLayout headBar = (RelativeLayout)param.thisObject;
-				if (headBar != null) headBar.bringToFront();
-			}
-		});
-		
-		findAndHookMethod("com.htc.idlescreen.base.ui.reminder.IncomingCallView", lpparam.classLoader, "init", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				try {
-					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-					
-					if (photoSize == 3) {
-						RelativeLayout mTile = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mTile");
-						if (mTile != null) {
-							RelativeLayout mCallPhotoRoot = (RelativeLayout)mTile.findViewById(mTile.getResources().getIdentifier("photo_view_root", "id", "com.htc.idlescreen.base"));
-							if (mCallPhotoRoot != null) {
-								LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mCallPhotoRoot.getLayoutParams();
-								params.height = modRes.getDimensionPixelSize(R.dimen.incoming_call_call_id_height);
-								mCallPhotoRoot.setLayoutParams(params);
-							}
-						}
-						
-						ImageView mCallId = (ImageView)XposedHelpers.getObjectField(param.thisObject, "mCallId");
-						if (mCallId != null) {
-							RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams)mCallId.getLayoutParams();
-							params2.height = modRes.getDimensionPixelSize(R.dimen.incoming_call_call_id_height);
-							params2.removeRule(RelativeLayout.BELOW);
-							mCallId.setLayoutParams(params2);
-						}
-						
-						TextView mSlotName = (TextView)XposedHelpers.getObjectField(param.thisObject, "mSlotName");
-						if (mSlotName != null) {
-							RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams)mSlotName.getLayoutParams();
-							params3.setMargins(0, Math.round(modRes.getDisplayMetrics().density * 28), 0, 0);
-							mSlotName.setLayoutParams(params3);
-							mSlotName.setBackground(null);
-							mSlotName.setBackgroundResource(0);
-							mSlotName.setGravity(Gravity.CENTER_HORIZONTAL);
-							mSlotName.setShadowLayer(4.0f, 0, 3.0f, Color.argb(153, 0, 0, 0));
-							mSlotName.bringToFront();
-						}						
-					}
-					
-					LinearLayout mContactPanel = (LinearLayout)XposedHelpers.getObjectField(param.thisObject, "mContactPanel");
-					if (mContactPanel != null) {
-						LinearLayout.LayoutParams params3 = (LinearLayout.LayoutParams)mContactPanel.getLayoutParams();
-						if (photoSize == 3) params3.setMargins(0, 0, 0, 0);
-						TextView text2 = (TextView)mContactPanel.findViewById(mContactPanel.getResources().getIdentifier("text2", "id", "com.htc.idlescreen.base"));
-						if (text2 != null) {
-							text2.setSingleLine(false);
-							text2.setMaxLines(2);
-						}
-						mContactPanel.setLayoutParams(params3);
-					}
-				} catch (Throwable t) {
-					XposedBridge.log(t);
-				}
-			}
-		});
-	}
-	
 	public static void execHook_RejectCallSilently(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.phone.CallNotifier", lpparam.classLoader, "addCallLog", "com.android.internal.telephony.Connection", "com.android.internal.telephony.Connection.DisconnectCause", new XC_MethodHook() {
 			@Override

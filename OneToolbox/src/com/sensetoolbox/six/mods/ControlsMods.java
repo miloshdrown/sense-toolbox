@@ -19,7 +19,6 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 
 import com.sensetoolbox.six.utils.GlobalActions;
-import com.sensetoolbox.six.utils.Version;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -139,21 +138,12 @@ public class ControlsMods {
 	}
 	
 	public static void execHook_dieGoogleNow(LoadPackageParam lpparam) {
-		if (XMain.senseVersion.compareTo(new Version("5.5")) >= 0) {
-			findAndHookMethod("com.htc.lockscreen.HtcKeyguardHostViewImpl", lpparam.classLoader, "launchGoogleNow", new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					param.setResult(null);
-				}
-			});
-		} else {
-			findAndHookMethod("com.htc.lockscreen.HtcLockScreen", lpparam.classLoader, "launchGoogleNow", new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					param.setResult(null);
-				}
-			});
-		}
+		findAndHookMethod("com.htc.lockscreen.HtcKeyguardHostViewImpl", lpparam.classLoader, "launchGoogleNow", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.setResult(null);
+			}
+		});
 	}
 
 	public static void execHook_Vol2Wake(final LoadPackageParam lpparam) {

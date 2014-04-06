@@ -7,8 +7,6 @@ import static de.robv.android.xposed.XposedHelpers.findConstructorExact;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
 
-import com.sensetoolbox.six.utils.Version;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.net.Uri;
@@ -78,20 +76,6 @@ public class MessagingMods{
 					param.setResult(1024000);
 			}
 		});
-		if (XMain.senseVersion.compareTo(new Version("5.5")) == -1) {
-			findAndHookMethod("com.android.mms.ui.MessagingPreferenceActivity", lpparam.classLoader, "convertMaxMmsSize", Context.class, String.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					String s = (String) param.args[1];
-					if(s.equals("1"))
-						param.setResult(307200);
-					if(s.equals("2"))
-						param.setResult(614400);
-					if(s.equals("3"))
-						param.setResult(1024000);
-				}
-			});
-		}
 		findAndHookMethod("com.android.mms.ui.MessageUtils", lpparam.classLoader, "getMMSLimit", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {

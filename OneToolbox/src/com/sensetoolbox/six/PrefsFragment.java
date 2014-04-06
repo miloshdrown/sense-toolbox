@@ -59,7 +59,6 @@ import com.sensetoolbox.six.utils.ColorPreference;
 import com.sensetoolbox.six.utils.DynamicPreference;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.HtcListPreferencePlus;
-import com.sensetoolbox.six.utils.Version;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
@@ -109,18 +108,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			showRestoreInfoDialog();
 		}
 		
-		if ((new Version(senseVer)).compareTo(new Version("5.5")) >= 0) {
-			if (findPreference("pref_key_eqs") != null) getPreferenceScreen().removePreference(findPreference("pref_key_eqs"));
-			if (findPreference("pref_key_prism_bfremove") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_homescreen")).removePreference(findPreference("pref_key_prism_bfremove"));
-			if (findPreference("pref_key_prism_infiniscroll") != null) ((HtcPreferenceCategory) findPreference("pref_key_sense_homescreen")).removePreference(findPreference("pref_key_prism_infiniscroll"));
-		} else {
-			if (findPreference("pref_key_eqs") != null && (MainActivity.isRootAccessGiven == false)) findPreference("pref_key_eqs").setEnabled(false);
-			if (findPreference("pref_key_persist_bypasslock") != null) ((HtcPreferenceScreen) findPreference("pref_key_persist")).removePreference(findPreference("pref_key_persist_bypasslock"));
-		}
-		
-		if (Build.VERSION.SDK_INT < 19) {
-			if (findPreference("pref_key_other_oldtoasts") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_oldtoasts"));
-		}
+		if (findPreference("pref_key_other_oldtoasts") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_oldtoasts"));
 		
 		if (!Build.DEVICE.equalsIgnoreCase("m7")) {
 			if (findPreference("pref_key_other_keyslight") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_keyslight"));
