@@ -909,12 +909,12 @@ public class SysUIMods {
 			closeRecents();
 			return;
 		}
-		int i = gridViewSelf.getChildCount();
+		final int i = gridViewSelf.getChildCount();
 		int j = taskDescriptionsArray.size();
-		int cnt = 0;
+		int cnt = i - 1;
 
 		// Go through all GridView items and get taskIds
-		while (cnt < i) {
+		while (cnt >= 0) {
 			View gridViewItem;
 			gridViewItem = gridViewSelf.getChildAt(cnt);
 			if (gridViewItem != null && !gridViewItem.equals(currApp)) {
@@ -932,10 +932,53 @@ public class SysUIMods {
 					if (am != null) 
 					XposedHelpers.callMethod(am, "removeTask", XposedHelpers.getIntField(gridViewItemTag, "persistentTaskId"), Integer.valueOf(1));
 					
-					gridViewItem.startAnimation(terminateAnimation(i, cnt, animType, currApp));
+					if (gridViewContext != null) {
+						AnimationSet localAnimationSet = new AnimationSet(true);
+						Animation fadeOut = AnimationUtils.loadAnimation(gridViewContext, android.R.anim.fade_out);
+						if (animType == 0) {
+							fadeOut.setDuration(220l);
+							fadeOut.setStartOffset(cnt * 30);
+							fadeOut.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
+							
+							TranslateAnimation drop = new TranslateAnimation(0.0F, 0.0F, 0.0F, 100.0f);
+							drop.setDuration(220l);
+							drop.setStartOffset(cnt * 30);
+							drop.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
+							localAnimationSet.addAnimation(drop);
+							localAnimationSet.addAnimation(fadeOut);
+						} else {
+							fadeOut.setDuration(220L);
+							fadeOut.setStartOffset(cnt * 30);
+							fadeOut.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
+							
+							ScaleAnimation shrink = new ScaleAnimation(1.0f, 0.8f, 1.0f, 0.8f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+							shrink.setDuration(220L);
+							shrink.setStartOffset(cnt * 30);
+							shrink.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
+							localAnimationSet.addAnimation(shrink);
+							localAnimationSet.addAnimation(fadeOut);
+						}
+						
+						localAnimationSet.setFillAfter(true);
+						if (cnt == 0)
+						localAnimationSet.setAnimationListener(new Animation.AnimationListener() {
+							public void onAnimationEnd(Animation paramAnonymousAnimation) {
+								new Thread(new Runnable() {
+									@Override
+									public void run() {
+										try { if (i > 3) Thread.sleep((i + 1) * 15); } catch (Exception e) {}
+										if (currApp == null) closeRecents();
+									}
+								}).start();				
+							}
+							public void onAnimationRepeat(Animation paramAnonymousAnimation) {}
+							public void onAnimationStart(Animation paramAnonymousAnimation) {}
+						});
+						gridViewItem.startAnimation(localAnimationSet);
+					}
 				}
 			}
-			cnt++;
+			cnt--;
 		}
 		if (currApp != null) {
 			Handler handler = (Handler)XposedHelpers.getObjectField(gridViewObject, "handler");
@@ -944,55 +987,8 @@ public class SysUIMods {
 					XposedHelpers.callMethod(gridViewObject, "handleOnClick", currApp);
 				}
 			};
-			handler.postDelayed(runnable, 550l + (i - 1) * 50l);
+			handler.postDelayed(runnable, 300l + (i - 1) * 30l);
 		}
-	}
-	
-	// Shrink to center and fade out animations
-	private static Animation terminateAnimation(final int i, int cnt, int animType, final ViewGroup currApp) {
-		if (gridViewContext == null) return null;
-		Animation fadeOut = AnimationUtils.loadAnimation(gridViewContext, android.R.anim.fade_out);
-		AnimationSet localAnimationSet = new AnimationSet(true);
-		if (animType == 0)
-		{
-			fadeOut.setDuration(300l);
-			fadeOut.setStartOffset((i - cnt) * 70);
-			fadeOut.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
-			
-			TranslateAnimation drop = new TranslateAnimation(0.0F, 0.0F, 0.0F, 300.0f);
-			drop.setDuration(500l);
-			drop.setStartOffset((i - cnt) * 70);
-			drop.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
-			localAnimationSet.addAnimation(drop);
-		} else {			
-			fadeOut.setDuration(500l);
-			fadeOut.setStartOffset(cnt * 50);
-			fadeOut.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.accelerate_interpolator));
-			
-			ScaleAnimation shrink = new ScaleAnimation(1f, 0.2f, 1f, 0.2f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f); 
-			shrink.setDuration(500l);
-			shrink.setStartOffset(cnt * 50);
-			shrink.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.accelerate_decelerate_interpolator));
-			localAnimationSet.addAnimation(shrink);
-		}
-
-		localAnimationSet.addAnimation(fadeOut);
-		localAnimationSet.setFillAfter(true);
-		if (cnt == i - 1)
-		localAnimationSet.setAnimationListener(new Animation.AnimationListener() {
-			public void onAnimationEnd(Animation paramAnonymousAnimation) {
-				new Thread(new Runnable() {
-					@Override
-					public void run() {
-						try { if (i > 3) Thread.sleep((i + 1) * 15); } catch (Exception e) {}
-						if (currApp == null) closeRecents();
-					}
-				}).start();				
-			}
-			public void onAnimationRepeat(Animation paramAnonymousAnimation) {}
-			public void onAnimationStart(Animation paramAnonymousAnimation) {}
-		});
-		return localAnimationSet;
 	}
 	
 	// Listener for scale gestures
@@ -1098,11 +1094,7 @@ public class SysUIMods {
 	// Close activity
 	private static void closeRecents() {
 		try {
-			if (gridViewObject != null) {
-				if (XposedHelpers.getObjectField(gridViewObject, "mFinished") != null)
-				XposedHelpers.setBooleanField(gridViewObject, "mFinished", Boolean.valueOf(true));
-				((Activity)gridViewObject).finish();
-			}
+			if (gridViewObject != null) ((Activity)gridViewObject).finish();
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
