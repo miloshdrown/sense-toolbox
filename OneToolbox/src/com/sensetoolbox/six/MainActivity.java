@@ -3,6 +3,7 @@ package com.sensetoolbox.six;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
+import com.htc.configuration.HtcWrapConfiguration;
 import com.htc.preference.HtcPreferenceActivity;
 import com.htc.widget.ActionBarContainer;
 import com.htc.widget.ActionBarExt;
@@ -14,6 +15,9 @@ public class MainActivity extends HtcPreferenceActivity {
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+
+		// Apply HTC's default theme
+		setTheme(HtcWrapConfiguration.getHtcThemeId(this, 0));		
 		
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
 		ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();

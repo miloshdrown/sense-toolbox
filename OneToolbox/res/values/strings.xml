@@ -5,7 +5,7 @@
     <string name="app_name">Sense 6 Toolbox</string>
     <string name="app_name_version">Sense 6 Toolbox (Version: %1$s)</string>
     <string name="app_about">About</string>
-    <string name="about_version">Version: %1$s (\#JENKINSBUILDNUMBERGOESHERE)</string>
+    <string name="about_version">Version: %1$s (build JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Support (App Version: %1$s)</string>
     <string name="restore">Restore</string>
     <string name="add">Add</string>
@@ -377,7 +377,7 @@
 	<string name="about_devs">Developers</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
 	<string name="about_thanks">Thanks</string>
-	<string name="about_sense">Sense 5</string>
+	<string name="about_sense">Sense 6</string>
 	<string name="about_toolbox">Toolbox</string>
 	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nDunc001 and LeSScro - for their APM icons\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
 	<string name="about_l10n">Translation</string>

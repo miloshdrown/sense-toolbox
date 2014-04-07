@@ -11,14 +11,20 @@ import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.htc.configuration.HtcWrapConfiguration;
 import com.htc.widget.ActionBarContainer;
 import com.htc.widget.ActionBarExt;
 import com.htc.widget.ActionBarText;
+import com.sensetoolbox.six.utils.Helpers;
 
 public class AboutScreen extends Activity {
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		// Apply HTC's default theme
+		setTheme(HtcWrapConfiguration.getHtcThemeId(this, 0));
+		
 		setContentView(R.layout.about_screen);
 		
 		Typeface face = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
@@ -81,12 +87,8 @@ public class AboutScreen extends Activity {
 			ImageView logo = (ImageView)findViewById(R.id.imageView1);
 			logo.setLongClickable(true);
 			logo.setOnLongClickListener(olcl);
-			TextView title1 = (TextView)findViewById(R.id.textView1);
-			title1.setLongClickable(true);
-			title1.setOnLongClickListener(olcl);
-			TextView title2 = (TextView)findViewById(R.id.TextView01);
-			title2.setLongClickable(true);
-			title2.setOnLongClickListener(olcl);
+			
+			logo.setImageDrawable(Helpers.applySenseTheme(this, logo.getDrawable()));
 		} catch (NameNotFoundException e) {
 			//Shouldn't happen...
 			e.printStackTrace();

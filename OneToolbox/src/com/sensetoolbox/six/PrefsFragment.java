@@ -73,6 +73,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		inflater.inflate(R.menu.menu_mods, menu);
+		menu.getItem(2).setIcon(Helpers.applySenseTheme(getActivity(), menu.getItem(2).getIcon()));
 	}
 	
 	@Override

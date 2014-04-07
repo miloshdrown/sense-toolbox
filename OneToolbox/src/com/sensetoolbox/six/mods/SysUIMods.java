@@ -16,6 +16,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -1115,73 +1116,83 @@ public class SysUIMods {
 		TextView ramView = null;
 		String ramText = null;
 		
-        @Override
-        protected Void doInBackground(final MethodHookParam... params) {
-        	try {
-        		final MethodHookParam param = params[0];
-        		theView = (ViewGroup)param.getResult();
-        		if (theView != null) {
-        			int pos = (Integer)param.args[0];
-        			Object viewholder = theView.getTag();
-        			
-        			ArrayList<?> mRecentTaskDescriptions = (ArrayList<?>)XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mRecentTaskDescriptions");
-        			if (mRecentTaskDescriptions == null) return null;
-        			int taskPos = mRecentTaskDescriptions.size() - pos - 1;
-        			if (taskPos < 0) return null;
-        			Object taskdescription = mRecentTaskDescriptions.get(taskPos);
-        			if (taskdescription == null) return null;
-        			ResolveInfo resolveInfo = (ResolveInfo)XposedHelpers.getObjectField(taskdescription, "resolveInfo");
-        			
-        			final ActivityManager am = (ActivityManager)theView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
-        			if (pos == 0 || procs == null) procs = am.getRunningAppProcesses();
-        			
-        			final List<Integer> pids_mem = new ArrayList<Integer>();
-        			for (ActivityManager.RunningAppProcessInfo process: procs)
-        			if (process.processName.equals(resolveInfo.activityInfo.processName))
-        			if (!pids_mem.contains(process.pid)) pids_mem.add(process.pid);
-        			
-        			MemoryInfo[] mi = am.getProcessMemoryInfo(toIntArray(pids_mem));
-        			int memTotal = 0;
-        			for (MemoryInfo memInfo: mi)
-        			memTotal += memInfo.getTotalPss();
-        			
-        			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-        			ramText = String.format("%.1f", (float)(memTotal / 1024.0f)) + modRes.getString(R.string.ram_mb);
-        			if (theView.findViewWithTag(ramTAG) == null) {
-        				ramView = new TextView(theView.getContext());
-        				ramView.setTag(ramTAG);
-        				ramView.setText(ramText);
-            			final TextView text1 = (TextView)XposedHelpers.getObjectField(viewholder, "text1");		
-            			ramView.setTextSize(TypedValue.COMPLEX_UNIT_PX, text1.getTextSize());
-            			ramView.setEllipsize(TruncateAt.END);
-            			ramView.setSingleLine();
-            			ramView.setTypeface(text1.getTypeface());
-            			ramView.setTextColor(Color.argb(127, Color.red(text1.getCurrentTextColor()), Color.green(text1.getCurrentTextColor()), Color.blue(text1.getCurrentTextColor())));
-           				FrameLayout.LayoutParams p0 = (FrameLayout.LayoutParams)text1.getLayoutParams();
-               			ramView.setLayoutParams(p0);
-               			ramView.setGravity(Gravity.CENTER_VERTICAL);
-               			ramView.setBackground(text1.getBackground());
-               			ramView.setPadding(text1.getPaddingLeft(), text1.getPaddingTop(), text1.getPaddingRight(), text1.getPaddingBottom());
-               			ramView.setTranslationY(-29.7f * theView.getContext().getResources().getDisplayMetrics().density);
-        			}
-        		}
-        	} catch (Throwable t) {
-        		XposedBridge.log(t);
-        	}
-        	return null;        	
-        }
+		@Override
+		protected Void doInBackground(final MethodHookParam... params) {
+			try {
+				final MethodHookParam param = params[0];
+				theView = (ViewGroup)param.getResult();
+				if (theView != null) {
+					int pos = (Integer)param.args[0];
+					Object viewholder = theView.getTag();
+					
+					ArrayList<?> mRecentTaskDescriptions = (ArrayList<?>)XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mRecentTaskDescriptions");
+					if (mRecentTaskDescriptions == null) return null;
+					int taskPos = mRecentTaskDescriptions.size() - pos - 1;
+					if (taskPos < 0) return null;
+					Object taskdescription = mRecentTaskDescriptions.get(taskPos);
+					if (taskdescription == null) return null;
+					ResolveInfo resolveInfo = (ResolveInfo)XposedHelpers.getObjectField(taskdescription, "resolveInfo");
+					
+					final ActivityManager am = (ActivityManager)theView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+					if (pos == 0 || procs == null) procs = am.getRunningAppProcesses();
+					
+					final List<Integer> pids_mem = new ArrayList<Integer>();
+					for (ActivityManager.RunningAppProcessInfo process: procs)
+					if (process.processName.equals(resolveInfo.activityInfo.processName))
+					if (!pids_mem.contains(process.pid)) pids_mem.add(process.pid);
+					
+					MemoryInfo[] mi = am.getProcessMemoryInfo(toIntArray(pids_mem));
+					int memTotal = 0;
+					for (MemoryInfo memInfo: mi) memTotal += memInfo.getTotalPss();
+					
+					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+					ramText = String.format("%.1f", (float)(memTotal / 1024.0f)) + modRes.getString(R.string.ram_mb);
+					if (theView.findViewWithTag(ramTAG) == null) {
+						ramView = new TextView(theView.getContext());
+						ramView.setTag(ramTAG);
+						ramView.setText(ramText);
+						final TextView text1 = (TextView)XposedHelpers.getObjectField(viewholder, "text1");		
+						ramView.setTextSize(TypedValue.COMPLEX_UNIT_PX, text1.getTextSize());
+						ramView.setEllipsize(TruncateAt.END);
+						ramView.setSingleLine();
+						ramView.setTypeface(text1.getTypeface());
+						ramView.setTextColor(Color.argb(190, Color.red(text1.getCurrentTextColor()), Color.green(text1.getCurrentTextColor()), Color.blue(text1.getCurrentTextColor())));
+						FrameLayout.LayoutParams p0 = (FrameLayout.LayoutParams)text1.getLayoutParams();
+						ramView.setLayoutParams(p0);
+						ramView.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+						Drawable bkg = text1.getBackground().mutate().getConstantState().newDrawable();
+						bkg.setAlpha(160);
+						ramView.setBackground(bkg);
+						ramView.setPadding(text1.getPaddingLeft(), text1.getPaddingTop() + 5, text1.getPaddingRight(), text1.getPaddingBottom());
+					}
+				}
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+			return null;        	
+		}
 
-        @Override
-        protected void onPostExecute(Void result) {
-        	if (theView != null)
-            	if (theView.findViewWithTag(ramTAG) == null) {
-            		if (ramView != null) theView.addView(ramView);
-            	} else {
-            		if (ramText != null)
-            		((TextView)theView.findViewWithTag(ramTAG)).setText(ramText);
-            	}
-        }
-    }
+		@Override
+		protected void onPostExecute(Void result) {
+			if (theView != null)
+			if (theView.findViewWithTag(ramTAG) == null) {
+				if (ramView != null) {
+					theView.addView(ramView, 1);
+					ObjectAnimator translationY = ObjectAnimator.ofFloat(ramView, "translationY", 0.0f, -29.7f * theView.getContext().getResources().getDisplayMetrics().density);
+					ObjectAnimator alpha = ObjectAnimator.ofFloat(ramView, "alpha", 0.0f, 1.0f);
+					translationY.setInterpolator(AnimationUtils.loadInterpolator(theView.getContext(), android.R.anim.decelerate_interpolator));
+					translationY.setDuration(220L);
+					alpha.setInterpolator(AnimationUtils.loadInterpolator(theView.getContext(), android.R.anim.linear_interpolator));
+					alpha.setDuration(220L);
+					
+					translationY.start();
+					alpha.start();
+				}
+			} else {
+				if (ramText != null) ((TextView)theView.findViewWithTag(ramTAG)).setText(ramText);
+			}
+		}
+	}
 	
 	public static void execHook_RAMInRecents(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity.RecentGridViewAdapter", lpparam.classLoader, "getView", int.class, View.class, ViewGroup.class, new XC_MethodHook() {
