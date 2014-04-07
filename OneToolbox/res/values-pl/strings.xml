@@ -5,7 +5,7 @@
     <string name="app_name">Sense 6 Toolbox</string>
     <string name="app_name_version">Sense 6 Toolbox (Wersja: %1$s)</string>
     <string name="app_about">O programie</string>
-    <string name="about_version">Wersja: %1$s (\#JENKINSBUILDNUMBERGOESHERE)</string>
+    <string name="about_version">Wersja: %1$s (build JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Wsparcie (Wersja Aplikacji: %1$s)</string>
     <string name="restore">Przywróć</string>
     <string name="add">Dodaj</string>
@@ -42,7 +42,7 @@
     
     <string name="xposed_not_found">Nie znaleziono Xposed Installer</string>
     <string name="xposed_not_found_explain">Wygląda na to, że nie masz Xposed Installed.\n\nProsimy pamiętać, że w tej zakładce modyfikacje działają tylko z Xposed!\n\nXposed jest dostępny w instalatorze ARHD.</string>
-    <string name="okay">Okay</string>
+    <string name="okay">Dobrze</string>
     <string name="close_camera">Upewnij się, że kamera jest zamknięta i nie ma jej na liście ostatnio używanych aplikacji!</string>
     <string name="remove_last">Nie można usunąć ostatniego elementu!</string>
     <string name="remove">Usuń</string>
@@ -212,7 +212,7 @@
     <string name="sense_swipeleftaction_title">Działanie przesuń w lewo</string>
     <string name="sense_swipeleftaction_summ">Akcja dla gestu przesunięcia w lewo dla stacji dokującej.</string>
     <string name="sense_sevenscreens_title">Siedem pulpitów</string>
-	<string name="sense_sevenscreens_summ">Zwiększ liczbę dostępnych pulpitów do siedmiu.</string>
+	<string name="sense_sevenscreens_summ">Zwiększ liczbę dostępnych pulpitów do siedmiu.UWAGA: Nie działa na HTC One 4.2.2!</string>
 	<string name="sense_4x5homescreen_title">Siatka 4x5</string>
 	<string name="sense_4x5homescreen_summ">Dodaj kolejny wiersz do wszystkich ekranów głównych.</string>
 	<string name="sense_invisilabels_title">Usuń nazwy ikon</string>
@@ -347,7 +347,7 @@
     <string name="about_devs">Programiści</string>
     <string name="about_devs_names">Langer Hans\nMikanoshi</string>
     <string name="about_thanks">Dziękuję</string>
-    <string name="about_sense">Sense 5</string>
+    <string name="about_sense">Sense 6</string>
     <string name="about_toolbox">Toolbox</string>
     <string name="about_thanks_data">mike1986 - za ARHD i platformę do wydania tej aplikacji\n\ndescenpet - dla pierwszego pomysłu oraz kolejnych zmian\n\nvomer - modyfikacje CleanBeam\n\nDunc001 i LeSScro - za ich ikony APM\n\nZespołom RU i AU (i kilka innych wczesnych beta testerów) - za badania i cenne informacje\n\nUżytkownikom ARHD - za ich cierpliwość</string>
 
@@ -446,7 +446,7 @@
 	<string name="various_securelock_title">Ulepszona blokada ekranu</string>
 	<string name="various_securelock_summ">Wyłącz menu zasilania i wykonanie resetu, gdy powiadomienie blokady ekranu jest aktywny.</string>
 	
-	<string name="array_recents_menu_playstore">Play Store</string>
+	<string name="array_recents_menu_playstore">Sklep Google Play</string>
 	<string name="no_currents">Nie znaleziono przycisków sterowania podświetleniem. Urządzenie może być niezgodne z tym modem.</string>
     
     <string name="hideicons_title">Ukryj ikony paska stanu</string>
