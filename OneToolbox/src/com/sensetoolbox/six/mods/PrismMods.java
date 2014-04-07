@@ -174,8 +174,8 @@ public class PrismMods {
 	
 	public static void execHook_InvisiDrawerRes(InitPackageResourcesParam resparam) {
 		try {
-			resparam.res.setReplacement("com.htc.launcher", "integer", "config_workspaceUnshrinkTime", 300);
-			resparam.res.setReplacement("com.htc.launcher", "integer", "config_appsCustomizeWorkspaceShrinkTime", 100);
+			resparam.res.setReplacement("com.htc.launcher", "integer", "config_workspaceUnshrinkTime", 200);
+			resparam.res.setReplacement("com.htc.launcher", "integer", "config_appsCustomizeWorkspaceShrinkTime", 70);
 		} catch (Exception e) {}
 	}
 	
@@ -188,7 +188,7 @@ public class PrismMods {
 				((FrameLayout)param.thisObject).getBackground().setAlpha(transparency);
 			}
 		});
-		
+		/*
 		findAndHookMethod("com.htc.launcher.DragLayer", lpparam.classLoader, "setBackgroundAlpha", float.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -196,32 +196,32 @@ public class PrismMods {
 				Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
 				if (m_launcher != null)
 				isAllAppsOpen = (Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown");	
-				
+				XposedBridge.log("setBackgroundAlpha: " + String.valueOf((Float)param.args[0]));
 				if (isAllAppsOpen)
 					param.args[0] = 0;
 				else if ((Float)param.args[0] > transparency/255.0f)
 					param.args[0] = transparency/255.0f;
 			}
 		});
-		
-		// Animate Workspace alpha during transition between Workspace and AllApps   
+		*/
+		// Animate Workspace alpha during transition between Workspace and AllApps
 		final Class<?> Properties = XposedHelpers.findClass("com.htc.launcher.LauncherViewPropertyAnimator.Properties", lpparam.classLoader);
 		findAndHookMethod("com.htc.launcher.LauncherViewPropertyAnimator", lpparam.classLoader, "start", new XC_MethodHook() {
 			@Override
 			@SuppressWarnings({ "rawtypes", "unchecked" })
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				EnumSet m_propertiesToSet = (EnumSet)XposedHelpers.getObjectField(param.thisObject, "m_propertiesToSet");
-				Enum SCALE_X = (Enum) XposedHelpers.getStaticObjectField(Properties, "SCALE_X");
-				Enum SCALE_Y = (Enum) XposedHelpers.getStaticObjectField(Properties, "SCALE_Y");
+				Enum SCALE_X = (Enum)XposedHelpers.getStaticObjectField(Properties, "SCALE_X");
+				Enum SCALE_Y = (Enum)XposedHelpers.getStaticObjectField(Properties, "SCALE_Y");
 				if (m_propertiesToSet.contains(SCALE_X) && m_propertiesToSet.contains(SCALE_Y)) {
 					float m_fScaleX = XposedHelpers.getFloatField(param.thisObject, "m_fScaleX");
 					float m_fScaleY = XposedHelpers.getFloatField(param.thisObject, "m_fScaleY");
 					
 					Enum ALPHA = (Enum)XposedHelpers.getStaticObjectField(Properties, "ALPHA");
-					if (m_fScaleX == 0.9f && m_fScaleY == 0.9f) {
+					if (m_fScaleX == 0.5f && m_fScaleY == 0.5f) {
 						m_propertiesToSet.add(ALPHA);
 						XposedHelpers.setFloatField(param.thisObject, "m_fAlpha", 0.0f);
-					} else if (m_fScaleX == 1.0f && m_fScaleY == 1.0f) {
+					} else if (m_fScaleX == 1.33f && m_fScaleY == 1.33f) {
 						m_propertiesToSet.add(ALPHA);
 						XposedHelpers.setFloatField(param.thisObject, "m_fAlpha", 1.0f);
 					}
@@ -229,32 +229,26 @@ public class PrismMods {
 			}
 		});
 		
-		/*
-		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "setBackgroundAlpha", float.class, new XC_MethodHook() {
+		// Hide dock
+		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAllApps", boolean.class, new XC_MethodHook() {
 			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				XposedHelpers.callMethod(param.thisObject, "hideHotseat", param.args[0]);
 			}
 		});
-		
-		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAppsCustomizeHelper", "com.htc.launcher.Launcher.State", boolean.class, boolean.class, new XC_MethodHook() {
+
+		// Hide page indicator, nothing to indicate in appdrawer
+		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "showPageIndicator", boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-			}
-		});
-		*/
-		
-		try {
-			// This will fail on 4.2.2, best version check ever!
-			XposedHelpers.findMethodExact("com.htc.launcher.masthead.Masthead", lpparam.classLoader, "updateActionbarPosition");
-		} catch (NoSuchMethodError e){
-			findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAllApps", boolean.class, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					ViewGroup m_workspace = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_workspace");
-					m_workspace.setVisibility(4);
+				Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
+				Enum<?> m_state = (Enum<?>)XposedHelpers.getObjectField(m_launcher, "m_state");
+				if (m_state != null) {
+					boolean isForAllApps = (Boolean)XposedHelpers.callMethod(m_state, "isForAllApps");
+					if (isForAllApps) param.setResult(null);
 				}
-			});
-		}						
+			}
+		});
 	}
 	
 	public static void execHook_AppDrawerGridSizes(LoadPackageParam lpparam) {
