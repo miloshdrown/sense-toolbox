@@ -49,8 +49,7 @@
                 android:paddingBottom="10dp"
                 android:paddingTop="0dp"
                 android:text="@string/about_version"
-                android:textSize="20sp"
-                android:textColor="@android:color/secondary_text_light" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textView2"
@@ -58,8 +57,7 @@
                 android:layout_height="wrap_content"
                 android:paddingTop="0dp"
                 android:text="@string/about_devs"
-                android:textSize="20sp"
-                android:textColor="@android:color/secondary_text_light" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/textView3"
@@ -69,8 +67,7 @@
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
                 android:text="@string/about_devs_names"
-                android:textSize="18sp"
-                android:textColor="@android:color/secondary_text_light" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/TextView02"
@@ -78,8 +75,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp"
                 android:text="@string/about_thanks"
-                android:textSize="20sp"
-                android:textColor="@android:color/secondary_text_light" />
+                android:textSize="20sp" />
 
             <TextView
                 android:id="@+id/TextView03"
@@ -90,8 +86,7 @@
                 android:paddingLeft="20dp"
                 android:paddingTop="10dp"
                 android:text="@string/about_thanks_data"
-                android:textSize="18sp"
-                android:textColor="@android:color/secondary_text_light" />
+                android:textSize="18sp" />
 
             <TextView
                 android:id="@+id/TextView04"
@@ -99,8 +94,7 @@
                 android:layout_height="wrap_content"
                 android:paddingBottom="10dp"
                 android:text="@string/about_l10n"
-                android:textSize="20sp"
-                android:textColor="@android:color/secondary_text_light" />
+                android:textSize="20sp" />
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -115,8 +109,7 @@
                     android:paddingLeft="20dp"
                     android:paddingTop="10dp"
                     android:text="@string/about_l10n_data_left"
-                    android:textSize="18sp"
-                    android:textColor="@android:color/secondary_text_light" />
+                    android:textSize="18sp" />
 
                 <TextView
                     android:id="@+id/TextView5"
@@ -126,8 +119,7 @@
                     android:paddingLeft="20dp"
                     android:paddingTop="10dp"
                     android:text="@string/about_l10n_data_right"
-                    android:textSize="18sp"
-                    android:textColor="@android:color/secondary_text_light" />
+                    android:textSize="18sp" />
             </LinearLayout>
         </LinearLayout>
     </ScrollView>

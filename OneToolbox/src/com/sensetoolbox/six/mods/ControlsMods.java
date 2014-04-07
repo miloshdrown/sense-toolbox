@@ -119,7 +119,7 @@ public class ControlsMods {
 		}
 	}
 	
-	public static void assistAndSearchPanelOverride (final MethodHookParam param) {
+	public static void assistAndSearchPanelOverride(final MethodHookParam param) {
 		int pref_homeassist = Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassistaction", "1"));
 		if (pref_homeassist != 1) {
 			Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
@@ -130,15 +130,19 @@ public class ControlsMods {
 				case 4: GlobalActions.lockDevice(mContext); break;
 				case 5: GlobalActions.goToSleep(mContext); break;
 				case 6: GlobalActions.takeScreenshot(mContext); break;
-				case 7: XposedHelpers.callMethod(param.thisObject, "dismissKeyguardLw"); GlobalActions.launchApp(mContext, 4); break;
+				case 7: Object amn = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
+						XposedHelpers.callMethod(amn, "dismissKeyguardOnNextActivity");
+						GlobalActions.launchApp(mContext, 4); break;
 				case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassist_toggle", "0"))); break;
 				case 9: GlobalActions.killForegroundApp(mContext); break;
+				case 10: GlobalActions.simulateMenu(mContext); break;
+				case 11: GlobalActions.openRecents(mContext); break;
 			}
 		}
 	}
 	
 	public static void execHook_dieGoogleNow(LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.lockscreen.HtcKeyguardHostViewImpl", lpparam.classLoader, "launchGoogleNow", new XC_MethodHook() {
+		findAndHookMethod("com.htc.lockscreen.keyguard.KeyguardHostView", lpparam.classLoader, "showAssistant", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(null);
