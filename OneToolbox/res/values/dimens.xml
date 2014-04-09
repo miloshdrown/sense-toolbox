@@ -15,12 +15,13 @@
     
     <dimen name="photo_new_height">887.0px</dimen>
     <dimen name="photo_new_height_rect">720.0px</dimen>
+    <dimen name="photo_new_height_ls">796.0px</dimen>
+    
     <dimen name="people_info_top_margin">727.0px</dimen>
     <dimen name="people_info_top_margin_rect">714.0px</dimen>
     
     <dimen name="masthead_minHeight">-200dip</dimen>
 	<dimen name="incoming_call_call_id_height">429.0dip</dimen>
-	<dimen name="custom_15_font_size">25.0px</dimen>
-	<dimen name="text_size_custom_04">21.0dip</dimen>
+	<dimen name="lockscreen_10">25.0px</dimen>
 
 </resources>
