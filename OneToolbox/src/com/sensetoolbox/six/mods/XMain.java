@@ -218,12 +218,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_ytwatermark", false))
 				OtherMods.execHook_YouTubeNoWatermark(resparam);
 		}
-		
-		if (pkg.equals("com.htc.lockscreen")) {
-			int largePhoto = Integer.parseInt(pref.getString("pref_key_other_largephoto", "1"));
-			if (largePhoto > 1)
-				OtherMods.execHook_LargePhotoLS55(resparam, largePhoto);
-		}
 	}
 
 	@Override
@@ -319,10 +313,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_other_fastunlock", false))
 				OtherMods.execHook_fastUnlock(lpparam);
-			
-			int largePhoto = Integer.parseInt(pref.getString("pref_key_other_largephoto", "1"));
-			if (largePhoto > 1)
-				OtherMods.execHook_LargePhotoLSCode55(lpparam, largePhoto);
 		}
 		
 		if (pkg.equals("com.android.settings"))
