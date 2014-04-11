@@ -1590,7 +1590,7 @@ public class SysUIMods {
 							for (PackageTheme pt: pkgthm) if (pt.getPkg() != null)
 								if (pt.getPkg().equals(pkgName) ||
 								   (pt.getPkg().equals("com.htc.contacts") && (pkgName.equals("com.android.phone") || pkgName.equals("com.htc.htcdialer"))) ||
-								   (pt.getPkg().equals("com.android.settings") && (pkgName.equals("com.htc.home.personalize")))) {
+								   (pt.getPkg().equals("com.android.settings") && (pkgName.equals("com.htc.sdm") ||pkgName.equals("com.htc.home.personalize") || pkgName.equals("com.htc.widget.notification") || pkgName.equals("com.htc.sense.easyaccessservice")))) {
 									ptOut = pt;
 									break;
 								}
