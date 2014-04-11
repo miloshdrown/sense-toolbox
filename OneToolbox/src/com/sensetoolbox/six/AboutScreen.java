@@ -55,7 +55,6 @@ public class AboutScreen extends Activity {
 	    actionBarText.setPrimaryText(R.string.app_about);
 	    actionBarContainer.addCenterView(actionBarText);
 		actionBarContainer.setBackUpEnabled(true);
-		actionBarContainer.setBackgroundResource(R.color.actionbar_color);
 		
         View homeBtn = actionBarContainer.getChildAt(0);
 		if (homeBtn != null) {

@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.htc.widget.HtcListItem
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_marginBottom="10dp"
+    android:paddingTop="5dp"
+    android:paddingBottom="5dp"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+	    <com.sensetoolbox.six.utils.ColorFrameLayout
+        	android:id="@+id/header_color"
+        	android:layout_width="150dp"
+        	android:layout_height="match_parent"
+        	android:layout_weight="1"
+        	android:layout_gravity="left">
+        	<TextView
+        	    android:text="@string/sense_theme_color_header"
+        	    android:id="@+id/header_color_title"
+        	    android:layout_gravity="center"
+        	    android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:shadowDx="1"
+        		android:shadowDy="1"
+        		android:shadowRadius="1" />
+        </com.sensetoolbox.six.utils.ColorFrameLayout>
+    	<com.sensetoolbox.six.utils.ColorFrameLayout
+	        android:id="@+id/controls_color"
+	        android:layout_width="150dp"
+        	android:layout_height="match_parent"
+        	android:layout_weight="1"
+        	android:layout_gravity="right">
+        	<TextView
+        	    android:text="@string/sense_theme_color_controls"
+        	    android:id="@+id/controls_color_title"
+        	    android:layout_gravity="center"
+        	    android:layout_width="wrap_content"
+        		android:layout_height="wrap_content"
+        		android:shadowDx="1"
+        		android:shadowDy="1"
+        		android:shadowRadius="1" />
+        </com.sensetoolbox.six.utils.ColorFrameLayout>
+</com.htc.widget.HtcListItem>

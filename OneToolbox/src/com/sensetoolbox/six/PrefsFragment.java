@@ -47,6 +47,7 @@ import com.htc.preference.HtcCheckBoxPreference;
 import com.htc.preference.HtcListPreference;
 import com.htc.preference.HtcPreference;
 import com.htc.preference.HtcPreference.OnPreferenceChangeListener;
+import com.htc.preference.HtcPreference.OnPreferenceClickListener;
 import com.htc.preference.HtcPreferenceCategory;
 import com.htc.preference.HtcPreferenceFragment;
 import com.htc.preference.HtcPreferenceManager;
@@ -72,6 +73,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+		menu.clear();
 		inflater.inflate(R.menu.menu_mods, menu);
 		menu.getItem(2).setIcon(Helpers.applySenseTheme(getActivity(), menu.getItem(2).getIcon()));
 	}
@@ -262,7 +264,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 						@Override
 						public void run() {
 							try {
-								getApps();
+								getApps(getActivity());
 								getActivity().runOnUiThread(new Runnable(){
 									@Override
 									public void run(){
@@ -296,6 +298,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		HtcListPreference homeAssistActionPreference = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
 		HtcListPreference shakeActionPreference = (HtcListPreference) findPreference("pref_key_prism_shakeaction");
 		HtcListPreference keysLightPreference = (HtcListPreference) findPreference("pref_key_other_keyslight");
+		HtcPreference senseThemesPreference = (HtcPreference) findPreference("pref_key_sense_themes");
 		
 		// Insert new option to controls listprefs
 		CharSequence[] entries = backLongPressActionPreference.getEntries();
@@ -414,6 +417,14 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			@Override
 			public boolean onPreferenceClick(HtcPreference preference) {
 				initScriptHandler(((HtcCheckBoxPreference) preference).isChecked());
+				return true;
+			}
+        });
+        
+        senseThemesPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+			@Override
+			public boolean onPreferenceClick(HtcPreference arg0) {
+				getActivity().startActivity(new Intent(getActivity(), SenseThemes.class));
 				return true;
 			}
         });
@@ -564,14 +575,14 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		return entriesNew;
 	}
 	
-	public void getApps() {
-		PackageManager pm = getActivity().getPackageManager();
+	public static void getApps(Context ctx) {
+		PackageManager pm = ctx.getPackageManager();
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		PrefsFragment.pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
 		Collections.sort(PrefsFragment.pkgAppsList, new ResolveInfo.DisplayNameComparator(pm));
 		for (ResolveInfo inf: PrefsFragment.pkgAppsList) {
-			PrefsFragment.pkgAppsListIcons.add(inf.loadIcon(getActivity().getPackageManager()));
+			PrefsFragment.pkgAppsListIcons.add(inf.loadIcon(pm));
 			if ((inf.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM)
 				PrefsFragment.pkgAppsListSystem.add(true);
 			else
@@ -654,8 +665,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 	
 	@Override
 	public boolean onOptionsItemSelected(MenuItem item) {
-		if (item.getItemId() == R.id.softreboot)
-		{
+		if (item.getItemId() == R.id.softreboot) {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
 			alert.setTitle(R.string.soft_reboot);
 			alert.setView(Helpers.createCenteredText(getActivity(), R.string.hotreboot_explain_prefs));
@@ -800,11 +810,10 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			if (dialog != null) {
 				ActionBar ab = dialog.getActionBar();
 				ActionBarExt actionBarExt = new ActionBarExt(this.getActivity(), ab);
-		        ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
-		        actionBarContainer.setBackUpEnabled(true);
-		        actionBarContainer.setBackgroundResource(R.color.actionbar_color);
+				ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
+				actionBarContainer.setBackUpEnabled(true);
 				
-		        View homeBtn = actionBarContainer.getChildAt(0);
+				View homeBtn = actionBarContainer.getChildAt(0);
 				if (homeBtn != null) {
 					OnClickListener dismissDialogClickListener = new OnClickListener() {
 						@Override
