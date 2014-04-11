@@ -81,6 +81,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_other_keyslight_auto", false))
 			GlobalActions.buttonBacklight();
 		
+		if (pref.getBoolean("themes_active", false))
+			SysUIMods.execHook_Sense6ColorControl();
+		
 		GlobalActions.easterEgg();
 	}
 

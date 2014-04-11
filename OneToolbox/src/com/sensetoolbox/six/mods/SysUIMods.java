@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.animation.ObjectAnimator;
@@ -28,6 +29,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.content.res.Resources.Theme;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.database.ContentObserver;
@@ -48,6 +50,7 @@ import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.text.TextUtils.TruncateAt;
 import android.text.method.SingleLineTransformationMethod;
+import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -79,12 +82,16 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
+import com.htc.gson.Gson;
+import com.htc.gson.reflect.TypeToken;
 import com.htc.widget.HtcCheckBox;
 import com.htc.widget.HtcCompoundButton;
 import com.htc.widget.HtcPopupWindow;
 import com.htc.widget.HtcCompoundButton.OnCheckedChangeListener;
 import com.htc.widget.HtcSeekBar;
 import com.sensetoolbox.six.R;
+import com.sensetoolbox.six.SenseThemes;
+import com.sensetoolbox.six.SenseThemes.PackageTheme;
 import com.sensetoolbox.six.utils.PopupAdapter;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -1538,6 +1545,67 @@ public class SysUIMods {
 					ControlsMods.assistAndSearchPanelOverride(param);
 				}
 			});
-		} catch (Throwable ignore) {}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_Sense6ColorControl() {
+		try {
+			findAndHookMethod("android.view.ContextThemeWrapper", null, "onApplyThemeResource", Theme.class, int.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					int style = (Integer)param.args[1];
+					SparseArray<int[]> styles = SenseThemes.getColors();
+					
+					List<Integer> allStyles = Arrays.asList(new Integer[] {
+						// Theme 1
+						0x02030069, 0x0203012d, 0x0203012e, 0x0203012f, 0x02030130,
+						// Theme 2
+						0x020301c3,0x020301c7, 0x020301cb, 0x020301cf, 0x020301d3,
+						// Theme 3
+						0x020301d7, 0x020301db, 0x020301df, 0x020301e3, 0x020301e7,
+						// Theme 4
+						0x020301eb, 0x020301ef, 0x020301f3, 0x020301f7, 0x020301fb
+					});
+					
+					if (allStyles.contains(style)) {
+						Context ctx = (Context)param.thisObject;
+						Theme theme = (Theme)param.args[0];
+						String pkgName = ctx.getPackageName();
+
+						XposedBridge.log(pkgName + " old style: " + String.valueOf(style));
+						
+						XMain.pref.reload();
+						if (XMain.pref.getBoolean("themes_active", false)) {
+							String tmp = XMain.pref.getString("pkgthm", null);
+							
+							List<PackageTheme> pkgthm;
+							if (tmp != null)
+								pkgthm = new Gson().fromJson(tmp, new TypeToken<ArrayList<PackageTheme>>(){}.getType());
+							else
+								pkgthm = new ArrayList<PackageTheme>();
+							
+							PackageTheme ptOut = null;
+							for (PackageTheme pt: pkgthm) if (pt.getPkg() != null)
+								if (pt.getPkg().equals(pkgName) ||
+								   (pt.getPkg().equals("com.htc.contacts") && (pkgName.equals("com.android.phone") || pkgName.equals("com.htc.htcdialer"))) ||
+								   (pt.getPkg().equals("com.android.settings") && (pkgName.equals("com.htc.home.personalize")))) {
+									ptOut = pt;
+									break;
+								}
+							
+							if (ptOut != null) {
+								XposedBridge.log(pkgName + " new style: " + String.valueOf(styles.keyAt(ptOut.getTheme())));
+								theme.applyStyle(styles.keyAt(ptOut.getTheme()), true);
+								param.setResult(null);
+							}
+						}
+					}
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 }

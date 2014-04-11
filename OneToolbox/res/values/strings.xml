@@ -108,6 +108,23 @@
 	<string name="camera_mods">Camera mods</string>
 	
 	<string name="systemui_mods">Interface mods</string>
+	<string name="sense_themes_title">Sense themes</string>
+    <string name="sense_themes_summ">Change theme colors for every app</string>
+    <string name="sense_themes_apply">Apply</string>
+    <string name="sense_themes_cancel">Cancel</string>
+    <string name="sense_themes_base">Base</string>
+    <string name="sense_themes_theme1">Theme 1</string>
+    <string name="sense_themes_theme2">Theme 2</string>
+    <string name="sense_themes_theme3">Theme 3</string>
+    <string name="sense_themes_theme4">Theme 4</string>
+    <string name="sense_themes_custom">Custom</string>
+    <string name="sense_theme_sep1">Theme</string>
+    <string name="sense_theme_sep2">Actions</string>
+    <string name="sense_theme_remove">Remove</string>
+    <string name="sense_theme_color_header">Header</string>
+    <string name="sense_theme_color_controls">Controls</string>
+    <string name="sense_theme_package_has_profile">This package already has a profile</string>
+    <string name="sense_theme_hint">Enable theme colors override from the action bar above.\n\nSoft reboot will be required only once after you\'ve enabled override.</string>
 	<string name="systemui_statusbar">Status Bar and Notification Drawer</string>
 	<string name="systemui_tsb_title">Transparent status bar</string>
 	<string name="systemui_tsb_summ">Make the status bar transparent.</string>
@@ -373,6 +390,9 @@
 	
 	<string name="apps_disabled">Show disabled only</string>
 	<string name="apps_all">Show all</string>
+	
+	<string name="add_app">Add app</string>
+	<string name="select_app">Select app</string>
 	
 	<string name="about_devs">Developers</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>

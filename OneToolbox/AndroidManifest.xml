@@ -44,6 +44,7 @@
 		</activity>
 		<activity android:theme="@style/Invisible" android:name="com.sensetoolbox.six.DimmedActivity" android:exported="true" android:launchMode="singleInstance" android:excludeFromRecents="true" />
 		<activity android:name="com.sensetoolbox.six.AboutScreen" android:screenOrientation="portrait" />
+		<activity android:name="com.sensetoolbox.six.SenseThemes" />
 		<receiver android:name="com.sensetoolbox.six.PrefsFragment$SetButtonBacklight" android:exported="true">
 			<intent-filter>
 			    <action android:name="com.sensetoolbox.six.UPDATEBACKLIGHT" />

@@ -16,6 +16,10 @@
     <com.htc.preference.HtcPreferenceScreen 
         android:title="@string/systemui_mods"
         android:key="pref_key_sysui">
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_sense_themes"
+            android:title="@string/sense_themes_title"
+            android:summary="@string/sense_themes_summ" />
         <com.htc.preference.HtcPreferenceCategory
         	android:title="@string/systemui_statusbar">
         <com.sensetoolbox.six.utils.SeekBarPreference 

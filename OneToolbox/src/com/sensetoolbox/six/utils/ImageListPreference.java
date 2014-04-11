@@ -23,6 +23,7 @@ public class ImageListPreference extends HtcListPreference {
 
 	public ImageListPreference(Context context, AttributeSet attrs) {
 		super(context, attrs);
+		
 		int namesResId = attrs.getAttributeResourceValue(namespace, "entryImages", -1);
 		String[] imageNames = null;
 		if (namesResId > 0) imageNames = context.getResources().getStringArray(namesResId);
@@ -64,7 +65,11 @@ public class ImageListPreference extends HtcListPreference {
         }
 		
 		public View getView(int position, View view, ViewGroup parent) {
-			View row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
+			View row;
+			if (view != null)
+				row = view;
+			else
+				row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
 			
 			HtcListItem2LineText title = (HtcListItem2LineText)row.findViewById(R.id.list_item);
 			HtcListItemTileImage img = (HtcListItemTileImage)row.findViewById(R.id.list_item_img);

@@ -92,7 +92,11 @@ public class DynamicPreference extends HtcListPreference {
 		}
 
 		public View getView(int position, View convertView, ViewGroup parent) {
-			View row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
+			View row;
+			if (convertView != null)
+				row = convertView;
+			else
+				row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
 
 			HtcListItem2LineText itemTitle = (HtcListItem2LineText) row.findViewById(R.id.list_item);
 			HtcListItemTileImage itemIcon = (HtcListItemTileImage) row.findViewById(R.id.list_item_img);
@@ -103,7 +107,7 @@ public class DynamicPreference extends HtcListPreference {
 			itemIcon.setTileImageDrawable(PrefsFragment.pkgAppsListIcons.get(position));
 			itemIcon.setScaleX(0.65f);
 			itemIcon.setScaleY(0.65f);
-			itemIcon.setTranslationX(mContext.getResources().getDisplayMetrics().density * 5.0f);
+			itemIcon.setTranslationX(mContext.getResources().getDisplayMetrics().density * 10.0f);
 
 			//if (PrefsFragment.pkgAppsListSystem.get(position)) 
 			if (position == index) itemRadio.setChecked(true);

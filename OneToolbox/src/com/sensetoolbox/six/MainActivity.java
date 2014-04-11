@@ -1,6 +1,5 @@
 package com.sensetoolbox.six;
 
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 
 import com.htc.configuration.HtcWrapConfiguration;
@@ -12,12 +11,14 @@ import com.htc.widget.ActionBarText;
 public class MainActivity extends HtcPreferenceActivity {
 
 	//public static boolean isRootAccessGiven = false;
+	private int mThemeId = 0;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
 		// Apply HTC's default theme
-		setTheme(HtcWrapConfiguration.getHtcThemeId(this, 0));		
+		mThemeId = HtcWrapConfiguration.getHtcThemeId(this, 0);
+		setTheme(mThemeId);
 		
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
 		ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
@@ -25,7 +26,6 @@ public class MainActivity extends HtcPreferenceActivity {
 		actionBarText.setPrimaryText(R.string.app_name);
 		actionBarContainer.addCenterView(actionBarText);
 		actionBarContainer.setBackUpEnabled(false);
-		getActionBar().setBackgroundDrawable(new ColorDrawable(getResources().getColor(R.color.actionbar_color)));
 		
 		/*
 		if (RootTools.isAccessGiven()) {
@@ -52,4 +52,10 @@ public class MainActivity extends HtcPreferenceActivity {
 		*/
 		getFragmentManager().beginTransaction().replace(android.R.id.content, new PrefsFragment()).commit();
     }
+	
+	protected void onResume() {
+		super.onResume();
+		int newThemeId = HtcWrapConfiguration.getHtcThemeId(this, 0);
+		if (newThemeId != mThemeId) setTheme(newThemeId);
+	}
 }
