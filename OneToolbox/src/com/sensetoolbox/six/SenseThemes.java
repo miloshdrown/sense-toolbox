@@ -24,11 +24,12 @@ import com.sensetoolbox.six.utils.AppDetailDialog;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,6 +43,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 public class SenseThemes extends Activity {
+	static public List<ApplicationInfo> pkgAppsList = null;
+	static public List<Drawable> pkgAppsListIcons = new ArrayList<Drawable>();
 	static public SparseArray<int[]> colors = null;
 	public static List<PackageTheme> pkgthm = new ArrayList<PackageTheme>();
 	public static SharedPreferences prefs;
@@ -96,7 +99,7 @@ public class SenseThemes extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setTheme(HtcWrapConfiguration.getHtcThemeId(this, 0));		
+		setTheme(HtcWrapConfiguration.getHtcThemeId(this, 0));
 		
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
 		ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
@@ -121,7 +124,7 @@ public class SenseThemes extends Activity {
 				appAddDialog = new AppAddDialog(st);
 				appAddDialog.setTitle(R.string.select_app);
 				
-				if (PrefsFragment.pkgAppsList == null) {
+				if (pkgAppsList == null) {
 					final HtcProgressDialog dialog = new HtcProgressDialog(st);
 					dialog.setMessage(getString(R.string.loading_app_data));
 					dialog.setCancelable(false);
@@ -131,7 +134,7 @@ public class SenseThemes extends Activity {
 						@Override
 						public void run() {
 							try {
-								PrefsFragment.getApps(st);
+								getApps(st);
 								runOnUiThread(new Runnable(){
 									@Override
 									public void run(){
@@ -266,6 +269,13 @@ public class SenseThemes extends Activity {
 		}
 	}
 	
+	public static void getApps(Context ctx) {
+		PackageManager pm = ctx.getPackageManager();
+		pkgAppsList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+		Collections.sort(pkgAppsList, new ApplicationInfo.DisplayNameComparator(pm));
+		for (ApplicationInfo inf: pkgAppsList) pkgAppsListIcons.add(inf.loadIcon(pm));
+	}
+	
 	public class AscComparator implements Comparator<PackageTheme> {
 	    @Override
 	    public int compare(PackageTheme first, PackageTheme second) {
@@ -290,7 +300,6 @@ public class SenseThemes extends Activity {
 	
 	public void savePkgs() {
 		String json = new Gson().toJson(pkgthm);
-		Log.e(null, json);
 		prefs.edit().putString("pkgthm", json).commit();
 	}
 	
@@ -308,6 +317,13 @@ public class SenseThemes extends Activity {
 		ListView appsList = (ListView)findViewById(R.id.appslist);
 		AppsAdapter aa = (AppsAdapter)appsList.getAdapter();
 		aa.updateWith(pkgthm);
+	}
+	
+	public void notifyThemeChanged() {
+		Intent intent = new Intent("com.htc.intent.action.CONFIGURATION_CHANGED");
+        intent.addCategory("com.htc.intent.category.THEMEID");
+        sendBroadcast(intent);
+        android.provider.Settings.Global.putString(this.getContentResolver(), "restart_launcher_on_resume", "true");
 	}
 
 	public static SparseArray<int[]> getColors() {

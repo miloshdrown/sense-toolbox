@@ -1568,14 +1568,14 @@ public class SysUIMods {
 						// Theme 4
 						0x020301eb, 0x020301ef, 0x020301f3, 0x020301f7, 0x020301fb
 					});
+
+					XposedBridge.log(((Context)param.thisObject).getPackageName() + " old style: " + String.valueOf(style));
 					
 					if (allStyles.contains(style)) {
 						Context ctx = (Context)param.thisObject;
 						Theme theme = (Theme)param.args[0];
 						String pkgName = ctx.getPackageName();
 
-						XposedBridge.log(pkgName + " old style: " + String.valueOf(style));
-						
 						XMain.pref.reload();
 						if (XMain.pref.getBoolean("themes_active", false)) {
 							String tmp = XMain.pref.getString("pkgthm", null);
@@ -1588,12 +1588,12 @@ public class SysUIMods {
 							
 							PackageTheme ptOut = null;
 							for (PackageTheme pt: pkgthm) if (pt.getPkg() != null)
-								if (pt.getPkg().equals(pkgName) ||
-								   (pt.getPkg().equals("com.htc.contacts") && (pkgName.equals("com.android.phone") || pkgName.equals("com.htc.htcdialer"))) ||
-								   (pt.getPkg().equals("com.android.settings") && (pkgName.equals("com.htc.sdm") ||pkgName.equals("com.htc.home.personalize") || pkgName.equals("com.htc.widget.notification") || pkgName.equals("com.htc.sense.easyaccessservice")))) {
-									ptOut = pt;
-									break;
-								}
+							if (pt.getPkg().equals(pkgName) ||
+							   (pt.getPkg().equals("com.htc.contacts") && pkgName.equals("com.htc.htcdialer")) ||
+							   (pt.getPkg().equals("com.android.settings") && (pkgName.equals("com.htc.sdm") ||pkgName.equals("com.htc.home.personalize") || pkgName.equals("com.htc.widget.notification") || pkgName.equals("com.htc.sense.easyaccessservice")))) {
+								ptOut = pt;
+								break;
+							}
 							
 							if (ptOut != null) {
 								XposedBridge.log(pkgName + " new style: " + String.valueOf(styles.keyAt(ptOut.getTheme())));

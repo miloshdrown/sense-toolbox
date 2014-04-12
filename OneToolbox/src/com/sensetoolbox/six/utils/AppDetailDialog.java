@@ -92,6 +92,7 @@ public class AppDetailDialog extends HtcAlertDialog {
         		if (pt != null) {
         			pt.setTheme(cs.getSelectedTheme());
         			stContext.savePkgs();
+        			stContext.notifyThemeChanged();
         		}
         	}
         });
@@ -103,6 +104,7 @@ public class AppDetailDialog extends HtcAlertDialog {
         			SenseThemes.pkgthm.remove(pt);
         			stContext.savePkgs();
         			stContext.updateListArray();
+        			stContext.notifyThemeChanged();
         		}
         	}
         });
