@@ -68,7 +68,8 @@ public class PrismMods {
 	static Unhook onclickOption = null;
 	public static int gridSizeVal = 0;
 	private static GestureDetector mDetector;
-	private static GestureDetector mDetectorDock;
+	private static GestureDetector mDetectorHorizontal;
+	private static GestureDetector mDetectorVertical;
 	static HtcAlertDialog dlg = null;
 	
 	public static void execHook_InvisiWidgetSense55(LoadPackageParam lpparam, final int transparency) {
@@ -492,7 +493,7 @@ public class PrismMods {
 		
 		@Override
 		public boolean onDown(MotionEvent e) {
-			return true;			
+			return true;
 		} 
 		
 		@Override
@@ -530,55 +531,54 @@ public class PrismMods {
 		}
 	}
 	
-	static FrameLayout hotSeat = null;
-	static int x_start = 0;
-	static int y_start = 0;
-	
 	public static void execHook_DockSwipe(final LoadPackageParam lpparam) {
-		XposedHelpers.findAndHookMethod("com.htc.launcher.CellLayout", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new XC_MethodHook() {
+		XposedHelpers.findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "dispatchTouchEvent", MotionEvent.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				Context helperContext = ((ViewGroup)param.thisObject).getContext();
+				MotionEvent ev = (MotionEvent)param.args[0];
+				if (ev == null) return;
+
+				FrameLayout hotSeat = (FrameLayout)param.thisObject;
+				Context helperContext = hotSeat.getContext();
 				if (helperContext == null) return;
-				if (mDetectorDock == null) mDetectorDock = new GestureDetector(helperContext, new SwipeListenerDock(param.thisObject));
+				if (mDetectorHorizontal == null) mDetectorHorizontal = new GestureDetector(helperContext, new SwipeListenerHorizontal(hotSeat));
+				mDetectorHorizontal.onTouchEvent(ev);
+			}
+		});
+		
+		XposedHelpers.findAndHookMethod("com.htc.launcher.DragLayer", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				MotionEvent ev = (MotionEvent)param.args[0];
+				if (ev == null) return;
 				
-				boolean m_bIsHotseat = XposedHelpers.getBooleanField(param.thisObject, "m_bIsHotseat");
-				if (m_bIsHotseat) {
-					if (hotSeat == null) {
-						Object hotSeatObj = ((ViewGroup)param.thisObject).getParent();
-						if (hotSeatObj != null) hotSeat = (FrameLayout)hotSeatObj;
-					}
-					
-					MotionEvent ev = (MotionEvent)param.args[0];
-					if (ev == null) return;
-					mDetectorDock.onTouchEvent(ev);
-				}
+				FrameLayout dragLayer = (FrameLayout)param.thisObject;
+				Context helperContext = dragLayer.getContext();
+				if (helperContext == null) return;
+				if (mDetectorVertical == null) mDetectorVertical = new GestureDetector(helperContext, new SwipeListenerVertical(dragLayer));
+				mDetectorVertical.onTouchEvent(ev);
 			}
 		});
 	}
 	
-	// Listener for swipes on dock
-	private static class SwipeListenerDock extends GestureDetector.SimpleOnGestureListener {
+	// Listener for hotizontal swipes on dock
+	private static class SwipeListenerHorizontal extends GestureDetector.SimpleOnGestureListener {
 		// For HTC One
 		private int SWIPE_MIN_DISTANCE_HORIZ = 230;
-		private int SWIPE_MIN_DISTANCE_VERT = 50;
 		private int SWIPE_THRESHOLD_VELOCITY = 100;
 		
 		final Context helperContext;
-		final Object launcher;
 
-		public SwipeListenerDock(Object cellLayout) {
-			launcher = XposedHelpers.getObjectField(cellLayout, "m_launcher");
+		public SwipeListenerHorizontal(Object cellLayout) {
 			helperContext = ((ViewGroup)cellLayout).getContext();
 			float density = helperContext.getResources().getDisplayMetrics().density;
 			SWIPE_MIN_DISTANCE_HORIZ = Math.round(75 * density);
-			SWIPE_MIN_DISTANCE_VERT = Math.round(17 * density);
 			SWIPE_THRESHOLD_VELOCITY = Math.round(33 * density);
 		}
 		
 		@Override
 		public boolean onDown(MotionEvent e) {
-			return true;			
+			return false;
 		} 
 		
 		@Override
@@ -610,13 +610,48 @@ public class PrismMods {
 				}
 			}
 
-			if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE_VERT && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+			return false;
+		}
+	}
+	
+	// Listener for vertical swipes on the bottom of workspace
+	private static class SwipeListenerVertical extends GestureDetector.SimpleOnGestureListener {
+		// For HTC One
+		private int SWIPE_MIN_DISTANCE_VERT = 50;
+		private int SWIPE_THRESHOLD_VELOCITY = 100;
+		
+		//final Context helperContext;
+		final Object launcher;
+		float density;
+		int screenHeight;
+
+		public SwipeListenerVertical(Object cellLayout) {
+			launcher = XposedHelpers.getObjectField(cellLayout, "m_launcher");
+			Context helperContext = ((ViewGroup)cellLayout).getContext();
+			density = helperContext.getResources().getDisplayMetrics().density;
+			screenHeight = helperContext.getResources().getDisplayMetrics().heightPixels;
+			SWIPE_MIN_DISTANCE_VERT = Math.round(10 * density);
+			SWIPE_THRESHOLD_VELOCITY = Math.round(33 * density);
+		}
+		
+		@Override
+		public boolean onDown(MotionEvent e) {
+			return false;
+		} 
+		
+		@Override
+		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
+			if (e1 == null || e2 == null) return false;
+			
+			if (e1.getY() > (screenHeight - density * 95) && e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE_VERT && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 				if (XMain.pref.getBoolean("pref_key_prism_homemenu", false)) {
+					Enum<?> m_state = (Enum<?>)XposedHelpers.getObjectField(launcher, "m_state");
+					if (m_state != null && m_state.ordinal() == 0)
 					createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace"), (Activity)launcher);
 					return true;
-				} else return false;
+				}
 			}
-
+			
 			return false;
 		}
 	}
@@ -868,6 +903,23 @@ public class PrismMods {
 				Activity launcherActivity = (Activity) param.thisObject;
 				SensorManager sensorMgr = (SensorManager) launcherActivity.getSystemService(Context.SENSOR_SERVICE);
 				sensorMgr.unregisterListener((ShakeManager) getAdditionalInstanceField(param.thisObject, shakeMgrKey));
+			}
+		});
+	}
+	
+	public static void execHook_Sense6ColorControlLauncher(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.launcher.util.HtcWrapConfigurationActivity", lpparam.classLoader, "onResume", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Activity launcher = (Activity)param.thisObject;
+				if (launcher != null) {
+					String doRestart = android.provider.Settings.Global.getString(launcher.getContentResolver(), "restart_launcher_on_resume");
+					if (doRestart != null && doRestart.equals("true")) {
+						android.provider.Settings.Global.putString(launcher.getContentResolver(), "restart_launcher_on_resume", "false");
+						XposedHelpers.callStaticMethod(findClass("com.htc.launcher.util.Utilities", lpparam.classLoader), "resetColorTheme");
+						launcher.recreate();
+					}
+				}
 			}
 		});
 	}

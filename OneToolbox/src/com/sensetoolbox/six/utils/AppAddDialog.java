@@ -16,7 +16,6 @@ import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListItemColorIcon;
 import com.htc.widget.HtcListView;
-import com.sensetoolbox.six.PrefsFragment;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.SenseThemes;
 import com.sensetoolbox.six.SenseThemes.PackageTheme;
@@ -42,12 +41,13 @@ public class AppAddDialog extends HtcAlertDialog {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if (view.isEnabled()) {
-					String pkgName = PrefsFragment.pkgAppsList.get(position).activityInfo.applicationInfo.packageName;
+					String pkgName = SenseThemes.pkgAppsList.get(position).packageName;
 					PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);
 	        		if (pt == null) {
 	        			SenseThemes.pkgthm.add(new PackageTheme(pkgName, 0));
 	        			stContext.savePkgs();
 	        			stContext.updateListArray();
+	        			stContext.notifyThemeChanged();
 	        			view.setEnabled(false);
 	        			((ImageArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
 	        		} else {
@@ -73,11 +73,11 @@ public class AppAddDialog extends HtcAlertDialog {
 		}
 		
 		public int getCount() {
-			return PrefsFragment.pkgAppsList.size();
+			return SenseThemes.pkgAppsList.size();
 		}
 		 
 		public CharSequence getItem(int position) {
-			return PrefsFragment.pkgAppsList.get(position).loadLabel(stContext.getPackageManager());
+			return SenseThemes.pkgAppsList.get(position).loadLabel(stContext.getPackageManager());
 		}
 		 
 		public long getItemId(int position) {
@@ -96,11 +96,11 @@ public class AppAddDialog extends HtcAlertDialog {
 			itemTitle.setSecondaryTextVisibility(View.GONE);
 			
 			HtcListItemColorIcon itemIcon = (HtcListItemColorIcon)row.findViewById(R.id.list_item_img);
-			itemIcon.setColorIconImageDrawable(PrefsFragment.pkgAppsListIcons.get(position));
+			itemIcon.setColorIconImageDrawable(SenseThemes.pkgAppsListIcons.get(position));
 			float density = stContext.getResources().getDisplayMetrics().density;
 			itemIcon.setPadding(Math.round(density * 10), Math.round(density * 6), Math.round(density * 15), Math.round(density * 3));
 			
-			if (SenseThemes.arrayHasPkg(PrefsFragment.pkgAppsList.get(position).activityInfo.applicationInfo.packageName) == null)
+			if (SenseThemes.arrayHasPkg(SenseThemes.pkgAppsList.get(position).packageName) == null)
 				row.setEnabled(true);
 			else
 				row.setEnabled(false);

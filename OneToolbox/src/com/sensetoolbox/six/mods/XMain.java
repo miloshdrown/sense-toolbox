@@ -39,6 +39,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		senseVersion = new Version(pref.getString("pref_sense_version", "5.0"));
 		
+		PackagePermissions.init();
+		
 		if(pref.getBoolean("pref_key_cb_beats", false))
 			CleanBeamMods.execHook_BeatsIcon(MODULE_PATH);
 		
@@ -53,10 +55,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		pref_homeassist = Integer.parseInt(pref.getString("pref_key_controls_homeassistaction", "1"));
 		pref_shake = Integer.parseInt(pref.getString("pref_key_prism_shakeaction", "1"));
 		
-		if (pref.getBoolean("pref_key_other_apm", false) || pref.getBoolean("pref_key_prism_homemenu", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1) {
-			PackagePermissions.initHooks();
+		if (pref.getBoolean("pref_key_other_apm", false) || pref.getBoolean("pref_key_prism_homemenu", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1)
 			GlobalActions.setupPWM();
-		}
 		
 		if (pref_backlongpress != 1 || pref_homeassist != 1)
 			ControlsMods.setupPWMKeys();
@@ -276,7 +276,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				PrismMods.execHook_InvisiDrawerCode(lpparam, transparency);
 			}
 			
-			if (pref_swipedown != 1 || pref_swipeup != 1)
+			if(pref_swipedown != 1 || pref_swipeup != 1)
 				PrismMods.execHook_SwipeActions(lpparam);
 			
 			PrismMods.execHook_AppDrawerGridSizes(lpparam);
@@ -284,7 +284,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_gridtinyfont", false))
 				PrismMods.execHook_AppDrawerGridTinyText(lpparam);
 			
-			if (pref_swiperight != 1 || pref_swipeleft != 1 || pref.getBoolean("pref_key_prism_homemenu", false))
+			if(pref_swiperight != 1 || pref_swipeleft != 1 || pref.getBoolean("pref_key_prism_homemenu", false))
 				PrismMods.execHook_DockSwipe(lpparam);
 			
 			if(pref.getBoolean("pref_key_prism_homemenu", false)) {
@@ -301,11 +301,14 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_invisilabels", false))
 				PrismMods.execHook_invisiLabels(lpparam);
 			
-			if (Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false)) //Le KitKat
+			if(Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false)) //Le KitKat
 				PrismMods.fixInvisibarKitKat(lpparam);
 			
 			if(pref_shake != 1)
 				PrismMods.execHook_ShakeAction(lpparam);
+			
+			if(pref.getBoolean("themes_active", false))
+				PrismMods.execHook_Sense6ColorControlLauncher(lpparam);
 
 			//PrismMods.execHook_hotseatToggleBtn(lpparam);
 		}
