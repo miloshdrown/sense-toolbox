@@ -630,7 +630,7 @@ public class PrismMods {
 			Context helperContext = ((ViewGroup)cellLayout).getContext();
 			density = helperContext.getResources().getDisplayMetrics().density;
 			screenHeight = helperContext.getResources().getDisplayMetrics().heightPixels;
-			SWIPE_MIN_DISTANCE_VERT = Math.round(10 * density);
+			SWIPE_MIN_DISTANCE_VERT = Math.round(17 * density);
 			SWIPE_THRESHOLD_VELOCITY = Math.round(33 * density);
 		}
 		

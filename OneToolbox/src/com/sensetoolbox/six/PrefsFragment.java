@@ -31,6 +31,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.PowerManager;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -444,8 +445,8 @@ public class PrefsFragment extends HtcPreferenceFragment {
 					if (lineCnt > 0) return;
 					
 					String level = "20";
-					if (pref_keyslight == 2) level = "5";
-					else if (pref_keyslight == 3) level = "2";
+					if (pref_keyslight == 2) level = "7";
+					else if (pref_keyslight == 3) level = "3";
 					else if (pref_keyslight == 4) level = "0";
 					
 					if (!line.trim().equals(level)) {
@@ -523,7 +524,13 @@ public class PrefsFragment extends HtcPreferenceFragment {
 				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
 					if (thepref > 1) setButtonBacklightTo(context, thepref);
 				} else if (intent.getAction().equals("com.sensetoolbox.six.UPDATEBACKLIGHT")) {
-					boolean forceDisableBacklight = intent.getBooleanExtra("forceDisableBacklight", false);
+					boolean forceDisableBacklight = false;
+					PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+					if (!pm.isScreenOn())
+						forceDisableBacklight = true;
+					else
+						forceDisableBacklight = intent.getBooleanExtra("forceDisableBacklight", false);
+					
 					if (forceDisableBacklight)
 						setButtonBacklightTo(context, 4);
 					else

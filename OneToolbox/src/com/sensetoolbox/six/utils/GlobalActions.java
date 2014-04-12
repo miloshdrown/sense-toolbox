@@ -651,24 +651,8 @@ public class GlobalActions {
 	    }
 	}
 	
-	private static BroadcastReceiver mScrOff = new BroadcastReceiver() {
-		public void onReceive(final Context context, Intent intent) {
-			Intent intent2 = new Intent();
-	        intent2.setAction("com.sensetoolbox.six.UPDATEBACKLIGHT");
-			intent2.putExtra("forceDisableBacklight", true);
-		}
-	};
-	
 	public static void buttonBacklight(){
 		try {
-			findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-					mPWMContext.registerReceiver(mScrOff, new IntentFilter(Intent.ACTION_SCREEN_OFF));
-				}
-			});
-			
 			findAndHookMethod("com.android.server.wm.WindowManagerService", null, "statusBarVisibilityChanged", int.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
