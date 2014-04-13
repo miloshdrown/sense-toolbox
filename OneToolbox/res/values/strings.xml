@@ -329,8 +329,8 @@
 	<string name="various_fastunlock_summ">Unlock device as soon as correct PIN or password are entered. HTC lockscreen only.</string>
 	<string name="various_ytwatermark_title">YouTube channel watermark</string>
 	<string name="various_ytwatermark_summ">Hide channel logo overlay on videos in YouTube app.</string>
-	<string name="various_oldtoasts_title">Jelly Bean styled toasts</string>
-	<string name="various_oldtoasts_summ">Bring back JB toast design on Android 4.4.</string>
+	<string name="various_oldtoasts_title">Sense 6 styled toasts</string>
+	<string name="various_oldtoasts_summ">Make toasts darker with smaller rounded corners radius.</string>
 	<string name="various_securelock_title">Enhanced screen lock</string>
 	<string name="various_securelock_summ">Disable power menu and hardware reset notification while screen lock is active.</string>
 	<string name="various_keyslight_title">Hardware buttons backlight</string>
@@ -349,6 +349,10 @@
 	<string name="persist_recentslongtap_summ">Show popup menu on long press for every app in recents list.</string>
 	<string name="persist_installer_title">Display app version</string>
 	<string name="persist_installer_summ">Add package version to installer title when updating or installing an app.</string>
+	
+	<string name="toolbox">Toolbox settings</string>
+	<string name="toolbox_show_icon_title">Fast access icon</string>
+	<string name="toolbox_show_icon_summ">Show Toolbox icon in Settings.</string>
 	
 	<string name="support">Support</string>
 	<string name="support_s5t_title">Visit Sense 6 Toolbox Post</string>

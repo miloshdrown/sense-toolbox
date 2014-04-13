@@ -18,6 +18,7 @@ import java.util.Set;
 import android.app.ActionBar;
 import android.app.Dialog;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -112,8 +113,6 @@ public class PrefsFragment extends HtcPreferenceFragment {
 			showRestoreInfoDialog();
 		}
 		
-		if (findPreference("pref_key_other_oldtoasts") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_oldtoasts"));
-		
 		if (!Build.DEVICE.equalsIgnoreCase("m7")) {
 			if (findPreference("pref_key_other_keyslight") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_keyslight"));
 			if (findPreference("pref_key_other_keyslight_auto") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_keyslight_auto"));
@@ -192,6 +191,18 @@ public class PrefsFragment extends HtcPreferenceFragment {
 					((HtcListPreferencePlus)toggleSettings).show();
 				} else toggleSettings.setEnabled(false);
 				
+				return true;
+			}
+		};
+		
+		HtcCheckBoxPreference.OnPreferenceChangeListener toggleIcon = new HtcCheckBoxPreference.OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
+				PackageManager pm = getActivity().getPackageManager(); 
+				if ((Boolean)newValue)
+					pm.setComponentEnabledSetting(new ComponentName(getActivity(), GateWay.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+				else
+					pm.setComponentEnabledSetting(new ComponentName(getActivity(), GateWay.class), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 				return true;
 			}
 		};
@@ -300,6 +311,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		HtcListPreference shakeActionPreference = (HtcListPreference) findPreference("pref_key_prism_shakeaction");
 		HtcListPreference keysLightPreference = (HtcListPreference) findPreference("pref_key_other_keyslight");
 		HtcPreference senseThemesPreference = (HtcPreference) findPreference("pref_key_sense_themes");
+		HtcCheckBoxPreference toolboxSettingsPreference = (HtcCheckBoxPreference) findPreference("pref_key_toolbox_icon");
 		
 		// Insert new option to controls listprefs
 		CharSequence[] entries = backLongPressActionPreference.getEntries();
@@ -325,6 +337,7 @@ public class PrefsFragment extends HtcPreferenceFragment {
 		backLongPressActionPreference.setOnPreferenceChangeListener(chooseAction);
 		homeAssistActionPreference.setOnPreferenceChangeListener(chooseAction);
 		shakeActionPreference.setOnPreferenceChangeListener(chooseAction);
+		toolboxSettingsPreference.setOnPreferenceChangeListener(toggleIcon);
 		if (keysLightPreference != null) keysLightPreference.setOnPreferenceChangeListener(applyButtonsLight);
 		
 		HtcPreference launchAppsSwipeDown = findPreference("pref_key_prism_swipedown_app");
