@@ -727,6 +727,16 @@
     </com.htc.preference.HtcPreferenceCategory>
     
     <com.htc.preference.HtcPreferenceCategory
+        android:title="@string/toolbox"
+        android:key="pref_key_toolbox">
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_toolbox_icon"
+            android:summary="@string/toolbox_show_icon_summ"
+            android:title="@string/toolbox_show_icon_title"
+            android:defaultValue="true" />
+    </com.htc.preference.HtcPreferenceCategory>
+        
+    <com.htc.preference.HtcPreferenceCategory
         android:title="@string/support"
         android:key="pref_key_support">
 		<com.htc.preference.HtcPreference

@@ -386,7 +386,7 @@ public class OtherMods{
 			toast.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
 			toast.setTypeface(Typeface.DEFAULT);
 			LinearLayout toastLayout = (LinearLayout)toastView;
-			toastLayout.setBackground(modRes.getDrawable(R.drawable.toast_frame_holo));
+			toastLayout.setBackground(modRes.getDrawable(R.drawable.toast_frame));
 		} catch (Throwable t) {
 			//XposedBridge.log(t);
 		}
