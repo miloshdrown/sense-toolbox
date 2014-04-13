@@ -317,8 +317,8 @@
 	<string name="various_fastunlock_summ">Позволяет разблокировать экран сразу после ввода правильного ПИНа или пароля. Только для HTC локскрина.</string>
 	<string name="various_ytwatermark_title">Логотип канала YouTube</string>
 	<string name="various_ytwatermark_summ">Прячет лого канала при просмотре видео в приложении YouTube.</string>
-	<string name="various_oldtoasts_title">Уведомления в стиле Jelly Bean</string>
-	<string name="various_oldtoasts_summ">Возвращает внешний вид всплывающих уведомлений из JB на Андроиде 4.4.</string>
+	<string name="various_oldtoasts_title">Уведомления в стиле Sense 6</string>
+	<string name="various_oldtoasts_summ">Меняет внешний вид всплывающих уведомлений на более тёмные с менее закруглёнными краями.</string>
 	<string name="various_securelock_title">Улучшенная блокировка</string>
 	<string name="various_securelock_summ">Отключает меню управления питанием и уведомление об аппаратном сбросе во время блокировки.</string>
 	<string name="various_keyslight_title">Подсветка клавиш</string>
