@@ -57,7 +57,6 @@ import de.robv.android.xposed.XC_MethodHook.Unhook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
-import de.robv.android.xposed.XposedHelpers.ClassNotFoundError;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LayoutInflated.LayoutInflatedParam;
@@ -253,64 +252,63 @@ public class PrismMods {
 	}
 	
 	public static void execHook_AppDrawerGridSizes(LoadPackageParam lpparam) {
-		// Override grid size with current value
-		findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "setupGrid", Context.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				int cellX = 3;
-				int cellY = 4;
-				
-				if (gridSizeVal == 0)
-				{
-					cellX = 3;
-					cellY = 4;
-				} else if (gridSizeVal == 1) {
-					cellX = 4;
-					cellY = 5;
-				} else if (gridSizeVal == 2) {
-					cellX = 5;
-					cellY = 5;
-				} else if (gridSizeVal == 3) {
-					cellX = 4;
-					cellY = 6;
-				} else if (gridSizeVal == 4) {
-					cellX = 5;
-					cellY = 6;
-				}
-				
-				XposedHelpers.setIntField(param.thisObject, "m_nCellCountX", cellX);
-				XposedHelpers.setIntField(param.thisObject, "m_nCellCountY", cellY);
-
-				// Calculate item width/height
-				if (gridSizeVal > 0) {
-					Context ctx = (Context)param.args[0];
-					WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
-					Display display = wm.getDefaultDisplay();
-					Point size = new Point();
-					display.getSize(size);
-					XposedHelpers.setIntField(param.thisObject, "m_nItemViewWidth", Math.round(size.x / (cellX + 0.5f)));
-					XposedHelpers.setIntField(param.thisObject, "m_nItemViewHeight", Math.round(size.y / (cellY + 1.5f)));
- 				}
-			}
-		});
-
-		// Change grid size on dialog click
-		final Class<?> OnOptionClickListener = XposedHelpers.findClass("com.htc.launcher.pageview.AllAppsDialogFragment.OnOptionClickListener", lpparam.classLoader);
-		findAndHookMethod("com.htc.launcher.pageview.AllAppsDialogFragment", lpparam.classLoader, "setOnClickSortListener", OnOptionClickListener, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				if (onclickOption != null) onclickOption.unhook();
-				onclickOption = XposedHelpers.findAndHookMethod(param.args[0].getClass(), "onclickOption", int.class, new XC_MethodHook() {
-					@Override
-					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-						gridSizeVal = (Integer)param.args[0];
-					}
-				});
-			}
-		});
-		
-		// Save grid size to Sense launcher preferences
 		try {
+			// Override grid size with current value
+			findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "setupGrid", Context.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					int cellX = 3;
+					int cellY = 4;
+					
+					if (gridSizeVal == 0) {
+						cellX = 3;
+						cellY = 4;
+					} else if (gridSizeVal == 1) {
+						cellX = 4;
+						cellY = 5;
+					} else if (gridSizeVal == 2) {
+						cellX = 5;
+						cellY = 5;
+					} else if (gridSizeVal == 3) {
+						cellX = 4;
+						cellY = 6;
+					} else if (gridSizeVal == 4) {
+						cellX = 5;
+						cellY = 6;
+					}
+					
+					XposedHelpers.callMethod(param.thisObject, "setCellCountX", cellX);
+					XposedHelpers.callMethod(param.thisObject, "setCellCountY", cellY);
+					
+					// Calculate item width/height
+					if (gridSizeVal > 0) {
+						Context ctx = (Context)param.args[0];
+						WindowManager wm = (WindowManager) ctx.getSystemService(Context.WINDOW_SERVICE);
+						Display display = wm.getDefaultDisplay();
+						Point size = new Point();
+						display.getSize(size);
+						XposedHelpers.callMethod(param.thisObject, "setItemViewWidth", Math.round(size.x / (cellX + 0.5f)));
+						XposedHelpers.callMethod(param.thisObject, "setItemViewHeight", Math.round(size.y / (cellY + 1.5f)));
+					}
+				}
+			});
+			
+			// Change grid size on dialog click
+			final Class<?> OnOptionClickListener = XposedHelpers.findClass("com.htc.launcher.pageview.AllAppsDialogFragment.OnOptionClickListener", lpparam.classLoader);
+			findAndHookMethod("com.htc.launcher.pageview.AllAppsDialogFragment", lpparam.classLoader, "setOnClickSortListener", OnOptionClickListener, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					if (onclickOption != null) onclickOption.unhook();
+					onclickOption = XposedHelpers.findAndHookMethod(param.args[0].getClass(), "onclickOption", int.class, new XC_MethodHook() {
+						@Override
+						protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+							gridSizeVal = (Integer)param.args[0];
+						}
+					});
+				}
+			});
+			
+			// Save grid size to Sense launcher preferences
 			findAndHookMethod("com.htc.launcher.pageview.AllAppsOptionsManager", lpparam.classLoader, "saveGridSize", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -319,19 +317,8 @@ public class PrismMods {
 					editor.putInt("grid_size_override", gridSizeVal).commit();
 				}
 			});
-		} catch (ClassNotFoundError e){
-			findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "saveGridOption", Context.class, int.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					Context context = (Context)param.args[0];
-					SharedPreferences.Editor editor = context.getSharedPreferences("launcher.preferences", 0).edit();
-					editor.putInt("grid_size_override", gridSizeVal).commit();
-				}
-			});
-		}
-
-		// Load grid size from Sense launcher preferences
-		try {
+			
+			// 	Load grid size from Sense launcher preferences
 			findAndHookMethod("com.htc.launcher.pageview.AllAppsOptionsManager", lpparam.classLoader, "loadGridSize", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -340,42 +327,35 @@ public class PrismMods {
 					if (prefs.contains("grid_size_override")) gridSizeVal = prefs.getInt("grid_size_override", 0);
 				}
 			});
-		} catch (ClassNotFoundError e){
-			findAndHookMethod("com.htc.launcher.pageview.AllAppsDataManager", lpparam.classLoader, "loadGridOption", Context.class, new XC_MethodHook() {
+			
+			// Select current grid size in dialog
+			findAndHookMethod("com.htc.launcher.pageview.AllAppsDialogFragment", lpparam.classLoader, "newInstance", int.class, int.class, int.class, boolean.class, boolean.class, boolean.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					Context context = (Context)param.args[0];
-					SharedPreferences prefs = context.getSharedPreferences("launcher.preferences", 0);
-					if (prefs.contains("grid_size_override")) gridSizeVal = prefs.getInt("grid_size_override", 0);
+					param.args[2] = gridSizeVal;
 				}
 			});
+			
+			// Layout scale and frame border for editor layout
+			final Class<?> EditLayoutHelper = XposedHelpers.findClass("com.htc.launcher.pageview.AllAppsPagedView.EditLayoutHelper", lpparam.classLoader);
+			XposedBridge.hookAllConstructors(EditLayoutHelper, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.args[2] = 0.95f;
+					param.args[3] = false;
+					// param.args[1] = Color.argb(153, 0, 0, 0);
+					// m_nEditLayoutPageSpacing
+					// param.args[4] = 300;
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
-		
-		// Select current grid size in dialog
-		findAndHookMethod("com.htc.launcher.pageview.AllAppsDialogFragment", lpparam.classLoader, "newInstance", int.class, int.class, int.class, boolean.class, boolean.class, boolean.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				param.args[2] = gridSizeVal;
-			}
-		});
-		
-		// Layout scale and frame border for editor layout
-		final Class<?> EditLayoutHelper = XposedHelpers.findClass("com.htc.launcher.pageview.AllAppsPagedView.EditLayoutHelper", lpparam.classLoader);
-		XposedBridge.hookAllConstructors(EditLayoutHelper, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				param.args[2] = 0.95f;
-				param.args[3] = false;
-				//param.args[1] = Color.argb(153, 0, 0, 0);
-				//m_nEditLayoutPageSpacing
-				//param.args[4] = 300;
-			}
-		});		
 	}
 
 	// Add 5x5, 4x6 and 5x6 grid options to dialog
 	public static void execHook_AppDrawerGridSizesLayout(final InitPackageResourcesParam resparam, String MODULE_PATH) {
-		int apps_grid_option = resparam.res.getIdentifier("apps_grid_option", "array", "com.htc.launcher");
+		int apps_grid_option = resparam.res.getIdentifier("apps_grid_options", "array", "com.htc.launcher");
 		String[] gridSizes = resparam.res.getStringArray(apps_grid_option);
 		
 	    final int n = gridSizes.length;
@@ -404,7 +384,7 @@ public class PrismMods {
 	        
 					if (itemlabel != null) {
 						if (gridSizeVal == 3 || gridSizeVal == 4)
-							itemlabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, 0.73f * itemlabel.getTextSize());
+							itemlabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, 0.9f * itemlabel.getTextSize());
 					}
 				} catch (Throwable t) {
 					XposedBridge.log(t);

@@ -20,7 +20,6 @@ import android.content.pm.PackageInfo;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.text.Editable;
@@ -382,9 +381,9 @@ public class OtherMods{
 	private static void changeToast(View toastView) {
 		try {
 			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-			TextView toast = (TextView)toastView.findViewById(android.R.id.message);
-			toast.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
-			toast.setTypeface(Typeface.DEFAULT);
+			//TextView toast = (TextView)toastView.findViewById(android.R.id.message);
+			//toast.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+			//toast.setTypeface(Typeface.DEFAULT);
 			LinearLayout toastLayout = (LinearLayout)toastView;
 			toastLayout.setBackground(modRes.getDrawable(R.drawable.toast_frame));
 		} catch (Throwable t) {
