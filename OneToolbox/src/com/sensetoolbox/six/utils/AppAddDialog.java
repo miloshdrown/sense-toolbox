@@ -56,7 +56,7 @@ public class AppAddDialog extends HtcAlertDialog {
 				}
 			}
 		});
-        this.setButton(DialogInterface.BUTTON_NEUTRAL, this.getContext().getString(R.string.okay), new DialogInterface.OnClickListener() {
+        this.setButton(DialogInterface.BUTTON_NEUTRAL, this.getContext().getString(R.string.array_recents_menu_close), new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog, int whichButton) {}
         });
         this.setCancelable(true);

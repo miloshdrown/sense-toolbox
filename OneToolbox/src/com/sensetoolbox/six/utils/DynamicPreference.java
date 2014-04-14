@@ -110,7 +110,10 @@ public class DynamicPreference extends HtcListPreference {
 			itemIcon.setTranslationX(mContext.getResources().getDisplayMetrics().density * 10.0f);
 
 			//if (PrefsFragment.pkgAppsListSystem.get(position)) 
-			if (position == index) itemRadio.setChecked(true);
+			if (position == index)
+				itemRadio.setChecked(true);
+			else
+				itemRadio.setChecked(false);
 
 			return row;
 		}

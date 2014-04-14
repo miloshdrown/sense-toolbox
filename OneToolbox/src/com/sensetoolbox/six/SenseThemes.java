@@ -6,7 +6,6 @@ import java.util.Comparator;
 import java.util.List;
 
 import com.htc.app.HtcProgressDialog;
-import com.htc.configuration.HtcWrapConfiguration;
 import com.htc.gson.Gson;
 import com.htc.gson.reflect.TypeToken;
 import com.htc.widget.ActionBarContainer;
@@ -21,6 +20,7 @@ import com.htc.widget.HtcToggleButtonLight;
 import com.htc.widget.HtcToggleButtonLight.OnCheckedChangeListener;
 import com.sensetoolbox.six.utils.AppAddDialog;
 import com.sensetoolbox.six.utils.AppDetailDialog;
+import com.sensetoolbox.six.utils.Helpers;
 
 import android.app.Activity;
 import android.content.Context;
@@ -53,6 +53,7 @@ public class SenseThemes extends Activity {
 	ActionBarItemView menuAdd;
 	HtcListView appsList;
 	TextView themeHint;
+	int mThemeId = 0;
 	
 	public static PackageTheme arrayHasPkg(String pkgName) {
 		if (pkgName == null) return null;
@@ -99,7 +100,10 @@ public class SenseThemes extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		setTheme(HtcWrapConfiguration.getHtcThemeId(this, 0));
+		// Apply Settings theme
+		mThemeId = Helpers.getCurrentTheme(this);
+		setTheme(mThemeId);
+		Helpers.setTranslucentStatusBar(this);
 		
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
 		ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
@@ -210,6 +214,12 @@ public class SenseThemes extends Activity {
 		}
 	}
 	
+	protected void onResume() {
+		super.onResume();
+		int newThemeId = Helpers.getCurrentTheme(this);
+		if (newThemeId != mThemeId) recreate();
+	}
+	
 	private class AppsAdapter extends BaseAdapter {
 		List<PackageTheme> pkgthm;
 		private LayoutInflater mInflater;
@@ -273,7 +283,14 @@ public class SenseThemes extends Activity {
 		PackageManager pm = ctx.getPackageManager();
 		pkgAppsList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 		Collections.sort(pkgAppsList, new ApplicationInfo.DisplayNameComparator(pm));
-		for (ApplicationInfo inf: pkgAppsList) pkgAppsListIcons.add(inf.loadIcon(pm));
+		ApplicationInfo toolbox = null;
+		for (ApplicationInfo inf: pkgAppsList) {
+			if (inf.packageName.equals("com.sensetoolbox.six"))
+				toolbox = inf;
+			else
+				pkgAppsListIcons.add(inf.loadIcon(pm));
+		}
+		if (toolbox != null) pkgAppsList.remove(toolbox);
 	}
 	
 	public class AscComparator implements Comparator<PackageTheme> {
@@ -324,6 +341,8 @@ public class SenseThemes extends Activity {
         intent.addCategory("com.htc.intent.category.THEMEID");
         sendBroadcast(intent);
         android.provider.Settings.Global.putString(this.getContentResolver(), "restart_launcher_on_resume", "true");
+        int newThemeId = Helpers.getCurrentTheme(this);
+		if (newThemeId != mThemeId) recreate();
 	}
 
 	public static SparseArray<int[]> getColors() {

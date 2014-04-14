@@ -6,6 +6,9 @@
     <issue id="ExportedService">
         <ignore path="AndroidManifest.xml" />
     </issue>
+    <issue id="HardcodedText">
+        <ignore path="res/layout/prefs_systemui.xml" />
+    </issue>
     <issue id="UseCompoundDrawables">
         <ignore path="res/layout/about_screen.xml" />
     </issue>

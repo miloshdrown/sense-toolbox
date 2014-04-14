@@ -1,0 +1,104 @@
+<com.htc.preference.HtcPreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six">
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_sense_themes"
+            android:title="@string/sense_themes_title"
+            android:summary="@string/sense_themes_summ" />
+        <com.htc.preference.HtcPreferenceCategory
+        	android:title="@string/systemui_statusbar">
+        <com.sensetoolbox.six.utils.SeekBarPreference 
+            android:key="pref_key_sysui_invisibar_new"
+    		android:title="@string/systemui_tsb_title"
+    		android:summary="@string/systemui_tsb_summ"
+    		android:dialogMessage="@string/transparency_msg"
+    		android:defaultValue="100"
+    		android:text=" %"
+    		android:max="100"
+    		toolbox:enableKey="pref_key_sysui_invisibar_enable"/>
+        <com.sensetoolbox.six.utils.SeekBarPreference 
+            android:key="pref_key_sysui_invisinotify"
+    		android:title="@string/systemui_tnb_title"
+    		android:summary="@string/systemui_tnb_summ"
+    		android:dialogMessage="@string/transparency_msg"
+    		android:defaultValue="100"
+    		android:text=" %"
+    		android:max="100"
+    		toolbox:enableKey="pref_key_sysui_invisinotify_enable"/>
+		<com.htc.preference.HtcListPreference
+            android:key="pref_key_sysui_clockstyle"
+            android:summary="@string/systemui_clockstyle_summ"
+            android:title="@string/systemui_clockstyle_title"
+            android:entries="@array/clock_style"
+            android:entryValues="@array/clock_style_val"
+            android:defaultValue="1"/>
+		<com.htc.preference.HtcListPreference
+            android:key="pref_key_sysui_headerclick"
+            android:summary="@string/systemui_statusheaderclick_summ"
+            android:title="@string/systemui_statusheaderclick_title"
+            android:entries="@array/header_click_action"
+            android:entryValues="@array/header_click_action_val"
+            android:defaultValue="1"/>
+		<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_ampmremove"
+            android:summary="@string/systemui_ampmremove_summ"
+            android:title="@string/systemui_ampmremove_title"
+            android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_brightslide"
+            android:summary="@string/systemui_brightslide_summ"
+            android:title="@string/systemui_brightslide_title"
+            android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_dataratestatus"
+            android:summary="@string/systemui_dataratestatus_summ"
+            android:title="@string/systemui_dataratestatus_title"
+            android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_alarmnotify"
+            android:summary="@string/systemui_alarmnotify_summ"
+            android:title="@string/systemui_alarmnotify_title"
+            android:defaultValue="false" />
+        </com.htc.preference.HtcPreferenceCategory>
+        
+        <com.htc.preference.HtcPreferenceCategory
+        	android:title="@string/systemui_eqs">
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_minorqs"
+            android:summary="@string/systemui_heqs_summ"
+            android:title="@string/systemui_heqs_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_minorqs_notext"
+            android:summary="@string/systemui_heqs_notext_summ"
+            android:title="@string/systemui_heqs_notext_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_noeqs"
+            android:summary="@string/systemui_noeqs_summ"
+            android:title="@string/systemui_noeqs_title"
+            android:defaultValue="false" />
+        </com.htc.preference.HtcPreferenceCategory>
+        
+        <com.htc.preference.HtcPreferenceCategory
+        	android:title="@string/systemui_recent">
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_aosprecent"
+            android:summary="@string/systemui_aosp_summ"
+            android:title="@string/systemui_aosp_title"
+            android:defaultValue="false"
+            android:disableDependentsState="true" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_recentappsclear"
+            android:summary="@string/systemui_recentclear_summ"
+            android:title="@string/systemui_recentclear_title"
+            android:defaultValue="false"
+            android:dependency="pref_key_sysui_aosprecent" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_recentram"
+            android:summary="@string/systemui_recentram_summ"
+            android:title="@string/systemui_recentram_title"
+            android:defaultValue="false"
+            android:dependency="pref_key_sysui_aosprecent" />
+        </com.htc.preference.HtcPreferenceCategory>
+</com.htc.preference.HtcPreferenceScreen>

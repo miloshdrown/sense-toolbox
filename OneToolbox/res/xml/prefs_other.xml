@@ -1,0 +1,109 @@
+<com.htc.preference.HtcPreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six">
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_apm"
+            android:summary="@string/various_apm_summ"
+            android:title="@string/various_apm_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_keepscreenon"
+            android:summary="@string/various_scron_summ"
+            android:title="@string/various_scron_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_appdetails"
+            android:summary="@string/various_apps_summ"
+            android:title="@string/various_apps_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_mtpnotif"
+            android:summary="@string/various_mtpnotif_summ"
+            android:title="@string/various_mtpnotif_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_fastunlock"
+            android:summary="@string/various_fastunlock_summ"
+            android:title="@string/various_fastunlock_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_ytwatermark"
+            android:summary="@string/various_ytwatermark_summ"
+            android:title="@string/various_ytwatermark_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_oldtoasts"
+            android:summary="@string/various_oldtoasts_summ"
+            android:title="@string/various_oldtoasts_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_securelock"
+            android:summary="@string/various_securelock_summ"
+            android:title="@string/various_securelock_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_other_keyslight"
+            android:summary="@string/various_keyslight_summ"
+            android:title="@string/various_keyslight_title"
+            android:entries="@array/keys_light"
+            android:entryValues="@array/keys_light_val"
+            android:defaultValue="1"/>
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_keyslight_auto"
+            android:summary="@string/various_keyslight_auto_summ"
+            android:title="@string/various_keyslight_auto_title"
+            android:defaultValue="false" />
+        
+        <com.htc.preference.HtcPreferenceCategory
+            android:title="@string/various_mods_calls" >
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_other_largephoto"
+            android:summary="@string/various_largephoto_summ"
+            android:title="@string/various_largephoto_title"
+            android:entries="@array/large_photo"
+            android:entryValues="@array/large_photo_val"
+            android:defaultValue="1"/>
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_rejectedcall"
+            android:summary="@string/various_rejectedcall_summ"
+            android:title="@string/various_rejectedcall_title"
+            android:defaultValue="false" />
+        </com.htc.preference.HtcPreferenceCategory>
+            
+        <com.htc.preference.HtcPreferenceCategory
+            android:title="@string/various_mods_volume" >
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_volsound"
+            android:summary="@string/various_volsnd_summ"
+            android:title="@string/various_volsnd_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_volsafe"
+            android:summary="@string/various_volsafe_summ"
+            android:title="@string/various_volsafe_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_movevol"
+            android:summary="@string/various_movevol_summ"
+            android:title="@string/various_movevol_title"
+            android:defaultValue="false" />
+		</com.htc.preference.HtcPreferenceCategory>
+		
+        <com.htc.preference.HtcPreferenceCategory
+            android:title="@string/various_mods_screenanim" >
+            <com.htc.preference.HtcListPreference
+                android:key="pref_key_other_screenon"
+                android:summary="@string/various_screenon_summ"
+                android:title="@string/various_screenon_title"
+                android:entries="@array/various_screenonanim"
+                android:entryValues="@array/various_screenonanim_val"
+                android:defaultValue="0" />
+            <com.htc.preference.HtcListPreference
+                android:key="pref_key_other_screenoff"
+                android:summary="@string/various_screenoff_summ"
+                android:title="@string/various_screenoff_title"
+                android:entries="@array/various_screenoffanim"
+                android:entryValues="@array/various_screenoffanim_val"
+                android:defaultValue="0" />
+        </com.htc.preference.HtcPreferenceCategory>
+</com.htc.preference.HtcPreferenceScreen>

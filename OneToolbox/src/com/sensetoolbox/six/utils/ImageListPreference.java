@@ -88,7 +88,10 @@ public class ImageListPreference extends HtcListPreference {
 			}			
 			HtcListItemRadioButton radio = (HtcListItemRadioButton)row.findViewById(R.id.list_item_radio);
 			
-			if (position == index) radio.setChecked(true);
+			if (position == index)
+				radio.setChecked(true);
+			else
+				radio.setChecked(false);
 			return row;
 		}
 	}

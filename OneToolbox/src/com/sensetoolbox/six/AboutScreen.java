@@ -11,19 +11,21 @@ import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.htc.configuration.HtcWrapConfiguration;
 import com.htc.widget.ActionBarContainer;
 import com.htc.widget.ActionBarExt;
 import com.htc.widget.ActionBarText;
 import com.sensetoolbox.six.utils.Helpers;
 
 public class AboutScreen extends Activity {
+	int mThemeId = 0;
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		// Apply HTC's default theme
-		setTheme(HtcWrapConfiguration.getHtcThemeId(this, 0));
+		// Apply Settings theme
+		mThemeId = Helpers.getCurrentTheme(this);
+		setTheme(mThemeId);
+		Helpers.setTranslucentStatusBar(this);
 		
 		setContentView(R.layout.about_screen);
 		
@@ -86,11 +88,16 @@ public class AboutScreen extends Activity {
 			ImageView logo = (ImageView)findViewById(R.id.imageView1);
 			logo.setLongClickable(true);
 			logo.setOnLongClickListener(olcl);
-			
 			logo.setImageDrawable(Helpers.applySenseTheme(this, logo.getDrawable()));
 		} catch (NameNotFoundException e) {
 			//Shouldn't happen...
 			e.printStackTrace();
 		}
+	}
+	
+	protected void onResume() {
+		super.onResume();
+		int newThemeId = Helpers.getCurrentTheme(this);
+		if (newThemeId != mThemeId) recreate();
 	}
 }
