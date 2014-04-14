@@ -905,7 +905,7 @@ public class SysUIMods {
 	private static GestureDetector mDetector;
 	static boolean killedEmAll = false;
 	
-	// Exterminate! © Daleks
+	// Exterminate! - Daleks
 	private static void terminateAll(int animType) throws InvocationTargetException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
 		terminateAll(animType, null);
 	}
