@@ -149,6 +149,13 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	        
 	        ColorPreference colorChanger = (ColorPreference) findPreference("pref_key_colorfilter");
 			colorChanger.applyThemes();
+			
+			if (Helpers.isM8()) {
+				HtcCheckBoxPreference beats = (HtcCheckBoxPreference) findPreference("pref_key_cb_beats");
+				beats.setTitle(beats.getTitle().toString().replace("Beats", "Boomsound"));
+				beats.setSummary(beats.getSummary().toString().replace("Beats", "Boomsound"));
+				beats.setIcon(R.drawable.stat_sys_boomsound);
+			}
 	    }
 	}
 	

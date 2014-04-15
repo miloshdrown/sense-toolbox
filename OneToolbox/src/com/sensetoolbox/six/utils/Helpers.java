@@ -29,6 +29,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.os.Build;
 import android.os.Environment;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -216,5 +217,9 @@ public class Helpers {
 			alert.show();
 			return false;
 		}
+	}
+	
+	public static boolean isM8() {
+		return Build.DEVICE.equals("htc_m8");
 	}
 }

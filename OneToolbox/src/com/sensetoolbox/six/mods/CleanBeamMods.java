@@ -15,6 +15,7 @@ import android.widget.LinearLayout;
 
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
+import com.sensetoolbox.six.utils.Helpers;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
@@ -178,19 +179,28 @@ public class CleanBeamMods{
 
 	public static void execHook_BeatsIcon(String MODULE_PATH) {
 		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, null);
-		XResources.setSystemWideReplacement("com.htc.framework", "drawable", "stat_notify_beats_red", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_notify_beats_red);
-				//applyTheme(..., (Integer.parseInt(XMain.pref.getString("pref_key_colortheme", "1")) == 5)?false:true);
-			}	
-		});
-		XResources.setSystemWideReplacement("com.htc.framework", "drawable", "stat_sys_beats", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return modRes.getDrawable(R.drawable.stat_sys_beats);
-			}	
-		});
+		if (!Helpers.isM8()) {
+			XResources.setSystemWideReplacement("com.htc.framework", "drawable", "stat_notify_beats_red", new XResources.DrawableLoader(){
+				@Override
+				public Drawable newDrawable(XResources res, int id)	throws Throwable {
+					return modRes.getDrawable(R.drawable.stat_notify_beats_red);
+					//applyTheme(..., (Integer.parseInt(XMain.pref.getString("pref_key_colortheme", "1")) == 5)?false:true);
+				}	
+			});
+			XResources.setSystemWideReplacement("com.htc.framework", "drawable", "stat_sys_beats", new XResources.DrawableLoader(){
+				@Override
+				public Drawable newDrawable(XResources res, int id)	throws Throwable {
+					return modRes.getDrawable(R.drawable.stat_sys_beats);
+				}	
+			});
+		} else {
+			XResources.setSystemWideReplacement("com.htc.framework", "drawable", "stat_sys_boomsound", new XResources.DrawableLoader(){
+				@Override
+				public Drawable newDrawable(XResources res, int id)	throws Throwable {
+					return applyTheme(modRes.getDrawable(R.drawable.stat_sys_boomsound));
+				}	
+			});
+		}
 	}
 
 	public static void execHook_AlarmIcon(InitPackageResourcesParam resparam, String MODULE_PATH) {
