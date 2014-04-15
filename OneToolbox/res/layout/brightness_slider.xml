@@ -3,10 +3,10 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
-    android:paddingBottom="5dp"
+    android:paddingBottom="3dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingTop="5dp" >
+    android:paddingTop="6dp" >
     
 	<com.htc.widget.HtcCheckBox
 	    android:id="@+id/autoCheckBox"
@@ -17,6 +17,7 @@
 	    android:layout_width="wrap_content"
 	    android:layout_height="wrap_content"
 	    android:layout_gravity="center_vertical"
+	    android:layout_marginBottom="0.5dp"
 	    android:id="@+id/autoText"
 	    android:text="@string/systemui_brightslide_auto" />
 
@@ -24,6 +25,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
+        android:layout_gravity="center_vertical"
         android:orientation="horizontal" >
         
 	    <com.htc.widget.HtcSeekBar
