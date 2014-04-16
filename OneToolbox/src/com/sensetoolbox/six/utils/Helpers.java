@@ -18,6 +18,7 @@ import com.sensetoolbox.six.MainActivity;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.SenseThemes;
 import com.sensetoolbox.six.SenseThemes.PackageTheme;
+import com.sensetoolbox.six.mods.XMain;
 
 import android.app.Activity;
 import android.content.Context;
@@ -44,7 +45,6 @@ public class Helpers {
 	static Document doc;
 	static Element eQS;
 	static List<PackageTheme> cached_pkgthm = null;
-	// static String cached_str = null;
 
 	public static boolean isXposedInstalled(Context ctx) {
 		PackageManager pm = ctx.getPackageManager();
@@ -111,6 +111,27 @@ public class Helpers {
 			return SenseThemes.getColors().keyAt(ptOut.getTheme());
 		else
 			return HtcWrapConfiguration.getHtcThemeId(context, 0);
+	}
+	
+	public static PackageTheme getThemeForPackageFromXposed(String pkgName) {
+		XMain.pref.reload();
+		if (XMain.pref.getBoolean("themes_active", false)) {			
+			String tmp = XMain.pref.getString("pkgthm", null);
+			
+			List<PackageTheme> pkgthm;
+			if (tmp != null)
+				pkgthm = new Gson().fromJson(tmp, new TypeToken<ArrayList<PackageTheme>>(){}.getType());
+			else
+				pkgthm = new ArrayList<PackageTheme>();
+			
+			for (PackageTheme pt: pkgthm) if (pt.getPkg() != null)
+				if (pt.getPkg().equals(pkgName) ||
+						(pt.getPkg().equals("com.htc.contacts") && pkgName.equals("com.htc.htcdialer")) ||
+						(pt.getPkg().equals("com.android.settings") && (pkgName.equals("com.htc.sdm") ||pkgName.equals("com.htc.home.personalize") || pkgName.equals("com.htc.widget.notification") || pkgName.equals("com.htc.sense.easyaccessservice")))) {
+					return pt;
+				}
+		}
+		return null;
 	}
 	
 	public static BitmapDrawable applySenseTheme(Context context, Drawable img) {

@@ -51,13 +51,16 @@ public class MainActivity extends HtcPreferenceActivity {
 		});
 		
 		if (txt == null) {
+			fadeOutSub.setStartOffset(100);
+			fadeOut.setStartOffset(100);
+			fadeIn.setStartOffset(100);
 			actionBarTextSub.startAnimation(fadeOutSub);
 			actionBarBackBtn.startAnimation(fadeOut);
 			actionBarTextMain.setVisibility(View.VISIBLE);
 			actionBarTextMain.startAnimation(fadeIn);
 		} else {
-			fadeOutMain.setStartOffset(120);
-			fadeIn.setStartOffset(120);
+			fadeOutMain.setStartOffset(180);
+			fadeIn.setStartOffset(180);
 			actionBarTextSub.setPrimaryText(txt);
 			actionBarTextMain.startAnimation(fadeOutMain);
 			actionBarTextSub.setVisibility(View.VISIBLE);

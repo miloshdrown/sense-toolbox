@@ -58,7 +58,11 @@ public class AppDetailDialog extends HtcAlertDialog {
 		PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);
 		int selectedTheme = 0;
 		if (pt != null) selectedTheme = pt.getTheme();
-		final ColorSelect cs = new ColorSelect(themeColorsLayout.getContext(), selectedTheme);
+		final ColorSelect cs;
+		if (pkgName.equals("com.htc.launcher"))
+			cs = new ColorSelect(themeColorsLayout.getContext(), selectedTheme, true);
+		else
+			cs = new ColorSelect(themeColorsLayout.getContext(), selectedTheme);
 		cs.setLayoutParams(lllpcs);
 		
 		themeColorsLayout.addView(cs);

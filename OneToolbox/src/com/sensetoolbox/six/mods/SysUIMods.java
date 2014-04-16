@@ -82,8 +82,6 @@ import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-import com.htc.gson.Gson;
-import com.htc.gson.reflect.TypeToken;
 import com.htc.widget.HtcCheckBox;
 import com.htc.widget.HtcCompoundButton;
 import com.htc.widget.HtcPopupWindow;
@@ -92,6 +90,7 @@ import com.htc.widget.HtcSeekBar;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.SenseThemes;
 import com.sensetoolbox.six.SenseThemes.PackageTheme;
+import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.PopupAdapter;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -1556,7 +1555,7 @@ public class SysUIMods {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					int style = (Integer)param.args[1];
-					SparseArray<int[]> styles = SenseThemes.getColors();
+					SparseArray<Object[]> styles = SenseThemes.getColors();
 					
 					List<Integer> allStyles = Arrays.asList(new Integer[] {
 						// Theme 1
@@ -1569,37 +1568,14 @@ public class SysUIMods {
 						0x020301eb, 0x020301ef, 0x020301f3, 0x020301f7, 0x020301fb
 					});
 
-					XposedBridge.log(((Context)param.thisObject).getPackageName() + " old style: " + String.valueOf(style));
-					
 					if (allStyles.contains(style)) {
 						Context ctx = (Context)param.thisObject;
 						Theme theme = (Theme)param.args[0];
 						String pkgName = ctx.getPackageName();
-
-						XMain.pref.reload();
-						if (XMain.pref.getBoolean("themes_active", false)) {
-							String tmp = XMain.pref.getString("pkgthm", null);
-							
-							List<PackageTheme> pkgthm;
-							if (tmp != null)
-								pkgthm = new Gson().fromJson(tmp, new TypeToken<ArrayList<PackageTheme>>(){}.getType());
-							else
-								pkgthm = new ArrayList<PackageTheme>();
-							
-							PackageTheme ptOut = null;
-							for (PackageTheme pt: pkgthm) if (pt.getPkg() != null)
-							if (pt.getPkg().equals(pkgName) ||
-							   (pt.getPkg().equals("com.htc.contacts") && pkgName.equals("com.htc.htcdialer")) ||
-							   (pt.getPkg().equals("com.android.settings") && (pkgName.equals("com.htc.sdm") ||pkgName.equals("com.htc.home.personalize") || pkgName.equals("com.htc.widget.notification") || pkgName.equals("com.htc.sense.easyaccessservice")))) {
-								ptOut = pt;
-								break;
-							}
-							
-							if (ptOut != null) {
-								XposedBridge.log(pkgName + " new style: " + String.valueOf(styles.keyAt(ptOut.getTheme())));
-								theme.applyStyle(styles.keyAt(ptOut.getTheme()), true);
-								param.setResult(null);
-							}
+						PackageTheme pt = Helpers.getThemeForPackageFromXposed(pkgName);
+						if (pt != null) {
+							theme.applyStyle(styles.keyAt(pt.getTheme()), true);
+							param.setResult(null);
 						}
 					}
 				}

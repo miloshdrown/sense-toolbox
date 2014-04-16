@@ -25,14 +25,18 @@ public class ColorSelect extends HtcListView {
 	private int selected = 0;
 	
 	public ColorSelect(Context ctx) {
-		this(ctx, 0);
+		this(ctx, 0, false);
+	}
+	
+	public ColorSelect(Context ctx, int selectedTheme) {
+		this(ctx, selectedTheme, false);
 	}
 		
-	public ColorSelect(Context ctx, int selectedTheme) {
+	public ColorSelect(Context ctx, int selectedTheme, boolean isBF) {
 		super(ctx);
 		selected = selectedTheme;
 		final ColorSelect cs = this;
-		setAdapter(new ColorArrayAdapter(ctx, SenseThemes.getColors(), selected));
+		setAdapter(new ColorArrayAdapter(ctx, SenseThemes.getColors(), selected, isBF));
 		this.setOverScrollMode(ListView.OVER_SCROLL_NEVER);
 		this.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -50,22 +54,24 @@ public class ColorSelect extends HtcListView {
 	
 	private class ColorArrayAdapter extends BaseAdapter {
 		
-		final SparseArray<int[]> items;
+		final SparseArray<Object[]> items;
 		private LayoutInflater mInflater;
 		Context mContext = null;
+		boolean isBlinkfeed = false;
 
-		public ColorArrayAdapter(Context context, SparseArray<int[]> colors, int i) {
+		public ColorArrayAdapter(Context context, SparseArray<Object[]> colors, int i, boolean isBF) {
 			mContext = context;
 			items = colors;
 			selected = i;
 			mInflater = LayoutInflater.from(context);
+			isBlinkfeed = isBF;
 		}
 		
 		public int getCount() {
 			return items.size();
 		}
 		 
-		public int[] getItem(int position) {
+		public Object[] getItem(int position) {
 			return items.get(items.keyAt(position));
 		}
 		 
@@ -75,8 +81,8 @@ public class ColorSelect extends HtcListView {
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View row;
-			if (convertView != null)
-				row = convertView;
+			if (isBlinkfeed)
+				row = mInflater.inflate(R.layout.htc_list_item_colors_with_bf, parent, false);
 			else
 				row = mInflater.inflate(R.layout.htc_list_item_colors, parent, false);
 
@@ -86,8 +92,9 @@ public class ColorSelect extends HtcListView {
 			borderColor.getPaint().setStyle(Style.STROKE);
 			borderColor.getPaint().setStrokeWidth(2);
 			
-			int item0 = getItem(position)[0];
-			int item1 = getItem(position)[1];
+			int item0 = (Integer)getItem(position)[0];
+			int item1 = (Integer)getItem(position)[1];
+			int item2 = (Integer)getItem(position)[3];
 			
 			ColorFrameLayout colorHeader = (ColorFrameLayout)row.findViewById(R.id.header_color);
 			layers[0] = new ColorDrawable(item0);
@@ -108,17 +115,36 @@ public class ColorSelect extends HtcListView {
 				colorHeaderTitle.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_light));
 				
 			TextView controlsHeaderTitle = (TextView)row.findViewById(R.id.controls_color_title);
-			if (item1 == 0x252525)
+			if (item1 == 0xff252525)
 				controlsHeaderTitle.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_dark));
 			else
 				controlsHeaderTitle.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_light));
 			
+			if (isBlinkfeed) {
+				ColorFrameLayout colorBlinkfeed = (ColorFrameLayout)row.findViewById(R.id.blinkfeed_color);
+				layers[0] = new ColorDrawable(item2);
+				layers[1] = borderColor;
+				LayerDrawable compositeBlinkfeed = new LayerDrawable(layers);
+				colorBlinkfeed.setBackground(compositeBlinkfeed);
+				
+				TextView blinkfeedHeaderTitle = (TextView)row.findViewById(R.id.blinkfeed_color_title);
+				if (item2 <= 0xff4b4b4b)
+					blinkfeedHeaderTitle.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_dark));
+				else
+					blinkfeedHeaderTitle.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_light));
+				
+				if (position == selected)
+					colorBlinkfeed.setTag(new boolean[] { true, isBlinkfeed });
+				else
+					colorBlinkfeed.setTag(new boolean[] { false, isBlinkfeed });
+			}
+			
 			if (position == selected) {
-				colorHeader.setTag(true);
-				colorControls.setTag(true);
+				colorHeader.setTag(new boolean[] { true, isBlinkfeed });
+				colorControls.setTag(new boolean[] { true, isBlinkfeed });
 			} else {
-				colorHeader.setTag(false);
-				colorControls.setTag(false);
+				colorHeader.setTag(new boolean[] { false, isBlinkfeed });
+				colorControls.setTag(new boolean[] { false, isBlinkfeed });
 			}
 			
 			return row;

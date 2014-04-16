@@ -21,11 +21,13 @@ import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
+import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.provider.Settings;
+import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -48,7 +50,10 @@ import android.widget.TextView;
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcPopupWindow;
 import com.sensetoolbox.six.R;
+import com.sensetoolbox.six.SenseThemes;
+import com.sensetoolbox.six.SenseThemes.PackageTheme;
 import com.sensetoolbox.six.utils.GlobalActions;
+import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.PopupAdapter;
 import com.sensetoolbox.six.utils.ShakeManager;
 
@@ -341,11 +346,19 @@ public class PrismMods {
 			XposedBridge.hookAllConstructors(EditLayoutHelper, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					param.args[2] = 0.95f;
-					param.args[3] = false;
+					param.args[2] = 0.85f;
+					param.args[3] = true;
 					// param.args[1] = Color.argb(153, 0, 0, 0);
 					// m_nEditLayoutPageSpacing
 					// param.args[4] = 300;
+				}
+			});
+			
+			// Make rearrange arrows transparent 
+			findAndHookMethod("com.htc.launcher.bar.AllAppsDropTargetBar", lpparam.classLoader, "setup", "com.htc.launcher.Launcher", "com.htc.launcher.DragController", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					((LinearLayout)param.thisObject).setBackgroundColor(Color.TRANSPARENT);
 				}
 			});
 		} catch (Throwable t) {
@@ -888,17 +901,16 @@ public class PrismMods {
 	}
 	
 	public static void execHook_Sense6ColorControlLauncher(final LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.launcher.util.HtcWrapConfigurationActivity", lpparam.classLoader, "onResume", new XC_MethodHook() {
+		findAndHookMethod("com.htc.lib1.cc.util.HtcCommonUtil", lpparam.classLoader, "getHtcThemeId", Context.class, int.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				Activity launcher = (Activity)param.thisObject;
-				if (launcher != null) {
-					String doRestart = android.provider.Settings.Global.getString(launcher.getContentResolver(), "restart_launcher_on_resume");
-					if (doRestart != null && doRestart.equals("true")) {
-						android.provider.Settings.Global.putString(launcher.getContentResolver(), "restart_launcher_on_resume", "false");
-						XposedHelpers.callStaticMethod(findClass("com.htc.launcher.util.Utilities", lpparam.classLoader), "resetColorTheme");
-						launcher.recreate();
-					}
+				SparseArray<Object[]> styles = SenseThemes.getColors();
+				PackageTheme pt = Helpers.getThemeForPackageFromXposed("com.htc.launcher");
+				if (pt != null) {
+					Context ctx = (Context)param.args[0];
+					String htc_theme = (String)styles.valueAt(pt.getTheme())[2];
+					int htc_theme_id = ctx.getResources().getIdentifier(htc_theme, "style", "com.htc.launcher");
+					if (htc_theme_id != 0) param.setResult(htc_theme_id);
 				}
 			}
 		});
