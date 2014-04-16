@@ -286,8 +286,8 @@
 	<string name="various_fastunlock_summ">"Odblokuj urządzenie od razu gdy poprawny numer PIN  lub hasło zostanie wprowadzony. Tylko ekran blokady HTC."</string>
 	<string name="various_ytwatermark_title">Znak wodny kanału YouTube</string>
 	<string name="various_ytwatermark_summ">Ukryj logo kanału nakładki wideo w aplikacji YouTube.</string>
-	<string name="various_oldtoasts_title">Styl tła powiadomień z Jelly Bean</string>
-	<string name="various_oldtoasts_summ">Przywróć sześcienny styl tła powiadomień.</string>
+	<string name="various_oldtoasts_title">Styl powiadomień Sense 6</string>
+	<string name="various_oldtoasts_summ">"Dodaj ciemniejsze okna powiadomień  z mniej zaokrąglonymi rogami."</string>
 	
 	<string name="persistent_mods">Zawsze aktywne mody</string>
 	<string name="persist_adgrid_title">Rozmiar siatki szuflady aplikacji</string>
@@ -477,4 +477,29 @@
     <string name="open_menu">Otwórz menu</string>
 	<string name="open_recents">Pokaż nowe aplikacje</string>
 	
+	<string name="sense_themes_title">Motywy Sense</string>
+    <string name="sense_themes_summ">Zmień kolor motywu dla każdej aplikacji</string>
+    <string name="sense_themes_apply">Zastosuj</string>
+    <string name="sense_themes_cancel">Anuluj</string>
+    <string name="sense_themes_base">Baza</string>
+    <string name="sense_themes_theme1">Motyw 1</string>
+    <string name="sense_themes_theme2">Motyw 2</string>
+    <string name="sense_themes_theme3">Motyw 3</string>
+    <string name="sense_themes_theme4">Motyw 4</string>
+    <string name="sense_themes_custom">Niestandardowy</string>
+    <string name="sense_theme_sep1">Motyw</string>
+    <string name="sense_theme_sep2">Akcje</string>
+    <string name="sense_theme_remove">Usuń</string>
+    <string name="sense_theme_color_header">Nagłówek</string>
+    <string name="sense_theme_color_controls">Kontrola</string>
+    <string name="sense_theme_color_bf">BlinkFeed</string>
+    <string name="sense_theme_package_has_profile">Ten pakiet posiada już profil</string>
+    <string name="toolbox">Ustawienia Toolbox</string>
+	<string name="toolbox_show_icon_title">Ikony szybkiego dostępu</string>
+	<string name="toolbox_show_icon_summ">Pokaż ikonę Toolbox w Ustawieniach.</string>
+	
+	<string name="add_app">Dodaj aplikację</string>
+	<string name="select_app">Wybierz aplikację</string>
+	
+	<string name="sense_theme_hint">Włącz zmianę koloru motywu na pasku akcji powyżej..↵\n↵\nMiękki restart jest wymagany jedynie raz po ręcznym włączeniu.</string>
 	</resources>
