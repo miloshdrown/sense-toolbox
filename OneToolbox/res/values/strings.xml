@@ -356,8 +356,8 @@
 	<string name="toolbox_show_icon_summ">Show Toolbox icon in Settings.</string>
 	
 	<string name="support">Support</string>
-	<string name="support_s5t_title">Visit Sense 6 Toolbox Post</string>
-	<string name="support_s5t_summ">Find infos and changelog for the app here.</string>
+	<string name="support_s6t_title">Visit Sense 6 Toolbox Post</string>
+	<string name="support_s6t_summ">Find infos and changelog for the app here.</string>
 	<string name="support_blog_title">Visit ARHD Blog</string>
 	<string name="support_blog_summ">Get the latest news and updates for your favorite ROM here.</string>
 	
@@ -404,7 +404,7 @@
 	<string name="about_thanks">Thanks</string>
 	<string name="about_sense">Sense 6</string>
 	<string name="about_toolbox">Toolbox</string>
-	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nDunc001 and LeSScro - for their APM icons\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
+	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\nAcogu - for Sense 6 Toolbox logo and main app icon\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nDunc001 and LeSScro - for their APM icons\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
 	<string name="about_l10n">Translation</string>
 	<string name="about_l10n_data_left">Croatian\nDutch\nItalian\nPolish\nSpanish\nFrench</string>
 	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>

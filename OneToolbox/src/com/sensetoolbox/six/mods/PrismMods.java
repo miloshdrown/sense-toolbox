@@ -871,7 +871,7 @@ public class PrismMods {
 	
 	public static void execHook_ShakeAction(final LoadPackageParam lpparam)
 	{
-		final String shakeMgrKey = "S5T_SHAKE_MGR";
+		final String shakeMgrKey = "S6T_SHAKE_MGR";
 		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onResume", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {

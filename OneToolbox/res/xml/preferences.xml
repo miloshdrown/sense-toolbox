@@ -55,8 +55,8 @@
         android:title="@string/support"
         android:key="pref_key_support">
 		<com.htc.preference.HtcPreference
-            android:title="@string/support_s5t_title"
-            android:summary="@string/support_s5t_summ" >
+            android:title="@string/support_s6t_title"
+            android:summary="@string/support_s6t_summ" >
 			<intent android:action="android.intent.action.VIEW"
             android:data="http://forum.xda-developers.com/showpost.php?p=44650768&#038;postcount=2" />
 		</com.htc.preference.HtcPreference>

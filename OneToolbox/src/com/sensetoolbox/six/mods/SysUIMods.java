@@ -361,7 +361,7 @@ public class SysUIMods {
 					
 				}else
 				{
-					XposedBridge.log("[S5T] Center Clock Error: One or more layouts or views not found");
+					XposedBridge.log("[S6T] Center Clock Error: One or more layouts or views not found");
 				}
 			}
 		});

@@ -217,7 +217,7 @@ public class ControlsMods {
 										isPowerLongPressed = true;
 										
 										if (mWakeLock == null)
-										mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S5T PowerFlash");
+										mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T PowerFlash");
 											
 										if (mFlashlightLevel == 0) {
 											mFlashlightLevel = 127;

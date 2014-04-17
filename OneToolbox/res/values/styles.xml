@@ -1,12 +1,8 @@
 <resources xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <style name="AppTheme">
+    <style name="AppTheme" parent="@android:style/Theme.Holo.Light">
         <item name="android:actionBarSize">@dimen/sense_actionbar_height</item>
         <item name="android:textColor">@android:color/secondary_text_light</item>
-    </style>
-    
-    <style name="ActivityTheme">
-    	<item name="android:windowBackground">@android:color/transparent</item>
     </style>
     
 	<style name="Invisible" parent="@android:style/Theme.Dialog">
