@@ -43,7 +43,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
 import de.robv.android.xposed.XC_MethodHook;
-import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -224,48 +223,44 @@ public class OtherMods{
         }
 	}
 	
-	private static void applyFastUnlock(final LoadPackageParam lpparam, final MethodHookParam param, final String className) {
-		final Object mLockPatternUtils = getObjectField(param.thisObject, "mLockPatternUtils");
-		final AutoCompleteTextView mPasswordEntry = (AutoCompleteTextView) getObjectField(param.thisObject, "mPasswordEntry");
-		if (mLockPatternUtils != null && mPasswordEntry != null)
-		{
-			mPasswordEntry.removeTextChangedListener((TextWatcher) getObjectField(param.thisObject, "mTextChangeListener"));
-			mPasswordEntry.addTextChangedListener(new TextWatcher() {
-				@Override
-				public void onTextChanged(CharSequence s, int start, int before, int count) {}
-				@Override
-				public void beforeTextChanged(CharSequence s, int start, int count,	int after) {}
-				
-				@Override
-				public void afterTextChanged(Editable s) {
-					if (mPasswordEntry != null) {
-						if (mPasswordEntry.getText().length() > 3) //No need to check PINs shorter that 4
-						{
-							Boolean isPinCorrect = (Boolean) callMethod(mLockPatternUtils, "checkPassword", mPasswordEntry.getText().toString());
-							if (isPinCorrect) try {
-								Method onEditorAction = XposedHelpers.findMethodExact(className, lpparam.classLoader, "onEditorAction", TextView.class, int.class, KeyEvent.class);
-								onEditorAction.invoke(param.thisObject, null, 0, null);
+	public static void execHook_fastUnlock(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.lockscreen.unlockscreen.HtcKeyInputUnlockView", lpparam.classLoader, "initView", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				final Object mLockPatternUtils = getObjectField(param.thisObject, "mLockPatternUtils");
+				final AutoCompleteTextView mPasswordEntry = (AutoCompleteTextView)getObjectField(param.thisObject, "mPasswordEntry");
+				if (mLockPatternUtils != null && mPasswordEntry != null) {
+					mPasswordEntry.removeTextChangedListener((TextWatcher)param.thisObject);
+					mPasswordEntry.addTextChangedListener(new TextWatcher() {
+						@Override
+						public void onTextChanged(CharSequence s, int start, int before, int count) {}
+						@Override
+						public void beforeTextChanged(CharSequence s, int start, int count,	int after) {}
+						
+						@Override
+						public void afterTextChanged(Editable s) {
+							if (mPasswordEntry != null) try {
+								if (mPasswordEntry.getText().length() > 3) {
+									Boolean isPinCorrect = (Boolean)callMethod(mLockPatternUtils, "checkPassword", mPasswordEntry.getText().toString());
+									if (isPinCorrect) {
+										Method onEditorAction = XposedHelpers.findMethodExact("com.htc.lockscreen.unlockscreen.HtcKeyInputUnlockView", lpparam.classLoader, "onEditorAction", TextView.class, int.class, KeyEvent.class);
+										onEditorAction.invoke(param.thisObject, null, 0, null);
+									}
+								}
+								if (!TextUtils.isEmpty(mPasswordEntry.getText())) {
+									XposedHelpers.setObjectField(param.thisObject, "mErrorMessage", "");
+									XposedHelpers.callMethod(param.thisObject, "updateHint");
+									if (!mPasswordEntry.isEnabled()) mPasswordEntry.setText("");
+								}
+								Object mCallback = getObjectField(param.thisObject, "mCallback");
+								if (mCallback != null) callMethod(mCallback, "userActivity", 0L);
 							} catch (Throwable t) {
 								XposedBridge.log(t);
 							}
 						}
-						if (!mPasswordEntry.isEnabled() && !TextUtils.isEmpty(mPasswordEntry.getText()))
-							mPasswordEntry.setText("");
-						Object mCallback = getObjectField(param.thisObject, "mCallback");
-						if (mCallback != null)
-							callMethod(mCallback, "userActivity", 0L);
-					}
+					});
 				}
-			});
-		}
-	}
-	
-	public static void execHook_fastUnlock(final LoadPackageParam lpparam)
-	{
-		findAndHookMethod("com.htc.lockscreen.unlockscreen.HtcKeyInputUnlockView", lpparam.classLoader, "initView", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				applyFastUnlock(lpparam, param, "com.htc.lockscreen.unlockscreen.HtcKeyInputUnlockView");
+				
 			}
 		});
 	}
