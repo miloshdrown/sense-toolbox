@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <resources>
     <string name="menu_save">Lưu</string>
     <string name="app_name">Sense 5 Toolbox Việt hóa</string>
@@ -99,7 +99,7 @@ Bạn có thể thêm nó trở lại thông qua menu trên đầu trang."</stri
     <string name="eqs_timeout">Timeout</string>
     <string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
     <string name="eqs_apn">APN</string>
-    <string name="dummy" />
+    <string name="dummy"/>
     <string name="transparency_msg">0 = trong suốt, 100 = đục</string>
     <string name="transparency_enable">Kích hoạt trong suốt</string>
     <string name="launch_app">Khởi động ứng dụng</string>
@@ -192,7 +192,7 @@ Bạn có thể thêm nó trở lại thông qua menu trên đầu trang."</stri
     <string name="cleanbeam_sunbeam_summ">Cài đặt thêm Live Wallpaper.</string>
     <string name="cleanbeam_mods_credits_head">Credits</string>
     <string name="cleanbeam_post_title">Xem bài của CleanBeam</string>
-    <string name="cleanbeam_post_summ">"Xem bản cũ và những thay đổi ở đây. Hãy nhấn nút 'Cảm ơn'!"</string>
+    <string name="cleanbeam_post_summ">Xem bản cũ và những thay đổi ở đây. Hãy nhấn nút \'Cảm ơn\'.</string>
     <string name="cleanbeam_hd2o_title">HD2Owner</string>
     <string name="cleanbeam_hd2o_summ">Để có thêm bộ biểu tượng pin.</string>
     <string name="sense_mods">Sense Mods</string>
@@ -242,7 +242,7 @@ Bạn có thể thêm nó trở lại thông qua menu trên đầu trang."</stri
     <string name="loading_app_data">Đang tải ứng dụng…</string>
     <string name="locked_warning">Please unlock launcher first!</string>
     <string name="message_mods">Tùy chọn SMS và MMS</string>
-    <string name="message_smsmms_title">Vô hiệu hóa chuyển đổi SMS -> MMS</string>
+    <string name="message_smsmms_title">Vô hiệu hóa chuyển đổi SMS -&gt; MMS</string>
     <string name="message_smsmms_summ">Chọn để vô hiệu hóa bặt buộc chuyển đổi SMS thành MMS nếu qúa số ký tự mạng di động áp dụng.</string>
     <string name="message_smswake_title">Đánh thức trên tin nhắn SMS</string>
     <string name="message_smswake_summ">Bật màn hình, nếu bạn nhận được tin nhắn.</string>
@@ -266,7 +266,7 @@ Bạn có thể thêm nó trở lại thông qua menu trên đầu trang."</stri
     <string name="controls_powerflash_title">Mở nhanh đèn Led</string>
     <string name="controls_powerflash_summ">Nhấn giữ nút nguần trong khi màn hình tắt để bật tắt đèn Led.</string>
     <string name="controls_swapvolume_title">Hoán đổi nút volume trong chế độ màn hình ngang</string>
-    <string name="controls_swapvolume_summ">Đổi volume up -> down trong chế độ màn hình nằm ngang.</string>
+    <string name="controls_swapvolume_summ">Đổi volume up -&gt; down trong chế độ màn hình nằm ngang.</string>
     <string name="controls_mods_volume">Nút Volume</string>
     <string name="controls_vol_up_cam_title">Hành động cho Volum Up</string>
     <string name="controls_vol_up_cam_summ">Hành động cho Volume Up trong camera.</string>
@@ -278,7 +278,7 @@ Bạn có thể thêm nó trở lại thông qua menu trên đầu trang."</stri
     <string name="controls_vol_down_media_summ">Hành động cho nhấn giữ Volume Down khi màn hình đang tắt.</string>
     <string name="kill_foreground">Tắt hẳn ứng dụng đang chạy</string>
     <string name="kill_foreground_warn">Bạn đang cố gắng để tiêu diệt bộ khởi chạy!</string>
-    <string name="kill_foreground_yes">Tôi biết!</string>
+    <string name="kill_foreground_yes">Tôi biết</string>
     <string name="kill_foreground_no">Bỏ qua!</string>
     <string name="open_menu">Open menu</string>
     <string name="open_recents">Show recent apps</string>
@@ -294,7 +294,7 @@ Nếu bạn có sẵn, không nên chọn mục này."</string>
     <string name="various_scron_title">"Kích hoạt 'Keep screen on'"</string>
     <string name="various_scron_summ">"Hiện tùy chọn 'Keep screen on' Trong cài đặt hiển thị và tùy chọn nhà phát triển."</string>
     <string name="various_apps_title">Hiển thị chi tiết ứng dụng bổ sung</string>
-    <string name="various_apps_summ">"Thêm các mục mới vào Settings > Ứng dụng:
+    <string name="various_apps_summ">"Thêm các mục mới vào Settings &gt; Ứng dụng:
 - Nút để mở ứng dụng
 - Tên và đường dẫn của file apk
 - Đường dẫn dât
