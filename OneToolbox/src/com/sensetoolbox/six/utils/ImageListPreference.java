@@ -65,8 +65,7 @@ public class ImageListPreference extends HtcListPreference {
         }
 		
 		public View getView(int position, View view, ViewGroup parent) {
-			View row;
-			row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
+			View row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
 			
 			HtcListItem2LineText title = (HtcListItem2LineText)row.findViewById(R.id.list_item);
 			HtcListItemTileImage img = (HtcListItemTileImage)row.findViewById(R.id.list_item_img);
@@ -82,7 +81,7 @@ public class ImageListPreference extends HtcListPreference {
 				}
 				img.setScaleX(0.55f);
 				img.setScaleY(0.55f);
-			} else img.setTileImageResource(0);
+			}
 			HtcListItemRadioButton radio = (HtcListItemRadioButton)row.findViewById(R.id.list_item_radio);
 			
 			if (position == index)
