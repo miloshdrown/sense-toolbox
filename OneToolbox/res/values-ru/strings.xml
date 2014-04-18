@@ -389,10 +389,6 @@
 	<string name="array_cam_actions_zoom_in">Приблизить</string>
 	<string name="array_cam_actions_zoom_out">Отдалить</string>
 	<string name="array_cam_actions_nothing">Без изменений</string>
-	<string name="array_batt_icon_percentage">hd2o Sense 5 с процентами</string>
-	<string name="array_batt_icon_circle">Круг с процентами</string>
-	<string name="array_batt_icon_kitkat">KitKat</string>
-	<string name="array_batt_icon_kitkat_p">KitKat с процентами</string>
 	<string name="array_batt_icon_none">Скрыть иконку</string>
 	<string name="array_wifi_icon_style1">Стиль 1</string>
 	<string name="array_wifi_icon_style2">Стиль 2</string>
@@ -461,7 +457,4 @@
 	<string name="cleanbeam_mods_credits_head">Благодарности</string>
 	<string name="cleanbeam_hd2o_title">HD2Owner</string>
 	<string name="cleanbeam_hd2o_summ">За дополнительные наборы иконок батареи.</string>
-	
-	<string name="array_batt_icon_white">hd2o белая</string>
-	<string name="array_batt_icon_white_percent">hd2o белая с процентами</string>
-	</resources>
+</resources>

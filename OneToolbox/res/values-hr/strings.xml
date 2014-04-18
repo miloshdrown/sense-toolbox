@@ -356,10 +356,6 @@
 	<string name="array_cam_actions_zoom_in">Zumirati</string>
 	<string name="array_cam_actions_zoom_out">Odzumirati</string>
 	<string name="array_cam_actions_nothing">Bez promjene</string>
-	<string name="array_batt_icon_percentage">hd20 Sense 5 postotak</string>
-	<string name="array_batt_icon_circle">Krug sa postotkom</string>
-	<string name="array_batt_icon_kitkat">KitKat</string>
-	<string name="array_batt_icon_kitkat_p">KitKat sa postotkom</string>
 	<string name="array_batt_icon_none">Bez ikone</string>
 	<string name="array_wifi_icon_style1">Stil 1</string>
 	<string name="array_wifi_icon_style2">Stil 2</string>
@@ -403,7 +399,7 @@
 	<string name="array_media_next">Iduća pjesma</string>
 	<string name="array_media_prev">Prethodna pjesma</string>
 	
-<string name="cpu_mhz">MHz</string>
+	<string name="cpu_mhz">MHz</string>
     
     <string name="systemui_alarmnotify_title">Prikaži slijedeći alarm</string>
 	<string name="systemui_alarmnotify_summ">Prikaži slijedeće vreme alarma umesto imena mreže.</string>
@@ -431,13 +427,11 @@
 	<string name="array_header_click_clock">Otvori aplikaciju Sat</string>
 	<string name="array_header_click_sysinfo">Prikaži/sakrij CPU i RAM informacije, otvori aplikaciju Sat pritiskom na tretnutno vrijeme.</string>
 	
-<string name="cleanbeam_hd2o_title">HD2Owner</string>
+	<string name="cleanbeam_hd2o_title">HD2Owner</string>
 	<string name="module_not_active">Sense 6 Toolbox nije aktivan! Otvorite Xposed Installer, aktivirajte modul i ponovno pokrenite uređaj.</string>
     <string name="cleanbeam_mods_credits_head">Zasluge</string>
 	<string name="cleanbeam_hd2o_summ">Za dodatni set ikona baterije.</string>
 	
-	<string name="array_batt_icon_white">hd2o bijelo</string>
-	<string name="array_batt_icon_white_percent">hd2o bijelo postotak</string>
 	<string name="array_recents_menu_playstore">Play Store</string>
 	<string name="backup_restore">Management postavki</string>
     <string name="backup_restore_choose">Odaberite željenu rutinu</string>

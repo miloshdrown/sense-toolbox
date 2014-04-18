@@ -66,10 +66,7 @@ public class ImageListPreference extends HtcListPreference {
 		
 		public View getView(int position, View view, ViewGroup parent) {
 			View row;
-			if (view != null)
-				row = view;
-			else
-				row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
+			row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
 			
 			HtcListItem2LineText title = (HtcListItem2LineText)row.findViewById(R.id.list_item);
 			HtcListItemTileImage img = (HtcListItemTileImage)row.findViewById(R.id.list_item_img);

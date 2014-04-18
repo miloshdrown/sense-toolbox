@@ -395,12 +395,6 @@
 	<string name="array_cam_actions_zoom_in">Zoom in</string>
 	<string name="array_cam_actions_zoom_out">Zoom out</string>
 	<string name="array_cam_actions_nothing">No change</string>
-	<string name="array_batt_icon_percentage">hd2o Sense 5 percent</string>
-	<string name="array_batt_icon_white">hd2o white</string>
-	<string name="array_batt_icon_white_percent">hd2o white percent</string>
-	<string name="array_batt_icon_circle">Circle with percentage</string>
-	<string name="array_batt_icon_kitkat">KitKat</string>
-	<string name="array_batt_icon_kitkat_p">KitKat with percentage</string>
 	<string name="array_batt_icon_none">No icon</string>
 	<string name="array_wifi_icon_style1">Style 1</string>
 	<string name="array_wifi_icon_style2">Style 2</string>

@@ -357,10 +357,6 @@
 	<string name="array_cam_actions_zoom_in">Inzoomen</string>
 	<string name="array_cam_actions_zoom_out">Uitzoomen</string>
 	<string name="array_cam_actions_nothing">Geen wijziging</string>
-	<string name="array_batt_icon_percentage">hd2o Sense 5 procent</string>
-	<string name="array_batt_icon_circle">Cirkel met percentage</string>
-	<string name="array_batt_icon_kitkat">KitKat</string>
-	<string name="array_batt_icon_kitkat_p">KitKat met percentage</string>
 	<string name="array_batt_icon_none">Geen icoon</string>
 	<string name="array_wifi_icon_style1">Stijl 1</string>
 	<string name="array_wifi_icon_style2">Stijl 2</string>
@@ -404,7 +400,7 @@
 	<string name="array_media_next">Volgend nummer</string>
 	<string name="array_media_prev">Vorig nummer</string>
 	
-<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
 	
 	<string name="cpu_mhz">MHz</string>
     
@@ -432,13 +428,11 @@
 	<string name="array_header_click_clock">Open Klok app</string>
 	<string name="array_header_click_sysinfo">Laat zien/verberg CPU en RAM info, open Klok app door te drukken op actuele tijd.</string>
 	
-<string name="module_not_active">Sense 6 Toolbox module is niet actief! Open Xposed Installer, activeer de module en herstart het toestel.</string>
+	<string name="module_not_active">Sense 6 Toolbox module is niet actief! Open Xposed Installer, activeer de module en herstart het toestel.</string>
     <string name="cleanbeam_hd2o_title">HD2Owner</string>
 	<string name="cleanbeam_mods_credits_head">Credits</string>
 	<string name="cleanbeam_hd2o_summ">Voor additionele batterij-icoon sets.</string>
 	
-	<string name="array_batt_icon_white">hd2o wit</string>
-	<string name="array_batt_icon_white_percent">hd2o wit procent</string>
 	<string name="various_securelock_title">Verbeterde schermvergrendeling</string>
 	<string name="various_securelock_summ">Powermenu en hardware reset melding uitschakelen indien de schermvergrendeling actief is.</string>
 	
@@ -452,7 +446,7 @@
 	<string name="array_keyslight_extradim">Extra dimmen</string>
 	<string name="array_keyslight_alwaysoff">Altijd uit</string>
 	
-<string name="various_keyslight_auto_title">Dynamische achtergrondverlichting</string>
+	<string name="various_keyslight_auto_title">Dynamische achtergrondverlichting</string>
 	<string name="various_keyslight_auto_summ">Schakel knopverlichting uit bij applicaties met volledig scherm.</string>
 	
 	<string name="no_currents">Beheer voor achtergrondverlichting van de knoppen niet gevonden. Wellicht is deze aanpassing op uw toestel niet mogelijk.</string>
