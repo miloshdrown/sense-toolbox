@@ -76,11 +76,11 @@ public class PrismMods {
 	private static GestureDetector mDetectorVertical;
 	static HtcAlertDialog dlg = null;
 	
-	public static void execHook_InvisiWidgetSense55(LoadPackageParam lpparam, final int transparency) {
-		findAndHookMethod("com.htc.launcher.LauncherAppWidgetHostView", lpparam.classLoader, "onHierarchyViewAdded", View.class, View.class, new XC_MethodHook() {
+	public static void execHook_InvisiWidget(LoadPackageParam lpparam, final int transparency) {
+		XC_MethodHook hook = new XC_MethodHook() {
 			@Override
 			public void afterHookedMethod(MethodHookParam param) throws Throwable {
-				ViewGroup widgetView = (ViewGroup) param.args[1];
+				ViewGroup widgetView = param.args.length == 2 ? (ViewGroup) param.args[1] : (ViewGroup) param.args[0];
 				Resources viewRes = widgetView.getResources();
 				int bgId = viewRes.getIdentifier("background_panel", "id", "com.htc.widget.weatherclock");
 				if(bgId != 0)
@@ -89,7 +89,9 @@ public class PrismMods {
 					bg.getBackground().setAlpha(transparency);
 				}
 			}
-		});
+		};
+		findAndHookMethod("com.htc.launcher.LauncherAppWidgetHostView", lpparam.classLoader, "onHierarchyViewAdded", View.class, View.class, hook);
+		findAndHookMethod("com.htc.launcher.LauncherAppWidgetHostView", lpparam.classLoader, "onHierarchyViewUpdated", View.class, hook);
 	}
 
 	public static void execHook_PreserveWallpaper(LoadPackageParam lpparam) {
