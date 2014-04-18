@@ -76,28 +76,6 @@
 	<string name="close_forever">Close dialog forever!</string>
 	
 	<string name="sunbeam_installed">SunBeam has been installed. Make sure you soft reboot to apply the changes. Remember that you need to reinstall SunBeam after every ROM flash.</string>
-	<string name="eqs_user_card">User Card</string>
-	<string name="eqs_brightness">Brightness</string>
-	<string name="eqs_settings">Settings</string>
-	<string name="eqs_wifi">WiFi</string>
-	<string name="eqs_bluetooth">Bluetooth</string>
-	<string name="eqs_airplane">Airplane</string>
-	<string name="eqs_power_save">Power Save</string>
-	<string name="eqs_rotation">Rotation</string>
-	<string name="eqs_mobile_data">Mobile Data</string>
-	<string name="eqs_sound_profile">Sound Profile</string>
-	<string name="eqs_wifi_hotspot">WiFi Hotspot</string>
-	<string name="eqs_screenshot">Screenshot</string>
-	<string name="eqs_gps">GPS</string>
-	<string name="eqs_roaming">Roaming</string>
-	<string name="eqs_media_output">Media Output</string>
-	<string name="eqs_auto_sync">Auto Sync</string>
-	<string name="eqs_roaming_setting">Roaming Setting</string>
-	<string name="eqs_music_channel">Music Channel</string>
-	<string name="eqs_ringtone">Ringtone</string>
-	<string name="eqs_timeout">Timeout</string>
-	<string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
-	<string name="eqs_apn">APN</string>
 	<string name="dummy"></string>
 	
 	<string name="transparency_msg">0 = transparent, 100 = opaque</string>

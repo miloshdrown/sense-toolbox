@@ -236,7 +236,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				OtherMods.execHook_MTPNotif(lpparam);
 		}
 		
-		if(pkg.equals("com.android.mms"))
+		if(pkg.equals("com.htc.sense.mms"))
 		{
 			if(pref.getBoolean("pref_key_other_smscreenon", false))
 				MessagingMods.execHook_smsscreenon(lpparam);
