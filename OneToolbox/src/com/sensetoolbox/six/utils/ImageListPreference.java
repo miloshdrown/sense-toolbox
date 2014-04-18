@@ -82,7 +82,7 @@ public class ImageListPreference extends HtcListPreference {
 				}
 				img.setScaleX(0.55f);
 				img.setScaleY(0.55f);
-			}			
+			} else img.setTileImageResource(0);
 			HtcListItemRadioButton radio = (HtcListItemRadioButton)row.findViewById(R.id.list_item_radio);
 			
 			if (position == index)

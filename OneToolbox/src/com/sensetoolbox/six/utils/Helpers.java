@@ -45,6 +45,7 @@ public class Helpers {
 	static Document doc;
 	static Element eQS;
 	static List<PackageTheme> cached_pkgthm = null;
+	static String cached_str;
 
 	public static boolean isXposedInstalled(Context ctx) {
 		PackageManager pm = ctx.getPackageManager();
@@ -93,12 +94,13 @@ public class Helpers {
 	
 	public static int getCurrentTheme(Context context) {
 		String current_str = context.getSharedPreferences("one_toolbox_prefs", 1).getString("pkgthm", "");
-		if (cached_pkgthm == null) {
+		if (cached_pkgthm == null || !current_str.equals(cached_str)) {
 			if (current_str != null && !current_str.equals(""))
 				cached_pkgthm = new Gson().fromJson(current_str, new TypeToken<ArrayList<PackageTheme>>(){}.getType());
 			else
 				cached_pkgthm = new ArrayList<PackageTheme>();
-		}		
+			cached_str = current_str;
+		}
 		
 		PackageTheme ptOut = null;
 		for (PackageTheme pt: cached_pkgthm) if (pt.getPkg() != null)
