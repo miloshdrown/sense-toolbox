@@ -358,12 +358,6 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="array_cam_actions_zoom_in">Zoom +</string>
     <string name="array_cam_actions_zoom_out">Zoom -</string>
     <string name="array_cam_actions_nothing">Aucun changement</string>
-    <string name="array_batt_icon_percentage">hd2o Sense 5 pourcentage</string>
-    <string name="array_batt_icon_white">hd2o blanc</string>
-    <string name="array_batt_icon_white_percent">hd2o blanc pourcentage</string>
-    <string name="array_batt_icon_circle">Cercle avec pourcentage</string>
-    <string name="array_batt_icon_kitkat">KitKat</string>
-    <string name="array_batt_icon_kitkat_p">KitKat avec pourcentage</string>
     <string name="array_batt_icon_none">Aucune icône</string>
     <string name="array_wifi_icon_style1">Style 1</string>
     <string name="array_wifi_icon_style2">Style 2</string>
@@ -413,7 +407,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="array_large_photo_max">Maximum</string>
     <string name="array_header_click_clock">Ouvrir l\'app de l\'horloge</string>
     <string name="array_header_click_sysinfo">Afficher/cacher les infos du CPU et du RAM info, ouvrir l\'app horloge en tappant sur l\'heure actuel.</string>
-<string name="array_recents_menu_playstore">Play Store</string>
+	<string name="array_recents_menu_playstore">Play Store</string>
 	<string name="hideicons_title">Cacher les icônes de la barre d\'état</string>
 	<string name="hideicons_summ">Sélectionnez les icônes que vous voulez empêcher d\'afficher.</string>
 	<string name="various_keyslight_title">Rétroéclairage des boutons</string>
@@ -424,7 +418,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
 	<string name="array_keyslight_extradim">Très faible</string>
 	<string name="array_keyslight_alwaysoff">Toujours éteint</string>
 	
-<string name="various_securelock_summ">Désactive le menu et la réinitialisation de notification du matériel quand l\'écran de verrouillage est actif.</string>
+	<string name="various_securelock_summ">Désactive le menu et la réinitialisation de notification du matériel quand l\'écran de verrouillage est actif.</string>
 	<string name="no_currents">Les boutons de contrôle du rétroéclairage n\'ont pas été trouvés. Votre appareil peut être incompatible à ce mod.</string>
     
     <string name="various_keyslight_auto_title">Rétroéclairage dynamique</string>

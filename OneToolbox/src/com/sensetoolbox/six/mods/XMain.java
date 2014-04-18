@@ -260,7 +260,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			{
 				int transparency = pref.getInt("pref_key_prism_invisiwidget", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
-				PrismMods.execHook_InvisiWidgetSense55(lpparam, transparency);
+				PrismMods.execHook_InvisiWidget(lpparam, transparency);
 			}
 			
 			if(pref.getBoolean("pref_key_prism_folder20", false))

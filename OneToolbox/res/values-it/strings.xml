@@ -353,10 +353,6 @@
 	<string name="array_cam_actions_zoom_in">Zoom in</string>
 	<string name="array_cam_actions_zoom_out">Zoom out</string>
 	<string name="array_cam_actions_nothing">Nessuna modifica</string>
-	<string name="array_batt_icon_percentage">hd2o Sense 5 percentuale</string>
-	<string name="array_batt_icon_circle">Circolare con percentuale</string>
-	<string name="array_batt_icon_kitkat">KitKat</string>
-	<string name="array_batt_icon_kitkat_p">KitKat con percentuale</string>
 	<string name="array_batt_icon_none">Nessuna icona</string>
 	<string name="array_wifi_icon_style1">Stile 1</string>
 	<string name="array_wifi_icon_style2">Stile 2</string>
@@ -400,7 +396,7 @@
 	<string name="array_media_next">Traccia successiva</string>
 	<string name="array_media_prev">Traccia precedente</string>
 	
-<string name="about_version">Versione: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
+	<string name="about_version">Versione: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
 	<string name="dummy">" "</string>
 	
@@ -433,13 +429,11 @@
 	<string name="array_header_click_clock">Apri app Orologio</string>
 	<string name="array_header_click_sysinfo">Mostra/nascondi info CPU e RAM, apri l\'app Orologio premendo l\'ora.</string>
 	
-<string name="cleanbeam_hd2o_title">HD2Owner</string>
+	<string name="cleanbeam_hd2o_title">HD2Owner</string>
 	<string name="cleanbeam_mods_credits_head">Ringraziamenti</string>
 	<string name="cleanbeam_hd2o_summ">Per set aggiuntivi di icone della batteria.</string>
 	
 	<string name="module_not_active">Il modulo Sense 6 Toolbox non è attivo! Apri Xposed Installer, attiva il modulo e riavvia il dispositivo.</string>
-    <string name="array_batt_icon_white">hd2o bianco</string>
-	<string name="array_batt_icon_white_percent">hd2o bianco percentuale</string>
 	<string name="various_securelock_title">Modifica blocca schermo</string>
 	<string name="various_securelock_summ">Disabilita il menu di spegnimento e la notifica di reset hardware quando il blocca schermo è attivo.</string>
 	
@@ -453,7 +447,7 @@
 	<string name="array_keyslight_extradim">Molto bassa</string>
 	<string name="array_keyslight_alwaysoff">Spegni sempre</string>
 	
-<string name="backup_restore">Gestione impostazioni</string>
+	<string name="backup_restore">Gestione impostazioni</string>
     <string name="backup_restore_choose">Scegli l\'opzione desiderata</string>
     <string name="do_backup">Backup</string>
     <string name="do_restore">Ripristina</string>

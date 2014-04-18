@@ -40,37 +40,12 @@ public class CleanBeamMods{
 	}
 
 	public static void execHook_BatteryIcon(InitPackageResourcesParam resparam, String MODULE_PATH, int battIcon) {
-		XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
-		if (battIcon == 2) //2=b=percentage
-		{
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.b_stat_sys_battery));
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.b_stat_sys_battery_charge));
-		}
-		if (battIcon == 3) //3=c=circle
-		{
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.c_stat_sys_battery));
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.c_stat_sys_battery_charge));
-		}
-		if (battIcon == 5) //5=kitkat_nopercent
-		{
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.d_stat_sys_battery));
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.d_stat_sys_battery_charge));
-		}
-		if (battIcon == 6) //6=kitkat_percent
-		{
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.e_stat_sys_battery));
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.e_stat_sys_battery_charge));
-		}
-		if (battIcon == 7) //7=sense6_nopercent
-		{
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.f_stat_sys_battery));
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.f_stat_sys_battery_charge));
-		}
-		if (battIcon == 8) //8=sense6_percent
-		{
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.g_stat_sys_battery));
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.g_stat_sys_battery_charge));
-		}
+//		XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+//		if (battIcon == 2) //2=b=percentage
+//		{
+//			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.b_stat_sys_battery));
+//			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.b_stat_sys_battery_charge));
+//		}
 		if (battIcon == 4) //No icon
 		{
 			resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
