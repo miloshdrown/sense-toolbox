@@ -1,6 +1,7 @@
 <com.htc.preference.HtcPreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six">
+    xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
+    android:key="pref_key_persist">
         <com.htc.preference.HtcPreference
             android:key="pref_key_persist_appdrawer_grid"
             android:summary="@string/persist_adgrid_summ"

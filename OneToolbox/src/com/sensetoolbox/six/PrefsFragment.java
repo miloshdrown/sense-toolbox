@@ -20,7 +20,6 @@ import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.View;
@@ -543,7 +542,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	        super.onCreate(savedInstanceState);
 	        addPreferencesFromResource(R.xml.prefs_other);
 	        
-	        if (!Build.DEVICE.equalsIgnoreCase("m7")) {
+	        if (Helpers.isNotM7()) {
 				if (findPreference("pref_key_other_keyslight") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_keyslight"));
 				if (findPreference("pref_key_other_keyslight_auto") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_keyslight_auto"));
 			}
