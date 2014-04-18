@@ -1,6 +1,7 @@
 <com.htc.preference.HtcPreferenceScreen
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six">
+    xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
+    android:key="pref_key_sms">
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sms_smsmmsconv"
             android:summary="@string/message_smsmms_summ"
