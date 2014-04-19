@@ -26,6 +26,7 @@ import android.graphics.Point;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
+import android.os.Bundle;
 import android.provider.Settings;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -914,6 +915,28 @@ public class PrismMods {
 					int htc_theme_id = ctx.getResources().getIdentifier(htc_theme, "style", "com.htc.launcher");
 					if (htc_theme_id != 0) param.setResult(htc_theme_id);
 				}
+			}
+		});
+	}
+
+	public static void execHook_invisiWidgetFix(LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherClock4x1View", lpparam.classLoader, "getControls", Context.class, "com.htc.widget.weatherclock.util.WidgetData", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				Bundle result = (Bundle) param.getResult();
+				result.putInt("background_day", result.getInt("background_night"));
+				result.putInt("point_day", result.getInt("point_night"));
+				result.putInt("divider_day", result.getInt("divider_night"));
+				result.putInt("text_day", result.getInt("text_night"));
+				result.putInt("error_day", result.getInt("error_night"));
+				result.putIntArray("number_day", result.getIntArray("number_night"));
+			}
+		});
+		
+		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherClock4x1View", lpparam.classLoader, "getGraphicType", boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				param.args[0] = false;
 			}
 		});
 	}

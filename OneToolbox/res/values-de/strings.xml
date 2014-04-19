@@ -187,8 +187,8 @@
 	<string name="sense_gestures">Gesten</string>
 	<string name="sense_td_title">Dock</string>
 	<string name="sense_td_summ">Mache das Sense launcher dock transparent.</string>
-	<string name="sense_twidget_title">4x1 Uhr Widget</string>
-	<string name="sense_twidget_summ">Macht das Standard 4x1 Uhr Widget transparent.</string>
+	<string name="sense_twidget_title">Uhr und Wetter Widget</string>
+	<string name="sense_twidget_summ">Macht den Hintergrund der 4x1 und 4x2 Uhr/Wetter Widgets transparent.</string>
 	<string name="sense_tappdrawer_title">\'Alle Apps\' Bildschirm</string>
 	<string name="sense_tappdrawer_summ">Macht den \'Alle Apps\' Bildschirm transparent.</string>
 	<string name="sense_tfolders_title">Ordner-Hintergrund</string>

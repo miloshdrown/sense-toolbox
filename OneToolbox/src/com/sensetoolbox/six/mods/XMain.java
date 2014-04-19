@@ -430,6 +430,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				OtherMods.execHook_RejectCallSilently(lpparam);
 		}
 		
+		if (pkg.equals("com.htc.widget.weatherclock")) {
+			if(pref.getBoolean("pref_key_prism_invisiwidget_enable", false)) {
+				PrismMods.execHook_invisiWidgetFix(lpparam);
+			}
+		}
+		
 		if (lpparam.processName.equals("android"))
 		{
 			if (pref.getBoolean("pref_key_other_apm", false))
