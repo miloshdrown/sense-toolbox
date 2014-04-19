@@ -142,7 +142,7 @@ public class BrightnessPicker extends HtcDialogPreference implements HtcNumberPi
 		brightPick4.setLayoutParams(lp);
 		brightPick4.setRange(curVal3, 100);
 		brightPick4.setCenterView(curVal4);
-		brightPick4.setGravity(1);
+		brightPick4.setOnScrollIdleStateListener(this);
 		layout.addView(brightPick4);
 		
 		layout_main.addView(layout);
