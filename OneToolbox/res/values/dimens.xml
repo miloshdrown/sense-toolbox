@@ -20,5 +20,8 @@
     <dimen name="masthead_minHeight">-200dip</dimen>
 	<dimen name="incoming_call_call_id_height">429.0dip</dimen>
 	<dimen name="lockscreen_10">25.0px</dimen>
+	
+	<dimen name="navigation_bar_height">30dp</dimen>
+    <dimen name="navigation_bar_height_landscape">30dp</dimen>
 
 </resources>

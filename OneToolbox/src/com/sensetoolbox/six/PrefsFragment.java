@@ -533,6 +533,9 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					return true;
 				}
 	        });
+	        
+			if (!Helpers.isM8())
+				((HtcPreferenceScreen) findPreference("pref_key_controls")).removePreference(findPreference("pref_key_controls_smallsoftkeys"));
 	    }
 	}
 	

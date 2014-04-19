@@ -9,6 +9,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.XModuleResources;
+import android.content.res.XResources;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
@@ -22,6 +24,7 @@ import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.ImageView;
 
+import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
 
 import de.robv.android.xposed.XC_MethodHook;
@@ -414,5 +417,12 @@ public class ControlsMods {
 				}
 			}
 		});
+	}
+
+	public static void execHook_SmallNavbar(String MODULE_PATH) {
+        XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, null);
+        XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
+        XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_height_landscape", modRes.fwd(R.dimen.navigation_bar_height_landscape));
+        XResources.setSystemWideReplacement("android", "dimen", "system_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
 	}
 }

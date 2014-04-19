@@ -84,6 +84,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("themes_active", false))
 			SysUIMods.execHook_Sense6ColorControl();
 		
+		if (pref.getBoolean("pref_key_controls_smallsoftkeys", false))
+			ControlsMods.execHook_SmallNavbar(MODULE_PATH);
+		
 		GlobalActions.easterEgg();
 	}
 
