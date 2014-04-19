@@ -464,7 +464,7 @@
     <string name="sense_theme_sep1">Тема</string>
     <string name="sense_theme_remove">Удалить</string>
     <string name="sense_theme_color_header">Заголовок</string>
-    <string name="sense_theme_color_controls">Управл.</string>
+    <string name="sense_theme_color_controls">Управление</string>
     <string name="sense_theme_color_bf">BlinkFeed</string>
     <string name="sense_theme_hint">Включите замену цветов переключателем выше.\n\nБыстрый перезапуск будет необходим только один раз после первой активации замены.</string>
 	<string name="systemui_brightqs_title">Яркость</string>
