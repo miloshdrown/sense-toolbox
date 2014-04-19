@@ -4,6 +4,7 @@ import android.content.res.XResources;
 import android.os.Build;
 
 import com.sensetoolbox.six.utils.GlobalActions;
+import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.PackagePermissions;
 import com.sensetoolbox.six.utils.Version;
 
@@ -399,6 +400,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_sysui_brightqs", false))
 				SysUIMods.execHook_ChangeBrightnessQSTile(lpparam);
+			
+			if (pref_backlongpress != 1 && Helpers.isM8())
+				ControlsMods.execHook_M8BackLongpress(lpparam);
 			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 			CleanBeamMods.execHook_HideIcons(lpparam);

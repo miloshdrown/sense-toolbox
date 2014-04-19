@@ -1,8 +1,9 @@
 package com.sensetoolbox.six.mods;
 
+import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
-
+import static de.robv.android.xposed.XposedHelpers.setObjectField;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,8 +16,11 @@ import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.view.KeyEvent;
 import android.view.Surface;
+import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
+import android.widget.ImageView;
 
 import com.sensetoolbox.six.utils.GlobalActions;
 
@@ -369,5 +373,46 @@ public class ControlsMods {
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
+	}
+
+	public static void execHook_M8BackLongpress(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				final ImageView backButton = (ImageView) callMethod(param.thisObject, "getBackButton");
+				if(backButton!=null){
+					setObjectField(backButton, "mCheckLongPress", new Runnable() {
+						@Override
+						public void run() {
+							if(backButton.isPressed()) {
+								backButton.setPressed(false);
+								backButton.performLongClick();
+							}
+						}
+					});
+					backButton.setLongClickable(true);
+					backButton.setOnLongClickListener(new OnLongClickListener() {
+						@Override
+						public boolean onLongClick(View v) {
+							int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
+							Context mContext = backButton.getContext();
+							switch (pref_backlongpress) {
+								case 2: GlobalActions.expandNotifications(mContext); break;
+								case 3: GlobalActions.expandEQS(mContext); break;
+								case 4: GlobalActions.lockDevice(mContext); break;
+								case 5: GlobalActions.goToSleep(mContext); break;
+								case 6: GlobalActions.takeScreenshot(mContext); break;
+								case 7: GlobalActions.launchApp(mContext, 3); break; // No back key on lock screen
+								case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpress_toggle", "0"))); break;
+								case 9: GlobalActions.killForegroundApp(mContext); break;
+								case 10: GlobalActions.simulateMenu(mContext); break;
+								case 11: GlobalActions.openRecents(mContext); break;
+							}
+							return true;
+						}
+					});
+				}
+			}
+		});
 	}
 }
