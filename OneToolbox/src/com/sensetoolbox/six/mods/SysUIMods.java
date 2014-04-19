@@ -819,12 +819,11 @@ public class SysUIMods {
 	
 	//hEQS LongClickListeners
 	public static void execHook_hEQSLongClick(final LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettingsTileView", lpparam.classLoader, "onAttachedToWindow", new XC_MethodHook() {
+		findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettingsTileView", lpparam.classLoader, "getOnLongClickListener", new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				final LinearLayout thisTile = (LinearLayout) param.thisObject;
-				thisTile.setLongClickable(true);
-				thisTile.setOnLongClickListener(new OnLongClickListener() {
+				param.setResult(new OnLongClickListener() {
 					@Override
 					@SuppressLint("DefaultLocale")
 					public boolean onLongClick(View v) {
