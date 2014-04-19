@@ -3,7 +3,7 @@
     <string name="app_name">Sense 6 Toolbox</string>
     <string name="app_name_version">Sense 6 Toolbox (Versie: %1$s)</string>
     <string name="app_about">Over</string>
-    <string name="about_version">Versie: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
+    <string name="about_version">Versie: %1$s (build JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Ondersteuning (App Versie: %1$s)</string>
     <string name="restore">Herstellen</string>
     <string name="add">Toevoegen</string>
@@ -181,8 +181,8 @@
 	<string name="sense_gestures">Gebaren</string>
 	<string name="sense_td_title">Dock</string>
 	<string name="sense_td_summ">Maak het Sense dock transparant.</string>
-	<string name="sense_twidget_title">4x1 klok widget</string>
-	<string name="sense_twidget_summ">Maak de standaard 4x1 klok en weer widget transparant.</string>
+	<string name="sense_twidget_title">Klok en weer widget</string>
+	<string name="sense_twidget_summ">Maakt de achtergrond panelen van de 4x1en 4x2 klok/weer widget transparant.</string>
 	<string name="sense_tappdrawer_title">Applicatie overzicht</string>
 	<string name="sense_tappdrawer_summ">Maak het applicatie overzicht in Sense transparant.</string>
 	<string name="sense_tfolders_title">Mappen</string>
@@ -284,8 +284,8 @@
 	<string name="various_fastunlock_summ">Ontgrendel het apparaat zodra de juiste PIN is ingevoerd. Alleen voor HTC vergrendelscherm.</string>
 	<string name="various_ytwatermark_title">Youtube kanaal watermerk</string>
 	<string name="various_ytwatermark_summ">Verberg kanaallogo\'s in video\'s in de YouTube app.</string>
-	<string name="various_oldtoasts_title">Toasts in Jelly Bean stijl</string>
-	<string name="various_oldtoasts_summ">Breng de JB stijl terug in Android 4.4 toasts.</string>
+	<string name="various_oldtoasts_title">Toasts in Sense 6 stijl</string>
+	<string name="various_oldtoasts_summ">Maak toasts donkerder met kleiner afgeronde hoeken radius.</string>
 	
 	<string name="persistent_mods">Altijd actieve aanpassingen</string>
 	<string name="persist_adgrid_title">Rastergrootte applicatie overzicht</string>
@@ -345,9 +345,9 @@
 	<string name="about_devs">Ontwikkelaars</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
 	<string name="about_thanks">Bedankt</string>
-	<string name="about_sense">Sense 5</string>
+	<string name="about_sense">Sense 6</string>
 	<string name="about_toolbox">Toolbox</string>
-	<string name="about_thanks_data">mike1986 - voor ARHD en het platform om deze app beschikbaar te maken\n\ndescenpet - voor het initiële idee om te kunnen ordenen\n\nvomer - voor CleanBeam aanpassingen\n\nDunc001 en LeSScro - voor hun APM iconen\n\nRU en AU teams (en een aantal andere vroege beta testers) - voor het testen en geven van waardevolle feedback\n\nARHD gebruikers - voor hun geduld</string>
+	<string name="about_thanks_data">mike1986 - voor ARHD en het platform om deze app beschikbaar te maken\n\nAcogu - voor Sense 6 Toolbox en hoofdapp icoon\n\ndescenpet - voor het initiële idee om te kunnen ordenen\n\nvomer - voor CleanBeam aanpassingen\n\nDunc001 en LeSScro - voor hun APM iconen\n\nRU en AU teams (en een aantal andere vroege beta testers) - voor het testen en geven van waardevolle feedback\n\nARHD gebruikers - voor hun geduld</string>
 
 	<string name="array_default">Standaard</string>
 	<string name="array_cam_actions_shutter">Sluiter</string>
