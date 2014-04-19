@@ -8,7 +8,7 @@
             android:summary="@string/sense_themes_summ" />
         <com.htc.preference.HtcPreferenceCategory
         	android:title="@string/systemui_statusbar">
-        <com.sensetoolbox.six.utils.SeekBarPreference 
+<!--    <com.sensetoolbox.six.utils.SeekBarPreference 
             android:key="pref_key_sysui_invisibar_new"
     		android:title="@string/systemui_tsb_title"
     		android:summary="@string/systemui_tsb_summ"
@@ -16,7 +16,7 @@
     		android:defaultValue="100"
     		android:text=" %"
     		android:max="100"
-    		toolbox:enableKey="pref_key_sysui_invisibar_enable"/>
+    		toolbox:enableKey="pref_key_sysui_invisibar_enable"/> -->
         <com.sensetoolbox.six.utils.SeekBarPreference 
             android:key="pref_key_sysui_invisinotify"
     		android:title="@string/systemui_tnb_title"
