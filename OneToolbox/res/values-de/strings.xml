@@ -5,7 +5,7 @@
     <string name="app_name">Sense 6 Toolbox</string>
     <string name="app_name_version">Sense 6 Toolbox (Version: %1$s)</string>
     <string name="app_about">Info</string>
-    <string name="about_version">Version: %1$s (\#JENKINSBUILDNUMBERGOESHERE)</string>
+    <string name="about_version">Version: %1$s (build JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Support (App Version: %1$s)</string>
     <string name="restore">Wiederherstellen</string>
     <string name="add">Hinzufügen</string>
@@ -206,7 +206,7 @@
 	<string name="sense_infiniscroll_title">Unendliches Scrollen</string>
 	<string name="sense_infiniscroll_summ">Unendliches Scrollen durch die Home Screens.</string>
 	<string name="sense_gridtinyfont_title">Kleine Schrift in \'Alle Apps\'</string>
-	<string name="sense_gridtinyfont_summ">Verkleinert die Schrift in \'Alle Apps\'. Nützlich für größere Raster.</string>
+	<string name="sense_gridtinyfont_summ">Verkleinert die Schrift in \'Alle Apps\'. Nützlich für größere Raster</string>
 	<string name="sense_swipedownaction_title">Abwärts-Geste</string>
 	<string name="sense_swipedownaction_summ">Aktion für ein abwärts Wischen auf dem Home Screen.</string>
 	<string name="sense_swipeupaction_title">Aufwärts-Geste</string>
@@ -292,8 +292,8 @@
 	<string name="various_fastunlock_summ">Entsperrt das Gerät sobald die richtige PIN eingegeben wurde. Nur mit HTC Lockscreen.</string>
 	<string name="various_ytwatermark_title">Youtube Kanal-Wasserzeichen</string>
 	<string name="various_ytwatermark_summ">Entfernt das Kanal-Wasserzeichen in Youtube Videos.</string>
-	<string name="various_oldtoasts_title">Jelly Bean Toast Benachrichtigungen</string>
-	<string name="various_oldtoasts_summ">Aktiviert den alten Stil für Toast-Benachrichtigungen auf Android 4.4.</string>
+	<string name="various_oldtoasts_title">Sense 6 Toast Benachrichtigungen</string>
+	<string name="various_oldtoasts_summ">Dunklere Toast Benachrichtigungen mit abgerundeten Ecken.</string>
 	
 	<string name="persistent_mods">Dauerhaft aktive Mods</string>
 	<string name="persist_adgrid_title">Rastergöße in \'Alle Apps\'</string>
@@ -350,12 +350,12 @@
 	<string name="apps_disabled">Nur deaktivierte anzeigen</string>
 	<string name="apps_all">Alle anzeigen</string>
 
-	<string name="about_devs">Developers</string>
+	<string name="about_devs">Entwickler</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
-	<string name="about_thanks">Thanks</string>
-	<string name="about_sense">Sense 5</string>
+	<string name="about_thanks">Danke</string>
+	<string name="about_sense">Sense 6</string>
 	<string name="about_toolbox">Toolbox</string>
-	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nDunc001 and LeSScro - for their APM icons\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
+	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\nAcogu - for Sense 6 Toolbox logo and main app icon\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nDunc001 and LeSScro - for their APM icons\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
 
 	<string name="array_default">Standard</string>
 	<string name="array_cam_actions_shutter">Auslöser</string>
@@ -432,7 +432,7 @@
     <string name="array_header_click_clock">Uhr-App öffnen</string>
 	<string name="array_header_click_sysinfo">CPU/RAM Info anzeigen/verstecken. Uhr-App per tap auf die Uhrzeit öffnen.</string>
 	
-	<string name="about_l10n">Translation</string>
+	<string name="about_l10n">Übersetzung</string>
 	<string name="about_l10n_data_left">Kroatisch\nHolländisch\nItalienisch\nPolnisch\nSpanisch\nFanzösisch</string>
 	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
 	
@@ -467,4 +467,33 @@
 	<string name="array_keyslight_extradim">Extra verdunkelt</string>
 	<string name="array_keyslight_alwaysoff">Immer aus</string>
 	
-</resources>
+<string name="sense_themes_title">Sense Designs</string>
+    <string name="sense_themes_summ">Design-Farben per App setzen.</string>
+    <string name="sense_themes_apply">Übernehmen</string>
+    <string name="sense_themes_cancel">Abbrechen</string>
+    <string name="sense_theme_sep1">Design</string>
+    <string name="sense_theme_remove">Entfernen</string>
+    <string name="sense_theme_color_header">Kopfzeile</string>
+    <string name="sense_theme_color_controls">Bedienelemente</string>
+    <string name="sense_theme_color_bf">BlinkFeed</string>
+    <string name="sense_theme_package_has_profile">Diese App hat bereits ein Profil</string>
+    <string name="sense_theme_hint">Aktiviere die Designs mit dem Schalter oben.\n\nEin schneller Neustart ist nur einmalig nach dem Aktivieren erforderlich.</string>
+	<string name="systemui_brightqs_title">Helligkeit</string>
+	<string name="systemui_brightqs_summ">Setze eigene Werte für die Helligkeit-Schnelleinstellung.</string>
+	<string name="brightpicker_switch">Aktiviere eigene Werte</string>
+	<string name="brightpicker_desc">Wähle vier verschiedene Werte</string>
+	<string name="brightpicker_warn_text">Alle Werte müssen verschieden sein</string>
+	
+	<string name="controls_smallsoftkeys_title">Kleine Tasten</string>	
+	<string name="controls_smallsoftkeys_summ">Schmalere Tasten-Leiste am unteren Rand.</string>
+	
+	<string name="toolbox">Toolbox Einstellungen</string>
+	<string name="toolbox_show_icon_title">Schnellzugriff</string>
+	<string name="toolbox_show_icon_summ">Zeige Toolbox Icon in den Einstellungen.</string>
+	
+	<string name="support_s6t_title">Besuche den Sense 6 Toolbox Post</string>
+	<string name="support_s6t_summ">Alle Infos und Änderungen hier.</string>
+	<string name="add_app">App hinzufügen</string>
+	<string name="select_app">App auswählen</string>
+	
+	</resources>
