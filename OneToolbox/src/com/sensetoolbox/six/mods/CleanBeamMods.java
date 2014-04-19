@@ -196,36 +196,28 @@ public class CleanBeamMods{
 		} else if (i==3) {
 			wifiBase = "b_stat_sys_wifi_signal_";
 		}
-		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_wifi_signal_0", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + "0", "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
-			}	
-		});
-		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_wifi_signal_1", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + "1", "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
-			}	
-		});
-		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_wifi_signal_2", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + "2", "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
-			}	
-		});
-		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_wifi_signal_3", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + "3", "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
-			}	
-		});
-		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_wifi_signal_4", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + "4", "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
-			}
-		});
+		
+		String[] glowIcons = {"stat_sys_wifi_signal_in_0", "stat_sys_wifi_signal_in_1", "stat_sys_wifi_signal_in_2", "stat_sys_wifi_signal_in_3", "stat_sys_wifi_signal_in_4", 
+				"stat_sys_wifi_signal_inandout_0", "stat_sys_wifi_signal_inandout_1", "stat_sys_wifi_signal_inandout_2", "stat_sys_wifi_signal_inandout_3", "stat_sys_wifi_signal_inandout_4",
+				"stat_sys_wifi_signal_out_0", "stat_sys_wifi_signal_out_1", "stat_sys_wifi_signal_out_2", "stat_sys_wifi_signal_out_3", "stat_sys_wifi_signal_out_4"};
+		for(final String s : glowIcons) {
+			resparam.res.setReplacement("com.android.systemui", "drawable", s, new XResources.DrawableLoader(){
+				@Override
+				public Drawable newDrawable(XResources res, int id)	throws Throwable {
+					return applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + "glow_" + s.substring(s.length()-1), "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
+				}	
+			});
+		}
+		
+		String[] nonGlowIcons = {"stat_sys_wifi_signal_connected_0", "stat_sys_wifi_signal_connected_1", "stat_sys_wifi_signal_connected_2", "stat_sys_wifi_signal_connected_3", "stat_sys_wifi_signal_connected_4"};
+		for(final String s : nonGlowIcons) {
+			resparam.res.setReplacement("com.android.systemui", "drawable", s, new XResources.DrawableLoader(){
+				@Override
+				public Drawable newDrawable(XResources res, int id)	throws Throwable {
+					return applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + s.substring(s.length()-1), "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
+				}	
+			});
+		}
 	}
 
 	public static void execHook_ProfileIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
