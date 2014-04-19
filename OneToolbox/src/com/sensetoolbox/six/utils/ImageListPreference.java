@@ -8,6 +8,7 @@ import com.htc.widget.HtcListItemTileImage;
 import com.sensetoolbox.six.R;
 
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -72,13 +73,21 @@ public class ImageListPreference extends HtcListPreference {
 			title.setPrimaryText(getItem(position));
 			title.setSecondaryTextVisibility(8);
 			if (resourceIds != null && (resourceIds[position]) != 0) {
-				img.setTileImageResource(resourceIds[position]);
+				Drawable icon = getContext().getResources().getDrawable(resourceIds[position]);
+				img.setTileImageDrawable(icon);
+				
 				if (imageThemes != null) {
 					if (imageThemes[position] == 1)
 						img.getTileImageDrawable().setColorFilter(GlobalActions.createColorFilter(false));
 					else
 						img.getTileImageDrawable().clearColorFilter();
 				}
+
+				if (resourceIds[position] == R.drawable.stat_sys_wifi_signal_preview || resourceIds[position] == R.drawable.stat_sys_battery_preview)
+					img.setTileImageDrawable(Helpers.dropIconShadow(getContext(), icon, true));
+				else if (resourceIds[position] == R.drawable.b_stat_sys_wifi_signal_4)
+					img.setTileImageDrawable(Helpers.dropIconShadow(getContext(), icon, false));
+				
 				img.setScaleX(0.55f);
 				img.setScaleY(0.55f);
 			}

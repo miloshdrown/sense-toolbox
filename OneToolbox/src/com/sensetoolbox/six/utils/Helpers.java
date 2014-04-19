@@ -15,6 +15,7 @@ import com.htc.gson.Gson;
 import com.htc.gson.reflect.TypeToken;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.MainActivity;
+import com.sensetoolbox.six.PrefsFragment;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.SenseThemes;
 import com.sensetoolbox.six.SenseThemes.PackageTheme;
@@ -25,7 +26,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
+import android.graphics.BlurMaskFilter;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ColorFilter;
+import android.graphics.LightingColorFilter;
+import android.graphics.Paint;
+import android.graphics.Bitmap.Config;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -74,9 +81,9 @@ public class Helpers {
 	}
 	
 	public static void setTranslucentStatusBar(Activity act) {
-		int category_color_id = act.getResources().getIdentifier("multiply_color", "attr", "com.htc");
+		int multiply_color_id = act.getResources().getIdentifier("multiply_color", "attr", "com.htc");
 		TypedValue typedValue = new TypedValue();
-		act.getTheme().resolveAttribute(category_color_id, typedValue, true);
+		act.getTheme().resolveAttribute(multiply_color_id, typedValue, true);
 		int color = typedValue.data;
 		
 		Window actWnd = act.getWindow();
@@ -188,6 +195,45 @@ public class Helpers {
 		
 		input.setPixels(pix, 0, w, 0, 0, w, h);
 		return input;
+	}
+	
+	public static Drawable dropIconShadow(Context mContext, Drawable icon) {
+		return dropIconShadow(mContext, icon, false);
+	}
+	
+	public static Drawable dropIconShadow(Context mContext, Drawable icon, Boolean force) {
+		if (!force)
+		if (PrefsFragment.prefs.getInt("pref_key_colorfilter_brightValue", 100) != 200 || PrefsFragment.prefs.getInt("pref_key_colorfilter_satValue", 100) != 0) return icon;
+		
+		Bitmap bitmap = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Config.ARGB_8888);
+		Canvas canvas = new Canvas(bitmap);
+		icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
+		icon.draw(canvas);
+		
+		float density = mContext.getResources().getDisplayMetrics().density;
+		
+		BlurMaskFilter blurFilter = new BlurMaskFilter(Math.round(density * 3), BlurMaskFilter.Blur.OUTER);
+		Paint shadowPaint = new Paint();
+		shadowPaint.setMaskFilter(blurFilter);
+		
+		int[] offsetXY = new int[2];
+		Bitmap shadowImage = bitmap.extractAlpha(shadowPaint, offsetXY);
+		
+		int category_color_id = mContext.getResources().getIdentifier("category_color", "attr", "com.htc");
+		TypedValue typedValue = new TypedValue();
+		mContext.getTheme().resolveAttribute(category_color_id, typedValue, true);
+		int category_theme = typedValue.data;
+		
+		Paint p = new Paint();
+		ColorFilter filter = new LightingColorFilter(Color.BLACK, category_theme);
+		p.setColorFilter(filter);
+		
+		Bitmap imageWithShadow = Bitmap.createBitmap(icon.getIntrinsicWidth() + Math.round(density * 6), icon.getIntrinsicHeight() + Math.round(density * 6), Config.ARGB_8888);
+		Canvas c = new Canvas(imageWithShadow);
+		c.drawBitmap(shadowImage, 0, 0, p);
+		c.drawBitmap(bitmap, -offsetXY[0], -offsetXY[1], null);
+		
+		return new BitmapDrawable(mContext.getResources(), imageWithShadow);
 	}
 	
 	public static boolean checkStorageReadable(Context ctx) {

@@ -1,5 +1,7 @@
 package com.sensetoolbox.six.utils;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -19,6 +21,7 @@ import android.widget.SeekBar;
 import android.widget.TextView;
 
 import com.htc.preference.HtcDialogPreference;
+import com.htc.preference.HtcPreference;
 import com.htc.preference.HtcPreferenceManager;
 import com.htc.widget.HtcRimButton;
 import com.htc.widget.HtcSeekBar;
@@ -38,6 +41,8 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 	private int brightValue = 100;
 	private float density = 3;
 	private SharedPreferences prefs = null;
+	private ArrayList<ImageView> icons;
+	private ArrayList<Integer> icons_res;
 	
 	private void applyTheme(Drawable icon) {
 		ColorFilter cf = GlobalActions.createColorFilter(false);
@@ -59,6 +64,8 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 	@Override 
 	protected View onCreateDialogView() {
 		prefs = getPreferenceManager().getSharedPreferences();
+		icons = new ArrayList<ImageView>();
+		icons_res = new ArrayList<Integer>();
 		
 		LinearLayout layout = new LinearLayout(mContext);
 		layout.setOrientation(LinearLayout.VERTICAL);
@@ -76,46 +83,39 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		iconsContainer.setPadding(densify(16), densify(6), densify(16), densify(4));
 		iconsContainer.setGravity(Gravity.CENTER);
 		icon1 = new ImageView(mContext);
-		icon1.setImageResource(R.drawable.cb_signal_preview);
-		icon1.setPadding(0, 0, densify(7), 0);
 		icon2 = new ImageView(mContext);
-		icon2.setImageResource(R.drawable.stat_sys_ringer_silent);
-		icon2.setPadding(0, 0, densify(7), 0);
 		icon3 = new ImageView(mContext);
-		icon3.setImageResource(R.drawable.stat_notify_alarm);
-		icon3.setPadding(0, 0, densify(7), 0);
 		icon4 = new ImageView(mContext);
-		icon4.setImageResource(R.drawable.stat_sys_sync);
-		icon4.setPadding(0, 0, densify(7), 0);
 		icon5 = new ImageView(mContext);
-		icon5.setImageResource(R.drawable.stat_sys_data_usb);
-		icon5.setPadding(0, 0, densify(7), 0);
 		icon6 = new ImageView(mContext);
-		icon6.setImageResource(R.drawable.stat_sys_phone_call);
-		icon6.setPadding(0, 0, densify(7), 0);
 		icon7 = new ImageView(mContext);
-		icon7.setImageResource(R.drawable.stat_notify_tv);
-		icon7.setPadding(0, 0, densify(7), 0);
 		icon8 = new ImageView(mContext);
-		icon8.setImageResource(R.drawable.stat_sys_gps_acquiring);
-		icon8.setPadding(0, 0, densify(7), 0);
 		icon9 = new ImageView(mContext);
-		icon9.setImageResource(R.drawable.stat_sys_headphones);
-		icon9.setPadding(0, 0, densify(7), 0);
 		icon10 = new ImageView(mContext);
-		icon10.setImageResource(R.drawable.b_stat_sys_wifi_signal_4);
-		icon10.setPadding(0, 0, densify(7), 0);
 		
-		iconsContainer.addView(icon1);
-		iconsContainer.addView(icon2);
-		iconsContainer.addView(icon3);
-		iconsContainer.addView(icon4);
-		iconsContainer.addView(icon5);
-		iconsContainer.addView(icon6);
-		iconsContainer.addView(icon7);
-		iconsContainer.addView(icon8);
-		iconsContainer.addView(icon9);
-		iconsContainer.addView(icon10);
+		icons.add(icon1);
+		icons.add(icon2);
+		icons.add(icon3);
+		icons.add(icon4);
+		icons.add(icon5);
+		icons.add(icon6);
+		icons.add(icon7);
+		icons.add(icon8);
+		icons.add(icon9);
+		icons.add(icon10);
+		
+		icons_res.add(R.drawable.cb_signal_preview);
+		icons_res.add(R.drawable.stat_sys_ringer_silent);
+		icons_res.add(R.drawable.stat_notify_alarm);
+		icons_res.add(R.drawable.stat_sys_sync);
+		icons_res.add(R.drawable.stat_sys_data_usb);
+		icons_res.add(R.drawable.stat_sys_phone_call);
+		icons_res.add(R.drawable.stat_notify_tv);
+		icons_res.add(R.drawable.stat_sys_gps_acquiring);
+		icons_res.add(R.drawable.stat_sys_headphones);
+		icons_res.add(R.drawable.b_stat_sys_wifi_signal_4);
+		
+		for (ImageView icon: icons) iconsContainer.addView(icon);
 		
 		layout.addView(iconsContainer);
 		
@@ -297,22 +297,86 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 	
 	public void applyThemes() {
 		HtcPreferenceManager pm = getPreferenceManager();
-		applyTheme(pm.findPreference("pref_key_cb_signal").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_data").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_headphone").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_profile").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_alarm").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_sync").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_gps").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_bt").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_screenshot").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_usb").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_powersave").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_nfc").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_mtp").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_dnd").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_phone").getIcon());
-		applyTheme(pm.findPreference("pref_key_cb_tv").getIcon());
+		
+		HtcPreference signal = pm.findPreference("pref_key_cb_signal");
+		Drawable signal_icon = mContext.getResources().getDrawable(R.drawable.cb_signal_preview);
+		applyTheme(signal_icon);
+		signal.setIcon(Helpers.dropIconShadow(mContext, signal_icon));
+		
+		HtcPreference data = pm.findPreference("pref_key_cb_data");
+		Drawable data_icon = mContext.getResources().getDrawable(R.drawable.cb_data_preview);
+		applyTheme(data_icon);
+		data.setIcon(Helpers.dropIconShadow(mContext, data_icon));
+		
+		HtcPreference headphone = pm.findPreference("pref_key_cb_headphone");
+		Drawable headphone_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_headphones);
+		applyTheme(headphone_icon);
+		headphone.setIcon(Helpers.dropIconShadow(mContext, headphone_icon));
+		
+		HtcPreference profile = pm.findPreference("pref_key_cb_profile");
+		Drawable profile_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_ringer_silent);
+		applyTheme(profile_icon);
+		profile.setIcon(Helpers.dropIconShadow(mContext, profile_icon));
+		
+		HtcPreference alarm = pm.findPreference("pref_key_cb_alarm");
+		Drawable alarm_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_alarm);
+		applyTheme(alarm_icon);
+		alarm.setIcon(Helpers.dropIconShadow(mContext, alarm_icon));
+		
+		HtcPreference sync = pm.findPreference("pref_key_cb_sync");
+		Drawable sync_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_sync);
+		applyTheme(sync_icon);
+		sync.setIcon(Helpers.dropIconShadow(mContext, sync_icon));
+		
+		HtcPreference gps = pm.findPreference("pref_key_cb_gps");
+		Drawable gps_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_gps_acquiring);
+		applyTheme(gps_icon);
+		gps.setIcon(Helpers.dropIconShadow(mContext, gps_icon));
+		
+		HtcPreference bt = pm.findPreference("pref_key_cb_bt");
+		Drawable bt_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_data_bluetooth_connected);
+		applyTheme(bt_icon);
+		bt.setIcon(Helpers.dropIconShadow(mContext, bt_icon));
+		
+		HtcPreference screenshot = pm.findPreference("pref_key_cb_screenshot");
+		Drawable screenshot_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_image);
+		applyTheme(screenshot_icon);
+		screenshot.setIcon(Helpers.dropIconShadow(mContext, screenshot_icon));
+		
+		HtcPreference usb = pm.findPreference("pref_key_cb_usb");
+		Drawable usb_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_data_usb);
+		applyTheme(usb_icon);
+		usb.setIcon(Helpers.dropIconShadow(mContext, usb_icon));
+		
+		HtcPreference powersave = pm.findPreference("pref_key_cb_powersave");
+		Drawable powersave_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_power_saver);
+		applyTheme(powersave_icon);
+		powersave.setIcon(Helpers.dropIconShadow(mContext, powersave_icon));
+		
+		HtcPreference nfc = pm.findPreference("pref_key_cb_nfc");
+		Drawable nfc_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_nfc_vzw);
+		applyTheme(nfc_icon);
+		nfc.setIcon(Helpers.dropIconShadow(mContext, nfc_icon));
+		
+		HtcPreference mtp = pm.findPreference("pref_key_cb_mtp");
+		Drawable mtp_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_running_services);
+		applyTheme(mtp_icon);
+		mtp.setIcon(mtp_icon);
+		
+		HtcPreference dnd = pm.findPreference("pref_key_cb_dnd");
+		Drawable dnd_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_dnd);
+		applyTheme(dnd_icon);
+		dnd.setIcon(Helpers.dropIconShadow(mContext, dnd_icon));
+		
+		HtcPreference phone = pm.findPreference("pref_key_cb_phone");
+		Drawable phone_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_phone_call);
+		applyTheme(phone_icon);
+		phone.setIcon(Helpers.dropIconShadow(mContext, phone_icon));
+		
+		HtcPreference tv = pm.findPreference("pref_key_cb_tv");
+		Drawable tv_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_tv);
+		applyTheme(tv_icon);
+		tv.setIcon(Helpers.dropIconShadow(mContext, tv_icon));
 	}
 	
 	private void applyColors() {
@@ -322,16 +386,19 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		else
 			cf = ColorFilterGenerator.adjustColor(brightValue - 100, 0, satValue - 100, hueValue - 180);
 		
-		if (icon1 != null) icon1.setColorFilter(cf);
-		if (icon2 != null) icon2.setColorFilter(cf);
-		if (icon3 != null) icon3.setColorFilter(cf);
-		if (icon4 != null) icon4.setColorFilter(cf);
-		if (icon5 != null) icon5.setColorFilter(cf);
-		if (icon6 != null) icon6.setColorFilter(cf);
-		if (icon7 != null) icon7.setColorFilter(cf);
-		if (icon8 != null) icon8.setColorFilter(cf);
-		if (icon9 != null) icon9.setColorFilter(cf);
-		if (icon10 != null) icon10.setColorFilter(cf);
+		int i = 0;
+		for (ImageView icon: icons) 
+		if (icon != null) { icon.setImageResource(icons_res.get(i)); i++; icon.setColorFilter(cf); }
+		
+		if (brightValue == 200 && satValue == 0) {
+			for (ImageView icon: icons) if (icon != null) {
+				icon.setImageDrawable(Helpers.dropIconShadow(mContext, icon.getDrawable(), true));
+				icon.setColorFilter(null);
+				icon.setPadding(densify(1), 0, densify(1), 0);
+			}
+		} else {
+			for (ImageView icon: icons) if (icon != null) icon.setPadding(densify(4), densify(3), densify(4), densify(3));
+		}
 	}
 
 	@Override
