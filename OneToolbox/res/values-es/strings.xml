@@ -165,15 +165,15 @@
     <string name="cleanbeam_sunbeam_summ">Instalar el Sunbeam Live Wallpaper.</string>
     <string name="cleanbeam_post_title">Vomer</string>
     <string name="cleanbeam_post_summ">Para los iconos CleanBeam y fondo de pantalla SunBeam.</string>
-    <string name="sense_mods">Sense mods</string>
+    <string name="sense_mods">Mods Sense</string>
     <string name="sense_transparency">Transparencia</string>
     <string name="sense_homescreen">Pantalla de Inicio</string>
     <string name="sense_appdrawer">Cajón de Aplicaciones</string>
     <string name="sense_gestures">Gestos</string>
     <string name="sense_td_title">Barra Aplicaciones</string>
     <string name="sense_td_summ">Hacer la barra de aplicaciones transparente.</string>
-    <string name="sense_twidget_title">Widget de Reloj 4x1</string>
-    <string name="sense_twidget_summ">Hacer transparente los widget 4x1 de Reloj + Clima.</string>
+    <string name="sense_twidget_title">Widget de Reloj y Clima</string>
+    <string name="sense_twidget_summ">Hacer transparente el fondo de los panel 4x1 y 4x2 del widget de Reloj/Clima.</string>
     <string name="sense_tappdrawer_title">Cajón de Aplicaciones</string>
     <string name="sense_tappdrawer_summ">Hacer el cajón de aplicaciones transparente.</string>
     <string name="sense_tfolders_title">Carpetas</string>
@@ -271,8 +271,8 @@
     <string name="various_fastunlock_summ">Desbloquear cuando digite PIN o contraseña correcta. Solo en bloqueo HTC.</string>
     <string name="various_ytwatermark_title">Marca de canales de YouTube</string>
     <string name="various_ytwatermark_summ">Ocultar marca de canales en los vídeos de YouTube.</string>
-    <string name="various_oldtoasts_title">Avisos estilo Jelly Bean</string>
-    <string name="various_oldtoasts_summ">Volver al diseño de JB de avisos en Android 4.4.</string>
+    <string name="various_oldtoasts_title">Estilo de avisos Sense 6</string>
+    <string name="various_oldtoasts_summ">Hacer los avisos oscuros con esquinas menos redondeadas.</string>
     <string name="persistent_mods">Modificaciones siempre activas</string>
     <string name="persist_adgrid_title">Tamaño del listado de Apps</string>
     <string name="persist_adgrid_summ">Nuevos tamaños de Grillas: 5x5, 4x6 y 5x6. Puedes seleccionar desde el menú por defecto de las aplicaciones.</string>
@@ -326,9 +326,9 @@
     <string name="about_devs">Desarrolladores</string>
     <string name="about_devs_names">Langer Hans\nMikanoshi</string>
     <string name="about_thanks">Gracias</string>
-    <string name="about_sense">Sense 5</string>
+    <string name="about_sense">Sense 6</string>
     <string name="about_toolbox">Toolbox</string>
-    <string name="about_thanks_data">"mike1986 - por ARHD y la plataforma para  liberar esta aplicacion\n\ndescenpet - por la idea inicial de las ediciones\n\nvomer - por los Mods CleanBeam\n\nDunc001 y LeSScro - por sus iconos del APM\n\nEquipos RU y AU (y  algunos otros beta testers) - por probar y dar retroalimentacion valiosa
+    <string name="about_thanks_data">"mike1986 - por ARHD y la plataforma para  liberar esta aplicacion\n\nAcogu - por el logo e imagen principal del Sense 6 Toolbox\n\ndescenpet - por la idea inicial de las ediciones\n\nvomer - por los Mods CleanBeam\n\nDunc001 y LeSScro - por sus iconos del APM\n\nEquipos RU y AU (y  algunos otros beta testers) - por probar y dar retroalimentacion valiosa
 \n\nUsuarios ARHD - por su paciencia"</string>
     
     <string name="array_default">Defecto</string>
@@ -370,7 +370,7 @@
 	<string name="array_recents_menu_close">Cerrar</string>
 	<string name="array_recents_menu_closeothers">Cerrar otras</string>
 	<string name="array_screen_anim_none">Ninguna</string>
-	<string name="array_screen_anim_fade">Fade</string>
+	<string name="array_screen_anim_fade">Oscurecer</string>
 	<string name="array_screen_anim_crt">CRT</string>
 	<string name="array_color_blue">Azul</string>
 	<string name="array_color_green">Verde</string>
@@ -378,7 +378,7 @@
 	<string name="array_color_orange">Naranja</string>
 	<string name="array_color_white">Blanco</string>
 	<string name="array_media_none">Sin cambio</string>
-	<string name="array_media_playpause">Play/Pause</string>
+	<string name="array_media_playpause">Iniciar/Pausar</string>
 	<string name="array_media_next">Siguiente canción</string>
 	<string name="array_media_prev">Anterior canción</string>
 	<string name="systemui_largephoto_title">Foto del Llamante</string>
@@ -451,4 +451,33 @@
     <string name="backup_ok">Ajustes copiados correctamente!</string>
     <string name="restore_ok">Ajustes restaurados correctamente!</string>
     
-    </resources>
+    <string name="sense_themes_title">Escenas Sense</string>
+    <string name="sense_themes_summ">Cambiar color de escena para todas las app.</string>
+    <string name="sense_themes_apply">Aplicar</string>
+    <string name="sense_themes_cancel">Cancelar</string>
+    <string name="sense_theme_sep1">Escena</string>
+    <string name="sense_theme_remove">Remover</string>
+    <string name="sense_theme_color_header">Cabecera</string>
+    <string name="sense_theme_color_controls">Controles</string>
+    <string name="sense_theme_color_bf">BlinkFeed</string>
+    <string name="sense_theme_package_has_profile">Esta app ya esta en el perfil</string>
+    <string name="sense_theme_hint">Activar el color de las escenas reescribe lo hecho sobre la barra superior.\n\nEl Reinicio Rápido sera requerido una vez se habilitan los cambios.</string>
+	<string name="systemui_brightqs_title">Brillo</string>
+	<string name="systemui_brightqs_summ">Ajustar valores del brillo para el menú EQS.</string>
+	<string name="brightpicker_switch">Activa niveles personalizados</string>
+	<string name="brightpicker_desc">Escoge 4 diferentes valores</string>
+	<string name="brightpicker_warn_text">Todos los niveles de brillo deben ser diferentes</string>
+	
+	<string name="controls_smallsoftkeys_title">Teclas virtuales pequeñas</string>	
+	<string name="controls_smallsoftkeys_summ">Reduce el tamaño de las teclas virtuales en la barra.</string>
+	
+	<string name="toolbox">Ajustes del Toolbox</string>
+	<string name="toolbox_show_icon_title">Icono de acceso rápido</string>
+	<string name="toolbox_show_icon_summ">Mostrar icono del Toolbox en Ajustes.</string>
+	
+	<string name="support_s6t_title">Visitar tema del Sense 6 Toolbox</string>
+	<string name="support_s6t_summ">Ver info y lista de cambios de la app aqui.</string>
+	<string name="add_app">Adicionar app</string>
+	<string name="select_app">Seleccionar app</string>
+	
+	</resources>
