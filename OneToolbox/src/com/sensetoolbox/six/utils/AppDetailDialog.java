@@ -72,23 +72,10 @@ public class AppDetailDialog extends HtcAlertDialog {
 		themeBtnsLayout.setLayoutParams(lllp1);
 		themeBtnsLayout.setOrientation(LinearLayout.HORIZONTAL);
 		
-		// Actions
-		LinearLayout.LayoutParams lllp5 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		lllp5.setMargins(0, pad10dp, 0, 0);
-		
-		//HtcListItemSeparator separator2 = new HtcListItemSeparator(globalLayout.getContext());
-		//separator2.setLayoutParams(lllp5);
-		//separator2.setText(0, R.string.sense_theme_sep2);
-		
-		LinearLayout.LayoutParams lllp6 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-		lllp6.setMargins(pad10dp, pad10dp, pad10dp, pad10dp);
-		
 		// Construct resulting layout
 		globalLayout.addView(separator);
 		globalLayout.addView(themeColorsLayout);
 		globalLayout.addView(themeBtnsLayout);
-		//globalLayout.addView(separator2);
-		//globalLayout.addView(remove);
 		
 		this.setButton(DialogInterface.BUTTON_POSITIVE, this.getContext().getString(R.string.sense_themes_apply), new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog, int whichButton) {
