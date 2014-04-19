@@ -194,7 +194,7 @@ public class SysUIMods {
 			}
 		});
 		
-		//Redraw the tile view because we have added or removed something... Sense 5.5 only.
+		//Redraw the tile view because we have added or removed something...
 		findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettings", lpparam.classLoader, "repositionQuickSettingTile", ViewGroup.class, ArrayList.class, boolean.class, new XC_MethodHook() {
 			@Override
     		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -1578,6 +1578,29 @@ public class SysUIMods {
 							param.setResult(null);
 						}
 					}
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_ChangeBrightnessQSTile(LoadPackageParam lpparam) {
+		try {
+			final Class<?> QSB = findClass("com.android.systemui.statusbar.quicksetting.QuickSettingBrightness", lpparam.classLoader);
+			XposedBridge.hookAllConstructors(QSB, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					int val1 = XMain.pref.getInt("pref_key_sysui_brightqs_value1", 10);
+					int val2 = XMain.pref.getInt("pref_key_sysui_brightqs_value2", 40);
+					int val3 = XMain.pref.getInt("pref_key_sysui_brightqs_value3", 60);
+					int val4 = XMain.pref.getInt("pref_key_sysui_brightqs_value4", 100);
+					int valnorm1 = Math.round(255 * val1 / 100 + 1); if (valnorm1 > 255) valnorm1 = 255;
+					int valnorm2 = Math.round(255 * val2 / 100 + 1); if (valnorm2 > 255) valnorm2 = 255;
+					int valnorm3 = Math.round(255 * val3 / 100 + 1); if (valnorm3 > 255) valnorm3 = 255;
+					int valnorm4 = Math.round(255 * val4 / 100 + 1); if (valnorm4 > 255) valnorm4 = 255;
+					XposedHelpers.setStaticObjectField(QSB, "BRIGHTNESS_LEVEL", new int[] { valnorm1, valnorm2, valnorm3, valnorm4 });
+					XposedHelpers.setStaticObjectField(QSB, "BRIGHTNESS_VALUE", new int[] { valnorm1, valnorm2, valnorm3, valnorm4 });
 				}
 			});
 		} catch (Throwable t) {

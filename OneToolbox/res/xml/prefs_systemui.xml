@@ -64,6 +64,10 @@
         
         <com.htc.preference.HtcPreferenceCategory
         	android:title="@string/systemui_eqs">
+		<com.sensetoolbox.six.utils.BrightnessPicker
+            android:key="pref_key_sysui_brightqs"
+            android:summary="@string/systemui_brightqs_summ"
+            android:title="@string/systemui_brightqs_title" />
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_minorqs"
             android:summary="@string/systemui_heqs_summ"

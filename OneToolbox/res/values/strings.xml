@@ -110,6 +110,8 @@
 	<string name="systemui_tnb_title">Transparent notification background</string>
 	<string name="systemui_tnb_summ">Make the notification drawer background transparent.</string>
 	<string name="systemui_eqs">Extended Quick Settings</string>
+	<string name="systemui_brightqs_title">Brightness</string>
+	<string name="systemui_brightqs_summ">Configure brightness values for EQS tile</string>
 	<string name="systemui_heqs_title">Horizontal EQS</string>
 	<string name="systemui_heqs_summ">Enable horizontal EQS. Your normal EQS will be there (scrollable).</string>
 	<string name="systemui_heqs_notext_title">Smaller horizontal EQS</string>
@@ -139,6 +141,9 @@
 	<string name="systemui_alarmnotify_title">Display next alarm</string>
 	<string name="systemui_alarmnotify_summ">Show next alarm time instead of carrier name in notification drawer.</string>
 	<string name="next_alarm">Next alarm</string>
+	<string name="brightpicker_switch">Enable custom levels</string>
+	<string name="brightpicker_desc">Choose four different values</string>
+	<string name="brightpicker_warn_text">All brightness values must be different</string>
 	
 	<string name="cleanbeam_mods">Statusbar icons</string>
 	<string name="cleanbeam_colortheme_title">Color theme</string>
