@@ -468,4 +468,34 @@
     <string name="backup_ok">Backup maken van de instellingen is gelukt!</string>
     <string name="restore_ok">Herstellen van de instellingen is gelukt!</string>
     
-    </resources>
+    <string name="sense_themes_title">Sense themas</string>
+    <string name="sense_themes_summ">Verander thema kleuren voor elke app.</string>
+    <string name="sense_themes_apply">Toepassen</string>
+    <string name="sense_themes_cancel">Annuleren</string>
+    <string name="sense_theme_sep1">Thema</string>
+    <string name="sense_theme_remove">Verwijderen</string>
+    <string name="sense_theme_color_header">Header</string>
+    <string name="sense_theme_color_controls">Bediening</string>
+    <string name="sense_theme_color_bf">BlinkFeed</string>
+    <string name="sense_theme_package_has_profile">Deze app heeft al een profiel</string>
+    <string name="sense_theme_hint">Activeer thema kleuren override vanuit de bovenstaande actiebalk
+\n\nZachte hersart zal enkel eenmalig vereist zijn na het activeren van de override.</string>
+	<string name="systemui_brightqs_title">Helderheid</string>
+	<string name="systemui_brightqs_summ">Stel helderheidswaarden in voor EQS tegel.</string>
+	<string name="brightpicker_switch">Activeer aangepaste waarden</string>
+	<string name="brightpicker_desc">Kies vier verschillende waarden</string>
+	<string name="brightpicker_warn_text">Alle helderheidswaarden moeten verschillend zijn</string>
+	
+	<string name="controls_smallsoftkeys_title">Kleine softkeys</string>	
+	<string name="controls_smallsoftkeys_summ">Verklein de hoogte van de softkey balk.</string>
+	
+	<string name="toolbox">Toolbox instellingen</string>
+	<string name="toolbox_show_icon_title">Snelle toegang icoon</string>
+	<string name="toolbox_show_icon_summ">Toon Toolbox icoon in Instellingen.</string>
+	
+	<string name="support_s6t_title">Bezoek Sense 6 Toolbox Post</string>
+	<string name="support_s6t_summ">Vind info en changelog voor de app hier.</string>
+	<string name="add_app">Voeg app toe</string>
+	<string name="select_app">Selecteer app</string>
+	
+	</resources>
