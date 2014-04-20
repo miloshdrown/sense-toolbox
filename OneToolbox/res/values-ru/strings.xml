@@ -203,8 +203,8 @@
 	<string name="sense_gestures">Жесты</string>
 	<string name="sense_td_title">Док</string>
 	<string name="sense_td_summ">Настройка прозрачности дока ланчера Sense.</string>
-	<string name="sense_twidget_title">Виджет часов 4x1</string>
-	<string name="sense_twidget_summ">Настройка прозрачности стандартного виджета часов и погоды 4x1.</string>
+	<string name="sense_twidget_title">Виджет часов и погоды</string>
+	<string name="sense_twidget_summ">Настройка прозрачности фона виджетов часов и погоды 4x1 и 4x2.</string>
 	<string name="sense_tappdrawer_title">Фон списка приложений</string>
 	<string name="sense_tappdrawer_summ">Настройка прозрачности фона списка приложений ланчера Sense.</string>
 	<string name="sense_tfolders_title">Фон папок</string>
@@ -483,4 +483,7 @@
 	<string name="select_app">Выбрать приложение</string>
 	
 	<string name="sense_theme_package_has_profile">Данное приложение уже имеет профиль</string>
-    </resources>
+    <string name="controls_smallsoftkeys_title">Маленькие кнопки навигации</string>	
+	<string name="controls_smallsoftkeys_summ">Уменьшает высоту панели с софт кнопками.</string>
+	
+	</resources>
