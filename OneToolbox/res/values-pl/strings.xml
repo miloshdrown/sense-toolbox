@@ -496,4 +496,5 @@
 	<string name="select_app">Wybierz aplikację</string>
 	
 	<string name="sense_theme_hint">Włącz zmianę koloru motywu na pasku akcji powyżej..↵\n↵\nMiękki restart jest wymagany jedynie raz po ręcznym włączeniu.</string>
+	<string name="systemui_brightqs_title">Jasność</string>
 	</resources>
