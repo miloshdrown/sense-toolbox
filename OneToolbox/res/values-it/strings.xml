@@ -177,8 +177,8 @@
 	<string name="sense_gestures">Gesture</string>
 	<string name="sense_td_title">Dock</string>
 	<string name="sense_td_summ">Rende trasparente la dock del launcher di Sense.</string>
-	<string name="sense_twidget_title">Widget orologio 4x1</string>
-	<string name="sense_twidget_summ">Rende trasparente la classica widget 4x1 orologio + meteo.</string>
+	<string name="sense_twidget_title">Widget orologio e meteo</string>
+	<string name="sense_twidget_summ">Rende trasparente lo sfondo delle widget \"Orologio e Meteo\" 4x1 e 4x2.</string>
 	<string name="sense_tappdrawer_title">Elenco app</string>
 	<string name="sense_tappdrawer_summ">Rende trasparente lo sfondo dell\'elenco app del launcher di Sense.</string>
 	<string name="sense_tfolders_title">Cartelle</string>
@@ -196,7 +196,7 @@
 	<string name="sense_infiniscroll_title">Scroll infinito schermate Home</string>
 	<string name="sense_infiniscroll_summ">Abilita per poter scrollare all\'infinito tra le schermate della Home.</string>
 	<string name="sense_gridtinyfont_title">Font più piccolo per l\'elenco app</string>
-	<string name="sense_gridtinyfont_summ">Riduce la dimensione del font per le griglie a 6 righe dell\'elenco app.</string>
+	<string name="sense_gridtinyfont_summ">Riduce la dimensione del font per le griglie a 6 righe dell\'elenco app</string>
 	<string name="sense_swipedownaction_title">Swipe verso il basso</string>
 	<string name="sense_swipeupaction_title">Swipe verso l\'alto</string>
 	<string name="sense_swiperightaction_title">Swipe verso destra</string>
@@ -280,8 +280,8 @@
 	<string name="various_fastunlock_summ">Sblocca il dispositivo una volta immesso il PIN corretto. Solo per blocca-schermo HTC.</string>
 	<string name="various_ytwatermark_title">Watermark canali YouTube</string>
 	<string name="various_ytwatermark_summ">Nasconde il logo del canale in sovrimpressione sui video nella app YouTube.</string>
-	<string name="various_oldtoasts_title">Toast in stile Jelly Bean</string>
-	<string name="various_oldtoasts_summ">Riabilita l\'aspetto dei toast di Android 4.3 in Android 4.4.</string>
+	<string name="various_oldtoasts_title">Toast in stile Sense 6</string>
+	<string name="various_oldtoasts_summ">Rende i toast piu\' scuri e con gli angoli meno pronunciati.</string>
 	
 	<string name="persistent_mods">Mod sempre attive</string>
 	<string name="persist_adgrid_title">Dimensioni griglia elenco app</string>
@@ -341,9 +341,9 @@
 	<string name="about_devs">Sviluppatori</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
 	<string name="about_thanks">Ringraziamenti</string>
-	<string name="about_sense">Sense 5</string>
+	<string name="about_sense">Sense 6</string>
 	<string name="about_toolbox">Toolbox</string>
-	<string name="about_thanks_data">mike1986 - per ARHD e per la piattaforma su cui rilasciare questa app\n\ndescenpet - per l\'idea iniziale della modifica ordinamento\n\nvomer - per le mod CleanBeam\n\nDunc001 e LeSScro - per le loro icone dell\'APM\n\nTeam RU e AU (e altri beta tester iniziali) - per i test e il loro importante feedback\n\nUtenti ARHD - per la loro pazienza</string>
+	<string name="about_thanks_data">mike1986 - per ARHD e per la piattaforma su cui rilasciare questa app\n\nAcogu - per il logo di Sense 6 Toolbox e l\'icona della app\n\ndescenpet - per l\'idea iniziale della modifica ordinamento\n\nvomer - per le mod CleanBeam\n\nDunc001 e LeSScro - per le loro icone dell\'APM\n\nTeam RU e AU (e altri beta tester iniziali) - per i test e il loro importante feedback\n\nUtenti ARHD - per la loro pazienza</string>
 
 	<string name="array_default">Default</string>
 	<string name="array_cam_actions_shutter">Scatta</string>
@@ -396,7 +396,7 @@
 	<string name="array_media_next">Traccia successiva</string>
 	<string name="array_media_prev">Traccia precedente</string>
 	
-	<string name="about_version">Versione: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
+	<string name="about_version">Versione: %1$s (build JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="eqs_syn_all_fake">Syn_All_Fake(?)</string>
 	<string name="dummy">" "</string>
 	
@@ -467,5 +467,34 @@
 	
 	<string name="various_keyslight_auto_title">Illuminazione dinamica</string>
 	<string name="various_keyslight_auto_summ">Spegni l\'illuminazione dei tasti per le app a schermo intero.</string>
+	
+	<string name="sense_themes_title">Temi Sense</string>
+    <string name="sense_themes_summ">Cambia i colori del tema per tutte le app.</string>
+    <string name="sense_themes_apply">Applica</string>
+    <string name="sense_themes_cancel">Annulla</string>
+    <string name="sense_theme_sep1">Tema</string>
+    <string name="sense_theme_remove">Rimuovi</string>
+    <string name="sense_theme_color_header">Titolo</string>
+    <string name="sense_theme_color_controls">Controlli</string>
+    <string name="sense_theme_color_bf">BlinkFeed</string>
+    <string name="sense_theme_package_has_profile">Questa app dispone già di un profilo</string>
+    <string name="sense_theme_hint">Abilita la precedenza sui colori del tema dalla action bar in alto.\n\nVerrà richiesto un soft reboot solo dopo aver abilitato la precedenza.</string>
+	<string name="systemui_brightqs_title">Luminosità</string>
+	<string name="systemui_brightqs_summ">Imposta i valori di luminosità per la casella EQS.</string>
+	<string name="brightpicker_switch">Abilita livelli personalizzati</string>
+	<string name="brightpicker_desc">Scegli 4 valori differenti</string>
+	<string name="brightpicker_warn_text">Tutti i valori di luminosità devono essere differenti</string>
+	
+	<string name="controls_smallsoftkeys_title">Tasti a schermo piccoli</string>	
+	<string name="controls_smallsoftkeys_summ">Riduce l\'altezza della barra dei tasti a schermo.</string>
+	
+	<string name="toolbox">Impostazioni Toolbox</string>
+	<string name="toolbox_show_icon_title">Icona di accesso rapido</string>
+	<string name="toolbox_show_icon_summ">Mostra l\'icona di Toolbox nelle Impostazioni.</string>
+	
+	<string name="support_s6t_title">Visita il Post di Sense 6 Toolbox</string>
+	<string name="support_s6t_summ">Qua potrai trovare informazioni e changelog della app.</string>
+	<string name="add_app">Aggiungi app</string>
+	<string name="select_app">Seleziona app</string>
 	
 	</resources>
