@@ -183,8 +183,8 @@
     <string name="sense_gestures">Gesty</string>
     <string name="sense_td_title">Stacja dokująca</string>
     <string name="sense_td_summ">Dodaj przejrzysty launcher Sense dla stacji dokującej .</string>
-    <string name="sense_twidget_title">4x1 widget zegara</string>
-    <string name="sense_twidget_summ">Dodaj domyślny zegar 4x1 + przezroczysty widżet pogody.</string>
+    <string name="sense_twidget_title">Widget zegara i pogody</string>
+    <string name="sense_twidget_summ">Dodaj przezroczyste tło 4x1 i 4x2 panelu widgeta zegara i pogody.</string>
     <string name="sense_tappdrawer_title">Lista aplikacji</string>
     <string name="sense_tappdrawer_summ">Dodaj przejrzysty launcher Sense dla szuflady aplikacji.</string>
     <string name="sense_tfolders_title">Foldery</string>
@@ -349,7 +349,8 @@
     <string name="about_thanks">Dziękuję</string>
     <string name="about_sense">Sense 6</string>
     <string name="about_toolbox">Toolbox</string>
-    <string name="about_thanks_data">mike1986 - za ARHD i platformę do wydania tej aplikacji\n\ndescenpet - dla pierwszego pomysłu oraz kolejnych zmian\n\nvomer - modyfikacje CleanBeam\n\nDunc001 i LeSScro - za ich ikony APM\n\nZespołom RU i AU (i kilka innych wczesnych beta testerów) - za badania i cenne informacje\n\nUżytkownikom ARHD - za ich cierpliwość</string>
+    <string name="about_thanks_data">mike1986 - za ARHD i platformę do wydania tej aplikacji\n\nAcogu - za logo Sense 6 Toolbox i ikony aplikacji głównej
+\n\ndescenpet - dla pierwszego pomysłu oraz kolejnych zmian\n\nvomer - modyfikacje CleanBeam\n\nDunc001 i LeSScro - za ich ikony APM\n\nZespołom RU i AU (i kilka innych wczesnych beta testerów) - za badania i cenne informacje\n\nUżytkownikom ARHD - za ich cierpliwość</string>
 
     <string name="array_default">Domyślnie</string>
 	<string name="array_cam_actions_shutter">Migawka</string>
@@ -472,7 +473,7 @@
 	<string name="open_recents">Pokaż nowe aplikacje</string>
 	
 	<string name="sense_themes_title">Motywy Sense</string>
-    <string name="sense_themes_summ">Zmień kolor motywu dla każdej aplikacji</string>
+    <string name="sense_themes_summ">Zmień kolor motywu dla każdej aplikacji.</string>
     <string name="sense_themes_apply">Zastosuj</string>
     <string name="sense_themes_cancel">Anuluj</string>
     <string name="sense_themes_base">Baza</string>
@@ -487,7 +488,7 @@
     <string name="sense_theme_color_header">Nagłówek</string>
     <string name="sense_theme_color_controls">Kontrola</string>
     <string name="sense_theme_color_bf">BlinkFeed</string>
-    <string name="sense_theme_package_has_profile">Ten pakiet posiada już profil</string>
+    <string name="sense_theme_package_has_profile">Ta aplikacja ma już profil</string>
     <string name="toolbox">Ustawienia Toolbox</string>
 	<string name="toolbox_show_icon_title">Ikony szybkiego dostępu</string>
 	<string name="toolbox_show_icon_summ">Pokaż ikonę Toolbox w Ustawieniach.</string>
@@ -495,7 +496,7 @@
 	<string name="add_app">Dodaj aplikację</string>
 	<string name="select_app">Wybierz aplikację</string>
 	
-	<string name="sense_theme_hint">Włącz zmianę koloru motywu na pasku akcji powyżej..↵\n↵\nMiękki restart jest wymagany jedynie raz po ręcznym włączeniu.</string>
+	<string name="sense_theme_hint">Włącz zmianę koloru motywu na pasku akcji powyżej.↵\n↵\nSzybkie ponowne uruchomienie jest wymagane tylko raz po aktywacji.</string>
 	<string name="systemui_brightqs_title">Jasność</string>
 	<string name="systemui_brightqs_summ">Dostosowanie wartości jasności w EQS.</string>
 	<string name="brightpicker_switch">Włącz własny poziom</string>
