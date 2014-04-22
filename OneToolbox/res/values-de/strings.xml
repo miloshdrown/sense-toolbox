@@ -496,4 +496,6 @@
 	<string name="add_app">App hinzufügen</string>
 	<string name="select_app">App auswählen</string>
 	
+	<string name="various_powersavenotif_title">Energiesparmodus-Benachrichtigung</string>
+	<string name="various_powersavenotif_summ">Versteckt die Energiesparmodus-Benachrichtigung.</string>
 	</resources>
