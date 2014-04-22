@@ -498,4 +498,6 @@
 	<string name="add_app">Voeg app toe</string>
 	<string name="select_app">Selecteer app</string>
 	
+	<string name="various_powersavenotif_title">Verberg energiebesparing notificatie</string>
+	<string name="various_powersavenotif_summ">Schakel energiebesparing notificatie uit.</string>
 	</resources>
