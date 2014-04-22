@@ -23,6 +23,11 @@
             android:title="@string/various_mtpnotif_title"
             android:defaultValue="false" />
         <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_powersavenotif"
+            android:summary="@string/various_powersavenotif_summ"
+            android:title="@string/various_powersavenotif_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_other_fastunlock"
             android:summary="@string/various_fastunlock_summ"
             android:title="@string/various_fastunlock_title"

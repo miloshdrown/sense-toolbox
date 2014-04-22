@@ -313,6 +313,8 @@
 	<string name="various_movevol_summ">Выравнивает окно по низу, чтобы оно не закрывало обзор.</string>
 	<string name="various_mtpnotif_title">Скрыть уведомление сервиса MTP</string>
 	<string name="various_mtpnotif_summ">Делает MTP сервис фоновым и скрывает уведомление. Мод предназначен для прошивок на основе утечки 4.3.</string>
+	<string name="various_powersavenotif_title">Скрыть уведомление Энергосбережения</string>
+	<string name="various_powersavenotif_summ">Отключает уведомление о включенном Энергосбережении.</string>
 	<string name="various_fastunlock_title">Быстрая разблокировка</string>
 	<string name="various_fastunlock_summ">Позволяет разблокировать экран сразу после ввода правильного ПИНа или пароля. Только для HTC локскрина.</string>
 	<string name="various_ytwatermark_title">Логотип канала YouTube</string>

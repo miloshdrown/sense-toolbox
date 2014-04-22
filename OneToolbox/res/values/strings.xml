@@ -304,6 +304,8 @@
 	<string name="various_movevol_summ">Make volume dialog bottom aligned so it won\'t block the view.</string>
 	<string name="various_mtpnotif_title">Hide MTP notification</string>
 	<string name="various_mtpnotif_summ">Make MTP service background and disable notification.</string>
+	<string name="various_powersavenotif_title">Hide Power Saver notification</string>
+	<string name="various_powersavenotif_summ">Disable Power Saver notification.</string>
 	<string name="various_fastunlock_title">Fast unlock</string>
 	<string name="various_fastunlock_summ">Unlock device as soon as correct PIN or password are entered. HTC lockscreen only.</string>
 	<string name="various_ytwatermark_title">YouTube channel watermark</string>

@@ -239,6 +239,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				OtherMods.execHook_MTPNotif(lpparam);
 		}
 		
+		if(pkg.equals("com.htc.htcpowermanager")) {
+			if(pref.getBoolean("pref_key_other_powersavenotif", false))
+				OtherMods.execHook_PowerSaverNotif(lpparam);
+		}
+		
 		if(pkg.equals("com.htc.sense.mms"))
 		{
 			if(pref.getBoolean("pref_key_other_smscreenon", false))

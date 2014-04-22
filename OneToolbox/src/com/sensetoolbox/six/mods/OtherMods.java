@@ -100,6 +100,15 @@ public class OtherMods{
 		}
 	}
 	
+	public static void execHook_PowerSaverNotif(LoadPackageParam lpparam) {
+		try {
+			XposedHelpers.findAndHookMethod("com.htc.htcpowermanager.powersaver.PowerSaverNotificationService", lpparam.classLoader, "addNotification", XC_MethodReplacement.DO_NOTHING);
+			XposedHelpers.findAndHookMethod("com.htc.htcpowermanager.powersaver.PowerSaverNotificationService", lpparam.classLoader, "addNtfPowerJacket", int.class, int.class, XC_MethodReplacement.DO_NOTHING);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
 	public static void execHook_MoveVolume(StartupParam startparam) {
 		try {
 			final Class<?> clsVP = XposedHelpers.findClass("com.htc.view.VolumePanel", null);
