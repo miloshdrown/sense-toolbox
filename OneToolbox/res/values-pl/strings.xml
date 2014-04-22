@@ -497,4 +497,16 @@
 	
 	<string name="sense_theme_hint">Włącz zmianę koloru motywu na pasku akcji powyżej..↵\n↵\nMiękki restart jest wymagany jedynie raz po ręcznym włączeniu.</string>
 	<string name="systemui_brightqs_title">Jasność</string>
+	<string name="systemui_brightqs_summ">Dostosowanie wartości jasności w EQS.</string>
+	<string name="brightpicker_switch">Włącz własny poziom</string>
+	<string name="brightpicker_desc">Wybierz cztery różne wartości</string>
+	<string name="brightpicker_warn_text">Wszystkie wartości jasności muszą być różne</string>
+	
+	<string name="controls_smallsoftkeys_title">Małe przyciski</string>	
+	<string name="controls_smallsoftkeys_summ">Zmniejsz wysokość paska przycisków.</string>
+	
+	<string name="various_powersavenotif_title">Ukryj powiadomienie oszczędzania energii</string>
+	<string name="various_powersavenotif_summ">Wyłącz powiadomienie oszczędzania energii.</string>
+	<string name="support_s6t_title">Odwiedź Stronę Sense 6 Toolbox</string>
+	<string name="support_s6t_summ">Znajdź tutaj informacje o aplikacji i listę zmian.</string>
 	</resources>
