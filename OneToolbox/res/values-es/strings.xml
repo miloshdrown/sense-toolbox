@@ -480,4 +480,6 @@
 	<string name="add_app">Adicionar app</string>
 	<string name="select_app">Seleccionar app</string>
 	
+	<string name="various_powersavenotif_title">Ocultar notificación Ahorro de Energía</string>
+	<string name="various_powersavenotif_summ">Desactiva la notificación de Ahorro de Energía.</string>
 	</resources>
