@@ -417,20 +417,17 @@ public class PrismMods {
 			resparam.res.setReplacement(cell_count_y, 5);
 
 			resparam.res.setReplacement(resparam.res.getIdentifier("app_icon_padding_top", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.app_icon_padding_top));
+			resparam.res.setReplacement(resparam.res.getIdentifier("button_bar_height_without_padding", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.button_bar_height_without_padding));
 			
-			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_top_padding_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_top_padding_port));
-			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_bottom_padding_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_bottom_padding_port));
 			resparam.res.setReplacement(resparam.res.getIdentifier("celllayout_top_padding_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.celllayout_top_padding_port));
 			resparam.res.setReplacement(resparam.res.getIdentifier("celllayout_bottom_padding_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.celllayout_bottom_padding_port));
-			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_height_gap_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_height_gap_port));
 			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_cell_height_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_cell_height_port));
+			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_height_gap_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_height_gap_port));
 			
-			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_top_padding", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_top_padding_port));
-			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_bottom_padding", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_bottom_padding_port));
 			resparam.res.setReplacement(resparam.res.getIdentifier("celllayout_top_padding", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.celllayout_top_padding_port));
 			resparam.res.setReplacement(resparam.res.getIdentifier("celllayout_bottom_padding", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.celllayout_bottom_padding_port));
-			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_height_gap", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_height_gap_port));
 			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_cell_height", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_cell_height_port));
+			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_height_gap", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_height_gap_port));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

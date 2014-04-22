@@ -46,6 +46,7 @@ Current changelog
 [New] Sense 6 Theme colors per app override
 [New] Option to hide Toolbox icon from Settings
 [New] EQS brightness levels control
+[New] Small navbar on HTC One M8
 [Change] Jelly Bean styled toast changed to flat Sense 6 styled
 
 
