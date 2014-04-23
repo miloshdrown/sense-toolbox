@@ -289,7 +289,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="various_fastunlock_summ">Déverrouille l\'appareil aussitôt que le PIN est entré correctement. Pour écran de verrouillage HTC seulement.</string>
     <string name="various_ytwatermark_title">Filigrane de canal YouTube</string>
     <string name="various_ytwatermark_summ">Cache le recouvrement du logo du canal dans les vidéos de l\'app YouTube.</string>
-    <string name="various_oldtoasts_title">Toasts du style Jelly Bean</string>
+    <string name="various_oldtoasts_title">Toasts du style Sense 6</string>
     <string name="various_oldtoasts_summ">Ramène le design toast Jelly Bean sur Android 4.4.</string>
     <string name="persistent_mods">Mods toujours actifs</string>
     <string name="persist_adgrid_title">Taille de la grille du tiroir d\'apps</string>
