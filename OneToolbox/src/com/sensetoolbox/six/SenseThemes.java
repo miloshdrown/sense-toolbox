@@ -370,7 +370,7 @@ public class SenseThemes extends Activity {
 			colors.append(0x020301e7, new Object[]{ 0xff252525, 0xff6658cf, "ThemeTwo.CategoryFour", 0xff6658cf });
 			
 			// Theme 4
-			colors.append(0x020301eb, new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree", 0xff141414 });
+			//colors.append(0x020301eb, new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree", 0xff141414 });
 			//colors.append(0x020301ef, new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree.CategoryOne", 0xff4b4b4b });
 			//colors.append(0x020301f3, new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree.CategoryTwo", 0xff4b4b4b });
 			//colors.append(0x020301f7, new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree.CategoryThree", 0xff787878 });
