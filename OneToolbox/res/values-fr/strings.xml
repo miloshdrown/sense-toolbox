@@ -455,7 +455,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
 	<string name="systemui_brightqs_title">Luminosité</string>
 	<string name="systemui_brightqs_summ">Configure les valeurs de luminosité des tuiles EQS.</string>
 	<string name="brightpicker_switch">Activer les niveaux personnalisés</string>
-	<string name="brightpicker_desc">Choisir 4 valeurs différentes</string>
+	<string name="brightpicker_desc">Choisir quatre valeurs différentes</string>
 	<string name="brightpicker_warn_text">Toutes les valeurs de luminosité doivent être différentes</string>
 	
 	<string name="controls_smallsoftkeys_title">Petites touches</string>	
@@ -464,7 +464,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
 	<string name="various_powersavenotif_title">Cacher la notification d\'éco énergie</string>
 	<string name="various_powersavenotif_summ">Désactive la notification d\'économie d\'énergie.</string>
 	<string name="toolbox">Paramètres Toolbox</string>
-	<string name="toolbox_show_icon_title">Accès rapide de l\'icône</string>
+	<string name="toolbox_show_icon_title">Accès rapide à l\'icône</string>
 	<string name="toolbox_show_icon_summ">Affiche l\'icône Toolbox dans les paramètres.</string>
 	
 	<string name="support_s6t_title">Visiter le poste de Sense 6 Toolbox</string>
