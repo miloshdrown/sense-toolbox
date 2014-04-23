@@ -76,7 +76,7 @@ public class Helpers {
 		centerMsg.setGravity(Gravity.CENTER_HORIZONTAL);
 		centerMsg.setPadding(0, 60, 0, 60);
 		centerMsg.setTextSize(18.0f);
-		centerMsg.setTextColor(Color.DKGRAY);
+		centerMsg.setTextColor(ctx.getResources().getColor(android.R.color.primary_text_light));
 		return centerMsg; 
 	}
 	

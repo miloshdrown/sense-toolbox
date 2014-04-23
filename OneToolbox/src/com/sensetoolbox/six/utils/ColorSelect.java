@@ -56,11 +56,11 @@ public class ColorSelect extends HtcListView {
 		
 		final SparseArray<Object[]> items;
 		private LayoutInflater mInflater;
-		Context mContext = null;
+		//Context mContext = null;
 		boolean isBlinkfeed = false;
 
 		public ColorArrayAdapter(Context context, SparseArray<Object[]> colors, int i, boolean isBF) {
-			mContext = context;
+			//mContext = context;
 			items = colors;
 			selected = i;
 			mInflater = LayoutInflater.from(context);
@@ -110,15 +110,15 @@ public class ColorSelect extends HtcListView {
 			
 			TextView colorHeaderTitle = (TextView)row.findViewById(R.id.header_color_title);
 			if (item0 == 0xff252525)
-				colorHeaderTitle.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_dark));
+				colorHeaderTitle.setTextColor(0xffdfdfdf);
 			else
-				colorHeaderTitle.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_light));
+				colorHeaderTitle.setTextColor(0xff161616);
 				
 			TextView controlsHeaderTitle = (TextView)row.findViewById(R.id.controls_color_title);
 			if (item1 == 0xff252525)
-				controlsHeaderTitle.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_dark));
+				controlsHeaderTitle.setTextColor(0xffdfdfdf);
 			else
-				controlsHeaderTitle.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_light));
+				controlsHeaderTitle.setTextColor(0xff161616);
 			
 			if (isBlinkfeed) {
 				ColorFrameLayout colorBlinkfeed = (ColorFrameLayout)row.findViewById(R.id.blinkfeed_color);
@@ -129,9 +129,9 @@ public class ColorSelect extends HtcListView {
 				
 				TextView blinkfeedHeaderTitle = (TextView)row.findViewById(R.id.blinkfeed_color_title);
 				if (item2 <= 0xff4b4b4b)
-					blinkfeedHeaderTitle.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_dark));
+					blinkfeedHeaderTitle.setTextColor(0xffdfdfdf);
 				else
-					blinkfeedHeaderTitle.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_light));
+					blinkfeedHeaderTitle.setTextColor(0xff161616);
 				
 				if (position == selected)
 					colorBlinkfeed.setTag(new boolean[] { true, isBlinkfeed });
