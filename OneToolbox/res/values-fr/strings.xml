@@ -4,7 +4,7 @@
     <string name="app_name">Sense 6 Toolbox</string>
     <string name="app_name_version">Sense 6 Toolbox (Version: %1$s)</string>
     <string name="app_about">À propos</string>
-    <string name="about_version">Version: %1$s (\#JENKINSBUILDNUMBERGOESHERE)</string>
+    <string name="about_version">Version: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Support (App Version: %1$s)</string>
     <string name="restore">Rétablir</string>
     <string name="add">Ajouter</string>
