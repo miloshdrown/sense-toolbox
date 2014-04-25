@@ -3,8 +3,8 @@ package com.sensetoolbox.six.utils;
 import com.htc.preference.HtcListPreference;
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcListItem2LineText;
-import com.htc.widget.HtcListItemRadioButton;
 import com.htc.widget.HtcListItemTileImage;
+import com.htc.widget.HtcRadioButton;
 import com.sensetoolbox.six.R;
 
 import android.content.Context;
@@ -91,7 +91,7 @@ public class ImageListPreference extends HtcListPreference {
 				img.setScaleX(0.55f);
 				img.setScaleY(0.55f);
 			}
-			HtcListItemRadioButton radio = (HtcListItemRadioButton)row.findViewById(R.id.list_item_radio);
+			HtcRadioButton radio = (HtcRadioButton)row.findViewById(R.id.list_item_radio);
 			
 			if (position == index)
 				radio.setChecked(true);

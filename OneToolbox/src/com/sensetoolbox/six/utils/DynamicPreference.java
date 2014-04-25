@@ -9,9 +9,9 @@ import com.sensetoolbox.six.R;
 
 import com.htc.widget.HtcAlertDialog.Builder;
 import com.htc.widget.HtcListItem2LineText;
-import com.htc.widget.HtcListItemRadioButton;
 import com.htc.widget.HtcListItemTileImage;
 import com.htc.widget.HtcListView;
+import com.htc.widget.HtcRadioButton;
 
 import android.content.Context;
 import android.util.AttributeSet;
@@ -100,7 +100,7 @@ public class DynamicPreference extends HtcListPreference {
 
 			HtcListItem2LineText itemTitle = (HtcListItem2LineText) row.findViewById(R.id.list_item);
 			HtcListItemTileImage itemIcon = (HtcListItemTileImage) row.findViewById(R.id.list_item_img);
-			HtcListItemRadioButton itemRadio = (HtcListItemRadioButton) row.findViewById(R.id.list_item_radio);
+			HtcRadioButton itemRadio = (HtcRadioButton) row.findViewById(R.id.list_item_radio);
 			
 			itemTitle.setPrimaryText(getItem(position));
 			itemTitle.setSecondaryTextVisibility(8);
