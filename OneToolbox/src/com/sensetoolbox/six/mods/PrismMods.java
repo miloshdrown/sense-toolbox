@@ -549,7 +549,7 @@ public class PrismMods {
 				Context helperContext = dragLayer.getContext();
 				if (helperContext == null) return;
 				if (mDetectorVertical == null) mDetectorVertical = new GestureDetector(helperContext, new SwipeListenerVertical(dragLayer));
-				mDetectorVertical.onTouchEvent(ev);
+				if (mDetectorVertical.onTouchEvent(ev)) param.setResult(true);
 			}
 		});
 	}
@@ -636,7 +636,7 @@ public class PrismMods {
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			if (e1 == null || e2 == null) return false;
 			
-			if (e1.getY() > (screenHeight - density * 95) && e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE_VERT && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+			if (e1.getY() > (screenHeight - density * 100) && e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE_VERT && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 				if (XMain.pref.getBoolean("pref_key_prism_homemenu", false)) {
 					Enum<?> m_state = (Enum<?>)XposedHelpers.getObjectField(launcher, "m_state");
 					if (m_state != null && m_state.ordinal() == 0)
