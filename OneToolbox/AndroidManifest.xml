@@ -56,7 +56,7 @@
 		<meta-data android:value="true" android:name="xposedmodule"/>
 		<meta-data android:value="42+" android:name="xposedminversion"/>
 		<meta-data android:value="Mods for Sense 6 ROMs" android:name="xposeddescription"/>
-		<meta-data android:name="com.google.android.backup.api_key" android:value="AEdPqrEAAAAIhSrH0pp-xHb2SyhIIwRLpyQ3goUydSUQJT9GrQ" />
+		<meta-data android:name="com.google.android.backup.api_key" android:value="AEdPqrEAAAAIUO4cyZ9EtqkIPeN8Fb883BiV-vVVl10qB41-oA" />
 	</application>
 
 </manifest>

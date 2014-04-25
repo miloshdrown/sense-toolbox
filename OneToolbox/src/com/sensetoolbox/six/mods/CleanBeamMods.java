@@ -204,7 +204,9 @@ public class CleanBeamMods{
 			resparam.res.setReplacement("com.android.systemui", "drawable", s, new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
-					return applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + "glow_" + s.substring(s.length()-1), "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
+					Drawable db = applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + "glow_" + s.substring(s.length()-1), "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
+					if (i == 3 && (s.equals("stat_sys_wifi_signal_in_0") || s.equals("stat_sys_wifi_signal_out_0") || s.equals("stat_sys_wifi_signal_inandout_0"))) db.setAlpha(200);
+					return db;
 				}	
 			});
 		}
@@ -214,7 +216,9 @@ public class CleanBeamMods{
 			resparam.res.setReplacement("com.android.systemui", "drawable", s, new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
-					return applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + s.substring(s.length()-1), "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
+					Drawable db = applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + s.substring(s.length()-1), "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
+					if (i == 3 && s.equals("stat_sys_wifi_signal_connected_0")) db.setAlpha(200);
+					return db;
 				}	
 			});
 		}
