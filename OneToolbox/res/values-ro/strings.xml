@@ -1,7 +1,7 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources><string name="menu_save">Salvează</string>
     <string name="app_name">Sense 6 Toolbox</string>
-    <string name="app_name_version">Sense 5 Toolbox (Versiune: %1$s)</string>
+    <string name="app_name_version">Sense 6 Toolbox (Versiune: %1$s)</string>
     <string name="app_about">Despre</string>
     <string name="about_version">Versiune: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Suport (Versiune Aplicatie: %1$s)</string>
