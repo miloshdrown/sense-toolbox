@@ -58,7 +58,7 @@
             android:title="@string/support_s6t_title"
             android:summary="@string/support_s6t_summ" >
 			<intent android:action="android.intent.action.VIEW"
-            android:data="http://forum.xda-developers.com/showpost.php?p=44650768&#038;postcount=2" />
+            android:data="http://sensetoolbox.com/" />
 		</com.htc.preference.HtcPreference>
 		<com.htc.preference.HtcPreference 
             android:title="@string/support_blog_title"
