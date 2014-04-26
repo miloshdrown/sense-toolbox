@@ -224,4 +224,21 @@
 	<string name="sense_shakeaction_summ">Herhangi bir ana ekrandayken sallama eylemi.</string>
 	<string name="sense_sevenscreens_title">7 adet ana ekran</string>
 	<string name="sense_sevenscreens_summ">Ana ekran sayısı arttırılarak yedi yapılacaktır. NOT: HTC One 4.2.2 sürümünde çalışmaz!</string>
+	<string name="sense_4x5homescreen_title">Kılavuz 4x5</string>
+	<string name="sense_4x5homescreen_summ">Bütün ana ekranlara bir satır ekle.</string>
+	<string name="sense_invisilabels_title">Simge etiketlerini kaldır</string>
+	<string name="sense_invisilabels_summ">Ana ekranlardaki uygulama ve klasör simge etiketlerini kaldır.</string>
+	<string name="notselected">Seçilmedi</string>
+	<string name="loading_app_data">Uygulama yükleniyor…</string>
+	<string name="locked_warning">Lütfen önce başlatıcının kilidini açın!</string>
+	
+	<string name="message_mods">Mesajlaşma modları</string>
+	<string name="message_smsmms_title">SMS -&gt; MMS dönüştürmeyi devre dışı bırak</string>
+	<string name="message_smsmms_summ">Karakter sınırı nedeniyle SMS -&gt; MMS dönüştürmeyi zorla devre dışı bırakmayı kontrol et. Şebeke sınırlamaları uygulanır.</string>
+	<string name="message_smswake_title">SMS ile uyan</string>
+	<string name="message_smswake_summ">SMS alındığında ekranı aç.</string>
+	<string name="message_toast_title">Ekran üstü \"mesaj iletildi\" bildirimi</string>
+	<string name="message_toast_summ">İleti raporu için ekran üstü bildirim göster.</string>
+	<string name="message_size_title">MMS boyutunu artır</string>
+	<string name="message_size_summ">MMS boyutunu artır ve 300k, 600k, 1000k olarak sınırla.</string>
 	</resources>
