@@ -1,4 +1,72 @@
 <?xml version='1.0' encoding='utf-8'?>
 <resources><string name="menu_save">Salvează</string>
     <string name="app_name">Sense 6 Toolbox</string>
-    </resources>
+    <string name="app_name_version">Sense 5 Toolbox (Versiune: %1$s)</string>
+    <string name="app_about">Despre</string>
+    <string name="about_version">Versiune: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
+    <string name="support_version">Suport (Versiune Aplicatie: %1$s)</string>
+    <string name="restore">Restaureaza</string>
+    <string name="add">Adauga</string>
+    <string name="soft_reboot">Repornire Soft</string>
+    <string name="ram_mb">MB</string>
+    <string name="cpu_mhz">MHz</string>
+    <string name="backup_restore">Setari</string>
+    <string name="backup_restore_choose">Alegeți rutina dorită</string>
+    <string name="do_backup">Backup</string>
+    <string name="do_restore">Restaureaza</string>
+    <string name="storage_read_only">Mediul de stocare extern este doar read-only</string>
+    <string name="storage_unavailable">Nu se poate accesa nici un mediu de stocare</string>
+    <string name="storage_cannot_mkdir">Nu s-a reusit creerea directorului de stocare</string>
+    <string name="storage_cannot_backup">Nu s-a reusit creerea backup-ului</string>
+    <string name="storage_cannot_restore">Nu s-au gasit setarile de backul</string>
+    <string name="backup_ok">Setarile au fost salvate cu succes!</string>
+    <string name="restore_ok">Setarile au fost restaurate cu succes!</string>
+    
+    <string name="warning">Atentie!</string>
+    <string name="xposed_not_installed">Xposed Framework nu este instalat, trebuie sa instalati app_process si XposedBridge.jar din Instalerul Xposed, apoi activati modulul Sense 6 Toolbox si reporniti telefonul.</string>
+    <string name="module_not_active">Modulul Sense 5 Toolbox nu este activat! Deschideti Instalerul Xposed, activati modulul si reporniti telefonul.</string>
+    <string name="welcome">Bine ati venit la Sense 6 Toolbox!</string>
+    <string name="dragndrop">Folositi drag\'n\'drop pentru a rearanja setarile rapide.</string>
+    <string name="title_delete">Apasati pe dala pentru a sterge.</string>
+    <string name="plus_icon">Apasati pe \"+\" pentru a adăuga dale.</string>
+    <string name="save_settings">Nu uitati sa salvati setarile dumneavoastra!</string>
+    <string name="restore_layout">Apasati pe icoana restore pentru a restaura ultima configuratie salvata.</string>
+    <string name="xposed_mods">Retineti ca modurile din tab-ul \'MODS\' functioneaza doar daca aveti Xposed instalat!</string>
+    <string name="no_currents">Buttons backlight control nu a fost găsit. Dispozitivul dvs. ar putea fi incompatibil cu acest mod.</string>
+    <string name="backup_restore_info">Setarile dvs. au fost restaurate din Google Cloud Backup. Daca ati avut activat Vol2wake, reactivati manual din nou. Reporniti telefonul dupa ce ati activat modulul Xposed Toolbox.</string>
+    
+    <string name="apm_title">Alegeti modul de repornire</string>
+    <string name="apm_normal_title">Reporneste</string>
+    <string name="apm_normal_summ">Inchide toate aplicatiile si reporneste dispozitivul</string>
+    <string name="apm_hotreboot_title">Hot Reboot</string>
+    <string name="apm_hotreboot_summ">Reporneste shell</string>
+    <string name="apm_recovery_title">Recovery</string>
+    <string name="apm_recovery_summ">Reporneste direct in recovery</string>
+    <string name="apm_bootloader_title">Bootloader</string>
+    <string name="apm_bootloader_summ">Reporneste direct in bootloader</string>
+    
+    <string name="eqs_reorder">Rearanjare EQS</string>
+    <string name="eqs_reorder_explain">Rearanjati dalele EQS</string>
+    <string name="no_root_access">Nu aveti acces root</string>
+    <string name="no_root_explain">Dispozitivul dvs. nu are acces root ori nu ati permis accesul aplicatiei prin SuperUser.\nFara root nu puteti rearanja dalele EQS, prin urmare functia nu este disponibila.\nPuteti revoca acest mesaj o data sau pentru totdeauna. La fiecare repornire se va face o verificare de acces la root pentru a face optiunea disponibila in cazul in care va decideti sa activati root-ul.</string>
+	<string name="dismiss_once">Revoca o data</string>
+	<string name="dismiss_forever">Revoca pentru totdeauna</string>
+	<string name="mods">Moduri</string>
+	
+	<string name="xposed_not_found">Instalerul Xposed nu a fost gasit</string>
+	<string name="xposed_not_found_explain">Se pare ca nu aveti Xposed instalat.\n\nRetineti ca modurile din aceasta pagina functioneaza doar cu Xposed!\n\nXposed este disponibil in instalerul ARHD.</string>
+	<string name="okay">Ok</string>
+	<string name="close_camera">Nu uitati sa inchideti camera din aplicatii recente!</string>
+	<string name="remove_last">Nu puteti sterge ultimul element!</string>
+	<string name="remove">Sterge</string>
+	<string name="remove_tile_msg1">Doriti sa stergeti</string>
+	<string name="remove_tile_msg2">dala?\nPuteti readauga cu ajutorul meniului de sus.</string>
+	<string name="yes">Da</string>
+	<string name="no">Nu</string>
+	<string name="hotreboot_explain">Ordinea dvs. a fost salvata! Este necesara repornirea telefonului. Doriti sa faceti acest lucru acum?</string>
+	<string name="hotreboot_explain_prefs">Softul telefonului va fi repornit. Continuati?</string>
+	<string name="select_tile">Selectati dala pentru adaugare</string>
+	<string name="success">Succes</string>
+	<string name="backup_restored">Backup restaurat cu succes! Apasati pe \'Salvare\' pentru a aplica ordinea.</string>
+	<string name="no_backup">Nici un backup gasit</string>
+	</resources>
