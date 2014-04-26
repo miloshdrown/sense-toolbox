@@ -766,50 +766,51 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	// HtcPreferenceScreens management
 	@Override
 	public boolean onPreferenceTreeClick(HtcPreferenceScreen parentPreferenceScreen, HtcPreference preference) {
-		super.onPreferenceTreeClick(parentPreferenceScreen, preference);
-		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		HtcPreferenceFragment replaceTo = null;
-		
-		switch (preference.getKey()) {
-			case "pref_key_sysui": replaceTo = new SysUIFragment(); break;
-			case "pref_key_cb": replaceTo = new StatusBarFragment(); break;
-			case "pref_key_prism": replaceTo = new PrismFragment(); break;
-			case "pref_key_sms": replaceTo = new MessageFragment(); break;
-			case "pref_key_controls": replaceTo = new ControlsFragment(); break;
-			case "pref_key_other": replaceTo = new OtherFragment(); break;
-			case "pref_key_persist": replaceTo = new PersistFragment(); break;
-		}
-		
-		if (replaceTo != null)
-		ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out).replace(R.id.fragment_container, replaceTo).addToBackStack(null).commit();
-		
-		if (preference instanceof HtcPreferenceScreen) {
-			((MainActivity)getActivity()).setActionBarText((String)preference.getTitle());
-			View homeBtn = ((MainActivity)getActivity()).actionBarBackBtn;
-			if (homeBtn != null) {
-				OnClickListener dismissDialogClickListener = new OnClickListener() {
-					@Override
-					public void onClick(View v) {
-						getFragmentManager().popBackStack();
-					}
-				};
-
-				ViewParent homeBtnContainer = homeBtn.getParent();
-
-				if (homeBtnContainer instanceof FrameLayout) {
-					ViewGroup containerParent = (ViewGroup) homeBtnContainer.getParent();
-
-					if (containerParent instanceof LinearLayout) {
-						((LinearLayout) containerParent).setOnClickListener(dismissDialogClickListener);
+		if (preference != null && preference instanceof HtcPreferenceScreen) {
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			HtcPreferenceFragment replaceTo = null;
+			
+			switch (preference.getKey()) {
+				case "pref_key_sysui": replaceTo = new SysUIFragment(); break;
+				case "pref_key_cb": replaceTo = new StatusBarFragment(); break;
+				case "pref_key_prism": replaceTo = new PrismFragment(); break;
+				case "pref_key_sms": replaceTo = new MessageFragment(); break;
+				case "pref_key_controls": replaceTo = new ControlsFragment(); break;
+				case "pref_key_other": replaceTo = new OtherFragment(); break;
+				case "pref_key_persist": replaceTo = new PersistFragment(); break;
+			}
+			
+			if (replaceTo != null) {
+				ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out).replace(R.id.fragment_container, replaceTo).addToBackStack(null).commit();
+				
+				((MainActivity)getActivity()).setActionBarText((String)preference.getTitle());
+				View homeBtn = ((MainActivity)getActivity()).actionBarBackBtn;
+				if (homeBtn != null) {
+					OnClickListener dismissDialogClickListener = new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							getFragmentManager().popBackStack();
+						}
+					};
+					
+					ViewParent homeBtnContainer = homeBtn.getParent();
+					
+					if (homeBtnContainer instanceof FrameLayout) {
+						ViewGroup containerParent = (ViewGroup) homeBtnContainer.getParent();
+						
+						if (containerParent instanceof LinearLayout) {
+							((LinearLayout) containerParent).setOnClickListener(dismissDialogClickListener);
+						} else {
+							((FrameLayout) homeBtnContainer).setOnClickListener(dismissDialogClickListener);
+						}
 					} else {
-						((FrameLayout) homeBtnContainer).setOnClickListener(dismissDialogClickListener);
+						homeBtn.setOnClickListener(dismissDialogClickListener);
 					}
-				} else {
-					homeBtn.setOnClickListener(dismissDialogClickListener);
 				}
+				return true;
 			}
 		}
-		return true;
+		return super.onPreferenceTreeClick(parentPreferenceScreen, preference);
 	}
 	
 	public static boolean isXposedInstalled = false;
