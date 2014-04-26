@@ -344,7 +344,7 @@
 	<string name="about_devs">Developers</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
 	<string name="about_thanks">Hvala</string>
-	<string name="about_sense">Sense 5</string>
+	<string name="about_sense">Sense 6</string>
 	<string name="about_toolbox">Toolbox</string>
 	<string name="about_thanks_data">mike1986 - za ARHD i platformu za objavljivanje ove aplikacije\n\ndescenpet - za inicijalnu ideju za reorganizaciju edita\n\nvomer - za CleanBeam mods\n\nDunc001 and LeSScro - za njihove APM icone\n\nRU i AU imove (i neke rane beta testere) - za testiranje i davanje povratnih informacija\n\nARHD korisnici - za njihovo strpljenje</string>
 
@@ -467,4 +467,11 @@
 <string name="sense_themes_title">Sense teme</string>
     <string name="sense_themes_summ">Promjeni boje tema za svaku aplikaciju.</string>
     <string name="sense_themes_apply">Primijeni</string>
+    <string name="sense_themes_cancel">Poništi</string>
+    <string name="sense_theme_sep1">Tema</string>
+    <string name="sense_theme_remove">Ukloniti</string>
+    <string name="sense_theme_color_header">Vrh</string>
+    <string name="sense_theme_color_controls">Kontrole</string>
+    <string name="sense_theme_color_bf">BlinkFeed</string>
+    <string name="sense_theme_package_has_profile">Ova aplikacija već ima svoj profil</string>
     </resources>
