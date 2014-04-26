@@ -464,4 +464,7 @@
 	<string name="array_keyslight_extradim">Extra prigušenje (dimanje)</string>
 	<string name="array_keyslight_alwaysoff">Uvijek isključeno</string>
 	
-</resources>
+<string name="sense_themes_title">Sense teme</string>
+    <string name="sense_themes_summ">Promjeni boje tema za svaku aplikaciju.</string>
+    <string name="sense_themes_apply">Primijeni</string>
+    </resources>
