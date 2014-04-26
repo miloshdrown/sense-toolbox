@@ -4,7 +4,7 @@
     <string name="app_name">Sense 6 Toolbox</string>
     <string name="app_name_version">Sense 6 Toolbox (Version: %1$s)</string>
     <string name="app_about">À propos</string>
-    <string name="about_version">Version: %1$s (JENKINSBUILDNUMBERGOESHERE)</string>
+    <string name="about_version">Version: %1$s (build JENKINSBUILDNUMBERGOESHERE)</string>
     <string name="support_version">Support (App Version: %1$s)</string>
     <string name="restore">Rétablir</string>
     <string name="add">Ajouter</string>
@@ -181,8 +181,8 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="sense_gestures">Gestes</string>
     <string name="sense_td_title">Dock</string>
     <string name="sense_td_summ">Met le dock du lanceur Sense transparent.</string>
-    <string name="sense_twidget_title">4x1 widget de l\'horloge</string>
-    <string name="sense_twidget_summ">Met par défaut le widget 4x1 de météo-horloge transparent.</string>
+    <string name="sense_twidget_title">Clock and weather widget</string>
+    <string name="sense_twidget_summ">Makes the background panels of the 4x1 and 4x2 clock/weather widgets transparent.</string>
     <string name="sense_tappdrawer_title">Tiroir d\'applications</string>
     <string name="sense_tappdrawer_summ">Met le tiroir d\'applications du lanceur Sense transparent.</string>
     <string name="sense_tfolders_title">Dossiers</string>
@@ -290,7 +290,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="various_ytwatermark_title">Filigrane de canal YouTube</string>
     <string name="various_ytwatermark_summ">Cache le recouvrement du logo du canal dans les vidéos de l\'app YouTube.</string>
     <string name="various_oldtoasts_title">Toasts du style Sense 6</string>
-    <string name="various_oldtoasts_summ">Ramène le design toast Jelly Bean sur Android 4.4.</string>
+    <string name="various_oldtoasts_summ">Make toasts darker with smaller rounded corners radius.</string>
     <string name="persistent_mods">Mods toujours actifs</string>
     <string name="persist_adgrid_title">Taille de la grille du tiroir d\'apps</string>
     <string name="persist_adgrid_summ">Nouvelles tailles de grille: 5x5, 4x6 et 5x6. Tu peux les sélectionner par le menu du tiroir d\'apps par défaut.</string>
@@ -346,7 +346,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
     <string name="about_thanks">Merci</string>
     <string name="about_sense">Sense 6</string>
     <string name="about_toolbox">Toolbox</string>
-    <string name="about_thanks_data">mike1986 - pour ARHD et la plate-forme de publier cette app\ndescenpet - pour l\'idée initiative d\'éditer la réorganisation\nvomer - pour les mods CleanBeam\nDunc001 and LeSScro - pour leurs icônes APM\néquipes RU et AU (et d\'autres testeurs bêta) - pour tester et donner des commentaires valables\nutilisateurs ARHD - pour leur patience</string>
+    <string name="about_thanks_data">mike1986 - pour ARHD et la plate-forme de publier cette app\nAcogu - for Sense 6 Toolbox logo and main app icon\ndescenpet - pour l\'idée initiative d\'éditer la réorganisation\nvomer - pour les mods CleanBeam\nDunc001 and LeSScro - pour leurs icônes APM\néquipes RU et AU (et d\'autres testeurs bêta) - pour tester et donner des commentaires valables\nutilisateurs ARHD - pour leur patience</string>
     <string name="about_l10n">Traduction</string>
     <string name="about_l10n_data_left">Croate\nAllemand\nItalien\nPolonais\nEspagnol\nFrançais</string>
     <string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
@@ -467,7 +467,7 @@ Sans root, vous ne pouvez pas réorganiser vos tuiles EQS, donc la fonction n\'e
 	<string name="toolbox_show_icon_title">Accès rapide à l\'icône</string>
 	<string name="toolbox_show_icon_summ">Affiche l\'icône Toolbox dans les paramètres.</string>
 	
-	<string name="support_s6t_title">Visiter le poste de Sense 6 Toolbox</string>
+	<string name="support_s6t_title">Visiter le site de Sense 6 Toolbox</string>
 	<string name="support_s6t_summ">Trouver les informations et le changelog de l\'application ici.</string>
 	<string name="add_app">Ajouter une appli</string>
 	<string name="select_app">Sélectionner une appli</string>
