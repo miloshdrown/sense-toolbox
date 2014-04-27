@@ -433,8 +433,8 @@
 	<string name="array_header_click_sysinfo">CPU/RAM Info anzeigen/verstecken. Uhr-App per tap auf die Uhrzeit öffnen.</string>
 	
 	<string name="about_l10n">Übersetzung</string>
-	<string name="about_l10n_data_left">Kroatisch\nHolländisch\nItalienisch\nPolnisch\nSpanisch\nFanzösisch</string>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
+	<string name="about_l10n_data_left">Kroatisch\nHolländisch\nItalienisch\nPolnisch\nSpanisch\nFanzösisch\nTürkisch</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24\ninci55</string>
 	
 	<string name="module_not_active">Das Sense 6 Toolbox Xposed Modul ist nicht aktiv. Bitte aktiviere es im Xposed Installer und starte das Handy neu.</string>
     <string name="array_recents_menu_playstore">Play Store</string>
