@@ -98,9 +98,9 @@ public class DynamicPreference extends HtcListPreference {
 			else
 				row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
 
-			HtcListItem2LineText itemTitle = (HtcListItem2LineText) row.findViewById(R.id.list_item);
-			HtcListItemTileImage itemIcon = (HtcListItemTileImage) row.findViewById(R.id.list_item_img);
-			HtcRadioButton itemRadio = (HtcRadioButton) row.findViewById(R.id.list_item_radio);
+			HtcListItem2LineText itemTitle = (HtcListItem2LineText) row.findViewById(android.R.id.text1);
+			HtcListItemTileImage itemIcon = (HtcListItemTileImage) row.findViewById(android.R.id.icon);
+			HtcRadioButton itemRadio = (HtcRadioButton) row.findViewById(android.R.id.checkbox);
 			
 			itemTitle.setPrimaryText(getItem(position));
 			itemTitle.setSecondaryTextVisibility(8);

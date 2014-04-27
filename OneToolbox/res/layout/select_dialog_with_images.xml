@@ -4,11 +4,11 @@
 	android:layout_width="match_parent" 
 	android:layout_height="wrap_content"
 	xmlns:android="http://schemas.android.com/apk/res/android">
-	<com.htc.widget.HtcListItem 
+	<com.htc.widget.CheckableHtcListItem 
 		android:layout_width="match_parent" 
 		android:layout_height="wrap_content">
-		<com.htc.widget.HtcListItemTileImage android:id="@+id/list_item_img" />
-		<com.htc.widget.HtcListItem2LineText android:id="@+id/list_item" />
-		<com.htc.widget.HtcRadioButton android:id="@+id/list_item_radio" />
-	</com.htc.widget.HtcListItem>
+		<com.htc.widget.HtcListItemTileImage android:id="@android:id/icon" />
+		<com.htc.widget.HtcListItem2LineText android:id="@android:id/text1" />
+		<com.htc.widget.HtcRadioButton android:id="@android:id/checkbox" />
+	</com.htc.widget.CheckableHtcListItem>
 </LinearLayout>

@@ -68,8 +68,8 @@ public class ImageListPreference extends HtcListPreference {
 		public View getView(int position, View view, ViewGroup parent) {
 			View row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
 			
-			HtcListItem2LineText title = (HtcListItem2LineText)row.findViewById(R.id.list_item);
-			HtcListItemTileImage img = (HtcListItemTileImage)row.findViewById(R.id.list_item_img);
+			HtcListItem2LineText title = (HtcListItem2LineText)row.findViewById(android.R.id.text1);
+			HtcListItemTileImage img = (HtcListItemTileImage)row.findViewById(android.R.id.icon);
 			title.setPrimaryText(getItem(position));
 			title.setSecondaryTextVisibility(8);
 			if (resourceIds != null && (resourceIds[position]) != 0) {
@@ -91,7 +91,7 @@ public class ImageListPreference extends HtcListPreference {
 				img.setScaleX(0.55f);
 				img.setScaleY(0.55f);
 			}
-			HtcRadioButton radio = (HtcRadioButton)row.findViewById(R.id.list_item_radio);
+			HtcRadioButton radio = (HtcRadioButton)row.findViewById(android.R.id.checkbox);
 			
 			if (position == index)
 				radio.setChecked(true);
