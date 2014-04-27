@@ -439,7 +439,7 @@
 	<string name="array_color_orange">Turuncu</string>
 	<string name="array_color_white">Beyaz</string>
 	<string name="array_media_none">Değişiklik yok</string>
-	<string name="array_media_playpause">Başlat/Duraklat</string>
+	<string name="array_media_playpause">Oynat/Duraklat</string>
 	<string name="array_media_next">Sonraki parça</string>
 	<string name="array_media_prev">Önceki parça</string>
 	<string name="array_large_photo_default">Varsayılan</string>
