@@ -409,8 +409,8 @@
 	<string name="array_header_click_sysinfo">Mostrar/Ocultar información de CPU y RAM, abrir Reloj presionando la hora actual.</string>
 	
 	<string name="about_l10n">Traducción</string>
-	<string name="about_l10n_data_left">Croata\nHolandés\nItaliano\nPolaco\nEspañol\nFrances</string>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
+	<string name="about_l10n_data_left">Croata\nHolandés\nItaliano\nPolaco\nEspañol\nFrances\nTurco</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24\ninci55</string>
 	
 	<string name="module_not_active">El modulo Sense 6 Toolbox no esta activo! Abre el Instalador Xposed, activa el modulo y reinicia.</string>
     <string name="cleanbeam_mods_credits_head">Creditos</string>
