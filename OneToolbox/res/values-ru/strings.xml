@@ -453,8 +453,8 @@
 	<string name="about_thanks_data">mike1986 - за ARHD и платформу для релиза данного приложения\n\nAcogu - за Sense 6 Toolbox лого и иконку приложения\n\ndescenpet - за первоначальную идею сортировки EQS\n\nvomer - за моды CleanBeam\n\nDunc001 и LeSScro - за их APM иконки\n\nКомандам RU и AU (и некоторым ранним тестерам) - за тестирование и полезные отзывы\n\nПользователям ARHD - за их терпение :)</string>
 
 	<string name="about_l10n">Локализации</string>
-	<string name="about_l10n_data_left">Хорватский\nГолландский\nИтальянский\nПольский\nИспанский\nФранцузский</string>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
+	<string name="about_l10n_data_left">Хорватский\nГолландский\nИтальянский\nПольский\nИспанский\nФранцузский\nТурецкий</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24\ninci55</string>
 	
 	<string name="cleanbeam_mods_credits_head">Благодарности</string>
 	<string name="cleanbeam_hd2o_title">HD2Owner</string>
