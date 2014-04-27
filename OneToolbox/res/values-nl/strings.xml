@@ -400,7 +400,7 @@
 	<string name="array_media_next">Volgend nummer</string>
 	<string name="array_media_prev">Vorig nummer</string>
 	
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24\ninci55</string>
 	
 	<string name="cpu_mhz">MHz</string>
     
@@ -419,7 +419,7 @@
 	<string name="various_rejectedcall_summ">Laat gemiste oproep notificaties voor handmatig geweigerde inkomende oproepen niet zien. Ze zullen worden toegevoegd aan de oproep geschiedenis als normaal beantwoorde oproepen.</string>
 	<string name="various_mods_volume">Volume</string>
 	<string name="about_l10n">Vertaling</string>
-	<string name="about_l10n_data_left">Kroatisch\nNederlands\nItaliaans\nPools\nSpaans\nFrans</string>
+	<string name="about_l10n_data_left">Kroatisch\nNederlands\nItaliaans\nPools\nSpaans\nFrans\nTurks</string>
 	<string name="array_home_menu_draglock">Ontgrendel launcher</string>
 	<string name="array_home_menu_dragunlock">Ontgrendel launcher</string>
 	<string name="array_large_photo_default">Standaard</string>
