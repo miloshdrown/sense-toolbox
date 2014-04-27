@@ -386,8 +386,8 @@
 	<string name="about_toolbox">Toolbox</string>
 	<string name="about_thanks_data">mike1986 - ARHD ve bu uygulamanın platformu için\n\nAcogu - Sense 6 Toolbox logosu ve ana uygulama simgesi için\n\ndescenpet - Yeniden sıralama ile ilgili ilk fikir için\n\nvomer - CleanBeam modları için\n\nDunc001 ve LeSScro - APM simgeleri için\n\nRU ve AU takımları (ve diğer test edenler) - Denemeleri ve değerli geribildirimleri için\n\nARHD kullanıcıları - Sabırları için</string>
 	<string name="about_l10n">Çeviri</string>
-	<string name="about_l10n_data_left">Hırvatça\nFlemenkçe\nİtalyanca\nLehçe\nİspanyolca\nFransızca</string>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
+	<string name="about_l10n_data_left">Hırvatça\nFlemenkçe\nİtalyanca\nLehçe\nİspanyolca\nFransızca\nTürkçe</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24\ninci55</string>
 	
 	<string name="array_default">Varsayılan</string>
 	<string name="array_cam_actions_shutter">Deklanşör</string>
