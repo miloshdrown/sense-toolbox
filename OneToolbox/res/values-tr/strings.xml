@@ -96,7 +96,7 @@
     <string name="sense_theme_color_controls">Denetimler</string>
     <string name="sense_theme_color_bf">BlinkFeed</string>
     <string name="sense_theme_package_has_profile">Bu uygulama zaten bir profile sahip</string>
-    <string name="sense_theme_hint">Tema renklerini yukarıdaki eylem çubuğunun üstüne bindirerek etkinleştir.\n\nÜstüne bindirmeyi etkinleştirdikten sonra sadece bir kez yeniden başlatma gereklidir.</string>
+    <string name="sense_theme_hint">Tema renklerini yukarıdaki eylem çubuğundan etkinleştir.\n\nEtkinleştirdikten sonra sadece bir kez yeniden başlatma gereklidir.</string>
 	<string name="systemui_statusbar">Durum Çubuğu ve Bildirim Alanı</string>
 	<string name="systemui_tsb_title">Şeffaf durum çubuğu</string>
 	<string name="systemui_tsb_summ">Durum çubuğunu şeffaf yap.</string>
