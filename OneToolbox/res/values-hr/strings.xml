@@ -416,8 +416,8 @@
 	<string name="various_rejectedcall_summ">Nemoj prikazivati obavijest ručno odbijenih poziva. Oni će biti dodani u povijet kao normalno završeni razgovori.</string>
 	<string name="various_mods_volume">Glasnoća</string>
 	<string name="about_l10n">Prijevod</string>
-	<string name="about_l10n_data_left">Hrvatski\nNizozemski\nTalijanski\nPoljski\nŠpanjolski\nFrancuski</string>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24</string>
+	<string name="about_l10n_data_left">Hrvatski\nNizozemski\nTalijanski\nPoljski\nŠpanjolski\nFrancuski\nTurski</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24\ninci55</string>
 	
 	<string name="array_home_menu_draglock">Zaključaj launcher</string>
 	<string name="array_home_menu_dragunlock">Otključaj launcher</string>
