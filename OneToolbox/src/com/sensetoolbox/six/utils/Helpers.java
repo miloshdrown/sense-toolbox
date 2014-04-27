@@ -289,7 +289,7 @@ public class Helpers {
 	}
 	
 	public static boolean isM8() {
-		return Build.DEVICE.equals("htc_m8");
+		return Build.DEVICE.contains("htc_m8");
 	}
 	
 	public static boolean isNotM7() {
