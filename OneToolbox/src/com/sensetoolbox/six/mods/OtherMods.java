@@ -239,7 +239,6 @@ public class OtherMods{
 				final Object mLockPatternUtils = getObjectField(param.thisObject, "mLockPatternUtils");
 				final AutoCompleteTextView mPasswordEntry = (AutoCompleteTextView)getObjectField(param.thisObject, "mPasswordEntry");
 				if (mLockPatternUtils != null && mPasswordEntry != null) {
-					mPasswordEntry.removeTextChangedListener((TextWatcher)param.thisObject);
 					mPasswordEntry.addTextChangedListener(new TextWatcher() {
 						@Override
 						public void onTextChanged(CharSequence s, int start, int before, int count) {}
@@ -256,13 +255,6 @@ public class OtherMods{
 										onEditorAction.invoke(param.thisObject, null, 0, null);
 									}
 								}
-								if (!TextUtils.isEmpty(mPasswordEntry.getText())) {
-									XposedHelpers.setObjectField(param.thisObject, "mErrorMessage", "");
-									XposedHelpers.callMethod(param.thisObject, "updateHint");
-									if (!mPasswordEntry.isEnabled()) mPasswordEntry.setText("");
-								}
-								Object mCallback = getObjectField(param.thisObject, "mCallback");
-								if (mCallback != null) callMethod(mCallback, "userActivity", 0L);
 							} catch (Throwable t) {
 								XposedBridge.log(t);
 							}
