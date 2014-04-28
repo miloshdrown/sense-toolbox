@@ -69,4 +69,77 @@
 	<string name="success">Succes</string>
 	<string name="backup_restored">Backup restaurat cu succes! Apasati pe \'Salvare\' pentru a aplica ordinea.</string>
 	<string name="no_backup">Nici un backup gasit</string>
+	<string name="no_backup_explain">Nici un backup gasit, ati formatat cardul sd?</string>
+	<string name="first_start">Primul start</string>
+	<string name="close_forever">Inchide dialogul pentru intotdeauna!</string>
+	
+	<string name="sunbeam_installed">SunBeam a fost instalat. Reporniti softul telefonului pentru a avea efect. Va trebui sa il instalati ori de cate ori veti pune alt rom pe telefon.</string>
+	<string name="dummy"/>
+	
+	<string name="transparency_msg">0 = transparent, 100 = opac</string>
+	<string name="transparency_enable">Activeaza transparenta</string>
+	<string name="launch_app">Porneste aplicatia</string>
+	<string name="toggle_settings">Setari de comutare</string>
+	
+	<string name="camera_mods">Moduri camera</string>
+	
+	<string name="systemui_mods">Moduri de interfata</string>
+	<string name="sense_themes_title">Teme Sense</string>
+    <string name="sense_themes_summ">Schimba culoarea temei pentru fiecare aplicatie</string>
+    <string name="sense_themes_apply">Aplica</string>
+    <string name="sense_themes_cancel">Anuleaza</string>
+    <string name="sense_theme_sep1">Tema</string>
+    <string name="sense_theme_remove">Inlatura</string>
+    <string name="sense_theme_color_header">Antet</string>
+    <string name="sense_theme_color_controls">Controale</string>
+    <string name="sense_theme_color_bf">BlinkFeed</string>
+    <string name="sense_theme_package_has_profile">Aceasta aplicatie are deja un profil</string>
+    <string name="sense_theme_hint">Activati suprascrierea temelor colorate din bara de actiune.\nRepornirea softului telefonului va fi necesara doar odata dupa ce ati activat suprascrierea.</string>
+	<string name="systemui_statusbar">Bara de status si de aplicatii</string>
+	<string name="systemui_tsb_title">Bara de status transparenta</string>
+	<string name="systemui_tsb_summ">Faceti bara de status transparenta</string>
+	<string name="systemui_tnb_title">Fundal notificare transparent</string>
+	<string name="systemui_tnb_summ">Faceti transparent fundalul de notificare</string>
+	<string name="systemui_eqs">Setari Rapide Extinse</string>
+	<string name="systemui_brightqs_title">Luminozitate</string>
+	<string name="systemui_brightqs_summ">Configurati luminozitatea dalelor EQS</string>
+	<string name="systemui_heqs_title">EQS Orizontale</string>
+	<string name="systemui_heqs_summ">Activati EQS orizontale. Cele normale vor fi acolo (derulabile).</string>
+	<string name="systemui_heqs_notext_title">EQS orizontale mai mici</string>
+	<string name="systemui_heqs_notext_summ">Inlatura textul din EQS orizontale.</string>
+	<string name="systemui_noeqs_title">Dezactiveaza panoul EQS</string>
+	<string name="systemui_noeqs_summ">Dezactiveaza panoul EQS si reactiveaza butonul de setari.</string>
+	<string name="systemui_recent">Aplicatii recente</string>
+	<string name="systemui_aosp_title">Aplicatii recente AOSP</string>
+	<string name="systemui_aosp_summ">Activeaza ecranul de aplicatii recente in stil AOSP.</string>
+	<string name="systemui_recentclear_title">Inchide toate aplicatiile recente deodata.</string>
+	<string name="systemui_recentram_title">Utilizare RAM</string>
+	<string name="systemui_recentram_summ">Arata cantitatea de RAM utilizata de aplicatiile recente</string>
+	<string name="systemui_centerclock_title">Ceas in centru</string>
+	<string name="systemui_centerclock_summ">Activeaza pentru a muta ceasul in centru</string>
+	<string name="systemui_ampmremove_title">Inlatura AM/PM</string>
+	<string name="systemui_ampmremove_summ">Activeaza pentru a inlatura AM/PM in modul 12h.</string>
+	<string name="systemui_clockstyle_title">Stil ceas</string>
+	<string name="systemui_clockstyle_summ">Schimba stilul ceasului din bara de status.</string>
+	<string name="systemui_statusheaderclick_title">Click pe antet</string>
+	<string name="systemui_statusheaderclick_summ">Actiune pentru atingere pe antetul barei de aplicatii</string>
+	<string name="systemui_brightslide_title">Glisant de luminozitate</string>
+	<string name="systemui_brightslide_summ">Adauga o bara de glisare pentru luminozitate pe panoul de notificari</string>
+	<string name="systemui_brightslide_auto">Auto</string>
+	<string name="systemui_dataratestatus_title">Contor de trafic</string>
+	<string name="systemui_alarmnotify_title">Arata urmatoarea alarma</string>
+	<string name="next_alarm">Urmatoarea alarma</string>
+	<string name="brightpicker_switch">Activeaza nivele personalizate</string>
+	<string name="brightpicker_desc">Alegeti 4 valori diferite</string>
+	<string name="brightpicker_warn_text">Toate valorile trebuie sa fie diferite</string>
+	
+	<string name="cleanbeam_mods">Icoane din bara de status</string>
+	<string name="cleanbeam_colortheme_title">Culoare tema</string>
+	<string name="cleanbeam_colortheme_hue">Nuanta</string>
+	<string name="cleanbeam_colortheme_sat">Saturatie</string>
+	<string name="cleanbeam_colortheme_bright">Luminozitate</string>
+	<string name="cleanbeam_colortheme_preset">Presetari</string>
+	<string name="cleanbeam_battery_title">Icoana baterie</string>
+	<string name="cleanbeam_battery_summ">Schimba icoana bateriei.</string>
+	<string name="cleanbeam_signal_title">Bara de semnal</string>
 	</resources>
