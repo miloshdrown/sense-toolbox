@@ -40,6 +40,10 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Current changelog
 =================
 
+1.0.1
+[Fixed] Widget overlapping on 4x5 homescreens
+[Fixed] Swipe up on dock in appdrawer bug
+
 1.0
 [Fix] All Sense 5 Toolbox mods
 [Fix] Dynamic Buttons Backlight bug on screen off
