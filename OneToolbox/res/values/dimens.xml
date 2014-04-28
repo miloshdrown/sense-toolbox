@@ -6,7 +6,7 @@
     <dimen name="celllayout_bottom_padding_port">78.0dip</dimen>
     <dimen name="workspace_height_gap_port">-1.0dip</dimen>
     <dimen name="app_icon_padding_top">20.0dip</dimen>
-    <dimen name="workspace_cell_height_port">125.0dip</dimen>
+    <dimen name="workspace_cell_height_port">120.0dip</dimen>
     <dimen name="button_bar_height_without_padding">65.0dip</dimen>
     
     <dimen name="photo_new_height">887.0px</dimen>

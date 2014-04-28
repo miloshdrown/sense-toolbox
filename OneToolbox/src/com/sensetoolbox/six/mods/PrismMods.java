@@ -639,9 +639,10 @@ public class PrismMods {
 			if (e1.getY() > (screenHeight - density * 100) && e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE_VERT && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 				if (XMain.pref.getBoolean("pref_key_prism_homemenu", false)) {
 					Enum<?> m_state = (Enum<?>)XposedHelpers.getObjectField(launcher, "m_state");
-					if (m_state != null && m_state.ordinal() == 0)
-					createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace"), (Activity)launcher);
-					return true;
+					if (m_state != null && m_state.ordinal() == 0) {
+						createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace"), (Activity)launcher);
+						return true;
+					}
 				}
 			}
 			
