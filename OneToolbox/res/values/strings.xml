@@ -97,6 +97,7 @@
     <string name="sense_theme_color_bf">BlinkFeed</string>
     <string name="sense_theme_package_has_profile">This app already has a profile</string>
     <string name="sense_theme_hint">Enable theme colors override from the action bar above.\n\nSoft reboot will be required only once after you\'ve enabled override.</string>
+    <string name="sense_theme_replace_all">Change theme for all apps in the list</string>
 	<string name="systemui_statusbar">Status Bar and Notification Drawer</string>
 	<string name="systemui_tsb_title">Transparent status bar</string>
 	<string name="systemui_tsb_summ">Make the status bar transparent.</string>

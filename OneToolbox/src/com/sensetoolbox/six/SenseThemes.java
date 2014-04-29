@@ -51,6 +51,7 @@ public class SenseThemes extends Activity {
 	public HtcAlertDialog appAddDialog;
 	HtcToggleButtonLight OnOffSwitch;
 	ActionBarItemView menuAdd;
+	ActionBarItemView menuAll;
 	HtcListView appsList;
 	TextView themeHint;
 	int mThemeId = 0;
@@ -92,7 +93,7 @@ public class SenseThemes extends Activity {
 		}
 		
 		public int getTheme() {
-			return this.theme;
+			return (this.theme >= 0 ? this.theme : 0);
 		}
 	}
 	
@@ -117,11 +118,26 @@ public class SenseThemes extends Activity {
 		OnOffSwitch.setEnabled(true);
 		actionBarContainer.addRightView(OnOffSwitch);
 		
+		final SenseThemes st = this;
+		
+		menuAll = new ActionBarItemView(this);
+		menuAll.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+		menuAll.setIcon(getResources().getIdentifier("icon_btn_edit_dark", "drawable", "com.htc"));
+		menuAll.setLongClickable(false);
+		menuAll.setOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				AppDetailDialog appDetailDialog = new AppDetailDialog(st, "replace_all");
+				appDetailDialog.setTitle(R.string.sense_theme_replace_all);
+				appDetailDialog.show();
+			}
+		});
+		actionBarContainer.addRightView(menuAll);
+		
 		menuAdd = new ActionBarItemView(this);
 		menuAdd.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 		menuAdd.setIcon(getResources().getIdentifier("icon_btn_add_dark", "drawable", "com.htc"));
 		menuAdd.setLongClickable(false);
-		final SenseThemes st = this;
 		menuAdd.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -171,7 +187,6 @@ public class SenseThemes extends Activity {
 		loadPkgs();
 		
 		setContentView(R.layout.activity_sense_themes);
-		final SenseThemes sense = this;
 		
 		appsList = (HtcListView)findViewById(R.id.appslist);
 		appsList.setDivider(getResources().getDrawable(getResources().getIdentifier("inset_list_divider", "drawable", "com.htc")));
@@ -182,7 +197,7 @@ public class SenseThemes extends Activity {
 		appsList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				AppDetailDialog appDetailDialog = new AppDetailDialog(sense, (String)view.getTag());
+				AppDetailDialog appDetailDialog = new AppDetailDialog(st, (String)view.getTag());
 				HtcListItem2LineText title = (HtcListItem2LineText)view.findViewById(R.id.app_name);
 				appDetailDialog.setTitle(title.getPrimaryText());
 				appDetailDialog.show();
@@ -190,7 +205,6 @@ public class SenseThemes extends Activity {
 		});
 		
 		themeHint = (TextView)findViewById(R.id.themehint);
-		
 		applyThemeState(prefs.getBoolean("themes_active", false));
 		OnOffSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 			@Override
@@ -205,6 +219,7 @@ public class SenseThemes extends Activity {
 		OnOffSwitch.setChecked(state);
 		appsList.setEnabled(state);
 		menuAdd.setEnabled(state);
+		menuAll.setEnabled(state);
 		if (state) {
 			appsList.setVisibility(View.VISIBLE);
 			themeHint.setVisibility(View.GONE);

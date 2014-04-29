@@ -45,6 +45,7 @@ Current changelog
 [Fixed] Swipe up on dock in appdrawer bug
 [Fixed] PIN/password are not displayed with Fast unlock mod enabled
 [Fixed] Sense 6 Themes color override for Gallery and TV
+[New] Ability to change Sense 6 theme for all selected apps at once
 
 1.0
 [Fix] All Sense 5 Toolbox mods
