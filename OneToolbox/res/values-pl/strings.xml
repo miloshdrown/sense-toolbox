@@ -510,4 +510,5 @@
 	<string name="various_powersavenotif_summ">Wyłącz powiadomienie oszczędzania energii.</string>
 	<string name="support_s6t_title">Odwiedź Stronę Sense 6 Toolbox</string>
 	<string name="support_s6t_summ">Znajdź tutaj informacje o aplikacji i listę zmian.</string>
+	<string name="sense_theme_replace_all">Zmień motyw dla wszystkich aplikacji znajdujących się na liście</string>
 	</resources>
