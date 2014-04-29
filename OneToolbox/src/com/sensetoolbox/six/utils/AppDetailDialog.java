@@ -79,15 +79,22 @@ public class AppDetailDialog extends HtcAlertDialog {
 		
 		this.setButton(DialogInterface.BUTTON_POSITIVE, this.getContext().getString(R.string.sense_themes_apply), new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog, int whichButton) {
-        		PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);
-        		if (pt != null) {
-        			pt.setTheme(cs.getSelectedTheme());
+        		if (pkgName.equals("replace_all")) {
+        			for (PackageTheme pt: SenseThemes.pkgthm) if (pt != null) pt.setTheme(cs.getSelectedTheme());
         			stContext.savePkgs();
-        			stContext.notifyThemeChanged();
+    				stContext.notifyThemeChanged();
+        		} else {
+        			PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);
+        			if (pt != null) {
+        				pt.setTheme(cs.getSelectedTheme());
+        				stContext.savePkgs();
+        				stContext.notifyThemeChanged();
+        			}
         		}
         	}
         });
 		
+		if (!pkgName.equals("replace_all"))
 		this.setButton(DialogInterface.BUTTON_NEUTRAL, this.getContext().getString(R.string.sense_theme_remove), new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog, int whichButton) {
         		PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);

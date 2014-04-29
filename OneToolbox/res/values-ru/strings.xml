@@ -469,6 +469,7 @@
     <string name="sense_theme_color_controls">Управление</string>
     <string name="sense_theme_color_bf">BlinkFeed</string>
     <string name="sense_theme_hint">Включите замену цветов переключателем выше.\n\nБыстрый перезапуск будет необходим только один раз после первой активации замены.</string>
+    <string name="sense_theme_replace_all">Изменить тему для всех приложений в списке</string>
 	<string name="systemui_brightqs_title">Яркость</string>
 	<string name="systemui_brightqs_summ">Настройка уровней для изменения яркости из EQS.</string>
 	<string name="brightpicker_switch">Включить замену уровней</string>
