@@ -43,6 +43,8 @@ Current changelog
 1.0.1
 [Fixed] Widget overlapping on 4x5 homescreens
 [Fixed] Swipe up on dock in appdrawer bug
+[Fixed] PIN/password are not displayed with Fast unlock mod enabled
+[Fixed] Sense 6 Themes color override for Gallery and TV
 
 1.0
 [Fix] All Sense 5 Toolbox mods

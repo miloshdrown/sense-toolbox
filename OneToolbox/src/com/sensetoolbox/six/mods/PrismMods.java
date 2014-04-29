@@ -28,7 +28,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.provider.Settings;
-import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -51,10 +50,7 @@ import android.widget.TextView;
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcPopupWindow;
 import com.sensetoolbox.six.R;
-import com.sensetoolbox.six.SenseThemes;
-import com.sensetoolbox.six.SenseThemes.PackageTheme;
 import com.sensetoolbox.six.utils.GlobalActions;
-import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.PopupAdapter;
 import com.sensetoolbox.six.utils.ShakeManager;
 
@@ -901,22 +897,6 @@ public class PrismMods {
 		});
 	}
 	
-	public static void execHook_Sense6ColorControlLauncher(final LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.lib1.cc.util.HtcCommonUtil", lpparam.classLoader, "getHtcThemeId", Context.class, int.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				SparseArray<Object[]> styles = SenseThemes.getColors();
-				PackageTheme pt = Helpers.getThemeForPackageFromXposed("com.htc.launcher");
-				if (pt != null) {
-					Context ctx = (Context)param.args[0];
-					String htc_theme = (String)styles.valueAt(pt.getTheme())[2];
-					int htc_theme_id = ctx.getResources().getIdentifier(htc_theme, "style", "com.htc.launcher");
-					if (htc_theme_id != 0) param.setResult(htc_theme_id);
-				}
-			}
-		});
-	}
-
 	public static void execHook_invisiWidgetFix(LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherClock4x1View", lpparam.classLoader, "getControls", Context.class, "com.htc.widget.weatherclock.util.WidgetData", new XC_MethodHook() {
 			@Override

@@ -315,9 +315,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref_shake != 1)
 				PrismMods.execHook_ShakeAction(lpparam);
 			
-			if(pref.getBoolean("themes_active", false))
-				PrismMods.execHook_Sense6ColorControlLauncher(lpparam);
-
 			//PrismMods.execHook_hotseatToggleBtn(lpparam);
 		}
 		
@@ -472,6 +469,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		    
 //		    if (pref.getBoolean("pref_key_sysui_invisibar_enable", false) && Build.VERSION.SDK_INT >= 19)
 //		    	SysUIMods.execHook_anotherTSB44Fix(lpparam);
+		}
+		
+		if (pkg.equals("com.htc.launcher") || pkg.equals("com.htc.videohub.ui") || pkg.equals("com.htc.album")) {
+			if (pref.getBoolean("themes_active", false))
+				SysUIMods.execHook_Sense6ColorControlCustom(lpparam, pkg);
 		}
 	}
 }
