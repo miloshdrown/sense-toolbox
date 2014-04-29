@@ -451,4 +451,5 @@
 	<string name="array_keyslight_extradim">Ekstra sönük</string>
 	<string name="array_keyslight_alwaysoff">Daima kapalı</string>
 	
-</resources>
+<string name="sense_theme_replace_all">Listedeki bütün uygulamalar için temayı değiştir</string>
+	</resources>
