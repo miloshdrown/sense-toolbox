@@ -500,4 +500,5 @@
 	
 	<string name="various_powersavenotif_title">Verberg energiebesparing notificatie</string>
 	<string name="various_powersavenotif_summ">Schakel energiebesparing notificatie uit.</string>
+	<string name="sense_theme_replace_all">Verander thema voor alle apps in de lijst</string>
 	</resources>
