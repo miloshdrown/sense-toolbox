@@ -39,7 +39,7 @@ public class CleanBeamMods{
 		return applyTheme(icon, false);
 	}
 
-	public static void execHook_BatteryIcon(InitPackageResourcesParam resparam, String MODULE_PATH, int battIcon) {
+	public static void execHook_BatteryIcon(InitPackageResourcesParam resparam, int battIcon) {
 //		XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
 //		if (battIcon == 2) //2=b=percentage
 //		{
@@ -58,8 +58,8 @@ public class CleanBeamMods{
 		}
 	}
 
-	public static void execHook_SignalIcon(InitPackageResourcesParam resparam, String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_SignalIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_5signal_0", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -136,8 +136,8 @@ public class CleanBeamMods{
 		});
 	}
 
-	public static void execHook_HeadphoneIcon(InitPackageResourcesParam resparam, String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_HeadphoneIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_headphones", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -152,8 +152,8 @@ public class CleanBeamMods{
 		});
 	}
 
-	public static void execHook_BeatsIcon(String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, null);
+	public static void execHook_BeatsIcon() {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 		if (!Helpers.isM8()) {
 			XResources.setSystemWideReplacement("com.htc.framework", "drawable", "stat_notify_beats_red", new XResources.DrawableLoader(){
 				@Override
@@ -178,8 +178,8 @@ public class CleanBeamMods{
 		}
 	}
 
-	public static void execHook_AlarmIcon(InitPackageResourcesParam resparam, String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_AlarmIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_notify_alarm", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -188,8 +188,8 @@ public class CleanBeamMods{
 		});
 	}
 
-	public static void execHook_WiFiIcon(InitPackageResourcesParam resparam, String MODULE_PATH, final int i) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_WiFiIcon(InitPackageResourcesParam resparam, final int i) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		if (i==2)
 		{
 			wifiBase = "stat_sys_wifi_signal_";
@@ -205,7 +205,6 @@ public class CleanBeamMods{
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
 					Drawable db = applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + "glow_" + s.substring(s.length()-1), "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
-					if (i == 3 && (s.equals("stat_sys_wifi_signal_in_0") || s.equals("stat_sys_wifi_signal_out_0") || s.equals("stat_sys_wifi_signal_inandout_0"))) db.setAlpha(200);
 					return db;
 				}	
 			});
@@ -217,15 +216,14 @@ public class CleanBeamMods{
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
 					Drawable db = applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + s.substring(s.length()-1), "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
-					if (i == 3 && s.equals("stat_sys_wifi_signal_connected_0")) db.setAlpha(200);
 					return db;
 				}	
 			});
 		}
 	}
 
-	public static void execHook_ProfileIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_ProfileIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_ringer_silent", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -240,8 +238,8 @@ public class CleanBeamMods{
 		});
 	}
 
-	public static void execHook_SyncIcon(InitPackageResourcesParam resparam, String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_SyncIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_sync", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -262,8 +260,8 @@ public class CleanBeamMods{
 		});
 	}
 
-	public static void execHook_GpsIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_GpsIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_gps_acquiring", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -278,8 +276,8 @@ public class CleanBeamMods{
 		});
 	}
 
-	public static void execHook_BtIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_BtIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_data_bluetooth", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -294,8 +292,8 @@ public class CleanBeamMods{
 		});
 	}
 
-	public static void execHook_DataIcon(InitPackageResourcesParam resparam, String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_DataIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		Field[] fields = R.drawable.class.getFields();
 	    HashMap<String, Integer> dataIcons = new HashMap<String, Integer>();
 	    for (Field field : fields) {
@@ -326,8 +324,8 @@ public class CleanBeamMods{
 		});
 	}
 	
-	public static void execHook_PowerSaveIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_PowerSaveIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.htc.htcpowermanager", "drawable", "stat_notify_power_saver", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -336,8 +334,8 @@ public class CleanBeamMods{
 		});
 	}
 	
-	public static void execHook_ScreenshotIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_ScreenshotIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_notify_image", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -346,8 +344,8 @@ public class CleanBeamMods{
 		});
 	}
 	
-	public static void execHook_USBIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_USBIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.android.settings", "drawable", "stat_sys_data_usb", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -356,8 +354,8 @@ public class CleanBeamMods{
 		});
 	}
 	
-	public static void execHook_NFCIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_NFCIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.android.nfc", "drawable", "stat_sys_nfc_vzw", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -366,9 +364,9 @@ public class CleanBeamMods{
 		});
 	}
 
-	public static void execHook_DNDIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
+	public static void execHook_DNDIcon(InitPackageResourcesParam resparam) {
 		try {
-			final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 			resparam.res.setReplacement("com.android.settings", "drawable", "stat_notify_dnd", new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -378,9 +376,9 @@ public class CleanBeamMods{
 		} catch(Throwable t) {}
 	}
 	
-	public static void execHook_MTPIcon(InitPackageResourcesParam resparam,	String MODULE_PATH) {
+	public static void execHook_MTPIcon(InitPackageResourcesParam resparam) {
 		try {
-			final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 			resparam.res.setReplacement("com.android.providers.media", "drawable", "stat_notify_running_services", new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -390,8 +388,8 @@ public class CleanBeamMods{
 		} catch(Throwable t) {}
 	}
 
-	public static void execHook_PhoneIcons(InitPackageResourcesParam resparam,	String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_PhoneIcons(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.android.phone", "drawable", "stat_sys_phone_call", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -406,8 +404,8 @@ public class CleanBeamMods{
 		});
 	}
 
-	public static void execHook_TvIcon(InitPackageResourcesParam resparam, String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_TvIcon(InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.htc.videohub.ui", "drawable", "stat_notify_tv", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {

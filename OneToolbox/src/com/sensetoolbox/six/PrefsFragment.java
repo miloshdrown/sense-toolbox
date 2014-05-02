@@ -59,7 +59,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState, R.xml.preferences);
 		
 		if(!Helpers.isXposedInstalled(getActivity()))
 		{
@@ -73,7 +73,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		} else checkForXposed();
 		
 		addPreferencesFromResource(R.xml.preferences);
-        
+		
 		//Save current Sense version into the sharedprefs
 		prefs = getPreferenceManager().getSharedPreferences();
 		String senseVer = Helpers.getSenseVersion();
@@ -117,7 +117,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	public static class SysUIFragment extends HtcPreferenceFragmentExt {
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState);
+	        super.onCreate(savedInstanceState, R.xml.prefs_systemui);
 	        addPreferencesFromResource(R.xml.prefs_systemui);
 	        
 	        HtcPreference senseThemesPreference = (HtcPreference) findPreference("pref_key_sense_themes");
@@ -134,7 +134,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	public static class StatusBarFragment extends HtcPreferenceFragmentExt {
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState);
+	        super.onCreate(savedInstanceState, R.xml.prefs_statusbar);
 	        addPreferencesFromResource(R.xml.prefs_statusbar);
 	        
 	        HtcPreference sunbeamInstallPref = findPreference("pref_key_cb_sunbeam");
@@ -161,7 +161,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	public static class PrismFragment extends HtcPreferenceFragmentExt {
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState);
+	        super.onCreate(savedInstanceState, R.xml.prefs_prism);
 	        addPreferencesFromResource(R.xml.prefs_prism);
 	        
 	        HtcPreference.OnPreferenceChangeListener chooseAction = new HtcPreference.OnPreferenceChangeListener() {
@@ -343,7 +343,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	public static class MessageFragment extends HtcPreferenceFragmentExt {
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState);
+	        super.onCreate(savedInstanceState, R.xml.prefs_message);
 	        addPreferencesFromResource(R.xml.prefs_message);
 	    }
 	}
@@ -443,7 +443,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState);
+	        super.onCreate(savedInstanceState, R.xml.prefs_controls);
 	        addPreferencesFromResource(R.xml.prefs_controls);
 	        
 	        HtcPreference.OnPreferenceChangeListener chooseAction = new HtcPreference.OnPreferenceChangeListener() {
@@ -539,10 +539,18 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	    }
 	}
 	
+	public static class WakeGesturesFragment extends HtcPreferenceFragmentExt {
+		@Override
+	    public void onCreate(Bundle savedInstanceState) {
+	        super.onCreate(savedInstanceState, R.xml.prefs_wakegest);
+	        addPreferencesFromResource(R.xml.prefs_wakegest);
+		}
+	}
+	
 	public static class OtherFragment extends HtcPreferenceFragmentExt {
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState);
+	        super.onCreate(savedInstanceState, R.xml.prefs_other);
 	        addPreferencesFromResource(R.xml.prefs_other);
 	        
 	        if (Helpers.isNotM7()) {
@@ -569,7 +577,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	public static class PersistFragment extends HtcPreferenceFragmentExt {
 	    @Override
 	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState);
+	        super.onCreate(savedInstanceState, R.xml.prefs_persist);
 	        addPreferencesFromResource(R.xml.prefs_persist);
 	    }
 	}
@@ -778,6 +786,19 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				case "pref_key_controls": replaceTo = new ControlsFragment(); break;
 				case "pref_key_other": replaceTo = new OtherFragment(); break;
 				case "pref_key_persist": replaceTo = new PersistFragment(); break;
+				case "pref_key_wakegest":
+					if (Helpers.isWakeGestures()) {
+						getActivity().startActivity(new Intent(getActivity(), WakeGestures.class));
+					} else {
+						HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
+						builder.setTitle(R.string.warning);
+						builder.setMessage(R.string.wakegestures_not_supported);
+						builder.setIcon(android.R.drawable.ic_dialog_alert);
+						builder.setNeutralButton(R.string.okay, null);
+						HtcAlertDialog dlg = builder.create();
+						dlg.show();
+					}
+			        break;
 			}
 			
 			if (replaceTo != null) {

@@ -320,6 +320,23 @@
 	<string name="various_keyslight_auto_title">Dynamic backlight</string>
 	<string name="various_keyslight_auto_summ">Turn off buttons backlight in fullscreen apps.</string>
 	
+	<string name="wakegestures_mod">Wake gestures</string>
+	<string name="wakegestures_haptic_title">Haptic feedback</string>
+	<string name="wakegestures_haptic_summ">Short vibration after successful gesture</string>
+	<string name="wakegestures_dt2w_title">Double tap</string>
+	<string name="wakegestures_dt2w_summ">Action for double tap</string>
+	<string name="wakegestures_swipedown_title">Swipe down</string>
+	<string name="wakegestures_swipedown_summ">Action for swipe down gesture</string>
+	<string name="wakegestures_swipeup_title">Swipe up</string>
+	<string name="wakegestures_swipeup_summ">Action for swipe up gesture</string>
+	<string name="wakegestures_swipeleft_title">Swipe left</string>
+	<string name="wakegestures_swipeleft_summ">Action for swipe left gesture</string>
+	<string name="wakegestures_swiperight_title">Swipe right</string>
+	<string name="wakegestures_swiperight_summ">Action for swipe right gesture</string>
+	<string name="wakegestures_logopress_title">Logo</string>
+	<string name="wakegestures_logopress_summ">Action for logo long press</string>
+	<string name="wakegestures_not_supported">Wake gestures require kernel support, ask your kernel developer to add it or use ElementalX 14.4+</string>
+	
 	<string name="persistent_mods">Always active mods</string>
 	<string name="persist_adgrid_title">App drawer grid size</string>
 	<string name="persist_adgrid_summ">New grid sizes: 5x5, 4x6 and 5x6. You can select them from default app drawer menu.</string>
@@ -451,5 +468,12 @@
 	<string name="array_keyslight_dim">Dim</string>
 	<string name="array_keyslight_extradim">Extra dim</string>
 	<string name="array_keyslight_alwaysoff">Always off</string>
+	<string name="array_wakegestures_disable">Disable</string>
+	<string name="array_wakegestures_wakeup">Wake up</string>
+	<string name="array_wakegestures_wakeupbypass">Wake up bypassing lockscreen</string>
+	<string name="array_wakegestures_blinkfeed">Go to BlinkFeed</string>
+	<string name="array_wakegestures_home">Go to main home screen</string>
+	<string name="array_wakegestures_quickcall">Quick Call (voice dial)</string>
+	<string name="array_wakegestures_flashlight">Flashlight (no wake up)</string>
 	
 </resources>

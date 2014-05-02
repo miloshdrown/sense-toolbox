@@ -385,7 +385,7 @@ public class OtherMods{
 		}
 	}
 	
-	public static void exec_OldStyleToasts(final String MODULE_PATH) {
+	public static void exec_OldStyleToasts() {
 		try {
 			XResources.hookSystemWideLayout("android", "layout", "transient_notification", new XC_LayoutInflated() {
 				@Override
@@ -567,113 +567,7 @@ public class OtherMods{
 			}
 		});
 	}
-	/*
-	public static void execHook_LargePhotoLS(InitPackageResourcesParam resparam, int photoSize) {
-		try {
-			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
-			resparam.res.setReplacement("com.htc.lockscreen", "dimen", "masthead_minHeight", modRes.fwd(R.dimen.masthead_minHeight));
-			if (photoSize == 3)
-				resparam.res.setReplacement("com.htc.lockscreen", "dimen", "incoming_call_call_id_height", modRes.fwd(R.dimen.incoming_call_call_id_height));
-			resparam.res.setReplacement("com.htc.lockscreen", "dimen", "text_size_custom_04", modRes.fwd(R.dimen.text_size_custom_04));
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-	}
 	
-	public static void execHook_LargePhotoLSCode(LoadPackageParam lpparam, final int photoSize) {
-		findAndHookMethod("com.htc.lockscreen.ui.MainContainAnimator", lpparam.classLoader, "doTileChange", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				try {
-					RelativeLayout mCurTile = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mCurTile");
-					if (mCurTile != null) {
-						FrameLayout mCallPhotoContainer = (FrameLayout)mCurTile.findViewById(mCurTile.getResources().getIdentifier("call_id", "id", "com.htc.lockscreen"));
-						if (mCallPhotoContainer != null) {
-							RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mCurTile.getLayoutParams();
-							params.removeRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
-							if (photoSize == 3)
-								params.setMargins(0, 0, 0, 0);
-							else
-								params.setMargins(0, Math.round(mCurTile.getResources().getDisplayMetrics().density * 63), 0, 0);
-							mCurTile.setLayoutParams(params);
-						}
-					}
-				} catch (Throwable t) {
-					XposedBridge.log(t);
-				}
-			}
-		});
-
-		findAndHookMethod("com.htc.lockscreen.ui.HeadBar", lpparam.classLoader, "init", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				RelativeLayout headBar = (RelativeLayout)param.thisObject;
-				if (headBar != null) headBar.bringToFront();
-			}
-		});
-		
-		findAndHookMethod("com.htc.lockscreen.ui.reminder.IncomingCallView", lpparam.classLoader, "init", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				try {
-					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-					
-					if (photoSize == 3) {
-						RelativeLayout mTile = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mTile");
-						if (mTile != null) {
-							RelativeLayout mCallPhotoRoot = (RelativeLayout)mTile.findViewById(mTile.getResources().getIdentifier("photo_view_root", "id", "com.htc.lockscreen"));
-							if (mCallPhotoRoot != null) {
-								LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)mCallPhotoRoot.getLayoutParams();
-								params.height = modRes.getDimensionPixelSize(R.dimen.incoming_call_call_id_height);
-								mCallPhotoRoot.setLayoutParams(params);
-							}
-						}
-						
-						ImageView mCallPhoto = (ImageView)XposedHelpers.getObjectField(param.thisObject, "mCallPhoto");
-						if (mCallPhoto != null) {
-							FrameLayout.LayoutParams params2 = (FrameLayout.LayoutParams)mCallPhoto.getLayoutParams();
-							params2.height = modRes.getDimensionPixelSize(R.dimen.incoming_call_call_id_height);
-							mCallPhoto.setLayoutParams(params2);
-							
-							FrameLayout mCallPhotoFrame = (FrameLayout)mCallPhoto.getParent();
-							if (mCallPhotoFrame != null) {
-								RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams)mCallPhotoFrame.getLayoutParams();
-								params3.removeRule(RelativeLayout.BELOW);
-								mCallPhotoFrame.setLayoutParams(params3);
-							}
-						}
-						
-						TextView mSlotName = (TextView)XposedHelpers.getObjectField(param.thisObject, "mSlotName");
-						if (mSlotName != null) {
-							RelativeLayout.LayoutParams params3 = (RelativeLayout.LayoutParams)mSlotName.getLayoutParams();
-							params3.setMargins(0, Math.round(modRes.getDisplayMetrics().density * 28), 0, 0);
-							mSlotName.setLayoutParams(params3);
-							mSlotName.setBackground(null);
-							mSlotName.setBackgroundResource(0);
-							mSlotName.setGravity(Gravity.CENTER_HORIZONTAL);
-							mSlotName.setShadowLayer(4.0f, 0, 3.0f, Color.argb(153, 0, 0, 0));
-							mSlotName.bringToFront();
-						}
-					}
-					
-					LinearLayout mContactPanel = (LinearLayout)XposedHelpers.getObjectField(param.thisObject, "mContactPanel");
-					if (mContactPanel != null) {
-						LinearLayout.LayoutParams params3 = (LinearLayout.LayoutParams)mContactPanel.getLayoutParams();
-						if (photoSize == 3) params3.setMargins(0, 0, 0, 0);
-						TextView text2 = (TextView)mContactPanel.findViewById(mContactPanel.getResources().getIdentifier("text2", "id", "com.htc.lockscreen"));
-						if (text2 != null) {
-							text2.setSingleLine(false);
-							text2.setMaxLines(2);
-						}
-						mContactPanel.setLayoutParams(params3);
-					}
-				} catch (Throwable t) {
-					XposedBridge.log(t);
-				}
-			}
-		});
-	}
-	*/
 	public static void execHook_RejectCallSilently(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.phone.CallNotifier", lpparam.classLoader, "addCallLog", "com.android.internal.telephony.Connection", "com.android.internal.telephony.Connection.DisconnectCause", new XC_MethodHook() {
 			@Override

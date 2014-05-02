@@ -20,7 +20,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
-import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.graphics.ColorFilter;
 import android.location.LocationManager;
@@ -501,28 +500,29 @@ public class GlobalActions {
 	
 	public static boolean launchApp(Context context, int action) {
         try {
-        	PackageManager manager = context.getPackageManager();
-        	Resources toolboxRes = manager.getResourcesForApplication("com.sensetoolbox.six");
-        	
-        	String not_selected = toolboxRes.getString(R.string.notselected);
         	String pkgAppName = "";
-        	if (action == 1) pkgAppName = XMain.pref.getString("pref_key_prism_swipedown_app", not_selected);
-        	else if (action == 2) pkgAppName = XMain.pref.getString("pref_key_prism_swipeup_app", not_selected);
-        	else if (action == 3) pkgAppName = XMain.pref.getString("pref_key_controls_backlongpress_app", not_selected);
-        	else if (action == 4) pkgAppName = XMain.pref.getString("pref_key_controls_homeassist_app", not_selected);
-        	else if (action == 5) pkgAppName = XMain.pref.getString("pref_key_prism_swiperight_app", not_selected);
-        	else if (action == 6) pkgAppName = XMain.pref.getString("pref_key_prism_swipeleft_app", not_selected);
-        	else if (action == 7) pkgAppName = XMain.pref.getString("pref_key_prism_shake_app", not_selected);
-        	String[] pkgAppArray = pkgAppName.split("\\|");
+        	switch (action) {
+        		case 1: pkgAppName = XMain.pref.getString("pref_key_prism_swipedown_app", ""); break;
+        		case 2: pkgAppName = XMain.pref.getString("pref_key_prism_swipeup_app", ""); break;
+        		case 3: pkgAppName = XMain.pref.getString("pref_key_controls_backlongpress_app", ""); break;
+        		case 4: pkgAppName = XMain.pref.getString("pref_key_controls_homeassist_app", ""); break;
+        		case 5: pkgAppName = XMain.pref.getString("pref_key_prism_swiperight_app", ""); break;
+        		case 6: pkgAppName = XMain.pref.getString("pref_key_prism_swipeleft_app", ""); break;
+        		case 7: pkgAppName = XMain.pref.getString("pref_key_prism_shake_app", ""); break;
+        	}
         	
-        	ComponentName name = new ComponentName(pkgAppArray[0], pkgAppArray[1]);
-        	Intent intent = new Intent(Intent.ACTION_MAIN);
-        	intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-        	intent.setComponent(name);
-        	context.startActivity(intent);
-        	
-        	return true;
+        	if (pkgAppName != "") {
+        		String[] pkgAppArray = pkgAppName.split("\\|");
+        		
+        		ComponentName name = new ComponentName(pkgAppArray[0], pkgAppArray[1]);
+        		Intent intent = new Intent(Intent.ACTION_MAIN);
+        		intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+        		intent.setComponent(name);
+        		context.startActivity(intent);
+        		
+        		return true;
+        	} else return false;
         } catch (Throwable t) {
         	XposedBridge.log(t);
             return false;

@@ -42,7 +42,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		PackagePermissions.init();
 		
 		if(pref.getBoolean("pref_key_cb_beats", false))
-			CleanBeamMods.execHook_BeatsIcon(MODULE_PATH);
+			CleanBeamMods.execHook_BeatsIcon();
 		
 		if(pref.getBoolean("pref_key_other_movevol", false))
 			OtherMods.execHook_MoveVolume(startupParam);
@@ -73,7 +73,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			XResources.setSystemWideReplacement("android", "bool", "config_safe_media_volume_enabled", false);
 		
 		if (pref.getBoolean("pref_key_other_oldtoasts", false))
-			OtherMods.exec_OldStyleToasts(MODULE_PATH);
+			OtherMods.exec_OldStyleToasts();
 		
 		if (pref.getBoolean("pref_key_other_securelock", false))
 			OtherMods.execHook_EnhancedSecurity();
@@ -85,7 +85,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			SysUIMods.execHook_Sense6ColorControl();
 		
 		if (pref.getBoolean("pref_key_controls_smallsoftkeys", false))
-			ControlsMods.execHook_SmallNavbar(MODULE_PATH);
+			ControlsMods.execHook_SmallNavbar();
+		
+		if (pref.getBoolean("wake_gestures_active", false))
+			WakeGesturesMods.execHook_InitListener();
 		
 		GlobalActions.easterEgg();
 	}
@@ -110,13 +113,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			{
 				int transparency = pref.getInt("pref_key_prism_invisifoldersbkg", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
-				PrismMods.execHook_InvisiFolderBkg(resparam, transparency, MODULE_PATH);
+				PrismMods.execHook_InvisiFolderBkg(resparam, transparency);
 			}
 			
 			if(pref.getBoolean("pref_key_prism_4x5homescreen", false))
-				PrismMods.execHook_HomeScreenGridSize(resparam, MODULE_PATH);
+				PrismMods.execHook_HomeScreenGridSize(resparam);
 			
-			PrismMods.execHook_AppDrawerGridSizesLayout(resparam, MODULE_PATH);
+			PrismMods.execHook_AppDrawerGridSizesLayout(resparam);
 		}
 		
 		if (pkg.equals("com.android.systemui"))
@@ -132,44 +135,44 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 //			{
 //				int transparency = pref.getInt("pref_key_sysui_invisibar_new", 100);
 //				transparency = (int) Math.floor(transparency*2.55f);
-//				SysUIMods.execHook_InvisiBar(resparam, MODULE_PATH, transparency);
+//				SysUIMods.execHook_InvisiBar(resparam, transparency);
 //			}
 			
 			if(Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")) != 1)
-				CleanBeamMods.execHook_BatteryIcon(resparam, MODULE_PATH, Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")));
+				CleanBeamMods.execHook_BatteryIcon(resparam, Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")));
 			
 			if(pref.getBoolean("pref_key_cb_signal", false))
-				CleanBeamMods.execHook_SignalIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_SignalIcon(resparam);
 			
 			if(pref.getBoolean("pref_key_cb_headphone", false))
-				CleanBeamMods.execHook_HeadphoneIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_HeadphoneIcon(resparam);
 						
 			if(pref.getBoolean("pref_key_cb_alarm", false))
-				CleanBeamMods.execHook_AlarmIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_AlarmIcon(resparam);
 
 			if(Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")) != 1)
-				CleanBeamMods.execHook_WiFiIcon(resparam, MODULE_PATH, Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")));
+				CleanBeamMods.execHook_WiFiIcon(resparam, Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")));
 			
 			if(pref.getBoolean("pref_key_cb_profile", false))
-				CleanBeamMods.execHook_ProfileIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_ProfileIcon(resparam);
 			
 			if(pref.getBoolean("pref_key_cb_sync", false))
-				CleanBeamMods.execHook_SyncIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_SyncIcon(resparam);
 			
 			if(pref.getBoolean("pref_key_cb_gps", false))
-				CleanBeamMods.execHook_GpsIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_GpsIcon(resparam);
 			
 			if(pref.getBoolean("pref_key_cb_bt", false))
-				CleanBeamMods.execHook_BtIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_BtIcon(resparam);
 
 			if(pref.getBoolean("pref_key_cb_data", false))
-				CleanBeamMods.execHook_DataIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_DataIcon(resparam);
 			
 			if(pref.getBoolean("pref_key_cb_screenshot", false))
-				CleanBeamMods.execHook_ScreenshotIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_ScreenshotIcon(resparam);
 						
 			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
-				SysUIMods.execHook_CenterClockLayout(resparam, MODULE_PATH);
+				SysUIMods.execHook_CenterClockLayout(resparam);
 			
 			int headerClock = Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1"));
 			if(headerClock >= 2)
@@ -179,34 +182,34 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pkg.equals("com.android.settings"))
 		{
 			if(pref.getBoolean("pref_key_cb_usb", false))
-				CleanBeamMods.execHook_USBIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_USBIcon(resparam);
 			
 			if(pref.getBoolean("pref_key_cb_dnd", false))
-				CleanBeamMods.execHook_DNDIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_DNDIcon(resparam);
 		}
 		
 		if (pkg.equals("com.htc.htcpowermanager"))
 		{
 			if(pref.getBoolean("pref_key_cb_powersave", false))
-				CleanBeamMods.execHook_PowerSaveIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_PowerSaveIcon(resparam);
 		}
 		
 		if (pkg.equals("com.android.nfc"))
 		{
 			if(pref.getBoolean("pref_key_cb_nfc", false))
-				CleanBeamMods.execHook_NFCIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_NFCIcon(resparam);
 		}
 		
 		if (pkg.equals("com.android.providers.media")) 
 		{
 			if(pref.getBoolean("pref_key_cb_mtp", false))
-				CleanBeamMods.execHook_MTPIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_MTPIcon(resparam);
 		}
 		
 		if (pkg.equals("com.android.phone"))
 		{
 			if(pref.getBoolean("pref_key_cb_phone", false))
-				CleanBeamMods.execHook_PhoneIcons(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_PhoneIcons(resparam);
 			
 			int largePhoto = Integer.parseInt(pref.getString("pref_key_other_largephoto", "1"));
 			if (largePhoto > 1)
@@ -216,7 +219,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pkg.equals("com.htc.videohub.ui")) 
 		{
 			if(pref.getBoolean("pref_key_cb_tv", false))
-				CleanBeamMods.execHook_TvIcon(resparam, MODULE_PATH);
+				CleanBeamMods.execHook_TvIcon(resparam);
 		}
 		
 		if (pkg.equals("com.google.android.youtube"))
@@ -324,6 +327,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_other_fastunlock", false))
 				OtherMods.execHook_fastUnlock(lpparam);
+			
+			if (pref.getBoolean("wake_gestures_active", false))
+				WakeGesturesMods.execHook_LockScreenGestures(lpparam);
 		}
 		
 		if (pkg.equals("com.android.settings"))
@@ -382,7 +388,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				SysUIMods.execHook_removeAMPM(lpparam);
 			
 			if(pref.getBoolean("pref_key_sysui_brightslide", false))
-				SysUIMods.execHook_BrightnessSlider(lpparam, MODULE_PATH);
+				SysUIMods.execHook_BrightnessSlider(lpparam);
 			
 			if(pref.getBoolean("pref_key_sysui_dataratestatus", false))
 				SysUIMods.execHook_DataRateStatus(lpparam);

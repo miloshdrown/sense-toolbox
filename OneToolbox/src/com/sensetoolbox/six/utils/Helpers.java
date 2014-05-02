@@ -1,6 +1,8 @@
 package com.sensetoolbox.six.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -294,5 +296,15 @@ public class Helpers {
 	
 	public static boolean isNotM7() {
 		return !Build.DEVICE.contains("m7");
+	}
+	
+	public static boolean isWakeGestures() {
+		String wake_gestures = "0";
+		try {
+			BufferedReader br = new BufferedReader(new FileReader(new File("/sys/android_touch/wake_gestures")));
+			wake_gestures = br.readLine().trim();
+			br.close();
+		} catch (Exception e) {}
+		if (wake_gestures != null && wake_gestures.equals("1")) return true; else return false; 
 	}
 }

@@ -40,12 +40,13 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Current changelog
 =================
 
-1.0.1
+1.1
 [Fixed] Widget overlapping on 4x5 homescreens
 [Fixed] Swipe up on dock in appdrawer bug
 [Fixed] PIN/password are not displayed with Fast unlock mod enabled
 [Fixed] Sense 6 Themes color override for Gallery and TV
 [New] Ability to change Sense 6 theme for all selected apps at once
+[New] Wake gestures [requires ElementalX 14.4+ or any other kernel with wake_gesture support]
 
 1.0
 [Fix] All Sense 5 Toolbox mods

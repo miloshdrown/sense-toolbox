@@ -419,8 +419,8 @@ public class ControlsMods {
 		});
 	}
 
-	public static void execHook_SmallNavbar(String MODULE_PATH) {
-        XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, null);
+	public static void execHook_SmallNavbar() {
+        XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
         XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
         XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_height_landscape", modRes.fwd(R.dimen.navigation_bar_height_landscape));
         XResources.setSystemWideReplacement("android", "dimen", "system_bar_height", modRes.fwd(R.dimen.navigation_bar_height));

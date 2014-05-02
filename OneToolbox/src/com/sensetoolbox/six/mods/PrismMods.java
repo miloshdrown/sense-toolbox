@@ -160,8 +160,8 @@ public class PrismMods {
 		bg.getBackground().setAlpha(transparency);
 	}
 	
-	public static void execHook_InvisiFolderBkg(final InitPackageResourcesParam resparam, final int transparency,  String MODULE_PATH) {
-		final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+	public static void execHook_InvisiFolderBkg(final InitPackageResourcesParam resparam, final int transparency) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.htc.launcher", "drawable", "home_folder_base", new XResources.DrawableLoader() {
 			@Override
 			public Drawable newDrawable(XResources res, int id) throws Throwable {
@@ -366,7 +366,7 @@ public class PrismMods {
 	}
 
 	// Add 5x5, 4x6 and 5x6 grid options to dialog
-	public static void execHook_AppDrawerGridSizesLayout(final InitPackageResourcesParam resparam, String MODULE_PATH) {
+	public static void execHook_AppDrawerGridSizesLayout(final InitPackageResourcesParam resparam) {
 		int apps_grid_option = resparam.res.getIdentifier("apps_grid_options", "array", "com.htc.launcher");
 		String[] gridSizes = resparam.res.getStringArray(apps_grid_option);
 		
@@ -405,9 +405,9 @@ public class PrismMods {
 		});
 	}
 
-	public static void execHook_HomeScreenGridSize(final InitPackageResourcesParam resparam, String MODULE_PATH) {
+	public static void execHook_HomeScreenGridSize(final InitPackageResourcesParam resparam) {
 		try {
-			XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
+			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 			
 			int cell_count_y = resparam.res.getIdentifier("cell_count_y", "integer", "com.htc.launcher");
 			resparam.res.setReplacement(cell_count_y, 5);
@@ -634,10 +634,12 @@ public class PrismMods {
 			
 			if (e1.getY() > (screenHeight - density * 100) && e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE_VERT && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 				if (XMain.pref.getBoolean("pref_key_prism_homemenu", false)) {
-					Enum<?> m_state = (Enum<?>)XposedHelpers.getObjectField(launcher, "m_state");
-					if (m_state != null && m_state.ordinal() == 0) {
-						createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace"), (Activity)launcher);
-						return true;
+					if (launcher != null) {
+						Enum<?> m_state = (Enum<?>)XposedHelpers.getObjectField(launcher, "m_state");
+						if (m_state != null && m_state.ordinal() == 0) {
+							createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace"), (Activity)launcher);
+							return true;
+						}
 					}
 				}
 			}

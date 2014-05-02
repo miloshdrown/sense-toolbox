@@ -12,4 +12,5 @@
     <issue id="UseCompoundDrawables">
         <ignore path="res/layout/about_screen.xml" />
     </issue>
+    <issue id="UselessParent" severity="ignore" />
 </lint>

@@ -327,7 +327,7 @@ public class SysUIMods {
 		});
 	}
 	
-	public static void execHook_CenterClockLayout(final InitPackageResourcesParam resparam, String MODULE_PATH) {
+	public static void execHook_CenterClockLayout(final InitPackageResourcesParam resparam) {
 		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
@@ -529,12 +529,12 @@ public class SysUIMods {
 		});
 	}
 	
-	public static void execHook_BrightnessSlider(LoadPackageParam lpparam, final String MODULE_PATH) {
+	public static void execHook_BrightnessSlider(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook(){
 			@Override
 			protected void afterHookedMethod(MethodHookParam param)
 			{
-				final XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, null);
+				final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 				
 				FrameLayout mStatusBarWindow = (FrameLayout) getObjectField(param.thisObject, "mStatusBarWindow"); 
 				LinearLayout panel = (LinearLayout) mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("panel", "id", "com.android.systemui"));

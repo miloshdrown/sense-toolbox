@@ -1,0 +1,88 @@
+<com.htc.preference.HtcPreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
+    android:key="pref_key_wakegest">
+    	<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_wakegest_haptic"
+            android:summary="@string/wakegestures_haptic_summ"
+            android:title="@string/wakegestures_haptic_title"
+            android:defaultValue="true" />
+    
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_wakegest_dt2w"
+            android:title="@string/wakegestures_dt2w_title"
+            android:summary="@string/wakegestures_dt2w_summ"
+            android:entries="@array/wakegest_actions"
+            android:entryValues="@array/wakegest_actions_val"
+            android:defaultValue="1" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_wakegest_dt2w_app"
+			android:summary="@string/notselected"
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
+        
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_wakegest_swipedown"
+            android:title="@string/wakegestures_swipedown_title"
+            android:summary="@string/wakegestures_swipedown_summ"
+            android:entries="@array/wakegest_actions"
+            android:entryValues="@array/wakegest_actions_val"
+            android:defaultValue="5" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_wakegest_swipedown_app"
+			android:summary="@string/notselected"
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
+        
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_wakegest_swipeup"
+            android:title="@string/wakegestures_swipeup_title"
+            android:summary="@string/wakegestures_swipeup_summ"
+            android:entries="@array/wakegest_actions"
+            android:entryValues="@array/wakegest_actions_val"
+            android:defaultValue="2" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_wakegest_swipeup_app"
+			android:summary="@string/notselected"
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
+        
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_wakegest_swiperight"
+            android:title="@string/wakegestures_swiperight_title"
+            android:summary="@string/wakegestures_swiperight_summ"
+            android:entries="@array/wakegest_actions"
+            android:entryValues="@array/wakegest_actions_val"
+            android:defaultValue="3" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_wakegest_swiperight_app"
+			android:summary="@string/notselected"
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
+        
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_wakegest_swipeleft"
+            android:title="@string/wakegestures_swipeleft_title"
+            android:summary="@string/wakegestures_swipeleft_summ"
+            android:entries="@array/wakegest_actions"
+            android:entryValues="@array/wakegest_actions_val"
+            android:defaultValue="4" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_wakegest_swipeleft_app"
+			android:summary="@string/notselected"
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
+        
+        <com.htc.preference.HtcListPreference
+            android:key="pref_key_wakegest_logo2wake"
+            android:title="@string/wakegestures_logopress_title"
+            android:summary="@string/wakegestures_logopress_summ"
+            android:entries="@array/wakegest_actions"
+            android:entryValues="@array/wakegest_actions_val"
+            android:defaultValue="1" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_wakegest_logo2wake_app"
+			android:summary="@string/notselected"
+            android:title="@string/launch_app"
+            android:icon="@drawable/right_arrow" />
+</com.htc.preference.HtcPreferenceScreen>

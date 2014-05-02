@@ -36,6 +36,10 @@
         android:title="@string/various_mods"
         android:key="pref_key_other" />
     
+    <com.htc.preference.HtcPreferenceScreen 
+        android:title="@string/wakegestures_mod"
+        android:key="pref_key_wakegest" />
+    
     <com.htc.preference.HtcPreferenceScreen
         android:title="@string/persistent_mods"
         android:key="pref_key_persist" />

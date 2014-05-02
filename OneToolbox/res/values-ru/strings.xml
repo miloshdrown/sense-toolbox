@@ -328,6 +328,23 @@
 	<string name="various_keyslight_auto_title">Динамическая подсветка</string>
 	<string name="various_keyslight_auto_summ">Отключает подсветку клавиш в полноэкранных приложениях.</string>
 	
+	<string name="wakegestures_mod">Жесты включения</string>
+	<string name="wakegestures_haptic_title">Виброподтверждение</string>
+	<string name="wakegestures_haptic_summ">Короткая вибрация при успешно совершённом жесте</string>
+	<string name="wakegestures_dt2w_title">Двойное нажатие</string>
+	<string name="wakegestures_dt2w_summ">Действие при двойном нажатии</string>
+	<string name="wakegestures_swipedown_title">Провести вниз</string>
+	<string name="wakegestures_swipedown_summ">Действие при свайпе вниз</string>
+	<string name="wakegestures_swipeup_title">Провести вверх</string>
+	<string name="wakegestures_swipeup_summ">Действие при свайпе вверх</string>
+	<string name="wakegestures_swipeleft_title">Провести влево</string>
+	<string name="wakegestures_swipeleft_summ">Действие при свайпе влево</string>
+	<string name="wakegestures_swiperight_title">Провести вправо</string>
+	<string name="wakegestures_swiperight_summ">Действие при свайпе вправо</string>
+	<string name="wakegestures_logopress_title">Логотип</string>
+	<string name="wakegestures_logopress_summ">Действие на долгое нажатие лого</string>
+	<string name="wakegestures_not_supported">Жесты включения требуют поддержку ядром, попросите автора Вашего ядра её добавить, либо используйте ElementalX 14.4+</string>
+	
 	<string name="persistent_mods">Всегда активные моды</string>
 	<string name="persist_adgrid_title">Размер сетки списка приложений</string>
 	<string name="persist_adgrid_summ">Новые размеры: 5x5, 4x6 и 5x6. Вы можете выбрать их в стандартном меню списка приложений.</string>
@@ -444,6 +461,13 @@
 	<string name="array_keyslight_dim">Более тусклая</string>
 	<string name="array_keyslight_extradim">Очень тусклая</string>
 	<string name="array_keyslight_alwaysoff">Всегда выключена</string>
+	<string name="array_wakegestures_disable">Отключено</string>
+	<string name="array_wakegestures_wakeup">Пробуждение</string>
+	<string name="array_wakegestures_wakeupbypass">Пробуждение с пропуском экрана блокировки</string>
+	<string name="array_wakegestures_blinkfeed">Переход на BlinkFeed</string>
+	<string name="array_wakegestures_home">Переход на главный домашний экран</string>
+	<string name="array_wakegestures_quickcall">Быстрый Звонок (голосовой набор)</string>
+	<string name="array_wakegestures_flashlight">Фонарик (без пробуждения)</string>
 
 	<string name="about_devs">Разработчики</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>

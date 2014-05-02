@@ -17,7 +17,6 @@ import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
 import android.app.Activity;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -30,18 +29,6 @@ import android.view.MenuItem;
 
 public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 	private SharedPreferences prefs = null;
-	
-	private void setupPrefsManager(HtcPreferenceFragment pref) {
-		pref.getPreferenceManager().setSharedPreferencesName("one_toolbox_prefs");
-		pref.getPreferenceManager().setSharedPreferencesMode(1);
-		HtcPreferenceManager.setDefaultValues(pref.getActivity(), R.xml.prefs_systemui, false);
-	}
-	
-	private void setupPrefsMenu(Context ctx, Menu menu, MenuInflater inflater) {
-		menu.clear();
-		inflater.inflate(R.menu.menu_mods, menu);
-		menu.getItem(2).setIcon(Helpers.applySenseTheme(ctx, menu.getItem(2).getIcon()));
-	}
 	
 	private boolean handleOptionsItemSelected(final Activity act, MenuItem item) {
 		if (item.getItemId() == R.id.softreboot) {
@@ -180,7 +167,9 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 	
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-		setupPrefsMenu(getActivity(), menu, inflater);
+		menu.clear();
+		inflater.inflate(R.menu.menu_mods, menu);
+		menu.getItem(2).setIcon(Helpers.applySenseTheme(getActivity(), menu.getItem(2).getIcon()));
 	}
 	
 	@Override
@@ -188,11 +177,12 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 		return handleOptionsItemSelected(getActivity(), item);
 	}
 	
-	@Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setHasOptionsMenu(true);
-        setupPrefsManager(this);
-        prefs = getPreferenceManager().getSharedPreferences();
-    }
+	public void onCreate(Bundle savedInstanceState, int pref_defaults) {
+		super.onCreate(savedInstanceState);
+		setHasOptionsMenu(true);
+		getPreferenceManager().setSharedPreferencesName("one_toolbox_prefs");
+		getPreferenceManager().setSharedPreferencesMode(1);
+		HtcPreferenceManager.setDefaultValues(getActivity(), pref_defaults, false);
+		prefs = getPreferenceManager().getSharedPreferences();
+	}
 }
