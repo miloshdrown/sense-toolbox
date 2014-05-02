@@ -511,4 +511,25 @@
 	<string name="support_s6t_title">Odwiedź Stronę Sense 6 Toolbox</string>
 	<string name="support_s6t_summ">Znajdź tutaj informacje o aplikacji i listę zmian.</string>
 	<string name="sense_theme_replace_all">Zmień motyw dla wszystkich aplikacji znajdujących się na liście</string>
-	</resources>
+	<string name="wakegestures_mod">Gesty wybudzenia</string>
+	<string name="wakegestures_haptic_title">Wibracja dotykowa</string>
+	<string name="wakegestures_haptic_summ">Krótka wibracja po udanym geście</string>
+	<string name="wakegestures_dt2w_title">Podwójne dotknięcie</string>
+	<string name="wakegestures_dt2w_summ">Akcja dla podwójnego dotknięcia</string>
+	<string name="wakegestures_swipedown_title">Przesuwanie w dół</string>
+	<string name="wakegestures_swipedown_summ">Akcja dla gestu przesunięcia w dół</string>
+	<string name="wakegestures_swipeup_title">Przesuwanie do góry</string>
+	<string name="wakegestures_swipeup_summ">Akcja dla gestu przesunięcia do góry</string>
+	<string name="wakegestures_swipeleft_title">Przesuwanie w lewo</string>
+	<string name="wakegestures_swipeleft_summ">Akcja dla gestu przesunięcia w lewo</string>
+	<string name="wakegestures_swiperight_title">Przesuwanie w prawo</string>
+	<string name="wakegestures_swiperight_summ">Akcja dla gestu przesunięcia w prawo</string>
+	<string name="wakegestures_logopress_title">Logo</string>
+	<string name="array_wakegestures_disable">Wyłącz</string>
+	<string name="array_wakegestures_wakeup">Wybudzenie</string>
+	<string name="array_wakegestures_blinkfeed">Przejdź do BlinkFeed</string>
+	<string name="array_wakegestures_home">Przejdź do ekranu głównego</string>
+	<string name="array_wakegestures_quickcall">Szybkie połączenie (wybieranie głosowe)</string>
+	<string name="array_wakegestures_flashlight">Latarka (brak wybudzania)</string>
+	
+</resources>
