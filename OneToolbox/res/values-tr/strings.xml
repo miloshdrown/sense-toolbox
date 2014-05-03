@@ -477,4 +477,6 @@
 	<string name="array_wakegestures_quickcall">Hızlı Arama (Sesli Arama)</string>
 	<string name="array_wakegestures_flashlight">El feneri (Ekranı açmadan)</string>
 	
+<string name="array_wakegestures_appdrawer">Uygulama menüsünü aç</string>
+	
 </resources>
