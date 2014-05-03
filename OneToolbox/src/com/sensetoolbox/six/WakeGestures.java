@@ -126,7 +126,7 @@ public class WakeGestures extends HtcPreferenceActivity {
 				if (preference.equals(logoPressActionPreference)) launchApps = findPreference("pref_key_wakegest_logo2wake_app");
 				
 				if (launchApps != null)
-				if (newValue.equals("7")) {
+				if (newValue.equals("10")) {
 					launchApps.setEnabled(true);
 					if (launchApps instanceof DynamicPreference)
 						((DynamicPreference)launchApps).show();
@@ -138,12 +138,12 @@ public class WakeGestures extends HtcPreferenceActivity {
 			}
 		};
 		
-		if (swipeRightActionPreference.getValue().equals("7"))	launchAppsSwipeRight.setEnabled(true);	else launchAppsSwipeRight.setEnabled(false);
-		if (swipeleftActionPreference.getValue().equals("7"))	launchAppsSwipeLeft.setEnabled(true);	else launchAppsSwipeLeft.setEnabled(false);
-		if (swipeUpActionPreference.getValue().equals("7"))		launchAppsSwipeUp.setEnabled(true);		else launchAppsSwipeUp.setEnabled(false);
-		if (swipeDownActionPreference.getValue().equals("7"))	launchAppsSwipeDown.setEnabled(true);	else launchAppsSwipeDown.setEnabled(false);
-		if (doubleTapActionPreference.getValue().equals("7"))	launchAppsDoubleTap.setEnabled(true);	else launchAppsDoubleTap.setEnabled(false);
-		if (logoPressActionPreference.getValue().equals("7"))	launchAppsLogoPress.setEnabled(true);	else launchAppsLogoPress.setEnabled(false);
+		if (swipeRightActionPreference.getValue().equals("10"))	launchAppsSwipeRight.setEnabled(true);	else launchAppsSwipeRight.setEnabled(false);
+		if (swipeleftActionPreference.getValue().equals("10"))	launchAppsSwipeLeft.setEnabled(true);	else launchAppsSwipeLeft.setEnabled(false);
+		if (swipeUpActionPreference.getValue().equals("10"))		launchAppsSwipeUp.setEnabled(true);		else launchAppsSwipeUp.setEnabled(false);
+		if (swipeDownActionPreference.getValue().equals("10"))	launchAppsSwipeDown.setEnabled(true);	else launchAppsSwipeDown.setEnabled(false);
+		if (doubleTapActionPreference.getValue().equals("10"))	launchAppsDoubleTap.setEnabled(true);	else launchAppsDoubleTap.setEnabled(false);
+		if (logoPressActionPreference.getValue().equals("10"))	launchAppsLogoPress.setEnabled(true);	else launchAppsLogoPress.setEnabled(false);
 		
 		swipeRightActionPreference.setOnPreferenceChangeListener(chooseAction);
 		swipeleftActionPreference.setOnPreferenceChangeListener(chooseAction);

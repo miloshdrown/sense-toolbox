@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.Method;
 
+import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.StructInputEvent;
 
 import android.content.BroadcastReceiver;
@@ -60,6 +61,10 @@ public class WakeGesturesMods {
 						case 5:
 							launchApp(intent.getIntExtra("launch_app", 0));
 							break;
+						case 6:
+							Intent i2 = new Intent("com.htc.intent.action.HTC_Prism_AllApps").addCategory("android.intent.category.DEFAULT").addFlags(0x10000000);
+							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i2, false);
+							break;
 					}
 				}
 			} catch(Throwable t) {
@@ -86,6 +91,14 @@ public class WakeGesturesMods {
 			Intent intent = new Intent("com.sensetoolbox.six.MotionGesture");
 			intent.putExtra("motion_gesture", 5);
 			intent.putExtra("launch_app", input_val);
+			mContext.sendBroadcast(intent);
+		}
+	}
+	
+	private static void sendLockScreenIntentOpenAppDrawer(Context mContext) {
+		if (mContext != null) {
+			Intent intent = new Intent("com.sensetoolbox.six.MotionGesture");
+			intent.putExtra("motion_gesture", 6);
 			mContext.sendBroadcast(intent);
 		}
 	}
@@ -174,7 +187,7 @@ public class WakeGesturesMods {
 	        protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 	        	Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "event4thread");
 	        	if (th != null) {
-	        		XposedBridge.log("[S6T] Screen off, listening for motion gestures");
+	        		//XposedBridge.log("[S6T] Screen off, listening for motion gestures");
 	        		if (!th.isAlive()) th.start(); else
 	        		synchronized (mPauseLock) {
 	        			mPaused = false;
@@ -191,7 +204,7 @@ public class WakeGesturesMods {
 	        	setFlashlight(0);
 	        	Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "event4thread");
 	        	if (th != null) {
-	        		XposedBridge.log("[S6T] Screen on, pause motion gestures listener");
+	        		//XposedBridge.log("[S6T] Screen on, pause motion gestures listener");
 	        		synchronized (mPauseLock) {
 	        			mPaused = true;
 	        		}
@@ -238,8 +251,11 @@ public class WakeGesturesMods {
 											case 3: doWakeUp(param.thisObject); sendLockScreenIntent(mContext, 2); break;
 											case 4: doWakeUp(param.thisObject); sendLockScreenIntent(mContext, 3); break;
 											case 5: doWakeUp(param.thisObject); sendLockScreenIntent(mContext, 4); break;
-											case 6: if (mCurrentLEDLevel == 0) mCurrentLEDLevel = 127; else mCurrentLEDLevel = 0; setFlashlight(mCurrentLEDLevel); break;
-											case 7: doWakeUp(param.thisObject); sendLockScreenIntentLauchApp(mContext, input_event.value); break;
+											case 6: doWakeUp(param.thisObject); sendLockScreenIntentOpenAppDrawer(mContext); break;
+											case 7: if (mCurrentLEDLevel == 0) mCurrentLEDLevel = 127; else mCurrentLEDLevel = 0; setFlashlight(mCurrentLEDLevel); break;
+											case 8: doWakeUp(param.thisObject); GlobalActions.expandNotifications(mContext); break;
+											case 9: doWakeUp(param.thisObject); GlobalActions.expandEQS(mContext); break;
+											case 10: doWakeUp(param.thisObject); sendLockScreenIntentLauchApp(mContext, input_event.value); break;
 										};
 										
 										if (isHaptic && XMain.pref.getBoolean("pref_key_wakegest_haptic", false)) doHaptic(mContext);
@@ -273,7 +289,7 @@ public class WakeGesturesMods {
 	        		IntentFilter intentfilter = new IntentFilter();
 	        		intentfilter.addAction("com.sensetoolbox.six.MotionGesture");
 	        		mSysContext.registerReceiver(mBRLS, intentfilter);
-	        	} else XposedBridge.log("mSysContext == null");
+	        	} else XposedBridge.log("[S6T] mSysContext == null");
 	        }
 		});
 		
