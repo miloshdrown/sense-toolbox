@@ -235,7 +235,10 @@
         <item >@string/array_wakegestures_blinkfeed</item>
         <item >@string/array_wakegestures_home</item>
         <item >@string/array_wakegestures_quickcall</item>
+        <item >@string/array_wakegestures_appdrawer</item>
         <item >@string/array_wakegestures_flashlight</item>
+        <item >@string/array_global_actions_notif</item>
+        <item >@string/array_global_actions_eqs</item>
         <item >@string/launch_app</item>
     </string-array>
     <string-array name="wakegest_actions_val">
@@ -247,5 +250,8 @@
         <item >5</item>
         <item >6</item>
         <item >7</item>
+        <item >8</item>
+        <item >9</item>
+        <item >10</item>
     </string-array>
 </resources>

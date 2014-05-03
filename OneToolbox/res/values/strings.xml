@@ -475,5 +475,6 @@
 	<string name="array_wakegestures_home">Go to main home screen</string>
 	<string name="array_wakegestures_quickcall">Quick Call (voice dial)</string>
 	<string name="array_wakegestures_flashlight">Flashlight (no wake up)</string>
+	<string name="array_wakegestures_appdrawer">Open app drawer</string>
 	
 </resources>

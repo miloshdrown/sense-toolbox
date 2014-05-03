@@ -468,6 +468,7 @@
 	<string name="array_wakegestures_home">Переход на главный домашний экран</string>
 	<string name="array_wakegestures_quickcall">Быстрый Звонок (голосовой набор)</string>
 	<string name="array_wakegestures_flashlight">Фонарик (без пробуждения)</string>
+	<string name="array_wakegestures_appdrawer">Открыть список приложений</string>
 
 	<string name="about_devs">Разработчики</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
