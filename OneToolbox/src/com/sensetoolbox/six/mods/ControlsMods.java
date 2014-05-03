@@ -178,8 +178,8 @@ public class ControlsMods {
 			if (mFlashlightLevel > 0) {
 				mFlashlightLevel = 0;
 				GlobalActions.setFlashlight(0);
-				if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
 			};
+			if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
 		}
 	};
 	

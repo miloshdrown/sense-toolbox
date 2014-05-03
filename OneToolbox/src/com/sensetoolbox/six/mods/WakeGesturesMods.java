@@ -9,15 +9,16 @@ import java.lang.reflect.Method;
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.StructInputEvent;
 
+import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.os.PowerManager.WakeLock;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -30,6 +31,7 @@ public class WakeGesturesMods {
 	private static Object mEasyAccessCtrl = null;
 	private static ClassLoader mLSClassLoader = null;
 	private static int mCurrentLEDLevel = 0;
+	private static WakeLock mWakeLock;
 	private static BroadcastReceiver mBRLS = new BroadcastReceiver() {
 		public void onReceive(final Context context, Intent intent) {
 			try {
@@ -135,27 +137,6 @@ public class WakeGesturesMods {
         }
 	}
 	
-	public static void setFlashlight(int level) {
-		try {
-			Method setFlashlightBrightness = null;
-			Object svc = null;
-			Object HTCHW = Class.forName("android.os.ServiceManager").getMethod("getService", new Class[] { String.class }).invoke(null, new Object[] { "htchardware" });
-			Method HTCHWInterface = Class.forName("android.os.IHtcHardwareService$Stub").getMethod("asInterface", new Class[] { IBinder.class });
-			Object[] paramArr = new Object[1];
-			paramArr[0] = ((IBinder)HTCHW);
-			svc = HTCHWInterface.invoke(null, paramArr);
-			Class<?> svcClass = svc.getClass();
-			Class<?>[] paramArray2 = new Class[1];
-			paramArray2[0] = Integer.TYPE;
-			setFlashlightBrightness = svcClass.getMethod("setFlashlightBrightness", paramArray2);
-			Object[] paramArray = new Object[1];
-			paramArray[0] = level;
-			setFlashlightBrightness.invoke(svc, paramArray);
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-	}
-	
 	public static void doHaptic(Context context) {
 		String haptic = "false";
 		try {
@@ -200,8 +181,11 @@ public class WakeGesturesMods {
 		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurningOn", "android.view.WindowManagerPolicy.ScreenOnListener", new XC_MethodHook() {
 	        @Override
 	        protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-	        	mCurrentLEDLevel = 0;
-	        	setFlashlight(0);
+	        	if (mCurrentLEDLevel > 0) {
+	        		mCurrentLEDLevel = 0;
+					GlobalActions.setFlashlight(0);
+				};
+				if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
 	        	Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "event4thread");
 	        	if (th != null) {
 	        		//XposedBridge.log("[S6T] Screen on, pause motion gestures listener");
@@ -222,12 +206,13 @@ public class WakeGesturesMods {
 				
 				Thread th = new Thread(new Runnable(){
 					@Override
+					@SuppressLint("Wakelock")
 					public void run() {
 						while (true) try {
 							if (fin.read(event) > 0) {
 								StructInputEvent input_event = new StructInputEvent(event);
 								//XposedBridge.log("event3: " + bytesToHex(event));
-								//XposedBridge.log("[S6T] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
+								XposedBridge.log("[S6T] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
 								if (input_event.type == 0x02 && input_event.code == 0x0b) {
 									XMain.pref.reload();
 									if (XMain.pref.getBoolean("wake_gestures_active", false)) {
@@ -252,7 +237,18 @@ public class WakeGesturesMods {
 											case 4: doWakeUp(param.thisObject); sendLockScreenIntent(mContext, 3); break;
 											case 5: doWakeUp(param.thisObject); sendLockScreenIntent(mContext, 4); break;
 											case 6: doWakeUp(param.thisObject); sendLockScreenIntentOpenAppDrawer(mContext); break;
-											case 7: if (mCurrentLEDLevel == 0) mCurrentLEDLevel = 127; else mCurrentLEDLevel = 0; setFlashlight(mCurrentLEDLevel); break;
+											case 7:
+												PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+												if (mWakeLock == null) mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T PowerFlash");
+												if (mCurrentLEDLevel == 0) {
+													mCurrentLEDLevel = 127;
+													if (!mWakeLock.isHeld()) mWakeLock.acquire(600000);
+												} else { 
+													mCurrentLEDLevel = 0;
+													if (mWakeLock.isHeld()) mWakeLock.release();
+												}
+												GlobalActions.setFlashlight(mCurrentLEDLevel);
+												break;
 											case 8: doWakeUp(param.thisObject); GlobalActions.expandNotifications(mContext); break;
 											case 9: doWakeUp(param.thisObject); GlobalActions.expandEQS(mContext); break;
 											case 10: doWakeUp(param.thisObject); sendLockScreenIntentLauchApp(mContext, input_event.value); break;
