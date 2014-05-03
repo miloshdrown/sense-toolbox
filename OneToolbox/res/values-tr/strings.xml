@@ -50,7 +50,7 @@
 	<string name="no">Hayır</string>
 	<string name="cpu_mhz">MHz</string>
     <string name="backup_restore">Ayarların Yönetimi</string>
-    <string name="backup_restore_choose">İstediğiniz rutini seçin</string>
+    <string name="backup_restore_choose">İstediğiniz yöntemi seçin</string>
     <string name="do_backup">Yedekle</string>
     <string name="do_restore">Geri Yükle</string>
     <string name="storage_read_only">Harici depolama alanınız sadece okunabilir</string>
@@ -455,26 +455,26 @@
 	<string name="wakegestures_mod">Ekran uyandırma hareketleri</string>
 	<string name="wakegestures_haptic_title">Titreşimli geribildirim</string>
 	<string name="wakegestures_haptic_summ">Başarılı olan hareketlerden sonra kısa titreşim</string>
-	<string name="wakegestures_dt2w_title">Çift tıklama</string>
-	<string name="wakegestures_dt2w_summ">Çift tıklama eylemi</string>
-	<string name="wakegestures_swipedown_title">Aşağı kaydır</string>
+	<string name="wakegestures_dt2w_title">Çift dokun</string>
+	<string name="wakegestures_dt2w_summ">Çift dokunma eylemi</string>
+	<string name="wakegestures_swipedown_title">Aşağı çek</string>
 	<string name="wakegestures_swipedown_summ">Aşağı kaydırma eylemi</string>
-	<string name="wakegestures_swipeup_title">Yukarı kaydırma</string>
+	<string name="wakegestures_swipeup_title">Yukarı çek</string>
 	<string name="wakegestures_swipeup_summ">Yukarı kaydırma eylemi</string>
-	<string name="wakegestures_swipeleft_title">Sola kaydırma</string>
+	<string name="wakegestures_swipeleft_title">Sola çek</string>
 	<string name="wakegestures_swipeleft_summ">Sola kaydırma eylemi</string>
-	<string name="wakegestures_swiperight_title">Sağa kaydırma</string>
+	<string name="wakegestures_swiperight_title">Sağa çek</string>
 	<string name="wakegestures_swiperight_summ">Sağa kaydırma eylemi</string>
 	<string name="wakegestures_logopress_title">Logoya basma</string>
 	<string name="wakegestures_logopress_summ">Logoya uzun basma eylemi</string>
 	<string name="wakegestures_not_supported">Ekran uyandırma hareketleri kernel desteğine ihtiyaç duyar, ya kernel geliştiricinizden eklemesini isteyin ya da ElementalX 14.4\'ten sonraki versiyonunu kullanın</string>
 	
 	<string name="array_wakegestures_disable">Devre dışı</string>
-	<string name="array_wakegestures_wakeup">Uyandırma</string>
-	<string name="array_wakegestures_wakeupbypass">Uyandırma ile ekran kilidini atla</string>
+	<string name="array_wakegestures_wakeup">Ekranı aç</string>
+	<string name="array_wakegestures_wakeupbypass">Kilit ekranını atlayarak ekranı aç</string>
 	<string name="array_wakegestures_blinkfeed">BlinkFeed ekranına git</string>
 	<string name="array_wakegestures_home">Ana ekrana git</string>
 	<string name="array_wakegestures_quickcall">Hızlı Arama (Sesli Arama)</string>
-	<string name="array_wakegestures_flashlight">El feneri (Uyandırmadan)</string>
+	<string name="array_wakegestures_flashlight">El feneri (Ekranı açmadan)</string>
 	
 </resources>
