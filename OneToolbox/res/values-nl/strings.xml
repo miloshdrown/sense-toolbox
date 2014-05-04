@@ -85,7 +85,7 @@
 	
 	<string name="transparency_msg">0 = transparant, 100 = dekkend</string>
 	<string name="transparency_enable">Transparantie inschakelen</string>
-	<string name="launch_app">App starten</string>
+	<string name="launch_app">Applicatie starten</string>
 	<string name="toggle_settings">Schakelaar instellingen</string>
 	
 	<string name="camera_mods">Camera aanpassingen</string>
@@ -177,7 +177,7 @@
 	<string name="sense_mods">Sense aanpassingen</string>
 	<string name="sense_transparency">Transparantie</string>
 	<string name="sense_homescreen">Thuisscherm</string>
-	<string name="sense_appdrawer">App overzicht</string>
+	<string name="sense_appdrawer">Applicatie overzicht</string>
 	<string name="sense_gestures">Gebaren</string>
 	<string name="sense_td_title">Dock</string>
 	<string name="sense_td_summ">Maak het Sense dock transparant.</string>
@@ -199,7 +199,7 @@
 	<string name="sense_homemenu_summ">Toon popup menu met handige commando\'s bij indrukken van menuknop of lang indrukken van home-knop in de launcher.</string>
 	<string name="sense_infiniscroll_title">Oneindig scrollen in thuisschermen</string>
 	<string name="sense_infiniscroll_summ">Schakel eindeloos scrollen in thuisschermen in.</string>
-	<string name="sense_gridtinyfont_title">Klein lettertype in app overzicht</string>
+	<string name="sense_gridtinyfont_title">Klein lettertype in applicatie overzicht</string>
 	<string name="sense_gridtinyfont_summ">Verklein de lettergrootte voor applicatie overzicht met 6 rijen</string>
 	<string name="sense_swipedownaction_title">Actie bij omlaag slepen</string>
 	<string name="sense_swipedownaction_summ">Actie bij omlaag slepen op willekeurig thuisscherm.</string>
@@ -270,7 +270,7 @@
 	<string name="various_apm_summ">Advanced Power Menu in- of uitschakelen\nLaat deze optie uitgeschakeld als Android APM is geïnstalleerd.</string>
 	<string name="various_scron_title">\'Scherm aanhouden\' inschakelen</string>
 	<string name="various_scron_summ">Toon de \'Scherm aanhouden\' optie in scherminstellingen en opties voor ontwikkelaars.</string>
-	<string name="various_apps_title">Toon aanvullende app details</string>
+	<string name="various_apps_title">Toon aanvullende applicatie details</string>
 	<string name="various_apps_summ">Velden toevoegen aan Instellingen &gt; Apps:\n- knop om een app te starten\n- apk bestandsnaam en pad\n- data pad\n- procesnaam\n- gebruikers-id\n- doel SDK versie</string>
 	<string name="various_volsnd_title">Geluid bij volume wijzigen uitschakelen</string>
 	<string name="various_volsnd_summ">Aanvinken om het geluid bij het wijzigen van het volume uit te schakelen.</string>
@@ -298,7 +298,7 @@
 	<string name="persist_appfilter_summ">Voeg een optie toe om alleen uitgeschakelde pakketten te tonen in Apps.</string>
 	<string name="persist_recentslongtap_title">Popup menu in lijst recente applicaties</string>
 	<string name="persist_recentslongtap_summ">Toon een popup menu bij lang indrukken van een app in de recente apps lijst.</string>
-	<string name="persist_installer_title">Toon app versie</string>
+	<string name="persist_installer_title">Toon applicatie versie</string>
 	<string name="persist_installer_summ">Voeg pakketversie toe aan de titel van de installer bij updaten of installeren van een app.</string>
 	
 	<string name="support">Ondersteuning</string>
@@ -368,7 +368,7 @@
 	<string name="array_global_actions_lock">Apparaat vergrendelen</string>
 	<string name="array_global_actions_sleep">Slaapstand</string>
 	<string name="array_global_actions_screenshot">Maak schermafbeelding</string>
-	<string name="array_global_actions_launch">Start app</string>
+	<string name="array_global_actions_launch">Start applicatie</string>
 	<string name="array_global_actions_toggle">Instellingen in- en uitschakelen</string>
 	<string name="array_global_toggle_wifi">WiFi</string>
 	<string name="array_global_toggle_bt">Bluetooth</string>
@@ -425,7 +425,7 @@
 	<string name="array_large_photo_default">Standaard</string>
 	<string name="array_large_photo_rectangular">Rechthoekig</string>
 	<string name="array_large_photo_max">Maximum</string>
-	<string name="array_header_click_clock">Open Klok app</string>
+	<string name="array_header_click_clock">Open Klok applicatie</string>
 	<string name="array_header_click_sysinfo">Laat zien/verberg CPU en RAM info, open Klok app door te drukken op actuele tijd.</string>
 	
 	<string name="module_not_active">Sense 6 Toolbox module is niet actief! Open Xposed Installer, activeer de module en herstart het toestel.</string>
@@ -495,8 +495,8 @@
 	
 	<string name="support_s6t_title">Bezoek Sense 6 Toolbox Site</string>
 	<string name="support_s6t_summ">Vind info en changelog voor de app hier.</string>
-	<string name="add_app">Voeg app toe</string>
-	<string name="select_app">Selecteer app</string>
+	<string name="add_app">Voeg applicatie toe</string>
+	<string name="select_app">Selecteer applicatie</string>
 	
 	<string name="various_powersavenotif_title">Verberg energiebesparing notificatie</string>
 	<string name="various_powersavenotif_summ">Schakel energiebesparing notificatie uit.</string>
@@ -522,7 +522,7 @@
 	<string name="array_wakegestures_wakeup">Ontwaak</string>
 	<string name="array_wakegestures_wakeupbypass">Ontwaak zonder vergrendelscherm</string>
 	<string name="array_wakegestures_blinkfeed">Ga naar BlinkFeed</string>
-	<string name="array_wakegestures_home">Ga naar hoofd beginscherm</string>
+	<string name="array_wakegestures_home">Ga naar beginscherm</string>
 	<string name="array_wakegestures_quickcall">Snel bellen (kiezen met je stem)</string>
 	<string name="array_wakegestures_flashlight">Zaklamp (zonder ontwaken)</string>
 	<string name="array_wakegestures_appdrawer">Applicatie overzicht openen</string>
