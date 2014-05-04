@@ -47,6 +47,7 @@ Current changelog
 [Fixed] Sense 6 Themes color override for Gallery and TV
 [New] Ability to change Sense 6 theme for all selected apps at once
 [New] Wake gestures [requires ElementalX 14.4+ or any other kernel with wake_gesture support]
+[New] No signal icon
 
 1.0
 [Fix] All Sense 5 Toolbox mods
