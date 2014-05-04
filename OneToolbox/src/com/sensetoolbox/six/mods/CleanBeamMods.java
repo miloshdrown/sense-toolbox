@@ -60,6 +60,13 @@ public class CleanBeamMods{
 
 	public static void execHook_SignalIcon(InitPackageResourcesParam resparam) {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_5signal_null", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_null));
+			}	
+		});
+		
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_5signal_0", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
