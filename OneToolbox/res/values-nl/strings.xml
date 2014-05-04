@@ -501,4 +501,30 @@
 	<string name="various_powersavenotif_title">Verberg energiebesparing notificatie</string>
 	<string name="various_powersavenotif_summ">Schakel energiebesparing notificatie uit.</string>
 	<string name="sense_theme_replace_all">Verander thema voor alle apps in de lijst</string>
-	</resources>
+	<string name="wakegestures_mod">Gebaren voor ontwaken</string>
+	<string name="wakegestures_haptic_title">Trillen als feedback</string>
+	<string name="wakegestures_haptic_summ">Korte trilling bij succesvol gebaar</string>
+	<string name="wakegestures_dt2w_title">Dubbeltikken</string>
+	<string name="wakegestures_dt2w_summ">Actie bij dubbeltikken</string>
+	<string name="wakegestures_swipedown_title">Gebaar naar beneden</string>
+	<string name="wakegestures_swipedown_summ">Actie bij gebaar naar beneden</string>
+	<string name="wakegestures_swipeup_title">Gebaar naar boven</string>
+	<string name="wakegestures_swipeup_summ">Actie bij gebaar naar boven</string>
+	<string name="wakegestures_swipeleft_title">Gebaar naar links</string>
+	<string name="wakegestures_swipeleft_summ">Actie bij gebaar naar links</string>
+	<string name="wakegestures_swiperight_title">Gebaar naar rechts</string>
+	<string name="wakegestures_swiperight_summ">Actie bij gebaar naar rechts</string>
+	<string name="wakegestures_logopress_title">Logo</string>
+	<string name="wakegestures_logopress_summ">Actie bij lang indrukken logo</string>
+	<string name="wakegestures_not_supported">Ontwaak gebaren vereisen ondersteuning van de kernel, vraag aan de kernel ontwikkelaar om het toe te voegen of gebruik ElementalX 14.4+</string>
+	
+	<string name="array_wakegestures_disable">Uitschakelen</string>
+	<string name="array_wakegestures_wakeup">Ontwaak</string>
+	<string name="array_wakegestures_wakeupbypass">Ontwaak zonder vergrendelscherm</string>
+	<string name="array_wakegestures_blinkfeed">Ga naar BlinkFeed</string>
+	<string name="array_wakegestures_home">Ga naar hoofd beginscherm</string>
+	<string name="array_wakegestures_quickcall">Snel bellen (kiezen met je stem)</string>
+	<string name="array_wakegestures_flashlight">Zaklamp (zonder ontwaken)</string>
+	<string name="array_wakegestures_appdrawer">Applicatie overzicht openen</string>
+	
+</resources>
