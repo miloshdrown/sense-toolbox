@@ -74,21 +74,6 @@
             </fileset>
         </copy>
         <property environment="env" /> 
-        <replace encoding="utf-8" file="res/values/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace encoding="utf-8" file="res/values-ru/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace encoding="utf-8" file="res/values-de/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace encoding="utf-8" file="res/values-pl/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace encoding="utf-8" file="res/values-es/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace encoding="utf-8" file="res/values-fr/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace encoding="utf-8" file="res/values-hr/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace encoding="utf-8" file="res/values-it/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace encoding="utf-8" file="res/values-tr/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <!--
-        <replace encoding="utf-8" file="res/values-el/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace encoding="utf-8" file="res/values-he/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace encoding="utf-8" file="res/values-ro/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-        <replace encoding="utf-8" file="res/values-vi/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-    	-->
 		<replace file="src/com/sensetoolbox/six/utils/Helpers.java" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
 		
         <!-- Exclude languages until fully translated. -->
