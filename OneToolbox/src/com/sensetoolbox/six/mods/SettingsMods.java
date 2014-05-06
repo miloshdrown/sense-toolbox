@@ -12,6 +12,7 @@ import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListItemSeparator;
 import com.htc.widget.HtcRimButton;
 import com.sensetoolbox.six.R;
+import com.sensetoolbox.six.utils.Helpers;
 
 import android.content.Context;
 import android.content.Intent;
@@ -89,9 +90,9 @@ public class SettingsMods {
 					int mCurView = XposedHelpers.getIntField(param.thisObject, "mCurView");
 					if (mCurView != 2)
 					if (showDisabledOnly)
-						mOptionsMenu.add(0, 31337, 2, modRes.getString(R.string.apps_all)).setShowAsAction(0);
+						mOptionsMenu.add(0, 31337, 2, Helpers.xl10n(modRes, R.string.apps_all)).setShowAsAction(0);
 					else
-						mOptionsMenu.add(0, 31337, 2, modRes.getString(R.string.apps_disabled)).setShowAsAction(0);
+						mOptionsMenu.add(0, 31337, 2, Helpers.xl10n(modRes, R.string.apps_disabled)).setShowAsAction(0);
 					XposedHelpers.callMethod(param.thisObject, "updateOptionsMenu");
 				}
 			}
@@ -124,9 +125,9 @@ public class SettingsMods {
 					if (eleetMenuItem != null) {
 						eleetMenuItem.setVisible(true);
 						if (showDisabledOnly)
-							eleetMenuItem.setTitle(modRes.getString(R.string.apps_all));
+							eleetMenuItem.setTitle(Helpers.xl10n(modRes, R.string.apps_all));
 						else
-							eleetMenuItem.setTitle(modRes.getString(R.string.apps_disabled));
+							eleetMenuItem.setTitle(Helpers.xl10n(modRes, R.string.apps_disabled));
 					}
 				}
 			}
@@ -225,11 +226,11 @@ public class SettingsMods {
 					HtcRimButton uninstall_btn = (HtcRimButton)uninstall_item.getChildAt(0);
 					
 					HtcListItemSeparator toolbox_separator_apk = new HtcListItemSeparator(theContext);
-					toolbox_separator_apk.setText(0, modRes.getString(R.string.appdetails_package));
+					toolbox_separator_apk.setText(0, Helpers.xl10n(modRes, R.string.appdetails_package));
 					
 					HtcListItem toolbox_item_filename = new HtcListItem(theContext);
 					HtcListItem2LineText toolbox_item_filename_text = new HtcListItem2LineText(theContext);
-					toolbox_item_filename_text.setPrimaryText(modRes.getString(R.string.appdetails_apk_file));
+					toolbox_item_filename_text.setPrimaryText(Helpers.xl10n(modRes, R.string.appdetails_apk_file));
 					toolbox_item_filename_text.setSecondaryText(apkFile.getName());
 					HtcListItem2LineStamp toolbox_item_filename_stamp = new HtcListItem2LineStamp(theContext);
 					toolbox_item_filename_stamp.setPrimaryText(Formatter.formatFileSize(theContext, apkFile.length()));
@@ -238,18 +239,18 @@ public class SettingsMods {
 					
 					HtcListItem toolbox_item_path = new HtcListItem(theContext);
 					HtcListItem2LineText toolbox_item_path_text = new HtcListItem2LineText(theContext);
-					toolbox_item_path_text.setPrimaryText(modRes.getString(R.string.appdetails_apk_path));
+					toolbox_item_path_text.setPrimaryText(Helpers.xl10n(modRes, R.string.appdetails_apk_path));
 					toolbox_item_path_text.setSecondaryText(apkFile.getParent() + "/");
 					toolbox_item_path.addView(toolbox_item_path_text);
 					
 					HtcListItem toolbox_item_data = new HtcListItem(theContext);
 					HtcListItem2LineText toolbox_item_data_text = new HtcListItem2LineText(theContext);
-					toolbox_item_data_text.setPrimaryText(modRes.getString(R.string.appdetails_data_path));
+					toolbox_item_data_text.setPrimaryText(Helpers.xl10n(modRes, R.string.appdetails_data_path));
 					toolbox_item_data_text.setSecondaryText(appInfo.dataDir);
 					toolbox_item_data.addView(toolbox_item_data_text);
 					
 					HtcListItemSeparator toolbox_separator_dev = new HtcListItemSeparator(theContext);
-					toolbox_separator_dev.setText(0, modRes.getString(R.string.appdetails_dev));
+					toolbox_separator_dev.setText(0, Helpers.xl10n(modRes, R.string.appdetails_dev));
 					int permissions_id = all_details.getResources().getIdentifier("permissions_section", "id", "com.android.settings");
 					LinearLayout permissions_section = (LinearLayout)all_details.findViewById(permissions_id);
 					int perm_pos;
@@ -258,26 +259,26 @@ public class SettingsMods {
 					
 					HtcListItem toolbox_item_process = new HtcListItem(theContext);
 					HtcListItem2LineText toolbox_item_process_text = new HtcListItem2LineText(theContext);
-					toolbox_item_process_text.setPrimaryText(modRes.getString(R.string.appdetails_proc_name));
+					toolbox_item_process_text.setPrimaryText(Helpers.xl10n(modRes, R.string.appdetails_proc_name));
 					toolbox_item_process_text.setSecondaryText(appInfo.processName);
 					toolbox_item_process.addView(toolbox_item_process_text);
 					
 					HtcListItem toolbox_item_uid = new HtcListItem(theContext);
 					HtcListItem2LineText toolbox_item_uid_text = new HtcListItem2LineText(theContext);
-					toolbox_item_uid_text.setPrimaryText(modRes.getString(R.string.appdetails_uid));
+					toolbox_item_uid_text.setPrimaryText(Helpers.xl10n(modRes, R.string.appdetails_uid));
 					toolbox_item_uid_text.setSecondaryText(String.valueOf(appInfo.uid));
 					toolbox_item_uid.addView(toolbox_item_uid_text);
 					
 					HtcListItem toolbox_item_api = new HtcListItem(theContext);
 					HtcListItem2LineText toolbox_item_api_text = new HtcListItem2LineText(theContext);
-					toolbox_item_api_text.setPrimaryText(modRes.getString(R.string.appdetails_sdk));
+					toolbox_item_api_text.setPrimaryText(Helpers.xl10n(modRes, R.string.appdetails_sdk));
 					toolbox_item_api_text.setSecondaryText(String.valueOf(appInfo.targetSdkVersion));
 					toolbox_item_api.addView(toolbox_item_api_text);
 					
 					apk_launch_btn = new HtcRimButton(theContext);
 					
 					final Intent mainActivity = theContext.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);				
-					apk_launch_btn.setText(modRes.getString(R.string.appdetails_launch));
+					apk_launch_btn.setText(Helpers.xl10n(modRes, R.string.appdetails_launch));
 					if (mainActivity == null)
 						apk_launch_btn.setEnabled(false);
 					else

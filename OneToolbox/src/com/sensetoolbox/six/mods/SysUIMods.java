@@ -559,7 +559,7 @@ public class SysUIMods {
 						cb.toggle(); //Make it easier to toggle the checkbox. Way harder to hit it without that...
 					}
 				});
-				autoText.setText(modRes.getText(R.string.systemui_brightslide_auto));
+				autoText.setText(Helpers.xl10n(modRes, R.string.systemui_brightslide_auto));
 				
 				panel.addView(sliderConatiner, 1);
 				
@@ -1151,7 +1151,7 @@ public class SysUIMods {
 					for (MemoryInfo memInfo: mi) memTotal += memInfo.getTotalPss();
 					
 					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-					ramText = String.format("%.1f", (float)(memTotal / 1024.0f)) + modRes.getString(R.string.ram_mb);
+					ramText = String.format("%.1f", (float)(memTotal / 1024.0f)) + Helpers.xl10n(modRes, R.string.ram_mb);
 					if (theView.findViewWithTag(ramTAG) == null) {
 						ramView = new TextView(theView.getContext());
 						ramView.setTag(ramTAG);
@@ -1358,8 +1358,8 @@ public class SysUIMods {
 													long totalMegs = mi.totalMem / 1048576L;
 													
 													XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-													String MB = modRes.getString(R.string.ram_mb);
-													String MHz = modRes.getString(R.string.cpu_mhz);
+													String MB = Helpers.xl10n(modRes, R.string.ram_mb);
+													String MHz = Helpers.xl10n(modRes, R.string.cpu_mhz);
 													date.setText("CPU " + String.valueOf(Math.round(workC * 100 / (float)totalC)) + "% " + String.valueOf(curFreq) + MHz + " " + curTemp + "\u00B0C" + "\n" + "RAM " + String.valueOf(availableMegs) + MB + " / " + String.valueOf(totalMegs) + MB);
 												}
 											});
@@ -1460,15 +1460,15 @@ public class SysUIMods {
 			TextView mNetworkTextView = (TextView)XposedHelpers.getObjectField(paramThisObject, "mNetworkTextView");
 			if (mPlmnLabel != null) {
 				String txt = getNextAlarm(mPlmnLabel.getContext());
-				if (txt != null && !txt.equals("")) mPlmnLabel.setText(modRes.getString(R.string.next_alarm) + ": " + txt);
+				if (txt != null && !txt.equals("")) mPlmnLabel.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
 			}
 			if (mSpnLabel != null) {
 				String txt = getNextAlarm(mSpnLabel.getContext());
-				if (txt != null && !txt.equals("")) mSpnLabel.setText(modRes.getString(R.string.next_alarm) + ": " + txt);
+				if (txt != null && !txt.equals("")) mSpnLabel.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
 			}
 			if (mNetworkTextView != null) {
 				String txt = getNextAlarm(mNetworkTextView.getContext());
-				if (txt != null && !txt.equals("")) mNetworkTextView.setText(modRes.getString(R.string.next_alarm) + ": " + txt);
+				if (txt != null && !txt.equals("")) mNetworkTextView.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
 			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);

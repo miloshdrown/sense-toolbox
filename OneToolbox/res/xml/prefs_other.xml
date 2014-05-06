@@ -66,8 +66,8 @@
             android:key="pref_key_other_largephoto"
             android:summary="@string/various_largephoto_summ"
             android:title="@string/various_largephoto_title"
-            android:entries="@array/large_photo"
-            android:entryValues="@array/large_photo_val"
+            android:entries="@array/various_largephoto"
+            android:entryValues="@array/various_largephoto_val"
             android:defaultValue="1"/>
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_other_rejectedcall"
@@ -101,15 +101,15 @@
                 android:key="pref_key_other_screenon"
                 android:summary="@string/various_screenon_summ"
                 android:title="@string/various_screenon_title"
-                android:entries="@array/various_screenonanim"
-                android:entryValues="@array/various_screenonanim_val"
+                android:entries="@array/various_screenon"
+                android:entryValues="@array/various_screenon_val"
                 android:defaultValue="0" />
             <com.htc.preference.HtcListPreference
                 android:key="pref_key_other_screenoff"
                 android:summary="@string/various_screenoff_summ"
                 android:title="@string/various_screenoff_title"
-                android:entries="@array/various_screenoffanim"
-                android:entryValues="@array/various_screenoffanim_val"
+                android:entries="@array/various_screenoff"
+                android:entryValues="@array/various_screenoff_val"
                 android:defaultValue="0" />
         </com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>

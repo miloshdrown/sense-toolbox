@@ -47,7 +47,7 @@ public class AppDetailDialog extends HtcAlertDialog {
 		// Theme
 		HtcListItemSeparator separator = new HtcListItemSeparator(globalLayout.getContext());
 		separator.setLayoutParams(lllp1);
-		separator.setText(0, R.string.sense_theme_sep1);
+		separator.setText(0, Helpers.l10n(this.getContext(), R.string.sense_theme_sep1));
 		
 		// Theme colors
 		LinearLayout themeColorsLayout = new LinearLayout(globalLayout.getContext());
@@ -77,7 +77,7 @@ public class AppDetailDialog extends HtcAlertDialog {
 		globalLayout.addView(themeColorsLayout);
 		globalLayout.addView(themeBtnsLayout);
 		
-		this.setButton(DialogInterface.BUTTON_POSITIVE, this.getContext().getString(R.string.sense_themes_apply), new DialogInterface.OnClickListener() {
+		this.setButton(DialogInterface.BUTTON_POSITIVE, Helpers.l10n(this.getContext(), R.string.sense_themes_apply), new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog, int whichButton) {
         		if (pkgName.equals("replace_all")) {
         			for (PackageTheme pt: SenseThemes.pkgthm) if (pt != null) pt.setTheme(cs.getSelectedTheme());
@@ -95,7 +95,7 @@ public class AppDetailDialog extends HtcAlertDialog {
         });
 		
 		if (!pkgName.equals("replace_all"))
-		this.setButton(DialogInterface.BUTTON_NEUTRAL, this.getContext().getString(R.string.sense_theme_remove), new DialogInterface.OnClickListener() {
+		this.setButton(DialogInterface.BUTTON_NEUTRAL, Helpers.l10n(this.getContext(), R.string.sense_theme_remove), new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog, int whichButton) {
         		PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);
         		if (pt != null) {
@@ -107,7 +107,7 @@ public class AppDetailDialog extends HtcAlertDialog {
         	}
         });
 		
-		this.setButton(DialogInterface.BUTTON_NEGATIVE, this.getContext().getString(R.string.sense_themes_cancel), new DialogInterface.OnClickListener() {
+		this.setButton(DialogInterface.BUTTON_NEGATIVE, Helpers.l10n(this.getContext(), R.string.sense_themes_cancel), new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog, int whichButton) {}
         });
 		this.setView(globalLayout);

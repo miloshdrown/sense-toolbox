@@ -16,6 +16,7 @@ import android.widget.BaseAdapter;
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListItemTileImage;
+import com.sensetoolbox.six.utils.Helpers;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
@@ -24,8 +25,7 @@ public class ApmDialog extends HtcAlertDialog.Builder {
 	public ApmDialog(final Context context) {
 		super(context);
 
-		this.setTitle(R.string.apm_title);
-
+		this.setTitle(Helpers.l10n(context, R.string.apm_title));
 		this.setOnCancelListener(new OnCancelListener(){
 			@Override
 			public void onCancel(DialogInterface dialog) {
@@ -34,32 +34,32 @@ public class ApmDialog extends HtcAlertDialog.Builder {
 		});
 		
 		class MenuItem {
-			private int mTitle;
-			private int mSummary;
+			private String mTitle;
+			private String mSummary;
 			private int mIcon;
 		
-			public MenuItem(int title, int summary, int icon) {
+			public MenuItem(String title, String summary, int icon) {
 				mTitle = title;
 				mIcon = icon;
 				mSummary = summary;
 			}
 		
-			public int getTitle() {
+			public String getTitle() {
 				return mTitle;
+			}
+			public String getSummary() {
+				return mSummary;
 			}
 			public int getIcon() {
 				return mIcon;
 			}
-			public int getSummary() {
-				return mSummary;
-			}
 		}
 		
 		final ArrayList<MenuItem> items = new ArrayList<MenuItem>();
-		items.add(new MenuItem(R.string.apm_normal_title, R.string.apm_normal_summ, R.drawable.apm_reboot));
-		items.add(new MenuItem(R.string.apm_hotreboot_title, R.string.apm_hotreboot_summ, R.drawable.apm_hotreboot));
-		items.add(new MenuItem(R.string.apm_recovery_title, R.string.apm_recovery_summ, R.drawable.apm_recovery));
-		items.add(new MenuItem(R.string.apm_bootloader_title, R.string.apm_bootloader_summ, R.drawable.apm_bootloader));
+		items.add(new MenuItem(Helpers.l10n(context, R.string.apm_normal_title), Helpers.l10n(context, R.string.apm_normal_summ), R.drawable.apm_reboot));
+		items.add(new MenuItem(Helpers.l10n(context, R.string.apm_hotreboot_title), Helpers.l10n(context, R.string.apm_hotreboot_summ), R.drawable.apm_hotreboot));
+		items.add(new MenuItem(Helpers.l10n(context, R.string.apm_recovery_title), Helpers.l10n(context, R.string.apm_recovery_summ), R.drawable.apm_recovery));
+		items.add(new MenuItem(Helpers.l10n(context, R.string.apm_bootloader_title), Helpers.l10n(context, R.string.apm_bootloader_summ), R.drawable.apm_bootloader));
 
 		class HtcAlertDialogAdapter extends BaseAdapter {
 			

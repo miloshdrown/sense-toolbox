@@ -1,10 +1,17 @@
 package com.sensetoolbox.six;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
+import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -28,6 +35,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.htc.app.HtcProgressDialog;
@@ -42,6 +50,7 @@ import com.htc.preference.HtcPreferenceScreen;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.utils.ApkInstaller;
 import com.sensetoolbox.six.utils.ColorPreference;
+import com.sensetoolbox.six.utils.DownloadAndUnZip;
 import com.sensetoolbox.six.utils.DynamicPreference;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.HtcListPreferencePlus;
@@ -64,10 +73,10 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		if(!Helpers.isXposedInstalled(getActivity()))
 		{
 			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
-			builder.setTitle(R.string.xposed_not_found);
-			builder.setMessage(R.string.xposed_not_found_explain);
+			builder.setTitle(Helpers.l10n(getActivity(), R.string.xposed_not_found));
+			builder.setMessage(Helpers.l10n(getActivity(), R.string.xposed_not_found_explain));
 			builder.setIcon(android.R.drawable.ic_dialog_alert);
-			builder.setNeutralButton(R.string.okay, null);
+			builder.setNeutralButton(Helpers.l10n(getActivity(), R.string.okay), null);
 			HtcAlertDialog dlg = builder.create();
 			dlg.show();
 		} else checkForXposed();
@@ -88,7 +97,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		//Add version name to support title
 		try {
 			HtcPreferenceCategory supportCat = (HtcPreferenceCategory) findPreference("pref_key_support");
-			supportCat.setTitle(getActivity().getString(R.string.support_version, getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName));
+			supportCat.setTitle(String.format(Helpers.l10n(getActivity(), R.string.support_version), getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName));
 		} catch (NameNotFoundException e) {
 			//Shouldn't happen...
 			e.printStackTrace();
@@ -106,12 +115,43 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			}
 		};
 		
-		//HtcPreferenceScreen scrPref = (HtcPreferenceScreen) findPreference("pref_key_sysui");
-		//Fade fadeTrans = new Fade();
-		//fadeTrans.addTarget(scrPref.getLayoutResource());
+		HtcCheckBoxPreference.OnPreferenceClickListener openLang = new HtcCheckBoxPreference.OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(HtcPreference preference) {
+				HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
+				alert.setTitle(Helpers.l10n(getActivity(), R.string.toolbox_l10n_title));
+				try {
+					BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "version")));
+					String buildId = br.readLine();
+					int timeStamp = Integer.parseInt(br.readLine());
+					br.close();
+					Date datetime = new Date((long)timeStamp * 1000);
+					SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz", Locale.getDefault());
+				    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+					TextView center = Helpers.createCenteredText(getActivity(), R.string.download_current_ver);
+					center.setText(center.getText()  + " " + buildId + "\n(" + format.format(datetime) + ")");
+					alert.setView(center);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				alert.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {}
+				});
+				alert.setPositiveButton(Helpers.l10n(getActivity(), R.string.toolbox_l10n_btn), new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						final DownloadAndUnZip downloadTask = new DownloadAndUnZip(getActivity());
+						downloadTask.execute("http://sensetoolbox.com/l10n/strings_sense6.zip");
+					}
+				});
+				alert.show();
+				return true;
+			}
+		};
 		
 		HtcCheckBoxPreference toolboxSettingsPreference = (HtcCheckBoxPreference) findPreference("pref_key_toolbox_icon");
 		toolboxSettingsPreference.setOnPreferenceChangeListener(toggleIcon);
+		HtcPreference toolboxLanguagePreference = (HtcPreference) findPreference("pref_key_toolbox_lang");
+		toolboxLanguagePreference.setOnPreferenceClickListener(openLang);
 	}
 	
 	public static class SysUIFragment extends HtcPreferenceFragmentExt {
@@ -249,7 +289,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					
 					if (PrefsFragment.pkgAppsList == null) {
 						final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
-						dialog.setMessage(getString(R.string.loading_app_data));
+						dialog.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
 						dialog.setCancelable(false);
 						dialog.show();
 						
@@ -294,7 +334,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			HtcListPreferencePlus toggleSwipeLeft = (HtcListPreferencePlus) findPreference("pref_key_prism_swipeleft_toggle");
 			HtcListPreferencePlus toggleShake = (HtcListPreferencePlus) findPreference("pref_key_prism_shake_toggle");
 			
-			String not_selected = getResources().getString(R.string.notselected);
+			String not_selected = Helpers.l10n(getActivity(), R.string.notselected);
 			
 			launchAppsSwipeDown.setSummary(getAppName(getActivity(), prefs.getString("pref_key_prism_swipedown_app", not_selected)));
 			launchAppsSwipeDown.setOnPreferenceClickListener(clickPref);
@@ -406,7 +446,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				
 				if (PrefsFragment.pkgAppsList == null) {
 					final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
-					dialog.setMessage(getString(R.string.loading_app_data));
+					dialog.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
 					dialog.setCancelable(false);
 					dialog.show();
 					
@@ -436,7 +476,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		HtcPreference.OnPreferenceChangeListener camChangeListener = new HtcPreference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-				Toast.makeText(getActivity(), R.string.close_camera, Toast.LENGTH_LONG).show();
+				Toast.makeText(getActivity(), Helpers.l10n(getActivity(), R.string.close_camera), Toast.LENGTH_LONG).show();
 				return true;
 			}
 		};
@@ -493,9 +533,9 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			
 			// Insert new option to controls listprefs
 			CharSequence[] entries = backLongPressActionPreference.getEntries();
-			entries = addToArray(entries, 5, getResources().getString(R.string.kill_foreground));
-			entries = addToArray(entries, 6, getResources().getString(R.string.open_menu));
-			entries = addToArray(entries, 7, getResources().getString(R.string.open_recents));
+			entries = addToArray(entries, 5, Helpers.l10n(getActivity(), R.string.kill_foreground));
+			entries = addToArray(entries, 6, Helpers.l10n(getActivity(), R.string.open_menu));
+			entries = addToArray(entries, 7, Helpers.l10n(getActivity(), R.string.open_recents));
 			CharSequence[] entryVals = backLongPressActionPreference.getEntryValues();
 			entryVals = addToArray(entryVals, 5, "9");
 			entryVals = addToArray(entryVals, 6, "10");
@@ -505,7 +545,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			homeAssistActionPreference.setEntries(entries);
 			homeAssistActionPreference.setEntryValues(entryVals);
 
-			String not_selected = getResources().getString(R.string.notselected);
+			String not_selected = Helpers.l10n(getActivity(), R.string.notselected);
 			
 			launchAppsBackLongPress.setSummary(getAppName(getActivity(), prefs.getString("pref_key_controls_backlongpress_app", not_selected)));
 			launchAppsBackLongPress.setOnPreferenceClickListener(clickPref);
@@ -562,7 +602,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				@Override
 				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
 					if (!(new File("/sys/class/leds/button-backlight/currents")).isFile()) {
-						Toast.makeText(getActivity(), R.string.no_currents, Toast.LENGTH_LONG).show();
+						Toast.makeText(getActivity(), Helpers.l10n(getActivity(), R.string.no_currents), Toast.LENGTH_LONG).show();
 						return false;
 					} else
 						return setButtonBacklightTo(getActivity(), Integer.parseInt((String)newValue));
@@ -745,7 +785,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	
 	public static CharSequence getAppName(Context ctx, String pkgActName) {
 		PackageManager pm = ctx.getPackageManager();
-		String not_selected = ctx.getString(R.string.notselected);
+		String not_selected = Helpers.l10n(ctx, R.string.notselected);
 		String[] pkgActArray = pkgActName.split("\\|");
 		ApplicationInfo ai = null;
 
@@ -791,10 +831,10 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						getActivity().startActivity(new Intent(getActivity(), WakeGestures.class));
 					} else {
 						HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
-						builder.setTitle(R.string.warning);
-						builder.setMessage(R.string.wakegestures_not_supported);
+						builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
+						builder.setMessage(Helpers.l10n(getActivity(), R.string.wakegestures_not_supported));
 						builder.setIcon(android.R.drawable.ic_dialog_alert);
-						builder.setNeutralButton(R.string.okay, null);
+						builder.setNeutralButton(Helpers.l10n(getActivity(), R.string.okay), null);
 						HtcAlertDialog dlg = builder.create();
 						dlg.show();
 					}
@@ -880,8 +920,8 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	public void showXposedDialog()
 	{
 		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.warning);
-		builder.setMessage(R.string.xposed_not_installed);
+		builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
+		builder.setMessage(Helpers.l10n(getActivity(), R.string.xposed_not_installed));
 		builder.setIcon(android.R.drawable.ic_dialog_alert);
 		builder.setCancelable(true);
 		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -894,8 +934,8 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	public void showXposedDialog2()
 	{
 		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.warning);
-		builder.setMessage(R.string.module_not_active);
+		builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
+		builder.setMessage(Helpers.l10n(getActivity(), R.string.module_not_active));
 		builder.setIcon(android.R.drawable.ic_dialog_alert);
 		builder.setCancelable(true);
 		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -908,8 +948,8 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	private void showRestoreInfoDialog()
 	{
 		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
-		builder.setTitle(R.string.warning);
-		builder.setMessage(R.string.backup_restore_info);
+		builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
+		builder.setMessage(Helpers.l10n(getActivity(), R.string.backup_restore_info));
 		builder.setIcon(android.R.drawable.ic_dialog_alert);
 		builder.setCancelable(true);
 		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {

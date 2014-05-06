@@ -49,7 +49,8 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 		super(context,attrs); 
 		mContext = context;
 
-		mDialogMessage = (String) context.getResources().getText(attrs.getAttributeResourceValue(androidns,"dialogMessage",R.string.transparency_msg));
+		mDialogMessage = (String) Helpers.l10n(context, attrs.getAttributeResourceValue(androidns, "dialogMessage", R.string.transparency_msg));
+		this.setDialogTitle(Helpers.l10n(context, this.getTitleRes()));
 		mSuffix = attrs.getAttributeValue(androidns,"text");
 		mDefault = attrs.getAttributeIntValue(androidns,"defaultValue", 0);
 		mMax = attrs.getAttributeIntValue(androidns,"max", 100);
@@ -96,7 +97,7 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 		mPrefSwitch.setChecked(mIsEnabled);
 		
 		mEnableText = new TextView(mContext);
-		mEnableText.setText(mContext.getResources().getText(R.string.transparency_enable));
+		mEnableText.setText(Helpers.l10n(mContext, R.string.transparency_enable));
 		mEnableText.setTextSize(20f);
 		mEnableText.setPadding(densify(5), 0, 0, densify(2));
 		mEnableText.setOnClickListener(new OnClickListener() {

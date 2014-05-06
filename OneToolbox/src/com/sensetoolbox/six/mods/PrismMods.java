@@ -51,6 +51,7 @@ import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcPopupWindow;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
+import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.PopupAdapter;
 import com.sensetoolbox.six.utils.ShakeManager;
 
@@ -793,8 +794,8 @@ public class PrismMods {
 		if (dlg == null) {
 			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(act);
-			builder.setTitle(modRes.getString(R.string.warning));
-			builder.setMessage(modRes.getString(R.string.locked_warning));
+			builder.setTitle(Helpers.xl10n(modRes, R.string.warning));
+			builder.setMessage(Helpers.xl10n(modRes, R.string.locked_warning));
 			builder.setCancelable(false);
 			builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton){

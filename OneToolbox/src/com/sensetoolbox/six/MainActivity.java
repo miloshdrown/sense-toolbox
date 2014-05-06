@@ -81,7 +81,7 @@ public class MainActivity extends HtcPreferenceActivity {
 		actionBarContainer = actionBarExt.getCustomContainer();
 		
 		actionBarTextMain = new ActionBarText(this);
-		actionBarTextMain.setPrimaryText(R.string.app_name);
+		actionBarTextMain.setPrimaryText(Helpers.l10n(this, R.string.app_name));
 		actionBarTextSub = new ActionBarText(this);
 		actionBarTextSub.setVisibility(View.INVISIBLE);
 		//ImageView actionBarBackImg = new ImageView(this);
@@ -116,11 +116,11 @@ public class MainActivity extends HtcPreferenceActivity {
 			if(prefs.getBoolean("show_root_note", true))
 			{
 				HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(this);
-				builder.setTitle(R.string.no_root_access);
-				builder.setMessage(R.string.no_root_explain);
+				builder.setTitle(Helpers.l10n(this, R.string.no_root_access));
+				builder.setMessage(Helpers.l10n(this, R.string.no_root_explain));
 				builder.setIcon(android.R.drawable.ic_dialog_alert);
-				builder.setPositiveButton(R.string.dismiss_once, null);
-				builder.setNegativeButton(R.string.dismiss_forever, new OnClickListener(){
+				builder.setPositiveButton(Helpers.l10n(this, R.string.dismiss_once), null);
+				builder.setNegativeButton(Helpers.l10n(this, R.string.dismiss_forever), new OnClickListener(){
 					@Override
 					public void onClick(DialogInterface dialog, int which) {
 						prefs.edit().putBoolean("show_root_note", false).commit();

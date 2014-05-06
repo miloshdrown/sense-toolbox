@@ -10,19 +10,19 @@
 			android:key="pref_key_sysui_battery"
             android:summary="@string/cleanbeam_battery_summ"
             android:title="@string/cleanbeam_battery_title"
-            android:entries="@array/batt_icon"
-            android:entryValues="@array/batt_icon_val"
+            android:entries="@array/cleanbeam_battery"
+            android:entryValues="@array/cleanbeam_battery_val"
 			android:defaultValue="1"
 			toolbox:entryImages="@array/battery_images" />
         <com.sensetoolbox.six.utils.ImageListPreference
 			android:key="pref_key_cb_wifi_multi"
             android:summary="@string/cleanbeam_wifi_summ"
             android:title="@string/cleanbeam_wifi_title"
-            android:entries="@array/wifi_icon"
-            android:entryValues="@array/wifi_icon_val"
+            android:entries="@array/cleanbeam_wifi"
+            android:entryValues="@array/cleanbeam_wifi_val"
 			android:defaultValue="1"
-			toolbox:entryImages="@array/wifi_images"
-			toolbox:entryThemes="@array/wifi_themes" />
+			toolbox:entryImages="@array/cleanbeam_wifi_images"
+			toolbox:entryThemes="@array/cleanbeam_wifi_themes" />
         <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_signal"
             android:summary="@string/cleanbeam_signal_summ"
@@ -129,8 +129,8 @@
             android:title="@string/hideicons_title"
             android:summary="@string/hideicons_summ"
             android:key="pref_key_hide_icons"
-            android:entries="@array/icons_to_hide"
-            android:entryValues="@array/icons_to_hide_val" />
+            android:entries="@array/hideicons"
+            android:entryValues="@array/hideicons_val" />
         <com.htc.preference.HtcPreference
             android:title="@string/cleanbeam_sunbeam_title"
             android:summary="@string/cleanbeam_sunbeam_summ"

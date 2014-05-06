@@ -8,6 +8,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import com.htc.preference.HtcPreferenceActivity;
 import com.htc.preference.HtcPreferenceFragment;
 import com.htc.preference.HtcPreferenceManager;
 import com.htc.widget.HtcAlertDialog;
@@ -33,9 +34,9 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 	private boolean handleOptionsItemSelected(final Activity act, MenuItem item) {
 		if (item.getItemId() == R.id.softreboot) {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
-			alert.setTitle(R.string.soft_reboot);
+			alert.setTitle(Helpers.l10n(act, R.string.soft_reboot));
 			alert.setView(Helpers.createCenteredText(act, R.string.hotreboot_explain_prefs));
-			alert.setPositiveButton(act.getText(R.string.yes) + "!", new DialogInterface.OnClickListener() {
+			alert.setPositiveButton(Helpers.l10n(act, R.string.yes) + "!", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					try {
 						CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
@@ -45,7 +46,7 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 					}
 				}
 			});
-			alert.setNegativeButton(act.getText(R.string.no) + "!", new DialogInterface.OnClickListener() {
+			alert.setNegativeButton(Helpers.l10n(act, R.string.no) + "!", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
 			alert.show();
@@ -55,9 +56,9 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 			final String backupFile = "settings_backup";
 			
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
-			alert.setTitle(R.string.backup_restore);
+			alert.setTitle(Helpers.l10n(act, R.string.backup_restore));
 			alert.setView(Helpers.createCenteredText(act, R.string.backup_restore_choose));
-			alert.setPositiveButton(act.getText(R.string.do_restore), new DialogInterface.OnClickListener() {
+			alert.setPositiveButton(Helpers.l10n(act, R.string.do_restore), new DialogInterface.OnClickListener() {
 				@SuppressWarnings("unchecked")
 				public void onClick(DialogInterface dialog, int whichButton) {
 					if (!Helpers.checkStorageReadable(act)) return;
@@ -89,10 +90,10 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 						prefEdit.commit();
 						
 						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
-						alert.setTitle(R.string.do_restore);
+						alert.setTitle(Helpers.l10n(act, R.string.do_restore));
 						alert.setView(Helpers.createCenteredText(act, R.string.restore_ok));
 						alert.setCancelable(false);
-						alert.setNeutralButton(act.getText(android.R.string.ok), new DialogInterface.OnClickListener() {
+						alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								act.finish();
 								act.startActivity(act.getIntent());
@@ -101,9 +102,9 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 						alert.show();
 					} catch (Exception e) {
 						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
-						alert.setTitle(R.string.warning);
+						alert.setTitle(Helpers.l10n(act, R.string.warning));
 						alert.setView(Helpers.createCenteredText(act, R.string.storage_cannot_restore));
-						alert.setNeutralButton(act.getText(android.R.string.ok), new DialogInterface.OnClickListener() {
+						alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {}
 						});
 						alert.show();
@@ -116,7 +117,7 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 					}
 				}
 			});
-			alert.setNegativeButton(act.getText(R.string.do_backup), new DialogInterface.OnClickListener() {
+			alert.setNegativeButton(Helpers.l10n(act, R.string.do_backup), new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					if (!Helpers.preparePathForBackup(act, backupPath)) return;
 					ObjectOutputStream output = null;
@@ -125,17 +126,17 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 						output.writeObject(prefs.getAll());
 						
 						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
-						alert.setTitle(R.string.do_backup);
+						alert.setTitle(Helpers.l10n(act, R.string.do_backup));
 						alert.setView(Helpers.createCenteredText(act, R.string.backup_ok));
-						alert.setNeutralButton(act.getText(android.R.string.ok), new DialogInterface.OnClickListener() {
+						alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {}
 						});
 						alert.show();
 					} catch (Exception e) {
 						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
-						alert.setTitle(R.string.warning);
+						alert.setTitle(Helpers.l10n(act, R.string.warning));
 						alert.setView(Helpers.createCenteredText(act, R.string.storage_cannot_backup));
-						alert.setNeutralButton(act.getText(android.R.string.ok), new DialogInterface.OnClickListener() {
+						alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {}
 						});
 						alert.show();
@@ -153,7 +154,7 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 					}
 				}
 			});
-			alert.setNeutralButton(act.getText(android.R.string.cancel), new DialogInterface.OnClickListener() {
+			alert.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
 			alert.show();
@@ -184,5 +185,11 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 		getPreferenceManager().setSharedPreferencesMode(1);
 		HtcPreferenceManager.setDefaultValues(getActivity(), pref_defaults, false);
 		prefs = getPreferenceManager().getSharedPreferences();
+	}
+	
+	@Override
+	public void addPreferencesFromResource(int resId) {
+		super.addPreferencesFromResource(resId);
+		Helpers.applyLang((HtcPreferenceActivity)this.getActivity(), this);
 	}
 }

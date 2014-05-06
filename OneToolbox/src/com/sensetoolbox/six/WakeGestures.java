@@ -32,7 +32,7 @@ public class WakeGestures extends HtcPreferenceActivity {
 	
 	public static CharSequence getAppName(Context ctx, String pkgActName) {
 		PackageManager pm = ctx.getPackageManager();
-		String not_selected = ctx.getString(R.string.notselected);
+		String not_selected = Helpers.l10n(ctx, R.string.notselected);
 		String[] pkgActArray = pkgActName.split("\\|");
 		ApplicationInfo ai = null;
 
@@ -61,7 +61,7 @@ public class WakeGestures extends HtcPreferenceActivity {
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
 		ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
 		ActionBarText actionBarText = new ActionBarText(this);
-		actionBarText.setPrimaryText(R.string.wakegestures_mod);
+		actionBarText.setPrimaryText(Helpers.l10n(this, R.string.wakegestures_mod));
 		actionBarContainer.addCenterView(actionBarText);
 		actionBarContainer.setBackUpEnabled(true);
 		
@@ -154,7 +154,7 @@ public class WakeGestures extends HtcPreferenceActivity {
 		
 		final HtcPreferenceActivity act = this;
 		
-		String not_selected = getResources().getString(R.string.notselected);
+		String not_selected = Helpers.l10n(this, R.string.notselected);
 		HtcPreference.OnPreferenceClickListener clickPref = new HtcPreference.OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(HtcPreference preference) {
@@ -180,7 +180,7 @@ public class WakeGestures extends HtcPreferenceActivity {
 				
 				if (PrefsFragment.pkgAppsList == null) {
 					final HtcProgressDialog dialog = new HtcProgressDialog(act);
-					dialog.setMessage(getString(R.string.loading_app_data));
+					dialog.setMessage(Helpers.l10n(act, R.string.loading_app_data));
 					dialog.setCancelable(false);
 					dialog.show();
 					
@@ -219,6 +219,12 @@ public class WakeGestures extends HtcPreferenceActivity {
 		launchAppsDoubleTap.setOnPreferenceClickListener(clickPref);
 		launchAppsLogoPress.setSummary(getAppName(this, prefs.getString("pref_key_wakegest_logo2wake_app", not_selected)));
 		launchAppsLogoPress.setOnPreferenceClickListener(clickPref);
+	}
+	
+	@Override
+	public void addPreferencesFromResource(int resId) {
+		super.addPreferencesFromResource(resId);
+		Helpers.applyLang(this, null);
 	}
 	
 	private void applyThemeState(Boolean state) {

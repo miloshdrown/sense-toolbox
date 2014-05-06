@@ -51,8 +51,8 @@ public class ApkInstaller {
 		    RootTools.getShell(true).add(command).waitForFinish();
 		    		    
 		    new HtcAlertDialog.Builder(ctx)
-		    	.setMessage(R.string.sunbeam_installed)
-		    	.setTitle(R.string.success)
+		    	.setMessage(Helpers.l10n(ctx, R.string.sunbeam_installed))
+		    	.setTitle(Helpers.l10n(ctx, R.string.success))
 		    	.setCancelable(true)
 		    	.setNeutralButton(android.R.string.ok,
 		        new DialogInterface.OnClickListener() {

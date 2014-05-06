@@ -89,12 +89,14 @@
         <replace encoding="utf-8" file="res/values-ro/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
         <replace encoding="utf-8" file="res/values-vi/strings.xml" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
     	-->
-        
+		<replace file="src/com/sensetoolbox/six/utils/Helpers.java" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
+		
         <!-- Exclude languages until fully translated. -->
         <delete dir="res/values-el" quiet="true"/>
         <delete dir="res/values-he" quiet="true"/>
         <delete dir="res/values-ro" quiet="true"/>
         <delete dir="res/values-vi" quiet="true"/>
+		<delete dir="res/values-zh" quiet="true"/>
     </target>
     <target name="-post-compile">
         <path id="project.all.jars.path">

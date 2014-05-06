@@ -109,7 +109,7 @@ public class SenseThemes extends Activity {
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
 		ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
 		ActionBarText actionBarText = new ActionBarText(this);
-		actionBarText.setPrimaryText(R.string.sense_themes_title);
+		actionBarText.setPrimaryText(Helpers.l10n(this, R.string.sense_themes_title));
 		actionBarContainer.addCenterView(actionBarText);
 		actionBarContainer.setBackUpEnabled(true);
 		
@@ -128,7 +128,7 @@ public class SenseThemes extends Activity {
 			@Override
 			public void onClick(View v) {
 				AppDetailDialog appDetailDialog = new AppDetailDialog(st, "replace_all");
-				appDetailDialog.setTitle(R.string.sense_theme_replace_all);
+				appDetailDialog.setTitle(Helpers.l10n(st, R.string.sense_theme_replace_all));
 				appDetailDialog.show();
 			}
 		});
@@ -142,11 +142,11 @@ public class SenseThemes extends Activity {
 			@Override
 			public void onClick(View v) {
 				appAddDialog = new AppAddDialog(st);
-				appAddDialog.setTitle(R.string.select_app);
+				appAddDialog.setTitle(Helpers.l10n(st, R.string.select_app));
 				
 				if (pkgAppsList == null) {
 					final HtcProgressDialog dialog = new HtcProgressDialog(st);
-					dialog.setMessage(getString(R.string.loading_app_data));
+					dialog.setMessage(Helpers.l10n(st, R.string.loading_app_data));
 					dialog.setCancelable(false);
 					dialog.show();
 					
@@ -205,6 +205,7 @@ public class SenseThemes extends Activity {
 		});
 		
 		themeHint = (TextView)findViewById(R.id.themehint);
+		themeHint.setText(Helpers.l10n(this, R.string.sense_theme_hint));
 		applyThemeState(prefs.getBoolean("themes_active", false));
 		OnOffSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
 			@Override

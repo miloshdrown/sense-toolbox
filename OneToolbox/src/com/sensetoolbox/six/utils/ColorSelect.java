@@ -109,12 +109,14 @@ public class ColorSelect extends HtcListView {
 			colorControls.setBackground(compositeControls);
 			
 			TextView colorHeaderTitle = (TextView)row.findViewById(R.id.header_color_title);
+			colorHeaderTitle.setText(Helpers.l10n(colorHeaderTitle.getContext(), R.string.sense_theme_color_header));
 			if (item0 == 0xff252525)
 				colorHeaderTitle.setTextColor(0xffdfdfdf);
 			else
 				colorHeaderTitle.setTextColor(0xff161616);
 				
 			TextView controlsHeaderTitle = (TextView)row.findViewById(R.id.controls_color_title);
+			controlsHeaderTitle.setText(Helpers.l10n(controlsHeaderTitle.getContext(), R.string.sense_theme_color_controls));
 			if (item1 == 0xff252525)
 				controlsHeaderTitle.setTextColor(0xffdfdfdf);
 			else
@@ -128,6 +130,7 @@ public class ColorSelect extends HtcListView {
 				colorBlinkfeed.setBackground(compositeBlinkfeed);
 				
 				TextView blinkfeedHeaderTitle = (TextView)row.findViewById(R.id.blinkfeed_color_title);
+				blinkfeedHeaderTitle.setText(Helpers.l10n(blinkfeedHeaderTitle.getContext(), R.string.sense_theme_color_bf));
 				if (item2 <= 0xff4b4b4b)
 					blinkfeedHeaderTitle.setTextColor(0xffdfdfdf);
 				else

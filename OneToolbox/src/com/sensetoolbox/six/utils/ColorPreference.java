@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
+import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
@@ -55,6 +56,7 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		mContext = context;
 		mKey = attrs.getAttributeValue(androidns, "key");
 		density = mContext.getResources().getDisplayMetrics().density;
+		this.setDialogTitle(Helpers.l10n(context, this.getTitleRes()));
 	}
 	
 	private int densify(int dimension) {
@@ -133,7 +135,7 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		hueContainer.setPadding(0, densify(4), 0, densify(4));
 
 		TextView hueTitle = new TextView(mContext);
-		hueTitle.setText(R.string.cleanbeam_colortheme_hue);
+		hueTitle.setText(Helpers.l10n(mContext, R.string.cleanbeam_colortheme_hue));
 		hueTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 		hueTitle.setPadding(densify(16), densify(4), densify(4), densify(4));
 		hueTitle.setLayoutParams(paramsLeft);
@@ -166,7 +168,7 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		satContainer.setPadding(0, densify(4), 0, densify(4));
 
 		TextView satTitle = new TextView(mContext);
-		satTitle.setText(R.string.cleanbeam_colortheme_sat);
+		satTitle.setText(Helpers.l10n(mContext, R.string.cleanbeam_colortheme_sat));
 		satTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 		satTitle.setPadding(densify(16), densify(4), densify(4), densify(4));
 		satTitle.setLayoutParams(paramsLeft);
@@ -200,7 +202,7 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		brightContainer.setPadding(0, densify(4), 0, densify(4));
 
 		TextView brightTitle = new TextView(mContext);
-		brightTitle.setText(R.string.cleanbeam_colortheme_bright);
+		brightTitle.setText(Helpers.l10n(mContext, R.string.cleanbeam_colortheme_bright));
 		brightTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 		brightTitle.setPadding(densify(16), densify(4), densify(4), densify(4));
 		brightTitle.setLayoutParams(paramsLeft);
@@ -236,18 +238,18 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		layout.addView(divider2);
 		
 		TextView presets = new TextView(mContext);
-		presets.setText(R.string.cleanbeam_colortheme_preset);
+		presets.setText(Helpers.l10n(mContext, R.string.cleanbeam_colortheme_preset));
 		presets.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 		presets.setPadding(densify(16), densify(4), densify(16), densify(4));
 		layout.addView(presets);
 		
-		String[] presetsArray = mContext.getResources().getStringArray(R.array.theme_colors);
+		TypedArray presetsArrayIds = mContext.getResources().obtainTypedArray(R.array.theme_colors);
 		LinearLayout presetsContainer = null;
 		int col = 0;
 		int cnt = 1;
-		for (String colorName: presetsArray) {
+		for (int colorNameId = 0; colorNameId < presetsArrayIds.length(); colorNameId++) {
 			HtcRimButton btn = new HtcRimButton(mContext);
-			btn.setText(colorName);
+			btn.setText(Helpers.l10n(mContext, presetsArrayIds.getResourceId(colorNameId, 0)));
 			LinearLayout.LayoutParams llparams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			llparams.rightMargin = densify(10);
 			llparams.bottomMargin = densify(3);
@@ -279,7 +281,7 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 			col++;
 			cnt++;
 		}
-		
+		presetsArrayIds.recycle();
 		applyColors();
 		return layout;
 	}

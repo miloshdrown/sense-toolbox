@@ -5,7 +5,7 @@
     <string name="app_name">Sense 6 Toolbox</string>
     <string name="app_name_version">Sense 6 Toolbox (Version: %1$s)</string>
     <string name="app_about">About</string>
-    <string name="about_version">Version: %1$s (build JENKINSBUILDNUMBERGOESHERE)</string>
+    <string name="about_version">Version: %1$s (build %2$s)</string>
     <string name="support_version">Support (App Version: %1$s)</string>
     <string name="restore">Restore</string>
     <string name="add">Add</string>
@@ -36,6 +36,14 @@
     <string name="xposed_mods">Please note that the mods in the \'MODS\' tab only work if you have Xposed installed!</string>
     <string name="no_currents">Buttons backlight control not found. Your device may be uncompatible with this mod.</string>
     <string name="backup_restore_info">Your settings have been restored via Google Cloud Backup. If you had Vol2wake enabled, please re-enable it manually. Please do a full reboot after enabling the Toolbox Xposed module.</string>
+    <string name="download_current_ver">Installed update:</string>
+    <string name="download_title">Sense Toolbox localization</string>
+    <string name="download_desc">Downloading translations&#8230;</string>
+    <string name="download_failed">Download failed, check connection</string>
+    <string name="download_succeeded">Language pack was downloaded and installed, Toolbox will be restarted now</string>
+    <string name="download_unzip_failed">Unable to unzip language files</string>
+    <string name="download_same_version">You already have the latest version</string>
+    <string name="download_version_problem">Failed to read update version</string>
     
     <string name="apm_title">Choose reboot option</string>
     <string name="apm_normal_title">Reboot</string>
@@ -352,6 +360,9 @@
 	<string name="toolbox">Toolbox settings</string>
 	<string name="toolbox_show_icon_title">Fast access icon</string>
 	<string name="toolbox_show_icon_summ">Show Toolbox icon in Settings.</string>
+	<string name="toolbox_l10n_title">Localization</string>
+	<string name="toolbox_l10n_summ">Download and update language pack.</string>
+	<string name="toolbox_l10n_btn">Update</string>
 	
 	<string name="support">Support</string>
 	<string name="support_s6t_title">Visit Sense 6 Toolbox Site</string>
@@ -464,7 +475,7 @@
 	<string name="array_large_photo_rectangular">Rectangular</string>
 	<string name="array_large_photo_max">Maximum</string>
 	<string name="array_header_click_clock">Open Clock app</string>
-	<string name="array_header_click_sysinfo">Show/hide CPU and RAM info, open Clock app by tapping on current time.</string>
+	<string name="array_header_click_sysinfo">Show/hide CPU and RAM info, open Clock app by tapping on current time</string>
 	<string name="array_keyslight_dim">Dim</string>
 	<string name="array_keyslight_extradim">Extra dim</string>
 	<string name="array_keyslight_alwaysoff">Always off</string>

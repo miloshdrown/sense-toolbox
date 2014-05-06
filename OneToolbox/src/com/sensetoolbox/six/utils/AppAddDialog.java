@@ -51,12 +51,12 @@ public class AppAddDialog extends HtcAlertDialog {
 	        			view.setEnabled(false);
 	        			((ImageArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
 	        		} else {
-	        			Toast.makeText(parent.getContext(), R.string.sense_theme_package_has_profile, Toast.LENGTH_SHORT).show();
+	        			Toast.makeText(parent.getContext(), Helpers.l10n(parent.getContext(), R.string.sense_theme_package_has_profile), Toast.LENGTH_SHORT).show();
 	        		}
 				}
 			}
 		});
-        this.setButton(DialogInterface.BUTTON_NEUTRAL, this.getContext().getString(R.string.array_recents_menu_close), new DialogInterface.OnClickListener() {
+        this.setButton(DialogInterface.BUTTON_NEUTRAL, Helpers.l10n(this.getContext(), R.string.array_recents_menu_close), new DialogInterface.OnClickListener() {
         	public void onClick(DialogInterface dialog, int whichButton) {}
         });
         this.setCancelable(true);

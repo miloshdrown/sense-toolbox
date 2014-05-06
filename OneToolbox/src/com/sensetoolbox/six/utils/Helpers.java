@@ -2,19 +2,33 @@ package com.sensetoolbox.six.utils;
 
 import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
+import java.util.Map;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserFactory;
 
 import com.htc.configuration.HtcWrapConfiguration;
 import com.htc.gson.Gson;
 import com.htc.gson.reflect.TypeToken;
+import com.htc.preference.HtcListPreference;
+import com.htc.preference.HtcMultiSelectListPreference;
+import com.htc.preference.HtcPreference;
+import com.htc.preference.HtcPreferenceActivity;
+import com.htc.preference.HtcPreferenceCategory;
+import com.htc.preference.HtcPreferenceGroup;
+import com.htc.preference.HtcPreferenceScreen;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.MainActivity;
 import com.sensetoolbox.six.PrefsFragment;
@@ -23,10 +37,13 @@ import com.sensetoolbox.six.SenseThemes;
 import com.sensetoolbox.six.SenseThemes.PackageTheme;
 import com.sensetoolbox.six.mods.XMain;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
+import android.content.res.XModuleResources;
 import android.graphics.Bitmap;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
@@ -55,6 +72,150 @@ public class Helpers {
 	static Element eQS;
 	static List<PackageTheme> cached_pkgthm = null;
 	static String cached_str;
+	static Map<String, String> l10n = null;
+	static String cLang = "";
+	@SuppressLint("SdCardPath")
+	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
+	public static String buildVersion = "JENKINSBUILDNUMBERGOESHERE";
+
+	private static boolean preloadLang(String lang) {
+		try {
+			if (l10n == null || !cLang.equals(lang)) {
+				FileInputStream in_s = new FileInputStream(Helpers.dataPath + "values-" + lang + "/strings.xml");
+				XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
+				l10n = new HashMap<String, String>();
+				parser.setInput(in_s, null);
+				int eventType = parser.getEventType();
+				
+				while ((eventType = parser.next()) != XmlPullParser.END_DOCUMENT)
+				if (eventType == XmlPullParser.START_TAG)
+				if (parser.getName().equalsIgnoreCase("string"))
+				l10n.put(parser.getAttributeValue(null, "name"), parser.nextText().replace("\\'", "'").replace("\\\"", "\"").replace("\\n", "\n"));
+				
+				cLang = lang;
+			}
+			return true;
+		} catch (FileNotFoundException e) {
+			cLang = "not_found";
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return false;
+	}
+	
+	public static String l10n(Context ctx, int resId) {
+		if (resId != 0)
+			return l10n(ctx, ctx.getResources().getResourceEntryName(resId));
+		else
+			return "???";
+	}
+	public static String l10n(Context ctx, String resName) {
+		String lang = Locale.getDefault().getLanguage();
+		String newStr = null;
+		if (!lang.equals("") && !lang.equals("en") && !cLang.equals("not_found"))
+		if (preloadLang(lang)) newStr = l10n.get(resName);
+		if (newStr != null) return newStr;
+		
+		int resId = ctx.getResources().getIdentifier(resName, "string", ctx.getPackageName());
+		if (resId != 0)
+			return ctx.getResources().getString(resId);
+		else
+			return "???";
+	}
+	
+	public static String xl10n(XModuleResources modRes, int resId) {
+		if (resId != 0)
+			return xl10n(modRes, modRes.getResourceEntryName(resId));
+		else
+			return "???";
+	}
+	public static String xl10n(XModuleResources modRes, String resName) {
+		String lang = Locale.getDefault().getLanguage();
+		if (!lang.equals("") && !lang.equals("en") && !cLang.equals("not_found"))
+		if (preloadLang(lang)) return l10n.get(resName);
+		
+		int resId = modRes.getIdentifier(resName, "string", "com.sensetoolbox.six");
+		if (resId != 0)
+			return modRes.getString(resId);
+		else
+			return "???";
+	}
+	
+	private static ArrayList<HtcPreference> getPreferenceList(HtcPreference p, ArrayList<HtcPreference> list) {
+		if (p instanceof HtcPreferenceCategory || p instanceof HtcPreferenceScreen) {
+			HtcPreferenceGroup pGroup = (HtcPreferenceGroup) p;
+			int pCount = pGroup.getPreferenceCount();
+			for (int i = 0; i < pCount; i++)
+			getPreferenceList(pGroup.getPreference(i), list);
+		}
+		list.add(p);
+		return list;
+	}
+	
+	public static void applyLang(HtcPreferenceActivity act, HtcPreferenceFragmentExt frag) {
+		ArrayList<HtcPreference> list;
+		if (frag == null)
+			list = getPreferenceList(act.getPreferenceScreen(), new ArrayList<HtcPreference>());
+		else
+			list = getPreferenceList(frag.getPreferenceScreen(), new ArrayList<HtcPreference>());
+		
+		for (HtcPreference p: list) {
+			int titleResId = p.getTitleRes();
+			if (titleResId != 0) p.setTitle(l10n(act, titleResId));
+			
+			CharSequence summ = p.getSummary();
+			if (summ != null && summ != "") {
+				if (titleResId == R.string.launch_app || titleResId == R.string.toggle_settings) {
+					p.setSummary(l10n(act, "notselected"));
+				} else {
+					String titleResName = act.getResources().getResourceEntryName(titleResId);
+					String summResName = titleResName.replace("_title", "_summ");
+					p.setSummary(l10n(act, summResName));
+				}
+			}
+			
+			if (p.getClass() == HtcListPreference.class || p.getClass() == HtcListPreferencePlus.class || p.getClass() == ImageListPreference.class || p.getClass() == HtcMultiSelectListPreference.class) {
+				String titleResName = act.getResources().getResourceEntryName(titleResId);
+				String entriesResName;
+				if (titleResName.equals("controls_vol_up_media_title") || titleResName.equals("controls_vol_down_media_title"))
+					entriesResName = "media_action";
+				else if (titleResName.equals("controls_vol_up_cam_title") || titleResName.equals("controls_vol_down_cam_title"))
+					entriesResName = "cam_actions";
+				else if (titleResName.contains("sense_") || titleResName.contains("controls_"))
+					entriesResName = "global_actions";
+				else if (titleResName.contains("wakegestures_"))
+					entriesResName = "wakegest_actions";
+				else if (titleResId == R.string.toggle_settings)
+					entriesResName = "global_toggles";
+				else
+					entriesResName = titleResName.replace("_title", "");
+				
+				int arrayId = act.getResources().getIdentifier(entriesResName, "array", act.getPackageName());
+				if (arrayId != 0) {
+					TypedArray ids = act.getResources().obtainTypedArray(arrayId);
+					List<String> newEntries = new ArrayList<String>();
+					for (int i = 0; i < ids.length(); i++) {
+						int id = ids.getResourceId(i, 0);
+						if (id != 0)
+							newEntries.add(l10n(act, id));
+						else
+							newEntries.add("???");
+					}
+					ids.recycle();
+					
+					if (p.getClass() == HtcMultiSelectListPreference.class) {
+						HtcMultiSelectListPreference lst = ((HtcMultiSelectListPreference)p);
+						lst.setEntries(newEntries.toArray(new CharSequence[newEntries.size()]));
+						lst.setDialogTitle(l10n(act, titleResId));
+					} else {
+						HtcListPreference lst = ((HtcListPreference)p);
+						lst.setEntries(newEntries.toArray(new CharSequence[newEntries.size()]));
+						lst.setDialogTitle(l10n(act, titleResId));
+					}
+				}
+			}
+		}
+	}
 
 	public static boolean isXposedInstalled(Context ctx) {
 		PackageManager pm = ctx.getPackageManager();
@@ -74,7 +235,7 @@ public class Helpers {
 	
 	public static TextView createCenteredText(Context ctx, int resId) {
 		TextView centerMsg = new TextView(ctx);
-		centerMsg.setText(resId);
+		centerMsg.setText(l10n(ctx, resId));
 		centerMsg.setGravity(Gravity.CENTER_HORIZONTAL);
 		centerMsg.setPadding(0, 60, 0, 60);
 		centerMsg.setTextSize(18.0f);
@@ -244,9 +405,9 @@ public class Helpers {
 			return true;
 		} else {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
-			alert.setTitle(R.string.warning);
-			alert.setView(Helpers.createCenteredText(ctx, R.string.storage_unavailable));
-			alert.setNeutralButton(ctx.getText(android.R.string.ok), new DialogInterface.OnClickListener() {
+			alert.setTitle(l10n(ctx, R.string.warning));
+			alert.setView(createCenteredText(ctx, R.string.storage_unavailable));
+			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
 			alert.show();
@@ -258,9 +419,9 @@ public class Helpers {
 		String state = Environment.getExternalStorageState();
 		if (state.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
-			alert.setTitle(R.string.warning);
-			alert.setView(Helpers.createCenteredText(ctx, R.string.storage_read_only));
-			alert.setNeutralButton(ctx.getText(android.R.string.ok), new DialogInterface.OnClickListener() {
+			alert.setTitle(l10n(ctx, R.string.warning));
+			alert.setView(createCenteredText(ctx, R.string.storage_read_only));
+			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
 			alert.show();
@@ -269,9 +430,9 @@ public class Helpers {
 			File file = new File(path);
 			if (!file.exists() && !file.mkdirs()) {
 	        	HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
-				alert.setTitle(R.string.warning);
-				alert.setView(Helpers.createCenteredText(ctx, R.string.storage_cannot_mkdir));
-				alert.setNeutralButton(ctx.getText(android.R.string.ok), new DialogInterface.OnClickListener() {
+				alert.setTitle(l10n(ctx, R.string.warning));
+				alert.setView(createCenteredText(ctx, R.string.storage_cannot_mkdir));
+				alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {}
 				});
 				alert.show();
@@ -280,9 +441,9 @@ public class Helpers {
 			return true;
 		} else {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
-			alert.setTitle(R.string.warning);
-			alert.setView(Helpers.createCenteredText(ctx, R.string.storage_unavailable));
-			alert.setNeutralButton(ctx.getText(android.R.string.ok), new DialogInterface.OnClickListener() {
+			alert.setTitle(l10n(ctx, R.string.warning));
+			alert.setView(createCenteredText(ctx, R.string.storage_unavailable));
+			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
 			alert.show();

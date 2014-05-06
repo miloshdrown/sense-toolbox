@@ -45,6 +45,7 @@ public class BrightnessPicker extends HtcDialogPreference implements HtcNumberPi
 		super(context, attrs);
 		mContext = context;
 		density = mContext.getResources().getDisplayMetrics().density;
+		this.setDialogTitle(Helpers.l10n(context, this.getTitleRes()));
 	}
 	
 	private int densify(int dimension) {
@@ -86,7 +87,7 @@ public class BrightnessPicker extends HtcDialogPreference implements HtcNumberPi
 		});
 		
 		prefSwitchText = new TextView(mContext);
-		prefSwitchText.setText(mContext.getString(R.string.brightpicker_switch));
+		prefSwitchText.setText(Helpers.l10n(mContext, R.string.brightpicker_switch));
 		prefSwitchText.setPadding(densify(5), 0, 0, densify(2));
 		prefSwitchText.setTextSize(20f);
 		prefSwitchText.setOnClickListener(new OnClickListener() {
@@ -102,7 +103,7 @@ public class BrightnessPicker extends HtcDialogPreference implements HtcNumberPi
 		
 		desc = new TextView(mContext);
 		desc.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-		desc.setText(R.string.brightpicker_desc);
+		desc.setText(Helpers.l10n(mContext, R.string.brightpicker_desc));
 		desc.setGravity(Gravity.CENTER);
 		desc.setTextSize(20f);
 		desc.setPadding(0, 0, 0, densify(10));
@@ -200,7 +201,7 @@ public class BrightnessPicker extends HtcDialogPreference implements HtcNumberPi
 			@Override
 			public void onClick(View v) {
 				if (curVal1 == curVal2 || curVal2 == curVal3 || curVal3 == curVal4) {
-					Toast.makeText(mContext, R.string.brightpicker_warn_text, Toast.LENGTH_LONG).show();
+					Toast.makeText(mContext, Helpers.l10n(mContext, R.string.brightpicker_warn_text), Toast.LENGTH_LONG).show();
 				} else {
 					prefs.edit().putBoolean("pref_key_sysui_brightqs", prefSwitch.isChecked()).commit();
 					prefs.edit().putInt("pref_key_sysui_brightqs_value1", curVal1).commit();

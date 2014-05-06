@@ -34,27 +34,34 @@ public class AboutScreen extends Activity {
 		TextView iv2 = (TextView)findViewById(R.id.textView2);
 		iv2.setPaintFlags(iv2.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		iv2.setTypeface(face);
+		iv2.setText(Helpers.l10n(this, R.string.about_devs));
 		TextView iv3 = (TextView)findViewById(R.id.textView3);
 		iv3.setTypeface(face);
+		iv3.setText(Helpers.l10n(this, R.string.about_devs_names));
 		
 		TextView iv02 = (TextView)findViewById(R.id.TextView02);
 		iv02.setPaintFlags(iv02.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		iv02.setTypeface(face);
+		iv02.setText(Helpers.l10n(this, R.string.about_thanks));
 		TextView iv03 = (TextView)findViewById(R.id.TextView03);
 		iv03.setTypeface(face);
+		iv03.setText(Helpers.l10n(this, R.string.about_thanks_data));
 		
 		TextView iv04 = (TextView)findViewById(R.id.TextView04);
 		iv04.setPaintFlags(iv02.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		iv04.setTypeface(face);
+		iv04.setText(Helpers.l10n(this, R.string.about_l10n));
 		TextView iv4 = (TextView)findViewById(R.id.TextView4);
 		iv4.setTypeface(face);
+		iv4.setText(Helpers.l10n(this, R.string.about_l10n_data_left));
 		TextView iv5 = (TextView)findViewById(R.id.TextView5);
 		iv5.setTypeface(face);
+		iv5.setText(Helpers.l10n(this, R.string.about_l10n_data_right));
 		
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
         ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
         ActionBarText actionBarText = new ActionBarText(this);    		        
-	    actionBarText.setPrimaryText(R.string.app_about);
+	    actionBarText.setPrimaryText(Helpers.l10n(this, R.string.app_about));
 	    actionBarContainer.addCenterView(actionBarText);
 		actionBarContainer.setBackUpEnabled(true);
 		
@@ -72,7 +79,7 @@ public class AboutScreen extends Activity {
 		//Add version name
         try {
         	TextView versionTv = (TextView)findViewById(R.id.textViewVersion);
-			versionTv.setText(getString(R.string.about_version, getPackageManager().getPackageInfo(getPackageName(), 0).versionName));
+			versionTv.setText(String.format(Helpers.l10n(this, R.string.about_version), getPackageManager().getPackageInfo(getPackageName(), 0).versionName, Helpers.buildVersion));
 			versionTv.setTypeface(face);
 			versionTv.setPaintFlags(iv02.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			OnLongClickListener olcl = new OnLongClickListener(){
@@ -89,6 +96,7 @@ public class AboutScreen extends Activity {
 			logo.setLongClickable(true);
 			logo.setOnLongClickListener(olcl);
 			logo.setImageDrawable(Helpers.applySenseTheme(this, logo.getDrawable()));
+			logo.setContentDescription(Helpers.l10n(this, R.string.app_about));
 		} catch (NameNotFoundException e) {
 			//Shouldn't happen...
 			e.printStackTrace();

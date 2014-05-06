@@ -16,3 +16,4 @@ gen/
 # libs with abs paths, ignore
 .classpath
 .project
+.externalToolBuilders/

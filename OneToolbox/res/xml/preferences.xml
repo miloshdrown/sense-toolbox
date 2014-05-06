@@ -53,6 +53,10 @@
             android:summary="@string/toolbox_show_icon_summ"
             android:title="@string/toolbox_show_icon_title"
             android:defaultValue="true" />
+        <com.htc.preference.HtcPreference
+            android:key="pref_key_toolbox_lang"
+            android:summary="@string/toolbox_l10n_summ"
+            android:title="@string/toolbox_l10n_title" />
     </com.htc.preference.HtcPreferenceCategory>
         
     <com.htc.preference.HtcPreferenceCategory

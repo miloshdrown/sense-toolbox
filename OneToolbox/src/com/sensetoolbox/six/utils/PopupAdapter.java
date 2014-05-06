@@ -60,9 +60,9 @@ public class PopupAdapter extends BaseAdapter {
 			itemTitle.setWidth(parent.getWidth());
 			if (position == 5)
 				if (Boolean.parseBoolean(Settings.System.getString(itemTitle.getContext().getContentResolver(), "lock_homescreen_dragging")))
-					itemTitle.setText(modRes.getString(R.string.array_home_menu_dragunlock));
+					itemTitle.setText(Helpers.xl10n(modRes, R.string.array_home_menu_dragunlock));
 				else
-					itemTitle.setText(modRes.getString(R.string.array_home_menu_draglock));
+					itemTitle.setText(Helpers.xl10n(modRes, R.string.array_home_menu_draglock));
 		}
 		return itemTitle;
 	}

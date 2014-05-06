@@ -18,42 +18,42 @@
         <item >4</item>
     </string-array>
     
-    <string-array name="batt_icon">
+    <string-array name="cleanbeam_battery">
         <item >@string/array_default</item>
         <item >@string/array_batt_icon_none</item>
     </string-array>
-    <string-array name="batt_icon_val">
+    <string-array name="cleanbeam_battery_val">
         <item >1</item>
         <item >4</item>
     </string-array>
     
-	<string-array name="wifi_icon">
+	<string-array name="cleanbeam_wifi">
         <item >@string/array_default</item>
         <item >@string/array_wifi_icon_style1</item>
         <item >@string/array_wifi_icon_style2</item>
     </string-array>
-    <string-array name="wifi_icon_val">
+    <string-array name="cleanbeam_wifi_val">
         <item >1</item>
         <item >2</item>
         <item >3</item>
     </string-array>
-    <array name="wifi_images">
+    <array name="cleanbeam_wifi_images">
 		<item >@drawable/stat_sys_wifi_signal_preview</item>
 		<item >@drawable/stat_sys_wifi_signal_4</item>
 		<item >@drawable/b_stat_sys_wifi_signal_4</item>
 	</array>
-	<array name="wifi_themes">
+	<array name="cleanbeam_wifi_themes">
 		<item >0</item>
 		<item >0</item>
 		<item >1</item>
 	</array>
     
-    <string-array name="clock_style">
+    <string-array name="systemui_clockstyle">
         <item >@string/array_default</item>
         <item >@string/array_clock_style_center</item>
         <item >@string/array_clock_style_none</item>
     </string-array>
-    <string-array name="clock_style_val">
+    <string-array name="systemui_clockstyle_val">
         <item >1</item>
         <item >2</item>
         <item >3</item>
@@ -120,20 +120,20 @@
         <item >@string/array_recents_menu_close</item>
         <item >@string/array_recents_menu_closeothers</item>
     </string-array>
-    <string-array name="various_screenonanim">
+    <string-array name="various_screenon">
         <item >@string/array_screen_anim_none</item>
         <item >@string/array_screen_anim_fade</item>
     </string-array>
-    <string-array name="various_screenonanim_val">
+    <string-array name="various_screenon_val">
         <item >0</item>
         <item >2</item>
     </string-array>
-    <string-array name="various_screenoffanim">
+    <string-array name="various_screenoff">
         <item >@string/array_screen_anim_none</item>
         <item >@string/array_screen_anim_fade</item>
         <item >@string/array_screen_anim_crt</item>
     </string-array>
-    <string-array name="various_screenoffanim_val">
+    <string-array name="various_screenoff_val">
         <item >0</item>
         <item >2</item>
         <item >1</item>
@@ -166,29 +166,29 @@
         <item >88</item>
     </string-array>
     
-    <string-array name="large_photo">
+    <string-array name="various_largephoto">
         <item >@string/array_large_photo_default</item>
         <item >@string/array_large_photo_rectangular</item>
         <item >@string/array_large_photo_max</item>
     </string-array>
-    <string-array name="large_photo_val">
+    <string-array name="various_largephoto_val">
         <item >1</item>
         <item >2</item>
         <item >3</item>
     </string-array>
     
-    <string-array name="header_click_action">
+    <string-array name="systemui_statusheaderclick">
         <item >@string/array_global_actions_none</item>
         <item >@string/array_header_click_clock</item>
         <item >@string/array_header_click_sysinfo</item>
     </string-array>
-    <string-array name="header_click_action_val">
+    <string-array name="systemui_statusheaderclick_val">
         <item >1</item>
         <item >2</item>
         <item >3</item>
     </string-array>
     
-    <string-array name="icons_to_hide">
+    <string-array name="hideicons">
         <item >@string/cleanbeam_headphone_title</item>
         <item >@string/cleanbeam_beats_title</item>
         <item >@string/cleanbeam_alarm_title</item>
@@ -201,7 +201,7 @@
         <item >@string/cleanbeam_nfc_title</item>
         <item >@string/cleanbeam_dnd_title</item>
     </string-array>
-    <string-array name="icons_to_hide_val">
+    <string-array name="hideicons_val">
         <item >1</item>
         <item >2</item>
         <item >3</item>

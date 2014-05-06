@@ -106,20 +106,20 @@ public class GlobalActions {
 				WifiManager wifiManager = (WifiManager) context.getSystemService(Context.WIFI_SERVICE);
 				if (wifiManager.isWifiEnabled()) {
 					wifiManager.setWifiEnabled(false);
-					Toast.makeText(context, modRes.getString(R.string.toggle_wifi_off), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_wifi_off), Toast.LENGTH_SHORT).show();
 				} else {
 					wifiManager.setWifiEnabled(true);
-					Toast.makeText(context, modRes.getString(R.string.toggle_wifi_on), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_wifi_on), Toast.LENGTH_SHORT).show();
 				}
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.ToggleBluetooth")) {
 				BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
 				if (mBluetoothAdapter.isEnabled()) {
 					mBluetoothAdapter.disable();
-					Toast.makeText(context, modRes.getString(R.string.toggle_bt_off), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_bt_off), Toast.LENGTH_SHORT).show();
 				} else {
 					mBluetoothAdapter.enable();
-					Toast.makeText(context, modRes.getString(R.string.toggle_bt_on), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_bt_on), Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -127,10 +127,10 @@ public class GlobalActions {
 				LocationManager locManager = (LocationManager)context.getSystemService(Context.LOCATION_SERVICE);
 				if (locManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
 					turnGPSOff(context);
-					Toast.makeText(context, modRes.getString(R.string.toggle_gps_off), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_gps_off), Toast.LENGTH_SHORT).show();
 				} else {
 					turnGPSOn(context);
-					Toast.makeText(context, modRes.getString(R.string.toggle_gps_on), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_gps_on), Toast.LENGTH_SHORT).show();
 				}
 			}
 			
@@ -146,10 +146,10 @@ public class GlobalActions {
 				
 				if (mNfcAdapter.isEnabled()) {
 					disableNFC.invoke(mNfcAdapter);
-					Toast.makeText(context, modRes.getString(R.string.toggle_nfc_off), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_nfc_off), Toast.LENGTH_SHORT).show();
 				} else {
 					enableNFC.invoke(mNfcAdapter);
-					Toast.makeText(context, modRes.getString(R.string.toggle_nfc_on), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_nfc_on), Toast.LENGTH_SHORT).show();
 				}
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.ToggleSoundProfile")) {
@@ -157,46 +157,46 @@ public class GlobalActions {
 				int currentMode = am.getRingerMode();
 				if (currentMode == 0) {
 					am.setRingerMode(AudioManager.RINGER_MODE_VIBRATE);
-					Toast.makeText(context, modRes.getString(R.string.toggle_sound_vibrate), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_sound_vibrate), Toast.LENGTH_SHORT).show();
 				} else if (currentMode == 1) {
 					am.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
-					Toast.makeText(context, modRes.getString(R.string.toggle_sound_normal), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_sound_normal), Toast.LENGTH_SHORT).show();
 				} else if (currentMode == 2) {
 					am.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-					Toast.makeText(context, modRes.getString(R.string.toggle_sound_silent), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_sound_silent), Toast.LENGTH_SHORT).show();
 				}
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.ToggleAutoBrightness")) {
 				if (Settings.System.getInt(context.getContentResolver(), "screen_brightness_mode", 0) == 0) {
 					Settings.System.putInt(context.getContentResolver(), "screen_brightness_mode", 1);
-					Toast.makeText(context, modRes.getString(R.string.toggle_autobright_on), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_autobright_on), Toast.LENGTH_SHORT).show();
 				} else {
 					Settings.System.putInt(context.getContentResolver(), "screen_brightness_mode", 0);
-					Toast.makeText(context, modRes.getString(R.string.toggle_autobright_off), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_autobright_off), Toast.LENGTH_SHORT).show();
 				}
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.ToggleAutoRotation")) {
 				if (Settings.System.getInt(context.getContentResolver(), "accelerometer_rotation", 0) == 0) {
 					Settings.System.putInt(context.getContentResolver(), "accelerometer_rotation", 1);
-					Toast.makeText(context, modRes.getString(R.string.toggle_autorotate_on), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_autorotate_on), Toast.LENGTH_SHORT).show();
 				} else {
 					Settings.System.putInt(context.getContentResolver(), "accelerometer_rotation", 0);
-					Toast.makeText(context, modRes.getString(R.string.toggle_autorotate_off), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_autorotate_off), Toast.LENGTH_SHORT).show();
 				}
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.ToggleFlashlight")) {
 				if (mCurrentLEDLevel == 0) {
 					mCurrentLEDLevel = 125;
-					Toast.makeText(context, modRes.getString(R.string.toggle_flash_low), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_low), Toast.LENGTH_SHORT).show();
 				} else if (mCurrentLEDLevel == 125) {
 					mCurrentLEDLevel = 126;
-					Toast.makeText(context, modRes.getString(R.string.toggle_flash_med), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_med), Toast.LENGTH_SHORT).show();
 				} else if (mCurrentLEDLevel == 126) {
 					mCurrentLEDLevel = 127;
-					Toast.makeText(context, modRes.getString(R.string.toggle_flash_high), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_high), Toast.LENGTH_SHORT).show();
 				} else if (mCurrentLEDLevel == 127) {
 					mCurrentLEDLevel = 0;
-					Toast.makeText(context, modRes.getString(R.string.toggle_flash_off), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_off), Toast.LENGTH_SHORT).show();
 				}
 				setFlashlight(mCurrentLEDLevel);
 			}
@@ -209,10 +209,10 @@ public class GlobalActions {
 					
 				if ((Boolean)getMTE.invoke(dataManager)) {
 					setMTE.invoke(dataManager, false);
-					Toast.makeText(context, modRes.getString(R.string.toggle_mobiledata_off), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_mobiledata_off), Toast.LENGTH_SHORT).show();
 				} else {
 					setMTE.invoke(dataManager, true);
-					Toast.makeText(context, modRes.getString(R.string.toggle_mobiledata_on), Toast.LENGTH_SHORT).show();
+					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_mobiledata_on), Toast.LENGTH_SHORT).show();
 				}
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.APMReboot")) {
