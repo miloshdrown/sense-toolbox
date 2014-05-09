@@ -216,22 +216,22 @@ public class GlobalActions {
 				}
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.APMReboot")) {
-				setStaticObjectField(findClass("com.android.server.power.ShutdownThread", null), "mRebootReason", "oem-11");
-				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mReboot", true);
-				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mRebootSafeMode", false);
-				callStaticMethod(findClass("com.android.server.power.ShutdownThread", null), "shutdownInner", context, false);
+				setStaticObjectField(findClass("com.htc.app.HtcShutdownThread", null), "mRebootReason", "oem-11");
+				setStaticBooleanField(findClass("com.htc.app.HtcShutdownThread", null), "mReboot", true);
+				setStaticBooleanField(findClass("com.htc.app.HtcShutdownThread", null), "mRebootSafeMode", false);
+				callStaticMethod(findClass("com.htc.app.HtcShutdownThread", null), "shutdownInner", context, false);
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.APMRebootRecovery")) {
-				setStaticObjectField(findClass("com.android.server.power.ShutdownThread", null), "mRebootReason", "recovery");
-				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mReboot", true);
-				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mRebootSafeMode", false);
-				callStaticMethod(findClass("com.android.server.power.ShutdownThread", null), "shutdownInner", context, false);
+				setStaticObjectField(findClass("com.htc.app.HtcShutdownThread", null), "mRebootReason", "recovery");
+				setStaticBooleanField(findClass("com.htc.app.HtcShutdownThread", null), "mReboot", true);
+				setStaticBooleanField(findClass("com.htc.app.HtcShutdownThread", null), "mRebootSafeMode", false);
+				callStaticMethod(findClass("com.htc.app.HtcShutdownThread", null), "shutdownInner", context, false);
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.APMRebootBootloader")) {
-				setStaticObjectField(findClass("com.android.server.power.ShutdownThread", null), "mRebootReason", "bootloader");
-				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mReboot", true);
-				setStaticBooleanField(findClass("com.android.server.power.ShutdownThread", null), "mRebootSafeMode", false);
-				callStaticMethod(findClass("com.android.server.power.ShutdownThread", null), "shutdownInner", context, false);
+				setStaticObjectField(findClass("com.htc.app.HtcShutdownThread", null), "mRebootReason", "bootloader");
+				setStaticBooleanField(findClass("com.htc.app.HtcShutdownThread", null), "mReboot", true);
+				setStaticBooleanField(findClass("com.htc.app.HtcShutdownThread", null), "mRebootSafeMode", false);
+				callStaticMethod(findClass("com.htc.app.HtcShutdownThread", null), "shutdownInner", context, false);
 			}
 			
 			} catch(Throwable t) {

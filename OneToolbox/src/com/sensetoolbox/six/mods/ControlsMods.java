@@ -15,6 +15,7 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.os.PowerManager.WakeLock;
 import android.view.KeyEvent;
 import android.view.Surface;
@@ -248,8 +249,9 @@ public class ControlsMods {
 								mFlashlightLevel = 0;
 								GlobalActions.setFlashlight(0);
 								if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
-								XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
-								XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
+								//XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
+								//XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
+								mPowerManager.wakeUp(SystemClock.uptimeMillis());
 								param.setResult(0);
 							} catch (Throwable t) {
 								XposedBridge.log(t);
@@ -325,8 +327,9 @@ public class ControlsMods {
 								else if (isInCall) XposedHelpers.callMethod(param.thisObject, "handleVolumeKey", AudioManager.STREAM_VOICE_CALL, keycode);
 								// Use vol2wake in other cases 	
 								else if (vol2wakeEnabled) {
-									XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
-									XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
+									mPowerManager.wakeUp(SystemClock.uptimeMillis());
+									//XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
+									//XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
 								}
 								param.setResult(0);
 							}

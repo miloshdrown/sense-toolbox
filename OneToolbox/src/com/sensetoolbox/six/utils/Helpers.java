@@ -11,11 +11,6 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-
-import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
@@ -66,10 +61,6 @@ import android.widget.TextView;
 
 public class Helpers {
 	
-	static DocumentBuilderFactory dbf;
-	static DocumentBuilder db;
-	static Document doc;
-	static Element eQS;
 	static List<PackageTheme> cached_pkgthm = null;
 	static String cached_str;
 	static Map<String, String> l10n = null;
