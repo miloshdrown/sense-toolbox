@@ -60,6 +60,8 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 			int fileLength = connection.getContentLength();
 
 			input = connection.getInputStream();
+			File tmp = new File(Helpers.dataPath);
+			tmp.mkdirs();
 			output = new FileOutputStream(Helpers.dataPath + "strings.zip", false);
 
 			byte data[] = new byte[4096];
