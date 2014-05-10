@@ -62,6 +62,9 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 			input = connection.getInputStream();
 			File tmp = new File(Helpers.dataPath);
 			tmp.mkdirs();
+			tmp.setReadable(true, false);
+			tmp.setWritable(true, false);
+			tmp.setExecutable(true, false);
 			output = new FileOutputStream(Helpers.dataPath + "strings.zip", false);
 
 			byte data[] = new byte[4096];
@@ -189,6 +192,9 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 				File fmd = new File(path + filename);
 				if (ze.isDirectory()) {
 					fmd.mkdirs();
+					fmd.setReadable(true, false);
+					fmd.setWritable(true, false);
+					fmd.setExecutable(true, false);
 					continue;
 				}
 				FileOutputStream fout = new FileOutputStream(fmd, false);
@@ -196,6 +202,8 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 				fout.close();               
 				zis.closeEntry();
 				fmd.setReadable(true, false);
+				fmd.setWritable(true, false);
+				fmd.setExecutable(true, false);
 			}
 			zis.close();
 		} catch (Exception e) {

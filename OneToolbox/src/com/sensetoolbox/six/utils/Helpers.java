@@ -3,7 +3,6 @@ package com.sensetoolbox.six.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -86,9 +85,8 @@ public class Helpers {
 				cLang = lang;
 			}
 			return true;
-		} catch (FileNotFoundException e) {
-			cLang = "not_found";
 		} catch (Exception e) {
+			cLang = "not_found";
 			e.printStackTrace();
 		}
 		return false;
@@ -122,14 +120,30 @@ public class Helpers {
 	}
 	public static String xl10n(XModuleResources modRes, String resName) {
 		String lang = Locale.getDefault().getLanguage();
+		String newStr = null;
 		if (!lang.equals("") && !lang.equals("en") && !cLang.equals("not_found"))
-		if (preloadLang(lang)) return l10n.get(resName);
+		if (preloadLang(lang)) newStr = l10n.get(resName);
+		if (newStr != null) return newStr;
 		
 		int resId = modRes.getIdentifier(resName, "string", "com.sensetoolbox.six");
 		if (resId != 0)
 			return modRes.getString(resId);
 		else
 			return "???";
+	}
+	
+	public static String[] xl10n_array(XModuleResources modRes, int resId) {
+		TypedArray ids = modRes.obtainTypedArray(resId);
+		List<String> array = new ArrayList<String>();
+		for (int i = 0; i < ids.length(); i++) {
+			int id = ids.getResourceId(i, 0);
+			if (id != 0)
+				array.add(xl10n(modRes, id));
+			else
+				array.add("???");
+		}
+		ids.recycle();
+		return array.toArray(new String[array.size()]);
 	}
 	
 	private static ArrayList<HtcPreference> getPreferenceList(HtcPreference p, ArrayList<HtcPreference> list) {

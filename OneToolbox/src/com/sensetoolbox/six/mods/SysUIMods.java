@@ -1238,7 +1238,7 @@ public class SysUIMods {
 								
 								ListView options = new ListView(FxRecent);
 								XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-								ListAdapter listAdapter = new PopupAdapter(options.getContext(), modRes.getStringArray(R.array.recents_menu), true);
+								ListAdapter listAdapter = new PopupAdapter(options.getContext(), Helpers.xl10n_array(modRes, R.array.recents_menu), true);
 								options.setAdapter(listAdapter);
 								options.setFocusableInTouchMode(true);								
 								options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
