@@ -51,8 +51,8 @@
             android:key="pref_key_other_keyslight"
             android:summary="@string/various_keyslight_summ"
             android:title="@string/various_keyslight_title"
-            android:entries="@array/keys_light"
-            android:entryValues="@array/keys_light_val"
+            android:entries="@array/various_keyslight"
+            android:entryValues="@array/various_keyslight_val"
             android:defaultValue="1"/>
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_other_keyslight_auto"

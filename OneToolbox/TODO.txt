@@ -42,6 +42,7 @@ Current changelog
 
 1.1.1
 [Fixed] Sense 6 Themes color override for HTC Sense Input (onscreen keyboard)
+[Fixed] Long press home for menu on HTC One M8
 
 ===========
 Translators

@@ -917,45 +917,54 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		}
 	}
 
-	public void showXposedDialog()
-	{
-		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
-		builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
-		builder.setMessage(Helpers.l10n(getActivity(), R.string.xposed_not_installed));
-		builder.setIcon(android.R.drawable.ic_dialog_alert);
-		builder.setCancelable(true);
-		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton){}
-		});
-		HtcAlertDialog dlg = builder.create();
-		dlg.show();
+	public void showXposedDialog() {
+		try {
+			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
+			builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
+			builder.setMessage(Helpers.l10n(getActivity(), R.string.xposed_not_installed));
+			builder.setIcon(android.R.drawable.ic_dialog_alert);
+			builder.setCancelable(true);
+			builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton){}
+			});
+			HtcAlertDialog dlg = builder.create();
+			dlg.show();
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 	
-	public void showXposedDialog2()
-	{
-		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
-		builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
-		builder.setMessage(Helpers.l10n(getActivity(), R.string.module_not_active));
-		builder.setIcon(android.R.drawable.ic_dialog_alert);
-		builder.setCancelable(true);
-		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton){}
-		});
-		HtcAlertDialog dlg = builder.create();
-		dlg.show();
+	public void showXposedDialog2() {
+		try {
+			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
+			builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
+			builder.setMessage(Helpers.l10n(getActivity(), R.string.module_not_active));
+			builder.setIcon(android.R.drawable.ic_dialog_alert);
+			builder.setCancelable(true);
+			builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton){}
+			});
+			HtcAlertDialog dlg = builder.create();
+			dlg.show();
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 	
-	private void showRestoreInfoDialog()
-	{
-		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
-		builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
-		builder.setMessage(Helpers.l10n(getActivity(), R.string.backup_restore_info));
-		builder.setIcon(android.R.drawable.ic_dialog_alert);
-		builder.setCancelable(true);
-		builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-			public void onClick(DialogInterface dialog, int whichButton){}
-		});
-		HtcAlertDialog dlg = builder.create();
-		dlg.show();
+	private void showRestoreInfoDialog() {
+		try {
+			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
+			builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
+			builder.setMessage(Helpers.l10n(getActivity(), R.string.backup_restore_info));
+			builder.setIcon(android.R.drawable.ic_dialog_alert);
+			builder.setCancelable(true);
+			builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton){}
+			});
+			HtcAlertDialog dlg = builder.create();
+			dlg.show();
+		} catch (Throwable t) {
+			t.printStackTrace();
+		}
 	}
 }
