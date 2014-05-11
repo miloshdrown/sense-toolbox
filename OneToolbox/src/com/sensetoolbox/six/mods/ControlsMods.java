@@ -3,6 +3,7 @@ package com.sensetoolbox.six.mods;
 import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
+import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -418,6 +419,56 @@ public class ControlsMods {
 						}
 					});
 				}
+			}
+		});
+	}
+	
+	public static void execHook_M8HomeLongpress(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				final ImageView homeButton = (ImageView) callMethod(param.thisObject, "getHomeButton");
+				if(homeButton!=null){
+					setObjectField(homeButton, "mCheckLongPress", new Runnable() {
+						@Override
+						public void run() {
+							if(homeButton.isPressed()) {
+								homeButton.setPressed(false);
+								homeButton.performLongClick();
+							}
+						}
+					});
+					homeButton.setLongClickable(true);
+					homeButton.setOnLongClickListener(new OnLongClickListener() {
+						@Override
+						public boolean onLongClick(View v) {
+							Context mContext = homeButton.getContext();
+							GlobalActions.simulateMenu(mContext);
+							return true;
+						}
+					});
+				}
+			}
+		});
+		
+		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.policy.KeyButtonView", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				Integer mCode = (Integer) getObjectField(param.thisObject, "mCode");
+				if (mCode == KeyEvent.KEYCODE_HOME)
+					setObjectField(param.thisObject, "mSupportsLongpress", true);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "prepareNavigationBarView", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				View v = (View) getObjectField(param.thisObject, "mNavigationBarView");
+				if (v != null) {
+					View b = (View) callMethod(v, "getHomeButton");
+					if (b != null)
+						callMethod(b, "setOnTouchListener", new Object[]{null});
+				}		
 			}
 		});
 	}

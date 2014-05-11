@@ -414,6 +414,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref_backlongpress != 1 && Helpers.isM8())
 				ControlsMods.execHook_M8BackLongpress(lpparam);
 			
+			if(pref.getBoolean("pref_key_prism_homemenu", false) && Helpers.isM8()) {
+				ControlsMods.execHook_M8HomeLongpress(lpparam);
+			}
+			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 			CleanBeamMods.execHook_HideIcons(lpparam);
 		}
