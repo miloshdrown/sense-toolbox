@@ -1584,20 +1584,33 @@ public class SysUIMods {
 		}
 	}
 	
+	private static void replaceCustom(MethodHookParam param, String pkgName) {
+		SparseArray<Object[]> styles = SenseThemes.getColors();
+		PackageTheme pt = Helpers.getThemeForPackageFromXposed(pkgName);
+		if (pt != null) {
+			Context ctx = (Context)param.args[0];
+			String htc_theme = (String)styles.valueAt(pt.getTheme())[2];
+			int htc_theme_id = ctx.getResources().getIdentifier(htc_theme, "style", pkgName);
+			if (htc_theme_id != 0) param.setResult(htc_theme_id);
+		}
+	}
+	
 	public static void execHook_Sense6ColorControlCustom(final LoadPackageParam lpparam, final String pkgName) {
-		findAndHookMethod("com.htc.lib1.cc.util.HtcCommonUtil", lpparam.classLoader, "getHtcThemeId", Context.class, int.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				SparseArray<Object[]> styles = SenseThemes.getColors();
-				PackageTheme pt = Helpers.getThemeForPackageFromXposed(pkgName);
-				if (pt != null) {
-					Context ctx = (Context)param.args[0];
-					String htc_theme = (String)styles.valueAt(pt.getTheme())[2];
-					int htc_theme_id = ctx.getResources().getIdentifier(htc_theme, "style", pkgName);
-					if (htc_theme_id != 0) param.setResult(htc_theme_id);
+		if (pkgName.equals("com.htc.sense.ime")) {
+			findAndHookMethod("com.htc.sense.ime.HTCIMMData", lpparam.classLoader, "getThemeId", Context.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					replaceCustom(param, pkgName);
 				}
-			}
-		});
+			});
+		} else {
+			findAndHookMethod("com.htc.lib1.cc.util.HtcCommonUtil", lpparam.classLoader, "getHtcThemeId", Context.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					replaceCustom(param, pkgName);
+				}
+			});
+		}
 	}
 	
 	public static void execHook_ChangeBrightnessQSTile(LoadPackageParam lpparam) {

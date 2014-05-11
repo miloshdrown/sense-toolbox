@@ -477,7 +477,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 //		    	SysUIMods.execHook_anotherTSB44Fix(lpparam);
 		}
 		
-		if (pkg.equals("com.htc.launcher") || pkg.equals("com.htc.videohub.ui") || pkg.equals("com.htc.album")) {
+		if (pkg.equals("com.htc.launcher") || pkg.equals("com.htc.videohub.ui") || pkg.equals("com.htc.album") || pkg.equals("com.htc.sense.ime")) {
 			if (pref.getBoolean("themes_active", false))
 				SysUIMods.execHook_Sense6ColorControlCustom(lpparam, pkg);
 		}

@@ -168,7 +168,6 @@ public class WakeGesturesMods {
 	        protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 	        	Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "event4thread");
 	        	if (th != null) {
-	        		//XposedBridge.log("[S6T] Screen off, listening for motion gestures");
 	        		if (!th.isAlive()) th.start(); else
 	        		synchronized (mPauseLock) {
 	        			mPaused = false;
@@ -188,7 +187,6 @@ public class WakeGesturesMods {
 				if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
 	        	Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "event4thread");
 	        	if (th != null) {
-	        		//XposedBridge.log("[S6T] Screen on, pause motion gestures listener");
 	        		synchronized (mPauseLock) {
 	        			mPaused = true;
 	        		}
@@ -199,7 +197,6 @@ public class WakeGesturesMods {
 		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
 	        @Override
 	        protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-	        	//File file = new File("/dev/input/event3");
 	        	File file = new File("/dev/input/event4");
 	        	final byte event[] = new byte[4 * 2 + 2 + 2 + 4];
 	        	final FileInputStream fin = new FileInputStream(file);
@@ -212,7 +209,7 @@ public class WakeGesturesMods {
 							if (fin.read(event) > 0) {
 								StructInputEvent input_event = new StructInputEvent(event);
 								//XposedBridge.log("event3: " + bytesToHex(event));
-								XposedBridge.log("[S6T] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
+								//XposedBridge.log("[S6T] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
 								if (input_event.type == 0x02 && input_event.code == 0x0b) {
 									XMain.pref.reload();
 									if (XMain.pref.getBoolean("wake_gestures_active", false)) {

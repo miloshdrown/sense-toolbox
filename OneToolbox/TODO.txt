@@ -40,28 +40,8 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Current changelog
 =================
 
-1.1
-[Fixed] Widget overlapping on 4x5 homescreens
-[Fixed] Swipe up on dock in appdrawer bug
-[Fixed] PIN/password are not displayed with Fast unlock mod enabled
-[Fixed] Sense 6 Themes color override for Gallery and TV
-[Fixed] Vibration when turning screen on with Quick Flashlight mod enabled
-[Fixed] APM shutdown animation
-[New] Ability to change Sense 6 theme for all selected apps at once
-[New] Wake gestures [requires ElementalX 14.4+ or any other kernel with wake_gesture support]
-[New] No signal icon
-[New] Downloadable localizations
-
-1.0
-[Fix] All Sense 5 Toolbox mods
-[Fix] Dynamic Buttons Backlight bug on screen off
-[New] Sense 6 Theme colors per app override
-[New] Option to hide Toolbox icon from Settings
-[New] EQS brightness levels control
-[New] Small navbar on HTC One M8
-[New] Hide Power Saver notification
-[Change] Jelly Bean styled toast changed to flat Sense 6 styled
-
+1.1.1
+[Fixed] Sense 6 Themes color override for HTC Sense Input (onscreen keyboard)
 
 ===========
 Translators
@@ -86,3 +66,24 @@ http://forum.xda-developers.com/member.php?u=5379502
 Old Changelogs
 ==============
 
+1.1
+[Fixed] Widget overlapping on 4x5 homescreens
+[Fixed] Swipe up on dock in appdrawer bug
+[Fixed] PIN/password are not displayed with Fast unlock mod enabled
+[Fixed] Sense 6 Themes color override for Gallery and TV
+[Fixed] Vibration when turning screen on with Quick Flashlight mod enabled
+[Fixed] APM shutdown animation
+[New] Ability to change Sense 6 theme for all selected apps at once
+[New] Wake gestures [requires ElementalX 14.4+ or any other kernel with wake_gesture support]
+[New] No signal icon
+[New] Downloadable localizations
+
+1.0
+[Fix] All Sense 5 Toolbox mods
+[Fix] Dynamic Buttons Backlight bug on screen off
+[New] Sense 6 Theme colors per app override
+[New] Option to hide Toolbox icon from Settings
+[New] EQS brightness levels control
+[New] Small navbar on HTC One M8
+[New] Hide Power Saver notification
+[Change] Jelly Bean styled toast changed to flat Sense 6 styled
