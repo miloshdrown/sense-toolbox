@@ -150,6 +150,7 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 				} else if (!buildIdBefore.equals(buildIdAfter)) {
 					alert.setTitle(Helpers.l10n(act, R.string.success));
 					alert.setView(Helpers.createCenteredText(act, R.string.download_succeeded));
+					alert.setCancelable(false);
 					alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {
 							Helpers.l10n = null;

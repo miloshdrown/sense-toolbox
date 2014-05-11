@@ -62,8 +62,8 @@ public class Helpers {
 	
 	static List<PackageTheme> cached_pkgthm = null;
 	static String cached_str;
-	static Map<String, String> l10n = null;
-	static String cLang = "";
+	public static Map<String, String> l10n = null;
+	public static String cLang = "";
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static String buildVersion = "JENKINSBUILDNUMBERGOESHERE";

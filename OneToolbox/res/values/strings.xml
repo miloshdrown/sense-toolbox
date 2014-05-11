@@ -44,6 +44,7 @@
     <string name="download_unzip_failed">Unable to unzip language files</string>
     <string name="download_same_version">You already have the latest version</string>
     <string name="download_version_problem">Failed to read update version</string>
+    <string name="download_removed">Language files were removed,\nToolbox will be restarted now</string>
     
     <string name="apm_title">Choose reboot option</string>
     <string name="apm_normal_title">Reboot</string>

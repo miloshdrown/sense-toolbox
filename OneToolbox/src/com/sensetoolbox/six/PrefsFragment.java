@@ -137,6 +137,30 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				alert.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {}
 				});
+				alert.setNeutralButton(Helpers.l10n(getActivity(), R.string.remove), new DialogInterface.OnClickListener() {
+					void DeleteRecursive(File fileOrDirectory) {
+					    if (fileOrDirectory.isDirectory()) for (File child: fileOrDirectory.listFiles()) DeleteRecursive(child);
+					    fileOrDirectory.delete();
+					}
+					
+					public void onClick(DialogInterface dialog, int whichButton) {
+						File tmp = new File(Helpers.dataPath);
+						DeleteRecursive(tmp);
+						
+						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
+						alert.setTitle(Helpers.l10n(getActivity(), R.string.success));
+						alert.setView(Helpers.createCenteredText(getActivity(), R.string.download_removed));
+						alert.setCancelable(false);
+						alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								Helpers.l10n = null;
+								Helpers.cLang = "";
+								getActivity().recreate();
+							}
+						});
+						alert.show();
+					}
+				});
 				alert.setPositiveButton(Helpers.l10n(getActivity(), R.string.toolbox_l10n_btn), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						final DownloadAndUnZip downloadTask = new DownloadAndUnZip(getActivity());

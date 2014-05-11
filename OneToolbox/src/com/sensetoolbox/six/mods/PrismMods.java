@@ -478,7 +478,7 @@ public class PrismMods {
 			float density = helperContext.getResources().getDisplayMetrics().density;
 			SWIPE_MIN_DISTANCE = Math.round(100 * density);
 			SWIPE_MAX_OFF_PATH = Math.round(85 * density);
-			SWIPE_THRESHOLD_VELOCITY = Math.round(65 * density);			
+			SWIPE_THRESHOLD_VELOCITY = Math.round(65 * density);
 		}
 		
 		@Override

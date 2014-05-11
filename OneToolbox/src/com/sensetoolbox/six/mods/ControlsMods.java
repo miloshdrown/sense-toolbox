@@ -483,7 +483,6 @@ public class ControlsMods {
         XResources.setSystemWideReplacement("android", "dimen", "system_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
 	}
 	
-	
 	public static void execHook_FixDialer(LoadPackageParam lpparam) {
 		XC_MethodHook hook =  new XC_MethodHook() {
 			@Override
