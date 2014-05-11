@@ -10,8 +10,10 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
+import android.graphics.Canvas;
 import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
@@ -24,8 +26,9 @@ import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
+import android.widget.AbsListView;
 import android.widget.ImageView;
-
+import android.widget.RelativeLayout;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
 
@@ -478,5 +481,23 @@ public class ControlsMods {
         XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
         XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_height_landscape", modRes.fwd(R.dimen.navigation_bar_height_landscape));
         XResources.setSystemWideReplacement("android", "dimen", "system_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
+	}
+	
+	
+	public static void execHook_FixDialer(LoadPackageParam lpparam) {
+		XC_MethodHook hook =  new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				RelativeLayout thisView = (RelativeLayout) param.thisObject;
+				AbsListView.LayoutParams params = (AbsListView.LayoutParams) thisView.getLayoutParams();
+				params.height = 503; // 449 stock + 54 pixel white bar
+				thisView.setLayoutParams(params);
+				thisView.invalidate();
+			}
+		};
+		findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "initContactDetailPhotoView", Context.class, hook);
+		findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "onConfigurationChanged", Configuration.class, hook);
+		findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "onLayout", boolean.class, int.class, int.class, int.class, int.class, hook);
+		findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "dispatchDraw", Canvas.class, hook);
 	}
 }

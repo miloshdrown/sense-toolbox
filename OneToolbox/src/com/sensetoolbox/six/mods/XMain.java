@@ -448,6 +448,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			}
 		}
 		
+		if (pkg.equals("com.htc.htcdialer"))
+		{
+			if (pref.getBoolean("pref_key_controls_smallsoftkeys", false))
+				ControlsMods.execHook_FixDialer(lpparam);
+		}
+		
 		if (lpparam.processName.equals("android"))
 		{
 			if (pref.getBoolean("pref_key_other_apm", false))
