@@ -2,6 +2,7 @@ package com.sensetoolbox.six.mods;
 
 import static de.robv.android.xposed.XposedHelpers.findClass;
 
+import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.Method;
@@ -16,7 +17,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.PowerManager;
-import android.os.SystemClock;
+import android.os.Process;
 import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
 
@@ -75,9 +76,13 @@ public class WakeGesturesMods {
 		}
 	};
 	
-	private static void doWakeUp(Object thisObject) {
+	private static void doWakeUp(Object thisObject, long atTime) {
 		PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(thisObject, "mPowerManager");
-		if (mPowerManager != null) mPowerManager.wakeUp(SystemClock.uptimeMillis());
+		if (mPowerManager != null) {
+			WakeLock wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T WakeUpSleepy");
+			wl.acquire(2000);
+			mPowerManager.wakeUp(atTime);
+		}
 	}
 	
 	private static void sendLockScreenIntent(Context mContext, int action) {
@@ -197,20 +202,25 @@ public class WakeGesturesMods {
 		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
 	        @Override
 	        protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-	        	File file = new File("/dev/input/event4");
-	        	final byte event[] = new byte[4 * 2 + 2 + 2 + 4];
-	        	final FileInputStream fin = new FileInputStream(file);
-				
 				Thread th = new Thread(new Runnable(){
+					File file = new File("/dev/input/event4");
+		        	final byte event[] = new byte[4 * 2 + 2 + 2 + 4];
+					BufferedInputStream bfin = new BufferedInputStream(new FileInputStream(file));
+					StructInputEvent input_event = null;
+					
 					@Override
 					@SuppressLint("Wakelock")
 					public void run() {
+						Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
 						while (true) try {
-							if (fin.read(event) > 0) {
-								StructInputEvent input_event = new StructInputEvent(event);
+							if (bfin.read(event) > 0) {
+								input_event = new StructInputEvent(event);
 								//XposedBridge.log("event3: " + bytesToHex(event));
-								//XposedBridge.log("[S6T] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
-								if (input_event.type == 0x02 && input_event.code == 0x0b) {
+								//SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+								//Date d = new Date();
+								//XposedBridge.log("Event time: " + String.valueOf(Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000)) + " <> " + String.valueOf(SystemClock.uptimeMillis()));
+								//XposedBridge.log("[S6T @ " + sdf.format(d) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
+								if (input_event != null && input_event.type == 0x02 && input_event.code == 0x0b) {
 									XMain.pref.reload();
 									if (XMain.pref.getBoolean("wake_gestures_active", false)) {
 										Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
@@ -224,48 +234,55 @@ public class WakeGesturesMods {
 											case 0x06: prefName = "pref_key_wakegest_logo2wake"; break;
 										}
 										
-										boolean isHaptic = true;
-										if (prefName != null)
-										switch (Integer.parseInt(XMain.pref.getString(prefName, "1"))) {
-											case 0: isHaptic = false; break;
-											case 1: doWakeUp(param.thisObject); break;
-											case 2: doWakeUp(param.thisObject); sendLockScreenIntent(mContext, 1); break;
-											case 3: doWakeUp(param.thisObject); sendLockScreenIntent(mContext, 2); break;
-											case 4: doWakeUp(param.thisObject); sendLockScreenIntent(mContext, 3); break;
-											case 5: doWakeUp(param.thisObject); sendLockScreenIntent(mContext, 4); break;
-											case 6: doWakeUp(param.thisObject); sendLockScreenIntentOpenAppDrawer(mContext); break;
-											case 7:
-												PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
-												if (mWakeLock == null) mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T PowerFlash");
-												if (mCurrentLEDLevel == 0) {
-													mCurrentLEDLevel = 127;
-													if (!mWakeLock.isHeld()) mWakeLock.acquire(600000);
-												} else { 
-													mCurrentLEDLevel = 0;
-													if (mWakeLock.isHeld()) mWakeLock.release();
-												}
-												GlobalActions.setFlashlight(mCurrentLEDLevel);
-												break;
-											case 8: doWakeUp(param.thisObject); GlobalActions.expandNotifications(mContext); break;
-											case 9: doWakeUp(param.thisObject); GlobalActions.expandEQS(mContext); break;
-											case 10: doWakeUp(param.thisObject); sendLockScreenIntentLauchApp(mContext, input_event.value); break;
-										};
-										
-										if (isHaptic && XMain.pref.getBoolean("pref_key_wakegest_haptic", false)) doHaptic(mContext);
+										if (prefName != null) {
+											long event_time = Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000);
+											boolean isHaptic = true;
+											switch (Integer.parseInt(XMain.pref.getString(prefName, "1"))) {
+												case 0: isHaptic = false; break;
+												case 1: doWakeUp(param.thisObject, event_time); break;
+												case 2: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 1); break;
+												case 3: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 2); break;
+												case 4: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 3); break;
+												case 5: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 4); break;
+												case 6: doWakeUp(param.thisObject, event_time); sendLockScreenIntentOpenAppDrawer(mContext); break;
+												case 7:
+													PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+													if (mWakeLock == null) mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T GestureFlash");
+													if (mCurrentLEDLevel == 0) {
+														mCurrentLEDLevel = 127;
+														if (!mWakeLock.isHeld()) mWakeLock.acquire(600000);
+													} else { 
+														mCurrentLEDLevel = 0;
+														if (mWakeLock.isHeld()) mWakeLock.release();
+													}
+													GlobalActions.setFlashlight(mCurrentLEDLevel);
+													break;
+												case 8: doWakeUp(param.thisObject, event_time); GlobalActions.expandNotifications(mContext); break;
+												case 9: doWakeUp(param.thisObject, event_time); GlobalActions.expandEQS(mContext); break;
+												case 10: doWakeUp(param.thisObject, event_time); sendLockScreenIntentLauchApp(mContext, input_event.value); break;
+											};
+											
+											if (isHaptic && XMain.pref.getBoolean("pref_key_wakegest_haptic", false)) doHaptic(mContext);
+										}
 									}
 								}
-							}
+							} else Thread.sleep(100);
 							
 							synchronized (mPauseLock) {
-								while (mPaused) try { mPauseLock.wait(); } catch (Exception e) {}
+								while (mPaused) try {
+									mPauseLock.wait();
+									Thread.sleep(100);
+								} catch (Exception e) {}
 			        		}
 						} catch (Throwable t) {
 							XposedBridge.log(t);
-							try { if (fin != null) fin.close(); } catch (Exception e) {}
+							try { if (bfin != null) bfin.close(); } catch (Exception e) {}
 							break;
 						}
 					}
 				});
+				th.setPriority(Thread.MAX_PRIORITY);
+				th.setName("S6T_WakeGestures");
 				XposedHelpers.setAdditionalInstanceField(param.thisObject, "event4thread", th);
 	        }
 	    });

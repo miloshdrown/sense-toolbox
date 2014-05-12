@@ -44,6 +44,7 @@ Current changelog
 [Fixed] Sense 6 Themes color override for HTC Sense Input (onscreen keyboard)
 [Fixed] Long press home for menu on HTC One M8
 [Fixed] White bar in dialer when small sofkeys were used on M8
+[Improved] Wake gestures
 
 ===========
 Translators
