@@ -21,7 +21,6 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.PowerManager;
 import android.os.Process;
-import android.os.SystemClock;
 import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
 import android.view.KeyEvent;
@@ -223,7 +222,7 @@ public class WakeGesturesMods {
 								//XposedBridge.log("event3: " + bytesToHex(event));
 								SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 								Date d = new Date();
-								XposedBridge.log("Event time: " + String.valueOf(Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000)) + " <> " + String.valueOf(SystemClock.uptimeMillis()));
+								//XposedBridge.log("Event time: " + String.valueOf(Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000)) + " <> " + String.valueOf(SystemClock.uptimeMillis()));
 								XposedBridge.log("[S6T @ " + sdf.format(d) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
 								if (input_event != null && input_event.type == 0x02 && input_event.code == 0x0b) {
 									XMain.pref.reload();

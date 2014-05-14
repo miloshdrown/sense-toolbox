@@ -1,17 +1,26 @@
 package com.sensetoolbox.six.mods;
 
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
+
 import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import android.content.Context;
+import android.content.Intent;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.ColorFilter;
+import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
@@ -37,6 +46,57 @@ public class CleanBeamMods{
 	
 	private static Drawable applyTheme(Drawable icon) {
 		return applyTheme(icon, false);
+	}
+	
+	private static int getThemeColor() {
+		Bitmap bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
+		Canvas canvas = new Canvas(bmp);
+		Paint p = new Paint();
+		p.setARGB(255, 41, 142, 181);
+		p.setColorFilter(GlobalActions.createColorFilter(true));
+		canvas.drawPoint(0, 0, p);
+		return bmp.getPixel(0, 0);
+	}
+	
+	public static void execHook_StatusBarTexts(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.policy.BatteryController", lpparam.classLoader, "onReceive", Context.class, Intent.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				try {
+					ArrayList<?> mLabelViews = (ArrayList<?>)XposedHelpers.getObjectField(param.thisObject, "mLabelViews");
+					if (mLabelViews != null && mLabelViews.size() > 0) {
+						TextView label = (TextView)mLabelViews.get(0);
+						if (label != null) label.setTextColor(getThemeColor());
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateClockTime", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) {
+				try {
+					int themeColor = getThemeColor();
+					
+					ArrayList<?> mClockSet = (ArrayList<?>)XposedHelpers.getObjectField(param.thisObject, "mClockSet");
+					if (mClockSet != null && mClockSet.size() > 0) {
+						TextView clock0 = (TextView)mClockSet.get(0);
+						if (clock0 != null) clock0.setTextColor(themeColor);
+					}
+					
+					TextView networkLabel = (TextView)XposedHelpers.getObjectField(param.thisObject, "networkLabel");
+					if (networkLabel != null) networkLabel.setTextColor(themeColor); 
+					TextView carrierLabelL1 = (TextView)XposedHelpers.getObjectField(param.thisObject, "carrierLabelL1");
+					if (carrierLabelL1 != null) carrierLabelL1.setTextColor(themeColor);
+					TextView carrierLabelL2 = (TextView)XposedHelpers.getObjectField(param.thisObject, "carrierLabelL2");
+					if (carrierLabelL2 != null) carrierLabelL2.setTextColor(themeColor);
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
 	}
 
 	public static void execHook_BatteryIcon(InitPackageResourcesParam resparam, int battIcon) {

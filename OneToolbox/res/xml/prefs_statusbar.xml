@@ -24,6 +24,11 @@
 			toolbox:entryImages="@array/cleanbeam_wifi_images"
 			toolbox:entryThemes="@array/cleanbeam_wifi_themes" />
         <com.htc.preference.HtcCheckBoxPreference 
+            android:key="pref_key_cb_texts"
+            android:summary="@string/cleanbeam_texts_summ"
+            android:title="@string/cleanbeam_texts_title"
+            android:defaultValue="false"/>
+        <com.htc.preference.HtcCheckBoxPreference 
             android:key="pref_key_cb_signal"
             android:summary="@string/cleanbeam_signal_summ"
             android:title="@string/cleanbeam_signal_title"

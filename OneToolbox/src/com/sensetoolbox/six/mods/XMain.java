@@ -170,7 +170,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_cb_screenshot", false))
 				CleanBeamMods.execHook_ScreenshotIcon(resparam);
-						
+			
 			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockLayout(resparam);
 			
@@ -417,6 +417,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_homemenu", false) && Helpers.isM8()) {
 				ControlsMods.execHook_M8HomeLongpress(lpparam);
 			}
+			
+			if(pref.getBoolean("pref_key_cb_texts", false))
+				CleanBeamMods.execHook_StatusBarTexts(lpparam);
 			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 			CleanBeamMods.execHook_HideIcons(lpparam);

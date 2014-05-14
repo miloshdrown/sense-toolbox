@@ -46,6 +46,7 @@ Current changelog
 [Fixed] White bar in dialer when small sofkeys were used on M8
 [New] Performing kill foreground app action in any launcher will turn the screen off
 [New] Wake gesture actions: play/pause music, next/previous track
+[New] Apply icon theme color to clock, battery percentage, network and carrier labels
 [Improved] Wake gestures
 
 ===========
