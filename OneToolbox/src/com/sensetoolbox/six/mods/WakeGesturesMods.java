@@ -6,6 +6,9 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.Method;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.StructInputEvent;
@@ -18,8 +21,10 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.PowerManager;
 import android.os.Process;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
+import android.view.KeyEvent;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -115,12 +120,12 @@ public class WakeGesturesMods {
         	String pkgAppName = "";
 
         	switch (action) {
-    			case 1: pkgAppName = XMain.pref.getString("pref_key_wakegest_swiperight_app", ""); break;
-    			case 2: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeleft_app", ""); break;
-    			case 3: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeup_app", ""); break;
-    			case 4: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipedown_app", ""); break;
-    			case 5: pkgAppName = XMain.pref.getString("pref_key_wakegest_dt2w_app", ""); break;
-    			case 6: pkgAppName = XMain.pref.getString("pref_key_wakegest_logo2wake_app", ""); break;
+    			case 0x02: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeup_app", ""); break;
+    			case 0x03: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipedown_app", ""); break;
+    			case 0x04: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeleft_app", ""); break;
+    			case 0x05: pkgAppName = XMain.pref.getString("pref_key_wakegest_swiperight_app", ""); break;
+    			case 0x06: pkgAppName = XMain.pref.getString("pref_key_wakegest_logo2wake_app", ""); break;
+    			case 0x0f: pkgAppName = XMain.pref.getString("pref_key_wakegest_dt2w_app", ""); break;
         	}
         	
         	if (pkgAppName != "") {
@@ -216,22 +221,22 @@ public class WakeGesturesMods {
 							if (bfin.read(event) > 0) {
 								input_event = new StructInputEvent(event);
 								//XposedBridge.log("event3: " + bytesToHex(event));
-								//SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-								//Date d = new Date();
-								//XposedBridge.log("Event time: " + String.valueOf(Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000)) + " <> " + String.valueOf(SystemClock.uptimeMillis()));
-								//XposedBridge.log("[S6T @ " + sdf.format(d) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
+								SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+								Date d = new Date();
+								XposedBridge.log("Event time: " + String.valueOf(Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000)) + " <> " + String.valueOf(SystemClock.uptimeMillis()));
+								XposedBridge.log("[S6T @ " + sdf.format(d) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
 								if (input_event != null && input_event.type == 0x02 && input_event.code == 0x0b) {
 									XMain.pref.reload();
 									if (XMain.pref.getBoolean("wake_gestures_active", false)) {
 										Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 										String prefName = null;
 										switch (input_event.value) {
-											case 0x01: prefName = "pref_key_wakegest_swiperight"; break;
-											case 0x02: prefName = "pref_key_wakegest_swipeleft"; break;
-											case 0x03: prefName = "pref_key_wakegest_swipeup"; break;
-											case 0x04: prefName = "pref_key_wakegest_swipedown"; break;
-											case 0x05: prefName = "pref_key_wakegest_dt2w"; break;
+											case 0x02: prefName = "pref_key_wakegest_swipeup"; break;
+											case 0x03: prefName = "pref_key_wakegest_swipedown"; break;
+											case 0x04: prefName = "pref_key_wakegest_swipeleft"; break;
+											case 0x05: prefName = "pref_key_wakegest_swiperight"; break;
 											case 0x06: prefName = "pref_key_wakegest_logo2wake"; break;
+											case 0x0f: prefName = "pref_key_wakegest_dt2w"; break;
 										}
 										
 										if (prefName != null) {
@@ -260,6 +265,18 @@ public class WakeGesturesMods {
 												case 8: doWakeUp(param.thisObject, event_time); GlobalActions.expandNotifications(mContext); break;
 												case 9: doWakeUp(param.thisObject, event_time); GlobalActions.expandEQS(mContext); break;
 												case 10: doWakeUp(param.thisObject, event_time); sendLockScreenIntentLauchApp(mContext, input_event.value); break;
+												case 11:
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 85));
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 85));
+													break;
+												case 12:
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 87));
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 87));
+													break;
+												case 13:
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 88));
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 88));
+													break;
 											};
 											
 											if (isHaptic && XMain.pref.getBoolean("pref_key_wakegest_haptic", false)) doHaptic(mContext);

@@ -44,6 +44,8 @@ Current changelog
 [Fixed] Sense 6 Themes color override for HTC Sense Input (onscreen keyboard)
 [Fixed] Long press home for menu on HTC One M8
 [Fixed] White bar in dialer when small sofkeys were used on M8
+[New] Performing kill foreground app action in any launcher will turn the screen off
+[New] Wake gesture actions: play/pause music, next/previous track
 [Improved] Wake gestures
 
 ===========

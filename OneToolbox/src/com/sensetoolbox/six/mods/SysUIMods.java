@@ -536,7 +536,7 @@ public class SysUIMods {
 			{
 				final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 				
-				FrameLayout mStatusBarWindow = (FrameLayout) getObjectField(param.thisObject, "mStatusBarWindow"); 
+				FrameLayout mStatusBarWindow = (FrameLayout) getObjectField(param.thisObject, "mStatusBarWindow");
 				LinearLayout panel = (LinearLayout) mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("panel", "id", "com.android.systemui"));
 
 				//Inflate the slider layout

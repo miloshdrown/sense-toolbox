@@ -274,6 +274,7 @@ public class GlobalActions {
 			String thisPkg = taskInfo.get(0).topActivity.getPackageName();
 			
 			boolean isLauncher = false;
+			boolean isAllowed = true;
 			PackageManager pm = context.getPackageManager();
 			Intent intent_home = new Intent(Intent.ACTION_MAIN);
 			intent_home.addCategory(Intent.CATEGORY_HOME);
@@ -282,24 +283,27 @@ public class GlobalActions {
 			
 			for (ResolveInfo launcher: launcherList)
 			if (launcher.activityInfo.packageName.equals(thisPkg)) isLauncher = true;
-
-			if (thisPkg.equalsIgnoreCase("com.htc.android.worldclock")) isLauncher = true;
+			if (thisPkg.equalsIgnoreCase("com.htc.android.worldclock")) isAllowed = false;
 			
-			if (isLauncher) return;
-
-			// Removes from recents also
-			removeTask.invoke(am, Integer.valueOf(taskInfo.get(0).id), Integer.valueOf(1));
-			// Force closes all package parts 
-			forceStopPackage.invoke(am, thisPkg);
+			if (isLauncher) {
+				((PowerManager)context.getSystemService(Context.POWER_SERVICE)).goToSleep(SystemClock.uptimeMillis());
+			} else if (isAllowed) {
+				// Removes from recents also
+				removeTask.invoke(am, Integer.valueOf(taskInfo.get(0).id), Integer.valueOf(1));
+				// Force closes all package parts 
+				forceStopPackage.invoke(am, thisPkg);
+			}
 			
-			// Getting HTC Power Saver vibration state
-			Class<?> clsSP = Class.forName("android.os.SystemProperties");
-			Method getFunc = clsSP.getDeclaredMethod("get", String.class);
-			String haptic = (String)getFunc.invoke(null, "sys.psaver.haptic");
-			
-			if (haptic.equals("false")) {			
-				Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-				vibe.vibrate(50);
+			if (isLauncher || isAllowed) {
+				// Getting HTC Power Saver vibration state
+				Class<?> clsSP = Class.forName("android.os.SystemProperties");
+				Method getFunc = clsSP.getDeclaredMethod("get", String.class);
+				String haptic = (String)getFunc.invoke(null, "sys.psaver.haptic");
+				
+				if (haptic.equals("false")) {			
+					Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
+					vibe.vibrate(50);
+				}
 			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);

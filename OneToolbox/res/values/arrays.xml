@@ -240,6 +240,9 @@
         <item >@string/array_global_actions_notif</item>
         <item >@string/array_global_actions_eqs</item>
         <item >@string/launch_app</item>
+        <item >@string/array_media_playpause</item>
+        <item >@string/array_media_next</item>
+        <item >@string/array_media_prev</item>
     </string-array>
     <string-array name="wakegest_actions_val">
         <item >0</item>
@@ -253,5 +256,8 @@
         <item >8</item>
         <item >9</item>
         <item >10</item>
+        <item >11</item>
+        <item >12</item>
+        <item >13</item>
     </string-array>
 </resources>
