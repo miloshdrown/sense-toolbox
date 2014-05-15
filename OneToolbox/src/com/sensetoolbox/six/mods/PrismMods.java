@@ -1,12 +1,14 @@
 package com.sensetoolbox.six.mods;
 
 import static de.robv.android.xposed.XposedHelpers.callMethod;
+import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getAdditionalInstanceField;
 import static de.robv.android.xposed.XposedHelpers.setAdditionalInstanceField;
 import static de.robv.android.xposed.XposedHelpers.setBooleanField;
 import static de.robv.android.xposed.XposedHelpers.setIntField;
+import static de.robv.android.xposed.XposedHelpers.setObjectField;
 import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
 
 import java.util.Arrays;
@@ -18,6 +20,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
@@ -922,7 +925,7 @@ public class PrismMods {
 		});
 	}
 	
-	public static void execHook_BlinkFeedNoDock(LoadPackageParam lpparam) {
+	public static void execHook_BlinkFeedNoDock(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "onPageEndMoving", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
@@ -963,5 +966,47 @@ public class PrismMods {
 				}
 			}
 		});
+		
+		if (Helpers.isM8()) {
+			findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "hide", boolean.class, new XC_MethodReplacement() {
+				
+				@Override
+				protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+					FrameLayout hotseat = (FrameLayout) param.thisObject;
+					if (hotseat == null)
+						return null;
+					
+					hotseat.animate().cancel();
+					int duration = (int) callStaticMethod(findClass("com.htc.launcher.bar.BarController", lpparam.classLoader), "getTransitionOutDuration", new Object[]{});
+					boolean animate = (boolean) param.args[0];
+					int add = 30;
+					
+					if (animate)
+			        {
+			            if (hotseat.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+			            {
+			            	hotseat.setTranslationX(0.0F);
+			            	hotseat.animate().translationY(hotseat.getMeasuredHeight() + add).setDuration(duration);
+			            } else
+			            {
+			            	hotseat.setTranslationY(0.0F);
+			            	hotseat.animate().translationX(hotseat.getMeasuredWidth() + add).setDuration(duration);
+			            }
+			        } else
+			        if (hotseat.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+			        {
+			        	hotseat.setTranslationX(0.0F);
+			        	hotseat.setTranslationY(hotseat.getMeasuredHeight() + add);
+			        } else
+			        {
+			        	hotseat.setTranslationY(0.0F);
+			        	hotseat.setTranslationX(hotseat.getMeasuredWidth() + add);
+			        }
+			        setObjectField(param.thisObject, "m_bShown", false);
+					
+					return null;
+				}
+			});
+		}
 	}
 }
