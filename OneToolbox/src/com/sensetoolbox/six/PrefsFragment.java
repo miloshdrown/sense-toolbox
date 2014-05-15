@@ -731,7 +731,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		}
 	}
 	
-	static class SetButtonBacklight extends BroadcastReceiver {
+	static public class SetButtonBacklight extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction() != null) {

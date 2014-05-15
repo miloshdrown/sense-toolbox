@@ -312,6 +312,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_invisilabels", false))
 				PrismMods.execHook_invisiLabels(lpparam);
 			
+			if(pref.getBoolean("pref_key_prism_blinkfeednodock", false))
+				PrismMods.execHook_BlinkFeedNoDock(lpparam);
+			
 //			if(Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false)) //Le KitKat
 //				PrismMods.fixInvisibarKitKat(lpparam);
 			

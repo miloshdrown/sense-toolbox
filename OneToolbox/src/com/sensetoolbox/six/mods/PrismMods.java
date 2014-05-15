@@ -921,4 +921,47 @@ public class PrismMods {
 			}
 		});
 	}
+	
+	public static void execHook_BlinkFeedNoDock(LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "onPageEndMoving", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				try {
+					Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
+					if (m_launcher != null) {
+						Object m_dragLayer = XposedHelpers.getObjectField(m_launcher, "m_dragLayer");
+						Object m_hotseat = XposedHelpers.getObjectField(m_launcher, "m_hotseat");
+						if (m_dragLayer != null && m_hotseat != null) {
+							ImageView m_NavBarExtraBg = (ImageView)XposedHelpers.getObjectField(m_dragLayer, "m_NavBarExtraBg");
+							boolean m_bShown = XposedHelpers.getBooleanField(m_hotseat, "m_bShown");
+							if ((Boolean)XposedHelpers.callMethod(param.thisObject, "isFeedPage")) {
+								if (m_bShown) XposedHelpers.callMethod(m_hotseat, "hide", true);
+								if (m_NavBarExtraBg != null) m_NavBarExtraBg.setVisibility(View.GONE);
+							} else {
+								if (!m_bShown) XposedHelpers.callMethod(m_hotseat, "show", true);
+								if (m_NavBarExtraBg != null) m_NavBarExtraBg.setVisibility(View.VISIBLE);
+							}
+						}
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+		
+		findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "show", boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				try {
+					Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
+					if (m_launcher != null) {
+						Object m_workspace = XposedHelpers.getObjectField(m_launcher, "m_workspace");
+						if (m_workspace != null && (Boolean)XposedHelpers.callMethod(m_workspace, "isFeedPage")) param.setResult(null);
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+	}
 }

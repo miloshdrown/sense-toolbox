@@ -47,6 +47,7 @@ Current changelog
 [New] Performing kill foreground app action in any launcher will turn the screen off
 [New] Wake gesture actions: play/pause music, next/previous track
 [New] Apply icon theme color to clock, battery percentage, network and carrier labels
+[New] Hide dock on BlinkFeed
 [Improved] Wake gestures
 
 ===========
