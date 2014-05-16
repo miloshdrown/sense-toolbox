@@ -132,12 +132,12 @@ public class WakeGesturesMods {
         		}
         	} else {
         		switch (action) {
-        			case 1: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeup_app", ""); break;
-        			case 2: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipedown_app", ""); break;
-        			case 3: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeleft_app", ""); break;
-        			case 4: pkgAppName = XMain.pref.getString("pref_key_wakegest_swiperight_app", ""); break;
-        			case 5: pkgAppName = XMain.pref.getString("pref_key_wakegest_logo2wake_app", ""); break;
-        			case 6: pkgAppName = XMain.pref.getString("pref_key_wakegest_dt2w_app", ""); break;
+        			case 1: pkgAppName = XMain.pref.getString("pref_key_wakegest_swiperight_app", ""); break;
+        			case 2: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeleft_app", ""); break;
+        			case 3: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeup_app", ""); break;
+        			case 4: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipedown_app", ""); break;
+        			case 5: pkgAppName = XMain.pref.getString("pref_key_wakegest_dt2w_app", ""); break;
+        			case 6: pkgAppName = XMain.pref.getString("pref_key_wakegest_logo2wake_app", ""); break;
         		}
         	}
         	
@@ -288,12 +288,12 @@ public class WakeGesturesMods {
 									if (XMain.pref.getBoolean("wake_gestures_active", false)) {
 										String prefName = null;
 										switch (input_event.value) {
-											case 1: prefName = "pref_key_wakegest_swipeup"; break;
-											case 2: prefName = "pref_key_wakegest_swipedown"; break;
-											case 3: prefName = "pref_key_wakegest_swipeleft"; break;
-											case 4: prefName = "pref_key_wakegest_swiperight"; break;
-											case 5: prefName = "pref_key_wakegest_logo2wake"; break;
-											case 6: prefName = "pref_key_wakegest_dt2w"; break;
+											case 1: prefName = "pref_key_wakegest_swiperight"; break;
+											case 2: prefName = "pref_key_wakegest_swipeleft"; break;
+											case 3: prefName = "pref_key_wakegest_swipeup"; break;
+											case 4: prefName = "pref_key_wakegest_swipedown"; break;
+											case 5: prefName = "pref_key_wakegest_dt2w"; break;
+											case 6: prefName = "pref_key_wakegest_logo2wake"; break;
 										}
 										executeActionFor(param, prefName, Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000), input_event.value);
 									}
