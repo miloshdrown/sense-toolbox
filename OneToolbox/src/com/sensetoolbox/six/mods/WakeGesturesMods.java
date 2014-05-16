@@ -11,6 +11,7 @@ import java.util.Date;
 import java.util.Locale;
 
 import com.sensetoolbox.six.utils.GlobalActions;
+import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.StructInputEvent;
 
 import android.annotation.SuppressLint;
@@ -21,11 +22,13 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.os.PowerManager;
 import android.os.Process;
+import android.os.SystemClock;
 import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
 import android.view.KeyEvent;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
@@ -97,7 +100,7 @@ public class WakeGesturesMods {
 		}
 	}
 	
-	private static void sendLockScreenIntentLauchApp(Context mContext, int input_val) {
+	private static void sendLockScreenIntentLaunchApp(Context mContext, int input_val) {
 		if (mContext != null) {
 			Intent intent = new Intent("com.sensetoolbox.six.MotionGesture");
 			intent.putExtra("motion_gesture", 5);
@@ -118,13 +121,24 @@ public class WakeGesturesMods {
         try {
         	String pkgAppName = "";
 
-        	switch (action) {
-    			case 0x02: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeup_app", ""); break;
-    			case 0x03: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipedown_app", ""); break;
-    			case 0x04: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeleft_app", ""); break;
-    			case 0x05: pkgAppName = XMain.pref.getString("pref_key_wakegest_swiperight_app", ""); break;
-    			case 0x06: pkgAppName = XMain.pref.getString("pref_key_wakegest_logo2wake_app", ""); break;
-    			case 0x0f: pkgAppName = XMain.pref.getString("pref_key_wakegest_dt2w_app", ""); break;
+        	if (Helpers.isM8()) {
+        		switch (action) {
+    				case 2: case 24: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeup_app", ""); break;
+    				case 3: case 25: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipedown_app", ""); break;
+    				case 4: case 26: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeleft_app", ""); break;
+    				case 5: case 27: pkgAppName = XMain.pref.getString("pref_key_wakegest_swiperight_app", ""); break;
+    				case 6: pkgAppName = XMain.pref.getString("pref_key_wakegest_logo2wake_app", ""); break; //volume keys
+    				case 15: pkgAppName = XMain.pref.getString("pref_key_wakegest_dt2w_app", ""); break;
+        		}
+        	} else {
+        		switch (action) {
+        			case 1: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeup_app", ""); break;
+        			case 2: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipedown_app", ""); break;
+        			case 3: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeleft_app", ""); break;
+        			case 4: pkgAppName = XMain.pref.getString("pref_key_wakegest_swiperight_app", ""); break;
+        			case 5: pkgAppName = XMain.pref.getString("pref_key_wakegest_logo2wake_app", ""); break;
+        			case 6: pkgAppName = XMain.pref.getString("pref_key_wakegest_dt2w_app", ""); break;
+        		}
         	}
         	
         	if (pkgAppName != "") {
@@ -156,7 +170,53 @@ public class WakeGesturesMods {
 		
 		if (haptic.equals("false")) {			
 			Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-			vibe.vibrate(50);
+			vibe.vibrate(30);
+		}
+	}
+	
+	@SuppressLint("Wakelock")
+	public static void executeActionFor(MethodHookParam param, String prefName, long event_time, int action) {
+		if (prefName != null) {
+			Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+			boolean isHaptic = true;
+			switch (Integer.parseInt(XMain.pref.getString(prefName, "1"))) {
+				case 0: isHaptic = false; break;
+				case 1: doWakeUp(param.thisObject, event_time); break;
+				case 2: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 1); break;
+				case 3: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 2); break;
+				case 4: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 3); break;
+				case 5: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 4); break;
+				case 6: doWakeUp(param.thisObject, event_time); sendLockScreenIntentOpenAppDrawer(mContext); break;
+				case 7:
+					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+					if (mWakeLock == null) mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T GestureFlash");
+					if (mCurrentLEDLevel == 0) {
+						mCurrentLEDLevel = 127;
+						if (!mWakeLock.isHeld()) mWakeLock.acquire(600000);
+					} else { 
+						mCurrentLEDLevel = 0;
+						if (mWakeLock.isHeld()) mWakeLock.release();
+					}
+					GlobalActions.setFlashlight(mCurrentLEDLevel);
+					break;
+				case 8: doWakeUp(param.thisObject, event_time); GlobalActions.expandNotifications(mContext); break;
+				case 9: doWakeUp(param.thisObject, event_time); GlobalActions.expandEQS(mContext); break;
+				case 10: doWakeUp(param.thisObject, event_time); sendLockScreenIntentLaunchApp(mContext, action); break;
+				case 11:
+					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 85));
+					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 85));
+					break;
+				case 12:
+					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 87));
+					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 87));
+					break;
+				case 13:
+					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 88));
+					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 88));
+					break;
+			};
+			
+			if (isHaptic && XMain.pref.getBoolean("pref_key_wakegest_haptic", false)) doHaptic(mContext);
 		}
 	}
 	
@@ -213,7 +273,6 @@ public class WakeGesturesMods {
 					StructInputEvent input_event = null;
 					
 					@Override
-					@SuppressLint("Wakelock")
 					public void run() {
 						Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
 						while (true) try {
@@ -227,59 +286,16 @@ public class WakeGesturesMods {
 								if (input_event != null && input_event.type == 0x02 && input_event.code == 0x0b) {
 									XMain.pref.reload();
 									if (XMain.pref.getBoolean("wake_gestures_active", false)) {
-										Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 										String prefName = null;
 										switch (input_event.value) {
-											case 0x02: prefName = "pref_key_wakegest_swipeup"; break;
-											case 0x03: prefName = "pref_key_wakegest_swipedown"; break;
-											case 0x04: prefName = "pref_key_wakegest_swipeleft"; break;
-											case 0x05: prefName = "pref_key_wakegest_swiperight"; break;
-											case 0x06: prefName = "pref_key_wakegest_logo2wake"; break;
-											case 0x0f: prefName = "pref_key_wakegest_dt2w"; break;
+											case 1: prefName = "pref_key_wakegest_swipeup"; break;
+											case 2: prefName = "pref_key_wakegest_swipedown"; break;
+											case 3: prefName = "pref_key_wakegest_swipeleft"; break;
+											case 4: prefName = "pref_key_wakegest_swiperight"; break;
+											case 5: prefName = "pref_key_wakegest_logo2wake"; break;
+											case 6: prefName = "pref_key_wakegest_dt2w"; break;
 										}
-										
-										if (prefName != null) {
-											long event_time = Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000);
-											boolean isHaptic = true;
-											switch (Integer.parseInt(XMain.pref.getString(prefName, "1"))) {
-												case 0: isHaptic = false; break;
-												case 1: doWakeUp(param.thisObject, event_time); break;
-												case 2: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 1); break;
-												case 3: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 2); break;
-												case 4: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 3); break;
-												case 5: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 4); break;
-												case 6: doWakeUp(param.thisObject, event_time); sendLockScreenIntentOpenAppDrawer(mContext); break;
-												case 7:
-													PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
-													if (mWakeLock == null) mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T GestureFlash");
-													if (mCurrentLEDLevel == 0) {
-														mCurrentLEDLevel = 127;
-														if (!mWakeLock.isHeld()) mWakeLock.acquire(600000);
-													} else { 
-														mCurrentLEDLevel = 0;
-														if (mWakeLock.isHeld()) mWakeLock.release();
-													}
-													GlobalActions.setFlashlight(mCurrentLEDLevel);
-													break;
-												case 8: doWakeUp(param.thisObject, event_time); GlobalActions.expandNotifications(mContext); break;
-												case 9: doWakeUp(param.thisObject, event_time); GlobalActions.expandEQS(mContext); break;
-												case 10: doWakeUp(param.thisObject, event_time); sendLockScreenIntentLauchApp(mContext, input_event.value); break;
-												case 11:
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 85));
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 85));
-													break;
-												case 12:
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 87));
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 87));
-													break;
-												case 13:
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 88));
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 88));
-													break;
-											};
-											
-											if (isHaptic && XMain.pref.getBoolean("pref_key_wakegest_haptic", false)) doHaptic(mContext);
-										}
+										executeActionFor(param, prefName, Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000), input_event.value);
 									}
 								}
 							} else Thread.sleep(100);
@@ -319,17 +335,38 @@ public class WakeGesturesMods {
 	        }
 		});
 		
-		XposedHelpers.findAndHookMethod("com.htc.lockscreen.ctrl.SettingObserver", lpparam.classLoader, "isEnableEasyAccess", new XC_MethodHook() {
+		if (!Helpers.isM8()) {
+			XposedHelpers.findAndHookMethod("com.htc.lockscreen.ctrl.SettingObserver", lpparam.classLoader, "isEnableEasyAccess", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					param.setResult(true);
+				}
+			});
+			
+			XposedHelpers.findAndHookMethod("com.htc.lockscreen.ctrl.SettingObserver", lpparam.classLoader, "isEnableQuickCall", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					param.setResult(true);
+				}
+			});
+		}
+	}
+	
+	public static void execHook_EasyAccessService(LoadPackageParam lpparam) {
+		XposedHelpers.findAndHookMethod("com.htc.sense.easyaccessservice.SensorHubService", lpparam.classLoader, "onHtcGestureMotion", int.class, int.class, int.class, new XC_MethodHook() {
 	        @Override
 	        protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-	        	param.setResult(true);
-	        }
-		});
-		
-		XposedHelpers.findAndHookMethod("com.htc.lockscreen.ctrl.SettingObserver", lpparam.classLoader, "isEnableQuickCall", new XC_MethodHook() {
-	        @Override
-	        protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-	        	param.setResult(true);
+	        	int j = (Integer)param.args[1];
+	        	String prefName = null;
+	        	switch (j) {
+	        		case 3: case 25: prefName = "pref_key_wakegest_swipedown"; break;
+	        		case 15: prefName = "pref_key_wakegest_dt2w"; break;
+	        		case 6: prefName = "pref_key_wakegest_logo2wake"; break; // this is a volume keys
+	            	case 5: case 27: prefName = "pref_key_wakegest_swiperight"; break;
+	            	case 4: case 26: prefName = "pref_key_wakegest_swipeleft"; break;
+	            	case 2: case 24: prefName = "pref_key_wakegest_swipeup"; break;
+	        	}
+	        	executeActionFor(param, prefName, SystemClock.uptimeMillis(), j);
 	        }
 		});
 	}

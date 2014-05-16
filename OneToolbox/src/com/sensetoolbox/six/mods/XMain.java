@@ -87,7 +87,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_controls_smallsoftkeys", false))
 			ControlsMods.execHook_SmallNavbar();
 		
-		if (pref.getBoolean("wake_gestures_active", false))
+		if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures() && !Helpers.isM8())
 			WakeGesturesMods.execHook_InitListener();
 		
 		GlobalActions.easterEgg();
@@ -496,6 +496,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pkg.equals("com.htc.launcher") || pkg.equals("com.htc.videohub.ui") || pkg.equals("com.htc.album") || pkg.equals("com.htc.sense.ime")) {
 			if (pref.getBoolean("themes_active", false))
 				SysUIMods.execHook_Sense6ColorControlCustom(lpparam, pkg);
+		}
+		
+		if (lpparam.processName.equals("com.htc.sense.easyaccessservice")) {
+			if (pref.getBoolean("wake_gestures_active", false) && Helpers.isM8())
+				WakeGesturesMods.execHook_EasyAccessService(lpparam);
 		}
 	}
 }
