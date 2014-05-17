@@ -348,7 +348,7 @@
 	<string name="wakegestures_swiperight_summ">Action for swipe right gesture</string>
 	<string name="wakegestures_logopress_title">Logo</string>
 	<string name="wakegestures_logopress_summ">Action for logo long press</string>
-	<string name="wakegestures_not_supported">Wake gestures require kernel support, ask your kernel developer to add it or use ElementalX 14.6+</string>
+	<string name="wakegestures_not_supported">Wake gestures require kernel support, ask your kernel developer to add it or use ElementalX 14.7+</string>
 	
 	<string name="persistent_mods">Always active mods</string>
 	<string name="persist_adgrid_title">App drawer grid size</string>

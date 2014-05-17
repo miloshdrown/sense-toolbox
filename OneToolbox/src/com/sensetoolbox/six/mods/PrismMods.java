@@ -674,7 +674,7 @@ public class PrismMods {
 			popup.setOutsideTouchable(true);
 		}
 		
-		// Update items and listeners. I doubt launcher contexts will change over time but just in case :) 
+		if (m_workspace == null) if (launcher != null) m_workspace = (ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace");
 		ListView options = new ListView(m_workspace.getContext());
 		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 		ListAdapter listAdapter = new PopupAdapter(options.getContext(), Helpers.xl10n_array(modRes, R.array.home_menu), false);

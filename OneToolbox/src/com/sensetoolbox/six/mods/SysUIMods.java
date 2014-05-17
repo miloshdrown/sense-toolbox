@@ -147,7 +147,14 @@ public class SysUIMods {
 			@Override
 			protected Object replaceHookedMethod(MethodHookParam param)	throws Throwable {
 				int[] QS_DEFAULT = (int[]) getStaticObjectField(param.thisObject.getClass(), "QS_DEFAULT");
-				String[] QS_MAPPING = (String[]) getStaticObjectField(param.thisObject.getClass(), "QS_MAPPING");
+				Object QS_MAPPING_OBJ = getStaticObjectField(param.thisObject.getClass(), "QS_MAPPING");
+				String[] QS_MAPPING_ONE = null;
+				String[][] QS_MAPPING_MULTI = null;
+				if (QS_MAPPING_OBJ.getClass().getCanonicalName().equalsIgnoreCase("java.lang.String[][]"))
+					QS_MAPPING_MULTI = (String[][])QS_MAPPING_OBJ;
+				else
+					QS_MAPPING_ONE = (String[])QS_MAPPING_OBJ;
+				
 				ArrayList<String> qsContent = new ArrayList<String>();
 				ArrayList<String> qsContent2 = new ArrayList<String>();
 				int[] paramArgs;
@@ -168,13 +175,21 @@ public class SysUIMods {
 				
 				if (paramArgs == null || paramArgs.length == 0)
 					paramArgs = QS_DEFAULT;
-				int i = QS_MAPPING.length;
+				int i = 0;
+				if (QS_MAPPING_MULTI != null)
+					i = QS_MAPPING_MULTI.length;
+				else
+					i = QS_MAPPING_ONE.length;
+				
 		        int j = 0;
 		        for (int k = paramArgs.length; j < k; j++)
 		        {
 		            int i1 = paramArgs[j];
 		            if (i1 >= 0 && i1 < i)
-		                qsContent.add(QS_MAPPING[i1]);
+		            if (QS_MAPPING_MULTI != null)
+		                qsContent.add(QS_MAPPING_MULTI[i1][0]);
+		            else
+		            	qsContent.add(QS_MAPPING_ONE[i1]);
 		        }
 		        qsContent2 = new ArrayList<String>();
 		        int l = 0;
@@ -1550,11 +1565,29 @@ public class SysUIMods {
 	
 	public static void execHook_Sense6ColorControl() {
 		try {
+			// Overlay replacement
+			/*
+			findAndHookMethod("com.htc.util.skin.HtcSkinUtil", null, "getSkinResId", Context.class, String.class, int.class, String.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Context ctx = (Context)param.args[0];
+					String pkgName = ctx.getPackageName();
+					String resName = (String)param.args[1];
+					String resType = (String)param.args[3];
+					
+					PackageTheme pt = Helpers.getThemeForPackageFromXposed(pkgName);
+					if (pt != null && resType.equals("color") && resName.equals("overlay_color")) {
+						SparseArray<Object[]> styles = SenseThemes.getColors();
+						styles.keyAt(pt.getTheme());
+						param.setResult(null);
+					}
+				}
+			});
+			*/
 			findAndHookMethod("android.view.ContextThemeWrapper", null, "onApplyThemeResource", Theme.class, int.class, boolean.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					int style = (Integer)param.args[1];
-					SparseArray<Object[]> styles = SenseThemes.getColors();
 					
 					List<Integer> allStyles = Arrays.asList(new Integer[] {
 						// Theme 1
@@ -1573,6 +1606,7 @@ public class SysUIMods {
 						String pkgName = ctx.getPackageName();
 						PackageTheme pt = Helpers.getThemeForPackageFromXposed(pkgName);
 						if (pt != null) {
+							SparseArray<Object[]> styles = SenseThemes.getColors();
 							theme.applyStyle(styles.keyAt(pt.getTheme()), true);
 							param.setResult(null);
 						}
