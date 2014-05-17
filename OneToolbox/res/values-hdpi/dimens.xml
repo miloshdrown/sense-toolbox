@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     
-	<dimen name="photo_new_height">665.0px</dimen>
+	<dimen name="photo_new_height">648.0px</dimen>
     <dimen name="photo_new_height_rect">540.0px</dimen>
     <dimen name="photo_new_height_ls">597.0px</dimen>
     <dimen name="people_info_top_margin">545.0px</dimen>

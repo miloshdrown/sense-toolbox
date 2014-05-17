@@ -9,7 +9,7 @@
     <dimen name="workspace_cell_height_port">120.0dip</dimen>
     <dimen name="button_bar_height_without_padding">65.0dip</dimen>
     
-    <dimen name="photo_new_height">887.0px</dimen>
+    <dimen name="photo_new_height">864.0px</dimen>
     <dimen name="photo_new_height_rect">720.0px</dimen>
     <dimen name="photo_new_height_ls">796.0px</dimen>
     

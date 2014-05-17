@@ -448,6 +448,13 @@ public class PrismMods {
 				XposedHelpers.setIntField(param.thisObject, "mResizeMode", 3);
 			}
 		});
+		
+		XposedHelpers.findAndHookMethod("com.htc.launcher.LauncherAppWidgetInfo", lpparam.classLoader, "getSupportsSizes", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				param.setResult(null);
+			}
+		});
 	}
 	
 	public static void execHook_SwipeActions(final LoadPackageParam lpparam) {

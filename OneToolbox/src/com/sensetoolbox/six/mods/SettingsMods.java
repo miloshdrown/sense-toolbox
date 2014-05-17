@@ -6,6 +6,8 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 import java.io.File;
 import java.util.ArrayList;
 
+import com.htc.preference.HtcPreference;
+import com.htc.preference.HtcPreferenceFragment;
 import com.htc.widget.HtcListItem;
 import com.htc.widget.HtcListItem2LineStamp;
 import com.htc.widget.HtcListItem2LineText;
@@ -44,7 +46,7 @@ public class SettingsMods {
 		});
 	}
 	
-	public static void execHook_UnhidePrefs(LoadPackageParam lpparam) {
+	public static void execHook_UnhidePrefs(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportROMVersion", new XC_MethodHook(){
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -57,12 +59,36 @@ public class SettingsMods {
 				param.setResult(true);
 			}
 		});
-		findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportHardwareInformation", new XC_MethodHook(){
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				param.setResult(true);
+		
+		try {
+			findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportHardwareInformation", new XC_MethodHook(){
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(true);
+				}
+			});
+		} catch (Throwable t0) {
+			try {
+				findAndHookMethod("com.android.settings.framework.activity.aboutphone.HtcAboutPhoneSettings", lpparam.classLoader, "doPlugin", Context.class, new XC_MethodHook(){
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+						Class<?> clsHBP = XposedHelpers.findClass("com.android.settings.framework.content.custom.property.HtcBooleanProperty", lpparam.classLoader);
+						Object supportHardwareVersion = clsHBP.getConstructor(String.class, Boolean.class).newInstance("support_hardware_version", Boolean.valueOf(true));
+						XposedHelpers.setStaticObjectField(findClass("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader), "supportHardwareVersion", supportHardwareVersion);
+						
+						Class<?> clsHAHP = findClass("com.android.settings.framework.preference.aboutphone.HtcAboutPhoneHardwarePreference", lpparam.classLoader);
+						HtcPreference hwPref = (HtcPreference)clsHAHP.getConstructor(Context.class).newInstance((Context)XposedHelpers.callMethod(param.thisObject, "getContext"));
+						HtcPreferenceFragment prefFrag = (HtcPreferenceFragment)param.thisObject;
+						hwPref.setOrder(4);
+						prefFrag.getPreferenceScreen().addPreference(hwPref);
+						XposedHelpers.callMethod(param.thisObject, "addCallback", hwPref);
+					}
+				});
+			} catch (Throwable t) {
+				XposedBridge.log(t0);
+				XposedBridge.log(t);
 			}
-		});
+		}
 	}
 	
 	static HtcRimButton apk_launch_btn = null;
