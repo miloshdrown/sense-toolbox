@@ -6,9 +6,6 @@ import java.io.BufferedInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.lang.reflect.Method;
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Locale;
 
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
@@ -279,10 +276,10 @@ public class WakeGesturesMods {
 							if (bfin.read(event) > 0) {
 								input_event = new StructInputEvent(event);
 								//XposedBridge.log("event3: " + bytesToHex(event));
-								SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-								Date d = new Date();
+								//SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+								//Date d = new Date();
 								//XposedBridge.log("Event time: " + String.valueOf(Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000)) + " <> " + String.valueOf(SystemClock.uptimeMillis()));
-								XposedBridge.log("[S6T @ " + sdf.format(d) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
+								//XposedBridge.log("[S6T @ " + sdf.format(d) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
 								if (input_event != null && input_event.type == 0x02 && input_event.code == 0x0b) {
 									XMain.pref.reload();
 									if (XMain.pref.getBoolean("wake_gestures_active", false)) {

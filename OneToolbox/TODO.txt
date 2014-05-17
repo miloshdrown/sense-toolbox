@@ -42,6 +42,7 @@ Current changelog
 
 1.2
 [Fixed] Sense 6 Themes color override for HTC Sense Input (onscreen keyboard)
+[Fixed] Some sections in Settings are separate packages, they were removed from list and forced to use Settings theme (but there are exclusions, e.g. Mobile data section theme == Phone app theme, Keyboard settings == HTC Sense Input, Data usage == Data usage)
 [Fixed] Long press home for menu on HTC One M8
 [Fixed] White bar in dialer when small sofkeys were used on M8
 [Fixed] SystemUI crash while using hEQS

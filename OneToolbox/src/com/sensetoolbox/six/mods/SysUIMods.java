@@ -1563,6 +1563,30 @@ public class SysUIMods {
 		}
 	}
 	
+	public static void replaceTheme(MethodHookParam param, int style, Theme theme) {
+		List<Integer> allStyles = Arrays.asList(new Integer[] {
+			// Theme 1
+			0x02030069, 0x0203012d, 0x0203012e, 0x0203012f, 0x02030130,
+			// Theme 2
+			0x020301c3, 0x020301c7, 0x020301cb, 0x020301cf, 0x020301d3,
+			// Theme 3
+			0x020301d7, 0x020301db, 0x020301df, 0x020301e3, 0x020301e7,
+			// Theme 4
+			0x020301eb, 0x020301ef, 0x020301f3, 0x020301f7, 0x020301fb
+		});
+
+		if (allStyles.contains(style)) {
+			PackageTheme pt = Helpers.getThemeForPackageFromXposed(((Context)param.thisObject).getPackageName());
+			if (pt != null) {
+				SparseArray<Object[]> styles = SenseThemes.getColors();
+				if (theme != null) {
+					theme.applyStyle(styles.keyAt(pt.getTheme()), true);
+					param.setResult(null);
+				} else param.args[0] = styles.keyAt(pt.getTheme());
+			}
+		}
+	}
+	
 	public static void execHook_Sense6ColorControl() {
 		try {
 			// Overlay replacement
@@ -1584,33 +1608,17 @@ public class SysUIMods {
 				}
 			});
 			*/
+			findAndHookMethod("android.app.ContextImpl", null, "setTheme", int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					replaceTheme(param, (Integer)param.args[0], null);
+				}
+			});
+			
 			findAndHookMethod("android.view.ContextThemeWrapper", null, "onApplyThemeResource", Theme.class, int.class, boolean.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					int style = (Integer)param.args[1];
-					
-					List<Integer> allStyles = Arrays.asList(new Integer[] {
-						// Theme 1
-						0x02030069, 0x0203012d, 0x0203012e, 0x0203012f, 0x02030130,
-						// Theme 2
-						0x020301c3,0x020301c7, 0x020301cb, 0x020301cf, 0x020301d3,
-						// Theme 3
-						0x020301d7, 0x020301db, 0x020301df, 0x020301e3, 0x020301e7,
-						// Theme 4
-						0x020301eb, 0x020301ef, 0x020301f3, 0x020301f7, 0x020301fb
-					});
-
-					if (allStyles.contains(style)) {
-						Context ctx = (Context)param.thisObject;
-						Theme theme = (Theme)param.args[0];
-						String pkgName = ctx.getPackageName();
-						PackageTheme pt = Helpers.getThemeForPackageFromXposed(pkgName);
-						if (pt != null) {
-							SparseArray<Object[]> styles = SenseThemes.getColors();
-							theme.applyStyle(styles.keyAt(pt.getTheme()), true);
-							param.setResult(null);
-						}
-					}
+					replaceTheme(param, (Integer)param.args[1], (Theme)param.args[0]);
 				}
 			});
 		} catch (Throwable t) {
@@ -1632,6 +1640,13 @@ public class SysUIMods {
 	public static void execHook_Sense6ColorControlCustom(final LoadPackageParam lpparam, final String pkgName) {
 		if (pkgName.equals("com.htc.sense.ime")) {
 			findAndHookMethod("com.htc.sense.ime.HTCIMMData", lpparam.classLoader, "getThemeId", Context.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					replaceCustom(param, pkgName);
+				}
+			});
+			// Proguarded piece of shit!
+			findAndHookMethod("com.htc.lib1.cc.c.b", lpparam.classLoader, "a", Context.class, int.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					replaceCustom(param, pkgName);

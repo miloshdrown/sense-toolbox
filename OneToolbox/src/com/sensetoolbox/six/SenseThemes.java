@@ -299,14 +299,20 @@ public class SenseThemes extends Activity {
 		PackageManager pm = ctx.getPackageManager();
 		pkgAppsList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 		Collections.sort(pkgAppsList, new ApplicationInfo.DisplayNameComparator(pm));
-		ApplicationInfo toolbox = null;
+		ArrayList<ApplicationInfo> excluded = new ArrayList<ApplicationInfo>();
 		for (ApplicationInfo inf: pkgAppsList) {
-			if (inf.packageName.equals("com.sensetoolbox.six"))
-				toolbox = inf;
+			if (inf.packageName.equals("com.sensetoolbox.six") ||
+				inf.packageName.equals("com.htc.htcdialer") ||
+				inf.packageName.equals("com.htc.htcpowermanager") ||
+				inf.packageName.equals("com.htc.sdm") ||
+				inf.packageName.equals("com.htc.home.personalize") ||
+				inf.packageName.equals("com.htc.widget.notification") ||
+				inf.packageName.equals("com.htc.sense.easyaccessservice"))
+				excluded.add(inf);
 			else
 				pkgAppsListIcons.add(inf.loadIcon(pm));
 		}
-		if (toolbox != null) pkgAppsList.remove(toolbox);
+		for (ApplicationInfo infex: excluded) if (infex != null) pkgAppsList.remove(infex);
 	}
 	
 	public class AscComparator implements Comparator<PackageTheme> {

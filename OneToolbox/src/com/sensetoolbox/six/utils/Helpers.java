@@ -304,7 +304,7 @@ public class Helpers {
 			for (PackageTheme pt: pkgthm) if (pt.getPkg() != null)
 				if (pt.getPkg().equals(pkgName) ||
 						(pt.getPkg().equals("com.htc.contacts") && pkgName.equals("com.htc.htcdialer")) ||
-						(pt.getPkg().equals("com.android.settings") && (pkgName.equals("com.htc.sdm") ||pkgName.equals("com.htc.home.personalize") || pkgName.equals("com.htc.widget.notification") || pkgName.equals("com.htc.sense.easyaccessservice")))) {
+						(pt.getPkg().equals("com.android.settings") && (pkgName.equals("com.htc.htcpowermanager") || pkgName.equals("com.htc.sdm") || pkgName.equals("com.htc.home.personalize") || pkgName.equals("com.htc.widget.notification") || pkgName.equals("com.htc.sense.easyaccessservice")))) {
 					return pt;
 				}
 		}
