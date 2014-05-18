@@ -852,7 +852,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				case "pref_key_other": replaceTo = new OtherFragment(); break;
 				case "pref_key_persist": replaceTo = new PersistFragment(); break;
 				case "pref_key_wakegest":
-					if (Helpers.isWakeGestures()) {
+					if (Helpers.isWakeGestures() || Helpers.isM8()) {
 						getActivity().startActivity(new Intent(getActivity(), WakeGestures.class));
 					} else {
 						HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());

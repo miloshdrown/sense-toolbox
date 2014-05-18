@@ -364,6 +364,7 @@ public class WakeGesturesMods {
 	            	case 2: case 24: prefName = "pref_key_wakegest_swipeup"; break;
 	        	}
 	        	executeActionFor(param, prefName, SystemClock.uptimeMillis(), j);
+	        	param.setResult(null);
 	        }
 		});
 	}

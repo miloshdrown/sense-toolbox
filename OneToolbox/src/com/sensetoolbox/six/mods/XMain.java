@@ -498,7 +498,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				SysUIMods.execHook_Sense6ColorControlCustom(lpparam, pkg);
 		}
 		
-		if (lpparam.processName.equals("com.htc.sense.easyaccessservice")) {
+		if (pkg.equals("com.htc.sense.easyaccessservice")) {
 			if (pref.getBoolean("wake_gestures_active", false) && Helpers.isM8())
 				WakeGesturesMods.execHook_EasyAccessService(lpparam);
 		}

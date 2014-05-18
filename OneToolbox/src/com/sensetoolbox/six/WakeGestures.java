@@ -106,6 +106,25 @@ public class WakeGestures extends HtcPreferenceActivity {
 		final HtcListPreference doubleTapActionPreference = (HtcListPreference) findPreference("pref_key_wakegest_dt2w");
 		final HtcListPreference logoPressActionPreference = (HtcListPreference) findPreference("pref_key_wakegest_logo2wake");
 		
+		if (Helpers.isM8()) {
+			logoPressActionPreference.setTitle(Helpers.l10n(this, R.string.wakegestures_volume_title));
+			logoPressActionPreference.setSummary(Helpers.l10n(this, R.string.wakegestures_volume_summ));
+			if (!Helpers.isWakeGestures()) {
+				swipeRightActionPreference.setEntries(R.array.wakegest_m8stock_actions);
+				swipeRightActionPreference.setEntryValues(R.array.wakegest_m8stock_actions_val);
+				swipeleftActionPreference.setEntries(R.array.wakegest_m8stock_actions);
+				swipeleftActionPreference.setEntryValues(R.array.wakegest_m8stock_actions_val);
+				swipeUpActionPreference.setEntries(R.array.wakegest_m8stock_actions);
+				swipeUpActionPreference.setEntryValues(R.array.wakegest_m8stock_actions_val);
+				swipeDownActionPreference.setEntries(R.array.wakegest_m8stock_actions);
+				swipeDownActionPreference.setEntryValues(R.array.wakegest_m8stock_actions_val);
+				doubleTapActionPreference.setEntries(R.array.wakegest_m8stock_actions);
+				doubleTapActionPreference.setEntryValues(R.array.wakegest_m8stock_actions_val);
+				logoPressActionPreference.setEntries(R.array.wakegest_m8stock_actions);
+				logoPressActionPreference.setEntryValues(R.array.wakegest_m8stock_actions_val);
+			}
+		}
+		
 		HtcPreference launchAppsSwipeRight = findPreference("pref_key_wakegest_swiperight_app");
 		HtcPreference launchAppsSwipeLeft = findPreference("pref_key_wakegest_swipeleft_app");
 		HtcPreference launchAppsSwipeUp = findPreference("pref_key_wakegest_swipeup_app");

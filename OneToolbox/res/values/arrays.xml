@@ -260,4 +260,29 @@
         <item >12</item>
         <item >13</item>
     </string-array>
+    
+        <string-array name="wakegest_m8stock_actions">
+        <item >@string/array_wakegestures_disable</item>
+        <item >@string/array_wakegestures_wakeup</item>
+        <item >@string/array_wakegestures_wakeupbypass</item>
+        <item >@string/array_wakegestures_blinkfeed</item>
+        <item >@string/array_wakegestures_home</item>
+        <item >@string/array_wakegestures_quickcall</item>
+        <item >@string/array_wakegestures_appdrawer</item>
+        <item >@string/array_global_actions_notif</item>
+        <item >@string/array_global_actions_eqs</item>
+        <item >@string/launch_app</item>
+    </string-array>
+    <string-array name="wakegest_m8stock_actions_val">
+        <item >0</item>
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+        <item >4</item>
+        <item >5</item>
+        <item >6</item>
+        <item >8</item>
+        <item >9</item>
+        <item >10</item>
+    </string-array>
 </resources>
