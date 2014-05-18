@@ -423,17 +423,20 @@ public class OtherMods{
 		try {
 			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 			ViewParent mPhotoParent = mPhoto.getParent();
-			int navbar = modRes.getDimensionPixelSize(modRes.getIdentifier("navigation_bar_height", "dimen", "android"));
 			int photoHeight;
 			
 			KeyguardManager km = (KeyguardManager)mPhoto.getContext().getSystemService(Context.KEYGUARD_SERVICE);
 			if (photoSize == 2) photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_rect); else
 			if (km.inKeyguardRestrictedInputMode()) {
 				photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_ls);
-				if (Helpers.isM8()) photoHeight += 144 - navbar;
+				if (Helpers.isM8() && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false)) photoHeight += 54;
 			} else {
 				photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height);
-				if (Helpers.isM8()) photoHeight -= navbar - 32;
+				if (Helpers.isM8())
+				if (XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false))
+					photoHeight -= 58;
+				else
+					photoHeight -= 112;
 			}
 		
 			if (mPhotoParent != null)
