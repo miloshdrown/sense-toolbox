@@ -167,7 +167,7 @@ public class WakeGesturesMods {
 		
 		if (haptic.equals("false")) {			
 			Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-			vibe.vibrate(30);
+			vibe.vibrate(40);
 		}
 	}
 	

@@ -734,6 +734,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	static public class SetButtonBacklight extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
+			if (Helpers.isNotM7()) return;
 			if (intent.getAction() != null) {
 				int thepref = Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
 				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
