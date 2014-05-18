@@ -46,13 +46,14 @@ Current changelog
 [Fixed] Long press home for menu on HTC One M8
 [Fixed] White bar in dialer when small sofkeys were used on M8
 [Fixed] SystemUI crash while using hEQS
-[Fixed] Wrong layout positions with Large Photo mod
+[Fixed] Wrong layout positions with Caller photo mod on M7 and M8
 [Fixed] Show Hardware information in About section of Settings
 [Fixed] Widgets size restrictions (for 4x5 homescreen)
 [New] Performing kill foreground app action in any launcher will turn the screen off
 [New] Wake gesture actions: play/pause music, next/previous track
 [New] Apply icon theme color to clock, battery percentage, network and carrier labels
 [New] Hide dock on BlinkFeed
+[New] Wake gestures support for HTC One M8
 [Improved] Wake gestures
 
 ===========
