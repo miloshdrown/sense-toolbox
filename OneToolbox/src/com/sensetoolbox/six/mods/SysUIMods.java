@@ -255,6 +255,7 @@ public class SysUIMods {
 						qsScroll.setFillViewport(true);
 						qsScroll.setHorizontalFadingEdgeEnabled(true);
 						qsScroll.setHorizontalScrollBarEnabled(false);
+						qsScroll.setOverScrollMode(View.OVER_SCROLL_NEVER);
 						
 						WindowManager wm = (WindowManager) mStatusBarWindow.getContext().getSystemService(Context.WINDOW_SERVICE);
 						Display display = wm.getDefaultDisplay();
@@ -856,6 +857,7 @@ public class SysUIMods {
 							if (clickedTile.equals("gps")) {intentClass = "android.settings.LOCATION_SOURCE_SETTINGS";}
 							if (clickedTile.equals("mobile_data")) {intentPkg = "com.android.phone"; intentClass = "com.android.phone.MobileNetworkSettings";}
 							if (clickedTile.equals("power_saver")) {intentPkg = "com.htc.htcpowermanager"; intentClass = "com.htc.htcpowermanager.powersaver.PowerSaverActivity";}
+							if (clickedTile.equals("power_saver_ex")) {intentClass = "com.htc.htcpowermanager.EXTREME_POWER_SAVER_CONFIRM";}
 							if (clickedTile.equals("screenshot")) {
 								int mBucketId = -1;
 								File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Screenshots");

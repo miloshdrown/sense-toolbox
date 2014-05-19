@@ -40,6 +40,7 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Current changelog
 =================
 
+1.2.1
 [New] Mod to change timeout EQS values
 [Fixed] Quick Call in Wake gestures for M7
 [Fixed] Hide dock on Blinkfeed was not working with Go to Blinkfeed action in Wake gestures
