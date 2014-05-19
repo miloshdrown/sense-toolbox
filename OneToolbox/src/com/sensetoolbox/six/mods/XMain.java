@@ -414,6 +414,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_sysui_brightqs", false))
 				SysUIMods.execHook_ChangeBrightnessQSTile(lpparam);
 			
+			if(pref.getBoolean("pref_key_sysui_timeoutqs", false))
+				SysUIMods.execHook_ChangeTimeoutQSTile(lpparam);
+			
 			if (pref_backlongpress != 1 && Helpers.isM8())
 				ControlsMods.execHook_M8BackLongpress(lpparam);
 			

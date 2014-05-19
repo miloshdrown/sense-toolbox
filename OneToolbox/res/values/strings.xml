@@ -115,6 +115,8 @@
 	<string name="systemui_eqs">Extended Quick Settings</string>
 	<string name="systemui_brightqs_title">Brightness</string>
 	<string name="systemui_brightqs_summ">Configure brightness values for EQS tile.</string>
+	<string name="systemui_timeoutqs_title">Timeout</string>
+	<string name="systemui_timeoutqs_summ">Configure timeout values for EQS tile.</string>
 	<string name="systemui_heqs_title">Horizontal EQS</string>
 	<string name="systemui_heqs_summ">Enable horizontal EQS. Your normal EQS will be there (scrollable).</string>
 	<string name="systemui_heqs_notext_title">Smaller horizontal EQS</string>
@@ -147,6 +149,9 @@
 	<string name="brightpicker_switch">Enable custom levels</string>
 	<string name="brightpicker_desc">Choose four different values</string>
 	<string name="brightpicker_warn_text">All brightness values must be different</string>
+	<string name="timeoutpicker_switch">Enable custom values</string>
+	<string name="timeoutpicker_desc">Choose three different values</string>
+	<string name="timeoutpicker_warn_text">All timeout values must be different</string>
 	
 	<string name="cleanbeam_mods">Statusbar icons</string>
 	<string name="cleanbeam_colortheme_title">Color theme</string>

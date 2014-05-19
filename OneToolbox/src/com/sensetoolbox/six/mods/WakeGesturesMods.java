@@ -228,19 +228,80 @@ public class WakeGesturesMods {
 	    return new String(hexChars);
 	}
 	
+	public static Thread createThread(final MethodHookParam param) throws Throwable {
+		Thread th = new Thread(new Runnable() {
+			File file = new File("/dev/input/event4");
+        	final byte event[] = new byte[4 * 2 + 2 + 2 + 4];
+			BufferedInputStream bfin = new BufferedInputStream(new FileInputStream(file));
+			StructInputEvent input_event = null;
+			
+			@Override
+			public void run() {
+				Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
+				while (true) try {
+					if (bfin.read(event) > 0) {
+						input_event = new StructInputEvent(event);
+						//XposedBridge.log("event3: " + bytesToHex(event));
+						//SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
+						//Date d = new Date();
+						//XposedBridge.log("Event time: " + String.valueOf(Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000)) + " <> " + String.valueOf(SystemClock.uptimeMillis()));
+						//XposedBridge.log("[S6T @ " + sdf.format(d) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
+						if (input_event != null && input_event.type == 0x02 && input_event.code == 0x0b) {
+							XMain.pref.reload();
+							if (XMain.pref.getBoolean("wake_gestures_active", false)) {
+								String prefName = null;
+								switch (input_event.value) {
+									case 1: prefName = "pref_key_wakegest_swiperight"; break;
+									case 2: prefName = "pref_key_wakegest_swipeleft"; break;
+									case 3: prefName = "pref_key_wakegest_swipeup"; break;
+									case 4: prefName = "pref_key_wakegest_swipedown"; break;
+									case 5: prefName = "pref_key_wakegest_dt2w"; break;
+									case 6: prefName = "pref_key_wakegest_logo2wake"; break;
+								}
+								executeActionFor(param, prefName, Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000), input_event.value);
+							}
+						}
+					} else Thread.sleep(100);
+					
+					synchronized (mPauseLock) {
+						while (mPaused) try {
+							mPauseLock.wait();
+							Thread.sleep(100);
+						} catch (Exception e) {}
+	        		}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+					try { if (bfin != null) bfin.close(); } catch (Exception e) {}
+					break;
+				}
+			}
+		});
+		th.setPriority(Thread.MAX_PRIORITY);
+		th.setName("S6T_WakeGestures");
+		XposedHelpers.setAdditionalInstanceField(param.thisObject, "event4thread", th);
+		return th;
+	}
+	
 	public static void execHook_InitListener() {
 		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurnedOff", int.class, new XC_MethodHook() {
-	        @Override
-	        protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-	        	Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "event4thread");
-	        	if (th != null) {
-	        		if (!th.isAlive()) th.start(); else
-	        		synchronized (mPauseLock) {
-	        			mPaused = false;
-	        			mPauseLock.notifyAll();
-	        		}
-	        	}
-	        }
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "event4thread");
+				if (th != null) {
+					if (!th.isAlive()) {
+						try {
+							th.start();
+						} catch (Exception e) {
+							th.interrupt();
+							XposedBridge.log("Resetting gesture listener thread...");
+							createThread(param).start();
+						}
+					} else synchronized (mPauseLock) {
+						mPaused = false;
+						mPauseLock.notifyAll();
+					}
+				} else createThread(param).start();
+			}
 		});
 		
 		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurningOn", "android.view.WindowManagerPolicy.ScreenOnListener", new XC_MethodHook() {
@@ -263,56 +324,7 @@ public class WakeGesturesMods {
 		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
 	        @Override
 	        protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				Thread th = new Thread(new Runnable(){
-					File file = new File("/dev/input/event4");
-		        	final byte event[] = new byte[4 * 2 + 2 + 2 + 4];
-					BufferedInputStream bfin = new BufferedInputStream(new FileInputStream(file));
-					StructInputEvent input_event = null;
-					
-					@Override
-					public void run() {
-						Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
-						while (true) try {
-							if (bfin.read(event) > 0) {
-								input_event = new StructInputEvent(event);
-								//XposedBridge.log("event3: " + bytesToHex(event));
-								//SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-								//Date d = new Date();
-								//XposedBridge.log("Event time: " + String.valueOf(Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000)) + " <> " + String.valueOf(SystemClock.uptimeMillis()));
-								//XposedBridge.log("[S6T @ " + sdf.format(d) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
-								if (input_event != null && input_event.type == 0x02 && input_event.code == 0x0b) {
-									XMain.pref.reload();
-									if (XMain.pref.getBoolean("wake_gestures_active", false)) {
-										String prefName = null;
-										switch (input_event.value) {
-											case 1: prefName = "pref_key_wakegest_swiperight"; break;
-											case 2: prefName = "pref_key_wakegest_swipeleft"; break;
-											case 3: prefName = "pref_key_wakegest_swipeup"; break;
-											case 4: prefName = "pref_key_wakegest_swipedown"; break;
-											case 5: prefName = "pref_key_wakegest_dt2w"; break;
-											case 6: prefName = "pref_key_wakegest_logo2wake"; break;
-										}
-										executeActionFor(param, prefName, Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000), input_event.value);
-									}
-								}
-							} else Thread.sleep(100);
-							
-							synchronized (mPauseLock) {
-								while (mPaused) try {
-									mPauseLock.wait();
-									Thread.sleep(100);
-								} catch (Exception e) {}
-			        		}
-						} catch (Throwable t) {
-							XposedBridge.log(t);
-							try { if (bfin != null) bfin.close(); } catch (Exception e) {}
-							break;
-						}
-					}
-				});
-				th.setPriority(Thread.MAX_PRIORITY);
-				th.setName("S6T_WakeGestures");
-				XposedHelpers.setAdditionalInstanceField(param.thisObject, "event4thread", th);
+	        	createThread(param);
 	        }
 	    });
 	}
@@ -328,6 +340,10 @@ public class WakeGesturesMods {
 	        		IntentFilter intentfilter = new IntentFilter();
 	        		intentfilter.addAction("com.sensetoolbox.six.MotionGesture");
 	        		mSysContext.registerReceiver(mBRLS, intentfilter);
+	        		if (!Helpers.isM8()) {
+	        			XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableEasyAccess", true);
+	        			XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableQuickCall", true);
+	        		}
 	        	} else XposedBridge.log("[S6T] mSysContext == null");
 	        }
 		});

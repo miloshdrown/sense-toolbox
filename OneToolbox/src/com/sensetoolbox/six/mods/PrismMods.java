@@ -59,6 +59,7 @@ import com.sensetoolbox.six.utils.PopupAdapter;
 import com.sensetoolbox.six.utils.ShakeManager;
 
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodHook.Unhook;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
@@ -76,6 +77,7 @@ public class PrismMods {
 	private static GestureDetector mDetectorHorizontal;
 	private static GestureDetector mDetectorVertical;
 	static HtcAlertDialog dlg = null;
+	static Object launcher;
 	
 	public static void execHook_InvisiWidget(LoadPackageParam lpparam, final int transparency) {
 		XC_MethodHook hook = new XC_MethodHook() {
@@ -553,9 +555,10 @@ public class PrismMods {
 				if (ev == null) return;
 				
 				FrameLayout dragLayer = (FrameLayout)param.thisObject;
+				launcher = XposedHelpers.getObjectField(dragLayer, "m_launcher");
 				Context helperContext = dragLayer.getContext();
 				if (helperContext == null) return;
-				if (mDetectorVertical == null) mDetectorVertical = new GestureDetector(helperContext, new SwipeListenerVertical(dragLayer));
+				if (mDetectorVertical == null) mDetectorVertical = new GestureDetector(helperContext, new SwipeListenerVertical(helperContext));
 				if (mDetectorVertical.onTouchEvent(ev)) param.setResult(true);
 			}
 		});
@@ -620,16 +623,12 @@ public class PrismMods {
 		private int SWIPE_MIN_DISTANCE_VERT = 50;
 		private int SWIPE_THRESHOLD_VELOCITY = 100;
 		
-		//final Context helperContext;
-		final Object launcher;
 		float density;
 		int screenHeight;
 
-		public SwipeListenerVertical(Object cellLayout) {
-			launcher = XposedHelpers.getObjectField(cellLayout, "m_launcher");
-			Context helperContext = ((ViewGroup)cellLayout).getContext();
-			density = helperContext.getResources().getDisplayMetrics().density;
-			screenHeight = helperContext.getResources().getDisplayMetrics().heightPixels;
+		public SwipeListenerVertical(Context ctx) {
+			density = ctx.getResources().getDisplayMetrics().density;
+			screenHeight = ctx.getResources().getDisplayMetrics().heightPixels;
 			SWIPE_MIN_DISTANCE_VERT = Math.round(17 * density);
 			SWIPE_THRESHOLD_VELOCITY = Math.round(33 * density);
 		}
@@ -672,6 +671,7 @@ public class PrismMods {
 	}
 	
 	public static void createAndShowPopup(ViewGroup m_workspace, final Activity launcher) {
+		if (m_workspace == null) if (launcher != null) m_workspace = (ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace");
 		if (popup == null) {
 			popup = new HtcPopupWindow(m_workspace.getContext());
 			popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
@@ -681,7 +681,6 @@ public class PrismMods {
 			popup.setOutsideTouchable(true);
 		}
 		
-		if (m_workspace == null) if (launcher != null) m_workspace = (ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace");
 		ListView options = new ListView(m_workspace.getContext());
 		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 		ListAdapter listAdapter = new PopupAdapter(options.getContext(), Helpers.xl10n_array(modRes, R.array.home_menu), false);
@@ -932,30 +931,41 @@ public class PrismMods {
 		});
 	}
 	
+	private static void changeDockState(MethodHookParam param) {
+		try {
+			Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
+			if (m_launcher != null) {
+				Object m_dragLayer = XposedHelpers.getObjectField(m_launcher, "m_dragLayer");
+				Object m_hotseat = XposedHelpers.getObjectField(m_launcher, "m_hotseat");
+				if (m_dragLayer != null && m_hotseat != null) {
+					ImageView m_NavBarExtraBg = (ImageView)XposedHelpers.getObjectField(m_dragLayer, "m_NavBarExtraBg");
+					boolean m_bShown = XposedHelpers.getBooleanField(m_hotseat, "m_bShown");
+					if ((Boolean)XposedHelpers.callMethod(param.thisObject, "isFeedPage")) {
+						if (m_bShown) XposedHelpers.callMethod(m_hotseat, "hide", true);
+						if (m_NavBarExtraBg != null) m_NavBarExtraBg.setVisibility(View.GONE);
+					} else {
+						if (!m_bShown) XposedHelpers.callMethod(m_hotseat, "show", true);
+						if (m_NavBarExtraBg != null) m_NavBarExtraBg.setVisibility(View.VISIBLE);
+					}
+				}
+			}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
 	public static void execHook_BlinkFeedNoDock(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "onPageEndMoving", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				try {
-					Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
-					if (m_launcher != null) {
-						Object m_dragLayer = XposedHelpers.getObjectField(m_launcher, "m_dragLayer");
-						Object m_hotseat = XposedHelpers.getObjectField(m_launcher, "m_hotseat");
-						if (m_dragLayer != null && m_hotseat != null) {
-							ImageView m_NavBarExtraBg = (ImageView)XposedHelpers.getObjectField(m_dragLayer, "m_NavBarExtraBg");
-							boolean m_bShown = XposedHelpers.getBooleanField(m_hotseat, "m_bShown");
-							if ((Boolean)XposedHelpers.callMethod(param.thisObject, "isFeedPage")) {
-								if (m_bShown) XposedHelpers.callMethod(m_hotseat, "hide", true);
-								if (m_NavBarExtraBg != null) m_NavBarExtraBg.setVisibility(View.GONE);
-							} else {
-								if (!m_bShown) XposedHelpers.callMethod(m_hotseat, "show", true);
-								if (m_NavBarExtraBg != null) m_NavBarExtraBg.setVisibility(View.VISIBLE);
-							}
-						}
-					}
-				} catch (Throwable t) {
-					XposedBridge.log(t);
-				}
+				changeDockState(param);
+			}
+		});
+		
+		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "onStopOnFeedPage", int.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				changeDockState(param);
 			}
 		});
 		

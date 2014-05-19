@@ -1668,16 +1668,45 @@ public class SysUIMods {
 			XposedBridge.hookAllConstructors(QSB, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					int val1 = XMain.pref.getInt("pref_key_sysui_brightqs_value1", 10);
-					int val2 = XMain.pref.getInt("pref_key_sysui_brightqs_value2", 40);
-					int val3 = XMain.pref.getInt("pref_key_sysui_brightqs_value3", 60);
-					int val4 = XMain.pref.getInt("pref_key_sysui_brightqs_value4", 100);
-					int valnorm1 = Math.round(255 * val1 / 100 + 1); if (valnorm1 > 255) valnorm1 = 255;
-					int valnorm2 = Math.round(255 * val2 / 100 + 1); if (valnorm2 > 255) valnorm2 = 255;
-					int valnorm3 = Math.round(255 * val3 / 100 + 1); if (valnorm3 > 255) valnorm3 = 255;
-					int valnorm4 = Math.round(255 * val4 / 100 + 1); if (valnorm4 > 255) valnorm4 = 255;
+					int valnorm1 = Math.round(255 * XMain.pref.getInt("pref_key_sysui_brightqs_value1", 10) / 100 + 1); if (valnorm1 > 255) valnorm1 = 255;
+					int valnorm2 = Math.round(255 * XMain.pref.getInt("pref_key_sysui_brightqs_value2", 40) / 100 + 1); if (valnorm2 > 255) valnorm2 = 255;
+					int valnorm3 = Math.round(255 * XMain.pref.getInt("pref_key_sysui_brightqs_value3", 60) / 100 + 1); if (valnorm3 > 255) valnorm3 = 255;
+					int valnorm4 = Math.round(255 * XMain.pref.getInt("pref_key_sysui_brightqs_value4", 100) / 100 + 1); if (valnorm4 > 255) valnorm4 = 255;
 					XposedHelpers.setStaticObjectField(QSB, "BRIGHTNESS_LEVEL", new int[] { valnorm1, valnorm2, valnorm3, valnorm4 });
 					XposedHelpers.setStaticObjectField(QSB, "BRIGHTNESS_VALUE", new int[] { valnorm1, valnorm2, valnorm3, valnorm4 });
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	private static int numberToTimeout(int num) {
+		int timeout = 15000;
+		switch (num) {
+			case 0: timeout = 15000; break;
+			case 1: timeout = 30000; break;
+			case 2: timeout = 45000; break;
+			case 3: timeout = 60000; break;
+			case 4: timeout = 120000; break;
+			case 5: timeout = 600000; break;
+			case 6: timeout = 1800000; break;
+			case 7: timeout = 3600000; break;
+		}
+		return timeout;
+	}
+	
+	public static void execHook_ChangeTimeoutQSTile(LoadPackageParam lpparam) {
+		try {
+			final Class<?> QST = findClass("com.android.systemui.statusbar.quicksetting.QuickSettingTimeout", lpparam.classLoader);
+			XposedBridge.hookAllConstructors(QST, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					XposedHelpers.setStaticObjectField(QST, "timeoutList", new int[] {
+						numberToTimeout(XMain.pref.getInt("pref_key_sysui_timeoutqs_value1", 7)),
+						numberToTimeout(XMain.pref.getInt("pref_key_sysui_timeoutqs_value2", 6)),
+						numberToTimeout(XMain.pref.getInt("pref_key_sysui_timeoutqs_value3", 4))
+					});
 				}
 			});
 		} catch (Throwable t) {

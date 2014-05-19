@@ -23,25 +23,24 @@ import com.htc.widget.HtcNumberPicker;
 import com.htc.widget.HtcCompoundButton.OnCheckedChangeListener;
 import com.sensetoolbox.six.R;
 
-public class BrightnessPicker extends HtcDialogPreference implements HtcNumberPicker.OnScrollIdleStateListener {
+public class TimeoutPicker extends HtcDialogPreference implements HtcNumberPicker.OnScrollIdleStateListener {
 	private Context mContext;
 	private float density = 3;
 	private SharedPreferences prefs = null;
-	private HtcNumberPicker brightPick1;
-	private HtcNumberPicker brightPick2;
-	private HtcNumberPicker brightPick3;
-	private HtcNumberPicker brightPick4;
+	private HtcNumberPicker timeoutPick1;
+	private HtcNumberPicker timeoutPick2;
+	private HtcNumberPicker timeoutPick3;
 	private LinearLayout checkBoxContainer;
 	private HtcCheckBox prefSwitch;
 	private TextView prefSwitchText;
 	private LinearLayout layout;
 	private TextView desc;
-	private int curVal1 = 10;
-	private int curVal2 = 40;
-	private int curVal3 = 60;
-	private int curVal4 = 100;
+	private int curVal1 = 7;
+	private int curVal2 = 6;
+	private int curVal3 = 4;
+	String[] timeouts = new String[]{ "1 hr", "30 min", "10 min", "2 min", "1 min", "45sec", "30 sec",  "15 sec" };
 	
-	public BrightnessPicker(Context context, AttributeSet attrs) { 
+	public TimeoutPicker(Context context, AttributeSet attrs) { 
 		super(context, attrs);
 		mContext = context;
 		density = mContext.getResources().getDisplayMetrics().density;
@@ -70,7 +69,7 @@ public class BrightnessPicker extends HtcDialogPreference implements HtcNumberPi
 	    
 		prefSwitch = new HtcCheckBox(mContext);
 		prefSwitch.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
-		boolean isEnabled = getSharedPreferences().getBoolean("pref_key_sysui_brightqs", false);
+		boolean isEnabled = getSharedPreferences().getBoolean("pref_key_sysui_timeoutqs", false);
 		prefSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			@Override
 			public void onCheckedChanged(HtcCompoundButton btn, boolean state) {
@@ -87,7 +86,7 @@ public class BrightnessPicker extends HtcDialogPreference implements HtcNumberPi
 		});
 		
 		prefSwitchText = new TextView(mContext);
-		prefSwitchText.setText(Helpers.l10n(mContext, R.string.brightpicker_switch));
+		prefSwitchText.setText(Helpers.l10n(mContext, R.string.timeoutpicker_switch));
 		prefSwitchText.setPadding(densify(5), 0, 0, densify(2));
 		prefSwitchText.setTextSize(20f);
 		prefSwitchText.setOnClickListener(new OnClickListener() {
@@ -103,7 +102,7 @@ public class BrightnessPicker extends HtcDialogPreference implements HtcNumberPi
 		
 		desc = new TextView(mContext);
 		desc.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-		desc.setText(Helpers.l10n(mContext, R.string.brightpicker_desc));
+		desc.setText(Helpers.l10n(mContext, R.string.timeoutpicker_desc));
 		desc.setGravity(Gravity.CENTER);
 		desc.setTextSize(20f);
 		desc.setPadding(0, 0, 0, densify(10));
@@ -113,38 +112,33 @@ public class BrightnessPicker extends HtcDialogPreference implements HtcNumberPi
 		lp.weight = 1.0f;
 		lp.rightMargin = densify(5);
 		
-		curVal1 = prefs.getInt("pref_key_sysui_brightqs_value1", 10);
-		curVal2 = prefs.getInt("pref_key_sysui_brightqs_value2", 40);
-		curVal3 = prefs.getInt("pref_key_sysui_brightqs_value3", 60);
-		curVal4 = prefs.getInt("pref_key_sysui_brightqs_value4", 100);
+		curVal1 = prefs.getInt("pref_key_sysui_timeoutqs_value1", 7);
+		curVal2 = prefs.getInt("pref_key_sysui_timeoutqs_value2", 6);
+		curVal3 = prefs.getInt("pref_key_sysui_timeoutqs_value3", 4);
 		
-		brightPick1 = new HtcNumberPicker(mContext);
-		brightPick1.setLayoutParams(lp);
-		brightPick1.setRange(10, 100);
-		brightPick1.setCenterView(curVal1);
-		brightPick1.setOnScrollIdleStateListener(this);
-		layout.addView(brightPick1);
+		timeoutPick1 = new HtcNumberPicker(mContext);
+		timeoutPick1.setLayoutParams(lp);
+		timeoutPick1.setTextStyle(R.style.numberPickerText);
+		timeoutPick1.setRange(0, 7, timeouts);
+		timeoutPick1.setCenterView(curVal1);
+		timeoutPick1.setOnScrollIdleStateListener(this);
+		layout.addView(timeoutPick1);
 		
-		brightPick2 = new HtcNumberPicker(mContext);
-		brightPick2.setLayoutParams(lp);
-		brightPick2.setRange(curVal1, 100);
-		brightPick2.setCenterView(curVal2);
-		brightPick2.setOnScrollIdleStateListener(this);
-		layout.addView(brightPick2);
+		timeoutPick2 = new HtcNumberPicker(mContext);
+		timeoutPick2.setLayoutParams(lp);
+		timeoutPick2.setTextStyle(R.style.numberPickerText);
+		timeoutPick2.setRange(curVal1, 7, timeouts);
+		timeoutPick2.setCenterView(curVal2);
+		timeoutPick2.setOnScrollIdleStateListener(this);
+		layout.addView(timeoutPick2);
 		
-		brightPick3 = new HtcNumberPicker(mContext);
-		brightPick3.setLayoutParams(lp);
-		brightPick3.setRange(curVal2, 100);
-		brightPick3.setCenterView(curVal3);
-		brightPick3.setOnScrollIdleStateListener(this);
-		layout.addView(brightPick3);
-		
-		brightPick4 = new HtcNumberPicker(mContext);
-		brightPick4.setLayoutParams(lp);
-		brightPick4.setRange(curVal3, 100);
-		brightPick4.setCenterView(curVal4);
-		brightPick4.setOnScrollIdleStateListener(this);
-		layout.addView(brightPick4);
+		timeoutPick3 = new HtcNumberPicker(mContext);
+		timeoutPick3.setLayoutParams(lp);
+		timeoutPick3.setTextStyle(R.style.numberPickerText);
+		timeoutPick3.setRange(curVal2, 7, timeouts);
+		timeoutPick3.setCenterView(curVal3);
+		timeoutPick3.setOnScrollIdleStateListener(this);
+		layout.addView(timeoutPick3);
 		
 		layout_main.addView(layout);
 		prefSwitch.setChecked(isEnabled);
@@ -153,28 +147,25 @@ public class BrightnessPicker extends HtcDialogPreference implements HtcNumberPi
 	}
 
 	private void getStates() {
-		if (brightPick1 != null) curVal1 = brightPick1.getCenterView();
-		if (brightPick2 != null) curVal2 = brightPick2.getCenterView();
-		if (brightPick3 != null) curVal3 = brightPick3.getCenterView();
-		if (brightPick4 != null) curVal4 = brightPick4.getCenterView();
+		if (timeoutPick1 != null) curVal1 = timeoutPick1.getCenterView();
+		if (timeoutPick2 != null) curVal2 = timeoutPick2.getCenterView();
+		if (timeoutPick3 != null) curVal3 = timeoutPick3.getCenterView();
 	}
 	
 	private void reapplyStates() {
-		if (brightPick1 != null) brightPick1.setCenterView(curVal1);
-		if (brightPick2 != null) brightPick2.setCenterView(curVal2);
-		if (brightPick3 != null) brightPick3.setCenterView(curVal3);
-		if (brightPick4 != null) brightPick4.setCenterView(curVal4);
+		if (timeoutPick1 != null) timeoutPick1.setCenterView(curVal1);
+		if (timeoutPick2 != null) timeoutPick2.setCenterView(curVal2);
+		if (timeoutPick3 != null) timeoutPick3.setCenterView(curVal3);
 	}
 	
 	private void changeLimits(HtcNumberPicker numberPicker, int newVal) {
 		HtcNumberPicker nextPicker = null;
-		if (numberPicker.equals(brightPick1)) nextPicker = brightPick2;
-		else if (numberPicker.equals(brightPick2)) nextPicker = brightPick3;
-		else if (numberPicker.equals(brightPick3)) nextPicker = brightPick4;
+		if (numberPicker.equals(timeoutPick1)) nextPicker = timeoutPick2;
+		else if (numberPicker.equals(timeoutPick2)) nextPicker = timeoutPick3;
 		
 		if (nextPicker != null) {
 			int curVal = nextPicker.getCenterView();
-			nextPicker.setRange(newVal, 100);
+			nextPicker.setRange(newVal, 7, timeouts);
 			if (curVal < newVal) {
 				nextPicker.setCenterView(newVal);
 				changeLimits(nextPicker, newVal);
@@ -199,14 +190,13 @@ public class BrightnessPicker extends HtcDialogPreference implements HtcNumberPi
 			@Override
 			public void onClick(View v) {
 				getStates();
-				if (curVal1 == curVal2 || curVal2 == curVal3 || curVal3 == curVal4) {
-					Toast.makeText(mContext, Helpers.l10n(mContext, R.string.brightpicker_warn_text), Toast.LENGTH_LONG).show();
+				if (curVal1 == curVal2 || curVal2 == curVal3) {
+					Toast.makeText(mContext, Helpers.l10n(mContext, R.string.timeoutpicker_warn_text), Toast.LENGTH_LONG).show();
 				} else {
-					prefs.edit().putBoolean("pref_key_sysui_brightqs", prefSwitch.isChecked()).commit();
-					prefs.edit().putInt("pref_key_sysui_brightqs_value1", curVal1).commit();
-					prefs.edit().putInt("pref_key_sysui_brightqs_value2", curVal2).commit();
-					prefs.edit().putInt("pref_key_sysui_brightqs_value3", curVal3).commit();
-					prefs.edit().putInt("pref_key_sysui_brightqs_value4", curVal4).commit();
+					prefs.edit().putBoolean("pref_key_sysui_timeoutqs", prefSwitch.isChecked()).commit();
+					prefs.edit().putInt("pref_key_sysui_timeoutqs_value1", curVal1).commit();
+					prefs.edit().putInt("pref_key_sysui_timeoutqs_value2", curVal2).commit();
+					prefs.edit().putInt("pref_key_sysui_timeoutqs_value3", curVal3).commit();
 					dlg.dismiss();
 				}
 			}

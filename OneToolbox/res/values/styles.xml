@@ -23,4 +23,8 @@
     	<item name="android:windowAnimationStyle">@null</item>
 	</style>
 	
+	<style name="numberPickerText">
+        <item name="android:textSize">30sp</item>
+    </style>
+	
 </resources>

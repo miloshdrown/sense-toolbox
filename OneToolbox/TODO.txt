@@ -40,21 +40,11 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Current changelog
 =================
 
-1.2
-[Fixed] Sense 6 Themes color override for HTC Sense Input (onscreen keyboard)
-[Fixed] Some sections in Settings are separate packages, they were removed from list and forced to use Settings theme (but there are exclusions, e.g. Mobile data section theme == Phone app theme, Keyboard settings == HTC Sense Input, Data usage == Data usage)
-[Fixed] Long press home for menu on HTC One M8
-[Fixed] White bar in dialer when small sofkeys were used on M8
-[Fixed] SystemUI crash while using hEQS
-[Fixed] Wrong layout positions with Caller photo mod on M7 and M8
-[Fixed] Show Hardware information in About section of Settings
-[Fixed] Widgets size restrictions (for 4x5 homescreen)
-[New] Performing kill foreground app action in any launcher will turn the screen off
-[New] Wake gesture actions: play/pause music, next/previous track
-[New] Apply icon theme color to clock, battery percentage, network and carrier labels
-[New] Hide dock on BlinkFeed
-[New] Wake gestures support for HTC One M8
-[Improved] Wake gestures
+[New] Mod to change timeout EQS values
+[Fixed] Quick Call in Wake gestures for M7
+[Fixed] Hide dock on Blinkfeed was not working with Go to Blinkfeed action in Wake gestures
+[Fixed] Issues due to HTC Launcher restart after font or theme change
+[Fixed] Some UI bugs
 
 ===========
 Translators
@@ -78,6 +68,22 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.2
+[Fixed] Sense 6 Themes color override for HTC Sense Input (onscreen keyboard)
+[Fixed] Some sections in Settings are separate packages, they were removed from list and forced to use Settings theme (but there are exclusions, e.g. Mobile data section theme == Phone app theme, Keyboard settings == HTC Sense Input, Data usage == Data usage)
+[Fixed] Long press home for menu on HTC One M8
+[Fixed] White bar in dialer when small sofkeys were used on M8
+[Fixed] SystemUI crash while using hEQS
+[Fixed] Wrong layout positions with Caller photo mod on M7 and M8
+[Fixed] Show Hardware information in About section of Settings
+[Fixed] Widgets size restrictions (for 4x5 homescreen)
+[New] Performing kill foreground app action in any launcher will turn the screen off
+[New] Wake gesture actions: play/pause music, next/previous track
+[New] Apply icon theme color to clock, battery percentage, network and carrier labels
+[New] Hide dock on BlinkFeed
+[New] Wake gestures support for HTC One M8
+[Improved] Wake gestures
 
 1.1
 [Fixed] Widget overlapping on 4x5 homescreens

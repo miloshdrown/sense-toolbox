@@ -68,6 +68,10 @@
             android:key="pref_key_sysui_brightqs"
             android:summary="@string/systemui_brightqs_summ"
             android:title="@string/systemui_brightqs_title" />
+		<com.sensetoolbox.six.utils.TimeoutPicker
+            android:key="pref_key_sysui_timeoutqs"
+            android:summary="@string/systemui_timeoutqs_summ"
+            android:title="@string/systemui_timeoutqs_title" />
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_sysui_minorqs"
             android:summary="@string/systemui_heqs_summ"
