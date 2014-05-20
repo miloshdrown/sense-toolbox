@@ -43,8 +43,11 @@ Current changelog
 1.2.1
 [New] Mod to change timeout EQS values
 [Fixed] Quick Call in Wake gestures for M7
-[Fixed] Hide dock on Blinkfeed was not working with Go to Blinkfeed action in Wake gestures
-[Fixed] Issues due to HTC Launcher restart after font or theme change
+[Fixed] HTC Camera launch without unlocking secure lock and launch other actions/apps after unlocking (the only thing that won't work with secure screen lock is opening EQS/notification panels)
+[Fixed] Hide dock on Blinkfeed mod was not working with Go to Blinkfeed action in Wake gestures
+[Fixed] Issues due to HTC Launcher restart after font, theme or language change
+[Fixed] Dynamic buttons backlight in Gallery
+[Fixed] Wake gestures bugs
 [Fixed] Some UI bugs
 
 ===========

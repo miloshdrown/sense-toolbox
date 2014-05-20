@@ -13,7 +13,6 @@ import com.sensetoolbox.six.utils.StructInputEvent;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -49,12 +48,14 @@ public class WakeGesturesMods {
 							XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass("com.htc.lockscreen.keyguard.SlidingChallengeLayout.ScrollDirection", mLSClassLoader), "ScrollToUp"));
 							break;
 						case 2:
+							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
 							XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass("com.htc.lockscreen.keyguard.SlidingChallengeLayout.ScrollDirection", mLSClassLoader), "ScrollToRight"));
 							break;
 						case 3:
 							//XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass("com.htc.lockscreen.keyguard.SlidingChallengeLayout.ScrollDirection", mLSClassLoader), "ScrollToLeft"));
+							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
 							Intent i = new Intent("android.intent.action.MAIN").addCategory("android.intent.category.HOME").addFlags(0x10000000).putExtra("action", -1);
-							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i, false);
+							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i, true);
 							break;
 						case 4:
 							boolean isCT = (Boolean)XposedHelpers.callStaticMethod(findClass("com.htc.lockscreen.util.MyProjectSettings", mLSClassLoader), "isCT");
@@ -66,11 +67,12 @@ public class WakeGesturesMods {
 		                    	XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass("com.htc.lockscreen.keyguard.SlidingChallengeLayout.ScrollDirection", mLSClassLoader), "ScrollToBottom"));
 							break;
 						case 5:
-							launchApp(intent.getIntExtra("launch_app", 0));
+							launchApp(context, intent.getIntExtra("launch_app", 0));
 							break;
 						case 6:
+							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
 							Intent i2 = new Intent("com.htc.intent.action.HTC_Prism_AllApps").addCategory("android.intent.category.DEFAULT").addFlags(0x10000000);
-							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i2, false);
+							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i2, true);
 							break;
 					}
 				}
@@ -114,7 +116,7 @@ public class WakeGesturesMods {
 		}
 	}
 	
-	public static boolean launchApp(int action) {
+	public static boolean launchApp(Context ctx, int action) {
         try {
         	String pkgAppName = "";
 
@@ -141,13 +143,16 @@ public class WakeGesturesMods {
         	if (pkgAppName != "") {
         		String[] pkgAppArray = pkgAppName.split("\\|");
         		
-        		ComponentName name = new ComponentName(pkgAppArray[0], pkgAppArray[1]);
-        		Intent appIntent = new Intent(Intent.ACTION_MAIN);
-        		appIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-        		appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-        		appIntent.setComponent(name);
-        		if (mEasyAccessCtrl != null)
-        		XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", appIntent, false);
+        		if (mEasyAccessCtrl == null) XposedBridge.log("Failed to start app using wake gesture!"); else
+        		if (pkgAppArray[0].equals("com.htc.camera")) {
+        			XposedHelpers.callMethod(mEasyAccessCtrl, "launchCamera", ctx);
+        		} else {
+        			Intent appIntent = new Intent();
+        			appIntent.setClassName(pkgAppArray[0], pkgAppArray[1]);
+        			appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_FORWARD_RESULT);
+        			XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
+       				XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", appIntent, true);
+        		}
         	
         		return true;
         	} else return false;
@@ -175,6 +180,8 @@ public class WakeGesturesMods {
 	public static void executeActionFor(MethodHookParam param, String prefName, long event_time, int action) {
 		if (prefName != null) {
 			Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+			long curTime = SystemClock.uptimeMillis();
+			if (event_time > curTime) event_time = curTime;
 			boolean isHaptic = true;
 			switch (Integer.parseInt(XMain.pref.getString(prefName, "1"))) {
 				case 0: isHaptic = false; break;
