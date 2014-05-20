@@ -746,6 +746,12 @@ public class SysUIMods {
 										ArrayList<String> spd = humanReadableByteCount(speed);
 										dataRateVal.setText(spd.get(0));
 										dataRateUnits.setText(spd.get(1));
+										if (XMain.pref.getBoolean("pref_key_cb_texts", false)) {
+											int themeColor = CleanBeamMods.getThemeColor();
+											dataRateVal.setTextColor(themeColor);
+											dataRateUnits.setText(themeColor);
+										}
+											
 										if (speed == 0) {
 											dataRateVal.setAlpha(0.3f);
 											dataRateUnits.setAlpha(0.3f);

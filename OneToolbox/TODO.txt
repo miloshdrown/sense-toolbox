@@ -47,6 +47,8 @@ Current changelog
 [Fixed] Hide dock on Blinkfeed mod was not working with Go to Blinkfeed action in Wake gestures
 [Fixed] Issues due to HTC Launcher restart after font, theme or language change
 [Fixed] Dynamic buttons backlight in Gallery
+[Fixed] Apply icons theme color to traffic meter too
+[Fixed] Truncate labels to single line in 6-row appdrawer on M8, second line won't fit because of navbar
 [Fixed] Wake gestures bugs
 [Fixed] Some UI and language bugs
 

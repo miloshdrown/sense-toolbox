@@ -31,6 +31,7 @@ import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.text.TextUtils.TruncateAt;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.GestureDetector;
@@ -401,8 +402,13 @@ public class PrismMods {
 					}
 	        
 					if (itemlabel != null) {
-						if (gridSizeVal == 3 || gridSizeVal == 4)
+						if (gridSizeVal == 3 || gridSizeVal == 4) {
 							itemlabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, 0.9f * itemlabel.getTextSize());
+							if (Helpers.isM8()) {
+								itemlabel.setSingleLine(true);
+								itemlabel.setEllipsize(TruncateAt.END);
+							}
+						}
 					}
 				} catch (Throwable t) {
 					XposedBridge.log(t);

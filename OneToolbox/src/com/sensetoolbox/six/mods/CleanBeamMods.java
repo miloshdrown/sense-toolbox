@@ -34,7 +34,7 @@ import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResou
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
-public class CleanBeamMods{
+public class CleanBeamMods {
 	private static String wifiBase = "";
 	
 	private static Drawable applyTheme(Drawable icon, boolean useOriginal) {
@@ -48,7 +48,7 @@ public class CleanBeamMods{
 		return applyTheme(icon, false);
 	}
 	
-	private static int getThemeColor() {
+	public static int getThemeColor() {
 		Bitmap bmp = Bitmap.createBitmap(1, 1, Bitmap.Config.ARGB_8888);
 		Canvas canvas = new Canvas(bmp);
 		Paint p = new Paint();
