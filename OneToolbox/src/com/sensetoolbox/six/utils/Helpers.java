@@ -87,7 +87,7 @@ public class Helpers {
 			return true;
 		} catch (Exception e) {
 			cLang = "not_found";
-			e.printStackTrace();
+			//e.printStackTrace();
 		}
 		return false;
 	}
@@ -99,10 +99,16 @@ public class Helpers {
 			return "???";
 	}
 	public static String l10n(Context ctx, String resName) {
+		String lang_full = Locale.getDefault().toString();
 		String lang = Locale.getDefault().getLanguage();
+		boolean allowFallback = true;
+		if (lang_full.equals("zh_HK")) allowFallback = false;
 		String newStr = null;
-		if (!lang.equals("") && !lang.equals("en") && !cLang.equals("not_found"))
-		if (preloadLang(lang)) newStr = l10n.get(resName);
+		if (!lang.equals("") && !lang.equals("en") && !lang_full.contains("en_") && !cLang.equals("not_found"))
+		if (preloadLang(lang_full))
+			newStr = l10n.get(resName);
+		else if (allowFallback && preloadLang(lang))
+			newStr = l10n.get(resName);
 		if (newStr != null) return newStr;
 		
 		int resId = ctx.getResources().getIdentifier(resName, "string", ctx.getPackageName());
@@ -119,10 +125,16 @@ public class Helpers {
 			return "???";
 	}
 	public static String xl10n(XModuleResources modRes, String resName) {
+		String lang_full = Locale.getDefault().toString();
 		String lang = Locale.getDefault().getLanguage();
+		boolean allowFallback = true;
+		if (lang_full.equals("zh_HK")) allowFallback = false;
 		String newStr = null;
-		if (!lang.equals("") && !lang.equals("en") && !cLang.equals("not_found"))
-		if (preloadLang(lang)) newStr = l10n.get(resName);
+		if (!lang.equals("") && !lang.equals("en") && !lang_full.contains("en_") && !cLang.equals("not_found"))
+		if (preloadLang(lang_full))
+			newStr = l10n.get(resName);
+		else if (allowFallback && preloadLang(lang))
+			newStr = l10n.get(resName);
 		if (newStr != null) return newStr;
 		
 		int resId = modRes.getIdentifier(resName, "string", "com.sensetoolbox.six");

@@ -48,7 +48,7 @@ Current changelog
 [Fixed] Issues due to HTC Launcher restart after font, theme or language change
 [Fixed] Dynamic buttons backlight in Gallery
 [Fixed] Wake gestures bugs
-[Fixed] Some UI bugs
+[Fixed] Some UI and language bugs
 
 ===========
 Translators
