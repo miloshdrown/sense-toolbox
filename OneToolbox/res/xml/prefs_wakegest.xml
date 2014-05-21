@@ -14,7 +14,7 @@
             android:summary="@string/wakegestures_dt2w_summ"
             android:entries="@array/wakegest_actions"
             android:entryValues="@array/wakegest_actions_val"
-            android:defaultValue="1" />
+            android:defaultValue="0" />
         <com.htc.preference.HtcPreference
             android:key="pref_key_wakegest_dt2w_app"
 			android:summary="@string/notselected"
@@ -27,7 +27,7 @@
             android:summary="@string/wakegestures_swipedown_summ"
             android:entries="@array/wakegest_actions"
             android:entryValues="@array/wakegest_actions_val"
-            android:defaultValue="5" />
+            android:defaultValue="0" />
         <com.htc.preference.HtcPreference
             android:key="pref_key_wakegest_swipedown_app"
 			android:summary="@string/notselected"
@@ -40,7 +40,7 @@
             android:summary="@string/wakegestures_swipeup_summ"
             android:entries="@array/wakegest_actions"
             android:entryValues="@array/wakegest_actions_val"
-            android:defaultValue="2" />
+            android:defaultValue="0" />
         <com.htc.preference.HtcPreference
             android:key="pref_key_wakegest_swipeup_app"
 			android:summary="@string/notselected"
@@ -53,7 +53,7 @@
             android:summary="@string/wakegestures_swiperight_summ"
             android:entries="@array/wakegest_actions"
             android:entryValues="@array/wakegest_actions_val"
-            android:defaultValue="3" />
+            android:defaultValue="0" />
         <com.htc.preference.HtcPreference
             android:key="pref_key_wakegest_swiperight_app"
 			android:summary="@string/notselected"
@@ -66,7 +66,7 @@
             android:summary="@string/wakegestures_swipeleft_summ"
             android:entries="@array/wakegest_actions"
             android:entryValues="@array/wakegest_actions_val"
-            android:defaultValue="4" />
+            android:defaultValue="0" />
         <com.htc.preference.HtcPreference
             android:key="pref_key_wakegest_swipeleft_app"
 			android:summary="@string/notselected"
@@ -79,7 +79,7 @@
             android:summary="@string/wakegestures_logopress_summ"
             android:entries="@array/wakegest_actions"
             android:entryValues="@array/wakegest_actions_val"
-            android:defaultValue="1" />
+            android:defaultValue="0" />
         <com.htc.preference.HtcPreference
             android:key="pref_key_wakegest_logo2wake_app"
 			android:summary="@string/notselected"

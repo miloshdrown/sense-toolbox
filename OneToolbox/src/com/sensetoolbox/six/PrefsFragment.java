@@ -655,7 +655,6 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				int lineCnt = 0;
 				
 				@Override
-				@SuppressWarnings("deprecation")
 				public void output(int id, String line) {
 					if (lineCnt > 0) return;
 					
@@ -692,9 +691,9 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 								public void output(int id, String line) {
 									if (lineCnt2 == 0) try {
 										if (line.trim().equals("0") || line.trim().equals("1000")) {
-											RootTools.sendShell(cmdsPerm, 0, null, 3000);
+											RootTools.getShell(true).add(new CommandCapture(0, 3000, cmdsPerm));
 										} else
-											RootTools.sendShell(cmds, 0, null, false, 3000);
+											RootTools.getShell(false).add(new CommandCapture(0, 3000, cmds));
 
 										// 500ms interval between backlight updates
 										new Thread() {
@@ -771,7 +770,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)$\\)/\\1   WAKE_DROPPED/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",
 					"mount -o ro,remount /system");
 			try {
-				RootTools.getShell(true).add(command).waitForFinish();
+				RootTools.getShell(true).add(command);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -784,7 +783,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)\\)\\s\\+WAKE_DROPPED/\\1/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",
 					"mount -o ro,remount /system");
 		    try {
-				RootTools.getShell(true).add(command).waitForFinish();
+				RootTools.getShell(true).add(command);
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -936,7 +935,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			}
 		};
 		try {
-			RootTools.getShell(false).add(command).waitForFinish();
+			RootTools.getShell(false).add(command);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

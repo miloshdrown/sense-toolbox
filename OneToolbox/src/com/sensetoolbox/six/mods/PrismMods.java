@@ -421,8 +421,7 @@ public class PrismMods {
 		try {
 			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 			
-			int cell_count_y = resparam.res.getIdentifier("cell_count_y", "integer", "com.htc.launcher");
-			resparam.res.setReplacement(cell_count_y, 5);
+			resparam.res.setReplacement(resparam.res.getIdentifier("cell_count_y", "integer", "com.htc.launcher"), 5);
 
 			resparam.res.setReplacement(resparam.res.getIdentifier("app_icon_padding_top", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.app_icon_padding_top));
 			resparam.res.setReplacement(resparam.res.getIdentifier("button_bar_height_without_padding", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.button_bar_height_without_padding));

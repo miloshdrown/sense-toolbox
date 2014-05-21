@@ -183,7 +183,7 @@ public class WakeGesturesMods {
 			long curTime = SystemClock.uptimeMillis();
 			if (event_time > curTime) event_time = curTime;
 			boolean isHaptic = true;
-			switch (Integer.parseInt(XMain.pref.getString(prefName, "1"))) {
+			switch (Integer.parseInt(XMain.pref.getString(prefName, "0"))) {
 				case 0: isHaptic = false; break;
 				case 1: doWakeUp(param.thisObject, event_time); break;
 				case 2: doWakeUp(param.thisObject, event_time); sendLockScreenIntent(mContext, 1); break;
@@ -251,7 +251,6 @@ public class WakeGesturesMods {
 						//XposedBridge.log("event3: " + bytesToHex(event));
 						//SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
 						//Date d = new Date();
-						//XposedBridge.log("Event time: " + String.valueOf(Math.round(1000 * input_event.timeval_sec + input_event.timeval_usec / 1000)) + " <> " + String.valueOf(SystemClock.uptimeMillis()));
 						//XposedBridge.log("[S6T @ " + sdf.format(d) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
 						if (input_event != null && input_event.type == 0x02 && input_event.code == 0x0b) {
 							XMain.pref.reload();
@@ -294,6 +293,7 @@ public class WakeGesturesMods {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "event4thread");
+				PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 				if (th != null) {
 					if (!th.isAlive()) {
 						try {
@@ -303,7 +303,7 @@ public class WakeGesturesMods {
 							XposedBridge.log("Resetting gesture listener thread...");
 							createThread(param).start();
 						}
-					} else synchronized (mPauseLock) {
+					} else if (!mPowerManager.isScreenOn()) synchronized (mPauseLock) {
 						mPaused = false;
 						mPauseLock.notifyAll();
 					}
@@ -311,7 +311,7 @@ public class WakeGesturesMods {
 			}
 		});
 		
-		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurningOn", "android.view.WindowManagerPolicy.ScreenOnListener", new XC_MethodHook() {
+		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "finishScreenTurningOn", "android.view.WindowManagerPolicy.ScreenOnListener", new XC_MethodHook() {
 	        @Override
 	        protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 	        	if (mCurrentLEDLevel > 0) {
@@ -321,7 +321,8 @@ public class WakeGesturesMods {
 				if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
 	        	Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "event4thread");
 	        	if (th != null) {
-	        		synchronized (mPauseLock) {
+	        		PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+	        		if (mPowerManager.isScreenOn()) synchronized (mPauseLock) {
 	        			mPaused = true;
 	        		}
 	        	}

@@ -17,7 +17,7 @@ import com.stericson.RootTools.execution.CommandCapture;
 
 public class ApkInstaller {
 	
-	public static void installSunbeam(Context ctx) {
+	public static void installSunbeam(final Context ctx) {
 		AssetManager assetManager = ctx.getAssets();
 
 		InputStream in = null;
@@ -47,19 +47,16 @@ public class ApkInstaller {
 		    		"cp -f " + cache.getAbsolutePath() + "/SunBeam.apk /system/app/SunBeam.apk",
 		    		"rm -f " + cache.getAbsolutePath() + "/SunBeam.apk",
 		    		"chmod 644 /system/app/SunBeam.apk",
-		    		"mount -o ro,remount /system");
-		    RootTools.getShell(true).add(command).waitForFinish();
-		    		    
-		    new HtcAlertDialog.Builder(ctx)
-		    	.setMessage(Helpers.l10n(ctx, R.string.sunbeam_installed))
-		    	.setTitle(Helpers.l10n(ctx, R.string.success))
-		    	.setCancelable(true)
-		    	.setNeutralButton(android.R.string.ok,
-		        new DialogInterface.OnClickListener() {
-		        public void onClick(DialogInterface dialog, int whichButton){}
-		    	})
-		    	.show();
-
+		    		"mount -o ro,remount /system") {
+		    	@Override
+	    		public void commandCompleted(int id, int exitcode) {
+	    			if (exitcode == 0) new HtcAlertDialog.Builder(ctx).setMessage(Helpers.l10n(ctx, R.string.sunbeam_installed)).setTitle(Helpers.l10n(ctx, R.string.success)).setCancelable(true)
+	    			.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+	    				public void onClick(DialogInterface dialog, int whichButton) { }
+	    			}).show();
+	    		}
+		    };
+		    RootTools.getShell(true).add(command);
 		} catch(Exception e) {
 			Log.e("APK", e.toString());
 		}

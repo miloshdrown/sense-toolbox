@@ -114,7 +114,7 @@ public class ApmDialog extends HtcAlertDialog.Builder {
 				case 1:
 					try {
 						CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
-						RootTools.getShell(true).add(command).waitForFinish();
+						RootTools.getShell(true).add(command);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

@@ -40,7 +40,7 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					try {
 						CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
-						RootTools.getShell(true).add(command).waitForFinish();
+						RootTools.getShell(true).add(command);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
