@@ -417,7 +417,7 @@ public class PrismMods {
 		});
 	}
 
-	public static void execHook_HomeScreenGridSize(final InitPackageResourcesParam resparam) {
+	public static void execHook_HomeScreenGridSize(InitPackageResourcesParam resparam) {
 		try {
 			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 			
@@ -435,6 +435,16 @@ public class PrismMods {
 			resparam.res.setReplacement(resparam.res.getIdentifier("celllayout_bottom_padding", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.celllayout_bottom_padding_port));
 			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_cell_height", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_cell_height_port));
 			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_height_gap", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_height_gap_port));
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+
+	public static void execHook_HomeScreenGapFix(InitPackageResourcesParam resparam) {
+		try {
+			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
+			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_height_gap_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_height_gap_fix));
+			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_height_gap", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_height_gap_fix));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

@@ -119,6 +119,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_prism_4x5homescreen", false))
 				PrismMods.execHook_HomeScreenGridSize(resparam);
 			
+			if(pref.getBoolean("pref_key_prism_gapfix", false) && !pref.getBoolean("pref_key_prism_4x5homescreen", false))
+				PrismMods.execHook_HomeScreenGapFix(resparam);
+			
 			PrismMods.execHook_AppDrawerGridSizesLayout(resparam);
 		}
 		

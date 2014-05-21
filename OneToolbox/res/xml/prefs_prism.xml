@@ -65,7 +65,14 @@
             android:key="pref_key_prism_4x5homescreen"
             android:summary="@string/sense_4x5homescreen_summ"
             android:title="@string/sense_4x5homescreen_title"
-            android:defaultValue="false" />
+            android:defaultValue="false"
+            android:disableDependentsState="true" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_prism_gapfix"
+            android:summary="@string/sense_gapfix_summ"
+            android:title="@string/sense_gapfix_title"
+            android:defaultValue="false"
+            android:dependency="pref_key_prism_4x5homescreen" />
         <com.htc.preference.HtcCheckBoxPreference
             android:key="pref_key_prism_invisilabels"
             android:summary="@string/sense_invisilabels_summ"
