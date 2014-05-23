@@ -63,6 +63,7 @@ public class ControlsMods {
 					int flags = keyEvent.getFlags();
 					
 					//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
+					XMain.pref.reload();
 					int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 						// Back long press
@@ -85,6 +86,7 @@ public class ControlsMods {
 					int flags = keyEvent.getFlags();
 
 					//XposedBridge.log("interceptKeyBeforeDispatching: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
+					XMain.pref.reload();
 					int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 						// Back long press
@@ -132,6 +134,7 @@ public class ControlsMods {
 	}
 	
 	public static void assistAndSearchPanelOverride(final MethodHookParam param) {
+		XMain.pref.reload();
 		int pref_homeassist = Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassistaction", "1"));
 		if (pref_homeassist != 1) {
 			Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
@@ -297,14 +300,18 @@ public class ControlsMods {
 											isVolumeLongPressed = true;
 											switch (keyEvent.getKeyCode()) {
 												case KeyEvent.KEYCODE_VOLUME_UP:
-													if (XMain.pref_mediaUp == 0) break;
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, XMain.pref_mediaUp));
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, XMain.pref_mediaUp));
+													XMain.pref.reload();
+													int pref_mediaUp = Integer.parseInt(XMain.pref.getString("pref_key_controls_mediaupaction", "0"));
+													if (pref_mediaUp == 0) break;
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, pref_mediaUp));
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, pref_mediaUp));
 													break;
 												case KeyEvent.KEYCODE_VOLUME_DOWN:
-													if (XMain.pref_mediaDown == 0) break;
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, XMain.pref_mediaDown));
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, XMain.pref_mediaDown));
+													XMain.pref.reload();
+													int pref_mediaDown = Integer.parseInt(XMain.pref.getString("pref_key_controls_mediadownaction", "0"));
+													if (pref_mediaDown == 0) break;
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, pref_mediaDown));
+													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, pref_mediaDown));
 													break;
 												default:
 													break;

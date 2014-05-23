@@ -27,8 +27,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	private static int pref_shake = 1;
 	public static int pref_screenon = 0;
 	public static int pref_screenoff = 0;
-	public static int pref_mediaDown = 0;
-	public static int pref_mediaUp = 0;
 	public static Version senseVersion;
 	
 	@Override
@@ -487,9 +485,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_controls_powerflash", false))
 				ControlsMods.execHook_PowerFlash(lpparam);
 			
-			pref_mediaDown = Integer.parseInt(pref.getString("pref_key_controls_mediadownaction", "0"));
-		    pref_mediaUp = Integer.parseInt(pref.getString("pref_key_controls_mediaupaction", "0"));
-		    if (pref_mediaDown != 0 || pref_mediaUp != 0)
+			if (Integer.parseInt(pref.getString("pref_key_controls_mediadownaction", "0")) != 0 || Integer.parseInt(pref.getString("pref_key_controls_mediaupaction", "0")) != 0)
 		    	ControlsMods.execHook_VolumeMediaButtons(lpparam, vol2wakeEnabled);
 		    
 		    if (pref.getBoolean("pref_key_messaging_eassecurity", false))

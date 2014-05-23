@@ -519,6 +519,7 @@ public class PrismMods {
 			if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH) return false;
 			
 			if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+				XMain.pref.reload();
 				switch (Integer.parseInt(XMain.pref.getString("pref_key_prism_swipedownaction", "1"))) {
 					case 2: return GlobalActions.expandNotifications(helperContext);
 					case 3: return GlobalActions.expandEQS(helperContext);
@@ -532,6 +533,7 @@ public class PrismMods {
 			}
 			
 			if (e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+				XMain.pref.reload();
 				switch (Integer.parseInt(XMain.pref.getString("pref_key_prism_swipeupaction", "1"))) {
 					case 2: return GlobalActions.expandNotifications(helperContext);
 					case 3: return GlobalActions.expandEQS(helperContext);
@@ -604,6 +606,7 @@ public class PrismMods {
 			if (e1 == null || e2 == null) return false;
 			
 			if (e2.getX() - e1.getX() > SWIPE_MIN_DISTANCE_HORIZ && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				XMain.pref.reload();
 				switch (Integer.parseInt(XMain.pref.getString("pref_key_prism_swiperightaction", "1"))) {
 					case 2: return GlobalActions.expandNotifications(helperContext);
 					case 3: return GlobalActions.expandEQS(helperContext);
@@ -616,6 +619,7 @@ public class PrismMods {
 				}
 			}
 			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE_HORIZ && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
+				XMain.pref.reload();
 				switch (Integer.parseInt(XMain.pref.getString("pref_key_prism_swipeleftaction", "1"))) {
 					case 2: return GlobalActions.expandNotifications(helperContext);
 					case 3: return GlobalActions.expandEQS(helperContext);
@@ -658,6 +662,7 @@ public class PrismMods {
 			if (e1 == null || e2 == null) return false;
 			
 			if (e1.getY() > (screenHeight - density * 100) && e1.getY() - e2.getY() > SWIPE_MIN_DISTANCE_VERT && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
+				XMain.pref.reload();
 				if (XMain.pref.getBoolean("pref_key_prism_homemenu", false)) {
 					if (launcher != null) {
 						Enum<?> m_state = (Enum<?>)XposedHelpers.getObjectField(launcher, "m_state");
