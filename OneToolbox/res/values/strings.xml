@@ -431,8 +431,8 @@
 	<string name="about_toolbox">Toolbox</string>
 	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\nAcogu - for Sense 6 Toolbox logo and main app icon\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nDunc001 and LeSScro - for their APM icons\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
 	<string name="about_l10n">Translation</string>
-	<string name="about_l10n_data_left">Croatian\nDutch\nItalian\nPolish\nSpanish\nFrench\nTurkish\nChinese\nTraditional Chinese\nRomanian</string>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24\ninci55\nSteve-luo\nshanlan2012, ishow0806\nTeHashX</string>
+	<string name="about_l10n_data_left">Croatian\nDutch\nItalian\nPolish\nSpanish\nFrench\nTurkish\nChinese\nTraditional Chinese\n\nRomanian\nPortuguese (Brazil)</string>
+	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24\ninci55\nSteve-luo\nshanlan2012\nishow0806\nTeHashX\nckleuser</string>
 	
 	<string name="array_default">Default</string>
 	<string name="array_cam_actions_shutter">Shutter</string>

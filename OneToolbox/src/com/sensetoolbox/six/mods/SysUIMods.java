@@ -1722,12 +1722,10 @@ public class SysUIMods {
 		}
 	}
 	
-	private static boolean isPortrait(Context ctx) {
+	private static int getRotation(MethodHookParam param) {
+		Context ctx = ((View)param.thisObject).getContext();
 		WindowManager wm = (WindowManager)ctx.getSystemService(Context.WINDOW_SERVICE);
-		if (wm.getDefaultDisplay().getRotation() == 0)
-			return true;
-		else
-			return false;
+		return wm.getDefaultDisplay().getRotation();
 	}
 	
 	public static void execHook_SearchGlowPad() {
@@ -1735,54 +1733,78 @@ public class SysUIMods {
 			XposedBridge.hookAllConstructors(findClass("com.android.internal.widget.multiwaveview.GlowPadView", null), new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					if (isPortrait(((View)param.thisObject).getContext())) {
-						XposedHelpers.setObjectField(param.thisObject, "mFirstItemOffset", (float)Math.toRadians(-16));
-						XposedHelpers.setObjectField(param.thisObject, "mFeedbackCount", 1);
-						XposedHelpers.setObjectField(param.thisObject, "mAllowScaling", true);
-					}
+					XposedHelpers.setFloatField(param.thisObject, "mFirstItemOffset", 0);
+					XposedHelpers.setIntField(param.thisObject, "mFeedbackCount", 1);
+					XposedHelpers.setBooleanField(param.thisObject, "mAllowScaling", false);
 				}
 			});
 			
 			findAndHookMethod("com.android.internal.widget.multiwaveview.GlowPadView", null, "getSliceAngle", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					if (isPortrait(((View)param.thisObject).getContext()))
-					param.setResult((Float)param.getResult() / 1.6f);
+					param.setResult((float)Math.toRadians(-45));
 				}
 			});
 			
 			findAndHookMethod("com.android.internal.widget.multiwaveview.GlowPadView", null, "loadDrawableArray", int.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					Context ctx = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-					if (isPortrait(ctx)) {
-						XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-						Class<?> TargetDrawable = findClass("com.android.internal.widget.multiwaveview.TargetDrawable", null);
-						
-						Object apm = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, R.drawable.ic_action_apm);
-						Object stock_assist = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(Resources.getSystem(), Resources.getSystem().getIdentifier("ic_action_assist_generic", "drawable", "android"));
-						Object voicedial = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, R.drawable.ic_action_voicedial);
-						
-						ArrayList<Object> arraylist = new ArrayList<Object>();
+					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+					Class<?> TargetDrawable = findClass("com.android.internal.widget.multiwaveview.TargetDrawable", null);
+					
+					Object apm = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, R.drawable.ic_action_apm);
+					Object stock_assist = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(Resources.getSystem(), Resources.getSystem().getIdentifier("ic_action_assist_generic", "drawable", "android"));
+					Object voicedial = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, R.drawable.ic_action_voicedial);
+					Object dummy = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, 0);
+					
+					ArrayList<Object> arraylist = new ArrayList<Object>();
+					int rot = getRotation(param);
+					if (rot == 1) {
+						arraylist.add(dummy);
+						arraylist.add(dummy);
+						arraylist.add(dummy);
 						arraylist.add(apm);
 						arraylist.add(stock_assist);
 						arraylist.add(voicedial);
-						
-						param.setResult(arraylist);
+						arraylist.add(dummy);
+						arraylist.add(dummy);
+					} else if (rot == 3) {
+						arraylist.add(stock_assist);
+						arraylist.add(voicedial);
+						arraylist.add(dummy);
+						arraylist.add(dummy);
+						arraylist.add(dummy);
+						arraylist.add(dummy);
+						arraylist.add(dummy);
+						arraylist.add(apm);
+					} else {
+						arraylist.add(dummy);
+						arraylist.add(apm);
+						arraylist.add(stock_assist);
+						arraylist.add(voicedial);
+						arraylist.add(dummy);
+						arraylist.add(dummy);
+						arraylist.add(dummy);
+						arraylist.add(dummy);
 					}
+					
+					param.setResult(arraylist);
 				}
 			});
 			
 			findAndHookMethod("com.android.internal.widget.multiwaveview.GlowPadView", null, "loadDescriptions", int.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					if (isPortrait(((View)param.thisObject).getContext())) {
-						ArrayList<String> arraylist = new ArrayList<String>();
-						arraylist.add("APM");
-						arraylist.add(Resources.getSystem().getString(Resources.getSystem().getIdentifier("description_target_search", "string", "android")));
-						arraylist.add("Voice Dial");
-						param.setResult(arraylist);
-					}
+					ArrayList<String> arraylist = new ArrayList<String>();
+					arraylist.add("");
+					arraylist.add("");
+					arraylist.add("");
+					arraylist.add("");
+					arraylist.add("");
+					arraylist.add("");
+					arraylist.add("");
+					arraylist.add("");
+					param.setResult(arraylist);
 				}
 			});
 		} catch (Throwable t) {
@@ -1796,19 +1818,19 @@ public class SysUIMods {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					int item = (Integer)param.args[1];
-					Context ctx = ((View)param.args[0]).getContext();
-					if (!isPortrait(ctx)) return;
-        			
-					switch (item) {
-						case 0:
+					View mGlowPadView = (View)param.args[0];
+					if (mGlowPadView == null) return;
+					Context ctx = mGlowPadView.getContext();
+					int resId = (Integer)XposedHelpers.callMethod(mGlowPadView, "getResourceIdForTarget", item);
+					
+					switch (resId) {
+						case R.drawable.ic_action_apm:
 							Class<?> ActivityManagerNative = Class.forName("android.app.ActivityManagerNative");
-							Method getDefault = ActivityManagerNative.getMethod("getDefault");
-							Object activityManagerNative = getDefault.invoke(ActivityManagerNative);
-							Method dismissKeyguardOnNextActivity = ActivityManagerNative.getMethod("dismissKeyguardOnNextActivity");
-							dismissKeyguardOnNextActivity.invoke(activityManagerNative);
+							Object activityManagerNative = XposedHelpers.callStaticMethod(ActivityManagerNative, "getDefault");
+							XposedHelpers.callMethod(activityManagerNative, "dismissKeyguardOnNextActivity");
 							OtherMods.startAPM(ctx);
 							break;
-						case 2:
+						case R.drawable.ic_action_voicedial:
 							Intent intent = new Intent("com.htc.HTCSpeaker.HtcSpeakLauncher_QuickCall");
 		                    intent.setFlags(0x50000000);
 		                    intent.putExtra("LaunchBy", "LockScreen");
