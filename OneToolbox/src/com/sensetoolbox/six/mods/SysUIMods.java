@@ -21,6 +21,7 @@ import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.KeyguardManager;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -1714,6 +1715,110 @@ public class SysUIMods {
 						numberToTimeout(XMain.pref.getInt("pref_key_sysui_timeoutqs_value2", 6)),
 						numberToTimeout(XMain.pref.getInt("pref_key_sysui_timeoutqs_value3", 4))
 					});
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	private static boolean isPortrait(Context ctx) {
+		WindowManager wm = (WindowManager)ctx.getSystemService(Context.WINDOW_SERVICE);
+		if (wm.getDefaultDisplay().getRotation() == 0)
+			return true;
+		else
+			return false;
+	}
+	
+	public static void execHook_SearchGlowPad() {
+		try {
+			XposedBridge.hookAllConstructors(findClass("com.android.internal.widget.multiwaveview.GlowPadView", null), new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					if (isPortrait(((View)param.thisObject).getContext())) {
+						XposedHelpers.setObjectField(param.thisObject, "mFirstItemOffset", (float)Math.toRadians(-16));
+						XposedHelpers.setObjectField(param.thisObject, "mFeedbackCount", 1);
+						XposedHelpers.setObjectField(param.thisObject, "mAllowScaling", true);
+					}
+				}
+			});
+			
+			findAndHookMethod("com.android.internal.widget.multiwaveview.GlowPadView", null, "getSliceAngle", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					if (isPortrait(((View)param.thisObject).getContext()))
+					param.setResult((Float)param.getResult() / 1.6f);
+				}
+			});
+			
+			findAndHookMethod("com.android.internal.widget.multiwaveview.GlowPadView", null, "loadDrawableArray", int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Context ctx = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					if (isPortrait(ctx)) {
+						XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+						Class<?> TargetDrawable = findClass("com.android.internal.widget.multiwaveview.TargetDrawable", null);
+						
+						Object apm = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, R.drawable.ic_action_apm);
+						Object stock_assist = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(Resources.getSystem(), Resources.getSystem().getIdentifier("ic_action_assist_generic", "drawable", "android"));
+						Object voicedial = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, R.drawable.ic_action_voicedial);
+						
+						ArrayList<Object> arraylist = new ArrayList<Object>();
+						arraylist.add(apm);
+						arraylist.add(stock_assist);
+						arraylist.add(voicedial);
+						
+						param.setResult(arraylist);
+					}
+				}
+			});
+			
+			findAndHookMethod("com.android.internal.widget.multiwaveview.GlowPadView", null, "loadDescriptions", int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					if (isPortrait(((View)param.thisObject).getContext())) {
+						ArrayList<String> arraylist = new ArrayList<String>();
+						arraylist.add("APM");
+						arraylist.add(Resources.getSystem().getString(Resources.getSystem().getIdentifier("description_target_search", "string", "android")));
+						arraylist.add("Voice Dial");
+						param.setResult(arraylist);
+					}
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_SearchGlowPadLaunch(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.systemui.SearchPanelView.GlowPadTriggerListener", lpparam.classLoader, "onTrigger", View.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					int item = (Integer)param.args[1];
+					Context ctx = ((View)param.args[0]).getContext();
+					if (!isPortrait(ctx)) return;
+        			
+					switch (item) {
+						case 0:
+							Class<?> ActivityManagerNative = Class.forName("android.app.ActivityManagerNative");
+							Method getDefault = ActivityManagerNative.getMethod("getDefault");
+							Object activityManagerNative = getDefault.invoke(ActivityManagerNative);
+							Method dismissKeyguardOnNextActivity = ActivityManagerNative.getMethod("dismissKeyguardOnNextActivity");
+							dismissKeyguardOnNextActivity.invoke(activityManagerNative);
+							OtherMods.startAPM(ctx);
+							break;
+						case 2:
+							Intent intent = new Intent("com.htc.HTCSpeaker.HtcSpeakLauncher_QuickCall");
+		                    intent.setFlags(0x50000000);
+		                    intent.putExtra("LaunchBy", "LockScreen");
+		                    KeyguardManager kgm = (KeyguardManager)ctx.getSystemService(Context.KEYGUARD_SERVICE);
+		                    intent.putExtra("isKeyguardShow", kgm.inKeyguardRestrictedInputMode());
+		                    intent.putExtra("isKeyguardSecure", kgm.isKeyguardSecure());
+		                    intent.putExtra("isLockscreenDisable", !kgm.isKeyguardLocked());
+		                    ctx.startActivity(intent);
+		        			break;
+					}
 				}
 			});
 		} catch (Throwable t) {

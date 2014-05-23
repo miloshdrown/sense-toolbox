@@ -22,6 +22,11 @@
             android:summary="@string/controls_smallsoftkeys_summ"
             android:title="@string/controls_smallsoftkeys_title"
             android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_controls_extendedpanel"
+            android:summary="@string/controls_extendedpanel_summ"
+            android:title="@string/controls_extendedpanel_title"
+            android:defaultValue="false" />
                 
         <com.htc.preference.HtcPreferenceCategory
     	    android:title="@string/controls_mods_backlongpress"

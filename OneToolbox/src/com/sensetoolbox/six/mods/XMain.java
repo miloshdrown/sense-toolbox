@@ -90,6 +90,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures() && !Helpers.isM8())
 			WakeGesturesMods.execHook_InitListener();
 		
+		if (pref.getBoolean("pref_key_controls_extendedpanel", false))
+			SysUIMods.execHook_SearchGlowPad();
+		
 		GlobalActions.easterEgg();
 	}
 
@@ -429,6 +432,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_cb_texts", false))
 				CleanBeamMods.execHook_StatusBarTexts(lpparam);
+			
+			if (pref.getBoolean("pref_key_controls_extendedpanel", false))
+				SysUIMods.execHook_SearchGlowPadLaunch(lpparam);
 			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 			CleanBeamMods.execHook_HideIcons(lpparam);

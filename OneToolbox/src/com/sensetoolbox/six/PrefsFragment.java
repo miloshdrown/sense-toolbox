@@ -629,7 +629,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						Toast.makeText(getActivity(), Helpers.l10n(getActivity(), R.string.no_currents), Toast.LENGTH_LONG).show();
 						return false;
 					} else
-						return setButtonBacklightTo(getActivity(), Integer.parseInt((String)newValue));
+						return setButtonBacklightTo(Integer.parseInt((String)newValue), true);
 				}
 			};
 	        
@@ -647,7 +647,8 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	}
 	
 	static boolean isWaitingForCmd = false;
-	static boolean setButtonBacklightTo(Context ctx, final int pref_keyslight) {
+	static boolean setButtonBacklightTo(final int pref_keyslight, final boolean applyNoMatterWhat) {
+		if (applyNoMatterWhat) isWaitingForCmd = false;
 		if (isWaitingForCmd) return false; else try {
 			isWaitingForCmd = true;
 			final String currents = "/sys/class/leds/button-backlight/currents";
@@ -663,7 +664,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					else if (pref_keyslight == 3) level = "3";
 					else if (pref_keyslight == 4) level = "0";
 					
-					if (!line.trim().equals(level)) {
+					if (!line.trim().equals(level) || applyNoMatterWhat) {
 						/*
 						final String[] cmdsDefault = {
 							"chown 1000 " + currents,
@@ -737,7 +738,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			if (intent.getAction() != null) {
 				int thepref = Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
 				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-					if (thepref > 1) setButtonBacklightTo(context, thepref);
+					if (thepref > 1) setButtonBacklightTo(thepref, false);
 				} else if (intent.getAction().equals("com.sensetoolbox.six.UPDATEBACKLIGHT")) {
 					boolean forceDisableBacklight = false;
 					PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
@@ -747,9 +748,9 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						forceDisableBacklight = intent.getBooleanExtra("forceDisableBacklight", false);
 					
 					if (forceDisableBacklight)
-						setButtonBacklightTo(context, 4);
+						setButtonBacklightTo(4, false);
 					else
-						setButtonBacklightTo(context, thepref);
+						setButtonBacklightTo(thepref, false);
 				}
 			}
 		}
