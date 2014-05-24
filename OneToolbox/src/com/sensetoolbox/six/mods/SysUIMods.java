@@ -32,7 +32,6 @@ import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.content.res.XModuleResources;
-import android.content.res.XResources;
 import android.database.ContentObserver;
 import android.graphics.Color;
 import android.graphics.Point;
@@ -104,7 +103,7 @@ import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class SysUIMods {
-
+/*
 	public static void execHook_InvisiBar(final InitPackageResourcesParam resparam, final String MODULE_PATH, final int transparency) {
 		resparam.res.setReplacement("com.android.systemui", "drawable", "status_bar_background", new XResources.DrawableLoader() {
 			@Override
@@ -133,7 +132,7 @@ public class SysUIMods {
 			});
 		} catch (Throwable ignore){}
 	}
-
+*/
 	public static void execHook_MinorEQS(final LoadPackageParam lpparam, final boolean removeText) {
 		//Enable mEQS
 		findAndHookMethod("com.android.systemui.statusbar.StatusBarFlag", lpparam.classLoader, "loadMinorQuickSetting", new XC_MethodHook() {
