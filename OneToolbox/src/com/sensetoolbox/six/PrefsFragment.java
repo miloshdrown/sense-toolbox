@@ -70,8 +70,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, R.xml.preferences);
 		
-		if(!Helpers.isXposedInstalled(getActivity()))
-		{
+		if (!Helpers.isXposedInstalled(getActivity())) {
 			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
 			builder.setTitle(Helpers.l10n(getActivity(), R.string.xposed_not_found));
 			builder.setMessage(Helpers.l10n(getActivity(), R.string.xposed_not_found_explain));
@@ -88,8 +87,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		String senseVer = Helpers.getSenseVersion();
 		prefs.edit().putString("pref_sense_version", senseVer).commit();
 		
-		if (prefs.getBoolean("pref_key_was_restore", false))
-		{
+		if (prefs.getBoolean("pref_key_was_restore", false)) {
 			prefs.edit().putBoolean("pref_key_was_restore", false).commit();
 			showRestoreInfoDialog();
 		}
@@ -731,13 +729,16 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		}
 	}
 	
-	static public class SetButtonBacklight extends BroadcastReceiver {
+	static public class HelperReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (Helpers.isNotM7()) return;
 			if (intent.getAction() != null) {
 				int thepref = Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
-				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+				if (intent.getAction().equals("android.intent.action.LOCALE_CHANGED")) {
+					Helpers.l10n = null;
+					Helpers.cLang = "";
+				} else if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
 					if (thepref > 1) setButtonBacklightTo(thepref, false);
 				} else if (intent.getAction().equals("com.sensetoolbox.six.UPDATEBACKLIGHT")) {
 					boolean forceDisableBacklight = false;

@@ -63,11 +63,10 @@ public class ControlsMods {
 					int flags = keyEvent.getFlags();
 					
 					//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
-					XMain.pref.reload();
-					int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 						// Back long press
-						if (pref_backlongpress != 1 && keycode == KeyEvent.KEYCODE_BACK) {
+						XMain.pref.reload();
+						if (Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1")) != 1 && keycode == KeyEvent.KEYCODE_BACK) {
 							if (action == KeyEvent.ACTION_DOWN) isBackLongPressed = false;
 							if (action == KeyEvent.ACTION_UP && isBackLongPressed == true) param.setResult(0);
 						}
@@ -86,10 +85,10 @@ public class ControlsMods {
 					int flags = keyEvent.getFlags();
 
 					//XposedBridge.log("interceptKeyBeforeDispatching: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
-					XMain.pref.reload();
-					int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 						// Back long press
+						XMain.pref.reload();
+						int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 						if (pref_backlongpress != 1 && keycode == KeyEvent.KEYCODE_BACK) {
 							if (action == KeyEvent.ACTION_DOWN && repeats >= 5) {
 								if (isBackLongPressed == false) {

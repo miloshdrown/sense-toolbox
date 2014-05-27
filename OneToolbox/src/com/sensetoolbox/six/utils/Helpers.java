@@ -70,7 +70,7 @@ public class Helpers {
 
 	private static boolean preloadLang(String lang) {
 		try {
-			if (l10n == null || !cLang.equals(lang)) {
+			if (l10n == null) {
 				FileInputStream in_s = new FileInputStream(Helpers.dataPath + "values-" + lang + "/strings.xml");
 				XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
 				l10n = new HashMap<String, String>();

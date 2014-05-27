@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.sensetoolbox.six"
-	android:versionCode="4"
-	android:versionName="1.2.5" >
+	android:versionCode="5"
+	android:versionName="1.2.6" >
 
 	<uses-sdk
 		android:minSdkVersion="19"
@@ -48,10 +48,11 @@
 		<activity android:name="com.sensetoolbox.six.AboutScreen" android:screenOrientation="portrait" />
 		<activity android:name="com.sensetoolbox.six.SenseThemes" />
 		<activity android:name="com.sensetoolbox.six.WakeGestures" />
-		<receiver android:name="com.sensetoolbox.six.PrefsFragment$SetButtonBacklight" android:exported="true">
+		<receiver android:name="com.sensetoolbox.six.PrefsFragment$HelperReceiver" android:exported="true">
 			<intent-filter>
 			    <action android:name="com.sensetoolbox.six.UPDATEBACKLIGHT" />
 				<action android:name="android.intent.action.BOOT_COMPLETED" />
+				<action android:name="android.intent.action.LOCALE_CHANGED" />
 				<category android:name="android.intent.category.DEFAULT" />
 			</intent-filter>
 		</receiver>
