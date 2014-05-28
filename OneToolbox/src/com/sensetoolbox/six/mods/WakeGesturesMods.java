@@ -3,8 +3,10 @@ package com.sensetoolbox.six.mods;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 
 import java.io.BufferedInputStream;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileReader;
 import java.lang.reflect.Method;
 
 import com.sensetoolbox.six.utils.GlobalActions;
@@ -235,9 +237,30 @@ public class WakeGesturesMods {
 	    return new String(hexChars);
 	}
 	
+	private static String getEventDevice() {
+		String eventnum = "4";
+		File[] files = (new File("/sys/class/input")).listFiles();
+		for (File fl: files) 
+		if (fl.getName().contains("input")) try {
+			File inputname = new File(fl.getAbsolutePath() + "/name");
+			if (inputname.exists()) {
+				BufferedReader br = new BufferedReader(new FileReader(inputname));
+				String line = br.readLine();
+				br.close();
+				if (line.trim().equals("wake_gesture")) {
+					String tmp = fl.getName().replace("input", "");
+					Integer.parseInt(tmp);
+					eventnum = tmp;
+					break;
+				}
+			}
+		} catch (Throwable t) {}
+		return eventnum;
+	}
+	
 	public static Thread createThread(final MethodHookParam param) throws Throwable {
 		Thread th = new Thread(new Runnable() {
-			File file = new File("/dev/input/event4");
+			File file = new File("/dev/input/event" + getEventDevice());
         	final byte event[] = new byte[4 * 2 + 2 + 2 + 4];
 			BufferedInputStream bfin = new BufferedInputStream(new FileInputStream(file));
 			StructInputEvent input_event = null;
@@ -284,7 +307,7 @@ public class WakeGesturesMods {
 		});
 		th.setPriority(Thread.MAX_PRIORITY);
 		th.setName("S6T_WakeGestures");
-		XposedHelpers.setAdditionalInstanceField(param.thisObject, "event4thread", th);
+		XposedHelpers.setAdditionalInstanceField(param.thisObject, "eventXthread", th);
 		return th;
 	}
 	
@@ -292,7 +315,7 @@ public class WakeGesturesMods {
 		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurnedOff", int.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "event4thread");
+				Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "eventXthread");
 				PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 				if (th != null) {
 					if (!th.isAlive()) {
@@ -319,7 +342,7 @@ public class WakeGesturesMods {
 					GlobalActions.setFlashlight(0);
 				};
 				if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
-	        	Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "event4thread");
+	        	Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "eventXthread");
 	        	if (th != null) {
 	        		PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 	        		if (mPowerManager.isScreenOn()) synchronized (mPauseLock) {
