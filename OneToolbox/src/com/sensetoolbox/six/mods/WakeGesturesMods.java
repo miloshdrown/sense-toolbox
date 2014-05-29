@@ -248,6 +248,7 @@ public class WakeGesturesMods {
 				String line = br.readLine();
 				br.close();
 				if (line.trim().equals("wake_gesture")) {
+					XposedBridge.log("wake_gesture device found!");
 					String tmp = fl.getName().replace("input", "");
 					Integer.parseInt(tmp);
 					eventnum = tmp;
@@ -255,6 +256,7 @@ public class WakeGesturesMods {
 				}
 			}
 		} catch (Throwable t) {}
+		XposedBridge.log("wake_gesture device number: " + eventnum);
 		return eventnum;
 	}
 	
@@ -272,9 +274,7 @@ public class WakeGesturesMods {
 					if (bfin.read(event) > 0) {
 						input_event = new StructInputEvent(event);
 						//XposedBridge.log("event3: " + bytesToHex(event));
-						//SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss", Locale.getDefault());
-						//Date d = new Date();
-						//XposedBridge.log("[S6T @ " + sdf.format(d) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
+						//XposedBridge.log("[S6T @ " + String.valueOf(SystemClock.uptimeMillis()) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
 						if (input_event != null && input_event.type == 0x02 && input_event.code == 0x0b) {
 							XMain.pref.reload();
 							if (XMain.pref.getBoolean("wake_gestures_active", false)) {

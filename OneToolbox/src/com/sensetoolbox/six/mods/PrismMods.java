@@ -1016,7 +1016,7 @@ public class PrismMods {
 					hotseat.animate().cancel();
 					int duration = (int) callStaticMethod(findClass("com.htc.launcher.bar.BarController", lpparam.classLoader), "getTransitionOutDuration", new Object[]{});
 					boolean animate = (boolean) param.args[0];
-					int add = 45;
+					int add = 70;
 					
 					if (animate)
 			        {
