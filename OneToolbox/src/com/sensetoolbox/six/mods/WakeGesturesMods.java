@@ -56,7 +56,7 @@ public class WakeGesturesMods {
 						case 3:
 							//XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass("com.htc.lockscreen.keyguard.SlidingChallengeLayout.ScrollDirection", mLSClassLoader), "ScrollToLeft"));
 							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
-							Intent i = new Intent("android.intent.action.MAIN").addCategory("android.intent.category.HOME").addFlags(0x10000000).putExtra("action", -1);
+							Intent i = new Intent("android.intent.action.MAIN").addCategory("android.intent.category.HOME").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("action", -1);
 							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i, true);
 							break;
 						case 4:
@@ -73,7 +73,7 @@ public class WakeGesturesMods {
 							break;
 						case 6:
 							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
-							Intent i2 = new Intent("com.htc.intent.action.HTC_Prism_AllApps").addCategory("android.intent.category.DEFAULT").addFlags(0x10000000);
+							Intent i2 = new Intent("com.htc.intent.action.HTC_Prism_AllApps").addCategory("android.intent.category.DEFAULT").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i2, true);
 							break;
 					}
@@ -248,7 +248,6 @@ public class WakeGesturesMods {
 				String line = br.readLine();
 				br.close();
 				if (line.trim().equals("wake_gesture")) {
-					XposedBridge.log("wake_gesture device found!");
 					String tmp = fl.getName().replace("input", "");
 					Integer.parseInt(tmp);
 					eventnum = tmp;
@@ -256,7 +255,6 @@ public class WakeGesturesMods {
 				}
 			}
 		} catch (Throwable t) {}
-		XposedBridge.log("wake_gesture device number: " + eventnum);
 		return eventnum;
 	}
 	

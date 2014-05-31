@@ -41,6 +41,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
@@ -1045,5 +1046,27 @@ public class PrismMods {
 				}
 			});
 		}
+	}
+	
+	public static void execHook_BlinkFeedImmersive(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.plugin.news.NewsDetailActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				Activity act = (Activity)param.thisObject;
+				act.requestWindowFeature(Window.FEATURE_ACTION_MODE_OVERLAY);
+				act.requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
+			}
+
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				Activity act = (Activity)param.thisObject;
+				int main_layout = act.getResources().getIdentifier("main_layout", "id", act.getPackageName());
+				View mail_layout_view = act.findViewById(main_layout);
+				if (mail_layout_view != null) mail_layout_view.setFitsSystemWindows(false);
+				
+				act.getActionBar().hide();
+				act.getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+			}
+		});
 	}
 }

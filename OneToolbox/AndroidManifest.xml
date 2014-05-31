@@ -48,6 +48,19 @@
 		<activity android:name="com.sensetoolbox.six.AboutScreen" android:screenOrientation="portrait" />
 		<activity android:name="com.sensetoolbox.six.SenseThemes" />
 		<activity android:name="com.sensetoolbox.six.WakeGestures" />
+		<activity
+			android:name="com.sensetoolbox.six.BlinkFeed"
+			android:label="BlinkFeed"
+			android:icon="@drawable/ic_launcher_blinkfeed"
+			android:enabled="false"
+            android:excludeFromRecents="true"
+            android:theme="@style/Invisible"
+            android:launchMode="singleInstance" >
+			<intent-filter>
+				<action android:name="android.intent.action.MAIN" />
+				<category android:name="android.intent.category.LAUNCHER" />
+			</intent-filter>
+		</activity>
 		<receiver android:name="com.sensetoolbox.six.PrefsFragment$HelperReceiver" android:exported="true">
 			<intent-filter>
 			    <action android:name="com.sensetoolbox.six.UPDATEBACKLIGHT" />

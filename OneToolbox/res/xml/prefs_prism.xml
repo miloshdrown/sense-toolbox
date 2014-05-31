@@ -83,6 +83,16 @@
             android:summary="@string/sense_blinkfeednodock_summ"
             android:title="@string/sense_blinkfeednodock_title"
             android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_prism_blinkfeedimmersive"
+            android:summary="@string/sense_blinkfeedimmersive_summ"
+            android:title="@string/sense_blinkfeedimmersive_title"
+            android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_prism_blinkfeedicon"
+            android:summary="@string/sense_blinkfeedicon_summ"
+            android:title="@string/sense_blinkfeedicon_title"
+            android:defaultValue="false" />
         </com.htc.preference.HtcPreferenceCategory>
         
         <com.htc.preference.HtcPreferenceCategory

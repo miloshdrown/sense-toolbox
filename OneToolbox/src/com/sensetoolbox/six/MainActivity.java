@@ -1,11 +1,12 @@
 package com.sensetoolbox.six;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
+import android.animation.AnimatorInflater;
+import android.animation.ObjectAnimator;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.view.animation.Animation;
-import android.view.animation.Animation.AnimationListener;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
@@ -27,45 +28,56 @@ public class MainActivity extends HtcPreferenceActivity {
 	
 	public void setActionBarText(String txt) {
 		// Nice title crossfade
-		Animation fadeIn = AnimationUtils.loadAnimation(this, R.anim.fade_in);
-		Animation fadeOut = AnimationUtils.loadAnimation(this, R.anim.fade_out);
-		Animation fadeOutMain = AnimationUtils.loadAnimation(this, R.anim.fade_out);
-		Animation fadeOutSub = AnimationUtils.loadAnimation(this, R.anim.fade_out);
+		ObjectAnimator fadeIn = (ObjectAnimator)AnimatorInflater.loadAnimator(this, R.animator.fade_in);
+		ObjectAnimator fadeInBtn = (ObjectAnimator)AnimatorInflater.loadAnimator(this, R.animator.fade_in);
+		ObjectAnimator fadeOutBtn = (ObjectAnimator)AnimatorInflater.loadAnimator(this, R.animator.fade_out);
+		ObjectAnimator fadeOutMain = (ObjectAnimator)AnimatorInflater.loadAnimator(this, R.animator.fade_out);
+		ObjectAnimator fadeOutSub = (ObjectAnimator)AnimatorInflater.loadAnimator(this, R.animator.fade_out);
 		
-		fadeOutMain.setAnimationListener(new AnimationListener() {
-			public void onAnimationEnd(Animation animation) {
-				actionBarTextMain.setVisibility(View.INVISIBLE);
+		fadeOutMain.addListener(new AnimatorListener(){
+			public void onAnimationStart(Animator animation) {
 				actionBarBackBtn.setVisibility(View.VISIBLE);
 			}
-			public void onAnimationStart(Animation animation) {}
-			public void onAnimationRepeat(Animation animation) {}
+			public void onAnimationEnd(Animator animation) {
+				actionBarTextMain.setVisibility(View.INVISIBLE);
+			}
+			public void onAnimationCancel(Animator animation) {}
+			public void onAnimationRepeat(Animator animation) {}
 		});
 		
-		fadeOutSub.setAnimationListener(new AnimationListener() {
-			public void onAnimationEnd(Animation animation) {
+		fadeOutSub.addListener(new AnimatorListener() {
+			public void onAnimationEnd(Animator animation) {
 				actionBarTextSub.setVisibility(View.INVISIBLE);
 				actionBarBackBtn.setVisibility(View.INVISIBLE);
 			}
-			public void onAnimationStart(Animation animation) {}
-			public void onAnimationRepeat(Animation animation) {}
+			public void onAnimationStart(Animator animation) {}
+			public void onAnimationRepeat(Animator animation) {}
+			public void onAnimationCancel(Animator animation) {}
 		});
 		
 		if (txt == null) {
-			fadeOutSub.setStartOffset(100);
-			fadeOut.setStartOffset(100);
-			fadeIn.setStartOffset(100);
-			actionBarTextSub.startAnimation(fadeOutSub);
-			actionBarBackBtn.startAnimation(fadeOut);
+			fadeOutSub.setTarget(actionBarTextSub);
+			fadeOutBtn.setTarget(actionBarBackBtn);
+			fadeIn.setTarget(actionBarTextMain);
+			
 			actionBarTextMain.setVisibility(View.VISIBLE);
-			actionBarTextMain.startAnimation(fadeIn);
+			fadeOutSub.start();
+			fadeOutBtn.start();
+			fadeIn.start();
 		} else {
-			fadeOutMain.setStartOffset(180);
-			fadeIn.setStartOffset(180);
+			fadeOutMain.setTarget(actionBarTextMain);
+			fadeOutMain.setStartDelay(100);
+			fadeIn.setTarget(actionBarTextSub);
+			fadeIn.setStartDelay(100);
+			fadeInBtn.setTarget(actionBarBackBtn);
+			fadeInBtn.setStartDelay(100);
+			
 			actionBarTextSub.setPrimaryText(txt);
-			actionBarTextMain.startAnimation(fadeOutMain);
+			actionBarTextSub.setAlpha(0);
 			actionBarTextSub.setVisibility(View.VISIBLE);
-			actionBarTextSub.startAnimation(fadeIn);
-			actionBarBackBtn.startAnimation(fadeIn);
+			fadeOutMain.start();
+			fadeIn.start();
+			fadeInBtn.start();
 		}
 	}
 	
@@ -108,30 +120,8 @@ public class MainActivity extends HtcPreferenceActivity {
 		titles.addView(actionBarTextSub);
 		actionBarContainer.addLeftView(titles);
 		actionBarContainer.setBackUpEnabled(false);
-		/*
-		if (RootTools.isAccessGiven()) {
-			isRootAccessGiven = true;
-		} else {
-			final SharedPreferences prefs = getSharedPreferences("one_toolbox_prefs", 1);
-			if(prefs.getBoolean("show_root_note", true))
-			{
-				HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(this);
-				builder.setTitle(Helpers.l10n(this, R.string.no_root_access));
-				builder.setMessage(Helpers.l10n(this, R.string.no_root_explain));
-				builder.setIcon(android.R.drawable.ic_dialog_alert);
-				builder.setPositiveButton(Helpers.l10n(this, R.string.dismiss_once), null);
-				builder.setNegativeButton(Helpers.l10n(this, R.string.dismiss_forever), new OnClickListener(){
-					@Override
-					public void onClick(DialogInterface dialog, int which) {
-						prefs.edit().putBoolean("show_root_note", false).commit();
-					}
-				});
-				HtcAlertDialog dlg = builder.create();
-				dlg.show();
-			}
-		}
-		*/
 		setContentView(R.layout.activity_main);
+		
 		getFragmentManager().beginTransaction().replace(R.id.fragment_container, new PrefsFragment()).commit();
 		((FrameLayout)findViewById(R.id.fragment_container)).getChildAt(0).setBackgroundResource(android.R.color.background_light);
 	}

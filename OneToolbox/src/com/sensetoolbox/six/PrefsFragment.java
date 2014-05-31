@@ -338,11 +338,24 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				}
 			};
 			
+			HtcCheckBoxPreference.OnPreferenceChangeListener toggleBF = new HtcCheckBoxPreference.OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
+					PackageManager pm = getActivity().getPackageManager(); 
+					if ((Boolean)newValue)
+						pm.setComponentEnabledSetting(new ComponentName(getActivity(), BlinkFeed.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+					else
+						pm.setComponentEnabledSetting(new ComponentName(getActivity(), BlinkFeed.class), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+					return true;
+				}
+			};
+			
 			HtcListPreference swipeDownActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipedownaction");
 			HtcListPreference swipeUpActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipeupaction");
 			HtcListPreference swipeRightActionPreference = (HtcListPreference) findPreference("pref_key_prism_swiperightaction");
 			HtcListPreference swipeLeftActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipeleftaction");
 			HtcListPreference shakeActionPreference = (HtcListPreference) findPreference("pref_key_prism_shakeaction");
+			HtcCheckBoxPreference blinkFeedIconPreference = (HtcCheckBoxPreference) findPreference("pref_key_prism_blinkfeedicon");
 			
 			HtcPreference launchAppsSwipeDown = findPreference("pref_key_prism_swipedown_app");
 			HtcPreference launchAppsSwipeUp = findPreference("pref_key_prism_swipeup_app");
@@ -399,6 +412,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			swipeRightActionPreference.setOnPreferenceChangeListener(chooseAction);
 			swipeLeftActionPreference.setOnPreferenceChangeListener(chooseAction);
 			shakeActionPreference.setOnPreferenceChangeListener(chooseAction);
+			blinkFeedIconPreference.setOnPreferenceChangeListener(toggleBF);
 	    }
 	}
 	
@@ -868,7 +882,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			}
 			
 			if (replaceTo != null) {
-				ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out, android.R.animator.fade_in, android.R.animator.fade_out).replace(R.id.fragment_container, replaceTo).addToBackStack(null).commit();
+				ft.setCustomAnimations(R.animator.fade_in, R.animator.fade_out, R.animator.fade_in, R.animator.fade_out).replace(R.id.fragment_container, replaceTo).addToBackStack(null).commit();
 				
 				((MainActivity)getActivity()).setActionBarText((String)preference.getTitle());
 				View homeBtn = ((MainActivity)getActivity()).actionBarBackBtn;

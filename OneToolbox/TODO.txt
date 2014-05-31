@@ -40,19 +40,10 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Current changelog
 =================
 
-1.2.5
-[New] Mod to change timeout EQS values
-[New] Mod to fix bottom gap on BlinkFeed launcher homescreens
-[New] Extended assist panel (a ring selector that pops up on swipe up from Home). Added Voice Dial and APM shortcuts.
-[Fixed] Quick Call in Wake gestures for M7
-[Fixed] HTC Camera launch without unlocking secure lock and launch other actions/apps after unlocking (the only thing that won't work with secure screen lock is opening EQS/notification panels)
-[Fixed] Hide dock on Blinkfeed mod was not working with Go to Blinkfeed action in Wake gestures
-[Fixed] Issues due to HTC Launcher restart after font, theme or language change
-[Fixed] Dynamic buttons backlight in Gallery
-[Fixed] Apply icons theme color to traffic meter too
-[Fixed] Truncate labels to single line in 6-row appdrawer on M8, second line won't fit because of navbar
-[Fixed] Wake gestures bugs
-[Fixed] Some UI and language bugs
+1.2.7
+[New] Immersive BlinkFeed mod removes action bar and makes statusbar semitransparent
+[New] BlinkFeed shortcut mod adds an icon to app drawer that leads directly to BlinkFeed page
+[Fixed] Wake gestures support detection
 
 ===========
 Translators
@@ -76,6 +67,23 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.2.6
+[Fixed] Localization slowdown
+
+1.2.5
+[New] Mod to change timeout EQS values
+[New] Mod to fix bottom gap on BlinkFeed launcher homescreens
+[New] Extended assist panel (a ring selector that pops up on swipe up from Home). Added Voice Dial and APM shortcuts.
+[Fixed] Quick Call in Wake gestures for M7
+[Fixed] HTC Camera launch without unlocking secure lock and launch other actions/apps after unlocking (the only thing that won't work with secure screen lock is opening EQS/notification panels)
+[Fixed] Hide dock on Blinkfeed mod was not working with Go to Blinkfeed action in Wake gestures
+[Fixed] Issues due to HTC Launcher restart after font, theme or language change
+[Fixed] Dynamic buttons backlight in Gallery
+[Fixed] Apply icons theme color to traffic meter too
+[Fixed] Truncate labels to single line in 6-row appdrawer on M8, second line won't fit because of navbar
+[Fixed] Wake gestures bugs
+[Fixed] Some UI and language bugs
 
 1.2
 [Fixed] Sense 6 Themes color override for HTC Sense Input (onscreen keyboard)
