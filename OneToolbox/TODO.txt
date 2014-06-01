@@ -43,6 +43,8 @@ Current changelog
 1.2.7
 [New] Immersive BlinkFeed mod removes action bar and makes statusbar semitransparent
 [New] BlinkFeed shortcut mod adds an icon to app drawer that leads directly to BlinkFeed page
+[New] Allow 180 degree orientation
+[New] Fully transparent statusbar in launcher, in apps with translucent statusbar (including all Sense themed apps) and on lockscreen
 [Fixed] Wake gestures support detection
 
 ===========

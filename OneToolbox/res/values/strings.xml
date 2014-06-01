@@ -109,7 +109,7 @@
     <string name="sense_theme_replace_all">Change theme for all apps in the list</string>
 	<string name="systemui_statusbar">Status Bar and Notification Drawer</string>
 	<string name="systemui_tsb_title">Transparent status bar</string>
-	<string name="systemui_tsb_summ">Make the status bar transparent.</string>
+	<string name="systemui_tsb_summ">Make status bar fully transparent in launcher, in apps with translucent statusbar and on lockscreen.</string>
 	<string name="systemui_tnb_title">Transparent notification background</string>
 	<string name="systemui_tnb_summ">Make the notification drawer background transparent.</string>
 	<string name="systemui_eqs">Extended Quick Settings</string>
@@ -345,6 +345,8 @@
 	<string name="various_keyslight_summ">Change backlight brightness for buttons.</string>
 	<string name="various_keyslight_auto_title">Dynamic backlight</string>
 	<string name="various_keyslight_auto_summ">Turn off buttons backlight in fullscreen apps.</string>
+	<string name="various_allrotations_title">All rotations</string>
+	<string name="various_allrotations_summ">Allow 180 degree orientation additionally to stock 90 and 270.</string>
 	
 	<string name="wakegestures_mod">Wake gestures</string>
 	<string name="wakegestures_haptic_title">Haptic feedback</string>

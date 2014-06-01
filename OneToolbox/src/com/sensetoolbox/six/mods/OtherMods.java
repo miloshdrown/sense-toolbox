@@ -617,4 +617,13 @@ public class OtherMods{
 			}
 		});
 	}
+	
+	public static void execHook_AllRotations() {
+		try {
+			XResources.setSystemWideReplacement("android", "bool", "config_allowAllRotations", true);
+			XResources.setSystemWideReplacement("com.htc.framework", "bool", "config_allowAllRotations", true);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
 }

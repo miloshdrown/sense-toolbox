@@ -91,6 +91,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_controls_extendedpanel", false))
 			SysUIMods.execHook_SearchGlowPad();
 		
+		if (pref.getBoolean("pref_key_other_allrotations", false))
+			OtherMods.execHook_AllRotations();
+		
 		GlobalActions.easterEgg();
 	}
 
@@ -181,6 +184,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			int headerClock = Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1"));
 			if(headerClock >= 2)
 				SysUIMods.execHook_NotifDrawerHeaderClock(resparam, headerClock);
+			
+			if(pref.getBoolean("pref_key_sysui_tsb", false))
+				SysUIMods.execHook_NoStatusBarBackground(resparam);
 		}
 		
 		if (pkg.equals("com.android.settings"))

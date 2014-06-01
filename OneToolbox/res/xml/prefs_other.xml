@@ -59,6 +59,11 @@
             android:summary="@string/various_keyslight_auto_summ"
             android:title="@string/various_keyslight_auto_title"
             android:defaultValue="false" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_other_allrotations"
+            android:summary="@string/various_allrotations_summ"
+            android:title="@string/various_allrotations_title"
+            android:defaultValue="false" />
         
         <com.htc.preference.HtcPreferenceCategory
             android:title="@string/various_mods_calls" >

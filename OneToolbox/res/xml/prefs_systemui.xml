@@ -17,6 +17,11 @@
     		android:text=" %"
     		android:max="100"
     		toolbox:enableKey="pref_key_sysui_invisibar_enable"/> -->
+    	<com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_tsb"
+            android:summary="@string/systemui_tsb_summ"
+            android:title="@string/systemui_tsb_title"
+            android:defaultValue="false" />
         <com.sensetoolbox.six.utils.SeekBarPreference 
             android:key="pref_key_sysui_invisinotify"
     		android:title="@string/systemui_tnb_title"

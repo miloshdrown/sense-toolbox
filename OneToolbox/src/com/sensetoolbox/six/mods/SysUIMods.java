@@ -133,6 +133,15 @@ public class SysUIMods {
 		} catch (Throwable ignore){}
 	}
 */
+	public static void execHook_NoStatusBarBackground(InitPackageResourcesParam resparam) {
+		try {
+			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+			resparam.res.setReplacement("com.android.systemui", "drawable", "status_bar_background_transparent", modRes.fwd(R.drawable.status_bar_background_transparent));
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
 	public static void execHook_MinorEQS(final LoadPackageParam lpparam, final boolean removeText) {
 		//Enable mEQS
 		findAndHookMethod("com.android.systemui.statusbar.StatusBarFlag", lpparam.classLoader, "loadMinorQuickSetting", new XC_MethodHook() {
