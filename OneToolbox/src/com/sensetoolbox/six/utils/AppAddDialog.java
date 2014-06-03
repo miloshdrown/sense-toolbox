@@ -2,6 +2,7 @@ package com.sensetoolbox.six.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,6 +80,10 @@ public class AppAddDialog extends HtcAlertDialog {
 		public CharSequence getItem(int position) {
 			return SenseThemes.pkgAppsList.get(position).loadLabel(stContext.getPackageManager());
 		}
+		
+		public Drawable getIcon(int position) {
+			return SenseThemes.pkgAppsList.get(position).loadIcon(stContext.getPackageManager());
+		}
 		 
 		public long getItemId(int position) {
 			return position;
@@ -92,18 +97,19 @@ public class AppAddDialog extends HtcAlertDialog {
 				row = mInflater.inflate(R.layout.htc_list_item_with_image, parent, false);			
 			
 			HtcListItem2LineText itemTitle = (HtcListItem2LineText)row.findViewById(R.id.list_item);
-			itemTitle.setPrimaryText(getItem(position));
 			itemTitle.setSecondaryTextVisibility(View.GONE);
-			
 			HtcListItemColorIcon itemIcon = (HtcListItemColorIcon)row.findViewById(R.id.list_item_img);
-			itemIcon.setColorIconImageDrawable(SenseThemes.pkgAppsListIcons.get(position));
-			float density = stContext.getResources().getDisplayMetrics().density;
-			itemIcon.setPadding(Math.round(density * 10), Math.round(density * 6), Math.round(density * 15), Math.round(density * 3));
+			
+			itemTitle.setPrimaryText(getItem(position));
+			itemIcon.setColorIconImageDrawable(getIcon(position));
 			
 			if (SenseThemes.arrayHasPkg(SenseThemes.pkgAppsList.get(position).packageName) == null)
 				row.setEnabled(true);
 			else
 				row.setEnabled(false);
+			
+			float density = stContext.getResources().getDisplayMetrics().density;
+			itemIcon.setPadding(Math.round(density * 10), Math.round(density * 6), Math.round(density * 15), Math.round(density * 3));
 			
 			return row;
 		}

@@ -76,6 +76,9 @@ public class WakeGesturesMods {
 							Intent i2 = new Intent("com.htc.intent.action.HTC_Prism_AllApps").addCategory("android.intent.category.DEFAULT").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i2, true);
 							break;
+						case 7:
+							launchShortcut(context, intent.getIntExtra("launch_shortcut", 0));
+							break;
 					}
 				}
 			} catch(Throwable t) {
@@ -87,9 +90,9 @@ public class WakeGesturesMods {
 	private static void doWakeUp(Object thisObject, long atTime) {
 		PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(thisObject, "mPowerManager");
 		if (mPowerManager != null) {
-			WakeLock wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T WakeUpSleepy");
-			wl.acquire(2000);
 			mPowerManager.wakeUp(atTime);
+			WakeLock wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "S6T WakeUpSleepy");
+			wl.acquire(1000);
 		}
 	}
 	
@@ -110,6 +113,15 @@ public class WakeGesturesMods {
 		}
 	}
 	
+	private static void sendLockScreenIntentLaunchShortcut(Context mContext, int input_val) {
+		if (mContext != null) {
+			Intent intent = new Intent("com.sensetoolbox.six.MotionGesture");
+			intent.putExtra("motion_gesture", 7);
+			intent.putExtra("launch_shortcut", input_val);
+			mContext.sendBroadcast(intent);
+		}
+	}
+	
 	private static void sendLockScreenIntentOpenAppDrawer(Context mContext) {
 		if (mContext != null) {
 			Intent intent = new Intent("com.sensetoolbox.six.MotionGesture");
@@ -118,50 +130,90 @@ public class WakeGesturesMods {
 		}
 	}
 	
-	public static boolean launchApp(Context ctx, int action) {
-        try {
-        	String pkgAppName = "";
-
-        	if (Helpers.isM8()) {
-        		switch (action) {
-    				case 2: case 24: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeup_app", ""); break;
-    				case 3: case 25: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipedown_app", ""); break;
-    				case 4: case 26: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeleft_app", ""); break;
-    				case 5: case 27: pkgAppName = XMain.pref.getString("pref_key_wakegest_swiperight_app", ""); break;
-    				case 6: pkgAppName = XMain.pref.getString("pref_key_wakegest_logo2wake_app", ""); break; //volume keys
-    				case 15: pkgAppName = XMain.pref.getString("pref_key_wakegest_dt2w_app", ""); break;
-        		}
-        	} else {
-        		switch (action) {
-        			case 1: pkgAppName = XMain.pref.getString("pref_key_wakegest_swiperight_app", ""); break;
-        			case 2: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeleft_app", ""); break;
-        			case 3: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipeup_app", ""); break;
-        			case 4: pkgAppName = XMain.pref.getString("pref_key_wakegest_swipedown_app", ""); break;
-        			case 5: pkgAppName = XMain.pref.getString("pref_key_wakegest_dt2w_app", ""); break;
-        			case 6: pkgAppName = XMain.pref.getString("pref_key_wakegest_logo2wake_app", ""); break;
-        		}
-        	}
-        	
-        	if (pkgAppName != "") {
-        		String[] pkgAppArray = pkgAppName.split("\\|");
-        		
-        		if (mEasyAccessCtrl == null) XposedBridge.log("Failed to start app using wake gesture!"); else
-        		if (pkgAppArray[0].equals("com.htc.camera")) {
-        			XposedHelpers.callMethod(mEasyAccessCtrl, "launchCamera", ctx);
-        		} else {
-        			Intent appIntent = new Intent();
-        			appIntent.setClassName(pkgAppArray[0], pkgAppArray[1]);
-        			appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED | Intent.FLAG_ACTIVITY_FORWARD_RESULT);
-        			XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
-       				XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", appIntent, true);
-        		}
-        	
-        		return true;
-        	} else return false;
-        } catch (Throwable t) {
-        	XposedBridge.log(t);
-            return false;
-        }
+	private static String getPkgAppName(int action) {
+		XMain.pref.reload();
+		if (Helpers.isM8()) {
+    		switch (action) {
+				case 2: case 24: return XMain.pref.getString("pref_key_wakegest_swipeup_app", null);
+				case 3: case 25: return XMain.pref.getString("pref_key_wakegest_swipedown_app", null);
+				case 4: case 26: return XMain.pref.getString("pref_key_wakegest_swipeleft_app", null);
+				case 5: case 27: return XMain.pref.getString("pref_key_wakegest_swiperight_app", null);
+				case 6: return XMain.pref.getString("pref_key_wakegest_logo2wake_app", null); //volume keys
+				case 15: return XMain.pref.getString("pref_key_wakegest_dt2w_app", null);
+    		}
+    	} else {
+    		switch (action) {
+    			case 1: return XMain.pref.getString("pref_key_wakegest_swiperight_app", null);
+    			case 2: return XMain.pref.getString("pref_key_wakegest_swipeleft_app", null);
+    			case 3: return XMain.pref.getString("pref_key_wakegest_swipeup_app", null);
+    			case 4: return XMain.pref.getString("pref_key_wakegest_swipedown_app", null);
+    			case 5: return XMain.pref.getString("pref_key_wakegest_dt2w_app", null);
+    			case 6: return XMain.pref.getString("pref_key_wakegest_logo2wake_app", null);
+    		}
+    	}
+		return null;
+	}
+	
+	public static void launchApp(Context ctx, int action) {
+		try {
+			String pkgAppName = getPkgAppName(action);
+			if (pkgAppName != null) {
+				String[] pkgAppArray = pkgAppName.split("\\|");
+				
+				if (mEasyAccessCtrl == null) XposedBridge.log("Failed to start app using wake gesture!"); else
+				if (pkgAppArray[0].equals("com.htc.camera")) {
+					XposedHelpers.callMethod(mEasyAccessCtrl, "launchCamera", ctx);
+				} else {
+					Intent appIntent = new Intent();
+					appIntent.setClassName(pkgAppArray[0], pkgAppArray[1]);
+					appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+					XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
+					XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", appIntent, true);
+				}
+			}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	private static String getShortcutIntent(int action) {
+		XMain.pref.reload();
+		if (Helpers.isM8()) {
+    		switch (action) {
+				case 2: case 24: return XMain.pref.getString("pref_key_wakegest_swipeup_shortcut_intent", null);
+				case 3: case 25: return XMain.pref.getString("pref_key_wakegest_swipedown_shortcut_intent", null);
+				case 4: case 26: return XMain.pref.getString("pref_key_wakegest_swipeleft_shortcut_intent", null);
+				case 5: case 27: return XMain.pref.getString("pref_key_wakegest_swiperight_shortcut_intent", null);
+				case 6: return XMain.pref.getString("pref_key_wakegest_logo2wake_shortcut_intent", null); //volume keys
+				case 15: return XMain.pref.getString("pref_key_wakegest_dt2w_shortcut_intent", null);
+    		}
+    	} else {
+    		switch (action) {
+    			case 1: return XMain.pref.getString("pref_key_wakegest_swiperight_shortcut_intent", null);
+    			case 2: return XMain.pref.getString("pref_key_wakegest_swipeleft_shortcut_intent", null);
+    			case 3: return XMain.pref.getString("pref_key_wakegest_swipeup_shortcut_intent", null);
+    			case 4: return XMain.pref.getString("pref_key_wakegest_swipedown_shortcut_intent", null);
+    			case 5: return XMain.pref.getString("pref_key_wakegest_dt2w_shortcut_intent", null);
+    			case 6: return XMain.pref.getString("pref_key_wakegest_logo2wake_shortcut_intent", null);
+    		}
+    	}
+		return null;
+	}
+	
+	public static void launchShortcut(Context ctx, int action) {
+		try {
+			if (mEasyAccessCtrl == null) XposedBridge.log("Failed to start app using wake gesture!"); else {
+				String intentString = getShortcutIntent(action);
+				if (intentString != null) {
+					Intent shortcutIntent = Intent.parseUri(intentString, 0);
+					shortcutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+					XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
+					XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", shortcutIntent, true);
+				}
+			}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 	
 	public static void doHaptic(Context context) {
@@ -208,6 +260,7 @@ public class WakeGesturesMods {
 				case 8: doWakeUp(param.thisObject, event_time); GlobalActions.expandNotifications(mContext); break;
 				case 9: doWakeUp(param.thisObject, event_time); GlobalActions.expandEQS(mContext); break;
 				case 10: doWakeUp(param.thisObject, event_time); sendLockScreenIntentLaunchApp(mContext, action); break;
+				case 14: doWakeUp(param.thisObject, event_time); sendLockScreenIntentLaunchShortcut(mContext, action); break;
 				case 11:
 					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 85));
 					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 85));
@@ -399,17 +452,20 @@ public class WakeGesturesMods {
 	        @Override
 	        protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 	        	int j = (Integer)param.args[1];
-	        	String prefName = null;
-	        	switch (j) {
-	        		case 3: case 25: prefName = "pref_key_wakegest_swipedown"; break;
-	        		case 15: prefName = "pref_key_wakegest_dt2w"; break;
-	        		case 6: prefName = "pref_key_wakegest_logo2wake"; break; // this is a volume keys
-	            	case 5: case 27: prefName = "pref_key_wakegest_swiperight"; break;
-	            	case 4: case 26: prefName = "pref_key_wakegest_swipeleft"; break;
-	            	case 2: case 24: prefName = "pref_key_wakegest_swipeup"; break;
-	        	}
-	        	executeActionFor(param, prefName, SystemClock.uptimeMillis(), j);
-	        	param.setResult(null);
+	        	XMain.pref.reload();
+				if (XMain.pref.getBoolean("wake_gestures_active", false)) {
+					String prefName = null;
+					switch (j) {
+						case 3: case 25: prefName = "pref_key_wakegest_swipedown"; break;
+						case 15: prefName = "pref_key_wakegest_dt2w"; break;
+						case 6: prefName = "pref_key_wakegest_logo2wake"; break; // this is a volume keys
+						case 5: case 27: prefName = "pref_key_wakegest_swiperight"; break;
+						case 4: case 26: prefName = "pref_key_wakegest_swipeleft"; break;
+						case 2: case 24: prefName = "pref_key_wakegest_swipeup"; break;
+					}
+					executeActionFor(param, prefName, SystemClock.uptimeMillis(), j);
+					param.setResult(null);
+				}
 	        }
 		});
 	}

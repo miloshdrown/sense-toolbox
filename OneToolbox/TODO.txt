@@ -45,6 +45,7 @@ Current changelog
 [New] BlinkFeed shortcut mod adds an icon to app drawer that leads directly to BlinkFeed page
 [New] Allow 180 degree orientation
 [New] Fully transparent statusbar in launcher, in apps with translucent statusbar (including all Sense themed apps) and on lockscreen
+[New] Shortcuts added as an action for gestures/buttons
 [Fixed] Wake gestures support detection
 
 ===========

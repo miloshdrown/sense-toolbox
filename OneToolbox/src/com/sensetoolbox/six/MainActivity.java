@@ -4,6 +4,7 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
@@ -130,5 +131,9 @@ public class MainActivity extends HtcPreferenceActivity {
 		super.onResume();
 		int newThemeId = Helpers.getCurrentTheme(this);
 		if (newThemeId != mThemeId) recreate();
+	}
+	
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Helpers.processResult(this, requestCode, resultCode, data);
 	}
 }

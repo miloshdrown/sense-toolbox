@@ -312,7 +312,7 @@ public class GlobalActions {
 	
 	@SuppressWarnings("deprecation")
 	private static void turnGPSOn(Context context) {
-		beforeEnable = Settings.Secure.getString (context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+		beforeEnable = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 		String newSet;
 		if (beforeEnable.equals(""))
 			newSet = LocationManager.GPS_PROVIDER;
@@ -503,34 +503,59 @@ public class GlobalActions {
 	}
 	
 	public static boolean launchApp(Context context, int action) {
-        try {
-        	String pkgAppName = "";
-        	switch (action) {
-        		case 1: pkgAppName = XMain.pref.getString("pref_key_prism_swipedown_app", ""); break;
-        		case 2: pkgAppName = XMain.pref.getString("pref_key_prism_swipeup_app", ""); break;
-        		case 3: pkgAppName = XMain.pref.getString("pref_key_controls_backlongpress_app", ""); break;
-        		case 4: pkgAppName = XMain.pref.getString("pref_key_controls_homeassist_app", ""); break;
-        		case 5: pkgAppName = XMain.pref.getString("pref_key_prism_swiperight_app", ""); break;
-        		case 6: pkgAppName = XMain.pref.getString("pref_key_prism_swipeleft_app", ""); break;
-        		case 7: pkgAppName = XMain.pref.getString("pref_key_prism_shake_app", ""); break;
-        	}
-        	
-        	if (pkgAppName != "") {
-        		String[] pkgAppArray = pkgAppName.split("\\|");
-        		
-        		ComponentName name = new ComponentName(pkgAppArray[0], pkgAppArray[1]);
-        		Intent intent = new Intent(Intent.ACTION_MAIN);
-        		intent.addCategory(Intent.CATEGORY_LAUNCHER);
-        		intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-        		intent.setComponent(name);
-        		context.startActivity(intent);
-        		
-        		return true;
-        	} else return false;
-        } catch (Throwable t) {
-        	XposedBridge.log(t);
-            return false;
-        }
+		try {
+			String pkgAppName = null;
+			switch (action) {
+				case 1: pkgAppName = XMain.pref.getString("pref_key_prism_swipedown_app", null); break;
+				case 2: pkgAppName = XMain.pref.getString("pref_key_prism_swipeup_app", null); break;
+				case 3: pkgAppName = XMain.pref.getString("pref_key_controls_backlongpress_app", null); break;
+				case 4: pkgAppName = XMain.pref.getString("pref_key_controls_homeassist_app", null); break;
+				case 5: pkgAppName = XMain.pref.getString("pref_key_prism_swiperight_app", null); break;
+				case 6: pkgAppName = XMain.pref.getString("pref_key_prism_swipeleft_app", null); break;
+				case 7: pkgAppName = XMain.pref.getString("pref_key_prism_shake_app", null); break;
+			}
+			
+			if (pkgAppName != null) {
+				String[] pkgAppArray = pkgAppName.split("\\|");
+				
+				ComponentName name = new ComponentName(pkgAppArray[0], pkgAppArray[1]);
+				Intent intent = new Intent(Intent.ACTION_MAIN);
+				intent.addCategory(Intent.CATEGORY_LAUNCHER);
+				intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+				intent.setComponent(name);
+				context.startActivity(intent);
+				
+				return true;
+			} else return false;
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+			return false;
+		}
+	}
+	
+	public static boolean launchShortcut(Context context, int action) {
+		try {
+			String intentString = null;
+			switch (action) {
+				case 1: intentString = XMain.pref.getString("pref_key_prism_swipedownaction_shortcut_intent", null); break;
+				case 2: intentString = XMain.pref.getString("pref_key_prism_swipeupaction_shortcut_intent", null); break;
+				case 3: intentString = XMain.pref.getString("pref_key_controls_backlongpressaction_shortcut_intent", null); break;
+				case 4: intentString = XMain.pref.getString("pref_key_controls_homeassistaction_shortcut_intent", null); break;
+				case 5: intentString = XMain.pref.getString("pref_key_prism_swiperightaction_shortcut_intent", null); break;
+				case 6: intentString = XMain.pref.getString("pref_key_prism_swipeleftaction_shortcut_intent", null); break;
+				case 7: intentString = XMain.pref.getString("pref_key_prism_shakeaction_shortcut_intent", null); break;
+			}
+			
+			if (intentString != null) {
+				Intent shortcutIntent = Intent.parseUri(intentString, 0);
+				shortcutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+				context.startActivity(shortcutIntent);
+				return true;
+			} else return false;
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+			return false;
+		}
 	}
 	
 	public static boolean takeScreenshot(Context context) {

@@ -67,6 +67,7 @@
         <item >@string/array_global_actions_sleep</item>
         <item >@string/array_global_actions_screenshot</item>
         <item >@string/array_global_actions_launch</item>
+        <item >@string/array_global_actions_shortcut</item>
         <item >@string/array_global_actions_toggle</item>
     </string-array>
     <string-array name="global_actions_val">
@@ -77,6 +78,7 @@
         <item >5</item>
         <item >6</item>
         <item >7</item>
+        <item >12</item>
         <item >8</item>
     </string-array>
     
@@ -239,7 +241,8 @@
         <item >@string/array_wakegestures_flashlight</item>
         <item >@string/array_global_actions_notif</item>
         <item >@string/array_global_actions_eqs</item>
-        <item >@string/launch_app</item>
+        <item >@string/array_global_actions_launch</item>
+        <item >@string/array_global_actions_shortcut</item>
         <item >@string/array_media_playpause</item>
         <item >@string/array_media_next</item>
         <item >@string/array_media_prev</item>
@@ -256,12 +259,13 @@
         <item >8</item>
         <item >9</item>
         <item >10</item>
+        <item >14</item>
         <item >11</item>
         <item >12</item>
         <item >13</item>
     </string-array>
     
-        <string-array name="wakegest_m8stock_actions">
+    <string-array name="wakegest_m8stock_actions">
         <item >@string/array_wakegestures_disable</item>
         <item >@string/array_wakegestures_wakeup</item>
         <item >@string/array_wakegestures_wakeupbypass</item>
@@ -271,7 +275,8 @@
         <item >@string/array_wakegestures_appdrawer</item>
         <item >@string/array_global_actions_notif</item>
         <item >@string/array_global_actions_eqs</item>
-        <item >@string/launch_app</item>
+        <item >@string/array_global_actions_launch</item>
+        <item >@string/array_global_actions_shortcut</item>
     </string-array>
     <string-array name="wakegest_m8stock_actions_val">
         <item >0</item>
@@ -284,5 +289,6 @@
         <item >8</item>
         <item >9</item>
         <item >10</item>
+        <item >14</item>
     </string-array>
 </resources>

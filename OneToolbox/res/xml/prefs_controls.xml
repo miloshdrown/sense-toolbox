@@ -41,12 +41,12 @@
         <com.htc.preference.HtcPreference
             android:key="pref_key_controls_backlongpress_app"
 			android:summary="@string/notselected"
-            android:title="@string/launch_app"
+            android:title="@string/array_global_actions_launch"
             android:icon="@drawable/right_arrow" />
         <com.sensetoolbox.six.utils.HtcListPreferencePlus
             android:key="pref_key_controls_backlongpress_toggle"
 			android:summary="@string/notselected"
-            android:title="@string/toggle_settings"
+            android:title="@string/array_global_actions_toggle"
             android:entries="@array/global_toggles"
             android:entryValues="@array/global_toggles_val"
             android:icon="@drawable/right_arrow" />
@@ -65,12 +65,12 @@
         <com.htc.preference.HtcPreference
             android:key="pref_key_controls_homeassist_app"
 			android:summary="@string/notselected"
-            android:title="@string/launch_app"
+            android:title="@string/array_global_actions_launch"
             android:icon="@drawable/right_arrow" />
         <com.sensetoolbox.six.utils.HtcListPreferencePlus
             android:key="pref_key_controls_homeassist_toggle"
 			android:summary="@string/notselected"
-            android:title="@string/toggle_settings"
+            android:title="@string/array_global_actions_toggle"
             android:entries="@array/global_toggles"
             android:entryValues="@array/global_toggles_val"
             android:icon="@drawable/right_arrow" />

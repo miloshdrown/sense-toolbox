@@ -89,8 +89,6 @@
 	
 	<string name="transparency_msg">0 = transparent, 100 = opaque</string>
 	<string name="transparency_enable">Enable transparency</string>
-	<string name="launch_app">Launch app</string>
-	<string name="toggle_settings">Toggle setting</string>
 	
 	<string name="camera_mods">Camera mods</string>
 	
@@ -460,6 +458,7 @@
 	<string name="array_global_actions_sleep">Go to sleep</string>
 	<string name="array_global_actions_screenshot">Take screenshot</string>
 	<string name="array_global_actions_launch">Launch app</string>
+	<string name="array_global_actions_shortcut">Launch shortcut</string>
 	<string name="array_global_actions_toggle">Toggle settings</string>
 	<string name="array_global_toggle_wifi">Wi-Fi</string>
 	<string name="array_global_toggle_bt">Bluetooth</string>

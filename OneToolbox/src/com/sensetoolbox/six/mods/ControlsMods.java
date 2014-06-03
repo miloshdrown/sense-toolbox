@@ -104,6 +104,7 @@ public class ControlsMods {
 										case 9: GlobalActions.killForegroundApp(mContext); break;
 										case 10: GlobalActions.simulateMenu(mContext); break;
 										case 11: GlobalActions.openRecents(mContext); break;
+										case 12: XposedHelpers.callMethod(param.thisObject, "dismissKeyguardLw"); GlobalActions.launchShortcut(mContext, 3); break;
 									}
 								}
 								isBackLongPressed = true;
@@ -151,6 +152,9 @@ public class ControlsMods {
 				case 9: GlobalActions.killForegroundApp(mContext); break;
 				case 10: GlobalActions.simulateMenu(mContext); break;
 				case 11: GlobalActions.openRecents(mContext); break;
+				case 12: Object amn2 = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
+						 XposedHelpers.callMethod(amn2, "dismissKeyguardOnNextActivity");
+						 GlobalActions.launchShortcut(mContext, 4); break;
 			}
 		}
 	}
@@ -423,6 +427,7 @@ public class ControlsMods {
 								case 9: GlobalActions.killForegroundApp(mContext); break;
 								case 10: GlobalActions.simulateMenu(mContext); break;
 								case 11: GlobalActions.openRecents(mContext); break;
+								case 12: GlobalActions.launchShortcut(mContext, 3); break; // No back key on lock screen
 							}
 							return true;
 						}

@@ -3,6 +3,7 @@ package com.sensetoolbox.six.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,16 +36,19 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.content.res.XModuleResources;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.BlurMaskFilter;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
+import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -182,7 +186,7 @@ public class Helpers {
 			
 			CharSequence summ = p.getSummary();
 			if (summ != null && summ != "") {
-				if (titleResId == R.string.launch_app || titleResId == R.string.toggle_settings) {
+				if (titleResId == R.string.array_global_actions_launch || titleResId == R.string.array_global_actions_toggle) {
 					p.setSummary(l10n(act, "notselected"));
 				} else {
 					String titleResName = act.getResources().getResourceEntryName(titleResId);
@@ -202,7 +206,7 @@ public class Helpers {
 					entriesResName = "global_actions";
 				else if (titleResName.contains("wakegestures_"))
 					entriesResName = "wakegest_actions";
-				else if (titleResId == R.string.toggle_settings)
+				else if (titleResId == R.string.array_global_actions_toggle)
 					entriesResName = "global_toggles";
 				else
 					entriesResName = titleResName.replace("_title", "");
@@ -484,5 +488,46 @@ public class Helpers {
 			br.close();
 		} catch (Exception e) {}
 		if (wake_gestures != null && wake_gestures.equals("1")) return true; else return false; 
+	}
+	
+	public static void processResult(Activity act, int requestCode, int resultCode, Intent data) {
+		if (requestCode != 7350) return;
+		if (resultCode == Activity.RESULT_OK) {
+			Bitmap icon = null;
+			Intent.ShortcutIconResource iconResId = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
+			if (iconResId != null) try {
+				Context ctx = act.createPackageContext(iconResId.packageName, Context.CONTEXT_IGNORE_SECURITY);
+				icon = BitmapFactory.decodeResource(ctx.getResources(), ctx.getResources().getIdentifier(iconResId.resourceName, "drawable", iconResId.packageName));
+			} catch (Exception e) {}
+			if (icon == null) icon = (Bitmap)data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
+
+			if (icon != null && PrefsFragment.lastShortcutKey != null) try {
+				String dir = act.getFilesDir() + "/shortcuts";
+				String fileName = dir + "/" + PrefsFragment.lastShortcutKey + ".png";
+				File shortcutsDir = new File(dir);
+				shortcutsDir.mkdirs();
+				File shortcutFileName = new File(fileName);
+				FileOutputStream shortcutOutStream = new FileOutputStream(shortcutFileName);
+
+				if (icon.compress(CompressFormat.PNG, 100, shortcutOutStream))
+				PrefsFragment.prefs.edit().putString(PrefsFragment.lastShortcutKey + "_icon", shortcutFileName.getAbsolutePath()).commit();
+				
+				shortcutOutStream.close();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			
+			if (PrefsFragment.lastShortcutKey != null) {
+				if (PrefsFragment.lastShortcutKeyContents != null) PrefsFragment.prefs.edit().putString(PrefsFragment.lastShortcutKey, PrefsFragment.lastShortcutKeyContents).commit();
+				
+				String shortcutName = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
+				if (shortcutName != null) PrefsFragment.prefs.edit().putString(PrefsFragment.lastShortcutKey + "_name", shortcutName).commit();
+				
+				Intent shortcutIntent = (Intent)data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
+				if (shortcutIntent != null) PrefsFragment.prefs.edit().putString(PrefsFragment.lastShortcutKey + "_intent", shortcutIntent.toUri(0)).commit();
+			}
+			
+			if (PrefsFragment.shortcutDlg != null) PrefsFragment.shortcutDlg.dismiss();
+		}
 	}
 }

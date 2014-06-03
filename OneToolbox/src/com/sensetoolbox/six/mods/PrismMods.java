@@ -529,6 +529,7 @@ public class PrismMods {
 					case 6: return GlobalActions.takeScreenshot(helperContext);
 					case 7: return GlobalActions.launchApp(helperContext, 1);
 					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swipedown_toggle", "0")));
+					case 12: return GlobalActions.launchShortcut(helperContext, 1);
 					default: return false;					
 				}
 			}
@@ -543,6 +544,7 @@ public class PrismMods {
 					case 6: return GlobalActions.takeScreenshot(helperContext);
 					case 7: return GlobalActions.launchApp(helperContext, 2);
 					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swipeup_toggle", "0")));
+					case 12: return GlobalActions.launchShortcut(helperContext, 2);
 					default: return false;
 				}
 			}
@@ -616,6 +618,7 @@ public class PrismMods {
 					case 6: return GlobalActions.takeScreenshot(helperContext);
 					case 7: return GlobalActions.launchApp(helperContext, 5);
 					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swiperight_toggle", "0")));
+					case 12: return GlobalActions.launchShortcut(helperContext, 5);
 					default: return false;					
 				}
 			}
@@ -629,6 +632,7 @@ public class PrismMods {
 					case 6: return GlobalActions.takeScreenshot(helperContext);
 					case 7: return GlobalActions.launchApp(helperContext, 6);
 					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swipeleft_toggle", "0")));
+					case 12: return GlobalActions.launchShortcut(helperContext, 6);
 					default: return false;					
 				}
 			}

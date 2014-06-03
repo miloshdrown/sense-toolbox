@@ -104,6 +104,7 @@ public class ShakeManager implements SensorEventListener {
 			case 6: GlobalActions.takeScreenshot(helperContext); return;
 			case 7: GlobalActions.launchApp(helperContext, 7); return;
 			case 8: GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_shake_toggle", "0"))); return;
+			case 12: GlobalActions.launchShortcut(helperContext, 7); return;
 			default: return;
 		}
 	}

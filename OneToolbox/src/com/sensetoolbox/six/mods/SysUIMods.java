@@ -1353,6 +1353,8 @@ public class SysUIMods {
 			
 			readStream = new BufferedReader(new FileReader("/sys/class/thermal/thermal_zone0/temp"));
 			curTemp = readStream.readLine().trim();
+			int curTempInt = Integer.parseInt(curTemp);
+			if (curTempInt >= 1000) curTemp = String.valueOf(Math.round(curTempInt / 1000));
 			readStream.close();
 		} catch (Throwable t) {
 			t.printStackTrace();

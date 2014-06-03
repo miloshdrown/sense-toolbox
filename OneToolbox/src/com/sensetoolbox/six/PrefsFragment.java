@@ -49,6 +49,7 @@ import com.htc.preference.HtcPreferenceFragment;
 import com.htc.preference.HtcPreferenceScreen;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.utils.ApkInstaller;
+import com.sensetoolbox.six.utils.AppShortcutAddDialog;
 import com.sensetoolbox.six.utils.ColorPreference;
 import com.sensetoolbox.six.utils.DownloadAndUnZip;
 import com.sensetoolbox.six.utils.DynamicPreference;
@@ -64,6 +65,9 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	static public List<Drawable> pkgAppsListIcons = new ArrayList<Drawable>();
 	//static public List<Boolean> pkgAppsListSystem = new ArrayList<Boolean>();
 	static public SharedPreferences prefs = null;
+	static public String lastShortcutKey = null;
+	static public String lastShortcutKeyContents = null;
+	static public AppShortcutAddDialog shortcutDlg = null;
 	private boolean toolboxModuleActive = false;
 	
 	@Override
@@ -271,6 +275,13 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						toggleSettings.setEnabled(true);
 						((HtcListPreferencePlus)toggleSettings).show();
 					} else toggleSettings.setEnabled(false);
+					
+					if (newValue.equals("12")) {
+						shortcutDlg = new AppShortcutAddDialog(getActivity(), preference.getKey() + "_shortcut");
+						shortcutDlg.setTitle(preference.getTitle());
+						shortcutDlg.setIcon(preference.getIcon());
+						shortcutDlg.show();
+					}
 					
 					return true;
 				}
@@ -552,6 +563,13 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						toggleSettings.setEnabled(true);
 						((HtcListPreferencePlus)toggleSettings).show();
 					} else toggleSettings.setEnabled(false);
+					
+					if (newValue.equals("12")) {
+						shortcutDlg = new AppShortcutAddDialog(getActivity(), preference.getKey() + "_shortcut");
+						shortcutDlg.setTitle(preference.getTitle());
+						shortcutDlg.setIcon(preference.getIcon());
+						shortcutDlg.show();
+					}
 					
 					return true;
 				}

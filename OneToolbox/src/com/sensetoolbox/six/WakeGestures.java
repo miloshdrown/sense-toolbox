@@ -1,6 +1,7 @@
 package com.sensetoolbox.six;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -21,6 +22,7 @@ import com.htc.widget.ActionBarText;
 import com.htc.widget.HtcListView;
 import com.htc.widget.HtcToggleButtonLight;
 import com.htc.widget.HtcToggleButtonLight.OnCheckedChangeListener;
+import com.sensetoolbox.six.utils.AppShortcutAddDialog;
 import com.sensetoolbox.six.utils.DynamicPreference;
 import com.sensetoolbox.six.utils.Helpers;
 
@@ -132,6 +134,7 @@ public class WakeGestures extends HtcPreferenceActivity {
 		HtcPreference launchAppsDoubleTap = findPreference("pref_key_wakegest_dt2w_app");
 		HtcPreference launchAppsLogoPress = findPreference("pref_key_wakegest_logo2wake_app");
 		
+		final HtcPreferenceActivity prefAct = this;
 		HtcPreference.OnPreferenceChangeListener chooseAction = new HtcPreference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
@@ -152,6 +155,13 @@ public class WakeGestures extends HtcPreferenceActivity {
 					else
 						launchApps.getOnPreferenceClickListener().onPreferenceClick(launchApps);
 				} else launchApps.setEnabled(false);
+				
+				if (newValue.equals("14")) {
+					PrefsFragment.shortcutDlg = new AppShortcutAddDialog(prefAct, preference.getKey() + "_shortcut");
+					PrefsFragment.shortcutDlg.setTitle(preference.getTitle());
+					PrefsFragment.shortcutDlg.setIcon(preference.getIcon());
+					PrefsFragment.shortcutDlg.show();
+				}
 				
 				return true;
 			}
@@ -238,6 +248,11 @@ public class WakeGestures extends HtcPreferenceActivity {
 		launchAppsDoubleTap.setOnPreferenceClickListener(clickPref);
 		launchAppsLogoPress.setSummary(getAppName(this, prefs.getString("pref_key_wakegest_logo2wake_app", not_selected)));
 		launchAppsLogoPress.setOnPreferenceClickListener(clickPref);
+	}
+	
+	@Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		Helpers.processResult(this, requestCode, resultCode, data);
 	}
 	
 	@Override
