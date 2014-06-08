@@ -248,7 +248,7 @@
 	<string name="sense_blinkfeednodock_title">Hide dock on BlinkFeed</string>
 	<string name="sense_blinkfeednodock_summ">Extend BlinkFeed\'s visible area by hiding bottom icon dock.</string>
 	<string name="sense_blinkfeedimmersive_title">Immersive BlinkFeed</string>
-	<string name="sense_blinkfeedimmersive_summ">Remove action bar and make statusbar semitransparent in article view.</string>
+	<string name="sense_blinkfeedimmersive_summ">Remove action bar and make statusbar semitransparent in article view. You can access removed elements using Menu key.</string>
 	<string name="sense_blinkfeedicon_title">BlinkFeed shortcut</string>
 	<string name="sense_blinkfeedicon_summ">Add shortcut to app drawer that leads directly to BlinkFeed. Reboot is not required. Uncheck this option to remove shortcut, don\'t uninstall it!</string>
 	<string name="notselected">Not selected</string>
