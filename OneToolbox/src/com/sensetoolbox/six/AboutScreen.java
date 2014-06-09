@@ -84,9 +84,7 @@ public class AboutScreen extends Activity {
 			versionTv.setPaintFlags(iv02.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			OnLongClickListener olcl = new OnLongClickListener(){
 			    public boolean onLongClick(View v) {
-			    	Intent intent = new Intent();
-			        intent.setAction("com.sensetoolbox.six.mods.action.StartEasterEgg");
-			        sendBroadcast(intent);
+			        sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.StartEasterEgg"));
 			    	return true;
 			    }
 			};

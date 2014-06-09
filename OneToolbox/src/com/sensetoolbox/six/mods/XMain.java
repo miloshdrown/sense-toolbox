@@ -38,6 +38,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		senseVersion = new Version(pref.getString("pref_sense_version", "5.0"));
 		
 		PackagePermissions.init();
+		GlobalActions.toolboxStuff();
 		
 		if(pref.getBoolean("pref_key_cb_beats", false))
 			CleanBeamMods.execHook_BeatsIcon();
@@ -93,8 +94,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pref.getBoolean("pref_key_other_allrotations", false))
 			OtherMods.execHook_AllRotations();
-		
-		GlobalActions.easterEgg();
 	}
 
 	@Override
@@ -103,6 +102,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.htc.launcher"))
 		{
+			pref.reload();
 			if(pref.getBoolean("pref_key_prism_invisidrawer_enable", false))
 				PrismMods.execHook_InvisiDrawerRes(resparam);
 			
@@ -259,6 +259,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if(pkg.equals("com.htc.sense.mms"))
 		{
+			pref.reload();
 			if(pref.getBoolean("pref_key_other_smscreenon", false))
 				MessagingMods.execHook_smsscreenon(lpparam);
 			
@@ -277,6 +278,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if(pkg.equals("com.htc.launcher"))
 		{
+			pref.reload();
 			if(pref.getBoolean("pref_key_prism_invisiwidget_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_prism_invisiwidget", 100);

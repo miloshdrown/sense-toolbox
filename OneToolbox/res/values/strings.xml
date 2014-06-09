@@ -10,6 +10,10 @@
     <string name="restore">Restore</string>
     <string name="add">Add</string>
     <string name="soft_reboot">Soft Reboot</string>
+    <string name="restart_prism">Restart launcher</string>
+    <string name="restarted_prism">Launcher was restarted</string>
+    <string name="restart_messages">Restart Messages</string>
+    <string name="restarted_messages">Messages app was restarted</string>
     <string name="ram_mb">MB</string>
     <string name="cpu_mhz">MHz</string>
     <string name="backup_restore">Settings management</string>
@@ -75,7 +79,9 @@
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
 	<string name="hotreboot_explain">Your order has been saved! A hot reboot is required for this to take effect. Would you like to do this now?</string>
-	<string name="hotreboot_explain_prefs">This will soft reboot your device. Continue?</string>
+	<string name="hotreboot_explain_prefs">This will soft reboot your device.\nContinue?</string>
+	<string name="restartprism_explain_prefs">This will restart BlinkFeed launcher.\nContinue?</string>
+	<string name="restartmessages_explain_prefs">This will restart Messages app.\nContinue?</string>
 	<string name="select_tile">Select tile to add</string>
 	<string name="success">Success</string>
 	<string name="backup_restored">Backup successfully restored! Tap on \'Save\' to apply the order.</string>

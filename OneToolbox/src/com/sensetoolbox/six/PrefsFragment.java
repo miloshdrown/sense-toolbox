@@ -229,6 +229,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState, R.xml.prefs_prism);
 	        addPreferencesFromResource(R.xml.prefs_prism);
+	        this.rebootType = 1;
 	        
 	        HtcPreference.OnPreferenceChangeListener chooseAction = new HtcPreference.OnPreferenceChangeListener() {
 				@Override
@@ -432,6 +433,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	    public void onCreate(Bundle savedInstanceState) {
 	        super.onCreate(savedInstanceState, R.xml.prefs_message);
 	        addPreferencesFromResource(R.xml.prefs_message);
+	        this.rebootType = 2;
 	    }
 	}
 	

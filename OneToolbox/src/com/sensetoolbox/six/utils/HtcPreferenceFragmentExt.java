@@ -27,20 +27,38 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 	private SharedPreferences prefs = null;
+	public int rebootType = 0;
 	
 	private boolean handleOptionsItemSelected(final Activity act, MenuItem item) {
 		if (item.getItemId() == R.id.softreboot) {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
-			alert.setTitle(Helpers.l10n(act, R.string.soft_reboot));
-			alert.setView(Helpers.createCenteredText(act, R.string.hotreboot_explain_prefs));
+			if (rebootType == 1) {
+				alert.setTitle(Helpers.l10n(act, R.string.restart_prism));
+				alert.setView(Helpers.createCenteredText(act, R.string.restartprism_explain_prefs));
+			} else if (rebootType == 2) {
+				alert.setTitle(Helpers.l10n(act, R.string.restart_messages));
+				alert.setView(Helpers.createCenteredText(act, R.string.restartmessages_explain_prefs));
+			} else {
+				alert.setTitle(Helpers.l10n(act, R.string.soft_reboot));
+				alert.setView(Helpers.createCenteredText(act, R.string.hotreboot_explain_prefs));
+			}
 			alert.setPositiveButton(Helpers.l10n(act, R.string.yes) + "!", new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {
 					try {
-						CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
-						RootTools.getShell(true).add(command);
+						if (rebootType == 1) {
+							getActivity().sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.RestartPrism"));
+							Toast.makeText(getActivity(), R.string.restarted_prism, Toast.LENGTH_SHORT).show();
+						} else if (rebootType == 2) {
+							getActivity().sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.RestartMessages"));
+							Toast.makeText(getActivity(), R.string.restarted_messages, Toast.LENGTH_SHORT).show();
+						} else {
+							CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
+							RootTools.getShell(true).add(command);
+						}
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -171,6 +189,13 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 		menu.clear();
 		inflater.inflate(R.menu.menu_mods, menu);
 		menu.getItem(2).setIcon(Helpers.applySenseTheme(getActivity(), menu.getItem(2).getIcon()));
+		if (rebootType == 1) {
+			menu.getItem(0).setIcon(R.drawable.ic_menu_restart_prism);
+			menu.getItem(0).setTitle(R.string.restart_prism);
+		} else if (rebootType == 2) {
+			menu.getItem(0).setIcon(R.drawable.ic_menu_restart_message);
+			menu.getItem(0).setTitle(R.string.restart_messages);
+		}
 	}
 	
 	@Override

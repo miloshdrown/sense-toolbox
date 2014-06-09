@@ -367,20 +367,32 @@ public class GlobalActions {
 		}
 	}
 	
-	private static BroadcastReceiver mBREgg = new BroadcastReceiver() {
+	private static BroadcastReceiver mBRTools = new BroadcastReceiver() {
 		public void onReceive(final Context context, Intent intent) {
 			try {
-				Intent intentEgg = new Intent(Intent.ACTION_MAIN);
-				intentEgg.setClassName("android", "com.android.internal.app.PlatLogoActivity");
-				intentEgg.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-				context.startActivity(intentEgg);
+				String action = intent.getAction();
+				ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+				Method forceStopPackage = am.getClass().getMethod("forceStopPackage", new Class[] { String.class });
+				forceStopPackage.setAccessible(true);
+
+				if (action.equals("com.sensetoolbox.six.mods.action.StartEasterEgg")) {
+					Intent intentEgg = new Intent(Intent.ACTION_MAIN);
+					intentEgg.setClassName("android", "com.android.internal.app.PlatLogoActivity");
+					intentEgg.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
+					context.startActivity(intentEgg);
+				} else if (action.equals("com.sensetoolbox.six.mods.action.RestartMessages")) {
+					forceStopPackage.invoke(am, "com.htc.sense.mms");
+				} else if (action.equals("com.sensetoolbox.six.mods.action.RestartPrism")) {
+					forceStopPackage.invoke(am, "com.htc.launcher");
+					forceStopPackage.invoke(am, "com.htc.widget.weatherclock");
+				}
 			} catch (Throwable t) {
 				XposedBridge.log(t);
 			}
 		}
 	};
 	
-	public static void easterEgg() {
+	public static void toolboxStuff() {
 		try {
 			final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
 			findAndHookMethod(clsPWM, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
@@ -389,7 +401,9 @@ public class GlobalActions {
 					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 		            IntentFilter intentfilter = new IntentFilter();
 		            intentfilter.addAction("com.sensetoolbox.six.mods.action.StartEasterEgg");
-		            mPWMContext.registerReceiver(mBREgg, intentfilter);
+		            intentfilter.addAction("com.sensetoolbox.six.mods.action.RestartMessages");
+		            intentfilter.addAction("com.sensetoolbox.six.mods.action.RestartPrism");
+		            mPWMContext.registerReceiver(mBRTools, intentfilter);
 				}
 			});
 		} catch (Throwable t) {
@@ -480,9 +494,7 @@ public class GlobalActions {
 	
 	public static boolean lockDevice(Context context) {
 		try {
-        	Intent intent = new Intent();
-            intent.setAction("com.sensetoolbox.six.mods.action.LockDevice");
-            context.sendBroadcast(intent);
+            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.LockDevice"));
 			return true;
 		} catch (Throwable t) {
 			XposedBridge.log(t);
@@ -492,9 +504,7 @@ public class GlobalActions {
 	
 	public static boolean goToSleep(Context context) {
         try {
-        	Intent intent = new Intent();
-            intent.setAction("com.sensetoolbox.six.mods.action.GoToSleep");
-            context.sendBroadcast(intent);
+            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.GoToSleep"));
         	return true;
         } catch (Throwable t) {
         	XposedBridge.log(t);
@@ -560,9 +570,7 @@ public class GlobalActions {
 	
 	public static boolean takeScreenshot(Context context) {
         try {
-        	Intent intent = new Intent();
-            intent.setAction("com.sensetoolbox.six.mods.action.TakeScreenshot");
-            context.sendBroadcast(intent);
+            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.TakeScreenshot"));
         	return true;
         } catch (Throwable t) {
         	XposedBridge.log(t);
@@ -572,9 +580,7 @@ public class GlobalActions {
 	
 	public static boolean killForegroundApp(Context context) {
         try {
-        	Intent intent = new Intent();
-            intent.setAction("com.sensetoolbox.six.mods.action.killForegroundApp");
-            context.sendBroadcast(intent);
+            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.killForegroundApp"));
         	return true;
         } catch (Throwable t) {
         	XposedBridge.log(t);
@@ -584,9 +590,7 @@ public class GlobalActions {
 	
 	public static boolean simulateMenu(Context context) {
         try {
-        	Intent intent = new Intent();
-            intent.setAction("com.sensetoolbox.six.mods.action.SimulateMenu");
-            context.sendBroadcast(intent);
+            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.SimulateMenu"));
         	return true;
         } catch (Throwable t) {
         	XposedBridge.log(t);
@@ -596,9 +600,7 @@ public class GlobalActions {
 	
 	public static boolean openRecents(Context context) {
         try {
-        	Intent intent = new Intent();
-            intent.setAction("com.sensetoolbox.six.mods.action.OpenRecents");
-            context.sendBroadcast(intent);
+            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.OpenRecents"));
         	return true;
         } catch (Throwable t) {
         	XposedBridge.log(t);
@@ -621,9 +623,7 @@ public class GlobalActions {
         		case 9: whatStr = "MobileData"; break;
         		default: return false;
         	}
-        	Intent intent = new Intent();
-            intent.setAction("com.sensetoolbox.six.mods.action.Toggle" + whatStr);
-            context.sendBroadcast(intent);
+            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.Toggle" + whatStr));
         	return true;
         } catch (Throwable t) {
         	XposedBridge.log(t);
@@ -686,8 +686,7 @@ public class GlobalActions {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-					Intent intent = new Intent();
-			        intent.setAction("com.sensetoolbox.six.UPDATEBACKLIGHT");
+					Intent intent = new Intent("com.sensetoolbox.six.UPDATEBACKLIGHT");
 			        
 					int sysUiVis = (Integer)param.args[0];
 					if (sysUiVis == 67108864 || sysUiVis == 0) return;
@@ -719,9 +718,7 @@ public class GlobalActions {
 						   (newFlags & WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR) == WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR) {
 								//XposedBridge.log("setFlags FLAG_LAYOUT_*: " + String.valueOf(newFlags));
 								Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-								Intent intent = new Intent();
-								intent.setAction("com.sensetoolbox.six.UPDATEBACKLIGHT");
-								mContext.sendBroadcast(intent);
+								mContext.sendBroadcast(new Intent("com.sensetoolbox.six.UPDATEBACKLIGHT"));
 						}
 					}
 				}
@@ -734,8 +731,7 @@ public class GlobalActions {
 					if (act == null) return;
 					int newFlags = act.getWindow().getAttributes().flags;
 					//XposedBridge.log("onResume flags: " + String.valueOf(newFlags));
-					Intent intent = new Intent();
-			        intent.setAction("com.sensetoolbox.six.UPDATEBACKLIGHT");
+					Intent intent = new Intent("com.sensetoolbox.six.UPDATEBACKLIGHT");
 			        if (newFlags != 0 && (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN && !act.getPackageName().equals("com.android.systemui"))
 					intent.putExtra("forceDisableBacklight", true);
 					act.sendBroadcast(intent);
