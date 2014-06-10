@@ -51,10 +51,10 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 					try {
 						if (rebootType == 1) {
 							getActivity().sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.RestartPrism"));
-							Toast.makeText(getActivity(), R.string.restarted_prism, Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), Helpers.l10n(act, R.string.restarted_prism), Toast.LENGTH_SHORT).show();
 						} else if (rebootType == 2) {
 							getActivity().sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.RestartMessages"));
-							Toast.makeText(getActivity(), R.string.restarted_messages, Toast.LENGTH_SHORT).show();
+							Toast.makeText(getActivity(), Helpers.l10n(act, R.string.restarted_messages), Toast.LENGTH_SHORT).show();
 						} else {
 							CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
 							RootTools.getShell(true).add(command);
@@ -191,10 +191,10 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 		menu.getItem(2).setIcon(Helpers.applySenseTheme(getActivity(), menu.getItem(2).getIcon()));
 		if (rebootType == 1) {
 			menu.getItem(0).setIcon(R.drawable.ic_menu_restart_prism);
-			menu.getItem(0).setTitle(R.string.restart_prism);
+			menu.getItem(0).setTitle(Helpers.l10n(getActivity(), R.string.restart_prism));
 		} else if (rebootType == 2) {
 			menu.getItem(0).setIcon(R.drawable.ic_menu_restart_message);
-			menu.getItem(0).setTitle(R.string.restart_messages);
+			menu.getItem(0).setTitle(Helpers.l10n(getActivity(), R.string.restart_messages));
 		}
 	}
 	
