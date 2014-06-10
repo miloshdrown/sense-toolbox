@@ -47,7 +47,7 @@ Current changelog
 [New] Fully transparent statusbar in launcher, in apps with translucent statusbar (including all Sense themed apps) and on lockscreen
 [New] Shortcuts added as an action for gestures/buttons
 [New] Apply Sense and Messaging mods without soft reboot
-[Fixed] Wake gestures support detection
+[Fixed] Wake gestures support detection for some devices
 
 ===========
 Translators
