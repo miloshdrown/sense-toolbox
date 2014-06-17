@@ -750,7 +750,7 @@ public class SysUIMods {
 										if (rxBytes != -1L && txBytes != -1L) newBytes = rxBytes + txBytes;						
 										long newBytesFixed = newBytes - bytesTotal;
 										if (newBytesFixed < 0 || bytesTotal == 0) newBytesFixed = 0;
-										long speed = Math.round(newBytesFixed/3);
+										long speed = Math.round(newBytesFixed/2);
 										bytesTotal = newBytes;
 										ArrayList<String> spd = humanReadableByteCount(speed);
 										dataRateVal.setText(spd.get(0));

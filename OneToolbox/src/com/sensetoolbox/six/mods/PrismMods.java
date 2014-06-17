@@ -90,10 +90,9 @@ public class PrismMods {
 				ViewGroup widgetView = param.args.length == 2 ? (ViewGroup) param.args[1] : (ViewGroup) param.args[0];
 				Resources viewRes = widgetView.getResources();
 				int bgId = viewRes.getIdentifier("background_panel", "id", "com.htc.widget.weatherclock");
-				if(bgId != 0)
-				{
+				if (bgId != 0) {
 					ImageView bg = (ImageView) widgetView.findViewById(bgId);
-					bg.getBackground().setAlpha(transparency);
+					if (bg.getBackground() != null) bg.getBackground().setAlpha(transparency);
 				}
 			}
 		};
