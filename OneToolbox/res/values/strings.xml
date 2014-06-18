@@ -282,8 +282,10 @@
 	<string name="controls_backlongpressaction_title">Action</string>
 	<string name="controls_backlongpressaction_summ">Action for back button long press.</string>
 	<string name="controls_mods_homeassist">Home assist</string>
+	<string name="controls_mods_recentslongpress">Recents button long press</string>
 	<string name="controls_homeassistaction_title">Action</string>
 	<string name="controls_homeassistaction_summ">Overrides assist action (which is Google Now by default).</string>
+	<string name="controls_recentslongpressaction_summ">Assigns action to recents button long press.</string>
 	<string name="controls_vol2wake_title">Volume2Wake</string>
 	<string name="controls_vol2wake_summ">Wake your phone with the volume keys. Needs Root! Make a FULL reboot to apply!</string>
 	<string name="controls_powerflash_title">Quick flashlight</string>

@@ -630,7 +630,12 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				}
 	        });
 	        
-			if (!Helpers.isM8())
+			if (Helpers.isM8()) {
+				HtcPreferenceCategory assist_cat = (HtcPreferenceCategory) findPreference("pref_key_controls_home");
+				assist_cat.setTitle(Helpers.l10n(getActivity(), R.string.controls_mods_recentslongpress));
+				HtcListPreference assist = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
+				assist.setSummary(Helpers.l10n(getActivity(), R.string.controls_recentslongpressaction_summ));
+			} else
 				((HtcPreferenceScreen) findPreference("pref_key_controls")).removePreference(findPreference("pref_key_controls_smallsoftkeys"));
 	    }
 	}
