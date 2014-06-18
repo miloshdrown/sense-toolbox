@@ -94,6 +94,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pref.getBoolean("pref_key_other_allrotations", false))
 			OtherMods.execHook_AllRotations();
+		
+		if (pref.getBoolean("pref_key_sysui_hqthumbs", false))
+			SysUIMods.execHook_HDThumbnails();
 	}
 
 	@Override
@@ -340,7 +343,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		}
 		
 		if (pkg.equals("com.htc.lockscreen")) {
-			if (pref_homeassist != 1)
+			if (pref_homeassist != 1 && !Helpers.isM8())
 				ControlsMods.execHook_dieGoogleNow(lpparam);
 			
 			if (pref.getBoolean("pref_key_other_fastunlock", false))
@@ -393,9 +396,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			SysUIMods.execHook_RecentAppsInit(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_recentappsclear", false)) {
+			if(pref.getBoolean("pref_key_sysui_recentappsclear", false))
 				SysUIMods.execHook_RecentAppsClearTouch(lpparam);	
-			}
 			
 			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockAnimation(lpparam);
@@ -423,8 +425,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1")) == 3)
 				SysUIMods.execHook_NotifDrawerHeaderSysInfo(lpparam);
 			
-			if(pref_homeassist != 1)
-				SysUIMods.execHook_OverrideAssist(lpparam);
+			if(pref_homeassist != 1) {
+				if (Helpers.isM8())
+					ControlsMods.execHook_M8RecentsLongpress(lpparam);
+				else
+					SysUIMods.execHook_OverrideAssist(lpparam);
+			}
 			
 			if(pref.getBoolean("pref_key_sysui_brightqs", false))
 				SysUIMods.execHook_ChangeBrightnessQSTile(lpparam);
@@ -432,17 +438,16 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_sysui_timeoutqs", false))
 				SysUIMods.execHook_ChangeTimeoutQSTile(lpparam);
 			
-			if (pref_backlongpress != 1 && Helpers.isM8())
+			if(pref_backlongpress != 1 && Helpers.isM8())
 				ControlsMods.execHook_M8BackLongpress(lpparam);
 			
-			if(pref.getBoolean("pref_key_prism_homemenu", false) && Helpers.isM8()) {
+			if(pref.getBoolean("pref_key_prism_homemenu", false) && Helpers.isM8())
 				ControlsMods.execHook_M8HomeLongpress(lpparam);
-			}
 			
 			if(pref.getBoolean("pref_key_cb_texts", false))
 				CleanBeamMods.execHook_StatusBarTexts(lpparam);
 			
-			if (pref.getBoolean("pref_key_controls_extendedpanel", false))
+			if(pref.getBoolean("pref_key_controls_extendedpanel", false))
 				SysUIMods.execHook_SearchGlowPadLaunch(lpparam);
 			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
@@ -454,7 +459,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			OtherMods.execHook_EnhancedInstaller(lpparam);
 		}
 		
-		if(pkg.equals("com.htc.android.mail"))
+		if (pkg.equals("com.htc.android.mail"))
 		{
 			if (pref.getBoolean("pref_key_messaging_eassecurity", false))
 		    	MessagingMods.execHook_EASSecurityPartTwo(lpparam);

@@ -40,14 +40,8 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Current changelog
 =================
 
-1.2.7
-[New] Immersive BlinkFeed mod removes action bar and makes statusbar semitransparent
-[New] BlinkFeed shortcut mod adds an icon to app drawer that leads directly to BlinkFeed page
-[New] Allow 180 degree orientation
-[New] Fully transparent statusbar in launcher, in apps with translucent statusbar (including all Sense themed apps) and on lockscreen
-[New] Shortcuts added as an action for gestures/buttons
-[New] Apply Sense and Messaging mods without soft reboot
-[Fixed] Wake gestures support detection for some devices
+1.2.8
+[New] High quality recent apps thumbnails
 
 ===========
 Translators
@@ -71,6 +65,15 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.2.7
+[New] Immersive BlinkFeed mod removes action bar and makes statusbar semitransparent
+[New] BlinkFeed shortcut mod adds an icon to app drawer that leads directly to BlinkFeed page
+[New] Allow 180 degree orientation
+[New] Fully transparent statusbar in launcher, in apps with translucent statusbar (including all Sense themed apps) and on lockscreen
+[New] Shortcuts added as an action for gestures/buttons
+[New] Apply Sense and Messaging mods without soft reboot
+[Fixed] Wake gestures support detection for some devices
 
 1.2.6
 [Fixed] Localization slowdown

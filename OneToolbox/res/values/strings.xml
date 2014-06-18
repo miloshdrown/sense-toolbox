@@ -134,6 +134,8 @@
 	<string name="systemui_recentclear_summ">Add ability to clear recent apps list by pinching or swiping down.</string>
 	<string name="systemui_recentram_title">RAM usage</string>
 	<string name="systemui_recentram_summ">Show the amount of RAM used by recent apps.</string>
+	<string name="systemui_hqthumbs_title">High quality thumbnails</string>
+	<string name="systemui_hqthumbs_summ">Disable thumbnail conversion that reduces color data.</string>
 	<string name="systemui_centerclock_title">Center clock</string>
 	<string name="systemui_centerclock_summ">Enable to move the status bar clock to the center.</string>
 	<string name="systemui_ampmremove_title">Remove AM/PM</string>

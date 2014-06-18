@@ -114,5 +114,11 @@
             android:title="@string/systemui_recentram_title"
             android:defaultValue="false"
             android:dependency="pref_key_sysui_aosprecent" />
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_sysui_hqthumbs"
+            android:summary="@string/systemui_hqthumbs_summ"
+            android:title="@string/systemui_hqthumbs_title"
+            android:defaultValue="false"
+            android:dependency="pref_key_sysui_aosprecent" />
         </com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>

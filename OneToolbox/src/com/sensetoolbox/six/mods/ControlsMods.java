@@ -21,10 +21,11 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.PowerManager.WakeLock;
+import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
-import android.view.View.OnLongClickListener;
 import android.view.ViewConfiguration;
 import android.view.WindowManager;
 import android.widget.AbsListView;
@@ -396,25 +397,23 @@ public class ControlsMods {
 		}
 	}
 
+	public static boolean isBackPressed = false;
 	public static void execHook_M8BackLongpress(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				final ImageView backButton = (ImageView) callMethod(param.thisObject, "getBackButton");
-				if(backButton!=null){
-					setObjectField(backButton, "mCheckLongPress", new Runnable() {
-						@Override
-						public void run() {
-							if(backButton.isPressed()) {
-								backButton.setPressed(false);
-								backButton.performLongClick();
+				if (backButton != null)
+				setObjectField(backButton, "mCheckLongPress", new Runnable() {
+					@Override
+					public void run() {
+						if (backButton.isPressed()) {
+							backButton.setPressed(false);
+							if (XposedHelpers.getIntField(backButton, "mCode") != 0) {
+								XposedHelpers.callMethod(backButton, "sendEvent", 1, 32);
+								XposedHelpers.callMethod(backButton, "sendAccessibilityEvent", 2);
 							}
-						}
-					});
-					backButton.setLongClickable(true);
-					backButton.setOnLongClickListener(new OnLongClickListener() {
-						@Override
-						public boolean onLongClick(View v) {
+							XMain.pref.reload();
 							int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 							Context mContext = backButton.getContext();
 							switch (pref_backlongpress) {
@@ -430,38 +429,59 @@ public class ControlsMods {
 								case 11: GlobalActions.openRecents(mContext); break;
 								case 12: GlobalActions.launchShortcut(mContext, 3); break; // No back key on lock screen
 							}
-							return true;
 						}
-					});
+					}
+				});
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.policy.KeyButtonView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				if (XposedHelpers.getIntField(param.thisObject, "mCode") == 4) {
+					MotionEvent mev = (MotionEvent)param.args[0];
+					int mevact = mev.getAction();
+					if (mevact == 0) isBackPressed = true;
+					if (mevact == 2 && isBackPressed) param.setResult(true);
+					if (mevact == 1) isBackPressed = false;
 				}
 			}
 		});
 	}
 	
+	public static boolean isHomePressed = false;
 	public static void execHook_M8HomeLongpress(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				final ImageView homeButton = (ImageView) callMethod(param.thisObject, "getHomeButton");
-				if(homeButton!=null){
-					setObjectField(homeButton, "mCheckLongPress", new Runnable() {
-						@Override
-						public void run() {
-							if(homeButton.isPressed()) {
-								homeButton.setPressed(false);
-								homeButton.performLongClick();
+				if (homeButton != null)
+				setObjectField(homeButton, "mCheckLongPress", new Runnable() {
+					@Override
+					public void run() {
+						if (homeButton.isPressed()) {
+							homeButton.setPressed(false);
+							if (XposedHelpers.getIntField(homeButton, "mCode") != 0) {
+								XposedHelpers.callMethod(homeButton, "sendEvent", 1, 32);
+								XposedHelpers.callMethod(homeButton, "sendAccessibilityEvent", 2);
 							}
+							homeButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+		                    GlobalActions.simulateMenu(homeButton.getContext());
 						}
-					});
-					homeButton.setLongClickable(true);
-					homeButton.setOnLongClickListener(new OnLongClickListener() {
-						@Override
-						public boolean onLongClick(View v) {
-							Context mContext = homeButton.getContext();
-							GlobalActions.simulateMenu(mContext);
-							return true;
-						}
-					});
+					}
+				});
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.policy.KeyButtonView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				if (XposedHelpers.getIntField(param.thisObject, "mCode") == 3) {
+					MotionEvent mev = (MotionEvent)param.args[0];
+					int mevact = mev.getAction();
+					if (mevact == 0) isHomePressed = true;
+					if (mevact == 2 && isHomePressed) param.setResult(true);
+					if (mevact == 1) isHomePressed = false;
 				}
 			}
 		});
@@ -481,9 +501,46 @@ public class ControlsMods {
 				View v = (View) getObjectField(param.thisObject, "mNavigationBarView");
 				if (v != null) {
 					View b = (View) callMethod(v, "getHomeButton");
-					if (b != null)
-						callMethod(b, "setOnTouchListener", new Object[]{null});
+					if (b != null) callMethod(b, "setOnTouchListener", new Object[]{ null });
 				}		
+			}
+		});
+	}
+	
+	public static boolean isRecentsPressed = false;
+	public static void execHook_M8RecentsLongpress(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				final ImageView recentsButton = (ImageView) callMethod(param.thisObject, "getRecentsButton");
+				if (recentsButton != null)
+				setObjectField(recentsButton, "mCheckLongPress", new Runnable() {
+					@Override
+					public void run() {
+						if (recentsButton.isPressed()) {
+							recentsButton.setPressed(false);
+							if (XposedHelpers.getIntField(recentsButton, "mCode") != 0) {
+								XposedHelpers.callMethod(recentsButton, "sendEvent", 1, 32);
+								XposedHelpers.callMethod(recentsButton, "sendAccessibilityEvent", 2);
+							}
+							recentsButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+							assistAndSearchPanelOverride(param);
+						}
+					}
+				});
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.policy.KeyButtonView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				if (XposedHelpers.getIntField(param.thisObject, "mCode") == 187) {
+					MotionEvent mev = (MotionEvent)param.args[0];
+					int mevact = mev.getAction();
+					if (mevact == 0) isRecentsPressed = true;
+					if (mevact == 2 && isRecentsPressed) param.setResult(true);
+					if (mevact == 1) isRecentsPressed = false;
+				}
 			}
 		});
 	}

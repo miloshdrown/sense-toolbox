@@ -46,6 +46,7 @@ import android.os.Bundle;
 import android.os.Debug.MemoryInfo;
 import android.os.Environment;
 import android.os.Handler;
+import android.os.IBinder;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.text.TextUtils.TruncateAt;
@@ -1851,6 +1852,19 @@ public class SysUIMods {
 		                    ctx.startActivity(intent);
 		        			break;
 					}
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_HDThumbnails() {
+		try {
+			findAndHookMethod("com.android.server.wm.WindowManagerService", null, "screenshotApplications", IBinder.class, int.class, int.class, int.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.args[4] = false;
 				}
 			});
 		} catch (Throwable t) {
