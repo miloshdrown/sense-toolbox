@@ -14,7 +14,8 @@ import com.htc.widget.HtcListView;
 import com.htc.widget.HtcRadioButton;
 
 import android.content.Context;
-import android.graphics.drawable.Drawable;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,10 +89,6 @@ public class DynamicPreference extends HtcListPreference {
 			return items[position];
 		}
 		
-		public Drawable getIcon(int position) {
-			return PrefsFragment.pkgAppsListIcons.get(position);
-		}
-		 
 		public long getItemId(int position) {
 			return position;
 		}
@@ -109,12 +106,19 @@ public class DynamicPreference extends HtcListPreference {
 			
 			itemTitle.setPrimaryText(getItem(position));
 			itemTitle.setSecondaryTextVisibility(8);
-			itemIcon.setTileImageDrawable(getIcon(position));
-			itemIcon.setScaleX(0.65f);
-			itemIcon.setScaleY(0.65f);
+			
+			ResolveInfo ai = PrefsFragment.pkgAppsList.get(position);
+			Bitmap icon = Helpers.memoryCache.get(ai.activityInfo.packageName);
+			if (icon == null)
+				(new BitmapCachedLoader(2, itemIcon, ai, mContext)).execute();
+			else
+				itemIcon.setTileImageBitmap(icon);
+			//Log.e(null, String.valueOf(Helpers.memoryCache.size()) + " KB / " + String.valueOf(Runtime.getRuntime().totalMemory() / 1024) + " KB");
+			
+			itemIcon.setScaleX(0.68f);
+			itemIcon.setScaleY(0.68f);
 			itemIcon.setTranslationX(mContext.getResources().getDisplayMetrics().density * 10.0f);
 
-			//if (PrefsFragment.pkgAppsListSystem.get(position)) 
 			if (position == index)
 				itemRadio.setChecked(true);
 			else

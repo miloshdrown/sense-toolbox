@@ -28,7 +28,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -43,9 +42,8 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 public class SenseThemes extends Activity {
-	static public List<ApplicationInfo> pkgAppsList = null;
-	static public List<Drawable> pkgAppsListIcons = new ArrayList<Drawable>();
-	static public SparseArray<Object[]> colors = null;
+	public static List<ApplicationInfo> pkgAppsList = null;
+	public static SparseArray<Object[]> colors = null;
 	public static List<PackageTheme> pkgthm = new ArrayList<PackageTheme>();
 	public static SharedPreferences prefs;
 	public HtcAlertDialog appAddDialog;
@@ -300,18 +298,16 @@ public class SenseThemes extends Activity {
 		pkgAppsList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 		Collections.sort(pkgAppsList, new ApplicationInfo.DisplayNameComparator(pm));
 		ArrayList<ApplicationInfo> excluded = new ArrayList<ApplicationInfo>();
-		for (ApplicationInfo inf: pkgAppsList) {
-			if (inf.packageName.equals("com.sensetoolbox.six") ||
-				inf.packageName.equals("com.htc.htcdialer") ||
-				inf.packageName.equals("com.htc.htcpowermanager") ||
-				inf.packageName.equals("com.htc.sdm") ||
-				inf.packageName.equals("com.htc.home.personalize") ||
-				inf.packageName.equals("com.htc.widget.notification") ||
-				inf.packageName.equals("com.htc.sense.easyaccessservice"))
-				excluded.add(inf);
-			else
-				pkgAppsListIcons.add(inf.loadIcon(pm));
-		}
+		
+		for (ApplicationInfo inf: pkgAppsList)
+		if (inf.packageName.equals("com.sensetoolbox.six") ||
+			inf.packageName.equals("com.htc.htcdialer") ||
+			inf.packageName.equals("com.htc.htcpowermanager") ||
+			inf.packageName.equals("com.htc.sdm") ||
+			inf.packageName.equals("com.htc.home.personalize") ||
+			inf.packageName.equals("com.htc.widget.notification") ||
+			inf.packageName.equals("com.htc.sense.easyaccessservice"))
+			excluded.add(inf);
 		for (ApplicationInfo infex: excluded) if (infex != null) pkgAppsList.remove(infex);
 	}
 	

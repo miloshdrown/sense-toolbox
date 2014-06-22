@@ -229,6 +229,8 @@
 	<string name="sense_tfolders_summ">Make folders background transparent.</string>
 	<string name="sense_tfoldersbkg_title">Folder icons</string>
 	<string name="sense_tfoldersbkg_summ">Make folder icons background transparent.</string>
+	<string name="sense_abtransp_title">App drawer action bar</string>
+	<string name="sense_abtransp_summ">Remove action bar background in app drawer.</string>
 	<string name="sense_infini_title">Infinifolders</string>
 	<string name="sense_infini_summ">Enable to have infinite icons per folder.</string>
 	<string name="sense_homemenu_title">Home popup menu</string>

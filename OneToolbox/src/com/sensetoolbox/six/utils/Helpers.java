@@ -56,6 +56,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Environment;
+import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Window;
@@ -71,6 +72,15 @@ public class Helpers {
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static String buildVersion = "JENKINSBUILDNUMBERGOESHERE";
+	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
+		@Override
+		protected int sizeOf(String key, Bitmap icon) {
+			if (icon != null)
+				return icon.getAllocationByteCount() / 1024;
+			else
+				return 130 * 130 * 4 / 1024;
+		}
+	};
 
 	private static boolean preloadLang(String lang) {
 		try {
@@ -530,4 +540,6 @@ public class Helpers {
 			if (PrefsFragment.shortcutDlg != null) PrefsFragment.shortcutDlg.dismiss();
 		}
 	}
+	
+	
 }

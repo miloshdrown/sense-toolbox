@@ -41,6 +41,11 @@
     		android:text=" %"
     		android:max="100"
     		toolbox:enableKey="pref_key_prism_invisifoldersbkg_enable"/>
+        <com.htc.preference.HtcCheckBoxPreference
+            android:key="pref_key_prism_invisiactionbar"
+            android:summary="@string/sense_abtransp_summ"
+            android:title="@string/sense_abtransp_title"
+            android:defaultValue="false" />
 		</com.htc.preference.HtcPreferenceCategory>
 		
         <com.htc.preference.HtcPreferenceCategory

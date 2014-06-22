@@ -339,6 +339,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref_shake != 1)
 				PrismMods.execHook_ShakeAction(lpparam);
 			
+			if(pref.getBoolean("pref_key_prism_invisiactionbar", false))
+				PrismMods.execHook_ActionBarNoBkg(lpparam);
+			
 			//PrismMods.execHook_hotseatToggleBtn(lpparam);
 		}
 		

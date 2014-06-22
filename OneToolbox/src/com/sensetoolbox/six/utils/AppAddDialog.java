@@ -2,7 +2,8 @@ package com.sensetoolbox.six.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.graphics.drawable.Drawable;
+import android.content.pm.ApplicationInfo;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -81,10 +82,6 @@ public class AppAddDialog extends HtcAlertDialog {
 			return SenseThemes.pkgAppsList.get(position).loadLabel(stContext.getPackageManager());
 		}
 		
-		public Drawable getIcon(int position) {
-			return SenseThemes.pkgAppsList.get(position).loadIcon(stContext.getPackageManager());
-		}
-		 
 		public long getItemId(int position) {
 			return position;
 		}
@@ -101,9 +98,14 @@ public class AppAddDialog extends HtcAlertDialog {
 			HtcListItemColorIcon itemIcon = (HtcListItemColorIcon)row.findViewById(R.id.list_item_img);
 			
 			itemTitle.setPrimaryText(getItem(position));
-			itemIcon.setColorIconImageDrawable(getIcon(position));
+			ApplicationInfo ai = SenseThemes.pkgAppsList.get(position);
+			Bitmap icon = Helpers.memoryCache.get(ai.packageName);
+			if (icon == null)
+				(new BitmapCachedLoader(1, itemIcon, ai, stContext)).execute();
+			else
+				itemIcon.setColorIconImageBitmap(icon);
 			
-			if (SenseThemes.arrayHasPkg(SenseThemes.pkgAppsList.get(position).packageName) == null)
+			if (SenseThemes.arrayHasPkg(ai.packageName) == null)
 				row.setEnabled(true);
 			else
 				row.setEnabled(false);

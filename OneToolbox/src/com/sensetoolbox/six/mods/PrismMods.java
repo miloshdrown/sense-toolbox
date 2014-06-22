@@ -1086,4 +1086,13 @@ public class PrismMods {
 			}
 		});
 	}
+	
+	public static void execHook_ActionBarNoBkg(final LoadPackageParam lpparam) {
+		XposedBridge.hookAllConstructors(findClass("com.htc.launcher.masthead.AllAppsActionBar", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				XposedHelpers.callMethod(param.thisObject, "setBackgroundVisible", false);
+			}
+		});
+	}
 }

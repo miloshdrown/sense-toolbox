@@ -26,7 +26,6 @@ import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.View;
@@ -62,8 +61,6 @@ import com.stericson.RootTools.execution.CommandCapture;
 public class PrefsFragment extends HtcPreferenceFragmentExt {
 	
 	static public List<ResolveInfo> pkgAppsList = null;
-	static public List<Drawable> pkgAppsListIcons = new ArrayList<Drawable>();
-	//static public List<Boolean> pkgAppsListSystem = new ArrayList<Boolean>();
 	static public SharedPreferences prefs = null;
 	static public String lastShortcutKey = null;
 	static public String lastShortcutKeyContents = null;
@@ -837,15 +834,13 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		PrefsFragment.pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
 		Collections.sort(PrefsFragment.pkgAppsList, new ResolveInfo.DisplayNameComparator(pm));
+		/*
 		for (ResolveInfo inf: PrefsFragment.pkgAppsList) {
-			PrefsFragment.pkgAppsListIcons.add(inf.loadIcon(pm));
-			/*
 			if ((inf.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM)
-				PrefsFragment.pkgAppsListSystem.add(true);
+				// system app
 			else
-				PrefsFragment.pkgAppsListSystem.add(false);
-			*/
-		}
+				// user app
+		}*/
 	}
 	
 	public static CharSequence getAppName(Context ctx, String pkgActName) {
