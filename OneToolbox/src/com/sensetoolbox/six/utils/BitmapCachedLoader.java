@@ -10,6 +10,7 @@ import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.widget.FrameLayout;
 
 import com.htc.widget.HtcListItemColorIcon;
 import com.htc.widget.HtcListItemTileImage;
@@ -19,12 +20,16 @@ public class BitmapCachedLoader extends AsyncTask<Void, Void, Bitmap> {
 	private final WeakReference<Object> appInfo;
 	private final int type;
 	private final Context ctx;
+	private int theTag = -1;
+	
 	
 	public BitmapCachedLoader(int t, Object target, Object info, Context context) {
 		targetRef = new WeakReference<Object>(target);
 		appInfo = new WeakReference<Object>(info);
 		type = t;
 		ctx = context;
+		Object tag = ((FrameLayout)target).getTag();
+		if (tag != null) theTag = (Integer)tag;
 	}
 
 	@Override
@@ -35,12 +40,16 @@ public class BitmapCachedLoader extends AsyncTask<Void, Void, Bitmap> {
 		int newIconSize = Math.round(ctx.getResources().getDisplayMetrics().density * 45.0f);
 		if (type == 1) {
 			ApplicationInfo ai = ((ApplicationInfo)appInfo.get());
-			icon = ai.loadIcon(ctx.getPackageManager());
-			pkgName = ai.packageName;
+			if (ai != null) {
+				icon = ai.loadIcon(ctx.getPackageManager());
+				pkgName = ai.packageName;
+			}
 		} else if (type == 2) {
 			ResolveInfo ai = ((ResolveInfo)appInfo.get());
-			icon = ai.loadIcon(ctx.getPackageManager());
-			pkgName = ai.activityInfo.packageName;
+			if (ai != null) {
+				icon = ai.loadIcon(ctx.getPackageManager());
+				pkgName = ai.activityInfo.packageName;
+			}
 		}
 		
 		if (pkgName != null && icon != null && BitmapDrawable.class.isInstance(icon)) {
@@ -60,7 +69,8 @@ public class BitmapCachedLoader extends AsyncTask<Void, Void, Bitmap> {
 	
 	@Override
 	protected void onPostExecute(Bitmap bmp) {
-		if (targetRef != null && bmp != null)
+		Object tag = ((FrameLayout)targetRef.get()).getTag();
+		if (targetRef != null && bmp != null && tag != null && theTag == (Integer)tag)
 		if (type == 1) {
 			HtcListItemColorIcon itemIcon = ((HtcListItemColorIcon)targetRef.get());
 			if (itemIcon != null) itemIcon.setColorIconImageBitmap(bmp);

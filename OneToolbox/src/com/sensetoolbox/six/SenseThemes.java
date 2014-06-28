@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Locale;
 
 import com.htc.app.HtcProgressDialog;
 import com.htc.gson.Gson;
@@ -354,12 +355,15 @@ public class SenseThemes extends Activity {
 		aa.updateWith(pkgthm);
 	}
 	
-	public void notifyThemeChanged() {
+	public void notifyThemeChanged(String forPkg) {
 		Intent intent = new Intent("com.htc.intent.action.CONFIGURATION_CHANGED");
         intent.addCategory("com.htc.intent.category.THEMEID");
         sendBroadcast(intent);
         int newThemeId = Helpers.getCurrentTheme(this);
 		if (newThemeId != mThemeId) recreate();
+		// Restart launcher to refresh themes for widgets
+		if (forPkg.equals("replace_all") || (forPkg.startsWith("com.htc.") && forPkg.toLowerCase(Locale.getDefault()).contains("widget")))
+		sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.RestartPrism"));
 	}
 
 	public static SparseArray<Object[]> getColors() {
@@ -367,32 +371,32 @@ public class SenseThemes extends Activity {
 			colors = new SparseArray<Object[]>();
 
 			// Theme 1
-			//colors.append(0x02030069, new Object[]{ 0xff252525, 0xff4ea770, "HtcDeviceDefault", 0xff141414 });
-			colors.append(0x0203012d, new Object[]{ 0xff0086cb, 0xff0086cb, "HtcDeviceDefault.CategoryOne", 0xff4b4b4b });
-			colors.append(0x0203012e, new Object[]{ 0xff4ea770, 0xff4ea770, "HtcDeviceDefault.CategoryTwo", 0xff4b4b4b });
-			colors.append(0x0203012f, new Object[]{ 0xffff5d3d, 0xffff5d3d, "HtcDeviceDefault.CategoryThree", 0xff787878 });
-			colors.append(0x02030130, new Object[]{ 0xff252525, 0xff4ea770, "HtcDeviceDefault.CategoryFour", 0xff4ea770 });
+			//colors.append(Helpers.allStyles.get(0), new Object[]{ 0xff252525, 0xff4ea770, "HtcDeviceDefault", 0xff141414 });
+			colors.append(Helpers.allStyles.get(1), new Object[]{ 0xff0086cb, 0xff0086cb, "HtcDeviceDefault.CategoryOne", 0xff4b4b4b });
+			colors.append(Helpers.allStyles.get(2), new Object[]{ 0xff4ea770, 0xff4ea770, "HtcDeviceDefault.CategoryTwo", 0xff4b4b4b });
+			colors.append(Helpers.allStyles.get(3), new Object[]{ 0xffff5d3d, 0xffff5d3d, "HtcDeviceDefault.CategoryThree", 0xff787878 });
+			colors.append(Helpers.allStyles.get(4), new Object[]{ 0xff252525, 0xff4ea770, "HtcDeviceDefault.CategoryFour", 0xff4ea770 });
 			
 			// Theme 2
-			//colors.append(0x020301c3, new Object[]{ 0xff252525, 0xffff813d, "ThemeOne", 0xff141414 });
-			colors.append(0x020301c7, new Object[]{ 0xffffa63d, 0xffffa63d, "ThemeOne.CategoryOne", 0xff4b4b4b });
-			colors.append(0x020301cb, new Object[]{ 0xffe74457, 0xffe74457, "ThemeOne.CategoryTwo", 0xff4b4b4b });
-			colors.append(0x020301cf, new Object[]{ 0xfff64541, 0xfff64541, "ThemeOne.CategoryThree", 0xff787878 });
-			colors.append(0x020301d3, new Object[]{ 0xff252525, 0xffff813d, "ThemeOne.CategoryFour", 0xffff813d });
+			//colors.append(Helpers.allStyles.get(5), new Object[]{ 0xff252525, 0xffff813d, "ThemeOne", 0xff141414 });
+			colors.append(Helpers.allStyles.get(6), new Object[]{ 0xffffa63d, 0xffffa63d, "ThemeOne.CategoryOne", 0xff4b4b4b });
+			colors.append(Helpers.allStyles.get(7), new Object[]{ 0xffe74457, 0xffe74457, "ThemeOne.CategoryTwo", 0xff4b4b4b });
+			colors.append(Helpers.allStyles.get(8), new Object[]{ 0xfff64541, 0xfff64541, "ThemeOne.CategoryThree", 0xff787878 });
+			colors.append(Helpers.allStyles.get(9), new Object[]{ 0xff252525, 0xffff813d, "ThemeOne.CategoryFour", 0xffff813d });
 			
 			// Theme 3
-			//colors.append(0x020301d7, new Object[]{ 0xff252525, 0xff6658cf, "ThemeTwo", 0xff141414 });
-			colors.append(0x020301db, new Object[]{ 0xff0761B9, 0xff0761b9, "ThemeTwo.CategoryOne", 0xff4b4b4b });
-			colors.append(0x020301df, new Object[]{ 0xff07B7B9, 0xff07b7b9, "ThemeTwo.CategoryTwo", 0xff4b4b4b });
-			colors.append(0x020301e3, new Object[]{ 0xffA325A3, 0xffa325a3, "ThemeTwo.CategoryThree", 0xff787878 });
-			colors.append(0x020301e7, new Object[]{ 0xff252525, 0xff6658cf, "ThemeTwo.CategoryFour", 0xff6658cf });
+			//colors.append(Helpers.allStyles.get(10), new Object[]{ 0xff252525, 0xff6658cf, "ThemeTwo", 0xff141414 });
+			colors.append(Helpers.allStyles.get(11), new Object[]{ 0xff0761B9, 0xff0761b9, "ThemeTwo.CategoryOne", 0xff4b4b4b });
+			colors.append(Helpers.allStyles.get(12), new Object[]{ 0xff07B7B9, 0xff07b7b9, "ThemeTwo.CategoryTwo", 0xff4b4b4b });
+			colors.append(Helpers.allStyles.get(13), new Object[]{ 0xffA325A3, 0xffa325a3, "ThemeTwo.CategoryThree", 0xff787878 });
+			colors.append(Helpers.allStyles.get(14), new Object[]{ 0xff252525, 0xff6658cf, "ThemeTwo.CategoryFour", 0xff6658cf });
 			
 			// Theme 4
-			//colors.append(0x020301eb, new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree", 0xff141414 });
-			//colors.append(0x020301ef, new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree.CategoryOne", 0xff4b4b4b });
-			//colors.append(0x020301f3, new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree.CategoryTwo", 0xff4b4b4b });
-			//colors.append(0x020301f7, new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree.CategoryThree", 0xff787878 });
-			//colors.append(0x020301fb, new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree.CategoryFour", 0xff252525 });
+			//colors.append(Helpers.allStyles.get(15), new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree", 0xff141414 });
+			//colors.append(Helpers.allStyles.get(16), new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree.CategoryOne", 0xff4b4b4b });
+			//colors.append(Helpers.allStyles.get(17), new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree.CategoryTwo", 0xff4b4b4b });
+			//colors.append(Helpers.allStyles.get(18), new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree.CategoryThree", 0xff787878 });
+			//colors.append(Helpers.allStyles.get(19), new Object[]{ 0xff252525, 0xff4ea770, "ThemeThree.CategoryFour", 0xff252525 });
 		}
 		return colors;
 	}

@@ -102,6 +102,7 @@ public class DynamicPreference extends HtcListPreference {
 
 			HtcListItem2LineText itemTitle = (HtcListItem2LineText) row.findViewById(android.R.id.text1);
 			HtcListItemTileImage itemIcon = (HtcListItemTileImage) row.findViewById(android.R.id.icon);
+			itemIcon.setTag(position);
 			HtcRadioButton itemRadio = (HtcRadioButton) row.findViewById(android.R.id.checkbox);
 			
 			itemTitle.setPrimaryText(getItem(position));

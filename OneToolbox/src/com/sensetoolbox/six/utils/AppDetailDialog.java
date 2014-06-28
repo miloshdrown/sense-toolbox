@@ -27,18 +27,6 @@ public class AppDetailDialog extends HtcAlertDialog {
 		//int pad5dp = Math.round(5 * density);
 		int pad10dp = Math.round(10 * density);
 		
-		// Get Sense theme colors and theme number
-		/*
-		ArrayList<ThemeColor> themeColors = HtcWrapConfiguration.getThemeColor(this.getContext());
-		int themeId = HtcWrapConfiguration.getHtcThemeId(this.getContext(), 0);
-		int theme = 1;
-		switch (themeId) {
-			case 33751145: theme = 0; break;
-			case 33751491: theme = 1; break;
-			case 33751511: theme = 2; break;
-			case 33751531: theme = 3;
-		}
-		*/
 		LinearLayout globalLayout = new LinearLayout(this.getContext());
 		globalLayout.setOrientation(LinearLayout.VERTICAL);
 		
@@ -82,13 +70,13 @@ public class AppDetailDialog extends HtcAlertDialog {
         		if (pkgName.equals("replace_all")) {
         			for (PackageTheme pt: SenseThemes.pkgthm) if (pt != null) pt.setTheme(cs.getSelectedTheme());
         			stContext.savePkgs();
-    				stContext.notifyThemeChanged();
+    				stContext.notifyThemeChanged(pkgName);
         		} else {
         			PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);
         			if (pt != null) {
         				pt.setTheme(cs.getSelectedTheme());
         				stContext.savePkgs();
-        				stContext.notifyThemeChanged();
+        				stContext.notifyThemeChanged(pkgName);
         			}
         		}
         	}
@@ -102,7 +90,7 @@ public class AppDetailDialog extends HtcAlertDialog {
         			SenseThemes.pkgthm.remove(pt);
         			stContext.savePkgs();
         			stContext.updateListArray();
-        			stContext.notifyThemeChanged();
+        			stContext.notifyThemeChanged(pkgName);
         		}
         	}
         });

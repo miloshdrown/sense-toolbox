@@ -49,7 +49,7 @@ public class AppAddDialog extends HtcAlertDialog {
 	        			SenseThemes.pkgthm.add(new PackageTheme(pkgName, 0));
 	        			stContext.savePkgs();
 	        			stContext.updateListArray();
-	        			stContext.notifyThemeChanged();
+	        			stContext.notifyThemeChanged(pkgName);
 	        			view.setEnabled(false);
 	        			((ImageArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
 	        		} else {
@@ -96,6 +96,7 @@ public class AppAddDialog extends HtcAlertDialog {
 			HtcListItem2LineText itemTitle = (HtcListItem2LineText)row.findViewById(R.id.list_item);
 			itemTitle.setSecondaryTextVisibility(View.GONE);
 			HtcListItemColorIcon itemIcon = (HtcListItemColorIcon)row.findViewById(R.id.list_item_img);
+			itemIcon.setTag(position);
 			
 			itemTitle.setPrimaryText(getItem(position));
 			ApplicationInfo ai = SenseThemes.pkgAppsList.get(position);

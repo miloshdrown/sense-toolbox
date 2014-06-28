@@ -14,7 +14,6 @@ import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import android.animation.ObjectAnimator;
@@ -1583,18 +1582,7 @@ public class SysUIMods {
 	}
 	
 	public static void replaceTheme(MethodHookParam param, int style, Theme theme) {
-		List<Integer> allStyles = Arrays.asList(new Integer[] {
-			// Theme 1
-			0x02030069, 0x0203012d, 0x0203012e, 0x0203012f, 0x02030130,
-			// Theme 2
-			0x020301c3, 0x020301c7, 0x020301cb, 0x020301cf, 0x020301d3,
-			// Theme 3
-			0x020301d7, 0x020301db, 0x020301df, 0x020301e3, 0x020301e7,
-			// Theme 4
-			0x020301eb, 0x020301ef, 0x020301f3, 0x020301f7, 0x020301fb
-		});
-
-		if (allStyles.contains(style)) {
+		if (Helpers.allStyles.contains(style)) {
 			PackageTheme pt = Helpers.getThemeForPackageFromXposed(((Context)param.thisObject).getPackageName());
 			if (pt != null) {
 				SparseArray<Object[]> styles = SenseThemes.getColors();
@@ -1638,6 +1626,17 @@ public class SysUIMods {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					replaceTheme(param, (Integer)param.args[1], (Theme)param.args[0]);
+				}
+			});
+			
+			findAndHookMethod("com.htc.configuration.HtcWrapConfiguration", null, "getHtcThemeId", Context.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Context ctx = (Context)param.args[0];
+					if (ctx != null && ctx.getPackageName().equals("android")) {
+						PackageTheme pt = Helpers.getThemeForPackageFromXposed("android");
+						if (pt != null) param.setResult(SenseThemes.getColors().keyAt(pt.getTheme()));
+					}
 				}
 			});
 		} catch (Throwable t) {

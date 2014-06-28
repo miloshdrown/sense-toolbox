@@ -90,9 +90,13 @@ public class PrismMods {
 				ViewGroup widgetView = param.args.length == 2 ? (ViewGroup) param.args[1] : (ViewGroup) param.args[0];
 				Resources viewRes = widgetView.getResources();
 				int bgId = viewRes.getIdentifier("background_panel", "id", "com.htc.widget.weatherclock");
-				if (bgId != 0) {
-					ImageView bg = (ImageView) widgetView.findViewById(bgId);
-					if (bg.getBackground() != null) bg.getBackground().setAlpha(transparency);
+				int wlId = viewRes.getIdentifier("widget_layout", "id", "com.htc.widget.weatherclock");
+				if (bgId != 0 && wlId != 0) {
+					RelativeLayout wl = (RelativeLayout) widgetView.findViewById(wlId);
+					if (wl != null) {
+						ImageView bg = (ImageView) widgetView.findViewById(bgId);
+						if (bg != null) bg.setAlpha(transparency/100.0f);
+					}
 				}
 			}
 		};
@@ -936,7 +940,8 @@ public class PrismMods {
 	}
 	
 	public static void execHook_invisiWidgetFix(LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherClock4x1View", lpparam.classLoader, "getControls", Context.class, "com.htc.widget.weatherclock.util.WidgetData", new XC_MethodHook() {
+													   //WeatherClock4x1View	 //getControls										 //WidgetData
+		findAndHookMethod("com.htc.widget.weatherclock.a.d", lpparam.classLoader, "a", Context.class, "com.htc.widget.weatherclock.util.t", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				Bundle result = (Bundle) param.getResult();
@@ -949,12 +954,28 @@ public class PrismMods {
 			}
 		});
 		
-		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherClock4x1View", lpparam.classLoader, "getGraphicType", boolean.class, new XC_MethodHook() {
+		findAndHookMethod("com.htc.widget.weatherclock.a.d", lpparam.classLoader, "a", boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				param.args[0] = false;
 			}
 		});
+		
+		findAndHookMethod("com.htc.widget.weatherclock.a.f", lpparam.classLoader, "a", boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				param.args[0] = false;
+			}
+		});
+		
+		findAndHookMethod("com.htc.widget.weatherclock.util.m", lpparam.classLoader, "b", boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				param.args[0] = false;
+			}
+		});
+		
+		
 	}
 	
 	private static void changeDockState(MethodHookParam param) {

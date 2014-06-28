@@ -6,6 +6,7 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -81,6 +82,7 @@ public class Helpers {
 				return 130 * 130 * 4 / 1024;
 		}
 	};
+	public static List<Integer> allStyles;
 
 	private static boolean preloadLang(String lang) {
 		try {
@@ -541,5 +543,29 @@ public class Helpers {
 		}
 	}
 	
+	static {
+		if (new Version(Build.VERSION.RELEASE).compareTo(new Version("4.4.3")) >= 0)
+		allStyles = Arrays.asList(new Integer[] {
+			// Theme 1
+			0x02030069, 0x0203012d, 0x0203012e, 0x0203012f, 0x02030130,
+			// Theme 2
+			0x020301c5, 0x020301c9, 0x020301cd, 0x020301d1, 0x020301d5,
+			// Theme 3
+			0x020301d9, 0x020301dd, 0x020301e1, 0x020301e5, 0x020301e9,
+			// Theme 4
+			0x020301ed, 0x020301f1, 0x020301f5, 0x020301f9, 0x020301fd
+		});
+		else
+		allStyles = Arrays.asList(new Integer[] {
+			// Theme 1
+			0x02030069, 0x0203012d, 0x0203012e, 0x0203012f, 0x02030130,
+			// Theme 2
+			0x020301c3, 0x020301c7, 0x020301cb, 0x020301cf, 0x020301d3,
+			// Theme 3
+			0x020301d7, 0x020301db, 0x020301df, 0x020301e3, 0x020301e7,
+			// Theme 4
+			0x020301eb, 0x020301ef, 0x020301f3, 0x020301f7, 0x020301fb
+		});
+	}
 	
 }
