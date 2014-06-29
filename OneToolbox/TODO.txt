@@ -42,7 +42,8 @@ Current changelog
 
 1.3.0
 [Fix][4.4.3] Weather widget transparency and Sense 6 Themes
-[New][4.4.3] Additional color overrides for Sense 6 Themes: add "Android System" to change system controls (e.g. volume panel) theme, add any Sense widget to change its theme.
+[New][4.4.3] Additional elements support for Sense 6 Themes: add "Android System" to change system controls theme (e.g. volume panel sliders and header), add any Sense widget to change its theme, add "System UI" to change Quick settings and Brightness slider themes
+[Fix] Brightness slider reacts to brightness changes in Settings, min brightness value was set to 10%, background changed to the same as for header
 [New] High quality recent apps thumbnails
 [New] Transparent app drawer action bar background
 [New] [HTC One M8] Assist override was replaced with action for recents key long press
