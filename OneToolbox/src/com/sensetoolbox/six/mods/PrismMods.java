@@ -940,8 +940,7 @@ public class PrismMods {
 	}
 	
 	public static void execHook_invisiWidgetFix(LoadPackageParam lpparam) {
-													   //WeatherClock4x1View	 //getControls										 //WidgetData
-		findAndHookMethod("com.htc.widget.weatherclock.a.d", lpparam.classLoader, "a", Context.class, "com.htc.widget.weatherclock.util.t", new XC_MethodHook() {
+		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherClock4x1View", lpparam.classLoader, "getControls", Context.class, "com.htc.widget.weatherclock.util.WidgetData", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				Bundle result = (Bundle) param.getResult();
@@ -954,28 +953,27 @@ public class PrismMods {
 			}
 		});
 		
-		findAndHookMethod("com.htc.widget.weatherclock.a.d", lpparam.classLoader, "a", boolean.class, new XC_MethodHook() {
+		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherClock4x1View", lpparam.classLoader, "getGraphicType", boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				param.args[0] = false;
 			}
 		});
 		
-		findAndHookMethod("com.htc.widget.weatherclock.a.f", lpparam.classLoader, "a", boolean.class, new XC_MethodHook() {
+		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherView", lpparam.classLoader, "getGraphicType", boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				param.args[0] = false;
 			}
 		});
-		
-		findAndHookMethod("com.htc.widget.weatherclock.util.m", lpparam.classLoader, "b", boolean.class, new XC_MethodHook() {
+		/*
+		findAndHookMethod("com.htc.widget.weatherclock.util.WeatherBase", lpparam.classLoader, "getGraphicType", boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				param.args[0] = false;
 			}
 		});
-		
-		
+		*/
 	}
 	
 	private static void changeDockState(MethodHookParam param) {
