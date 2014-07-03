@@ -91,11 +91,16 @@ public class PrismMods {
 				Resources viewRes = widgetView.getResources();
 				int bgId = viewRes.getIdentifier("background_panel", "id", "com.htc.widget.weatherclock");
 				int wlId = viewRes.getIdentifier("widget_layout", "id", "com.htc.widget.weatherclock");
-				if (bgId != 0 && wlId != 0) {
+				int dcId = viewRes.getIdentifier("digital_clock", "id", "com.htc.widget.weatherclock");
+				if (bgId != 0 && wlId != 0 && dcId != 0) {
 					RelativeLayout wl = (RelativeLayout) widgetView.findViewById(wlId);
-					if (wl != null) {
+					RelativeLayout dc = (RelativeLayout) widgetView.findViewById(dcId);
+					if (wl != null && dc != null) {
 						ImageView bg = (ImageView) widgetView.findViewById(bgId);
-						if (bg != null) bg.setAlpha(transparency/100.0f);
+						if (bg != null) {
+							bg.setAlpha(1.0f);
+							if (bg.getBackground() != null) bg.getBackground().setAlpha(transparency);
+						}
 					}
 				}
 			}
@@ -959,14 +964,14 @@ public class PrismMods {
 				param.args[0] = false;
 			}
 		});
-		
+		/*
 		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherView", lpparam.classLoader, "getGraphicType", boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				param.args[0] = false;
 			}
 		});
-		/*
+		
 		findAndHookMethod("com.htc.widget.weatherclock.util.WeatherBase", lpparam.classLoader, "getGraphicType", boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {

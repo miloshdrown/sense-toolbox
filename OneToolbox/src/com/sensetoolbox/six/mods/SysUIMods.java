@@ -582,13 +582,13 @@ public class SysUIMods {
 			LayoutInflater inflater = LayoutInflater.from(ctw);
 			LinearLayout sliderConatiner = new LinearLayout(ctw);
 			sliderConatiner = (LinearLayout) inflater.inflate(modRes.getLayout(R.layout.brightness_slider), panel, false);
-			if (header.getBackground() != null)
 			sliderConatiner.setBackground(panel.getResources().getDrawable(panel.getResources().getIdentifier("common_app_bkg_top_src", "drawable", "com.htc")));
+			if (header != null && header.getBackground() != null) sliderConatiner.getBackground().setAlpha(header.getBackground().getAlpha());
 			sliderConatiner.setTag("sliderConatiner");
 			sliderConatiner.setOnTouchListener(new OnTouchListener() {
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
-					//Just capture the event so the status bar won't get it.
+					v.performClick();
 					return true;
 				}
 			});
