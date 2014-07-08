@@ -69,14 +69,16 @@ public class BitmapCachedLoader extends AsyncTask<Void, Void, Bitmap> {
 	
 	@Override
 	protected void onPostExecute(Bitmap bmp) {
-		Object tag = ((FrameLayout)targetRef.get()).getTag();
-		if (targetRef != null && bmp != null && tag != null && theTag == (Integer)tag)
-		if (type == 1) {
-			HtcListItemColorIcon itemIcon = ((HtcListItemColorIcon)targetRef.get());
-			if (itemIcon != null) itemIcon.setColorIconImageBitmap(bmp);
-		} else if (type == 2) {
-			HtcListItemTileImage itemIcon = ((HtcListItemTileImage)targetRef.get());
-			if (itemIcon != null) itemIcon.setTileImageBitmap(bmp);
+		if (targetRef != null && targetRef.get() == null && bmp != null) {
+			Object tag = ((FrameLayout)targetRef.get()).getTag();
+			if (tag != null && theTag == (Integer)tag)
+			if (type == 1) {
+				HtcListItemColorIcon itemIcon = ((HtcListItemColorIcon)targetRef.get());
+				if (itemIcon != null) itemIcon.setColorIconImageBitmap(bmp);
+			} else if (type == 2) {
+				HtcListItemTileImage itemIcon = ((HtcListItemTileImage)targetRef.get());
+				if (itemIcon != null) itemIcon.setTileImageBitmap(bmp);
+			}
 		}
 	}
 }

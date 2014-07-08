@@ -618,6 +618,7 @@ public class SysUIMods {
 				@Override
 				public void onStopTrackingTouch(SeekBar seekBar) {
 					seekBar.setPressed(false);
+					android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, seekBar.getProgress() + 30);
 				}
 				@Override
 				public void onStartTrackingTouch(SeekBar seekBar) {
@@ -625,7 +626,12 @@ public class SysUIMods {
 				}
 				@Override
 				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
-					if (fromUser) android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, progress + 30);
+					if (fromUser) try {
+						Object pwrmgr = seekBar.getContext().getSystemService(Context.POWER_SERVICE);
+						XposedHelpers.callMethod(pwrmgr, "setBacklightBrightness", progress + 30);
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
 				}
 			});
 			
@@ -845,9 +851,8 @@ public class SysUIMods {
 		}	
 		@Override
 		public void onChange(boolean selfChange, Uri uri) {
-			try {
+			if (!this.sb.isPressed()) try {
 				this.cb.setChecked(android.provider.Settings.System.getInt(this.cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE) == 0 ? false : true);
-				if (!this.sb.isPressed())
 				this.sb.setProgress(android.provider.Settings.System.getInt(this.cr, android.provider.Settings.System.SCREEN_BRIGHTNESS) - 30);
 			} catch (SettingNotFoundException e) {
 				//No brightness setting?
