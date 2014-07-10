@@ -69,7 +69,7 @@ public class BitmapCachedLoader extends AsyncTask<Void, Void, Bitmap> {
 	
 	@Override
 	protected void onPostExecute(Bitmap bmp) {
-		if (targetRef != null && targetRef.get() == null && bmp != null) {
+		if (targetRef != null && targetRef.get() != null && bmp != null) {
 			Object tag = ((FrameLayout)targetRef.get()).getTag();
 			if (tag != null && theTag == (Integer)tag)
 			if (type == 1) {
