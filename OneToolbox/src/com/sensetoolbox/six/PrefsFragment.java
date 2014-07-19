@@ -669,6 +669,15 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	        
 	        HtcListPreference keysLightPreference = (HtcListPreference) findPreference("pref_key_other_keyslight");
 	        if (keysLightPreference != null) keysLightPreference.setOnPreferenceChangeListener(applyButtonsLight);
+	        
+	        HtcPreference popupNotifyPreference = (HtcPreference) findPreference("pref_key_other_popupnotify");
+	        popupNotifyPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+				@Override
+				public boolean onPreferenceClick(HtcPreference arg0) {
+					getActivity().startActivity(new Intent(getActivity(), PopupNotify.class));
+					return true;
+				}
+	        });
 	    }
 	}
 	
@@ -768,13 +777,14 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	static public class HelperReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
-			if (Helpers.isNotM7()) return;
-			if (intent.getAction() != null) {
+			if (intent.getAction() != null)
+			if (intent.getAction().equals("android.intent.action.LOCALE_CHANGED")) {
+				Helpers.l10n = null;
+				Helpers.cLang = "";
+			} else {
+				if (Helpers.isNotM7()) return;
 				int thepref = Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
-				if (intent.getAction().equals("android.intent.action.LOCALE_CHANGED")) {
-					Helpers.l10n = null;
-					Helpers.cLang = "";
-				} else if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
 					if (thepref > 1) setButtonBacklightTo(thepref, false);
 				} else if (intent.getAction().equals("com.sensetoolbox.six.UPDATEBACKLIGHT")) {
 					boolean forceDisableBacklight = false;

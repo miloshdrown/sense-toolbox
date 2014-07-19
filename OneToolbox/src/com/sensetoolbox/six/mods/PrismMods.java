@@ -363,7 +363,7 @@ public class PrismMods {
 			XposedBridge.hookAllConstructors(EditLayoutHelper, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					param.args[2] = 0.85f;
+					param.args[2] = 0.95f;
 					param.args[3] = true;
 					// param.args[1] = Color.argb(153, 0, 0, 0);
 					// m_nEditLayoutPageSpacing
@@ -1013,6 +1013,13 @@ public class PrismMods {
 		});
 		
 		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "onStopOnFeedPage", int.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				changeDockState(param);
+			}
+		});
+		
+		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "onLeaveFeedPage", int.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				changeDockState(param);

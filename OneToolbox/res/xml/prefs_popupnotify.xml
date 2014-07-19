@@ -1,0 +1,37 @@
+<com.htc.preference.HtcPreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    key="test">
+    <com.htc.preference.HtcCheckBoxPreference
+        android:key="pref_key_other_popupnotify_priority"
+        android:summary="@string/various_popupnotify_priority_summ"
+        android:title="@string/various_popupnotify_priority_title"
+        android:defaultValue="false" />
+    <com.htc.preference.HtcCheckBoxPreference
+        android:key="pref_key_other_popupnotify_expand"
+        android:summary="@string/various_popupnotify_expand_summ"
+        android:title="@string/various_popupnotify_expand_title"
+        android:defaultValue="true" />
+    <com.htc.preference.HtcCheckBoxPreference
+        android:key="pref_key_other_popupnotify_fullscreen"
+        android:summary="@string/various_popupnotify_fullscreen_summ"
+        android:title="@string/various_popupnotify_fullscreen_title"
+        android:defaultValue="false" />
+    <com.htc.preference.HtcListPreference
+        android:key="pref_key_other_popupnotify_back"
+        android:summary="@string/various_popupnotify_back_summ"
+        android:title="@string/various_popupnotify_back_title"
+        android:entries="@array/various_background_style"
+        android:entryValues="@array/various_background_style_val"
+        android:defaultValue="1"/>
+    <com.htc.preference.HtcSwitchPreference
+        android:key="pref_key_other_popupnotify_bwlist"
+        android:summary="@string/various_popupnotify_bwlist_summ"
+        android:title="@string/various_popupnotify_bwlist_title" />
+    <com.sensetoolbox.six.utils.HtcMultiSelectListPreferenceEx
+        android:dialogTitle="@string/various_popupnotify_bwlist_title"
+        android:key="pref_key_other_popupnotify_bwlist_apps"
+        android:summary="@string/various_popupnotify_bwlist_black_summ"
+        android:title="@string/various_popupnotify_bwlist_black_title"
+        android:entries="@array/empty_array"
+        android:entryValues="@array/empty_array"
+        android:defaultValue="@array/empty_array" />
+</com.htc.preference.HtcPreferenceScreen>

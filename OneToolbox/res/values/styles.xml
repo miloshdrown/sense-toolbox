@@ -5,10 +5,21 @@
         <item name="android:textColor">@android:color/secondary_text_light</item>
     </style>
     
-	<style name="Invisible" parent="@android:style/Theme.Dialog">
-    	<item name="android:windowBackground">@android:color/transparent</item>
-    	<item name="android:windowIsFloating">true</item>
+    <style name="Invisible" parent="@android:style/Theme.Translucent">
+	    <item name="android:backgroundDimEnabled">true</item>
+    	<item name="android:windowFrame">@null</item>
+    	<item name="android:windowCloseOnTouchOutside">true</item>
     	<item name="android:windowNoTitle">true</item>
+    	<item name="android:windowContentOverlay">@null</item>
+    	<item name="android:windowIsFloating">false</item>
+    	<item name="android:windowTranslucentStatus">true</item>
+    	<item name="android:windowTranslucentNavigation">true</item>
+	</style>
+	
+	<style name="InvisibleOnLockscreen" parent="@android:style/Theme.Wallpaper.NoTitleBar">
+	    <item name="android:backgroundDimEnabled">true</item>
+	    <item name="android:windowFrame">@null</item>
+    	<item name="android:windowCloseOnTouchOutside">true</item>
     	<item name="android:windowContentOverlay">@null</item>
 	</style>
 	
@@ -25,6 +36,16 @@
 	
 	<style name="numberPickerText">
         <item name="android:textSize">30sp</item>
+    </style>
+    
+	<style name="lockscreen_text">
+        <item name="android:textSize">42.0px</item>
+        <item name="android:textStyle">normal</item>
+        <item name="android:textColor">#999999</item>
+        <item name="android:shadowColor">#7f000000</item>
+        <item name="android:shadowDy">3.0</item>
+        <item name="android:shadowRadius">4.0</item>
+        <item name="android:fontFamily">sans-serif-light</item>
     </style>
 	
 </resources>

@@ -29,6 +29,10 @@ public class AboutScreen extends Activity {
 		
 		setContentView(R.layout.about_screen);
 		
+		int bkgResId = getResources().getIdentifier("common_app_bkg", "drawable", "com.htc");
+		findViewById(R.id.backLayer).setBackgroundResource(bkgResId);
+		findViewById(R.id.scrollView1).setBackgroundResource(bkgResId);
+		
 		Typeface face = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
 		 
 		TextView iv2 = (TextView)findViewById(R.id.textView2);

@@ -1,7 +1,7 @@
 package com.sensetoolbox.six;
 
 import java.util.ArrayList;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -12,7 +12,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListItemTileImage;
@@ -22,14 +21,14 @@ import com.stericson.RootTools.execution.CommandCapture;
 
 public class ApmDialog extends HtcAlertDialog.Builder {
 
-	public ApmDialog(final Context context) {
+	public ApmDialog(final Context context, final int dType) {
 		super(context);
 
 		this.setTitle(Helpers.l10n(context, R.string.apm_title));
 		this.setOnCancelListener(new OnCancelListener(){
 			@Override
 			public void onCancel(DialogInterface dialog) {
-				((Activity)context).finish();
+				if (dType == 1) ((Activity)context).finish();
 			}
 		});
 		
@@ -83,6 +82,7 @@ public class ApmDialog extends HtcAlertDialog.Builder {
 				return position;
 			}
 			 
+			@SuppressLint("InflateParams")
 			public View getView(int position, View convertView, ViewGroup parent) {
 				if (convertView == null)
 				convertView = mInflater.inflate(R.layout.select_dialog_apm, null);
@@ -128,7 +128,7 @@ public class ApmDialog extends HtcAlertDialog.Builder {
 					((Activity)context).sendBroadcast(blIntent);
 					break;
 				}
-				((Activity)context).finish();
+				if (dType == 1) ((Activity)context).finish();
 			}
 		});
 	}

@@ -14,7 +14,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="fill_horizontal"
         android:orientation="vertical"
-        android:background="@android:color/background_light"
+        android:id="@+id/backLayer"
         android:paddingTop="15dp" >
 
             <ImageView
@@ -36,7 +36,6 @@
         android:fillViewport="true"
         android:scrollbarStyle="outsideOverlay"
         android:scrollbars="vertical|none"
-        android:background="@android:color/background_light"
         android:paddingLeft="20dp"
         android:paddingRight="20dp"
         android:paddingBottom="10dp"

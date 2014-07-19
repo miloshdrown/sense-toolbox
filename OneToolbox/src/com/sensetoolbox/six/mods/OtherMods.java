@@ -6,23 +6,34 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashSet;
 
+import com.htc.fragment.widget.CarouselFragment;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.Helpers;
 
 import android.animation.ObjectAnimator;
 import android.app.Activity;
+import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.app.KeyguardManager;
 import android.app.Service;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Handler;
+import android.os.PowerManager;
+import android.service.notification.StatusBarNotification;
+import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
@@ -43,6 +54,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -625,5 +637,191 @@ public class OtherMods{
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
+	}
+	
+	public static Object mNMS = null;
+	public static boolean isInFullscreen = false;
+	private static BroadcastReceiver mBR = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			try {
+				String action = intent.getAction();
+				if (action != null)
+				if (mNMS != null && action.equals("com.sensetoolbox.six.CLEARNOTIFICATION")) {
+					XposedHelpers.callMethod(mNMS, "cancelNotificationWithTag", intent.getStringExtra("pkgName"), intent.getStringExtra("tag"), intent.getIntExtra("id", 0), intent.getIntExtra("userId", 0));
+				} else if (action.equals("com.sensetoolbox.six.CHANGEFULLSCREEN")) {
+					isInFullscreen = intent.getBooleanExtra("isInFullscreen", false);
+				}
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	};
+	private static BroadcastReceiver mBRWMS = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			String action = intent.getAction();
+			if (action != null && action.equals("com.sensetoolbox.six.REQUESTSCREENSHOT")) {
+				Bitmap bmp = (Bitmap)XposedHelpers.callStaticMethod(findClass("android.view.SurfaceControl", null), "screenshot",
+					context.getResources().getDisplayMetrics().widthPixels,
+					context.getResources().getDisplayMetrics().heightPixels);
+				if (bmp != null) {
+					Intent intentScr = new Intent("com.sensetoolbox.six.NEWSCREENSHOT");
+					intentScr.putExtra("bmp", bmp);
+					context.sendBroadcast(intentScr);
+				}
+			}
+		}
+	};
+	
+	private static boolean isAllowed(String pkgName) {
+		HashSet<String> appsList = (HashSet<String>)XMain.pref.getStringSet("pref_key_other_popupnotify_bwlist_apps", new HashSet<String>());
+		boolean isInList = appsList.contains(pkgName);
+		boolean isWhitelist = XMain.pref.getBoolean("pref_key_other_popupnotify_bwlist", false);
+		if ((isWhitelist && isInList) || (!isWhitelist && !isInList))
+			return true;
+		else
+			return false;
+	}
+	
+	private static ArrayList<StatusBarNotification> makeSbnsArray(Object nmsObj) {
+		boolean lowPriority = XMain.pref.getBoolean("pref_key_other_popupnotify_priority", false);
+		@SuppressWarnings("unchecked")
+		ArrayList<Object> notifications = (ArrayList<Object>)XposedHelpers.getObjectField(nmsObj, "mNotificationList");
+		ArrayList<StatusBarNotification> sbns = new ArrayList<StatusBarNotification>();
+		if (notifications != null)
+		for (int l = 0; l < notifications.size(); l++) {
+			StatusBarNotification sbnrec = (StatusBarNotification)XposedHelpers.getObjectField(notifications.get(l), "sbn");
+			if (sbnrec != null && sbnrec.isClearable() && !sbnrec.isOngoing())
+			if (sbnrec.getNotification().priority >= 0 || (sbnrec.getNotification().priority < 0 && lowPriority))
+			if (isAllowed(sbnrec.getPackageName()))
+			sbns.add(sbnrec.clone());
+		}
+		return sbns;
+	}
+	
+	private static void sendSbnsArray(ArrayList<StatusBarNotification> sbns, Context mContext, boolean asBroadcast) {
+		if (asBroadcast) {
+			Intent intent = new Intent("com.sensetoolbox.six.UPDATENOTIFICATIONS");
+			intent.putParcelableArrayListExtra("sbns", sbns);
+			intent.putExtra("dialogType", 2);
+			mContext.sendBroadcast(intent);
+		} else {
+			Intent intent = new Intent();
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
+			
+			 KeyguardManager kgMgr = (KeyguardManager)mContext.getSystemService(Context.KEYGUARD_SERVICE);
+			if (kgMgr.isKeyguardLocked()) 
+				intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.DimmedActivityLS");				
+			else
+				intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.DimmedActivity");
+			
+			PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+			if (pm.isScreenOn()) {
+				Bitmap bmp = (Bitmap)XposedHelpers.callStaticMethod(findClass("android.view.SurfaceControl", null), "screenshot",
+						mContext.getResources().getDisplayMetrics().widthPixels,
+						mContext.getResources().getDisplayMetrics().heightPixels);
+				if (bmp != null) intent.putExtra("bmp", bmp);
+			}
+			intent.putParcelableArrayListExtra("sbns", sbns);
+			intent.putExtra("dialogType", 2);
+			Bundle animate = ActivityOptions.makeCustomAnimation(mContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
+			mContext.startActivity(intent, animate);
+		}
+	}
+	
+	private static void sendNotificationData(final MethodHookParam param, final boolean isRemove) {
+		try {
+			XMain.pref.reload();
+			if (!XMain.pref.getBoolean("popup_notify_active", false)) return;
+			if (isInFullscreen && XMain.pref.getBoolean("pref_key_other_popupnotify_fullscreen", false)) return;
+			
+			final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+			Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+			Object notificationRecord = param.args[0];
+			
+			if (mContext != null && mHandler != null && notificationRecord != null) {
+				TelephonyManager phone = (TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
+				if (phone.getCallState() == TelephonyManager.CALL_STATE_IDLE) {
+					StatusBarNotification sbn = ((StatusBarNotification)XposedHelpers.getObjectField(notificationRecord, "sbn")).clone();
+					if (sbn.isClearable() && !sbn.isOngoing() && isAllowed(sbn.getPackageName())) {
+						mHandler.post(new Runnable() {
+							public void run() {
+								ArrayList<StatusBarNotification> sbns = makeSbnsArray(param.thisObject);
+								if (isRemove)
+									sendSbnsArray(sbns, mContext, true);
+								else
+									sendSbnsArray(sbns, mContext, false);
+							}
+						});
+					}
+				}
+			}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_PopupNotify() {
+		findAndHookMethod("com.htc.fragment.widget.CarouselFragment", null, "hideCarousel", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				try {
+					CarouselFragment mCarousel = (CarouselFragment)param.thisObject;
+					if (mCarousel != null && mCarousel.getActivity().getPackageName().equals("com.sensetoolbox.six")) param.setResult(null);
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+		
+		findAndHookMethod("com.android.server.NotificationManagerService", null, "notifyPostedLocked", "com.android.server.NotificationManagerService.NotificationRecord", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				sendNotificationData(param, false);
+			}
+		});
+		
+		findAndHookMethod("com.android.server.NotificationManagerService", null, "notifyRemovedLocked", "com.android.server.NotificationManagerService.NotificationRecord", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				sendNotificationData(param, true);
+			}
+		});
+		
+		XposedBridge.hookAllConstructors(findClass("com.android.server.NotificationManagerService", null), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Context ctx = (Context)param.args[0];
+		        IntentFilter intentfilter = new IntentFilter();
+		        intentfilter.addAction("com.sensetoolbox.six.CLEARNOTIFICATION");
+		        intentfilter.addAction("com.sensetoolbox.six.CHANGEFULLSCREEN");
+		        ctx.registerReceiver(mBR, intentfilter);
+		        mNMS = param.thisObject;
+			}
+		});
+		
+		findAndHookMethod(Activity.class, "onResume", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Activity act = (Activity)param.thisObject;
+				if (act == null) return;
+				int flags = act.getWindow().getAttributes().flags;
+				Intent fullscreenIntent = new Intent("com.sensetoolbox.six.CHANGEFULLSCREEN");
+		        if (flags != 0 && (flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN && !act.getPackageName().equals("com.android.systemui"))
+		        	fullscreenIntent.putExtra("isInFullscreen", true);
+		        else
+		        	fullscreenIntent.putExtra("isInFullscreen", false);
+		        act.sendBroadcast(fullscreenIntent);
+			}
+		});
+		
+		XposedBridge.hookAllConstructors(findClass("com.android.server.wm.WindowManagerService", null), new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				Context ctx = (Context)param.args[0];
+		        IntentFilter intentfilter = new IntentFilter();
+		        intentfilter.addAction("com.sensetoolbox.six.REQUESTSCREENSHOT");
+		        ctx.registerReceiver(mBRWMS, intentfilter);
+			}
+		});
 	}
 }

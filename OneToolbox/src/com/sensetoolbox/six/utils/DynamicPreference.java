@@ -118,7 +118,7 @@ public class DynamicPreference extends HtcListPreference {
 			
 			itemIcon.setScaleX(0.68f);
 			itemIcon.setScaleY(0.68f);
-			itemIcon.setTranslationX(mContext.getResources().getDisplayMetrics().density * 10.0f);
+			itemIcon.setTranslationX(mContext.getResources().getDisplayMetrics().density * 6.0f);
 
 			if (position == index)
 				itemRadio.setChecked(true);

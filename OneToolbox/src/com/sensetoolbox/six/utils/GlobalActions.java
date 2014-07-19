@@ -56,8 +56,7 @@ public class GlobalActions {
 	private static int mCurrentLEDLevel = 0;
 	
 	private static BroadcastReceiver mBR = new BroadcastReceiver() {
-		public void onReceive(final Context context, Intent intent)
-		{
+		public void onReceive(final Context context, Intent intent) {
 			try {
 			
 			String action = intent.getAction();
@@ -701,7 +700,7 @@ public class GlobalActions {
 				}
 			});
 			
-			findAndHookMethod("android.view.Window", null, "setFlags", int.class, int.class, new XC_MethodHook() {
+			findAndHookMethod(Window.class, "setFlags", int.class, int.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					Window wnd = (Window)param.thisObject;
@@ -724,7 +723,7 @@ public class GlobalActions {
 				}
 			});
 			
-			findAndHookMethod("android.app.Activity", null, "onResume", new XC_MethodHook() {
+			findAndHookMethod(Activity.class, "onResume", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					Activity act = (Activity)param.thisObject;

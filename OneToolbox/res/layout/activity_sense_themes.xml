@@ -10,8 +10,7 @@
     <com.htc.widget.HtcListView
         android:id="@+id/appslist"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/background_light" >
+        android:layout_height="match_parent" >
     </com.htc.widget.HtcListView>
     
     <TextView
@@ -25,7 +24,6 @@
         android:textAllCaps="true"
         android:textSize="18sp"
         android:textColor="@color/theme_hint"
-        android:fontFamily="sans-serif-condensed"
-        android:background="@android:color/background_light" />
+        android:fontFamily="sans-serif-condensed" />
 </FrameLayout>
 

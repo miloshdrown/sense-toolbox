@@ -68,11 +68,24 @@
 			<intent android:action="android.intent.action.VIEW"
             android:data="http://sensetoolbox.com/" />
 		</com.htc.preference.HtcPreference>
+		<com.htc.preference.HtcPreference
+            android:title="@string/support_bug_title"
+            android:summary="@string/support_bug_summ" >
+			<intent android:action="android.intent.action.VIEW"
+            android:data="https://bitbucket.org/langerhans/sense-toolbox/issues/" />
+		</com.htc.preference.HtcPreference>
+		<com.htc.preference.HtcPreference
+            android:title="@string/support_donate_title"
+            android:summary="@string/support_donate_summ" >
+			<intent android:action="android.intent.action.VIEW"
+            android:data="http://sensetoolbox.com/donate" />
+		</com.htc.preference.HtcPreference>
 		<com.htc.preference.HtcPreference 
             android:title="@string/support_blog_title"
             android:summary="@string/support_blog_summ" >
     		<intent android:action="android.intent.action.VIEW"
             android:data="http://android-revolution-hd.blogspot.de" />
 		</com.htc.preference.HtcPreference>
+		
     </com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>

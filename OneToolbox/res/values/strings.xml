@@ -60,6 +60,15 @@
     <string name="apm_bootloader_title">Bootloader</string>
     <string name="apm_bootloader_summ">Reboot directly to bootloader</string>
     
+    <string name="popupnotify_experimental">Experimental! Report any bugs you may encounter.</string>
+    <string name="popupnotify_dismiss">Dismiss</string>
+    <string name="popupnotify_dismisssleep">Dismiss and sleep</string>
+    <string name="popupnotify_dismissonly">Just dismiss</string>
+    <string name="popupnotify_taptolockscreen">Tap to go back to lockscreen</string>
+    <string name="popupnotify_nobigview">No expanded view found for this notification</string>
+    <string name="popupnotify_noview">No standard view found for this notification</string>
+    <string name="popupnotify_hint">Enable popup notifications from the action bar above.\n\nSoft reboot will be required only once after that.</string>
+    
     <string name="eqs_reorder">EQS Reorder</string>
     <string name="eqs_reorder_explain">Set custom order for EQS tiles</string>
     <string name="no_root_access">No root access</string>
@@ -317,6 +326,22 @@
 	
 	<string name="various_mods">Various mods</string>
 	<string name="various_mods_screenanim">Screen animations</string>
+	<string name="various_popupnotify_title">Popup notifications</string>
+	<string name="various_popupnotify_summ">Display cancelable notifications in a horizontally scrollable popup</string>
+	<string name="various_popupnotify_priority_title">Low priority</string>
+	<string name="various_popupnotify_priority_summ">Display popups for low priority notifications.</string>
+	<string name="various_popupnotify_expand_title">Expand</string>
+	<string name="various_popupnotify_expand_summ">Always show expanded notification view.</string>
+	<string name="various_popupnotify_fullscreen_title">Respect fullscreen</string>
+	<string name="various_popupnotify_fullscreen_summ">Do not show popups when fullscreen app is currently active (does not apply to immersive apps with hidden status and navigation bars).</string>
+	<string name="various_popupnotify_back_title">Background style</string>
+	<string name="various_popupnotify_back_summ">Select different types of background defocus.\nBlur works only if screen is on when notification arrives.</string>
+	<string name="various_popupnotify_bwlist_title">Inverse filter</string>
+	<string name="various_popupnotify_bwlist_summ">Apps are blacklisted by default, turn this option on to whitelist them instead.</string>
+	<string name="various_popupnotify_bwlist_black_title">Blacklist</string>
+	<string name="various_popupnotify_bwlist_white_title">Whitelist</string>
+	<string name="various_popupnotify_bwlist_black_summ">All cancelable notifications will be shown in popups except those from selected apps.</string>
+	<string name="various_popupnotify_bwlist_white_summ">Popups will be shown only for notifications from selected apps.</string>
 	<string name="various_screenon_title">On animation</string>
 	<string name="various_screenon_summ">Animation for turning screen on</string>
 	<string name="various_screenoff_title">Off animation</string>
@@ -397,9 +422,13 @@
 	<string name="toolbox_l10n_btn">Update</string>
 	
 	<string name="support">Support</string>
-	<string name="support_s6t_title">Visit Sense 6 Toolbox Site</string>
+	<string name="support_s6t_title">Sense 6 Toolbox Site</string>
 	<string name="support_s6t_summ">Find infos and changelog for the app here.</string>
-	<string name="support_blog_title">Visit ARHD Blog</string>
+	<string name="support_bug_title">Report a bug</string>
+	<string name="support_bug_summ">Send us a bug report or a feature request via official issue tracker.</string>
+	<string name="support_donate_title">Donate</string>
+	<string name="support_donate_summ">Best way to express your gratitude for this awesome module :)</string>
+	<string name="support_blog_title">Android Revolution HD Blog</string>
 	<string name="support_blog_summ">Get the latest news and updates for your favorite ROM here.</string>
 	
 	<string name="toggle_wifi_on">Wi-Fi enabled</string>
@@ -520,5 +549,8 @@
 	<string name="array_wakegestures_quickcall">Quick Call (voice dial)</string>
 	<string name="array_wakegestures_flashlight">Flashlight (no wake up)</string>
 	<string name="array_wakegestures_appdrawer">Open app drawer</string>
+	<string name="array_popupbkg_dim">Dim</string>
+	<string name="array_popupbkg_blur">Static blur</string>
+	<string name="array_popupbkg_blur_and_dim">Dimmed static blur</string>
 	
 </resources>

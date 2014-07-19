@@ -86,6 +86,9 @@ public class WakeGestures extends HtcPreferenceActivity {
 		addPreferencesFromResource(R.xml.prefs_wakegest);
 		setContentView(R.layout.activity_wake_gestures);
 		
+		int backResId = getResources().getIdentifier("common_app_bkg", "drawable", "com.htc");
+		findViewById(R.id.backLayer).setBackgroundResource(backResId);
+		
 		OnOffSwitch = new HtcToggleButtonLight(this);
 		OnOffSwitch.setLayoutParams(new android.widget.LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		OnOffSwitch.setEnabled(true);
@@ -99,6 +102,10 @@ public class WakeGestures extends HtcPreferenceActivity {
 		actionBarContainer.addRightView(OnOffSwitch);
 		
 		prefListView = (HtcListView)this.findViewById(android.R.id.list);
+		prefListView.setBackgroundResource(backResId);
+		prefListView.setDivider(getResources().getDrawable(getResources().getIdentifier("inset_list_divider", "drawable", "com.htc")));
+		prefListView.setDividerHeight(1);
+		prefListView.setFooterDividersEnabled(false);
 		applyThemeState(prefs.getBoolean("wake_gestures_active", false));
 		
 		final HtcListPreference swipeRightActionPreference = (HtcListPreference) findPreference("pref_key_wakegest_swiperight");

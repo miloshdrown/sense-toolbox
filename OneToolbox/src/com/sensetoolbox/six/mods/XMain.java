@@ -54,7 +54,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		pref_homeassist = Integer.parseInt(pref.getString("pref_key_controls_homeassistaction", "1"));
 		pref_shake = Integer.parseInt(pref.getString("pref_key_prism_shakeaction", "1"));
 		
-		if (pref.getBoolean("pref_key_other_apm", false) || pref.getBoolean("pref_key_prism_homemenu", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1)
+		if (pref.getBoolean("popup_notify_active", false) || pref.getBoolean("pref_key_other_apm", false) || pref.getBoolean("pref_key_prism_homemenu", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1)
 			GlobalActions.setupPWM();
 		
 		if (pref_backlongpress != 1 || pref_homeassist != 1)
@@ -97,6 +97,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pref.getBoolean("pref_key_sysui_hqthumbs", false))
 			SysUIMods.execHook_HDThumbnails();
+		
+		if (pref.getBoolean("popup_notify_active", false))
+			OtherMods.execHook_PopupNotify();
 	}
 
 	@Override

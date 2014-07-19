@@ -489,7 +489,7 @@ public class Helpers {
 	}
 	
 	public static boolean isNotM7() {
-		return !Build.DEVICE.contains("m7");
+		return (!Build.DEVICE.contains("m7") || Build.DEVICE.equals("m7cdug") || Build.DEVICE.equals("m7cdwg"));
 	}
 	
 	public static boolean isWakeGestures() {

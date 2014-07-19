@@ -13,7 +13,6 @@ import com.htc.widget.ActionBarContainer;
 import com.htc.widget.ActionBarExt;
 import com.htc.widget.ActionBarItemView;
 import com.htc.widget.ActionBarText;
-import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcListItem;
 import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListView;
@@ -47,7 +46,7 @@ public class SenseThemes extends Activity {
 	public static SparseArray<Object[]> colors = null;
 	public static List<PackageTheme> pkgthm = new ArrayList<PackageTheme>();
 	public static SharedPreferences prefs;
-	public HtcAlertDialog appAddDialog;
+	public AppAddDialog appAddDialog;
 	HtcToggleButtonLight OnOffSwitch;
 	ActionBarItemView menuAdd;
 	ActionBarItemView menuAll;
@@ -186,10 +185,12 @@ public class SenseThemes extends Activity {
 		loadPkgs();
 		
 		setContentView(R.layout.activity_sense_themes);
+		int backResId = getResources().getIdentifier("common_app_bkg", "drawable", "com.htc");
 		
 		appsList = (HtcListView)findViewById(R.id.appslist);
+		appsList.setBackgroundResource(backResId);
 		appsList.setDivider(getResources().getDrawable(getResources().getIdentifier("inset_list_divider", "drawable", "com.htc")));
-		appsList.setDividerHeight(2);
+		appsList.setDividerHeight(1);
 		appsList.setFooterDividersEnabled(false);
 		AppsAdapter appsAdapter = new AppsAdapter(this, pkgthm);
 		appsList.setAdapter(appsAdapter);
@@ -204,6 +205,7 @@ public class SenseThemes extends Activity {
 		});
 		
 		themeHint = (TextView)findViewById(R.id.themehint);
+		themeHint.setBackgroundResource(backResId);
 		themeHint.setText(Helpers.l10n(this, R.string.sense_theme_hint));
 		applyThemeState(prefs.getBoolean("themes_active", false));
 		OnOffSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){

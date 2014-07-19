@@ -209,6 +209,9 @@ public class ControlsMods {
 		findAndHookMethod(clsPWM, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				// Power and volkeys are pressed at the same time
+				if (isVolumePressed) return;
+				
 				KeyEvent keyEvent = (KeyEvent)param.args[0];
 				
 				int keycode = keyEvent.getKeyCode();
@@ -269,6 +272,7 @@ public class ControlsMods {
 								XposedBridge.log(t);
 							}
 							isPowerPressed = false;
+							isWaitingForPowerLongPressed = false;
 						}
 					}
 				}
@@ -280,6 +284,9 @@ public class ControlsMods {
 		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				// Power and volkeys are pressed at the same time
+				if (isPowerPressed) return;
+				
 				final KeyEvent keyEvent = (KeyEvent)param.args[0];
 				
 				int keycode = keyEvent.getKeyCode();

@@ -124,7 +124,7 @@ public class MainActivity extends HtcPreferenceActivity {
 		setContentView(R.layout.activity_main);
 		
 		getFragmentManager().beginTransaction().replace(R.id.fragment_container, new PrefsFragment()).commit();
-		((FrameLayout)findViewById(R.id.fragment_container)).getChildAt(0).setBackgroundResource(android.R.color.background_light);
+		((FrameLayout)findViewById(R.id.fragment_container)).getChildAt(0).setBackgroundResource(getResources().getIdentifier("common_app_bkg", "drawable", "com.htc"));
 	}
 	
 	protected void onResume() {
