@@ -270,7 +270,7 @@ public class Helpers {
 		TextView centerMsg = new TextView(ctx);
 		centerMsg.setText(l10n(ctx, resId));
 		centerMsg.setGravity(Gravity.CENTER_HORIZONTAL);
-		centerMsg.setPadding(0, 60, 0, 60);
+		centerMsg.setPadding(10, 60, 10, 60);
 		centerMsg.setTextSize(18.0f);
 		centerMsg.setTextColor(ctx.getResources().getColor(android.R.color.primary_text_light));
 		return centerMsg; 

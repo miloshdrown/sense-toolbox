@@ -639,15 +639,17 @@ public class OtherMods{
 		}
 	}
 	
-	public static Object mNMS = null;
+	public static MethodHookParam mNMSParam = null;
 	public static boolean isInFullscreen = false;
 	private static BroadcastReceiver mBR = new BroadcastReceiver() {
 		public void onReceive(final Context context, Intent intent) {
 			try {
 				String action = intent.getAction();
 				if (action != null)
-				if (mNMS != null && action.equals("com.sensetoolbox.six.CLEARNOTIFICATION")) {
-					XposedHelpers.callMethod(mNMS, "cancelNotificationWithTag", intent.getStringExtra("pkgName"), intent.getStringExtra("tag"), intent.getIntExtra("id", 0), intent.getIntExtra("userId", 0));
+				if (mNMSParam != null && action.equals("com.sensetoolbox.six.CLEARNOTIFICATION")) {
+					XposedHelpers.callMethod(mNMSParam.thisObject, "cancelNotificationWithTag", intent.getStringExtra("pkgName"), intent.getStringExtra("tag"), intent.getIntExtra("id", 0), intent.getIntExtra("userId", 0));
+				} else if (action.equals("com.sensetoolbox.six.PREFSUPDATED")) {
+					sendNotificationData(mNMSParam, true, true);
 				} else if (action.equals("com.sensetoolbox.six.CHANGEFULLSCREEN")) {
 					isInFullscreen = intent.getBooleanExtra("isInFullscreen", false);
 				}
@@ -728,7 +730,7 @@ public class OtherMods{
 		}
 	}
 	
-	private static void sendNotificationData(final MethodHookParam param, final boolean isRemove) {
+	private static void sendNotificationData(final MethodHookParam param, final boolean isRemove, boolean isForced) {
 		try {
 			XMain.pref.reload();
 			if (!XMain.pref.getBoolean("popup_notify_active", false)) return;
@@ -738,21 +740,25 @@ public class OtherMods{
 			Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 			Object notificationRecord = param.args[0];
 			
-			if (mContext != null && mHandler != null && notificationRecord != null) {
+			if (mContext != null && mHandler != null) {
 				TelephonyManager phone = (TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
 				if (phone.getCallState() == TelephonyManager.CALL_STATE_IDLE) {
-					StatusBarNotification sbn = ((StatusBarNotification)XposedHelpers.getObjectField(notificationRecord, "sbn")).clone();
-					if (sbn.isClearable() && !sbn.isOngoing() && isAllowed(sbn.getPackageName())) {
-						mHandler.post(new Runnable() {
-							public void run() {
-								ArrayList<StatusBarNotification> sbns = makeSbnsArray(param.thisObject);
-								if (isRemove)
-									sendSbnsArray(sbns, mContext, true);
-								else
-									sendSbnsArray(sbns, mContext, false);
-							}
-						});
+					boolean isSuitable = false;
+					if (notificationRecord != null && !isForced) {
+						StatusBarNotification sbn = ((StatusBarNotification)XposedHelpers.getObjectField(notificationRecord, "sbn")).clone();
+						if (sbn.isClearable() && !sbn.isOngoing() && isAllowed(sbn.getPackageName())) isSuitable = true;
 					}
+					
+					if (isSuitable || isForced)
+					mHandler.post(new Runnable() {
+						public void run() {
+							ArrayList<StatusBarNotification> sbns = makeSbnsArray(param.thisObject);
+							if (isRemove)
+								sendSbnsArray(sbns, mContext, true);
+							else
+								sendSbnsArray(sbns, mContext, false);
+						}
+					});
 				}
 			}
 		} catch (Throwable t) {
@@ -776,14 +782,14 @@ public class OtherMods{
 		findAndHookMethod("com.android.server.NotificationManagerService", null, "notifyPostedLocked", "com.android.server.NotificationManagerService.NotificationRecord", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				sendNotificationData(param, false);
+				sendNotificationData(param, false, false);
 			}
 		});
 		
 		findAndHookMethod("com.android.server.NotificationManagerService", null, "notifyRemovedLocked", "com.android.server.NotificationManagerService.NotificationRecord", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				sendNotificationData(param, true);
+				sendNotificationData(param, true, false);
 			}
 		});
 		
@@ -794,8 +800,9 @@ public class OtherMods{
 		        IntentFilter intentfilter = new IntentFilter();
 		        intentfilter.addAction("com.sensetoolbox.six.CLEARNOTIFICATION");
 		        intentfilter.addAction("com.sensetoolbox.six.CHANGEFULLSCREEN");
+		        intentfilter.addAction("com.sensetoolbox.six.PREFSUPDATED");
 		        ctx.registerReceiver(mBR, intentfilter);
-		        mNMS = param.thisObject;
+		        mNMSParam = param;
 			}
 		});
 		

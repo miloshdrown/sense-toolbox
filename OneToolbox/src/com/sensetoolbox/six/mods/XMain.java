@@ -456,6 +456,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_controls_extendedpanel", false))
 				SysUIMods.execHook_SearchGlowPadLaunch(lpparam);
 			
+			if(pref.getBoolean("pref_key_other_nolowbattwarn", false))
+				SysUIMods.execHook_NoLowBatteryWarning(lpparam);
+			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 			CleanBeamMods.execHook_HideIcons(lpparam);
 		}

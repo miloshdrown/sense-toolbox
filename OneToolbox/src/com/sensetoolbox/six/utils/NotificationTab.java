@@ -1,11 +1,15 @@
 package com.sensetoolbox.six.utils;
 
+import java.util.HashSet;
+
 import com.htc.fragment.widget.CarouselUtil;
+import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcRimButton;
 import com.sensetoolbox.six.DimmedActivity;
 import com.sensetoolbox.six.R;
 
 import android.app.Fragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -19,6 +23,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.View.MeasureSpec;
@@ -26,11 +31,14 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RemoteViews;
+import android.widget.TextView;
 import android.widget.RelativeLayout.LayoutParams;
 import android.widget.Toast;
 
 public class NotificationTab extends Fragment {
 	SharedPreferences prefs;
+	DimmedActivity act;
+	StatusBarNotification sbn;
 	boolean isInBigView = true;
 	boolean doubleSwipeFailed = false;
 	//int touchPositionX, touchCurrentPositionX;
@@ -44,28 +52,28 @@ public class NotificationTab extends Fragment {
 		return Math.round(getActivity().getResources().getDisplayMetrics().density * dimens);
 	}
 	
-	private void cancelNotification(StatusBarNotification sbn) {
+	private void cancelNotification(DimmedActivity act, StatusBarNotification sbn) {
 		Intent cancelIntent = new Intent("com.sensetoolbox.six.CLEARNOTIFICATION");
 		cancelIntent.putExtra("pkgName", sbn.getPackageName());
 		cancelIntent.putExtra("tag", sbn.getTag());
 		cancelIntent.putExtra("id", sbn.getId());
 		cancelIntent.putExtra("userId", sbn.getUserId());
-		getActivity().sendBroadcast(cancelIntent);
+		act.sendBroadcast(cancelIntent);
 	}
 	
 	private void updateView(final LinearLayout tab) {
 		try {
 			final int id = getArguments().getInt("id");
 			final String pkgName = getArguments().getString("pkgName");
+			final String appName = getArguments().getString("appName");
 			final String tag = String.valueOf(getArguments().getString("tag"));
 			final String uniqueTag = pkgName + "_" + String.valueOf(id) + "_" + String.valueOf(tag);
-			
-			final DimmedActivity act = ((DimmedActivity)getActivity());
-			final StatusBarNotification sbn = act.findInLatest(pkgName, id, tag);
+
+			act = ((DimmedActivity)getActivity());
+			sbn = act.findInLatest(pkgName, id, tag);
 			if (sbn != null) {
 				RemoteViews content = null;
 				if (prefs == null || prefs.getBoolean("pref_key_other_popupnotify_expand", true))
-
 				content = sbn.getNotification().bigContentView;
 				if (content == null) {
 					content = sbn.getNotification().contentView;
@@ -90,7 +98,7 @@ public class NotificationTab extends Fragment {
 							        }   
 							    }).start();
 								act.finish();
-								cancelNotification(sbn);
+								cancelNotification(act, sbn);
 							}
 						}
 					});
@@ -178,12 +186,42 @@ public class NotificationTab extends Fragment {
 			LinearLayout notifyDismiss = (LinearLayout)tab.findViewById(R.id.notifyDismiss);
 			notifyDismiss.setGravity(Gravity.CENTER);
 			
+			OnLongClickListener blacklist = new OnLongClickListener() {
+				@Override
+				public boolean onLongClick(final View v) {
+					if (prefs.getBoolean("pref_key_other_popupnotify_bwlist", false)) return true;
+					
+					HtcAlertDialog.Builder blconfirm = new HtcAlertDialog.Builder(act);
+					blconfirm.setTitle(Helpers.l10n(act, R.string.popupnotify_blconfirm));
+					TextView centerMsg = new TextView(act);
+					centerMsg.setText(String.format(Helpers.l10n(act, R.string.popupnotify_blacklist), appName));
+					centerMsg.setGravity(Gravity.CENTER_HORIZONTAL);
+					centerMsg.setPadding(20, 60, 20, 60);
+					centerMsg.setTextSize(18.0f);
+					centerMsg.setTextColor(act.getResources().getColor(android.R.color.primary_text_light));
+					blconfirm.setView(centerMsg);
+					blconfirm.setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {
+							HashSet<String> appsList = new HashSet<String>(prefs.getStringSet("pref_key_other_popupnotify_bwlist_apps", new HashSet<String>()));
+							appsList.add(pkgName);
+							prefs.edit().putStringSet("pref_key_other_popupnotify_bwlist_apps", new HashSet<String>(appsList)).commit();
+							if (act != null) act.sendBroadcast(new Intent("com.sensetoolbox.six.PREFSUPDATED"));
+						}
+					});
+					blconfirm.setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
+						public void onClick(DialogInterface dialog, int whichButton) {}
+					});
+					blconfirm.show();
+					return true;
+				}
+			};
+			
 			HtcRimButton rimBtn = new HtcRimButton(notifyDismiss.getContext());
 			rimBtn.setText(Helpers.l10n(getActivity(), R.string.popupnotify_dismiss));
 			rimBtn.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 			rimBtn.setBackground(CarouselUtil.Skin.getWidgetBackgroundDrawable(tab.getContext(), null));
 			rimBtn.setPadding(densify(10), densify(8), densify(10), densify(8));
-			
+			rimBtn.setOnLongClickListener(blacklist);
 			rimBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -191,7 +229,7 @@ public class NotificationTab extends Fragment {
 						act.notifications.getCarouselHost().removeTabByTag(uniqueTag);
 					else if (!act.isFinishing())
 						act.finish();
-					cancelNotification(sbn);
+					cancelNotification(act, sbn);
 				}
 			});
 			
@@ -201,11 +239,11 @@ public class NotificationTab extends Fragment {
 				rimBtnSleep.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 0.5f));
 				rimBtnSleep.setBackground(CarouselUtil.Skin.getWidgetBackgroundDrawable(tab.getContext(), null));
 				rimBtnSleep.setPadding(densify(20), densify(8), densify(20), densify(8));
-				
+				rimBtnSleep.setOnLongClickListener(blacklist);
 				rimBtnSleep.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						cancelNotification(sbn);
+						cancelNotification(act, sbn);
 						GlobalActions.goToSleep(getActivity());
 						if (!act.isFinishing()) act.finish();
 					}
@@ -254,7 +292,7 @@ public class NotificationTab extends Fragment {
 	
 	@Override
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-		prefs = getActivity().getSharedPreferences("one_toolbox_prefs", 1);
+		prefs = ((DimmedActivity)getActivity()).getSharedPreferences("one_toolbox_prefs", 1);
 		LinearLayout tab = (LinearLayout)inflater.inflate(com.sensetoolbox.six.R.layout.notification_tab, container, false);
 		updateView(tab);
 		return tab;

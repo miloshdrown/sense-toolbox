@@ -1912,4 +1912,24 @@ public class SysUIMods {
 			XposedBridge.log(t);
 		}
 	}
+	
+	public static void execHook_NoLowBatteryWarning(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.systemui.power.PowerUI", lpparam.classLoader, "showLowBatteryWarningWithLevel", int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(null);
+				}
+			});
+			
+			findAndHookMethod("com.android.systemui.power.PowerUI", lpparam.classLoader, "startLowBatteryTone", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(null);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
 }

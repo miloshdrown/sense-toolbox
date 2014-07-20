@@ -2,6 +2,8 @@ package com.sensetoolbox.six;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 import com.htc.app.HtcProgressDialog;
@@ -25,8 +27,10 @@ import com.sensetoolbox.six.utils.HtcMultiSelectListPreferenceEx;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
@@ -39,17 +43,28 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
 public class PopupNotify extends HtcPreferenceActivity {
-	public static SharedPreferences prefs;
 	public static List<ApplicationInfo> pkgAppsList = null;
+	SharedPreferences prefs;
+	String recreateIntent = "com.sensetoolbox.six.PREFSUPDATED";
+	IntentFilter filter = new IntentFilter(recreateIntent);
+	SharedPreferences.OnSharedPreferenceChangeListener prefListener;
 	HtcToggleButtonLight OnOffSwitch;
 	ActionBarItemView menuTest;
 	HtcListView prefListView;
 	TextView themeHint;
 	int mThemeId = 0;
 	
+	public BroadcastReceiver recreateReceiver = new BroadcastReceiver() {    
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (intent.getAction() != null && intent.getAction().equals(recreateIntent)) recreate();
+		}
+	};
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		startListen();
 		
 		// Apply Settings theme
 		mThemeId = Helpers.getCurrentTheme(this);
@@ -73,6 +88,7 @@ public class PopupNotify extends HtcPreferenceActivity {
 			OnClickListener goBack = new OnClickListener() {
 				@Override
 				public void onClick(View v) {
+					stopListen();
 					finish();
 				}
 			};
@@ -213,13 +229,34 @@ public class PopupNotify extends HtcPreferenceActivity {
 								runOnUiThread(new Runnable() {
 									@Override
 									public void run() {
-										ArrayList<CharSequence> entries = new ArrayList<CharSequence>();
-										ArrayList<CharSequence> entryVals = new ArrayList<CharSequence>();
+										HashSet<String> appsList = (HashSet<String>)prefs.getStringSet("pref_key_other_popupnotify_bwlist_apps", new HashSet<String>());
+										ArrayList<ArrayList<CharSequence>> entries = new ArrayList<ArrayList<CharSequence>>();
 										for (ApplicationInfo appInfo: pkgAppsList) {
-											entries.add(appInfo.loadLabel(pn.getPackageManager()));
-											entryVals.add(appInfo.packageName);
+											ArrayList<CharSequence> entry = new ArrayList<CharSequence>();
+											entry.add(appInfo.loadLabel(pn.getPackageManager()));
+											entry.add(appInfo.packageName);
+											if (appsList.contains(appInfo.packageName))
+												entry.add("1");
+											else
+												entry.add("0");
+											entries.add(entry);
 										}
-										bwlistApps.setEntries(entries.toArray(new CharSequence[entries.size()]));
+										
+									    Collections.sort(entries, new Comparator<ArrayList<CharSequence>>() {
+									        @Override
+									        public int compare(ArrayList<CharSequence> entry1, ArrayList<CharSequence> entry2) {
+									        	return ((String)entry2.get(2)).compareTo((String)entry1.get(2));
+									        }
+									    });
+									    
+									    ArrayList<CharSequence> entryLabels = new ArrayList<CharSequence>();
+										ArrayList<CharSequence> entryVals = new ArrayList<CharSequence>();
+										for (ArrayList<CharSequence> entry: entries) {
+											entryLabels.add(entry.get(0));
+											entryVals.add(entry.get(1));
+										}
+										
+										bwlistApps.setEntries(entryLabels.toArray(new CharSequence[entries.size()]));
 										bwlistApps.setEntryValues(entryVals.toArray(new CharSequence[entryVals.size()]));
 										
 										dialog.dismiss();
@@ -276,9 +313,31 @@ public class PopupNotify extends HtcPreferenceActivity {
 		}
 	}
 	
+	private void startListen() {
+		try {
+			this.registerReceiver(recreateReceiver, filter);
+		} catch (Exception e) {}
+	}
+	
+	private void stopListen() {
+		if (recreateReceiver != null) try {
+			this.unregisterReceiver(recreateReceiver);
+		} catch (Exception e) {}
+	}
+	
 	protected void onResume() {
 		super.onResume();
 		int newThemeId = Helpers.getCurrentTheme(this);
 		if (newThemeId != mThemeId) recreate();
+	}
+	
+	protected void onRestart() {
+		startListen();
+		super.onRestart();
+	}
+	
+	protected void onStop() {
+		super.onStop();
+		stopListen();
 	}
 }

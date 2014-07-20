@@ -68,6 +68,8 @@
     <string name="popupnotify_nobigview">No expanded view found for this notification</string>
     <string name="popupnotify_noview">No standard view found for this notification</string>
     <string name="popupnotify_hint">Enable popup notifications from the action bar above.\n\nSoft reboot will be required only once after that.</string>
+    <string name="popupnotify_blconfirm">Confirmation</string>
+    <string name="popupnotify_blacklist">%1$s will be added to blacklist. Proceed?</string>
     
     <string name="eqs_reorder">EQS Reorder</string>
     <string name="eqs_reorder_explain">Set custom order for EQS tiles</string>
@@ -340,7 +342,7 @@
 	<string name="various_popupnotify_bwlist_summ">Apps are blacklisted by default, turn this option on to whitelist them instead.</string>
 	<string name="various_popupnotify_bwlist_black_title">Blacklist</string>
 	<string name="various_popupnotify_bwlist_white_title">Whitelist</string>
-	<string name="various_popupnotify_bwlist_black_summ">All cancelable notifications will be shown in popups except those from selected apps.</string>
+	<string name="various_popupnotify_bwlist_black_summ">All cancelable notifications will be shown in popups except those from selected apps. You can quickly blacklist app by long pressing Dismiss button in popup window.</string>
 	<string name="various_popupnotify_bwlist_white_summ">Popups will be shown only for notifications from selected apps.</string>
 	<string name="various_screenon_title">On animation</string>
 	<string name="various_screenon_summ">Animation for turning screen on</string>
@@ -382,6 +384,8 @@
 	<string name="various_keyslight_auto_summ">Turn off buttons backlight in fullscreen apps.</string>
 	<string name="various_allrotations_title">All rotations</string>
 	<string name="various_allrotations_summ">Allow 180 degree orientation additionally to stock 90 and 270.</string>
+	<string name="various_nolowbattwarn_title">Disable low battery warning</string>
+	<string name="various_nolowbattwarn_summ">Turn off low battery popup dialog and sound tone.</string>
 	
 	<string name="wakegestures_mod">Wake gestures</string>
 	<string name="wakegestures_haptic_title">Haptic feedback</string>

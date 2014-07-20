@@ -48,6 +48,7 @@ public class Notifications extends CarouselFragment {
 		fragBundle.putInt("id", id);
 		fragBundle.putString("pkgName", pkgName);
 		fragBundle.putString("tag", tag);
+		fragBundle.putString("appName", appName);
 		tab.setArguments(fragBundle);
 		getCarouselHost().addTab(getActivity(), tab);
     }

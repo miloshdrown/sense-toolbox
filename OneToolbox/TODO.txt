@@ -43,12 +43,14 @@ Current changelog
 1.3.2
 [Fixed] Widgets and brightness slider background transparency
 [Fixed] Many minor mod and Toolbox UI problems
+[New] Disable low battery popup and sound warnings
 [New, Experimental] Popup Notifications
  - Horizontally scrollable popup to show multiple notifications
  - Can be displayed on secure lockscreen
  - If popup was opened with screen off, it's possible to dismiss all notifications and go back to sleep immediately
  - Blacklist and whitelist apps to control what notifications are allowed to be displayed as popups
- - You can switch between normal and expanded view by 2-finger vertical swipe from notification
+ - While using blacklist you can add apps to it by long pressing Dismiss button in popup window
+ - Switching between normal and expanded view can be done by 2-finger vertical swipe from notification area (excluding action buttons)
  - Options: always show expanded view, ignore low priority notifications, prevent popups from showing in any fullscreen app
 
 ===========
