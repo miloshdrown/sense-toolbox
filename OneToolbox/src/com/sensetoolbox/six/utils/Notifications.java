@@ -7,7 +7,6 @@ import android.service.notification.StatusBarNotification;
 
 import com.htc.fragment.widget.CarouselFragment;
 import com.htc.fragment.widget.CarouselTabSpec;
-import com.htc.fragment.widget.CarouselUtil;
 import com.sensetoolbox.six.DimmedActivity;
 import com.sensetoolbox.six.R;
 
@@ -56,7 +55,7 @@ public class Notifications extends CarouselFragment {
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState);
-		getCarouselHost().setBackgroundColor(CarouselUtil.Skin.getBackgroundColorDark(getActivity(), null));
+		getCarouselHost().setBackgroundResource(R.color.popup_center_color);
 		if (onReadyListener != null) onReadyListener.onReady();
 		isLoaded = true;
 	}

@@ -9,7 +9,7 @@
     android:id="@+id/container"
     tools:context=".DimmedActivity" >
 
-    <LinearLayout
+    <RelativeLayout
         android:id="@+id/notifyRemote"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

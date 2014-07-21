@@ -163,6 +163,7 @@ public class DimmedActivity extends Activity {
 			@Override
 			public void onReady() {
 				notifications.getCarouselHost().showTabWidget(false);
+				notifications.getCarouselWidget().setBackgroundResource(R.color.popup_top_bottom_color);
 				int k = sbns.size();
 				for (int l = 0; l < k; l++) {
 					StatusBarNotification notifyRecord = sbns.get(l);

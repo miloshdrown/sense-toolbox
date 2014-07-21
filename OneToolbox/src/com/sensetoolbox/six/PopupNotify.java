@@ -177,6 +177,7 @@ public class PopupNotify extends HtcPreferenceActivity {
 		
 		TextView experimental = (TextView)findViewById(R.id.experimental);
 		experimental.setText(Helpers.l10n(this, R.string.popupnotify_experimental));
+		experimental.setTextColor(getResources().getColor(android.R.color.background_light));
 		
 		prefListView = (HtcListView)this.findViewById(android.R.id.list);
 		prefListView.setBackgroundResource(backResId);

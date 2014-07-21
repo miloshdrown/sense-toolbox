@@ -2,7 +2,6 @@ package com.sensetoolbox.six.utils;
 
 import java.util.HashSet;
 
-import com.htc.fragment.widget.CarouselUtil;
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcRimButton;
 import com.sensetoolbox.six.DimmedActivity;
@@ -30,6 +29,7 @@ import android.view.View.MeasureSpec;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.RemoteViews;
 import android.widget.TextView;
 import android.widget.RelativeLayout.LayoutParams;
@@ -81,7 +81,7 @@ public class NotificationTab extends Fragment {
 				}
 				if (content != null) {
 					View localContent = content.apply(act, tab);
-					final LinearLayout notifyRemote = (LinearLayout)tab.findViewById(R.id.notifyRemote);
+					final RelativeLayout notifyRemote = (RelativeLayout)tab.findViewById(R.id.notifyRemote);
 					notifyRemote.addView(localContent);
 					notifyRemote.setOnClickListener(new OnClickListener() {
 						@Override
@@ -103,7 +103,10 @@ public class NotificationTab extends Fragment {
 						}
 					});
 					
-					final FrameLayout sblec = (FrameLayout)notifyRemote.findViewById(getResources().getIdentifier("status_bar_latest_event_content", "id", "android"));
+					FrameLayout sblec = (FrameLayout)notifyRemote.findViewById(getResources().getIdentifier("status_bar_latest_event_content", "id", "android"));
+					RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)sblec.getLayoutParams();
+					lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+					sblec.setLayoutParams(lp);
 
 					notifyRemote.setOnTouchListener(new OnTouchListener() {
 						@Override
@@ -116,7 +119,6 @@ public class NotificationTab extends Fragment {
 					            		touchPositionY = (int)event.getY(1);
 					            		touchCurrentPositionY = touchPositionY;
 					            		doubleSwipeFailed = false;
-					            		if (sblec != null) sblec.setBackgroundColor(Color.TRANSPARENT);
 					                	break;
 						            case MotionEvent.ACTION_MOVE:
 						            	if (doubleSwipeFailed) return true;
@@ -219,7 +221,7 @@ public class NotificationTab extends Fragment {
 			HtcRimButton rimBtn = new HtcRimButton(notifyDismiss.getContext());
 			rimBtn.setText(Helpers.l10n(getActivity(), R.string.popupnotify_dismiss));
 			rimBtn.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-			rimBtn.setBackground(CarouselUtil.Skin.getWidgetBackgroundDrawable(tab.getContext(), null));
+			rimBtn.setBackgroundResource(R.color.popup_top_bottom_color);
 			rimBtn.setPadding(densify(10), densify(8), densify(10), densify(8));
 			rimBtn.setOnLongClickListener(blacklist);
 			rimBtn.setOnClickListener(new OnClickListener() {
@@ -237,7 +239,7 @@ public class NotificationTab extends Fragment {
 				HtcRimButton rimBtnSleep = new HtcRimButton(notifyDismiss.getContext());
 				rimBtnSleep.setText(Helpers.l10n(getActivity(), R.string.popupnotify_dismisssleep));
 				rimBtnSleep.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, 0.5f));
-				rimBtnSleep.setBackground(CarouselUtil.Skin.getWidgetBackgroundDrawable(tab.getContext(), null));
+				rimBtnSleep.setBackgroundResource(R.color.popup_top_bottom_color);
 				rimBtnSleep.setPadding(densify(20), densify(8), densify(20), densify(8));
 				rimBtnSleep.setOnLongClickListener(blacklist);
 				rimBtnSleep.setOnClickListener(new OnClickListener() {
@@ -268,7 +270,7 @@ public class NotificationTab extends Fragment {
 		((DimmedActivity)getActivity()).updateTabHeight(uniqueTag, tab.getMeasuredHeight());
 	}
 	
-	private void updateIcon(DimmedActivity act, String pkgName, LinearLayout notifyRemote, StatusBarNotification sbn) {
+	private void updateIcon(DimmedActivity act, String pkgName, RelativeLayout notifyRemote, StatusBarNotification sbn) {
 		try {
 			PackageManager manager = act.getPackageManager();
 			Resources sourceRes = manager.getResourcesForApplication(pkgName);
