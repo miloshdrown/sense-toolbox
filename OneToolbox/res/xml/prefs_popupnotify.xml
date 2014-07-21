@@ -16,6 +16,13 @@
         android:title="@string/various_popupnotify_fullscreen_title"
         android:defaultValue="false" />
     <com.htc.preference.HtcListPreference
+        android:key="pref_key_other_popupnotify_clock"
+        android:summary="@string/various_popupnotify_clock_summ"
+        android:title="@string/various_popupnotify_clock_title"
+        android:entries="@array/various_clock_style"
+        android:entryValues="@array/various_clock_style_val"
+        android:defaultValue="1"/>
+    <com.htc.preference.HtcListPreference
         android:key="pref_key_other_popupnotify_back"
         android:summary="@string/various_popupnotify_back_summ"
         android:title="@string/various_popupnotify_back_title"

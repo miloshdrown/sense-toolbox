@@ -154,13 +154,13 @@ public class PopupNotify extends HtcPreferenceActivity {
 	                public void run() {
 	                	nm.notify(6662, notification2);
 	                }
-	            }, 3000L);
+	            }, 2000L);
 	            
 	            (new Handler()).postDelayed(new Runnable() {
 	                public void run() {
 	                	nm.notify(6663, notification3);
 	                }
-	            }, 5000L);
+	            }, 3000L);
 			}
 		});
 		actionBarContainer.addRightView(menuTest);

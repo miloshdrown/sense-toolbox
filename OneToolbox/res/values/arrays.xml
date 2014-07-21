@@ -303,5 +303,16 @@
         <item >3</item>
     </string-array>
     
+    <string-array name="various_clock_style">
+        <item >@string/array_popuphdr_empty</item>
+        <item >@string/array_popuphdr_datetime</item>
+        <item >@string/array_popuphdr_dashclock</item>
+    </string-array>
+    <string-array name="various_clock_style_val">
+        <item >1</item>
+        <item >2</item>
+        <item >3</item>
+    </string-array>
+    
     <string-array name="empty_array"/>
 </resources>

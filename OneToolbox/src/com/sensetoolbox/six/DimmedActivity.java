@@ -1,6 +1,7 @@
 package com.sensetoolbox.six;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import com.htc.fragment.widget.CarouselHost.OnTabChangeListener;
 import com.htc.fragment.widget.CarouselUtil;
@@ -13,6 +14,10 @@ import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.app.KeyguardManager;
+import android.appwidget.AppWidgetHost;
+import android.appwidget.AppWidgetHostView;
+import android.appwidget.AppWidgetManager;
+import android.appwidget.AppWidgetProviderInfo;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,6 +29,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.service.notification.StatusBarNotification;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
@@ -34,11 +40,15 @@ import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextClock;
 import android.widget.TextView;
 
 public class DimmedActivity extends Activity {
 	int dialogType;
 	boolean isInLockscreen;
+	SharedPreferences prefs;
+	AppWidgetHost mAppWidgetHost = null;
 	WindowManager.LayoutParams params;
 	String clearIntent = "com.sensetoolbox.six.UPDATENOTIFICATIONS";
 	IntentFilter filter = new IntentFilter(clearIntent);
@@ -59,12 +69,14 @@ public class DimmedActivity extends Activity {
 	private void startListen() {
 		try {
 			this.registerReceiver(helperReceiver, filter);
+			if (mAppWidgetHost != null ) mAppWidgetHost.startListening();
 		} catch (Exception e) {}
 	}
 	
 	private void stopListen() {
 		if (helperReceiver != null) try {
 			this.unregisterReceiver(helperReceiver);
+			if (mAppWidgetHost != null ) mAppWidgetHost.stopListening();
 		} catch (Exception e) {}
 	}
 	
@@ -83,6 +95,50 @@ public class DimmedActivity extends Activity {
 					return true;
 				}
 			});
+			
+			float density = getResources().getDisplayMetrics().density;
+			
+			RelativeLayout time_date_widget = (RelativeLayout)findViewById(R.id.time_date_widget);
+			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)time_date_widget.getLayoutParams();
+			lp.topMargin = Math.round(density * 12);
+			time_date_widget.setLayoutParams(lp);
+			
+			TextClock time = (TextClock)findViewById(R.id.time);
+			TextClock date_dayofweek = (TextClock)findViewById(R.id.date_dayofweek);
+			TextClock date_day = (TextClock)findViewById(R.id.date_day);
+			TextClock date_month = (TextClock)findViewById(R.id.date_month);
+
+			time.setTextSize(25 * density);
+			date_dayofweek.setTextSize(5.5f * density);
+			date_day.setTextSize(5.5f * density);
+			date_month.setTextSize(5.5f * density);
+			time_date_widget.setVisibility(View.VISIBLE);
+
+			int headerStyle = Integer.parseInt(prefs.getString("pref_key_other_popupnotify_clock", "1"));
+			if (headerStyle == 1) {
+				time_date_widget.setVisibility(View.GONE);
+			} else if (headerStyle == 3) {
+				AppWidgetManager mAppWidgetManager = AppWidgetManager.getInstance(this);
+				mAppWidgetHost = new AppWidgetHost(this, 1);
+				int appWidgetId = mAppWidgetHost.allocateAppWidgetId();
+				mAppWidgetHost.startListening();
+				
+				List<AppWidgetProviderInfo> widgets = mAppWidgetManager.getInstalledProviders();
+				for (int i = 0; i < widgets.size(); i++) {
+					AppWidgetProviderInfo appWidgetInfo = widgets.get(i);
+					if (appWidgetInfo.provider.flattenToString().equals("net.nurik.roman.dashclock/com.google.android.apps.dashclock.WidgetProvider")) {
+						AppWidgetHostView hostView = mAppWidgetHost.createView(this, appWidgetId, appWidgetInfo);
+						hostView.setAppWidget(appWidgetId, appWidgetInfo);
+						hostView.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+						
+						time_date_widget.removeAllViews();
+						time_date_widget.addView(hostView);
+						
+						if (!mAppWidgetManager.bindAppWidgetIdIfAllowed(appWidgetId, appWidgetInfo.provider)) Log.e(null, "No permission to bind widgets!");
+						break;
+					}
+				}
+			}
 			
 			initNotifications(intent, true);
 			if (isInLockscreen) {
@@ -109,7 +165,7 @@ public class DimmedActivity extends Activity {
 		PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
 		if (!pm.isScreenOn()) sleepOnDismissLast = true;
 		
-		SharedPreferences prefs = getSharedPreferences("one_toolbox_prefs", 1);
+		prefs = getSharedPreferences("one_toolbox_prefs", 1);
 		int backStyle = Integer.parseInt(prefs.getString("pref_key_other_popupnotify_back", "1"));
 		
 		final Intent intent = getIntent();

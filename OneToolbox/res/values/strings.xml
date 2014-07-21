@@ -336,6 +336,8 @@
 	<string name="various_popupnotify_expand_summ">Always show expanded notification view.</string>
 	<string name="various_popupnotify_fullscreen_title">Respect fullscreen</string>
 	<string name="various_popupnotify_fullscreen_summ">Do not show popups when fullscreen app is currently active (does not apply to immersive apps with hidden status and navigation bars).</string>
+	<string name="various_popupnotify_clock_title">Header content</string>
+	<string name="various_popupnotify_clock_summ">Show DashClock widget, time and date or nothing above popup.</string>
 	<string name="various_popupnotify_back_title">Background style</string>
 	<string name="various_popupnotify_back_summ">Select different types of background defocus.\nBlur works only if screen is on when notification arrives.</string>
 	<string name="various_popupnotify_bwlist_title">Inverse filter</string>
@@ -556,5 +558,8 @@
 	<string name="array_popupbkg_dim">Dim</string>
 	<string name="array_popupbkg_blur">Static blur</string>
 	<string name="array_popupbkg_blur_and_dim">Dimmed static blur</string>
+	<string name="array_popuphdr_empty">Empty</string>
+	<string name="array_popuphdr_datetime">Time and date</string>
+	<string name="array_popuphdr_dashclock">DashClock widget</string>
 	
 </resources>

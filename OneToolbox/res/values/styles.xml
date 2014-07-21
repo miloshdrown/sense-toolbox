@@ -47,5 +47,17 @@
         <item name="android:shadowRadius">4.0</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
-	
+    
+	<style name="clock_style">
+        <item name="android:textColor">@android:color/white</item>
+		<item name="android:ellipsize">none</item>
+		<item name="android:maxLines">1</item>
+		<item name="android:singleLine">true</item>
+		<item name="android:fontFamily">sans-serif-thin</item>
+		<item name="android:textStyle">normal</item>
+		<item name="android:format24Hour">kk:mm</item>
+		<item name="android:format12Hour">h:mm</item>
+		<item name="android:includeFontPadding">false</item>
+    </style>
+    
 </resources>
