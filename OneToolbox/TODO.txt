@@ -52,6 +52,7 @@ Current changelog
  - While using blacklist you can add apps to it by long pressing Dismiss button in popup window
  - Switching between normal and expanded view can be done by 2-finger vertical swipe from notification area (excluding action buttons)
  - Options: always show expanded view, ignore low priority notifications, prevent popups from showing in any fullscreen app
+ - Background blur was added just for fun. It is static, works only if screen is on and doesn't react properly to orientation changes
 
 ===========
 Translators

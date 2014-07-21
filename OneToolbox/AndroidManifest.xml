@@ -49,12 +49,14 @@
 			android:name="com.sensetoolbox.six.DimmedActivity"
 			android:exported="true"
 			android:launchMode="singleInstance"
+			android:configChanges="keyboardHidden|orientation|screenSize"
 			android:excludeFromRecents="true" />
 		<activity
 			android:theme="@style/InvisibleOnLockscreen"
 			android:name="com.sensetoolbox.six.DimmedActivityLS"
 			android:exported="true"
 			android:showOnLockScreen="true"
+			android:configChanges="keyboardHidden|orientation|screenSize"
 			android:launchMode="singleInstance"
 			android:excludeFromRecents="true" />
 		<activity android:name="com.sensetoolbox.six.AboutScreen" android:screenOrientation="portrait" />

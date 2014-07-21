@@ -699,8 +699,11 @@ public class PrismMods {
 		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onKeyDown", int.class, KeyEvent.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				if ((Integer)param.args[0] == KeyEvent.KEYCODE_MENU)
-				createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_workspace"), (Activity)param.thisObject);
+				if ((Integer)param.args[0] == KeyEvent.KEYCODE_MENU) {
+					Enum<?> m_state = (Enum<?>)XposedHelpers.getObjectField(param.thisObject, "m_state");
+					if (m_state != null && m_state.ordinal() == 0)
+					createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_workspace"), (Activity)param.thisObject);
+				}
 			}
 		});
 	}
