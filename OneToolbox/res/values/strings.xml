@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="menu_save">Save</string>
     <string name="app_name">Sense 6 Toolbox</string>
-    <string name="app_name_version">Sense 6 Toolbox (Version: %1$s)</string>
     <string name="app_about">About</string>
     <string name="about_version">Version: %1$s (build %2$s)</string>
     <string name="support_version">Support (App Version: %1$s)</string>
-    <string name="restore">Restore</string>
-    <string name="add">Add</string>
     <string name="soft_reboot">Soft Reboot</string>
     <string name="restart_prism">Restart launcher</string>
     <string name="restarted_prism">Launcher was restarted</string>
@@ -27,17 +23,10 @@
     <string name="storage_cannot_restore">No settings backup found</string>
     <string name="backup_ok">Settings were backed up successfully!</string>
     <string name="restore_ok">Settings were successfully restored!</string>
-    
+
     <string name="warning">Warning!</string>
     <string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 6 Toolbox module there and reboot.</string>
     <string name="module_not_active">Sense 6 Toolbox module is not active! Open Xposed Installer, activate module and reboot.</string>
-    <string name="welcome">Welcome to Sense 6 Toolbox!</string>
-    <string name="dragndrop">Use drag\'n\'drop to rearrange your quick settings.</string>
-    <string name="title_delete">Just tap on tile to delete it.</string>
-    <string name="plus_icon">Use the \'+\' icon to add tiles.</string>
-    <string name="save_settings">Don\'t forget to save your settings!</string>
-    <string name="restore_layout">Tap the restore icon to restore your layout. That will load the last saved config.</string>
-    <string name="xposed_mods">Please note that the mods in the \'MODS\' tab only work if you have Xposed installed!</string>
     <string name="no_currents">Buttons backlight control not found. Your device may be uncompatible with this mod.</string>
     <string name="backup_restore_info">Your settings have been restored via Google Cloud Backup. If you had Vol2wake enabled, please re-enable it manually. Please do a full reboot after enabling the Toolbox Xposed module.</string>
     <string name="download_current_ver">Installed update:</string>
@@ -49,7 +38,7 @@
     <string name="download_same_version">You already have the latest version</string>
     <string name="download_version_problem">Failed to read update version</string>
     <string name="download_removed">Language files were removed,\nToolbox will be restarted now</string>
-    
+
     <string name="apm_title">Choose reboot option</string>
     <string name="apm_normal_title">Reboot</string>
     <string name="apm_normal_summ">Close all apps and restart device</string>
@@ -59,7 +48,7 @@
     <string name="apm_recovery_summ">Reboot directly to recovery</string>
     <string name="apm_bootloader_title">Bootloader</string>
     <string name="apm_bootloader_summ">Reboot directly to bootloader</string>
-    
+
     <string name="popupnotify_experimental">Experimental! Report any bugs you may encounter.</string>
     <string name="popupnotify_dismiss">Dismiss</string>
     <string name="popupnotify_dismisssleep">Dismiss and sleep</string>
@@ -70,45 +59,27 @@
     <string name="popupnotify_hint">Enable popup notifications from the action bar above.\n\nSoft reboot will be required only once after that.</string>
     <string name="popupnotify_blconfirm">Confirmation</string>
     <string name="popupnotify_blacklist">%1$s will be added to blacklist. Proceed?</string>
-    
-    <string name="eqs_reorder">EQS Reorder</string>
-    <string name="eqs_reorder_explain">Set custom order for EQS tiles</string>
-    <string name="no_root_access">No root access</string>
-    <string name="no_root_explain">Either your device is not rooted, or you didn\'t allow the app to access SuperUser.\nWithout root you can\'t reorder your EQS tiles, therefore the function is not shown.\nYou can dismiss this message once, or forever. A check for root will be done on every start, to make the function available if you decide to allow root access later.</string>
-	<string name="dismiss_once">Dismiss once</string>
-	<string name="dismiss_forever">Dismiss forever</string>
+
 	<string name="mods">Mods</string>
-	
+
 	<string name="xposed_not_found">Xposed Installer not found</string>
 	<string name="xposed_not_found_explain">It looks like you don\'t have Xposed Installed.\n\nPlease note that the mods on this page will only work with Xposed!\n\nXposed is available in the ARHD installer.</string>
 	<string name="okay">Okay</string>
 	<string name="close_camera">Make sure to close camera from recent apps!</string>
-	<string name="remove_last">You can\'t remove the last item!</string>
 	<string name="remove">Remove</string>
-	<string name="remove_tile_msg1">Do you want to remove the</string>
-	<string name="remove_tile_msg2">tile?\nYou can add it back via the menu on top.</string>
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
-	<string name="hotreboot_explain">Your order has been saved! A hot reboot is required for this to take effect. Would you like to do this now?</string>
 	<string name="hotreboot_explain_prefs">This will soft reboot your device.\nContinue?</string>
 	<string name="restartprism_explain_prefs">This will restart BlinkFeed launcher.\nContinue?</string>
 	<string name="restartmessages_explain_prefs">This will restart Messages app.\nContinue?</string>
-	<string name="select_tile">Select tile to add</string>
 	<string name="success">Success</string>
-	<string name="backup_restored">Backup successfully restored! Tap on \'Save\' to apply the order.</string>
-	<string name="no_backup">No backup found</string>
-	<string name="no_backup_explain">Sorry, no backup was found. Did you wipe your storage?</string>
-	<string name="first_start">First start</string>
-	<string name="close_forever">Close dialog forever!</string>
-	
+
 	<string name="sunbeam_installed">SunBeam has been installed. Make sure you soft reboot to apply the changes. Remember that you need to reinstall SunBeam after every ROM flash.</string>
 	<string name="dummy"></string>
-	
+
 	<string name="transparency_msg">0 = transparent, 100 = opaque</string>
 	<string name="transparency_enable">Enable transparency</string>
-	
-	<string name="camera_mods">Camera mods</string>
-	
+
 	<string name="systemui_mods">Interface mods</string>
 	<string name="sense_themes_title">Sense themes</string>
     <string name="sense_themes_summ">Change theme colors for every app.</string>
@@ -147,8 +118,6 @@
 	<string name="systemui_recentram_summ">Show the amount of RAM used by recent apps.</string>
 	<string name="systemui_hqthumbs_title">High quality thumbnails</string>
 	<string name="systemui_hqthumbs_summ">Disable thumbnail conversion that reduces color data.</string>
-	<string name="systemui_centerclock_title">Center clock</string>
-	<string name="systemui_centerclock_summ">Enable to move the status bar clock to the center.</string>
 	<string name="systemui_ampmremove_title">Remove AM/PM</string>
 	<string name="systemui_ampmremove_summ">Enable to remove the AM/PM from the status bar clock in 12h mode.</string>
 	<string name="systemui_clockstyle_title">Clock style</string>
@@ -169,7 +138,7 @@
 	<string name="timeoutpicker_switch">Enable custom values</string>
 	<string name="timeoutpicker_desc">Choose three different values</string>
 	<string name="timeoutpicker_warn_text">All timeout values must be different</string>
-	
+
 	<string name="cleanbeam_mods">Statusbar icons</string>
 	<string name="cleanbeam_colortheme_title">Color theme</string>
 	<string name="cleanbeam_colortheme_summ">Global theme for all icon sets excluding multicolor ones.</string>
@@ -226,7 +195,7 @@
 	<string name="cleanbeam_post_summ">For the CleanBeam icon set and the SunBeam wallpaper.</string>
 	<string name="cleanbeam_hd2o_title">HD2Owner</string>
 	<string name="cleanbeam_hd2o_summ">For additional battery icon sets.</string>
-	
+
 	<string name="sense_mods">Sense mods</string>
 	<string name="sense_transparency">Transparency</string>
 	<string name="sense_homescreen">Home screen</string>
@@ -275,7 +244,7 @@
 	<string name="notselected">Not selected</string>
 	<string name="loading_app_data">Loading apps&#8230;</string>
 	<string name="locked_warning">Please unlock launcher first!</string>
-	
+
 	<string name="message_mods">Messaging mods</string>
 	<string name="message_smsmms_title">Disable SMS -> MMS conversion</string>
 	<string name="message_smsmms_summ">Check to disable the forced SMS to MMS conversion by the character limit. Network limitations still apply.</string>
@@ -287,9 +256,7 @@
 	<string name="message_size_summ">Raise the MMS size limit to 300k, 600k, 1000k.</string>
 	<string name="message_accents_title">Enable accent support</string>
 	<string name="message_accents_summ">Enable accent support option in SMS settings.</string>
-	<string name="message_eassecurity_title">Exchange security mod</string>
-	<string name="message_eassecurity_summ">Removes Exchange security policies. Only for newly added accounts.</string>
-	
+
 	<string name="controls_mods">Controls mods</string>
 	<string name="controls_mods_backlongpress">Back button long press</string>
 	<string name="controls_backlongpressaction_title">Action</string>
@@ -308,24 +275,21 @@
 	<string name="controls_mods_volume">Volume keys</string>
 	<string name="controls_vol_up_cam_title">Volume Up action</string>
 	<string name="controls_vol_up_cam_summ">The action for Volume Up in camera.</string>
-	<string name="controls_vol_down_cam_title">Volume Down action</string>	
+	<string name="controls_vol_down_cam_title">Volume Down action</string>
 	<string name="controls_vol_down_cam_summ">The action for Volume Down in camera.</string>
 	<string name="controls_vol_up_media_title">Volume Up long press action</string>
 	<string name="controls_vol_up_media_summ">The action for Volume Up long press when screen is off.</string>
-	<string name="controls_vol_down_media_title">Volume Down long press action</string>	
+	<string name="controls_vol_down_media_title">Volume Down long press action</string>
 	<string name="controls_vol_down_media_summ">The action for Volume Down long press when screen is off.</string>
-	<string name="controls_smallsoftkeys_title">Small softkeys</string>	
+	<string name="controls_smallsoftkeys_title">Small softkeys</string>
 	<string name="controls_smallsoftkeys_summ">Reduce the height of the softkey bar.</string>
-	<string name="controls_extendedpanel_title">Extended assist panel</string>	
+	<string name="controls_extendedpanel_title">Extended assist panel</string>
 	<string name="controls_extendedpanel_summ">Add Voice Dial and APM shortcuts to ring selector on swipe up from Home.</string>
-	
+
 	<string name="kill_foreground">Kill foreground app</string>
-	<string name="kill_foreground_warn">You are trying to kill the launcher!</string>
-	<string name="kill_foreground_yes">I know</string>
-	<string name="kill_foreground_no">Abort!</string>
 	<string name="open_menu">Open menu</string>
 	<string name="open_recents">Show recent apps</string>
-	
+
 	<string name="various_mods">Various mods</string>
 	<string name="various_mods_screenanim">Screen animations</string>
 	<string name="various_popupnotify_title">Popup notifications</string>
@@ -388,7 +352,7 @@
 	<string name="various_allrotations_summ">Allow 180 degree orientation additionally to stock 90 and 270.</string>
 	<string name="various_nolowbattwarn_title">Disable low battery warning</string>
 	<string name="various_nolowbattwarn_summ">Turn off low battery popup dialog and sound tone.</string>
-	
+
 	<string name="wakegestures_mod">Wake gestures</string>
 	<string name="wakegestures_haptic_title">Haptic feedback</string>
 	<string name="wakegestures_haptic_summ">Short vibration after successful gesture</string>
@@ -407,7 +371,7 @@
 	<string name="wakegestures_volume_title">Volume keys</string>
 	<string name="wakegestures_volume_summ">Action for pressing volume keys in landscape</string>
 	<string name="wakegestures_not_supported">Wake gestures require kernel support, ask your kernel developer to add it or use ElementalX 14.7+</string>
-	
+
 	<string name="persistent_mods">Always active mods</string>
 	<string name="persist_adgrid_title">App drawer grid size</string>
 	<string name="persist_adgrid_summ">New grid sizes: 5x5, 4x6 and 5x6. You can select them from default app drawer menu.</string>
@@ -419,14 +383,14 @@
 	<string name="persist_recentslongtap_summ">Show popup menu on long press for every app in recents list.</string>
 	<string name="persist_installer_title">Display app version</string>
 	<string name="persist_installer_summ">Add package version to installer title when updating or installing an app.</string>
-	
+
 	<string name="toolbox">Toolbox settings</string>
 	<string name="toolbox_show_icon_title">Fast access icon</string>
 	<string name="toolbox_show_icon_summ">Show Toolbox icon in Settings.</string>
 	<string name="toolbox_l10n_title">Localization</string>
 	<string name="toolbox_l10n_summ">Download and update language pack.</string>
 	<string name="toolbox_l10n_btn">Update</string>
-	
+
 	<string name="support">Support</string>
 	<string name="support_s6t_title">Sense 6 Toolbox Site</string>
 	<string name="support_s6t_summ">Find infos and changelog for the app here.</string>
@@ -436,7 +400,7 @@
 	<string name="support_donate_summ">Best way to express your gratitude for this awesome module :)</string>
 	<string name="support_blog_title">Android Revolution HD Blog</string>
 	<string name="support_blog_summ">Get the latest news and updates for your favorite ROM here.</string>
-	
+
 	<string name="toggle_wifi_on">Wi-Fi enabled</string>
 	<string name="toggle_wifi_off">Wi-Fi disabled</string>
 	<string name="toggle_bt_on">Bluetooth enabled</string>
@@ -458,7 +422,7 @@
 	<string name="toggle_flash_off">Flashlight: off</string>
 	<string name="toggle_mobiledata_on">Mobile data enabled</string>
 	<string name="toggle_mobiledata_off">Mobile data disabled</string>
-	
+
 	<string name="appdetails_launch">Launch</string>
 	<string name="appdetails_package">Package</string>
 	<string name="appdetails_apk_file">APK filename</string>
@@ -468,23 +432,20 @@
 	<string name="appdetails_proc_name">Process name</string>
 	<string name="appdetails_uid">User ID</string>
 	<string name="appdetails_sdk">Target SDK Version</string>
-	
+
 	<string name="apps_disabled">Show disabled only</string>
 	<string name="apps_all">Show all</string>
-	
-	<string name="add_app">Add app</string>
+
 	<string name="select_app">Select app</string>
-	
+
 	<string name="about_devs">Developers</string>
 	<string name="about_devs_names">Langer Hans\nMikanoshi</string>
 	<string name="about_thanks">Thanks</string>
-	<string name="about_sense">Sense 6</string>
-	<string name="about_toolbox">Toolbox</string>
 	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\nAcogu - for Sense 6 Toolbox logo and main app icon\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nDunc001 and LeSScro - for their APM icons\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
 	<string name="about_l10n">Translation</string>
 	<string name="about_l10n_data_left">Croatian\nDutch\nItalian\nPolish\nSpanish\nFrench\nTurkish\nChinese\nTraditional Chinese\n\nRomanian\nPortuguese (Brazil)</string>
 	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24\ninci55\nSteve-luo\nshanlan2012\nishow0806\nTeHashX\nckleuser</string>
-	
+
 	<string name="array_default">Default</string>
 	<string name="array_cam_actions_shutter">Shutter</string>
 	<string name="array_cam_actions_focus">Focus</string>
@@ -561,5 +522,5 @@
 	<string name="array_popuphdr_empty">Empty</string>
 	<string name="array_popuphdr_datetime">Time and date</string>
 	<string name="array_popuphdr_dashclock">DashClock widget</string>
-	
+
 </resources>

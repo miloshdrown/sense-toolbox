@@ -20,10 +20,10 @@ import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
 public class ApmDialog extends HtcAlertDialog.Builder {
-
+	
 	public ApmDialog(final Context context, final int dType) {
 		super(context);
-
+		
 		this.setTitle(Helpers.l10n(context, R.string.apm_title));
 		this.setOnCancelListener(new OnCancelListener(){
 			@Override
@@ -36,13 +36,13 @@ public class ApmDialog extends HtcAlertDialog.Builder {
 			private String mTitle;
 			private String mSummary;
 			private int mIcon;
-		
+			
 			public MenuItem(String title, String summary, int icon) {
 				mTitle = title;
 				mIcon = icon;
 				mSummary = summary;
 			}
-		
+			
 			public String getTitle() {
 				return mTitle;
 			}
@@ -59,7 +59,7 @@ public class ApmDialog extends HtcAlertDialog.Builder {
 		items.add(new MenuItem(Helpers.l10n(context, R.string.apm_hotreboot_title), Helpers.l10n(context, R.string.apm_hotreboot_summ), R.drawable.apm_hotreboot));
 		items.add(new MenuItem(Helpers.l10n(context, R.string.apm_recovery_title), Helpers.l10n(context, R.string.apm_recovery_summ), R.drawable.apm_recovery));
 		items.add(new MenuItem(Helpers.l10n(context, R.string.apm_bootloader_title), Helpers.l10n(context, R.string.apm_bootloader_summ), R.drawable.apm_bootloader));
-
+		
 		class HtcAlertDialogAdapter extends BaseAdapter {
 			
 			final ArrayList<MenuItem> items;
@@ -69,26 +69,29 @@ public class ApmDialog extends HtcAlertDialog.Builder {
 				items = itms;
 				mInflater = LayoutInflater.from(context);
 			}
-			 
+			
 			public int getCount() {
 				return items.size();
 			}
-			 
+			
 			public Object getItem(int position) {
 				return items.get(position);
 			}
-			 
+			
 			public long getItemId(int position) {
 				return position;
 			}
-			 
+			
 			@SuppressLint("InflateParams")
 			public View getView(int position, View convertView, ViewGroup parent) {
+				View row;
 				if (convertView == null)
-				convertView = mInflater.inflate(R.layout.select_dialog_apm, null);
-
-				HtcListItem2LineText itemTitle = (HtcListItem2LineText) convertView.findViewById(R.id.list_item);
-				HtcListItemTileImage itemIcon = (HtcListItemTileImage) convertView.findViewById(R.id.list_item_img);
+					row = mInflater.inflate(R.layout.select_dialog_apm, null);
+				else
+					row = convertView;
+				
+				HtcListItem2LineText itemTitle = (HtcListItem2LineText) row.findViewById(R.id.list_item);
+				HtcListItemTileImage itemIcon = (HtcListItemTileImage) row.findViewById(R.id.list_item_img);
 				
 				itemTitle.setPrimaryText(items.get(position).getTitle());
 				itemTitle.setSecondaryTextSingleLine(true);
@@ -98,16 +101,15 @@ public class ApmDialog extends HtcAlertDialog.Builder {
 				itemIcon.setScaleY(0.65f);
 				itemIcon.setTranslationX(context.getResources().getDisplayMetrics().density * 5.0f);
 				
-				return convertView;
+				return row;
 			}
 		}
-		
 		
 		this.setAdapter(new HtcAlertDialogAdapter(context, items), new OnClickListener(){
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {
-				case 0: 
+				case 0:
 					Intent rebIntent = new Intent("com.sensetoolbox.six.mods.action.APMReboot");
 					((Activity)context).sendBroadcast(rebIntent);
 					break;

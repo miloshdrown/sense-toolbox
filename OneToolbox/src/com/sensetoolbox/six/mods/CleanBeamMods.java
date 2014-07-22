@@ -87,7 +87,7 @@ public class CleanBeamMods {
 					}
 					
 					TextView networkLabel = (TextView)XposedHelpers.getObjectField(param.thisObject, "networkLabel");
-					if (networkLabel != null) networkLabel.setTextColor(themeColor); 
+					if (networkLabel != null) networkLabel.setTextColor(themeColor);
 					TextView carrierLabelL1 = (TextView)XposedHelpers.getObjectField(param.thisObject, "carrierLabelL1");
 					if (carrierLabelL1 != null) carrierLabelL1.setTextColor(themeColor);
 					TextView carrierLabelL2 = (TextView)XposedHelpers.getObjectField(param.thisObject, "carrierLabelL2");
@@ -114,7 +114,7 @@ public class CleanBeamMods {
 					ImageView batt1 = (ImageView)liparam.view.findViewById(liparam.res.getIdentifier("battery", "id", "com.android.systemui"));
 					batt1.setVisibility(View.GONE);
 				}
-			}); 
+			});
 		}
 	}
 
@@ -124,82 +124,82 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_null));
-			}	
+			}
 		});
 		
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_5signal_0", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_0));
-			}	
+			}
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_5signal_1", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_1));
-			}	
+			}
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_5signal_2", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_2));
-			}	
+			}
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_5signal_3", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_3));
-			}	
+			}
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_5signal_4", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_4));
-			}	
+			}
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_5signal_5", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_5));
-			}	
+			}
 		});
 		
 		//Roaming
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_0", new XResources.DrawableLoader(){
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_0", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_r_5signal_0));
-			}	
+			}
 		});
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_1", new XResources.DrawableLoader(){
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_1", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_r_5signal_1));
-			}	
+			}
 		});
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_2", new XResources.DrawableLoader(){
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_2", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_r_5signal_2));
-			}	
+			}
 		});
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_3", new XResources.DrawableLoader(){
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_3", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_r_5signal_3));
-			}	
+			}
 		});
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_4", new XResources.DrawableLoader(){
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_4", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_r_5signal_4));
-			}	
+			}
 		});
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_5", new XResources.DrawableLoader(){
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_r_5signal_5", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_r_5signal_5));
-			}	
+			}
 		});
 	}
 
@@ -209,13 +209,13 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_headphones));
-			}	
+			}
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_headphone_no_mic", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_headphone_no_mic));
-			}	
+			}
 		});
 	}
 
@@ -227,20 +227,20 @@ public class CleanBeamMods {
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
 					return modRes.getDrawable(R.drawable.stat_notify_beats_red);
 					//applyTheme(..., (Integer.parseInt(XMain.pref.getString("pref_key_colortheme", "1")) == 5)?false:true);
-				}	
+				}
 			});
 			XResources.setSystemWideReplacement("com.htc.framework", "drawable", "stat_sys_beats", new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
 					return modRes.getDrawable(R.drawable.stat_sys_beats);
-				}	
+				}
 			});
 		} else {
 			XResources.setSystemWideReplacement("com.htc.framework", "drawable", "stat_sys_boomsound", new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
 					return applyTheme(modRes.getDrawable(R.drawable.stat_sys_boomsound));
-				}	
+				}
 			});
 		}
 	}
@@ -251,7 +251,7 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_notify_alarm));
-			}	
+			}
 		});
 	}
 
@@ -264,7 +264,7 @@ public class CleanBeamMods {
 			wifiBase = "b_stat_sys_wifi_signal_";
 		}
 		
-		String[] glowIcons = {"stat_sys_wifi_signal_in_0", "stat_sys_wifi_signal_in_1", "stat_sys_wifi_signal_in_2", "stat_sys_wifi_signal_in_3", "stat_sys_wifi_signal_in_4", 
+		String[] glowIcons = {"stat_sys_wifi_signal_in_0", "stat_sys_wifi_signal_in_1", "stat_sys_wifi_signal_in_2", "stat_sys_wifi_signal_in_3", "stat_sys_wifi_signal_in_4",
 				"stat_sys_wifi_signal_inandout_0", "stat_sys_wifi_signal_inandout_1", "stat_sys_wifi_signal_inandout_2", "stat_sys_wifi_signal_inandout_3", "stat_sys_wifi_signal_inandout_4",
 				"stat_sys_wifi_signal_out_0", "stat_sys_wifi_signal_out_1", "stat_sys_wifi_signal_out_2", "stat_sys_wifi_signal_out_3", "stat_sys_wifi_signal_out_4"};
 		for(final String s : glowIcons) {
@@ -273,7 +273,7 @@ public class CleanBeamMods {
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
 					Drawable db = applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + "glow_" + s.substring(s.length()-1), "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
 					return db;
-				}	
+				}
 			});
 		}
 		
@@ -284,7 +284,7 @@ public class CleanBeamMods {
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
 					Drawable db = applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + s.substring(s.length()-1), "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
 					return db;
-				}	
+				}
 			});
 		}
 	}
@@ -295,13 +295,13 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_ringer_silent));
-			}	
+			}
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_ringer_vibrate", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_ringer_vibrate));
-			}	
+			}
 		});
 	}
 
@@ -311,19 +311,19 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_sync));
-			}	
+			}
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_sync_anim0", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_sync_anim0));
-			}	
+			}
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_sync_error", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_sync_error));
-			}	
+			}
 		});
 	}
 
@@ -333,13 +333,13 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_gps_acquiring));
-			}	
+			}
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_gps_on", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_gps_on));
-			}	
+			}
 		});
 	}
 
@@ -349,45 +349,45 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_data_bluetooth));
-			}	
+			}
 		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_data_bluetooth_connected", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_data_bluetooth_connected));
-			}	
+			}
 		});
 	}
 
 	public static void execHook_DataIcon(InitPackageResourcesParam resparam) {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		Field[] fields = R.drawable.class.getFields();
-	    HashMap<String, Integer> dataIcons = new HashMap<String, Integer>();
-	    for (Field field : fields) {
-	        if (field.getName().startsWith("stat_sys_data_") && !field.getName().contains("bluetooth") && !field.getName().contains("usb")) { //Because bluetooth is seperate but also stat_sys_data_*. Meh!
-	            try {
+		HashMap<String, Integer> dataIcons = new HashMap<String, Integer>();
+		for (Field field : fields) {
+			if (field.getName().startsWith("stat_sys_data_") && !field.getName().contains("bluetooth") && !field.getName().contains("usb")) { //Because bluetooth is seperate but also stat_sys_data_*. Meh!
+				try {
 					dataIcons.put(field.getName(), field.getInt(null));
 				} catch (Throwable t) {
 					XposedBridge.log(t);
 				}
-	        }
-	    }
-	    
-	    for(final Entry<String, Integer> icon : dataIcons.entrySet())
-	    {
-	    	resparam.res.setReplacement("com.android.systemui", "drawable", icon.getKey(), new XResources.DrawableLoader(){
+			}
+		}
+		
+		for(final Entry<String, Integer> icon : dataIcons.entrySet())
+		{
+			resparam.res.setReplacement("com.android.systemui", "drawable", icon.getKey(), new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
 					return applyTheme(modRes.getDrawable(icon.getValue()));
-				}	
+				}
 			});
-	    }
-	    
-	    resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_signal_flightmode", new XResources.DrawableLoader(){
+		}
+		
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_signal_flightmode", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_signal_flightmode));
-			}	
+			}
 		});
 	}
 	
@@ -397,7 +397,7 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_notify_power_saver));
-			}	
+			}
 		});
 	}
 	
@@ -407,7 +407,7 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_notify_image));
-			}	
+			}
 		});
 	}
 	
@@ -417,7 +417,7 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_data_usb));
-			}	
+			}
 		});
 	}
 	
@@ -427,7 +427,7 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_nfc_vzw));
-			}	
+			}
 		});
 	}
 
@@ -438,7 +438,7 @@ public class CleanBeamMods {
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
 					return applyTheme(modRes.getDrawable(R.drawable.stat_notify_dnd));
-				}	
+				}
 			});
 		} catch(Throwable t) {}
 	}
@@ -450,7 +450,7 @@ public class CleanBeamMods {
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
 					return applyTheme(modRes.getDrawable(R.drawable.stat_notify_running_services));
-				}	
+				}
 			});
 		} catch(Throwable t) {}
 	}
@@ -461,13 +461,13 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_phone_call));
-			}	
+			}
 		});
 		resparam.res.setReplacement("com.android.phone", "drawable", "stat_sys_speakerphone", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_sys_speakerphone));
-			}	
+			}
 		});
 	}
 
@@ -477,7 +477,7 @@ public class CleanBeamMods {
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_notify_tv));
-			}	
+			}
 		});
 	}
 	
@@ -488,7 +488,7 @@ public class CleanBeamMods {
 		for (int i = 0; i < mStatusIcons.getChildCount(); i++) {
 			View statusIcon = mStatusIcons.getChildAt(i);
 			if (statusIcon != null) {
-				String mSlot = (String)XposedHelpers.getObjectField(statusIcon, "mSlot"); 
+				String mSlot = (String)XposedHelpers.getObjectField(statusIcon, "mSlot");
 				if (mSlot != null) {
 					if (iconsToHide.contains("1") && mSlot.equals("headset_plug") ||
 						iconsToHide.contains("2") && mSlot.equals("beats_effect") ||

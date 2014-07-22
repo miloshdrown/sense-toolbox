@@ -157,7 +157,7 @@ public class SenseThemes extends Activity {
 									@Override
 									public void run(){
 										dialog.dismiss();
-										appAddDialog.show();										
+										appAddDialog.show();
 									}
 								});
 							} catch (Exception e) {
@@ -241,13 +241,13 @@ public class SenseThemes extends Activity {
 		List<PackageTheme> pkgthm;
 		private LayoutInflater mInflater;
 		Context mContext = null;
-
+		
 		public AppsAdapter(Context context, List<PackageTheme> objects) {
 			mContext = context;
 			mInflater = LayoutInflater.from(context);
 			assignLocal(objects);
 		}
-
+		
 		public void updateWith(List<PackageTheme> objects) {
 			assignLocal(objects);
 			notifyDataSetChanged();
@@ -260,11 +260,11 @@ public class SenseThemes extends Activity {
 		public int getCount() {
 			return pkgthm.size();
 		}
-
+		
 		public String getItem(int position) {
 			return pkgthm.get(position).getPkg();
 		}
-
+		
 		public long getItemId(int position) {
 			return position;
 		}
@@ -274,7 +274,7 @@ public class SenseThemes extends Activity {
 			if (convertView != null)
 				listItem = (HtcListItem)convertView;
 			else
-				listItem = (HtcListItem)mInflater.inflate(R.layout.htc_list_item, parent, false);			
+				listItem = (HtcListItem)mInflater.inflate(R.layout.htc_list_item, parent, false);
 			
 			HtcListItem2LineText title = (HtcListItem2LineText)listItem.findViewById(R.id.app_name);
 			String pkgName = getItem(position);
@@ -282,11 +282,11 @@ public class SenseThemes extends Activity {
 			PackageManager pm = mContext.getPackageManager();
 			ApplicationInfo ai;
 			try {
-			    ai = pm.getApplicationInfo(pkgName, 0);
+				ai = pm.getApplicationInfo(pkgName, 0);
 			} catch (Exception e) {
-			    ai = null;
+				ai = null;
 			}
-				
+			
 			String pkgTitle = (String) (ai != null ? pm.getApplicationLabel(ai) : pkgName + " [Uninstalled]");
 			title.setPrimaryText(pkgTitle);
 			title.setSecondaryTextVisibility(View.GONE);
@@ -315,21 +315,21 @@ public class SenseThemes extends Activity {
 	}
 	
 	public class AscComparator implements Comparator<PackageTheme> {
-	    @Override
-	    public int compare(PackageTheme first, PackageTheme second) {
+		@Override
+		public int compare(PackageTheme first, PackageTheme second) {
 			PackageManager pm = getPackageManager();
 			ApplicationInfo ai1; ApplicationInfo ai2;
 			try {
-			    ai1 = pm.getApplicationInfo(first.getPkg(), 0);
-			    ai2 = pm.getApplicationInfo(second.getPkg(), 0);
+				ai1 = pm.getApplicationInfo(first.getPkg(), 0);
+				ai2 = pm.getApplicationInfo(second.getPkg(), 0);
 			} catch (Exception e) {
-			    ai1 = null;
-			    ai2 = null;
+				ai1 = null;
+				ai2 = null;
 			}
 			String pkgTitle1 = (String) (ai1 != null ? pm.getApplicationLabel(ai1) : first + " [Uninstalled]");
 			String pkgTitle2 = (String) (ai2 != null ? pm.getApplicationLabel(ai2) : second + " [Uninstalled]");
-	    	return pkgTitle1.compareToIgnoreCase(pkgTitle2);
-	    }
+			return pkgTitle1.compareToIgnoreCase(pkgTitle2);
+		}
 	}
 	
 	public void sortListArray() {
@@ -359,19 +359,19 @@ public class SenseThemes extends Activity {
 	
 	public void notifyThemeChanged(String forPkg) {
 		Intent intent = new Intent("com.htc.intent.action.CONFIGURATION_CHANGED");
-        intent.addCategory("com.htc.intent.category.THEMEID");
-        sendBroadcast(intent);
-        int newThemeId = Helpers.getCurrentTheme(this);
+		intent.addCategory("com.htc.intent.category.THEMEID");
+		sendBroadcast(intent);
+		int newThemeId = Helpers.getCurrentTheme(this);
 		if (newThemeId != mThemeId) recreate();
 		// Restart launcher to refresh themes for widgets
 		if (forPkg.equals("replace_all") || (forPkg.startsWith("com.htc.") && forPkg.toLowerCase(Locale.getDefault()).contains("widget")))
 		sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.RestartPrism"));
 	}
-
-	public static SparseArray<Object[]> getColors() {
+	
+	public synchronized static SparseArray<Object[]> getColors() {
 		if (colors == null) {
 			colors = new SparseArray<Object[]>();
-
+			
 			// Theme 1
 			//colors.append(Helpers.allStyles.get(0), new Object[]{ 0xff252525, 0xff4ea770, "HtcDeviceDefault", 0xff141414 });
 			colors.append(Helpers.allStyles.get(1), new Object[]{ 0xff0086cb, 0xff0086cb, "HtcDeviceDefault.CategoryOne", 0xff4b4b4b });

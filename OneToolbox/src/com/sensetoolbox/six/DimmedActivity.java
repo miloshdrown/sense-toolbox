@@ -25,6 +25,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -56,7 +57,7 @@ public class DimmedActivity extends Activity {
 	public boolean sleepOnDismissLast = false;
 	public ArrayList<StatusBarNotification> sbns = null;
 	
-	public BroadcastReceiver helperReceiver = new BroadcastReceiver() {    
+	public BroadcastReceiver helperReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction() != null)
@@ -70,14 +71,18 @@ public class DimmedActivity extends Activity {
 		try {
 			this.registerReceiver(helperReceiver, filter);
 			if (mAppWidgetHost != null ) mAppWidgetHost.startListening();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void stopListen() {
 		if (helperReceiver != null) try {
 			this.unregisterReceiver(helperReceiver);
 			if (mAppWidgetHost != null ) mAppWidgetHost.stopListening();
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void createDialog(int dType, Intent intent) {
@@ -85,7 +90,7 @@ public class DimmedActivity extends Activity {
 			ApmDialog rebD = new ApmDialog(this, dialogType);
 			rebD.show();
 		} else if (dType == 2) {
-			getWindow().getDecorView().setPadding(-1, 0, -1, 0); 
+			getWindow().getDecorView().setPadding(-1, 0, -1, 0);
 			setContentView(R.layout.notifications);
 			findViewById(android.R.id.content).setOnTouchListener(new OnTouchListener() {
 				@Override
@@ -99,21 +104,23 @@ public class DimmedActivity extends Activity {
 			float density = getResources().getDisplayMetrics().density;
 			
 			RelativeLayout time_date_widget = (RelativeLayout)findViewById(R.id.time_date_widget);
-			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)time_date_widget.getLayoutParams();
-			lp.topMargin = Math.round(density * 12);
-			time_date_widget.setLayoutParams(lp);
+			if (!isInLockscreen) {
+				RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)time_date_widget.getLayoutParams();
+				lp.topMargin = Math.round(density * 12);
+				time_date_widget.setLayoutParams(lp);
+			}
 			
 			TextClock time = (TextClock)findViewById(R.id.time);
 			TextClock date_dayofweek = (TextClock)findViewById(R.id.date_dayofweek);
 			TextClock date_day = (TextClock)findViewById(R.id.date_day);
 			TextClock date_month = (TextClock)findViewById(R.id.date_month);
-
-			time.setTextSize(25 * density);
-			date_dayofweek.setTextSize(5.5f * density);
-			date_day.setTextSize(5.5f * density);
-			date_month.setTextSize(5.5f * density);
+			
+			time.setTextSize(24.2f * density);
+			date_dayofweek.setTextSize(5.2f * density);
+			date_day.setTextSize(5.2f * density);
+			date_month.setTextSize(5.2f * density);
 			time_date_widget.setVisibility(View.VISIBLE);
-
+			
 			int headerStyle = Integer.parseInt(prefs.getString("pref_key_other_popupnotify_clock", "1"));
 			if (headerStyle == 1) {
 				time_date_widget.setVisibility(View.GONE);
@@ -130,10 +137,10 @@ public class DimmedActivity extends Activity {
 						AppWidgetHostView hostView = mAppWidgetHost.createView(this, appWidgetId, appWidgetInfo);
 						hostView.setAppWidget(appWidgetId, appWidgetInfo);
 						hostView.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
-						
+
 						time_date_widget.removeAllViews();
 						time_date_widget.addView(hostView);
-						
+
 						if (!mAppWidgetManager.bindAppWidgetIdIfAllowed(appWidgetId, appWidgetInfo.provider)) Log.e(null, "No permission to bind widgets!");
 						break;
 					}
@@ -167,6 +174,7 @@ public class DimmedActivity extends Activity {
 		
 		prefs = getSharedPreferences("one_toolbox_prefs", 1);
 		int backStyle = Integer.parseInt(prefs.getString("pref_key_other_popupnotify_back", "1"));
+		int headerStyle = Integer.parseInt(prefs.getString("pref_key_other_popupnotify_clock", "1"));
 		
 		final Intent intent = getIntent();
 		dialogType = intent.getIntExtra("dialogType", 1);
@@ -175,11 +183,14 @@ public class DimmedActivity extends Activity {
 				Bitmap bmp = (Bitmap)intent.getParcelableExtra("bmp");
 				if (bmp != null)
 				getWindow().setBackgroundDrawable(new BitmapDrawable(getResources(), BlurBuilder.blur(this, bmp, backStyle == 3 ? true : false)));
+			} else if (headerStyle > 1) {
+				if (!isInLockscreen) getWindow().getDecorView().setBackgroundColor(Color.argb(170, 0, 0, 0));
 			}
 			if (!isInLockscreen) overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		}
-
+		
 		super.onCreate(bundle);
+		if (isInLockscreen && this.getClass() == DimmedActivityLS.class)
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 		
 		startListen();
@@ -213,7 +224,7 @@ public class DimmedActivity extends Activity {
 			return;
 		}
 		if (notifications.isLoaded) curTabTag = notifications.getCarouselHost().getCurrentTabTag();
-
+		
 		notifications = new Notifications();
 		notifications.setOnCarouselReadyListener(new OnCarouselReadyListener() {
 			@Override
@@ -226,7 +237,7 @@ public class DimmedActivity extends Activity {
 					if (notifyRecord != null) {
 						notifications.addTab(notifyRecord);
 						//Log.e(null, String.valueOf(l) + ": " + String.valueOf(notifyRecord.getNotification().priority));
-						if (selectLast) curTabTag = notifyRecord.getPackageName() + "_" + String.valueOf(notifyRecord.getId()) + "_" + String.valueOf(notifyRecord.getTag()); 
+						if (selectLast) curTabTag = notifyRecord.getPackageName() + "_" + String.valueOf(notifyRecord.getId()) + "_" + String.valueOf(notifyRecord.getTag());
 					}
 				}
 				if (curTabTag != null)
@@ -278,10 +289,10 @@ public class DimmedActivity extends Activity {
 	public void updateTabHeight(String uniqueTag, int height) {
 		if (notifications.getCarouselHost().getCurrentTabTag().equals(uniqueTag)) {
 			// Add carousel header height
-			height = height + CarouselUtil.Dimen.getWidgetHeight(this, false);
-
+			int newHeight = height + CarouselUtil.Dimen.getWidgetHeight(this, false);
+			
 			final LinearLayout carousel = (LinearLayout)this.findViewById(R.id.carousel);
-			ValueAnimator anim = ValueAnimator.ofInt(carousel.getMeasuredHeight(), height);
+			ValueAnimator anim = ValueAnimator.ofInt(carousel.getMeasuredHeight(), newHeight);
 			anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 				@Override
 				public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -312,7 +323,7 @@ public class DimmedActivity extends Activity {
 	
 	@Override
 	public void finish() {
-	    super.finish();
-	    if (!isInLockscreen) overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+		super.finish();
+		if (!isInLockscreen) overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 	}
 }

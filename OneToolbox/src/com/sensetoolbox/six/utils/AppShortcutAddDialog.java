@@ -98,7 +98,7 @@ public class AppShortcutAddDialog extends HtcAlertDialog {
 		public int getCount() {
 			return shortcuts.size();
 		}
-		 
+		
 		public CharSequence getItem(int position) {
 			return shortcuts.get(position).loadLabel(act.getPackageManager());
 		}
@@ -159,7 +159,9 @@ public class AppShortcutAddDialog extends HtcAlertDialog {
 						itemIcon2.setTranslationX(act.getResources().getDisplayMetrics().density * 5.0f);
 					}
 				}
-			} catch (Exception e) {} else {
+			} catch (Exception e) {
+				e.printStackTrace();
+			} else {
 				radioBtn.setChecked(false);
 				hint.setVisibility(View.GONE);
 			}

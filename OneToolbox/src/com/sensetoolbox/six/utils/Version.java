@@ -35,4 +35,8 @@ public class Version implements Comparable<Version> {
 		if (this.getClass() != that.getClass()) return false;
 		return this.compareTo((Version) that) == 0;
 	}
+
+	@Override public int hashCode() {
+		return version.hashCode();
+	}
 }

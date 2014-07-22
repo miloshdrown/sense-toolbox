@@ -36,7 +36,7 @@ public class ImageListPreference extends HtcListPreference {
 				else {
 					String imageName = imageNames[i].substring(imageNames[i].lastIndexOf('/') + 1, imageNames[i].lastIndexOf('.'));
 					resourceIds[i] = context.getResources().getIdentifier(imageName, "drawable", context.getPackageName());
-				}				
+				}
 			}
 		}
 		
@@ -63,10 +63,14 @@ public class ImageListPreference extends HtcListPreference {
 			resourceIds = ids;
 			imageThemes = themes;
 			mInflater = LayoutInflater.from(context);
-        }
+		}
 		
 		public View getView(int position, View view, ViewGroup parent) {
-			View row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
+			View row;
+			if (view != null)
+				row = view;
+			else
+				row = mInflater.inflate(R.layout.select_dialog_with_images, parent, false);
 			
 			HtcListItem2LineText title = (HtcListItem2LineText)row.findViewById(android.R.id.text1);
 			HtcListItemTileImage img = (HtcListItemTileImage)row.findViewById(android.R.id.icon);
@@ -90,7 +94,7 @@ public class ImageListPreference extends HtcListPreference {
 				
 				img.setScaleX(0.55f);
 				img.setScaleY(0.55f);
-			}
+			} else img.setTileImageDrawable(null);
 			HtcRadioButton radio = (HtcRadioButton)row.findViewById(android.R.id.checkbox);
 			
 			if (position == index)

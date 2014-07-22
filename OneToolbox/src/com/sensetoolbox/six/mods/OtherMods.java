@@ -62,8 +62,8 @@ import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
-public class OtherMods{
-
+public class OtherMods {
+	
 	public static void execHook_APM(LoadPackageParam lpparam) {
 		try {
 			findAndHookMethod("com.htc.app.HtcShutdownThread", lpparam.classLoader, "reboot", Context.class, String.class, boolean.class, new XC_MethodReplacement() {
@@ -77,7 +77,7 @@ public class OtherMods{
 			XposedBridge.log(t);
 		}
 	}
-	
+		
 	public static void startAPM(Context ctx){
 		try {
 			Intent intent = new Intent();
@@ -89,7 +89,7 @@ public class OtherMods{
 			XposedBridge.log(t);
 		}
 	}
-
+	
 	public static void execHook_VolSound(LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.view.VolumePanel", lpparam.classLoader, "onPlaySound", int.class, int.class, new XC_MethodHook() {
 			@Override
@@ -98,7 +98,7 @@ public class OtherMods{
 			}
 		});
 	}
-	
+		
 	public static void execHook_MTPNotif(LoadPackageParam lpparam) {
 		try {
 			XposedHelpers.findAndHookMethod("com.android.providers.media.MtpService", lpparam.classLoader, "onStartCommand", Intent.class, int.class, int.class, new XC_MethodHook() {
@@ -111,7 +111,7 @@ public class OtherMods{
 			XposedBridge.log(t);
 		}
 	}
-	
+		
 	public static void execHook_PowerSaverNotif(LoadPackageParam lpparam) {
 		try {
 			XposedHelpers.findAndHookMethod("com.htc.htcpowermanager.powersaver.PowerSaverNotificationService", lpparam.classLoader, "addNotification", XC_MethodReplacement.DO_NOTHING);
@@ -120,7 +120,7 @@ public class OtherMods{
 			XposedBridge.log(t);
 		}
 	}
-	
+		
 	public static void execHook_MoveVolume(StartupParam startparam) {
 		try {
 			final Class<?> clsVP = XposedHelpers.findClass("com.htc.view.VolumePanel", null);
@@ -129,12 +129,12 @@ public class OtherMods{
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					Dialog dlg = (Dialog)XposedHelpers.getObjectField(param.thisObject, "mDialog");
 					Dialog dlgEx = (Dialog)XposedHelpers.getObjectField(param.thisObject, "mDialogEx");
-					
+						
 					float density = dlg.getContext().getResources().getDisplayMetrics().density;
 					int orientation = dlg.getContext().getResources().getConfiguration().orientation;
 					int bottomMargin = 75;
 					if (orientation == 2) bottomMargin = 40;
-					
+						
 					Window dlgWin = dlg.getWindow();
 					Window dlgExWin = dlgEx.getWindow();
 					WindowManager.LayoutParams dlgWinAttrs = dlgWin.getAttributes();
@@ -151,7 +151,7 @@ public class OtherMods{
 			XposedBridge.log(t);
 		}
 	}
-
+	
 	private static boolean updateScreenOn = false;
 	private static boolean updateScreenOff = false;
 	
@@ -229,8 +229,8 @@ public class OtherMods{
 					@Override
 					protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 						updateScreenOn = false;
-	                }
-	            });
+					}
+				});
 			}
 			
 			XposedHelpers.findAndHookMethod("com.android.server.power.DisplayPowerState", null, "setElectronBeamLevel", float.class, new XC_MethodHook() {
@@ -239,9 +239,9 @@ public class OtherMods{
 					if (updateScreenOn || updateScreenOff) param.setResult(null);
 				}
 			});
-        } catch (Throwable t) {
-        	XposedBridge.log(t);
-        }
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 	
 	public static void execHook_fastUnlock(final LoadPackageParam lpparam) {
@@ -490,7 +490,7 @@ public class OtherMods{
 		
 		findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				TextView mName = (TextView)XposedHelpers.getObjectField(param.thisObject, "mName");
 				if (mName != null) {
 					mName.setSingleLine(false);
@@ -503,7 +503,7 @@ public class OtherMods{
 		
 		findAndHookMethod("com.android.phone.InCallScreen", lpparam.classLoader, "initInCallScreen", new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				ViewGroup mInCallPanel = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "mInCallPanel");
 				if (mInCallPanel != null) {
 					RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams)mInCallPanel.getLayoutParams();
@@ -564,7 +564,7 @@ public class OtherMods{
 		
 		findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "onOrientationChanged", new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
 					RelativeLayout callCard = (RelativeLayout)param.thisObject;
 					LinearLayout peopleInfoLayout = (LinearLayout)callCard.findViewById(callCard.getResources().getIdentifier("peopleInfoLayout", "id", "com.android.phone"));
@@ -575,7 +575,7 @@ public class OtherMods{
 						peopleInfoLayout.setPadding(peopleInfoLayout.getPaddingLeft(), Math.round(peopleInfoLayout.getResources().getDisplayMetrics().density * 8), peopleInfoLayout.getPaddingRight(), Math.round(peopleInfoLayout.getResources().getDisplayMetrics().density * 10));
 						LinearLayout.LayoutParams paramsPI = (LinearLayout.LayoutParams)peopleInfoLayout.getLayoutParams();
 						paramsPI.setMargins(paramsPI.leftMargin, 0, paramsPI.rightMargin, Math.round(peopleInfoLayout.getResources().getDisplayMetrics().density * 143));
-						paramsPI.height = LayoutParams.WRAP_CONTENT; 
+						paramsPI.height = LayoutParams.WRAP_CONTENT;
 						((LinearLayout)peopleInfoLayout.getParent()).setGravity(Gravity.BOTTOM);
 						peopleInfoLayout.setLayoutParams(paramsPI);
 					} else {
@@ -710,12 +710,6 @@ public class OtherMods{
 			Intent intent = new Intent();
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			
-			 KeyguardManager kgMgr = (KeyguardManager)mContext.getSystemService(Context.KEYGUARD_SERVICE);
-			if (kgMgr.isKeyguardLocked()) 
-				intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.DimmedActivityLS");				
-			else
-				intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.DimmedActivity");
-			
 			PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 			if (pm.isScreenOn()) {
 				Bitmap bmp = (Bitmap)XposedHelpers.callStaticMethod(findClass("android.view.SurfaceControl", null), "screenshot",
@@ -723,8 +717,15 @@ public class OtherMods{
 						mContext.getResources().getDisplayMetrics().heightPixels);
 				if (bmp != null) intent.putExtra("bmp", bmp);
 			}
+			
+			KeyguardManager kgMgr = (KeyguardManager)mContext.getSystemService(Context.KEYGUARD_SERVICE);
+			if (kgMgr.isKeyguardLocked())
+				intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.DimmedActivityLS");
+			else
+				intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.DimmedActivity");
 			intent.putParcelableArrayListExtra("sbns", sbns);
 			intent.putExtra("dialogType", 2);
+			
 			Bundle animate = ActivityOptions.makeCustomAnimation(mContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 			mContext.startActivity(intent, animate);
 		}
@@ -797,12 +798,12 @@ public class OtherMods{
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				Context ctx = (Context)param.args[0];
-		        IntentFilter intentfilter = new IntentFilter();
-		        intentfilter.addAction("com.sensetoolbox.six.CLEARNOTIFICATION");
-		        intentfilter.addAction("com.sensetoolbox.six.CHANGEFULLSCREEN");
-		        intentfilter.addAction("com.sensetoolbox.six.PREFSUPDATED");
-		        ctx.registerReceiver(mBR, intentfilter);
-		        mNMSParam = param;
+				IntentFilter intentfilter = new IntentFilter();
+				intentfilter.addAction("com.sensetoolbox.six.CLEARNOTIFICATION");
+				intentfilter.addAction("com.sensetoolbox.six.CHANGEFULLSCREEN");
+				intentfilter.addAction("com.sensetoolbox.six.PREFSUPDATED");
+				ctx.registerReceiver(mBR, intentfilter);
+				mNMSParam = param;
 			}
 		});
 		
@@ -813,11 +814,11 @@ public class OtherMods{
 				if (act == null) return;
 				int flags = act.getWindow().getAttributes().flags;
 				Intent fullscreenIntent = new Intent("com.sensetoolbox.six.CHANGEFULLSCREEN");
-		        if (flags != 0 && (flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN && !act.getPackageName().equals("com.android.systemui"))
-		        	fullscreenIntent.putExtra("isInFullscreen", true);
-		        else
-		        	fullscreenIntent.putExtra("isInFullscreen", false);
-		        act.sendBroadcast(fullscreenIntent);
+				if (flags != 0 && (flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN && !act.getPackageName().equals("com.android.systemui"))
+					fullscreenIntent.putExtra("isInFullscreen", true);
+				else
+					fullscreenIntent.putExtra("isInFullscreen", false);
+				act.sendBroadcast(fullscreenIntent);
 			}
 		});
 		
@@ -825,9 +826,9 @@ public class OtherMods{
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				Context ctx = (Context)param.args[0];
-		        IntentFilter intentfilter = new IntentFilter();
-		        intentfilter.addAction("com.sensetoolbox.six.REQUESTSCREENSHOT");
-		        ctx.registerReceiver(mBRWMS, intentfilter);
+				IntentFilter intentfilter = new IntentFilter();
+				intentfilter.addAction("com.sensetoolbox.six.REQUESTSCREENSHOT");
+				ctx.registerReceiver(mBRWMS, intentfilter);
 			}
 		});
 	}

@@ -108,22 +108,22 @@ public class PrismMods {
 		findAndHookMethod("com.htc.launcher.LauncherAppWidgetHostView", lpparam.classLoader, "onHierarchyViewAdded", View.class, View.class, hook);
 		findAndHookMethod("com.htc.launcher.LauncherAppWidgetHostView", lpparam.classLoader, "onHierarchyViewUpdated", View.class, hook);
 	}
-
+	
 	public static void execHook_PreserveWallpaper(LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "updateWallpaperVisibility", boolean.class, XC_MethodReplacement.DO_NOTHING);
 	}
-		
+	
 	public static void execHook_20Folder_code(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "isFull", new XC_MethodHook() {
 			@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(false);
 			}
 		});
 		
 		findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "isFull", findClass("com.htc.launcher.folder.FolderInfo", lpparam.classLoader), new XC_MethodHook() {
 			@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(false);
 			}
 		});
@@ -131,30 +131,30 @@ public class PrismMods {
 		XposedBridge.hookAllConstructors(findClass("com.htc.launcher.folder.Folder", lpparam.classLoader), new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				setBooleanField(param.thisObject, "m_bMultiplePage", true);		
+				setBooleanField(param.thisObject, "m_bMultiplePage", true);
 				setStaticIntField(param.thisObject.getClass(), "FOLDER_MAX_COUNT", 9999);
 			}
 		});
 		
 		findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "setMultiplePage", boolean.class, new XC_MethodHook() {
 			@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(true);
 			}
 		});
 		
 		findAndHookMethod("com.htc.launcher.pageview.CheckedAppsDataManager", lpparam.classLoader, "setMaxCheckedAmount", int.class, new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				setIntField(param.thisObject, "m_MaxCheckedAmount", 9999);
 			}
 		});
 	}
-
+	
 	public static void execHookTSBFix(LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.bar.BarController", lpparam.classLoader, "setStatusBarTransparent", Context.class, boolean.class, new XC_MethodHook() {
 			@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(null);
 			}
 		});
@@ -198,7 +198,9 @@ public class PrismMods {
 		try {
 			resparam.res.setReplacement("com.htc.launcher", "integer", "config_workspaceUnshrinkTime", 200);
 			resparam.res.setReplacement("com.htc.launcher", "integer", "config_appsCustomizeWorkspaceShrinkTime", 70);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static void execHook_InvisiDrawerCode(LoadPackageParam lpparam, final int transparency) {
@@ -217,7 +219,7 @@ public class PrismMods {
 				boolean isAllAppsOpen = false;
 				Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
 				if (m_launcher != null)
-				isAllAppsOpen = (Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown");	
+				isAllAppsOpen = (Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown");
 				XposedBridge.log("setBackgroundAlpha: " + String.valueOf((Float)param.args[0]));
 				if (isAllAppsOpen)
 					param.args[0] = 0;
@@ -258,7 +260,7 @@ public class PrismMods {
 				XposedHelpers.callMethod(param.thisObject, "hideHotseat", param.args[0]);
 			}
 		});
-
+		
 		// Hide page indicator, nothing to indicate in appdrawer
 		findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "showPageIndicator", boolean.class, new XC_MethodHook() {
 			@Override
@@ -371,7 +373,7 @@ public class PrismMods {
 				}
 			});
 			
-			// Make rearrange arrows transparent 
+			// Make rearrange arrows transparent
 			findAndHookMethod("com.htc.launcher.bar.AllAppsDropTargetBar", lpparam.classLoader, "setup", "com.htc.launcher.Launcher", "com.htc.launcher.DragController", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -382,18 +384,18 @@ public class PrismMods {
 			XposedBridge.log(t);
 		}
 	}
-
+	
 	// Add 5x5, 4x6 and 5x6 grid options to dialog
 	public static void execHook_AppDrawerGridSizesLayout(final InitPackageResourcesParam resparam) {
 		int apps_grid_option = resparam.res.getIdentifier("apps_grid_options", "array", "com.htc.launcher");
 		String[] gridSizes = resparam.res.getStringArray(apps_grid_option);
 		
-	    final int n = gridSizes.length;
-	    gridSizes = Arrays.copyOf(gridSizes, n + 3);
-	    gridSizes[n] = "5 × 5";
-	    gridSizes[n + 1] = "4 × 6";
-	    gridSizes[n + 2] = "5 × 6";
-	    
+		final int n = gridSizes.length;
+		gridSizes = Arrays.copyOf(gridSizes, n + 3);
+		gridSizes[n] = "5 × 5";
+		gridSizes[n + 1] = "4 × 6";
+		gridSizes[n + 2] = "5 × 6";
+		
 		resparam.res.setReplacement(apps_grid_option, gridSizes);
 	}
 	
@@ -403,7 +405,7 @@ public class PrismMods {
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				Object item = param.args[0];
 				TextView itemlabel = null;
-			
+				
 				try {
 					if (item instanceof TextView) {
 						itemlabel = (TextView) item;
@@ -411,7 +413,7 @@ public class PrismMods {
 						itemlabel = (TextView) ((LinearLayout) item).getChildAt(1);
 						itemlabel.setPadding(itemlabel.getPaddingLeft(), itemlabel.getPaddingTop(), itemlabel.getPaddingRight(), 0);
 					}
-	        
+					
 					if (itemlabel != null) {
 						if (gridSizeVal == 3 || gridSizeVal == 4) {
 							itemlabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, 0.9f * itemlabel.getTextSize());
@@ -427,13 +429,13 @@ public class PrismMods {
 			}
 		});
 	}
-
+	
 	public static void execHook_HomeScreenGridSize(InitPackageResourcesParam resparam) {
 		try {
 			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 			
 			resparam.res.setReplacement(resparam.res.getIdentifier("cell_count_y", "integer", "com.htc.launcher"), 5);
-
+			
 			resparam.res.setReplacement(resparam.res.getIdentifier("app_icon_padding_top", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.app_icon_padding_top));
 			resparam.res.setReplacement(resparam.res.getIdentifier("button_bar_height_without_padding", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.button_bar_height_without_padding));
 			
@@ -450,7 +452,7 @@ public class PrismMods {
 			XposedBridge.log(t);
 		}
 	}
-
+	
 	public static void execHook_HomeScreenGapFix(InitPackageResourcesParam resparam) {
 		try {
 			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
@@ -491,10 +493,10 @@ public class PrismMods {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				Context helperContext = ((ViewGroup)param.thisObject).getContext();
-
+				
 				if (helperContext == null) return;
 				if (mDetector == null) mDetector = new GestureDetector(helperContext, new SwipeListener(helperContext));
-
+				
 				MotionEvent ev = (MotionEvent)param.args[0];
 				if (ev == null) return;
 				mDetector.onTouchEvent(ev);
@@ -510,7 +512,7 @@ public class PrismMods {
 		private int SWIPE_THRESHOLD_VELOCITY = 200;
 		
 		final Context helperContext;
-
+		
 		public SwipeListener(Context context) {
 			helperContext = context;
 			float density = helperContext.getResources().getDisplayMetrics().density;
@@ -522,7 +524,7 @@ public class PrismMods {
 		@Override
 		public boolean onDown(MotionEvent e) {
 			return true;
-		} 
+		}
 		
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -540,7 +542,7 @@ public class PrismMods {
 					case 7: return GlobalActions.launchApp(helperContext, 1);
 					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swipedown_toggle", "0")));
 					case 12: return GlobalActions.launchShortcut(helperContext, 1);
-					default: return false;					
+					default: return false;
 				}
 			}
 			
@@ -558,7 +560,7 @@ public class PrismMods {
 					default: return false;
 				}
 			}
-
+			
 			return false;
 		}
 	}
@@ -569,7 +571,7 @@ public class PrismMods {
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				MotionEvent ev = (MotionEvent)param.args[0];
 				if (ev == null) return;
-
+				
 				FrameLayout hotSeat = (FrameLayout)param.thisObject;
 				Context helperContext = hotSeat.getContext();
 				if (helperContext == null) return;
@@ -601,7 +603,7 @@ public class PrismMods {
 		private int SWIPE_THRESHOLD_VELOCITY = 100;
 		
 		final Context helperContext;
-
+		
 		public SwipeListenerHorizontal(Object cellLayout) {
 			helperContext = ((ViewGroup)cellLayout).getContext();
 			float density = helperContext.getResources().getDisplayMetrics().density;
@@ -612,7 +614,7 @@ public class PrismMods {
 		@Override
 		public boolean onDown(MotionEvent e) {
 			return false;
-		} 
+		}
 		
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -629,7 +631,7 @@ public class PrismMods {
 					case 7: return GlobalActions.launchApp(helperContext, 5);
 					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swiperight_toggle", "0")));
 					case 12: return GlobalActions.launchShortcut(helperContext, 5);
-					default: return false;					
+					default: return false;
 				}
 			}
 			if (e1.getX() - e2.getX() > SWIPE_MIN_DISTANCE_HORIZ && Math.abs(velocityX) > SWIPE_THRESHOLD_VELOCITY) {
@@ -643,10 +645,10 @@ public class PrismMods {
 					case 7: return GlobalActions.launchApp(helperContext, 6);
 					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swipeleft_toggle", "0")));
 					case 12: return GlobalActions.launchShortcut(helperContext, 6);
-					default: return false;					
+					default: return false;
 				}
 			}
-
+			
 			return false;
 		}
 	}
@@ -659,7 +661,7 @@ public class PrismMods {
 		
 		float density;
 		int screenHeight;
-
+		
 		public SwipeListenerVertical(Context ctx) {
 			density = ctx.getResources().getDisplayMetrics().density;
 			screenHeight = ctx.getResources().getDisplayMetrics().heightPixels;
@@ -670,7 +672,7 @@ public class PrismMods {
 		@Override
 		public boolean onDown(MotionEvent e) {
 			return false;
-		} 
+		}
 		
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
@@ -708,8 +710,7 @@ public class PrismMods {
 		});
 	}
 	
-	public static void createAndShowPopup(ViewGroup m_workspace, final Activity launcher) {
-		if (m_workspace == null) if (launcher != null) m_workspace = (ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace");
+	public static synchronized void createPopup(ViewGroup m_workspace) {
 		if (popup == null) {
 			popup = new HtcPopupWindow(m_workspace.getContext());
 			popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
@@ -718,8 +719,15 @@ public class PrismMods {
 			popup.setFocusable(true);
 			popup.setOutsideTouchable(true);
 		}
+	}
+	
+	public static void createAndShowPopup(ViewGroup m_workspace, final Activity launcher) {
+		ViewGroup m_workspace_local = m_workspace;
+		if (m_workspace_local == null) if (launcher != null) m_workspace_local = (ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace");
+		if (m_workspace_local == null) return;
+		createPopup(m_workspace_local);
 		
-		ListView options = new ListView(m_workspace.getContext());
+		ListView options = new ListView(m_workspace_local.getContext());
 		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 		ListAdapter listAdapter = new PopupAdapter(options.getContext(), Helpers.xl10n_array(modRes, R.array.home_menu), false);
 		options.setFocusableInTouchMode(true);
@@ -741,20 +749,20 @@ public class PrismMods {
 				} else if (position == 5) {
 					Settings.System.putString(view.getContext().getContentResolver(), "lock_homescreen_dragging", String.valueOf(!Boolean.parseBoolean(Settings.System.getString(view.getContext().getContentResolver(), "lock_homescreen_dragging"))));
 				}
-			}						
+			}
 		});
-		options.setOnKeyListener(new View.OnKeyListener() {        
-		    @Override
-		    public boolean onKey(View v, int keyCode, KeyEvent event) {
-		        if (keyCode ==  KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0 && event.getAction() == KeyEvent.ACTION_DOWN) {
-		        	popup.dismiss();
-		            return true;
-		        }                
-		        return false;
-		    }
+		options.setOnKeyListener(new View.OnKeyListener() {
+			@Override
+			public boolean onKey(View v, int keyCode, KeyEvent event) {
+				if (keyCode ==  KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0 && event.getAction() == KeyEvent.ACTION_DOWN) {
+					popup.dismiss();
+					return true;
+				}
+				return false;
+			}
 		});
 		popup.setContentView(options);
-		popup.showAtLocation(m_workspace, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
+		popup.showAtLocation(m_workspace_local, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
 	}
 	
 	public static void execHook_SevenScreens(final LoadPackageParam lpparam) {
@@ -787,7 +795,6 @@ public class PrismMods {
 				} catch (Throwable t) {
 					//Not an app icon
 				}
-				
 			}
 		});
 		
@@ -806,7 +813,7 @@ public class PrismMods {
 			}
 		});
 	}
-
+	
 	// Long press on hotseat toggle button, no idea how to use it for now :D
 	public static void execHook_hotseatToggleBtn(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "resetLayout", new XC_MethodHook() {
@@ -837,7 +844,7 @@ public class PrismMods {
 		return Boolean.parseBoolean(Settings.System.getString(context.getContentResolver(), "lock_homescreen_dragging"));
 	}
 	
-	private static void showLockedWarning(final Activity act) {
+	private static synchronized void showLockedWarning(final Activity act) {
 		if (dlg == null) {
 			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(act);
@@ -871,7 +878,7 @@ public class PrismMods {
 				if (allApps != null && isLauncherLocked(allApps.getContext())) param.setResult(false);
 			}
 		});
-
+		
 		// Disable other dragging
 		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "isDraggingEnabled", new XC_MethodHook() {
 			@Override
@@ -1046,7 +1053,6 @@ public class PrismMods {
 		
 		if (Helpers.isM8()) {
 			findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "hide", boolean.class, new XC_MethodReplacement() {
-				
 				@Override
 				protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
 					FrameLayout hotseat = (FrameLayout) param.thisObject;
@@ -1059,27 +1065,27 @@ public class PrismMods {
 					int add = 70;
 					
 					if (animate)
-			        {
-			            if (hotseat.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-			            {
-			            	hotseat.setTranslationX(0.0F);
-			            	hotseat.animate().translationY(hotseat.getMeasuredHeight() + add).setDuration(duration);
-			            } else
-			            {
-			            	hotseat.setTranslationY(0.0F);
-			            	hotseat.animate().translationX(hotseat.getMeasuredWidth() + add).setDuration(duration);
-			            }
-			        } else
-			        if (hotseat.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-			        {
-			        	hotseat.setTranslationX(0.0F);
-			        	hotseat.setTranslationY(hotseat.getMeasuredHeight() + add);
-			        } else
-			        {
-			        	hotseat.setTranslationY(0.0F);
-			        	hotseat.setTranslationX(hotseat.getMeasuredWidth() + add);
-			        }
-			        setObjectField(param.thisObject, "m_bShown", false);
+					{
+						if (hotseat.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+						{
+							hotseat.setTranslationX(0.0F);
+							hotseat.animate().translationY(hotseat.getMeasuredHeight() + add).setDuration(duration);
+						} else
+						{
+							hotseat.setTranslationY(0.0F);
+							hotseat.animate().translationX(hotseat.getMeasuredWidth() + add).setDuration(duration);
+						}
+					} else
+					if (hotseat.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
+					{
+						hotseat.setTranslationX(0.0F);
+						hotseat.setTranslationY(hotseat.getMeasuredHeight() + add);
+					} else
+					{
+						hotseat.setTranslationY(0.0F);
+						hotseat.setTranslationX(hotseat.getMeasuredWidth() + add);
+					}
+					setObjectField(param.thisObject, "m_bShown", false);
 					
 					return null;
 				}
@@ -1097,7 +1103,7 @@ public class PrismMods {
 					act.requestWindowFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
 				}
 			}
-
+			
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				Activity act = (Activity)param.thisObject;

@@ -148,7 +148,7 @@ public class SysUIMods {
 		//Enable mEQS
 		findAndHookMethod("com.android.systemui.statusbar.StatusBarFlag", lpparam.classLoader, "loadMinorQuickSetting", new XC_MethodHook() {
 			@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(true);
 			}
 		});
@@ -181,7 +181,7 @@ public class SysUIMods {
 					}
 				}else
 				{
-					 paramArgs = (int[]) param.args[0];
+					paramArgs = (int[]) param.args[0];
 				}
 				
 				if (paramArgs == null || paramArgs.length == 0)
@@ -192,30 +192,30 @@ public class SysUIMods {
 				else
 					i = QS_MAPPING_ONE.length;
 				
-		        int j = 0;
-		        for (int k = paramArgs.length; j < k; j++)
-		        {
-		            int i1 = paramArgs[j];
-		            if (i1 >= 0 && i1 < i)
-		            if (QS_MAPPING_MULTI != null)
-		                qsContent.add(QS_MAPPING_MULTI[i1][0]);
-		            else
-		            	qsContent.add(QS_MAPPING_ONE[i1]);
-		        }
-		        qsContent2 = new ArrayList<String>();
-		        int l = 0;
-		        do
-		        {
-		            if (l >= qsContent.size())
-		                break;
-		            if (!((String)qsContent.get(l)).equals("user_card"))
-		                qsContent2.add(qsContent.get(l));
+				int j = 0;
+				for (int k = paramArgs.length; j < k; j++)
+				{
+					int i1 = paramArgs[j];
+					if (i1 >= 0 && i1 < i)
+					if (QS_MAPPING_MULTI != null)
+						qsContent.add(QS_MAPPING_MULTI[i1][0]);
+					else
+						qsContent.add(QS_MAPPING_ONE[i1]);
+				}
+				qsContent2 = new ArrayList<String>();
+				int l = 0;
+				do
+				{
+					if (l >= qsContent.size())
+						break;
+					if (!((String)qsContent.get(l)).equals("user_card"))
+						qsContent2.add(qsContent.get(l));
 //		            if (qsContent2.size() == 5)
 //		                break;
-		            l++;
-		        } while (true);
-		        setObjectField(param.thisObject, "qsContent", qsContent);
-		        setObjectField(param.thisObject, "qsContent2", qsContent2);		        
+					l++;
+				} while (true);
+				setObjectField(param.thisObject, "qsContent", qsContent);
+				setObjectField(param.thisObject, "qsContent2", qsContent2);
 				return null;
 			}
 		});
@@ -223,17 +223,17 @@ public class SysUIMods {
 		//Redraw the tile view because we have added or removed something...
 		findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettings", lpparam.classLoader, "repositionQuickSettingTile", ViewGroup.class, ArrayList.class, boolean.class, new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				ViewGroup qsContainer = (ViewGroup) getObjectField(param.thisObject, "mContainerView2");
 				if(!param.args[0].equals(qsContainer))
 					return;
 				
-	        	WindowManager wm = (WindowManager) qsContainer.getContext().getSystemService(Context.WINDOW_SERVICE);
+				WindowManager wm = (WindowManager) qsContainer.getContext().getSystemService(Context.WINDOW_SERVICE);
 				Display display = wm.getDefaultDisplay();
 				Point displaySize = new Point();
 				display.getSize(displaySize);
 				int displayWidth = displaySize.x;
-	        	for(int k = 0; k < qsContainer.getChildCount(); k++)
+				for(int k = 0; k < qsContainer.getChildCount(); k++)
 				{
 					LinearLayout tmp = (LinearLayout) qsContainer.getChildAt(k);
 					LinearLayout.LayoutParams tmpParams = (LinearLayout.LayoutParams) tmp.getLayoutParams();
@@ -246,14 +246,14 @@ public class SysUIMods {
 						qsImg.setPadding(0, 0, 0, 20);
 					}
 				}
-	        	qsContainer.invalidate();
+				qsContainer.invalidate();
 			}
 		});
 		
 		//Makes them scrolling. Showing 5 at once.
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				FrameLayout mStatusBarWindow = (FrameLayout) getObjectField(param.thisObject, "mStatusBarWindow");
 				if (mStatusBarWindow != null)
 				{
@@ -267,7 +267,7 @@ public class SysUIMods {
 						qsScroll.setHorizontalFadingEdgeEnabled(true);
 						qsScroll.setHorizontalScrollBarEnabled(false);
 						qsScroll.setOverScrollMode(View.OVER_SCROLL_NEVER);
-						
+
 						WindowManager wm = (WindowManager) mStatusBarWindow.getContext().getSystemService(Context.WINDOW_SERVICE);
 						Display display = wm.getDefaultDisplay();
 						Point displaySize = new Point();
@@ -287,7 +287,7 @@ public class SysUIMods {
 								qsImg.setPadding(0, 0, 0, 20);
 							}
 						}
-
+						
 						notificationContainer.removeView(qsContainer);
 						qsScroll.addView(qsContainer);
 						notificationContainer.addView(qsScroll, 0);
@@ -296,7 +296,7 @@ public class SysUIMods {
 			}
 		});
 	}
-
+	
 	public static void execHook_InvisiNotify(final InitPackageResourcesParam resparam, final int transparency) {
 		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
 			@Override
@@ -310,7 +310,7 @@ public class SysUIMods {
 	public static void execHook_InvisiNotifyCode(final LoadPackageParam lpparam, final int transparency) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBarView", lpparam.classLoader, "panelExpansionChanged", "com.android.systemui.statusbar.phone.PanelView", float.class, new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
 					FrameLayout panelview = (FrameLayout)param.args[0];
 					FrameLayout mFadingPanel= (FrameLayout)XposedHelpers.getObjectField(param.thisObject, "mFadingPanel");
@@ -331,11 +331,11 @@ public class SysUIMods {
 			}
 		});
 	}
-
+	
 	public static void execHook_AospRecent(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.StatusBarFlag", lpparam.classLoader, "isHtcStyleRecentApp", new XC_MethodHook() {
 			@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(false);
 			}
 		});
@@ -343,7 +343,7 @@ public class SysUIMods {
 		//Fix for FC on Sense 5.5
 		findAndHookMethod("com.android.systemui.recent.RecentsActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
 			@Override
-	    	protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				BroadcastReceiver mIntentReceiver = (BroadcastReceiver) getObjectField(param.thisObject, "mIntentReceiver");
 				IntentFilter mIntentFilter = (IntentFilter) getObjectField(param.thisObject, "mIntentFilter");
 				if(mIntentReceiver != null && mIntentFilter != null) {
@@ -364,7 +364,7 @@ public class SysUIMods {
 				LinearLayout statusBarContents = (LinearLayout) liparam.view.findViewById(resparam.res.getIdentifier("status_bar_contents", "id", "com.android.systemui"));
 				
 				if(statusBar != null && clock != null && systemIconArea != null && statusBarContents != null)
-				{	
+				{
 					clock.setGravity(Gravity.CENTER);
 					clock.setPadding(0, 0, 0, 0);
 					LinearLayout clockContainer = new LinearLayout(clock.getContext());
@@ -375,9 +375,7 @@ public class SysUIMods {
 					clockContainer.setPadding(0, 0, 0, 0);
 					
 					systemIconArea.removeView(clock);
-					
 					clockContainer.addView(clock);
-					
 					statusBar.addView(clockContainer);
 					
 					LinearLayout fillView = new LinearLayout(clock.getContext());
@@ -465,8 +463,6 @@ public class SysUIMods {
 				}
 			});
 		} catch (Throwable t) {
-			// TODO: handle exception
-			// ^YOU DON'T TELL ME WHAT I HAVE TO DO ECLIPSE!
 		}
 		
 		//Helper class to hold needed variables for later methods (because nested methods and final and blah blah... Couldn't think of a better solution)
@@ -692,16 +688,16 @@ public class SysUIMods {
 	@SuppressLint("DefaultLocale")
 	private static ArrayList<String> humanReadableByteCount(long bytes) {
 		ArrayList<String> out = new ArrayList<String>();
-	    if (bytes < 1024) {
-	    	out.add(String.valueOf(bytes));
-		    out.add("B/s");
-	    	return out;
-	    }
-	    int exp = (int) (Math.log(bytes) / Math.log(1024));
-	    char pre = "KMGTPE".charAt(exp-1);
-	    out.add(String.format("%.1f", bytes / Math.pow(1024, exp)));
-	    out.add(String.format("%sB/s", pre));
-	    return out;
+		if (bytes < 1024) {
+			out.add(String.valueOf(bytes));
+			out.add("B/s");
+			return out;
+		}
+		int exp = (int) (Math.log(bytes) / Math.log(1024));
+		char pre = "KMGTPE".charAt(exp-1);
+		out.add(String.format("%.1f", bytes / Math.pow(1024, exp)));
+		out.add(String.format("%sB/s", pre));
+		return out;
 	}
 	
 	private static BroadcastReceiver connectChanged = new BroadcastReceiver() {
@@ -725,7 +721,7 @@ public class SysUIMods {
 			}
 		}
 	};
-			
+	
 	public static void execHook_DataRateStatus(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook(){
 			@Override
@@ -786,7 +782,7 @@ public class SysUIMods {
 										long rxBytes = TrafficStats.getTotalRxBytes();
 										long txBytes = TrafficStats.getTotalTxBytes();
 										long newBytes = 0;
-										if (rxBytes != -1L && txBytes != -1L) newBytes = rxBytes + txBytes;						
+										if (rxBytes != -1L && txBytes != -1L) newBytes = rxBytes + txBytes;
 										long newBytesFixed = newBytes - bytesTotal;
 										if (newBytesFixed < 0 || bytesTotal == 0) newBytesFixed = 0;
 										long speed = Math.round(newBytesFixed/2);
@@ -833,12 +829,12 @@ public class SysUIMods {
 	}
 	
 	//Need this to listen for settings changes
-	protected static class SettingsObserver extends ContentObserver {	
+	protected static class SettingsObserver extends ContentObserver {
 		private HtcCheckBox cb = null;
 		private HtcSeekBar sb = null;
 		private ContentResolver cr;
 		public SettingsObserver(Handler handler) {
-			super(handler);			
+			super(handler);
 		}
 		public void setup(HtcCheckBox cb, HtcSeekBar sb, ContentResolver cr) {
 			this.cb = cb;
@@ -848,7 +844,7 @@ public class SysUIMods {
 		@Override
 		public void onChange(boolean selfChange) {
 			this.onChange(selfChange, null);
-		}	
+		}
 		@Override
 		public void onChange(boolean selfChange, Uri uri) {
 			if (!this.sb.isPressed()) try {
@@ -857,7 +853,7 @@ public class SysUIMods {
 			} catch (SettingNotFoundException e) {
 				//No brightness setting?
 			}
-		}		
+		}
 	}
 	/*
 	public static void execHook_DisableEQS(final InitPackageResourcesParam resparam) {
@@ -868,23 +864,23 @@ public class SysUIMods {
 	public static void execHook_DisableEQS(final LoadPackageParam lpparam) {
 		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader), new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				View.OnClickListener newButtonOnClick = new View.OnClickListener() {
-		            public void onClick(View view) {
-		            	XposedHelpers.callMethod(param.thisObject, "startActivityDismissingKeyguard", new Intent("android.settings.SETTINGS"), true);
-	                    return;
-		            }
-		        };
-		        XposedHelpers.findField(param.thisObject.getClass(), "mSettingsButtonListener").set(param.thisObject, newButtonOnClick);
+					public void onClick(View view) {
+						XposedHelpers.callMethod(param.thisObject, "startActivityDismissingKeyguard", new Intent("android.settings.SETTINGS"), true);
+						return;
+					}
+				};
+				XposedHelpers.findField(param.thisObject.getClass(), "mSettingsButtonListener").set(param.thisObject, newButtonOnClick);
 			}
 		});
 		
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				ImageView mSettingsButton = (ImageView)XposedHelpers.findField(param.thisObject.getClass(), "mSettingsButton").get(param.thisObject);
 				XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-		        mSettingsButton.setImageDrawable(modRes.getDrawable(R.drawable.ic_sysbar_quicksettings));				
+				mSettingsButton.setImageDrawable(modRes.getDrawable(R.drawable.ic_sysbar_quicksettings));
 			}
 		});
 	}
@@ -893,7 +889,7 @@ public class SysUIMods {
 	public static void execHook_hEQSLongClick(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettingsTileView", lpparam.classLoader, "getOnLongClickListener", new XC_MethodHook() {
 			@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				final LinearLayout thisTile = (LinearLayout) param.thisObject;
 				param.setResult(new OnLongClickListener() {
 					@Override
@@ -919,7 +915,7 @@ public class SysUIMods {
 								File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Screenshots");
 								if (file != null)
 								{
-		                        	mBucketId = file.getAbsolutePath().toLowerCase().hashCode();
+									mBucketId = file.getAbsolutePath().toLowerCase().hashCode();
 								}
 								settingIntent = new Intent("com.htc.album.action.VIEW_FOLDER_IN_THUMBNAIL");
 								settingIntent.putExtra("folder_type", (new StringBuilder()).append("collection_regular_bucket ").append(mBucketId).append(" Screenshots").toString());
@@ -936,7 +932,7 @@ public class SysUIMods {
 									callMethod(viewTag, "startSettingsActivity", intentPkg, intentClass);
 								else if (!(settingIntent == null))
 									callMethod(viewTag, "startSettingsActivity", settingIntent);
-								else 
+								else
 									callMethod(viewTag, "startSettingsActivity", intentClass);
 							}
 						}
@@ -949,22 +945,22 @@ public class SysUIMods {
 	
 	// Pinch to clear all recent apps
 	public static void execHook_RecentAppsInit(final LoadPackageParam lpparam) {
-        findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "onCreate", "android.os.Bundle", new XC_MethodHook(){
-    		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-    			final GridView recentGridView = (GridView)XposedHelpers.findField(param.thisObject.getClass(), "mRecentGridView").get(param.thisObject);
-    			
-    			killedEmAll = false;
-    			
-    			gridViewObject = param.thisObject;
-    			gridViewContext = recentGridView.getContext();
-    			gridViewSelf = recentGridView;
-    		}
-    	});
+		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "onCreate", "android.os.Bundle", new XC_MethodHook(){
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				final GridView recentGridView = (GridView)XposedHelpers.findField(param.thisObject.getClass(), "mRecentGridView").get(param.thisObject);
+				
+				killedEmAll = false;
+				
+				gridViewObject = param.thisObject;
+				gridViewContext = recentGridView.getContext();
+				gridViewSelf = recentGridView;
+			}
+		});
 	}
 	
 	public static void execHook_RecentAppsClearTouch(final LoadPackageParam lpparam) {
-       	findAndHookMethod("com.android.systemui.recent.RecentsGridView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new TouchListenerOnTouch());
-       	findAndHookMethod("com.android.systemui.recent.RecentsGridView", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouchIntercept());		
+		findAndHookMethod("com.android.systemui.recent.RecentsGridView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new TouchListenerOnTouch());
+		findAndHookMethod("com.android.systemui.recent.RecentsGridView", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouchIntercept());
 	}
 	
 	private static GridView gridViewSelf;
@@ -991,7 +987,7 @@ public class SysUIMods {
 		final int i = gridViewSelf.getChildCount();
 		int j = taskDescriptionsArray.size();
 		int cnt = i - 1;
-
+		
 		// Go through all GridView items and get taskIds
 		while (cnt >= 0) {
 			View gridViewItem;
@@ -1005,10 +1001,10 @@ public class SysUIMods {
 					if (m != 0) try {
 						XposedHelpers.callMethod(gridViewSelf, "setDelPositionsList", Integer.valueOf(m));
 					} catch (Exception e) {}
-				
+					
 					if (am == null)
 					am = ((ActivityManager)gridViewContext.getSystemService("activity"));
-					if (am != null) 
+					if (am != null)
 					XposedHelpers.callMethod(am, "removeTask", XposedHelpers.getIntField(gridViewItemTag, "persistentTaskId"), Integer.valueOf(1));
 					
 					if (gridViewContext != null) {
@@ -1048,7 +1044,7 @@ public class SysUIMods {
 										try { if (i > 3) Thread.sleep((i + 1) * 15); } catch (Exception e) {}
 										if (currApp == null) closeRecents();
 									}
-								}).start();				
+								}).start();
 							}
 							public void onAnimationRepeat(Animation paramAnonymousAnimation) {}
 							public void onAnimationStart(Animation paramAnonymousAnimation) {}
@@ -1072,18 +1068,18 @@ public class SysUIMods {
 	
 	// Listener for scale gestures
 	private static class ScaleListener extends ScaleGestureDetector.SimpleOnScaleGestureListener {
-	    @Override
-	    public boolean onScale(ScaleGestureDetector detector) {
-	    	killedEmAll = true;
+		@Override
+		public boolean onScale(ScaleGestureDetector detector) {
+			killedEmAll = true;
 			try {
 				terminateAll(1);
 			} catch (Throwable t) {
 				XposedBridge.log(t);
 			}
-	        return true;
-	    }
+			return true;
+		}
 	}
-
+	
 	// Listener for swipe gestures
 	private static class SwipeListener extends GestureDetector.SimpleOnGestureListener {
 		// For HTC One
@@ -1106,9 +1102,9 @@ public class SysUIMods {
 			try {
 				if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH) return false;
 				if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
-			    	killedEmAll = true;
+					killedEmAll = true;
 					terminateAll(0);
-				} 
+				}
 			} catch (Throwable t) {
 				XposedBridge.log(t);
 			}
@@ -1117,56 +1113,56 @@ public class SysUIMods {
 	}
 	
 	private static void initDetectors(MethodHookParam param) throws Throwable {
-    	final GridView recentGridView = (GridView)param.thisObject;
-    	if (mScaleDetector == null) mScaleDetector = new ScaleGestureDetector(recentGridView.getContext(), new ScaleListener());
-    	if (mDetector == null) mDetector = new GestureDetector(recentGridView.getContext(), new SwipeListener((recentGridView.getContext())));
+		final GridView recentGridView = (GridView)param.thisObject;
+		if (mScaleDetector == null) mScaleDetector = new ScaleGestureDetector(recentGridView.getContext(), new ScaleListener());
+		if (mDetector == null) mDetector = new GestureDetector(recentGridView.getContext(), new SwipeListener((recentGridView.getContext())));
 	}
 	
 	// Detect second finger and cancel action if some app thumbnail was pressed
 	private static class TouchListenerOnTouchIntercept extends XC_MethodHook {
 		MotionEvent ev = null;
 		
-	    @Override
-	    protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-	    	initDetectors(param);
-	    	ev = (MotionEvent)param.args[0];
-	    	if (ev == null) return;
-		    mScaleDetector.onTouchEvent(ev);
-		    mDetector.onTouchEvent(ev);
-		    
-		    final int action = ev.getAction();
-		    switch (action & MotionEvent.ACTION_MASK) {
-		    case MotionEvent.ACTION_DOWN: {
-		    }
-		    case MotionEvent.ACTION_POINTER_DOWN: {
-		    	if (ev.getPointerCount() == 2)
-		    	try {
-		    		param.setResult(Boolean.valueOf(true));
+		@Override
+		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+			initDetectors(param);
+			ev = (MotionEvent)param.args[0];
+			if (ev == null) return;
+			mScaleDetector.onTouchEvent(ev);
+			mDetector.onTouchEvent(ev);
+			
+			final int action = ev.getAction();
+			switch (action & MotionEvent.ACTION_MASK) {
+			case MotionEvent.ACTION_DOWN: {
+			}
+			case MotionEvent.ACTION_POINTER_DOWN: {
+				if (ev.getPointerCount() == 2)
+				try {
+					param.setResult(Boolean.valueOf(true));
 				} catch (Throwable thw) {
 					param.setThrowable(thw);
 				}
-		    }		    
-		    }		    
-	    }
+			}
+			}
+		}
 	}
 	
 	// Detect scale/swipe gestures
 	private static class TouchListenerOnTouch extends XC_MethodHook {
-	    MotionEvent ev = null;
-	    
-	    @Override
+		MotionEvent ev = null;
+		
+		@Override
 		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 		}
-	    
-	    @Override
-	    protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-	    	if (killedEmAll == true) return;
-	    	
-	    	initDetectors(param);
-	    	ev = (MotionEvent)param.args[0];
-	    	if (ev == null) return;
-		    mScaleDetector.onTouchEvent(ev);
-		    mDetector.onTouchEvent(ev);
+		
+		@Override
+		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+			if (killedEmAll == true) return;
+
+			initDetectors(param);
+			ev = (MotionEvent)param.args[0];
+			if (ev == null) return;
+			mScaleDetector.onTouchEvent(ev);
+			mDetector.onTouchEvent(ev);
 		}
 	}
 	
@@ -1178,17 +1174,17 @@ public class SysUIMods {
 			XposedBridge.log(t);
 		}
 	}
-
+	
 	private static int[] toIntArray(List<Integer> list)  {
 		int[] ret = new int[list.size()];
 		int i = 0;
 		for (Integer e : list) ret[i++] = e.intValue();
 		return ret;
-    }
+	}
 	
 	private static List<ActivityManager.RunningAppProcessInfo> procs = null;
 	private static String ramTAG = "RAMView";
-
+	
 	private static class getRAMView extends AsyncTask<MethodHookParam, Void, Void> {
 		ViewGroup theView = null;
 		TextView ramView = null;
@@ -1229,7 +1225,7 @@ public class SysUIMods {
 						ramView = new TextView(theView.getContext());
 						ramView.setTag(ramTAG);
 						ramView.setText(ramText);
-						final TextView text1 = (TextView)XposedHelpers.getObjectField(viewholder, "text1");		
+						final TextView text1 = (TextView)XposedHelpers.getObjectField(viewholder, "text1");
 						ramView.setTextSize(TypedValue.COMPLEX_UNIT_PX, text1.getTextSize());
 						ramView.setEllipsize(TruncateAt.END);
 						ramView.setSingleLine();
@@ -1247,9 +1243,9 @@ public class SysUIMods {
 			} catch (Throwable t) {
 				XposedBridge.log(t);
 			}
-			return null;        	
+			return null;
 		}
-
+		
 		@Override
 		protected void onPostExecute(Void result) {
 			if (theView != null)
@@ -1275,12 +1271,12 @@ public class SysUIMods {
 	public static void execHook_RAMInRecents(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity.RecentGridViewAdapter", lpparam.classLoader, "getView", int.class, View.class, ViewGroup.class, new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				// Text before actual data is available
 				ViewGroup theView = (ViewGroup)param.getResult();
-        		if (theView != null && theView.findViewWithTag(ramTAG) != null)
-        		((TextView)theView.findViewWithTag(ramTAG)).setText("...");
-        		// Get RAM usage for the task of this view
+				if (theView != null && theView.findViewWithTag(ramTAG) != null)
+				((TextView)theView.findViewWithTag(ramTAG)).setText("...");
+				// Get RAM usage for the task of this view
 				new getRAMView().execute(param);
 			}
 		});
@@ -1291,10 +1287,10 @@ public class SysUIMods {
 	public static void execHook_RecentsLongTap(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity.RecentGridViewAdapter", lpparam.classLoader, "getView", int.class, View.class, ViewGroup.class, new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				final ViewGroup theView = (ViewGroup)param.getResult();
-        		if (theView != null) {
-        			theView.setOnLongClickListener(new OnLongClickListener() {
+				if (theView != null) {
+					theView.setOnLongClickListener(new OnLongClickListener() {
 						@Override
 						public boolean onLongClick(View v) {
 							try {
@@ -1313,7 +1309,7 @@ public class SysUIMods {
 								XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 								ListAdapter listAdapter = new PopupAdapter(options.getContext(), Helpers.xl10n_array(modRes, R.array.recents_menu), true);
 								options.setAdapter(listAdapter);
-								options.setFocusableInTouchMode(true);								
+								options.setFocusableInTouchMode(true);
 								options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 									@Override
 									public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -1325,7 +1321,7 @@ public class SysUIMods {
 											Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null));
 											intent.setComponent(intent.resolveActivity(view.getContext().getPackageManager()));
 											intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-									        view.getContext().startActivity(intent);
+											view.getContext().startActivity(intent);
 										} else if (position == 1) {
 											try {
 												theView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
@@ -1353,14 +1349,14 @@ public class SysUIMods {
 								return false;
 							}
 						}
-        			});
-        		}
+					});
+				}
 			}
 		});
 		
 		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "handleSwipe", View.class, new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				if (popup != null) popup.dismiss();
 			}
 		});
@@ -1375,18 +1371,22 @@ public class SysUIMods {
 		BufferedReader readStream;
 		String[] a;
 		long work, total;
-
+		
 		try {
 			readStream = new BufferedReader(new FileReader("/proc/stat"));
-			a = readStream.readLine().split("[ ]+", 9);
-			work = Long.parseLong(a[1]) + Long.parseLong(a[2]) + Long.parseLong(a[3]);
-			total = work + Long.parseLong(a[4]) + Long.parseLong(a[5]) + Long.parseLong(a[6]) + Long.parseLong(a[7]);
-			if (totalLast != 0) {
-				workC = work - workLast;
-				totalC = total - totalLast;
+			String line = readStream.readLine();
+			if (line != null ) {
+				a = line.split("[ ]+", 9);
+				work = Long.parseLong(a[1]) + Long.parseLong(a[2]) + Long.parseLong(a[3]);
+				total = work + Long.parseLong(a[4]) + Long.parseLong(a[5]) + Long.parseLong(a[6]) + Long.parseLong(a[7]);
+
+				if (totalLast != 0) {
+					workC = work - workLast;
+					totalC = total - totalLast;
+				}
+				workLast = work;
+				totalLast = total;
 			}
-			workLast = work;
-			totalLast = total;                
 			readStream.close();
 			
 			readStream = new BufferedReader(new FileReader("/sys/devices/system/cpu/cpu0/cpufreq/scaling_cur_freq"));
@@ -1394,9 +1394,12 @@ public class SysUIMods {
 			readStream.close();
 			
 			readStream = new BufferedReader(new FileReader("/sys/class/thermal/thermal_zone0/temp"));
-			curTemp = readStream.readLine().trim();
-			int curTempInt = Integer.parseInt(curTemp);
-			if (curTempInt >= 1000) curTemp = String.valueOf(Math.round(curTempInt / 1000));
+			String line2 = readStream.readLine();
+			if (line2 != null) {
+				curTemp = line2.trim();
+				int curTempInt = Integer.parseInt(curTemp);
+				if (curTempInt >= 1000) curTemp = String.valueOf(Math.round(curTempInt / 1000));
+			}
 			readStream.close();
 		} catch (Throwable t) {
 			t.printStackTrace();
@@ -1406,7 +1409,7 @@ public class SysUIMods {
 	public static void execHook_NotifDrawerHeaderSysInfo(final LoadPackageParam lpparam) {
 		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.policy.DateView", lpparam.classLoader), new XC_MethodHook() {
 			@Override
-    		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				final TextView date = (TextView)param.thisObject;
 				OnClickListener ocl = new OnClickListener() {
 					@Override
@@ -1454,7 +1457,7 @@ public class SysUIMods {
 		
 		findAndHookMethod("com.android.systemui.statusbar.policy.DateView", lpparam.classLoader, "updateClock", new XC_MethodHook() {
 			@Override
-    		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				if (isThreadActive) param.setResult(null);
 			}
 		});
@@ -1500,27 +1503,27 @@ public class SysUIMods {
 	// Listen for alarm changes and update label
 	static class SystemSettingsObserver extends ContentObserver {
 		Object thisObj = null;
-	    public SystemSettingsObserver(Handler h, Object paramThisObject) {
-	        super(h);
-	        thisObj = paramThisObject;
-	    }
-
-	    @Override
-	    public boolean deliverSelfNotifications() {
-	        return true;
-	    }
-
-	    @Override
-	    public void onChange(boolean selfChange, Uri uri) {
-	    	super.onChange(selfChange);
-	    	try {
-	    		String uriPart = uri.getLastPathSegment();
-	    		if (uriPart != null && uriPart.equals(Settings.System.NEXT_ALARM_FORMATTED));
-	    		if (thisObj != null) XposedHelpers.callMethod(thisObj, "triggerUpdate");
-	    	} catch (Throwable t) {
+		public SystemSettingsObserver(Handler h, Object paramThisObject) {
+			super(h);
+			thisObj = paramThisObject;
+		}
+		
+		@Override
+		public boolean deliverSelfNotifications() {
+			return true;
+		}
+		
+		@Override
+		public void onChange(boolean selfChange, Uri uri) {
+			super.onChange(selfChange);
+			try {
+				String uriPart = uri.getLastPathSegment();
+				if (uriPart != null && uriPart.equals(Settings.System.NEXT_ALARM_FORMATTED))
+				if (thisObj != null) XposedHelpers.callMethod(thisObj, "triggerUpdate");
+			} catch (Throwable t) {
 				XposedBridge.log(t);
 			}
-	    }
+		}
 	}
 	
 	private static String getNextAlarm(Context ctx) {
@@ -1585,7 +1588,7 @@ public class SysUIMods {
 			}
 		});
 	}
-
+	
 	public static void execHookTSB442Fix(LoadPackageParam lpparam) {
 		try {
 			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBarTransitions", lpparam.classLoader, "transitionTo", int.class, boolean.class, new XC_MethodHook() {
@@ -1609,7 +1612,7 @@ public class SysUIMods {
 			});
 		} catch (Throwable ignore) {}
 	}
-
+	
 	public static void execHook_OverrideAssist(LoadPackageParam lpparam) {
 		try {
 			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "showSearchPanel", new XC_MethodHook() {
@@ -1884,14 +1887,14 @@ public class SysUIMods {
 							break;
 						case R.drawable.ic_action_voicedial:
 							Intent intent = new Intent("com.htc.HTCSpeaker.HtcSpeakLauncher_QuickCall");
-		                    intent.setFlags(0x50000000);
-		                    intent.putExtra("LaunchBy", "LockScreen");
-		                    KeyguardManager kgm = (KeyguardManager)ctx.getSystemService(Context.KEYGUARD_SERVICE);
-		                    intent.putExtra("isKeyguardShow", kgm.inKeyguardRestrictedInputMode());
-		                    intent.putExtra("isKeyguardSecure", kgm.isKeyguardSecure());
-		                    intent.putExtra("isLockscreenDisable", !kgm.isKeyguardLocked());
-		                    ctx.startActivity(intent);
-		        			break;
+							intent.setFlags(0x50000000);
+							intent.putExtra("LaunchBy", "LockScreen");
+							KeyguardManager kgm = (KeyguardManager)ctx.getSystemService(Context.KEYGUARD_SERVICE);
+							intent.putExtra("isKeyguardShow", kgm.inKeyguardRestrictedInputMode());
+							intent.putExtra("isKeyguardSecure", kgm.isKeyguardSecure());
+							intent.putExtra("isLockscreenDisable", !kgm.isKeyguardLocked());
+							ctx.startActivity(intent);
+							break;
 					}
 				}
 			});

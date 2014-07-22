@@ -36,10 +36,10 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		mProgressDialog.setCancelable(true);
 		mProgressDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-		    @Override
-		    public void onCancel(DialogInterface dialog) {
-		        task.cancel(true);
-		    }
+			@Override
+			public void onCancel(DialogInterface dialog) {
+				task.cancel(true);
+			}
 		});
 	}
 
@@ -82,7 +82,7 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 		} catch (Exception e) {
 			act.runOnUiThread(new Runnable() {
 				@Override
-			    public void run() {
+				public void run() {
 					HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
 					alert.setTitle(Helpers.l10n(act, R.string.warning));
 					alert.setView(Helpers.createCenteredText(act, R.string.download_failed));
@@ -99,7 +99,9 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 		try {
 			if (output != null) output.close();
 			if (input != null) input.close();
-		} catch (Exception ignored) {}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		if (connection != null) connection.disconnect();
 		return "OK";
 	}
@@ -124,19 +126,15 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
 			
 			String buildIdBefore = "";
-			try {
-				BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "version")));
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "version")))) {
 				buildIdBefore = br.readLine();
-				br.close();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			if (unpackZip(Helpers.dataPath, "strings.zip")) {
 				String buildIdAfter = "";
-				try {
-					BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "version")));
+				try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "version")))) {
 					buildIdAfter = br.readLine();
-					br.close();
 				} catch (Exception e) {
 					e.printStackTrace();
 				}
@@ -177,13 +175,9 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 		mProgressDialog.dismiss();
 	}
 	
-	private boolean unpackZip(String path, String zipname) {       
-		InputStream is;
-		ZipInputStream zis;
-		try {
+	private boolean unpackZip(String path, String zipname) {
+		try (ZipInputStream zis = new ZipInputStream(new BufferedInputStream(new FileInputStream(path + zipname)))) {
 			String filename;
-			is = new FileInputStream(path + zipname);
-			zis = new ZipInputStream(new BufferedInputStream(is));          
 			ZipEntry ze;
 			byte[] buffer = new byte[1024];
 			int count;
@@ -198,19 +192,21 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 					fmd.setExecutable(true, false);
 					continue;
 				}
-				FileOutputStream fout = new FileOutputStream(fmd, false);
-				while ((count = zis.read(buffer)) != -1) fout.write(buffer, 0, count);             
-				fout.close();               
+				try (FileOutputStream fout = new FileOutputStream(fmd, false)) {
+					while ((count = zis.read(buffer)) != -1) fout.write(buffer, 0, count);
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				
 				zis.closeEntry();
 				fmd.setReadable(true, false);
 				fmd.setWritable(true, false);
 				fmd.setExecutable(true, false);
 			}
-			zis.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 			return false;
 		}
-	    return true;
+		return true;
 	}
 }

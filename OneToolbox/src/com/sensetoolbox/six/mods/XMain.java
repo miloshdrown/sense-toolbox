@@ -32,7 +32,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
 		MODULE_PATH = startupParam.modulePath;
-
+		
 		pref = new XSharedPreferences("com.sensetoolbox.six", "one_toolbox_prefs");
 		
 		senseVersion = new Version(pref.getString("pref_sense_version", "5.0"));
@@ -101,7 +101,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("popup_notify_active", false))
 			OtherMods.execHook_PopupNotify();
 	}
-
+	
 	@Override
 	public void handleInitPackageResources(InitPackageResourcesParam resparam) throws Throwable {
 		String pkg = resparam.packageName;
@@ -118,7 +118,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiFolder(resparam, transparency);
 			}
-
+			
 			if(pref.getBoolean("pref_key_prism_invisifoldersbkg_enable", false))
 			{
 				int transparency = pref.getInt("pref_key_prism_invisifoldersbkg", 100);
@@ -159,10 +159,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_cb_headphone", false))
 				CleanBeamMods.execHook_HeadphoneIcon(resparam);
-						
+			
 			if(pref.getBoolean("pref_key_cb_alarm", false))
 				CleanBeamMods.execHook_AlarmIcon(resparam);
-
+			
 			if(Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")) != 1)
 				CleanBeamMods.execHook_WiFiIcon(resparam, Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")));
 			
@@ -177,7 +177,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_cb_bt", false))
 				CleanBeamMods.execHook_BtIcon(resparam);
-
+			
 			if(pref.getBoolean("pref_key_cb_data", false))
 				CleanBeamMods.execHook_DataIcon(resparam);
 			
@@ -216,7 +216,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				CleanBeamMods.execHook_NFCIcon(resparam);
 		}
 		
-		if (pkg.equals("com.android.providers.media")) 
+		if (pkg.equals("com.android.providers.media"))
 		{
 			if(pref.getBoolean("pref_key_cb_mtp", false))
 				CleanBeamMods.execHook_MTPIcon(resparam);
@@ -232,7 +232,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				OtherMods.execHook_LargePhoto(resparam, largePhoto);
 		}
 		
-		if (pkg.equals("com.htc.videohub.ui")) 
+		if (pkg.equals("com.htc.videohub.ui"))
 		{
 			if(pref.getBoolean("pref_key_cb_tv", false))
 				CleanBeamMods.execHook_TvIcon(resparam);
@@ -244,7 +244,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				OtherMods.execHook_YouTubeNoWatermark(resparam);
 		}
 	}
-
+	
 	@Override
 	public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
 		String pkg = lpparam.packageName;
@@ -363,7 +363,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if(pref.getBoolean("pref_key_other_keepscreenon", false))
 				SettingsMods.execHook_ScreenOn(lpparam);
-
+			
 			if(pref.getBoolean("pref_key_other_appdetails", false))
 				SettingsMods.execHook_Apps(lpparam);
 			
@@ -374,9 +374,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pkg.equals("com.android.camera"))
 		{
 			int voldown = Integer.parseInt(pref.getString("pref_key_controls_camdownaction", "4"));
-		    int volup = Integer.parseInt(pref.getString("pref_key_controls_camupaction", "4"));
-		    if (!(voldown == 4 && volup == 4))
-		    	CamMods.execHook_VolKey(lpparam, volup, voldown);
+			int volup = Integer.parseInt(pref.getString("pref_key_controls_camupaction", "4"));
+			if (!(voldown == 4 && volup == 4))
+				CamMods.execHook_VolKey(lpparam, volup, voldown);
 		}
 		
 		if (pkg.equals("com.android.systemui"))
@@ -403,7 +403,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			SysUIMods.execHook_RecentAppsInit(lpparam);
 			
 			if(pref.getBoolean("pref_key_sysui_recentappsclear", false))
-				SysUIMods.execHook_RecentAppsClearTouch(lpparam);	
+				SysUIMods.execHook_RecentAppsClearTouch(lpparam);
 			
 			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockAnimation(lpparam);
@@ -427,7 +427,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 //			if(Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false))
 //				SysUIMods.execHookTSB442Fix(lpparam);
-
+			
 			if(Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1")) == 3)
 				SysUIMods.execHook_NotifDrawerHeaderSysInfo(lpparam);
 			
@@ -471,7 +471,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pkg.equals("com.htc.android.mail"))
 		{
 			if (pref.getBoolean("pref_key_messaging_eassecurity", false))
-		    	MessagingMods.execHook_EASSecurityPartTwo(lpparam);
+				MessagingMods.execHook_EASSecurityPartTwo(lpparam);
 		}
 		
 		if (pkg.equals("com.android.phone")) {
@@ -511,17 +511,17 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				ControlsMods.execHook_PowerFlash(lpparam);
 			
 			if (Integer.parseInt(pref.getString("pref_key_controls_mediadownaction", "0")) != 0 || Integer.parseInt(pref.getString("pref_key_controls_mediaupaction", "0")) != 0)
-		    	ControlsMods.execHook_VolumeMediaButtons(lpparam, vol2wakeEnabled);
-		    
-		    if (pref.getBoolean("pref_key_messaging_eassecurity", false))
-		    	MessagingMods.execHook_EASSecurityPartOne(lpparam);
-		    
-		    if (pref.getBoolean("pref_key_other_volsafe", false))
-		    	OtherMods.execHook_SafeVolume(lpparam);
-		    
-		    if (pref.getBoolean("pref_key_controls_swapvolume", false))
-		    	ControlsMods.exec_SwapVolumeCCWLand(lpparam);
-		    
+				ControlsMods.execHook_VolumeMediaButtons(lpparam, vol2wakeEnabled);
+			
+			if (pref.getBoolean("pref_key_messaging_eassecurity", false))
+				MessagingMods.execHook_EASSecurityPartOne(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_volsafe", false))
+				OtherMods.execHook_SafeVolume(lpparam);
+			
+			if (pref.getBoolean("pref_key_controls_swapvolume", false))
+				ControlsMods.exec_SwapVolumeCCWLand(lpparam);
+			
 //		    if (pref.getBoolean("pref_key_sysui_invisibar_enable", false) && Build.VERSION.SDK_INT >= 19)
 //		    	SysUIMods.execHook_anotherTSB44Fix(lpparam);
 		}

@@ -84,7 +84,7 @@ public class Helpers {
 	};
 	public static List<Integer> allStyles;
 
-	private static boolean preloadLang(String lang) {
+	private static synchronized boolean preloadLang(String lang) {
 		try {
 			if (l10n == null) {
 				FileInputStream in_s = new FileInputStream(Helpers.dataPath + "values-" + lang + "/strings.xml");
@@ -252,14 +252,14 @@ public class Helpers {
 
 	public static boolean isXposedInstalled(Context ctx) {
 		PackageManager pm = ctx.getPackageManager();
-	    boolean installed = false;
-	    try {
-	       pm.getPackageInfo("de.robv.android.xposed.installer", PackageManager.GET_ACTIVITIES);
-	       installed = true;
-	    } catch (PackageManager.NameNotFoundException e) {
-	       installed = false;
-	    }
-	    return installed;
+		boolean installed = false;
+		try {
+			pm.getPackageInfo("de.robv.android.xposed.installer", PackageManager.GET_ACTIVITIES);
+			installed = true;
+		} catch (PackageManager.NameNotFoundException e) {
+			installed = false;
+		}
+		return installed;
 	}
 	
 	public static String getSenseVersion() {
@@ -273,7 +273,7 @@ public class Helpers {
 		centerMsg.setPadding(10, 60, 10, 60);
 		centerMsg.setTextSize(18.0f);
 		centerMsg.setTextColor(ctx.getResources().getColor(android.R.color.primary_text_light));
-		return centerMsg; 
+		return centerMsg;
 	}
 	
 	public static void setTranslucentStatusBar(Activity act) {
@@ -295,7 +295,7 @@ public class Helpers {
 		}
 	}
 	
-	public static int getCurrentTheme(Context context) {
+	public static synchronized int getCurrentTheme(Context context) {
 		String current_str = context.getSharedPreferences("one_toolbox_prefs", 1).getString("pkgthm", "");
 		if (cached_pkgthm == null || !current_str.equals(cached_str)) {
 			if (current_str != null && !current_str.equals(""))
@@ -320,7 +320,7 @@ public class Helpers {
 	
 	public static PackageTheme getThemeForPackageFromXposed(String pkgName) {
 		XMain.pref.reload();
-		if (XMain.pref.getBoolean("themes_active", false)) {			
+		if (XMain.pref.getBoolean("themes_active", false)) {
 			String tmp = XMain.pref.getString("pkgthm", null);
 			
 			List<PackageTheme> pkgthm;
@@ -349,7 +349,7 @@ public class Helpers {
 		int multiply_theme = typedValue.data;
 		
 		if (context.getClass() == MainActivity.class && category_theme == multiply_theme) category_theme = 0xffdadada;
-
+		
 		Bitmap src = ((BitmapDrawable)img).getBitmap();
 		Bitmap bitmap = src.copy(Bitmap.Config.ARGB_8888, true);
 		return new BitmapDrawable(context.getResources(), shiftRGB(bitmap, category_theme));
@@ -365,7 +365,7 @@ public class Helpers {
 		
 		int[] pix = new int[w * h];
 		input.getPixels(pix, 0, w, 0, 0, w, h);
-        
+		
 		for (int i = 0; i < w * h; i++) {
 			int pixColor = pix[i];
 			int curR = Color.red(pixColor);
@@ -462,7 +462,7 @@ public class Helpers {
 		} else if (state.equals(Environment.MEDIA_MOUNTED)) {
 			File file = new File(path);
 			if (!file.exists() && !file.mkdirs()) {
-	        	HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
+				HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
 				alert.setTitle(l10n(ctx, R.string.warning));
 				alert.setView(createCenteredText(ctx, R.string.storage_cannot_mkdir));
 				alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -470,7 +470,7 @@ public class Helpers {
 				});
 				alert.show();
 				return false;
-		    }
+			}
 			return true;
 		} else {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
@@ -494,12 +494,13 @@ public class Helpers {
 	
 	public static boolean isWakeGestures() {
 		String wake_gestures = "0";
-		try {
-			BufferedReader br = new BufferedReader(new FileReader(new File("/sys/android_touch/wake_gestures")));
-			wake_gestures = br.readLine().trim();
-			br.close();
-		} catch (Exception e) {}
-		if (wake_gestures != null && wake_gestures.equals("1")) return true; else return false; 
+		try (BufferedReader br = new BufferedReader(new FileReader(new File("/sys/android_touch/wake_gestures")))) {
+			String line = br.readLine();
+			if (line != null) wake_gestures = line.trim();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if (wake_gestures != null && wake_gestures.equals("1")) return true; else return false;
 	}
 	
 	public static void processResult(Activity act, int requestCode, int resultCode, Intent data) {
@@ -510,7 +511,9 @@ public class Helpers {
 			if (iconResId != null) try {
 				Context ctx = act.createPackageContext(iconResId.packageName, Context.CONTEXT_IGNORE_SECURITY);
 				icon = BitmapFactory.decodeResource(ctx.getResources(), ctx.getResources().getIdentifier(iconResId.resourceName, "drawable", iconResId.packageName));
-			} catch (Exception e) {}
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
 			if (icon == null) icon = (Bitmap)data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
 
 			if (icon != null && PrefsFragment.lastShortcutKey != null) try {
@@ -519,12 +522,10 @@ public class Helpers {
 				File shortcutsDir = new File(dir);
 				shortcutsDir.mkdirs();
 				File shortcutFileName = new File(fileName);
-				FileOutputStream shortcutOutStream = new FileOutputStream(shortcutFileName);
-
-				if (icon.compress(CompressFormat.PNG, 100, shortcutOutStream))
-				PrefsFragment.prefs.edit().putString(PrefsFragment.lastShortcutKey + "_icon", shortcutFileName.getAbsolutePath()).commit();
-				
-				shortcutOutStream.close();
+				try (FileOutputStream shortcutOutStream = new FileOutputStream(shortcutFileName)) {
+					if (icon.compress(CompressFormat.PNG, 100, shortcutOutStream))
+					PrefsFragment.prefs.edit().putString(PrefsFragment.lastShortcutKey + "_icon", shortcutFileName.getAbsolutePath()).commit();
+				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -567,5 +568,4 @@ public class Helpers {
 			0x020301eb, 0x020301ef, 0x020301f3, 0x020301f7, 0x020301fb
 		});
 	}
-	
 }

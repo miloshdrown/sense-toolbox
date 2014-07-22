@@ -1,16 +1,74 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
+    <issue id="AlwaysShowAction">
+        <ignore path="res/menu/menu_mods.xml" />
+    </issue>
     <issue id="ExportedReceiver">
         <ignore path="AndroidManifest.xml" />
     </issue>
     <issue id="ExportedService">
         <ignore path="AndroidManifest.xml" />
     </issue>
-    <issue id="HardcodedText">
-        <ignore path="res/layout/prefs_systemui.xml" />
+    <issue id="IconColors" severity="ignore" />
+    <issue id="IconDuplicates">
+        <ignore path="res/drawable-xxhdpi/stat_sys_sync_anim0.png" />
     </issue>
-    <issue id="UseCompoundDrawables">
-        <ignore path="res/layout/about_screen.xml" />
+    <issue id="IconMissingDensityFolder" severity="ignore" />
+    <issue id="MissingPrefix">
+        <ignore path="AndroidManifest.xml" />
     </issue>
-    <issue id="UselessParent" severity="ignore" />
+    <issue id="OldTargetApi">
+        <ignore path="AndroidManifest.xml" />
+    </issue>
+    <issue id="ProtectedPermissions">
+        <ignore path="AndroidManifest.xml" />
+    </issue>
+    <issue id="UnusedResources">
+        <ignore path="res/drawable-xxhdpi/b_stat_sys_wifi_signal_0.png" />
+        <ignore path="res/drawable-xxhdpi/b_stat_sys_wifi_signal_1.png" />
+        <ignore path="res/drawable-xxhdpi/b_stat_sys_wifi_signal_2.png" />
+        <ignore path="res/drawable-xxhdpi/b_stat_sys_wifi_signal_3.png" />
+        <ignore path="res/drawable-xxhdpi/b_stat_sys_wifi_signal_glow_0.png" />
+        <ignore path="res/drawable-xxhdpi/b_stat_sys_wifi_signal_glow_1.png" />
+        <ignore path="res/drawable-xxhdpi/b_stat_sys_wifi_signal_glow_2.png" />
+        <ignore path="res/drawable-xxhdpi/b_stat_sys_wifi_signal_glow_3.png" />
+        <ignore path="res/drawable-xxhdpi/b_stat_sys_wifi_signal_glow_4.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_connected_3g.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_connected_4g.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_connected_e.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_connected_g.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_connected_h.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_connected_hplus.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_connected_lte.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_in_3g.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_in_4g.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_in_e.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_in_g.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_in_h.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_in_hplus.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_in_lte.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_inandout_3g.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_inandout_4g.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_inandout_e.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_inandout_g.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_inandout_h.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_inandout_hplus.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_inandout_lte.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_out_3g.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_out_4g.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_out_e.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_out_g.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_out_h.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_out_hplus.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_data_out_lte.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_0.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_1.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_2.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_3.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_glow_0.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_glow_1.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_glow_2.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_glow_3.png" />
+        <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_glow_4.png" />
+    </issue>
 </lint>

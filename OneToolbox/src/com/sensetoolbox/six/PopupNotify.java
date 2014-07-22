@@ -54,7 +54,7 @@ public class PopupNotify extends HtcPreferenceActivity {
 	TextView themeHint;
 	int mThemeId = 0;
 	
-	public BroadcastReceiver recreateReceiver = new BroadcastReceiver() {    
+	public BroadcastReceiver recreateReceiver = new BroadcastReceiver() {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction() != null && intent.getAction().equals(recreateIntent)) recreate();
@@ -105,62 +105,62 @@ public class PopupNotify extends HtcPreferenceActivity {
 			@Override
 			public void onClick(View v) {
 				PendingIntent pendingintent = PendingIntent.getActivity(pn, 0, new Intent(pn, MainActivity.class), 0x10000000);
-	            PendingIntent pendingintent1 = PendingIntent.getActivity(pn, 0, new Intent(), 0x10000000);
-	            Notification notification1 = (new Notification.Builder(pn))
-	            		.setContentTitle("Inbox Style notification")
-	            		.setContentText("This is a test notification")
-	            		.setAutoCancel(true)
-	            		.setContentIntent(pendingintent)
-	            		.setSmallIcon(R.drawable.apm_bootloader)
-	            		.setLargeIcon(BitmapFactory.decodeResource(pn.getResources(), R.drawable.apm_bootloader))
-	            		.addAction(android.R.drawable.ic_menu_call, "Do nothing", pendingintent1)
-	            		.addAction(android.R.drawable.ic_menu_delete, "...do it again", pendingintent1)
-	            		.setStyle(new Notification.InboxStyle()
-	            			.addLine("This is a test!")
-	            			.addLine("Multiple lines")
-	            			.setSummaryText("Summary example"))
-	            		.build();
-	            
-	            final Notification notification2 = (new Notification.Builder(pn))
-	            		.setContentTitle("Big Picture Style")
-	            		.setContentText("This is a test!")
-	            		.setAutoCancel(true)
-	            		.setContentIntent(pendingintent)
-	            		.setSmallIcon(R.drawable.apm_hotreboot)
-	            		.setLargeIcon(BitmapFactory.decodeResource(pn.getResources(), R.drawable.apm_hotreboot))
-	            		.addAction(android.R.drawable.ic_menu_call, "Do nothing", pendingintent1)
-	            		.addAction(android.R.drawable.ic_menu_delete, "...do it again", pendingintent1)
-	            		.setStyle(new Notification.BigPictureStyle()
-	            			.bigPicture(BitmapFactory.decodeResource(pn.getResources(), getResources().getIdentifier("htc_logo", "drawable", "com.htc")))
-	            			.bigLargeIcon(BitmapFactory.decodeResource(pn.getResources(), R.drawable.apm_hotreboot))
-	            			.setSummaryText("Summary example"))
-	            		.build();
-	            
-	            final Notification notification3 = (new Notification.Builder(pn))
-	            		.setContentTitle("Big Text Style notification")
-	            		.setContentText("This is a test notification")
-	            		.setAutoCancel(true)
-	            		.setContentIntent(pendingintent)
-	            		.setSmallIcon(R.drawable.apm_recovery)
-	            		.setLargeIcon(BitmapFactory.decodeResource(pn.getResources(), R.drawable.apm_recovery))
-	            		.addAction(android.R.drawable.ic_menu_call, "Do nothing", pendingintent1)
-	            		.addAction(android.R.drawable.ic_menu_delete, "...do it again", pendingintent1)
-	            		.setStyle(new Notification.BigTextStyle().setSummaryText("Summary example").bigText("This is a test!"))
-	            		.build();
-	            final NotificationManager nm = (NotificationManager)pn.getSystemService("notification");
-	            nm.notify(6661, notification1);
-	            
-	            (new Handler()).postDelayed(new Runnable() {
-	                public void run() {
-	                	nm.notify(6662, notification2);
-	                }
-	            }, 2000L);
-	            
-	            (new Handler()).postDelayed(new Runnable() {
-	                public void run() {
-	                	nm.notify(6663, notification3);
-	                }
-	            }, 3000L);
+				PendingIntent pendingintent1 = PendingIntent.getActivity(pn, 0, new Intent(), 0x10000000);
+				Notification notification1 = (new Notification.Builder(pn))
+						.setContentTitle("Inbox Style notification")
+						.setContentText("This is a test notification")
+						.setAutoCancel(true)
+						.setContentIntent(pendingintent)
+						.setSmallIcon(R.drawable.apm_bootloader)
+						.setLargeIcon(BitmapFactory.decodeResource(pn.getResources(), R.drawable.apm_bootloader))
+						.addAction(android.R.drawable.ic_menu_call, "Do nothing", pendingintent1)
+						.addAction(android.R.drawable.ic_menu_delete, "...do it again", pendingintent1)
+						.setStyle(new Notification.InboxStyle()
+							.addLine("This is a test!")
+							.addLine("Multiple lines")
+							.setSummaryText("Summary example"))
+						.build();
+				
+				final Notification notification2 = (new Notification.Builder(pn))
+						.setContentTitle("Big Picture Style")
+						.setContentText("This is a test!")
+						.setAutoCancel(true)
+						.setContentIntent(pendingintent)
+						.setSmallIcon(R.drawable.apm_hotreboot)
+						.setLargeIcon(BitmapFactory.decodeResource(pn.getResources(), R.drawable.apm_hotreboot))
+						.addAction(android.R.drawable.ic_menu_call, "Do nothing", pendingintent1)
+						.addAction(android.R.drawable.ic_menu_delete, "...do it again", pendingintent1)
+						.setStyle(new Notification.BigPictureStyle()
+							.bigPicture(BitmapFactory.decodeResource(pn.getResources(), getResources().getIdentifier("htc_logo", "drawable", "com.htc")))
+							.bigLargeIcon(BitmapFactory.decodeResource(pn.getResources(), R.drawable.apm_hotreboot))
+							.setSummaryText("Summary example"))
+						.build();
+				
+				final Notification notification3 = (new Notification.Builder(pn))
+						.setContentTitle("Big Text Style notification")
+						.setContentText("This is a test notification")
+						.setAutoCancel(true)
+						.setContentIntent(pendingintent)
+						.setSmallIcon(R.drawable.apm_recovery)
+						.setLargeIcon(BitmapFactory.decodeResource(pn.getResources(), R.drawable.apm_recovery))
+						.addAction(android.R.drawable.ic_menu_call, "Do nothing", pendingintent1)
+						.addAction(android.R.drawable.ic_menu_delete, "...do it again", pendingintent1)
+						.setStyle(new Notification.BigTextStyle().setSummaryText("Summary example").bigText("This is a test!"))
+						.build();
+				final NotificationManager nm = (NotificationManager)pn.getSystemService("notification");
+				nm.notify(6661, notification1);
+				
+				(new Handler()).postDelayed(new Runnable() {
+					public void run() {
+						nm.notify(6662, notification2);
+					}
+				}, 2000L);
+				
+				(new Handler()).postDelayed(new Runnable() {
+					public void run() {
+						nm.notify(6663, notification3);
+					}
+				}, 3000L);
 			}
 		});
 		actionBarContainer.addRightView(menuTest);
@@ -243,14 +243,14 @@ public class PopupNotify extends HtcPreferenceActivity {
 											entries.add(entry);
 										}
 										
-									    Collections.sort(entries, new Comparator<ArrayList<CharSequence>>() {
-									        @Override
-									        public int compare(ArrayList<CharSequence> entry1, ArrayList<CharSequence> entry2) {
-									        	return ((String)entry2.get(2)).compareTo((String)entry1.get(2));
-									        }
-									    });
-									    
-									    ArrayList<CharSequence> entryLabels = new ArrayList<CharSequence>();
+										Collections.sort(entries, new Comparator<ArrayList<CharSequence>>() {
+											@Override
+											public int compare(ArrayList<CharSequence> entry1, ArrayList<CharSequence> entry2) {
+												return ((String)entry2.get(2)).compareTo((String)entry1.get(2));
+											}
+										});
+										
+										ArrayList<CharSequence> entryLabels = new ArrayList<CharSequence>();
 										ArrayList<CharSequence> entryVals = new ArrayList<CharSequence>();
 										for (ArrayList<CharSequence> entry: entries) {
 											entryLabels.add(entry.get(0));
@@ -262,7 +262,7 @@ public class PopupNotify extends HtcPreferenceActivity {
 										
 										dialog.dismiss();
 										if (bwlistApps.getDialog() != null) bwlistApps.getDialog().dismiss();
-										bwlistApps.show();								
+										bwlistApps.show();
 									}
 								});
 							} catch (Exception e) {
@@ -294,7 +294,7 @@ public class PopupNotify extends HtcPreferenceActivity {
 		pkgAppsList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 		Collections.sort(pkgAppsList, new ApplicationInfo.DisplayNameComparator(pm));
 	}
-
+	
 	@Override
 	public void addPreferencesFromResource(int resId) {
 		super.addPreferencesFromResource(resId);
@@ -317,13 +317,17 @@ public class PopupNotify extends HtcPreferenceActivity {
 	private void startListen() {
 		try {
 			this.registerReceiver(recreateReceiver, filter);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	private void stopListen() {
 		if (recreateReceiver != null) try {
 			this.unregisterReceiver(recreateReceiver);
-		} catch (Exception e) {}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 	}
 	
 	protected void onResume() {

@@ -17,7 +17,7 @@
         <item >7</item>
         <item >4</item>
     </string-array>
-    
+
     <string-array name="cleanbeam_battery">
         <item >@string/array_default</item>
         <item >@string/array_batt_icon_none</item>
@@ -26,7 +26,7 @@
         <item >1</item>
         <item >4</item>
     </string-array>
-    
+
 	<string-array name="cleanbeam_wifi">
         <item >@string/array_default</item>
         <item >@string/array_wifi_icon_style1</item>
@@ -47,7 +47,7 @@
 		<item >0</item>
 		<item >1</item>
 	</array>
-    
+
     <string-array name="systemui_clockstyle">
         <item >@string/array_default</item>
         <item >@string/array_clock_style_center</item>
@@ -58,7 +58,7 @@
         <item >2</item>
         <item >3</item>
     </string-array>
-	
+
     <string-array name="global_actions">
         <item >@string/array_global_actions_none</item>
         <item >@string/array_global_actions_notif</item>
@@ -81,7 +81,7 @@
         <item >12</item>
         <item >8</item>
     </string-array>
-    
+
     <string-array name="global_toggles">
         <item >@string/array_global_toggle_wifi</item>
         <item >@string/array_global_toggle_bt</item>
@@ -140,6 +140,7 @@
         <item >2</item>
         <item >1</item>
     </string-array>
+
     <string-array name="theme_colors">
         <item >@string/array_color_blue</item>
         <item >@string/array_color_green</item>
@@ -147,14 +148,7 @@
         <item >@string/array_color_orange</item>
         <item >@string/array_color_white</item>
     </string-array>
-    <string-array name="theme_colors_val">
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-        <item >4</item>
-        <item >5</item>
-    </string-array>
-    
+
     <string-array name="media_action">
         <item >@string/array_media_none</item>
         <item >@string/array_media_playpause</item>
@@ -167,7 +161,7 @@
         <item >87</item>
         <item >88</item>
     </string-array>
-    
+
     <string-array name="various_largephoto">
         <item >@string/array_large_photo_default</item>
         <item >@string/array_large_photo_rectangular</item>
@@ -178,7 +172,7 @@
         <item >2</item>
         <item >3</item>
     </string-array>
-    
+
     <string-array name="systemui_statusheaderclick">
         <item >@string/array_global_actions_none</item>
         <item >@string/array_header_click_clock</item>
@@ -189,7 +183,7 @@
         <item >2</item>
         <item >3</item>
     </string-array>
-    
+
     <string-array name="hideicons">
         <item >@string/cleanbeam_headphone_title</item>
         <item >@string/cleanbeam_beats_title</item>
@@ -216,7 +210,7 @@
         <item >10</item>
         <item >11</item>
     </string-array>
-    
+
     <string-array name="various_keyslight">
         <item >@string/array_default</item>
         <item >@string/array_keyslight_dim</item>
@@ -229,7 +223,7 @@
         <item >3</item>
         <item >4</item>
     </string-array>
-    
+
     <string-array name="wakegest_actions">
         <item >@string/array_wakegestures_disable</item>
         <item >@string/array_wakegestures_wakeup</item>
@@ -264,7 +258,7 @@
         <item >12</item>
         <item >13</item>
     </string-array>
-    
+
     <string-array name="wakegest_m8stock_actions">
         <item >@string/array_wakegestures_disable</item>
         <item >@string/array_wakegestures_wakeup</item>
@@ -291,7 +285,7 @@
         <item >10</item>
         <item >14</item>
     </string-array>
-    
+
     <string-array name="various_background_style">
         <item >@string/array_popupbkg_dim</item>
         <item >@string/array_popupbkg_blur</item>
@@ -302,7 +296,7 @@
         <item >2</item>
         <item >3</item>
     </string-array>
-    
+
     <string-array name="various_clock_style">
         <item >@string/array_popuphdr_empty</item>
         <item >@string/array_popuphdr_datetime</item>
@@ -313,6 +307,6 @@
         <item >2</item>
         <item >3</item>
     </string-array>
-    
+
     <string-array name="empty_array"/>
 </resources>

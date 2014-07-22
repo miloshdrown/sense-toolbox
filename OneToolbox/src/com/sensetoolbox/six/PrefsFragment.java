@@ -105,7 +105,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		HtcCheckBoxPreference.OnPreferenceChangeListener toggleIcon = new HtcCheckBoxPreference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-				PackageManager pm = getActivity().getPackageManager(); 
+				PackageManager pm = getActivity().getPackageManager();
 				if ((Boolean)newValue)
 					pm.setComponentEnabledSetting(new ComponentName(getActivity(), GateWay.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 				else
@@ -119,14 +119,14 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			public boolean onPreferenceClick(HtcPreference preference) {
 				HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
 				alert.setTitle(Helpers.l10n(getActivity(), R.string.toolbox_l10n_title));
-				try {
-					BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "version")));
-					String buildId = br.readLine();
-					int timeStamp = Integer.parseInt(br.readLine());
-					br.close();
+				String buildId = "?";
+				int timeStamp = 0;
+				try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "version")))) {
+					buildId = br.readLine();
+					timeStamp = Integer.parseInt(br.readLine());
 					Date datetime = new Date((long)timeStamp * 1000);
 					SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz", Locale.getDefault());
-				    format.setTimeZone(TimeZone.getTimeZone("UTC"));
+					format.setTimeZone(TimeZone.getTimeZone("UTC"));
 					TextView center = Helpers.createCenteredText(getActivity(), R.string.download_current_ver);
 					center.setText(center.getText()  + " " + buildId + "\n(" + format.format(datetime) + ")");
 					alert.setView(center);
@@ -138,8 +138,8 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				});
 				alert.setNeutralButton(Helpers.l10n(getActivity(), R.string.remove), new DialogInterface.OnClickListener() {
 					void DeleteRecursive(File fileOrDirectory) {
-					    if (fileOrDirectory.isDirectory()) for (File child: fileOrDirectory.listFiles()) DeleteRecursive(child);
-					    fileOrDirectory.delete();
+						if (fileOrDirectory.isDirectory()) for (File child: fileOrDirectory.listFiles()) DeleteRecursive(child);
+						fileOrDirectory.delete();
 					}
 					
 					public void onClick(DialogInterface dialog, int whichButton) {
@@ -178,38 +178,38 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	}
 	
 	public static class SysUIFragment extends HtcPreferenceFragmentExt {
-	    @Override
-	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState, R.xml.prefs_systemui);
-	        addPreferencesFromResource(R.xml.prefs_systemui);
-	        
-	        HtcPreference senseThemesPreference = (HtcPreference) findPreference("pref_key_sense_themes");
-	        senseThemesPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState, R.xml.prefs_systemui);
+			addPreferencesFromResource(R.xml.prefs_systemui);
+			
+			HtcPreference senseThemesPreference = (HtcPreference) findPreference("pref_key_sense_themes");
+			senseThemesPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
 				@Override
 				public boolean onPreferenceClick(HtcPreference arg0) {
 					getActivity().startActivity(new Intent(getActivity(), SenseThemes.class));
 					return true;
 				}
-	        });
-	    }
+			});
+		}
 	}
 	
 	public static class StatusBarFragment extends HtcPreferenceFragmentExt {
-	    @Override
-	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState, R.xml.prefs_statusbar);
-	        addPreferencesFromResource(R.xml.prefs_statusbar);
-	        
-	        HtcPreference sunbeamInstallPref = findPreference("pref_key_cb_sunbeam");
-	        sunbeamInstallPref.setOnPreferenceClickListener(new HtcPreference.OnPreferenceClickListener(){
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState, R.xml.prefs_statusbar);
+			addPreferencesFromResource(R.xml.prefs_statusbar);
+			
+			HtcPreference sunbeamInstallPref = findPreference("pref_key_cb_sunbeam");
+			sunbeamInstallPref.setOnPreferenceClickListener(new HtcPreference.OnPreferenceClickListener(){
 				@Override
 				public boolean onPreferenceClick(HtcPreference preference) {
 					ApkInstaller.installSunbeam(getActivity());
 					return true;
 				}
-	        });
-	        
-	        ColorPreference colorChanger = (ColorPreference) findPreference("pref_key_colorfilter");
+			});
+			
+			ColorPreference colorChanger = (ColorPreference) findPreference("pref_key_colorfilter");
 			colorChanger.applyThemes();
 			
 			if (Helpers.isM8()) {
@@ -218,17 +218,17 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				beats.setSummary(beats.getSummary().toString().replace("Beats", "Boomsound"));
 				beats.setIcon(R.drawable.stat_sys_boomsound);
 			}
-	    }
+		}
 	}
 	
 	public static class PrismFragment extends HtcPreferenceFragmentExt {
-	    @Override
-	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState, R.xml.prefs_prism);
-	        addPreferencesFromResource(R.xml.prefs_prism);
-	        this.rebootType = 1;
-	        
-	        HtcPreference.OnPreferenceChangeListener chooseAction = new HtcPreference.OnPreferenceChangeListener() {
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState, R.xml.prefs_prism);
+			addPreferencesFromResource(R.xml.prefs_prism);
+			this.rebootType = 1;
+			
+			HtcPreference.OnPreferenceChangeListener chooseAction = new HtcPreference.OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
 					HtcPreference launchApps = null;
@@ -286,13 +286,13 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			};
 			
 			OnPreferenceChangeListener setEntryAsSummary = new OnPreferenceChangeListener() {
-		        @Override
-		        public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-		        	((HtcListPreferencePlus)preference).setValue((String)newValue);
-		        	preference.setSummary(((HtcListPreferencePlus)preference).getEntry());
-		            return false;
-		        }
-		    };
+				@Override
+				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
+					((HtcListPreferencePlus)preference).setValue((String)newValue);
+					preference.setSummary(((HtcListPreferencePlus)preference).getEntry());
+					return false;
+				}
+			};
 			
 			HtcPreference.OnPreferenceClickListener clickPref = new HtcPreference.OnPreferenceClickListener() {
 				@Override
@@ -310,7 +310,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					dp.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
 						@Override
 						public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-							preference.setSummary(getAppName(getActivity(), (String)newValue));				
+							preference.setSummary(getAppName(getActivity(), (String)newValue));
 							return true;
 						}
 					});
@@ -333,7 +333,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 										@Override
 										public void run(){
 											dialog.dismiss();
-											dp.show();										
+											dp.show();
 										}
 									});
 								} catch (Exception e) {
@@ -350,7 +350,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			HtcCheckBoxPreference.OnPreferenceChangeListener toggleBF = new HtcCheckBoxPreference.OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-					PackageManager pm = getActivity().getPackageManager(); 
+					PackageManager pm = getActivity().getPackageManager();
 					if ((Boolean)newValue)
 						pm.setComponentEnabledSetting(new ComponentName(getActivity(), BlinkFeed.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 					else
@@ -422,20 +422,20 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			swipeLeftActionPreference.setOnPreferenceChangeListener(chooseAction);
 			shakeActionPreference.setOnPreferenceChangeListener(chooseAction);
 			blinkFeedIconPreference.setOnPreferenceChangeListener(toggleBF);
-	    }
+		}
 	}
 	
 	public static class MessageFragment extends HtcPreferenceFragmentExt {
-	    @Override
-	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState, R.xml.prefs_message);
-	        addPreferencesFromResource(R.xml.prefs_message);
-	        this.rebootType = 2;
-	    }
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState, R.xml.prefs_message);
+			addPreferencesFromResource(R.xml.prefs_message);
+			this.rebootType = 2;
+		}
 	}
 	
 	public static class ControlsFragment extends HtcPreferenceFragmentExt {
-		private CharSequence[] addToArray(CharSequence[] cs, int position, String toAdd) {
+		private static CharSequence[] addToArray(CharSequence[] cs, int position, String toAdd) {
 			List<CharSequence> entries = new ArrayList<CharSequence>(Arrays.asList(cs));
 			entries.add(position, toAdd);
 			CharSequence[] entriesNew = entries.toArray(new CharSequence[entries.size()]);
@@ -443,14 +443,14 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		}
 		
 		OnPreferenceChangeListener setEntryAsSummary = new OnPreferenceChangeListener() {
-	        @Override
-	        public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-	        	((HtcListPreferencePlus)preference).setValue((String)newValue);
-	        	preference.setSummary(((HtcListPreferencePlus)preference).getEntry());
-	            return false;
-	        }
-	    };
-	    
+			@Override
+			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
+				((HtcListPreferencePlus)preference).setValue((String)newValue);
+				preference.setSummary(((HtcListPreferencePlus)preference).getEntry());
+				return false;
+			}
+		};
+		
 		HtcPreference.OnPreferenceClickListener clickPref = new HtcPreference.OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(HtcPreference preference) {
@@ -477,7 +477,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				dp.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
 					@Override
 					public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-						preference.setSummary(getAppName(getActivity(), (String)newValue));				
+						preference.setSummary(getAppName(getActivity(), (String)newValue));
 						return true;
 					}
 				});
@@ -505,7 +505,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 									@Override
 									public void run(){
 										dialog.dismiss();
-										dp.show();										
+										dp.show();
 									}
 								});
 							} catch (Exception e) {
@@ -527,12 +527,12 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			}
 		};
 		
-	    @Override
-	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState, R.xml.prefs_controls);
-	        addPreferencesFromResource(R.xml.prefs_controls);
-	        
-	        HtcPreference.OnPreferenceChangeListener chooseAction = new HtcPreference.OnPreferenceChangeListener() {
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState, R.xml.prefs_controls);
+			addPreferencesFromResource(R.xml.prefs_controls);
+			
+			HtcPreference.OnPreferenceChangeListener chooseAction = new HtcPreference.OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
 					HtcPreference launchApps = null;
@@ -619,14 +619,14 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			volupPreference.setOnPreferenceChangeListener(camChangeListener);
 			backLongPressActionPreference.setOnPreferenceChangeListener(chooseAction);
 			homeAssistActionPreference.setOnPreferenceChangeListener(chooseAction);
-	        vol2wakePref.setOnPreferenceClickListener(new HtcPreference.OnPreferenceClickListener(){
+			vol2wakePref.setOnPreferenceClickListener(new HtcPreference.OnPreferenceClickListener(){
 				@Override
 				public boolean onPreferenceClick(HtcPreference preference) {
 					initScriptHandler(((HtcCheckBoxPreference) preference).isChecked());
 					return true;
 				}
-	        });
-	        
+			});
+			
 			if (Helpers.isM8()) {
 				HtcPreferenceCategory assist_cat = (HtcPreferenceCategory) findPreference("pref_key_controls_home");
 				assist_cat.setTitle(Helpers.l10n(getActivity(), R.string.controls_mods_recentslongpress));
@@ -634,29 +634,29 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				assist.setSummary(Helpers.l10n(getActivity(), R.string.controls_recentslongpressaction_summ));
 			} else
 				((HtcPreferenceScreen) findPreference("pref_key_controls")).removePreference(findPreference("pref_key_controls_smallsoftkeys"));
-	    }
+		}
 	}
 	
 	public static class WakeGesturesFragment extends HtcPreferenceFragmentExt {
 		@Override
-	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState, R.xml.prefs_wakegest);
-	        addPreferencesFromResource(R.xml.prefs_wakegest);
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState, R.xml.prefs_wakegest);
+			addPreferencesFromResource(R.xml.prefs_wakegest);
 		}
 	}
 	
 	public static class OtherFragment extends HtcPreferenceFragmentExt {
-	    @Override
-	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState, R.xml.prefs_other);
-	        addPreferencesFromResource(R.xml.prefs_other);
-	        
-	        if (Helpers.isNotM7()) {
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState, R.xml.prefs_other);
+			addPreferencesFromResource(R.xml.prefs_other);
+			
+			if (Helpers.isNotM7()) {
 				if (findPreference("pref_key_other_keyslight") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_keyslight"));
 				if (findPreference("pref_key_other_keyslight_auto") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_keyslight_auto"));
 			}
-	        
-	        HtcListPreference.OnPreferenceChangeListener applyButtonsLight = new HtcListPreference.OnPreferenceChangeListener() {
+			
+			HtcListPreference.OnPreferenceChangeListener applyButtonsLight = new HtcListPreference.OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
 					if (!(new File("/sys/class/leds/button-backlight/currents")).isFile()) {
@@ -666,27 +666,27 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						return setButtonBacklightTo(Integer.parseInt((String)newValue), true);
 				}
 			};
-	        
-	        HtcListPreference keysLightPreference = (HtcListPreference) findPreference("pref_key_other_keyslight");
-	        if (keysLightPreference != null) keysLightPreference.setOnPreferenceChangeListener(applyButtonsLight);
-	        
-	        HtcPreference popupNotifyPreference = (HtcPreference) findPreference("pref_key_other_popupnotify");
-	        popupNotifyPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+			
+			HtcListPreference keysLightPreference = (HtcListPreference) findPreference("pref_key_other_keyslight");
+			if (keysLightPreference != null) keysLightPreference.setOnPreferenceChangeListener(applyButtonsLight);
+			
+			HtcPreference popupNotifyPreference = (HtcPreference) findPreference("pref_key_other_popupnotify");
+			popupNotifyPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
 				@Override
 				public boolean onPreferenceClick(HtcPreference arg0) {
 					getActivity().startActivity(new Intent(getActivity(), PopupNotify.class));
 					return true;
 				}
-	        });
-	    }
+			});
+		}
 	}
 	
 	public static class PersistFragment extends HtcPreferenceFragmentExt {
-	    @Override
-	    public void onCreate(Bundle savedInstanceState) {
-	        super.onCreate(savedInstanceState, R.xml.prefs_persist);
-	        addPreferencesFromResource(R.xml.prefs_persist);
-	    }
+		@Override
+		public void onCreate(Bundle savedInstanceState) {
+			super.onCreate(savedInstanceState, R.xml.prefs_persist);
+			addPreferencesFromResource(R.xml.prefs_persist);
+		}
 	}
 	
 	static boolean isWaitingForCmd = false;
@@ -830,7 +830,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					"rm -f /etc/init.d/89s5tvol2wake",
 					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)\\)\\s\\+WAKE_DROPPED/\\1/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",
 					"mount -o ro,remount /system");
-		    try {
+			try {
 				RootTools.getShell(true).add(command);
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -864,10 +864,10 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		if (pkgActName.equals(not_selected))
 			ai = null;
 		else try {
-		    ai = pm.getApplicationInfo(pkgActArray[0], 0);
+			ai = pm.getApplicationInfo(pkgActArray[0], 0);
 		} catch (Exception e) {
 			e.printStackTrace();
-		    ai = null;
+			ai = null;
 		}
 		return (ai != null ? pm.getApplicationLabel(ai) : not_selected);
 	}
@@ -876,9 +876,9 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
-	    super.onViewCreated(view, savedInstanceState);
-	    if (!firstView) ((MainActivity)getActivity()).setActionBarText(null);
-	    firstView = false;
+		super.onViewCreated(view, savedInstanceState);
+		if (!firstView) ((MainActivity)getActivity()).setActionBarText(null);
+		firstView = false;
 	}
 	
 	// HtcPreferenceScreens management
@@ -908,7 +908,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						HtcAlertDialog dlg = builder.create();
 						dlg.show();
 					}
-			        break;
+					break;
 			}
 			
 			if (replaceTo != null) {
@@ -947,7 +947,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	public static boolean isXposedInstalled = false;
 	private int lineCount = 0;
 	
-	public void checkForXposed() {		
+	public void checkForXposed() {
 		CommandCapture command = new CommandCapture(0, "/system/bin/app_process --xposedversion 2>/dev/null") {
 			@Override
 			public void output(int id, String line)
@@ -964,7 +964,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						e.printStackTrace();
 					}
 				}
-				if (!isXposedInstalled) {					
+				if (!isXposedInstalled) {
 					getActivity().runOnUiThread(new Runnable() {
 						public void run() {
 							showXposedDialog();
