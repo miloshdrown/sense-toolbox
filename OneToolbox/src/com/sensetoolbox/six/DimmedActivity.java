@@ -309,6 +309,10 @@ public class DimmedActivity extends Activity {
 	
 	@Override
 	public void onRestart() {
+		if (getClass() == DimmedActivity.class) {
+			KeyguardManager kgMgr = (KeyguardManager)getSystemService(Context.KEYGUARD_SERVICE);
+			if (kgMgr.isKeyguardLocked()) finish();
+		}
 		startListen();
 		super.onRestart();
 	}
