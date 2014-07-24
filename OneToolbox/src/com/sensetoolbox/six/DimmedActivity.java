@@ -106,7 +106,7 @@ public class DimmedActivity extends Activity {
 			RelativeLayout time_date_widget = (RelativeLayout)findViewById(R.id.time_date_widget);
 			if (!isInLockscreen) {
 				RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)time_date_widget.getLayoutParams();
-				lp.topMargin = Math.round(density * 12);
+				lp.topMargin = Math.round(density * 15);
 				time_date_widget.setLayoutParams(lp);
 			}
 			
@@ -219,7 +219,6 @@ public class DimmedActivity extends Activity {
 			sbns = sbnsNew;
 		
 		if (sbns.size() == 0) {
-			stopListen();
 			finish();
 			return;
 		}

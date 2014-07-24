@@ -221,6 +221,10 @@ public class Helpers {
 					entriesResName = "media_action";
 				else if (titleResName.equals("controls_vol_up_cam_title") || titleResName.equals("controls_vol_down_cam_title"))
 					entriesResName = "cam_actions";
+				else if (titleResName.equals("various_popupnotify_clock_title"))
+					entriesResName = "various_clock_style";
+				else if (titleResName.equals("various_popupnotify_back_title"))
+					entriesResName = "various_background_style";
 				else if (titleResName.contains("sense_") || titleResName.contains("controls_"))
 					entriesResName = "global_actions";
 				else if (titleResName.contains("wakegestures_"))
@@ -561,14 +565,6 @@ public class Helpers {
 			app = new AppData();
 			app.label = applicationinfo.loadLabel(pm).toString();
 			app.pkgName = applicationinfo.packageName;
-			
-			if (!app.pkgName.equals("com.sensetoolbox.six") &&
-				!app.pkgName.equals("com.htc.htcdialer") &&
-				!app.pkgName.equals("com.htc.htcpowermanager") &&
-				!app.pkgName.equals("com.htc.sdm") &&
-				!app.pkgName.equals("com.htc.home.personalize") &&
-				!app.pkgName.equals("com.htc.widget.notification") &&
-				!app.pkgName.equals("com.htc.sense.easyaccessservice"))
 			Helpers.installedAppsList.add(app);
 		} catch (Exception e) {
 			e.printStackTrace();

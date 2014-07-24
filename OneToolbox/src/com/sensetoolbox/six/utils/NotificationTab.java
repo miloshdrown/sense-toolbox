@@ -86,16 +86,16 @@ public class NotificationTab extends Fragment {
 						@Override
 						public void onClick(View v) {
 							if (sbn.getNotification().contentIntent != null) {
-								new Thread(new Runnable() {         
-							        public void run() {
-							        	try {
-							        		Thread.sleep(500);
+								new Thread(new Runnable() {
+									public void run() {
+										try {
+											Thread.sleep(500);
 											sbn.getNotification().contentIntent.send();
 										} catch (Exception e) {
 											e.printStackTrace();
 										}
-							        }   
-							    }).start();
+									}
+								}).start();
 								act.finish();
 								cancelNotification(act, sbn);
 							}
@@ -113,69 +113,69 @@ public class NotificationTab extends Fragment {
 							int pointerCount = event.getPointerCount();
 							int action = event.getActionMasked();
 							if (pointerCount == 2) {
-						        switch (action) {
-						        	case MotionEvent.ACTION_POINTER_DOWN:
-					            		touchPositionY = (int)event.getY(1);
-					            		touchCurrentPositionY = touchPositionY;
-					            		doubleSwipeFailed = false;
-					                	break;
-						            case MotionEvent.ACTION_MOVE:
-						            	if (doubleSwipeFailed) return true;
-						            	touchCurrentPositionY = (int)event.getY(1);
-						                int diff = touchCurrentPositionY - touchPositionY;
-						                if (diff > 150 && !isInBigView) {
-						                	RemoteViews contentNew = sbn.getNotification().bigContentView;
-						    				if (contentNew != null) {
-						    					View localContent = contentNew.apply(act, tab);
-						    					notifyRemote.removeAllViews();
-						    					notifyRemote.addView(localContent);
-						    					isInBigView = true;
-						    					updateHeight(tab, uniqueTag);
-						    					updateIcon(act, pkgName, notifyRemote, sbn);
-						    				} else {
-						    					Toast.makeText(getActivity(), Helpers.l10n(getActivity(), R.string.popupnotify_nobigview), Toast.LENGTH_SHORT).show();
-						    					doubleSwipeFailed = true;
-						    				}
-						                } else if (diff < -150 && isInBigView) {
-						                	RemoteViews contentNew = sbn.getNotification().contentView;
-						    				if (contentNew != null) {
-						    					View localContent = contentNew.apply(act, tab);
-						    					notifyRemote.removeAllViews();
-						    					notifyRemote.addView(localContent);
-						    					isInBigView = false;
-						    					updateHeight(tab, uniqueTag);
-						    					updateIcon(act, pkgName, notifyRemote, sbn);
-						    				} else {
-					    						Toast.makeText(getActivity(), Helpers.l10n(getActivity(), R.string.popupnotify_noview), Toast.LENGTH_SHORT).show();
-					    						doubleSwipeFailed = true;
-						    				}
-						                }
-						                break;
-						            case MotionEvent.ACTION_POINTER_UP:
-						            	touchPositionY = 0;
-					                	break;
-						        }
-						    } else {
-						    	switch (action) {
-					            	case MotionEvent.ACTION_DOWN:
-					            		touchPositionY = 0;
-					            		//touchPositionX = (int)event.getX();
-					            		touchCurrentPositionY = 0;
-					            		//touchCurrentPositionX = touchPositionX;
-					            		//if (sblec != null) sblec.setBackgroundColor(Color.argb(20, 255, 255, 255));
-					            		break;
-					            	case MotionEvent.ACTION_MOVE:
-					            		//touchCurrentPositionX = (int)event.getX();
-					            		//if (Math.abs(touchCurrentPositionX - touchPositionX) > 10)
-					            		//if (sblec != null) sblec.setBackgroundColor(Color.TRANSPARENT);
-					            		break;
-					            	case MotionEvent.ACTION_UP:
-					            		//if (sblec != null) sblec.setBackgroundColor(Color.TRANSPARENT);
-					            		if (touchCurrentPositionY == 0) v.performClick();
-					            		//touchPositionX = 0;
-					            		break;  
-						    	}
-						    }
+								switch (action) {
+									case MotionEvent.ACTION_POINTER_DOWN:
+										touchPositionY = (int)event.getY(1);
+										touchCurrentPositionY = touchPositionY;
+										doubleSwipeFailed = false;
+										break;
+									case MotionEvent.ACTION_MOVE:
+										if (doubleSwipeFailed) return true;
+										touchCurrentPositionY = (int)event.getY(1);
+										int diff = touchCurrentPositionY - touchPositionY;
+										if (diff > 100 && !isInBigView) {
+											RemoteViews contentNew = sbn.getNotification().bigContentView;
+											if (contentNew != null) {
+												View localContent = contentNew.apply(act, tab);
+												notifyRemote.removeAllViews();
+												notifyRemote.addView(localContent);
+												isInBigView = true;
+												updateHeight(tab, uniqueTag);
+												updateIcon(act, pkgName, notifyRemote, sbn);
+											} else {
+												Toast.makeText(getActivity(), Helpers.l10n(getActivity(), R.string.popupnotify_nobigview), Toast.LENGTH_SHORT).show();
+												doubleSwipeFailed = true;
+											}
+										} else if (diff < -100 && isInBigView) {
+											RemoteViews contentNew = sbn.getNotification().contentView;
+											if (contentNew != null) {
+												View localContent = contentNew.apply(act, tab);
+												notifyRemote.removeAllViews();
+												notifyRemote.addView(localContent);
+												isInBigView = false;
+												updateHeight(tab, uniqueTag);
+												updateIcon(act, pkgName, notifyRemote, sbn);
+											} else {
+												Toast.makeText(getActivity(), Helpers.l10n(getActivity(), R.string.popupnotify_noview), Toast.LENGTH_SHORT).show();
+												doubleSwipeFailed = true;
+											}
+										}
+										break;
+									case MotionEvent.ACTION_POINTER_UP:
+										touchPositionY = 0;
+										break;
+								}
+							} else {
+								switch (action) {
+									case MotionEvent.ACTION_DOWN:
+										touchPositionY = 0;
+										//touchPositionX = (int)event.getX();
+										touchCurrentPositionY = 0;
+										//touchCurrentPositionX = touchPositionX;
+										//if (sblec != null) sblec.setBackgroundColor(Color.argb(20, 255, 255, 255));
+										break;
+									case MotionEvent.ACTION_MOVE:
+										//touchCurrentPositionX = (int)event.getX();
+										//if (Math.abs(touchCurrentPositionX - touchPositionX) > 10)
+										//if (sblec != null) sblec.setBackgroundColor(Color.TRANSPARENT);
+										break;
+									case MotionEvent.ACTION_UP:
+										//if (sblec != null) sblec.setBackgroundColor(Color.TRANSPARENT);
+										if (touchCurrentPositionY == 0) v.performClick();
+										//touchPositionX = 0;
+										break;
+								}
+							}
 							return true;
 						}
 					});
@@ -298,4 +298,4 @@ public class NotificationTab extends Fragment {
 		updateView(tab);
 		return tab;
 	}
-}  
+}

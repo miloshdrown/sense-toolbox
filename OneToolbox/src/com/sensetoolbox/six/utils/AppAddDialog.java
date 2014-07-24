@@ -1,5 +1,7 @@
 package com.sensetoolbox.six.utils;
 
+import java.util.ArrayList;
+
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
@@ -23,6 +25,7 @@ import com.sensetoolbox.six.SenseThemes.PackageTheme;
 
 public class AppAddDialog extends HtcAlertDialog {
 	SenseThemes stContext = null;
+	ArrayList<AppData> installedAppsListThemable = null;
 	
 	public AppAddDialog(SenseThemes st) {
 		super(st);
@@ -31,6 +34,17 @@ public class AppAddDialog extends HtcAlertDialog {
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
+		installedAppsListThemable = new ArrayList<AppData>();
+		for (AppData app: Helpers.installedAppsList)
+		if (!app.pkgName.equals("com.sensetoolbox.six") &&
+			!app.pkgName.equals("com.htc.htcdialer") &&
+			!app.pkgName.equals("com.htc.htcpowermanager") &&
+			!app.pkgName.equals("com.htc.sdm") &&
+			!app.pkgName.equals("com.htc.home.personalize") &&
+			!app.pkgName.equals("com.htc.widget.notification") &&
+			!app.pkgName.equals("com.htc.sense.easyaccessservice"))
+		installedAppsListThemable.add(app);
+		
 		final HtcListView listView = new HtcListView(this.getContext());
 		listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 		listView.setId(android.R.id.list);
@@ -42,7 +56,7 @@ public class AppAddDialog extends HtcAlertDialog {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if (view.isEnabled()) {
-					String pkgName = Helpers.installedAppsList.get(position).pkgName;
+					String pkgName = installedAppsListThemable.get(position).pkgName;
 					PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);
 					if (pt == null) {
 						SenseThemes.pkgthm.add(new PackageTheme(pkgName, 0));
@@ -68,17 +82,17 @@ public class AppAddDialog extends HtcAlertDialog {
 	
 	private class ImageArrayAdapter extends BaseAdapter {
 		private LayoutInflater mInflater;
-
+		
 		public ImageArrayAdapter(Context context) {
 			mInflater = LayoutInflater.from(context);
 		}
 		
 		public int getCount() {
-			return Helpers.installedAppsList.size();
+			return installedAppsListThemable.size();
 		}
 		
 		public CharSequence getItem(int position) {
-			return Helpers.installedAppsList.get(position).label;
+			return installedAppsListThemable.get(position).label;
 		}
 		
 		public long getItemId(int position) {
@@ -98,7 +112,7 @@ public class AppAddDialog extends HtcAlertDialog {
 			itemIcon.setTag(position);
 			
 			itemTitle.setPrimaryText(getItem(position));
-			AppData ad = Helpers.installedAppsList.get(position);
+			AppData ad = installedAppsListThemable.get(position);
 			Bitmap icon = Helpers.memoryCache.get(ad.pkgName);
 			if (icon == null)
 				(new BitmapCachedLoader(itemIcon, ad, stContext)).execute();

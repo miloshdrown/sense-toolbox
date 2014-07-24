@@ -85,7 +85,6 @@ public class PopupNotify extends HtcPreferenceActivity {
 			OnClickListener goBack = new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					stopListen();
 					finish();
 				}
 			};
@@ -276,13 +275,13 @@ public class PopupNotify extends HtcPreferenceActivity {
 	private void updateListType(boolean state) {
 		HtcMultiSelectListPreference bwlistApps = (HtcMultiSelectListPreference)findPreference("pref_key_other_popupnotify_bwlist_apps");
 		if (state) {
-			bwlistApps.setTitle(R.string.various_popupnotify_bwlist_white_title);
-			bwlistApps.setDialogTitle(R.string.various_popupnotify_bwlist_white_title);
-			bwlistApps.setSummary(R.string.various_popupnotify_bwlist_white_summ);
+			bwlistApps.setTitle(Helpers.l10n(this, R.string.various_popupnotify_bwlist_white_title));
+			bwlistApps.setDialogTitle(Helpers.l10n(this, R.string.various_popupnotify_bwlist_white_title));
+			bwlistApps.setSummary(Helpers.l10n(this, R.string.various_popupnotify_bwlist_white_summ));
 		} else {
-			bwlistApps.setTitle(R.string.various_popupnotify_bwlist_black_title);
-			bwlistApps.setDialogTitle(R.string.various_popupnotify_bwlist_black_title);
-			bwlistApps.setSummary(R.string.various_popupnotify_bwlist_black_summ);
+			bwlistApps.setTitle(Helpers.l10n(this, R.string.various_popupnotify_bwlist_black_title));
+			bwlistApps.setDialogTitle(Helpers.l10n(this, R.string.various_popupnotify_bwlist_black_title));
+			bwlistApps.setSummary(Helpers.l10n(this, R.string.various_popupnotify_bwlist_black_summ));
 		}
 	}
 	
