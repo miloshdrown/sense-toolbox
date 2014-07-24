@@ -3,8 +3,6 @@ package com.sensetoolbox.six.utils;
 import java.lang.ref.WeakReference;
 
 import android.content.Context;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
@@ -18,15 +16,12 @@ import com.htc.widget.HtcListItemTileImage;
 public class BitmapCachedLoader extends AsyncTask<Void, Void, Bitmap> {
 	private final WeakReference<Object> targetRef;
 	private final WeakReference<Object> appInfo;
-	private final int type;
 	private final Context ctx;
 	private int theTag = -1;
 	
-	
-	public BitmapCachedLoader(int t, Object target, Object info, Context context) {
+	public BitmapCachedLoader(Object target, Object info, Context context) {
 		targetRef = new WeakReference<Object>(target);
 		appInfo = new WeakReference<Object>(info);
-		type = t;
 		ctx = context;
 		Object tag = ((FrameLayout)target).getTag();
 		if (tag != null) theTag = (Integer)tag;
@@ -38,18 +33,13 @@ public class BitmapCachedLoader extends AsyncTask<Void, Void, Bitmap> {
 		Drawable icon = null;
 		String pkgName = null;
 		int newIconSize = Math.round(ctx.getResources().getDisplayMetrics().density * 45.0f);
-		if (type == 1) {
-			ApplicationInfo ai = ((ApplicationInfo)appInfo.get());
-			if (ai != null) {
-				icon = ai.loadIcon(ctx.getPackageManager());
-				pkgName = ai.packageName;
-			}
-		} else if (type == 2) {
-			ResolveInfo ai = ((ResolveInfo)appInfo.get());
-			if (ai != null) {
-				icon = ai.loadIcon(ctx.getPackageManager());
-				pkgName = ai.activityInfo.packageName;
-			}
+		
+		AppData ad = ((AppData)appInfo.get());
+		if (ad != null) try {
+			icon = ctx.getPackageManager().getApplicationIcon(ad.pkgName);
+			pkgName = ad.pkgName;
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
 		
 		if (pkgName != null && icon != null && BitmapDrawable.class.isInstance(icon)) {
@@ -72,13 +62,14 @@ public class BitmapCachedLoader extends AsyncTask<Void, Void, Bitmap> {
 		if (targetRef != null && targetRef.get() != null && bmp != null) {
 			Object tag = ((FrameLayout)targetRef.get()).getTag();
 			if (tag != null && theTag == (Integer)tag)
-			if (type == 1) {
+			if (targetRef.get() instanceof HtcListItemColorIcon) {
 				HtcListItemColorIcon itemIcon = ((HtcListItemColorIcon)targetRef.get());
 				if (itemIcon != null) itemIcon.setColorIconImageBitmap(bmp);
-			} else if (type == 2) {
+			} else if (targetRef.get() instanceof HtcListItemTileImage) {
 				HtcListItemTileImage itemIcon = ((HtcListItemTileImage)targetRef.get());
 				if (itemIcon != null) itemIcon.setTileImageBitmap(bmp);
 			}
 		}
+//		Log.e(null, String.valueOf(Helpers.memoryCache.size()) + " KB / " + String.valueOf(Runtime.getRuntime().totalMemory() / 1024) + " KB");
 	}
 }

@@ -63,7 +63,7 @@ public class AppShortcutAddDialog extends HtcAlertDialog {
 		listView.setId(android.R.id.list);
 		listView.setAdapter(new ImageArrayAdapter(act, selected));
 		listView.setDivider(act.getResources().getDrawable(act.getResources().getIdentifier("inset_list_divider", "drawable", "com.htc")));
-		listView.setDividerHeight(2);
+		listView.setDividerHeight(1);
 		listView.setFooterDividersEnabled(false);
 		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override

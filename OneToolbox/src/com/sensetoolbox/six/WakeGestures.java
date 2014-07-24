@@ -43,10 +43,10 @@ public class WakeGestures extends HtcPreferenceActivity {
 		if (pkgActName.equals(not_selected))
 			ai = null;
 		else try {
-		    ai = pm.getApplicationInfo(pkgActArray[0], 0);
+			ai = pm.getApplicationInfo(pkgActArray[0], 0);
 		} catch (Exception e) {
 			e.printStackTrace();
-		    ai = null;
+			ai = null;
 		}
 		return (ai != null ? pm.getApplicationLabel(ai) : not_selected);
 	}
@@ -206,7 +206,7 @@ public class WakeGestures extends HtcPreferenceActivity {
 				dp.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
 					@Override
 					public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-						preference.setSummary(getAppName(act, (String)newValue));				
+						preference.setSummary(getAppName(act, (String)newValue));
 						return true;
 					}
 				});
@@ -214,7 +214,7 @@ public class WakeGestures extends HtcPreferenceActivity {
 				gesturesCat.removePreference(preference);
 				gesturesCat.addPreference(dp);
 				
-				if (PrefsFragment.pkgAppsList == null) {
+				if (Helpers.launchableAppsList == null) {
 					final HtcProgressDialog dialog = new HtcProgressDialog(act);
 					dialog.setMessage(Helpers.l10n(act, R.string.loading_app_data));
 					dialog.setCancelable(false);
@@ -224,12 +224,19 @@ public class WakeGestures extends HtcPreferenceActivity {
 						@Override
 						public void run() {
 							try {
-								PrefsFragment.getApps(act);
+								Helpers.getLaunchableApps(act);
 								act.runOnUiThread(new Runnable(){
 									@Override
-									public void run(){
+									public void run() {
+										dp.show();
+									}
+								});
+								// Nasty hack! Wait for icons to load.
+								Thread.sleep(1000);
+								act.runOnUiThread(new Runnable(){
+									@Override
+									public void run() {
 										dialog.dismiss();
-										dp.show();										
 									}
 								});
 							} catch (Exception e) {
@@ -258,7 +265,7 @@ public class WakeGestures extends HtcPreferenceActivity {
 	}
 	
 	@Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Helpers.processResult(this, requestCode, resultCode, data);
 	}
 	

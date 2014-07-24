@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.htc.preference.HtcListPreference;
-import com.sensetoolbox.six.PrefsFragment;
 import com.sensetoolbox.six.R;
-
 import com.htc.widget.HtcAlertDialog.Builder;
 import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListItemTileImage;
@@ -14,7 +12,6 @@ import com.htc.widget.HtcListView;
 import com.htc.widget.HtcRadioButton;
 
 import android.content.Context;
-import android.content.pm.ResolveInfo;
 import android.graphics.Bitmap;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -24,7 +21,7 @@ import android.widget.BaseAdapter;
 import android.widget.ListAdapter;
 
 public class DynamicPreference extends HtcListPreference {
-
+	
 	public DynamicPreference(Context context, AttributeSet attrs) {
 		super(context, attrs);
 	}
@@ -36,14 +33,14 @@ public class DynamicPreference extends HtcListPreference {
 	public void show() {
 		showDialog(null);
 	}
-
+	
 	@Override
 	public void onBindDialogView(View view) {
 		List<CharSequence> entries = new ArrayList<CharSequence>();
 		List<CharSequence> entryValues = new ArrayList<CharSequence>();
-		for (int i = 0; i < PrefsFragment.pkgAppsList.size(); i++) {
-			entries.add(PrefsFragment.pkgAppsList.get(i).loadLabel(getContext().getPackageManager()));
-			entryValues.add(PrefsFragment.pkgAppsList.get(i).activityInfo.applicationInfo.packageName + "|" + PrefsFragment.pkgAppsList.get(i).activityInfo.name);
+		for (int i = 0; i < Helpers.launchableAppsList.size(); i++) {
+			entries.add(Helpers.launchableAppsList.get(i).label);
+			entryValues.add(Helpers.launchableAppsList.get(i).pkgName + "|" + Helpers.launchableAppsList.get(i).actName);
 		}
 		setEntries(entries.toArray(new CharSequence[entries.size()]));
 		setEntryValues(entryValues.toArray(new CharSequence[entryValues.size()]));
@@ -84,7 +81,7 @@ public class DynamicPreference extends HtcListPreference {
 		public int getCount() {
 			return items.length;
 		}
-		 
+		
 		public CharSequence getItem(int position) {
 			return items[position];
 		}
@@ -108,13 +105,12 @@ public class DynamicPreference extends HtcListPreference {
 			itemTitle.setPrimaryText(getItem(position));
 			itemTitle.setSecondaryTextVisibility(8);
 			
-			ResolveInfo ai = PrefsFragment.pkgAppsList.get(position);
-			Bitmap icon = Helpers.memoryCache.get(ai.activityInfo.packageName);
+			AppData ad = Helpers.launchableAppsList.get(position);
+			Bitmap icon = Helpers.memoryCache.get(ad.pkgName);
 			if (icon == null)
-				(new BitmapCachedLoader(2, itemIcon, ai, mContext)).execute();
+				(new BitmapCachedLoader(itemIcon, ad, mContext)).execute();
 			else
 				itemIcon.setTileImageBitmap(icon);
-			//Log.e(null, String.valueOf(Helpers.memoryCache.size()) + " KB / " + String.valueOf(Runtime.getRuntime().totalMemory() / 1024) + " KB");
 			
 			itemIcon.setScaleX(0.68f);
 			itemIcon.setScaleY(0.68f);

@@ -24,6 +24,8 @@ import com.sensetoolbox.six.utils.Helpers;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnShowListener;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
@@ -42,7 +44,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
 
 public class SenseThemes extends Activity {
-	public static List<ApplicationInfo> pkgAppsList = null;
 	public static SparseArray<Object[]> colors = null;
 	public static List<PackageTheme> pkgthm = new ArrayList<PackageTheme>();
 	public static SharedPreferences prefs;
@@ -142,21 +143,26 @@ public class SenseThemes extends Activity {
 				appAddDialog = new AppAddDialog(st);
 				appAddDialog.setTitle(Helpers.l10n(st, R.string.select_app));
 				
-				if (pkgAppsList == null) {
+				if (Helpers.installedAppsList == null) {
 					final HtcProgressDialog dialog = new HtcProgressDialog(st);
 					dialog.setMessage(Helpers.l10n(st, R.string.loading_app_data));
 					dialog.setCancelable(false);
 					dialog.show();
+					appAddDialog.setOnShowListener(new OnShowListener() {
+						@Override
+						public void onShow(DialogInterface dlg) {
+							dialog.dismiss();
+						}
+					});
 					
 					new Thread() {
 						@Override
 						public void run() {
 							try {
-								getApps(st);
+								Helpers.getInstalledApps(st);
 								runOnUiThread(new Runnable(){
 									@Override
-									public void run(){
-										dialog.dismiss();
+									public void run() {
 										appAddDialog.show();
 									}
 								});
@@ -294,24 +300,6 @@ public class SenseThemes extends Activity {
 			
 			return listItem;
 		}
-	}
-	
-	public static void getApps(Context ctx) {
-		PackageManager pm = ctx.getPackageManager();
-		pkgAppsList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-		Collections.sort(pkgAppsList, new ApplicationInfo.DisplayNameComparator(pm));
-		ArrayList<ApplicationInfo> excluded = new ArrayList<ApplicationInfo>();
-		
-		for (ApplicationInfo inf: pkgAppsList)
-		if (inf.packageName.equals("com.sensetoolbox.six") ||
-			inf.packageName.equals("com.htc.htcdialer") ||
-			inf.packageName.equals("com.htc.htcpowermanager") ||
-			inf.packageName.equals("com.htc.sdm") ||
-			inf.packageName.equals("com.htc.home.personalize") ||
-			inf.packageName.equals("com.htc.widget.notification") ||
-			inf.packageName.equals("com.htc.sense.easyaccessservice"))
-			excluded.add(inf);
-		for (ApplicationInfo infex: excluded) if (infex != null) pkgAppsList.remove(infex);
 	}
 	
 	public class AscComparator implements Comparator<PackageTheme> {

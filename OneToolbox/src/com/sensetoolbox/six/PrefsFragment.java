@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -24,7 +23,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
-import android.content.pm.ResolveInfo;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.PowerManager;
@@ -60,7 +58,6 @@ import com.stericson.RootTools.execution.CommandCapture;
 
 public class PrefsFragment extends HtcPreferenceFragmentExt {
 	
-	static public List<ResolveInfo> pkgAppsList = null;
 	static public SharedPreferences prefs = null;
 	static public String lastShortcutKey = null;
 	static public String lastShortcutKeyContents = null;
@@ -318,7 +315,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					senseGesturesCat.removePreference(preference);
 					senseGesturesCat.addPreference(dp);
 					
-					if (PrefsFragment.pkgAppsList == null) {
+					if (Helpers.launchableAppsList == null) {
 						final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
 						dialog.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
 						dialog.setCancelable(false);
@@ -328,12 +325,20 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 							@Override
 							public void run() {
 								try {
-									getApps(getActivity());
+									Helpers.getLaunchableApps(getActivity());
 									getActivity().runOnUiThread(new Runnable(){
 										@Override
 										public void run(){
 											dialog.dismiss();
 											dp.show();
+										}
+									});
+									// Nasty hack! Wait for icons to load.
+									Thread.sleep(1000);
+									getActivity().runOnUiThread(new Runnable(){
+										@Override
+										public void run() {
+											dialog.dismiss();
 										}
 									});
 								} catch (Exception e) {
@@ -490,7 +495,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					senseControlsHomeCat.addPreference(dp);
 				}
 				
-				if (PrefsFragment.pkgAppsList == null) {
+				if (Helpers.launchableAppsList == null) {
 					final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
 					dialog.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
 					dialog.setCancelable(false);
@@ -500,12 +505,20 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						@Override
 						public void run() {
 							try {
-								getApps(getActivity());
+								Helpers.getLaunchableApps(getActivity());
 								getActivity().runOnUiThread(new Runnable(){
 									@Override
 									public void run(){
 										dialog.dismiss();
 										dp.show();
+									}
+								});
+								// Nasty hack! Wait for icons to load.
+								Thread.sleep(1000);
+								getActivity().runOnUiThread(new Runnable(){
+									@Override
+									public void run() {
+										dialog.dismiss();
 									}
 								});
 							} catch (Exception e) {
@@ -836,21 +849,6 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	public static void getApps(Context ctx) {
-		PackageManager pm = ctx.getPackageManager();
-		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
-		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
-		PrefsFragment.pkgAppsList = pm.queryIntentActivities(mainIntent, 0);
-		Collections.sort(PrefsFragment.pkgAppsList, new ResolveInfo.DisplayNameComparator(pm));
-		/*
-		for (ResolveInfo inf: PrefsFragment.pkgAppsList) {
-			if ((inf.activityInfo.applicationInfo.flags & ApplicationInfo.FLAG_SYSTEM) == ApplicationInfo.FLAG_SYSTEM)
-				// system app
-			else
-				// user app
-		}*/
 	}
 	
 	public static CharSequence getAppName(Context ctx, String pkgActName) {

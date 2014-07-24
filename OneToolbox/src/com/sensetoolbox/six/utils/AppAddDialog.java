@@ -2,7 +2,6 @@ package com.sensetoolbox.six.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -31,40 +30,40 @@ public class AppAddDialog extends HtcAlertDialog {
 	}
 
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		final HtcListView listView = new HtcListView(this.getContext());
-        listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-        listView.setId(android.R.id.list);
-        listView.setAdapter(new ImageArrayAdapter(this.getContext()));
-        listView.setDivider(stContext.getResources().getDrawable(stContext.getResources().getIdentifier("inset_list_divider", "drawable", "com.htc")));
-        listView.setDividerHeight(2);
-        listView.setFooterDividersEnabled(false);
-        listView.setOnItemClickListener(new OnItemClickListener() {
+		listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		listView.setId(android.R.id.list);
+		listView.setAdapter(new ImageArrayAdapter(this.getContext()));
+		listView.setDivider(stContext.getResources().getDrawable(stContext.getResources().getIdentifier("inset_list_divider", "drawable", "com.htc")));
+		listView.setDividerHeight(1);
+		listView.setFooterDividersEnabled(false);
+		listView.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				if (view.isEnabled()) {
-					String pkgName = SenseThemes.pkgAppsList.get(position).packageName;
+					String pkgName = Helpers.installedAppsList.get(position).pkgName;
 					PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);
-	        		if (pt == null) {
-	        			SenseThemes.pkgthm.add(new PackageTheme(pkgName, 0));
-	        			stContext.savePkgs();
-	        			stContext.updateListArray();
-	        			stContext.notifyThemeChanged(pkgName);
-	        			view.setEnabled(false);
-	        			((ImageArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
-	        		} else {
-	        			Toast.makeText(parent.getContext(), Helpers.l10n(parent.getContext(), R.string.sense_theme_package_has_profile), Toast.LENGTH_SHORT).show();
-	        		}
+					if (pt == null) {
+						SenseThemes.pkgthm.add(new PackageTheme(pkgName, 0));
+						stContext.savePkgs();
+						stContext.updateListArray();
+						stContext.notifyThemeChanged(pkgName);
+						view.setEnabled(false);
+						((ImageArrayAdapter)listView.getAdapter()).notifyDataSetChanged();
+					} else {
+						Toast.makeText(parent.getContext(), Helpers.l10n(parent.getContext(), R.string.sense_theme_package_has_profile), Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
 		});
-        this.setButton(DialogInterface.BUTTON_NEUTRAL, Helpers.l10n(this.getContext(), R.string.array_recents_menu_close), new DialogInterface.OnClickListener() {
-        	public void onClick(DialogInterface dialog, int whichButton) {}
-        });
-        this.setCancelable(true);
-        this.setInverseBackgroundForced(true);
-        this.setView(listView);
-        super.onCreate(savedInstanceState);
+		this.setButton(DialogInterface.BUTTON_NEUTRAL, Helpers.l10n(this.getContext(), R.string.array_recents_menu_close), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {}
+		});
+		this.setCancelable(true);
+		this.setInverseBackgroundForced(true);
+		this.setView(listView);
+		super.onCreate(savedInstanceState);
 	}
 	
 	private class ImageArrayAdapter extends BaseAdapter {
@@ -75,11 +74,11 @@ public class AppAddDialog extends HtcAlertDialog {
 		}
 		
 		public int getCount() {
-			return SenseThemes.pkgAppsList.size();
+			return Helpers.installedAppsList.size();
 		}
-		 
+		
 		public CharSequence getItem(int position) {
-			return SenseThemes.pkgAppsList.get(position).loadLabel(stContext.getPackageManager());
+			return Helpers.installedAppsList.get(position).label;
 		}
 		
 		public long getItemId(int position) {
@@ -91,7 +90,7 @@ public class AppAddDialog extends HtcAlertDialog {
 			if (convertView != null)
 				row = convertView;
 			else
-				row = mInflater.inflate(R.layout.htc_list_item_with_image, parent, false);			
+				row = mInflater.inflate(R.layout.htc_list_item_with_image, parent, false);
 			
 			HtcListItem2LineText itemTitle = (HtcListItem2LineText)row.findViewById(R.id.list_item);
 			itemTitle.setSecondaryTextVisibility(View.GONE);
@@ -99,14 +98,14 @@ public class AppAddDialog extends HtcAlertDialog {
 			itemIcon.setTag(position);
 			
 			itemTitle.setPrimaryText(getItem(position));
-			ApplicationInfo ai = SenseThemes.pkgAppsList.get(position);
-			Bitmap icon = Helpers.memoryCache.get(ai.packageName);
+			AppData ad = Helpers.installedAppsList.get(position);
+			Bitmap icon = Helpers.memoryCache.get(ad.pkgName);
 			if (icon == null)
-				(new BitmapCachedLoader(1, itemIcon, ai, stContext)).execute();
+				(new BitmapCachedLoader(itemIcon, ad, stContext)).execute();
 			else
 				itemIcon.setColorIconImageBitmap(icon);
 			
-			if (SenseThemes.arrayHasPkg(ai.packageName) == null)
+			if (SenseThemes.arrayHasPkg(ad.pkgName) == null)
 				row.setEnabled(true);
 			else
 				row.setEnabled(false);

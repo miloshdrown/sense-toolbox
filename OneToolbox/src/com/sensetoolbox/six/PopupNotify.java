@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 
 import com.htc.app.HtcProgressDialog;
 import com.htc.preference.HtcMultiSelectListPreference;
@@ -21,6 +20,7 @@ import com.htc.widget.ActionBarText;
 import com.htc.widget.HtcListView;
 import com.htc.widget.HtcToggleButtonLight;
 import com.htc.widget.HtcToggleButtonLight.OnCheckedChangeListener;
+import com.sensetoolbox.six.utils.AppData;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.HtcMultiSelectListPreferenceEx;
 
@@ -32,8 +32,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
@@ -43,7 +41,6 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
 public class PopupNotify extends HtcPreferenceActivity {
-	public static List<ApplicationInfo> pkgAppsList = null;
 	SharedPreferences prefs;
 	String recreateIntent = "com.sensetoolbox.six.PREFSUPDATED";
 	IntentFilter filter = new IntentFilter(recreateIntent);
@@ -216,7 +213,7 @@ public class PopupNotify extends HtcPreferenceActivity {
 				if (bwlistApps.getEntries().length == 0 || bwlistApps.getEntryValues().length == 0) {
 					if (bwlistApps.getDialog() != null) bwlistApps.getDialog().dismiss();
 					final HtcProgressDialog dialog = new HtcProgressDialog(pn);
-					if (pkgAppsList == null) {
+					if (Helpers.installedAppsList == null) {
 						dialog.setMessage(Helpers.l10n(pn, R.string.loading_app_data));
 						dialog.setCancelable(false);
 						dialog.show();
@@ -226,17 +223,17 @@ public class PopupNotify extends HtcPreferenceActivity {
 						@Override
 						public void run() {
 							try {
-								if (pkgAppsList == null) getApps(pn);
+								if (Helpers.installedAppsList == null) Helpers.getInstalledApps(pn);
 								runOnUiThread(new Runnable() {
 									@Override
 									public void run() {
 										HashSet<String> appsList = (HashSet<String>)prefs.getStringSet("pref_key_other_popupnotify_bwlist_apps", new HashSet<String>());
 										ArrayList<ArrayList<CharSequence>> entries = new ArrayList<ArrayList<CharSequence>>();
-										for (ApplicationInfo appInfo: pkgAppsList) {
+										for (AppData ad: Helpers.installedAppsList) {
 											ArrayList<CharSequence> entry = new ArrayList<CharSequence>();
-											entry.add(appInfo.loadLabel(pn.getPackageManager()));
-											entry.add(appInfo.packageName);
-											if (appsList.contains(appInfo.packageName))
+											entry.add(ad.label);
+											entry.add(ad.pkgName);
+											if (appsList.contains(ad.pkgName))
 												entry.add("1");
 											else
 												entry.add("0");
@@ -287,12 +284,6 @@ public class PopupNotify extends HtcPreferenceActivity {
 			bwlistApps.setDialogTitle(R.string.various_popupnotify_bwlist_black_title);
 			bwlistApps.setSummary(R.string.various_popupnotify_bwlist_black_summ);
 		}
-	}
-	
-	public static void getApps(Context ctx) {
-		PackageManager pm = ctx.getPackageManager();
-		pkgAppsList = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-		Collections.sort(pkgAppsList, new ApplicationInfo.DisplayNameComparator(pm));
 	}
 	
 	@Override

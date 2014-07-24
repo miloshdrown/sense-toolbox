@@ -7,7 +7,10 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -38,7 +41,9 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
 import android.content.res.TypedArray;
 import android.content.res.XModuleResources;
 import android.graphics.Bitmap;
@@ -68,6 +73,8 @@ public class Helpers {
 	
 	static List<PackageTheme> cached_pkgthm = null;
 	static String cached_str;
+	public static ArrayList<AppData> installedAppsList = null;
+	public static ArrayList<AppData> launchableAppsList = null;
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
 	@SuppressLint("SdCardPath")
@@ -542,6 +549,59 @@ public class Helpers {
 			
 			if (PrefsFragment.shortcutDlg != null) PrefsFragment.shortcutDlg.dismiss();
 		}
+	}
+	
+	public static void getInstalledApps(Context ctx) {
+		final PackageManager pm = ctx.getPackageManager();
+		List<ApplicationInfo> packs = pm.getInstalledApplications(PackageManager.GET_META_DATA);
+		Helpers.installedAppsList = new ArrayList<AppData>();
+		AppData app;
+		for (Iterator<ApplicationInfo> iterator = packs.iterator(); iterator.hasNext();) try {
+			ApplicationInfo applicationinfo = (ApplicationInfo)iterator.next();
+			app = new AppData();
+			app.label = applicationinfo.loadLabel(pm).toString();
+			app.pkgName = applicationinfo.packageName;
+			
+			if (!app.pkgName.equals("com.sensetoolbox.six") &&
+				!app.pkgName.equals("com.htc.htcdialer") &&
+				!app.pkgName.equals("com.htc.htcpowermanager") &&
+				!app.pkgName.equals("com.htc.sdm") &&
+				!app.pkgName.equals("com.htc.home.personalize") &&
+				!app.pkgName.equals("com.htc.widget.notification") &&
+				!app.pkgName.equals("com.htc.sense.easyaccessservice"))
+			Helpers.installedAppsList.add(app);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Collections.sort(Helpers.installedAppsList, new Comparator<AppData>() {
+			public int compare(AppData app1, AppData app2) {
+				return app1.label.compareToIgnoreCase(app2.label);
+			}
+		});
+	}
+	
+	public static void getLaunchableApps(Context ctx) {
+		PackageManager pm = ctx.getPackageManager();
+		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
+		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
+		List<ResolveInfo> packs = pm.queryIntentActivities(mainIntent, 0);
+		Helpers.launchableAppsList = new ArrayList<AppData>();
+		AppData app;
+		for (Iterator<ResolveInfo> iterator = packs.iterator(); iterator.hasNext();) try {
+			ResolveInfo resolveinfo = (ResolveInfo)iterator.next();
+			app = new AppData();
+			app.label = resolveinfo.loadLabel(pm).toString();
+			app.pkgName = resolveinfo.activityInfo.applicationInfo.packageName;
+			app.actName = resolveinfo.activityInfo.name;
+			Helpers.launchableAppsList.add(app);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		Collections.sort(Helpers.launchableAppsList, new Comparator<AppData>() {
+			public int compare(AppData app1, AppData app2) {
+				return app1.label.compareToIgnoreCase(app2.label);
+			}
+		});
 	}
 	
 	static {

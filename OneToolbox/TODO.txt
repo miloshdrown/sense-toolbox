@@ -42,6 +42,7 @@ Current changelog
 
 1.3.2
 [Fixed] Widgets and brightness slider background transparency
+[Fixed] Faster loading of application lists with icons
 [Fixed] Many minor mod and Toolbox UI problems
 [New] Disable low battery popup and sound warnings
 [New, Experimental] Popup Notifications
