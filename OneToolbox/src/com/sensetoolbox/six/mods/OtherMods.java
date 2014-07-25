@@ -832,4 +832,14 @@ public class OtherMods {
 			}
 		});
 	}
+	
+	public static void execHook_NoChargerWarning(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.settings.NSReceiver", lpparam.classLoader, "showVZWChargerNotification", Context.class, int.class, boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				int type = (Integer)param.args[1];
+				if (type == 1) param.setResult(null);
+			}
+		});
+	}
 }

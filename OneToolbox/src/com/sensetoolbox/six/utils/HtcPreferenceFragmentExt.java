@@ -181,7 +181,7 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 			Intent intent = new Intent(act, AboutScreen.class);
 			act.startActivity(intent);
 		}
-		return true;		
+		return true;
 	}
 	
 	@Override

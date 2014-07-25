@@ -45,6 +45,7 @@ Current changelog
 [Fixed] Faster loading of application lists with icons
 [Fixed] Many minor mod and Toolbox UI problems
 [New] Disable low battery popup and sound warnings
+[New] Disable slow charge notification (untested)
 [New, Experimental] Popup Notifications
  - Horizontally scrollable popup to show multiple notifications
  - Can be displayed on secure lockscreen

@@ -367,6 +367,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_other_appdetails", false))
 				SettingsMods.execHook_Apps(lpparam);
 			
+			if(pref.getBoolean("pref_key_other_nochargerwarn", false))
+				OtherMods.execHook_NoChargerWarning(lpparam);
+			
 			SettingsMods.execHook_AppFilter(lpparam);
 			SettingsMods.execHook_UnhidePrefs(lpparam);
 		}
