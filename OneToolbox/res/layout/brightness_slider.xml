@@ -1,39 +1,40 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/sliderContainer"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:paddingBottom="7dp"
-    android:paddingLeft="13dp"
-    android:paddingRight="0dp"
-    android:paddingTop="0dp" >
-    
+	android:id="@+id/sliderContainer"
+	android:layout_width="match_parent"
+	android:layout_height="wrap_content"
+	android:orientation="horizontal"
+	android:paddingBottom="7dp"
+	android:paddingLeft="13dp"
+	android:paddingRight="0dp"
+	android:paddingTop="0dp" >
+	
 	<com.htc.widget.HtcCheckBox
-	    android:id="@+id/autoCheckBox"
-	    android:layout_width="wrap_content"
-	    android:layout_height="match_parent" />
+		android:id="@+id/autoCheckBox"
+		android:layout_width="wrap_content"
+		android:layout_height="match_parent" />
 	
 	<TextView
-	    android:layout_width="wrap_content"
-	    android:layout_height="wrap_content"
-	    android:layout_gravity="center_vertical"
-	    android:layout_marginBottom="0.5dp"
-	    android:id="@+id/autoText"
-	    android:text="@string/systemui_brightslide_auto" />
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:layout_gravity="center_vertical"
+		android:layout_marginBottom="0.5dp"
+		android:id="@+id/autoText"
+		android:text="@string/systemui_brightslide_auto" />
 
-    <LinearLayout
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:layout_gravity="center_vertical"
-        android:orientation="horizontal" >
-        
-	    <com.htc.widget.HtcSeekBar
-	        android:id="@+id/sliderSeekBar"
-	        android:layout_width="match_parent"
-	        android:layout_height="wrap_content"
-	        android:max="225" />
-    
-    </LinearLayout>
+	<LinearLayout
+		android:layout_width="0dp"
+		android:layout_height="wrap_content"
+		android:layout_weight="1"
+		android:layout_gravity="center_vertical"
+		android:orientation="horizontal" >
+		
+		<com.htc.widget.HtcSeekBar
+			android:id="@+id/sliderSeekBar"
+			android:tag="sliderSeekBar"
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:max="225" />
+	
+	</LinearLayout>
 
 </LinearLayout>

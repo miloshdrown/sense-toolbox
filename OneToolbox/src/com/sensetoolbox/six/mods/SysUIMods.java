@@ -601,7 +601,7 @@ public class SysUIMods {
 			
 			panel.addView(sliderConatiner, 1);
 			
-			final HtcSeekBar seekBar = (HtcSeekBar) mStatusBarWindow.findViewById(R.id.sliderSeekBar);
+			final HtcSeekBar seekBar = (HtcSeekBar) mStatusBarWindow.findViewWithTag("sliderSeekBar");
 			final HtcCheckBox checkBox = (HtcCheckBox) mStatusBarWindow.findViewById(R.id.autoCheckBox);
 			final ContentResolver cr = mStatusBarWindow.getContext().getContentResolver();
 			
