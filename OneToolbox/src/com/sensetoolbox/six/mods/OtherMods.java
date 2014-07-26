@@ -27,7 +27,9 @@ import android.content.pm.PackageInfo;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Matrix;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -37,8 +39,10 @@ import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.TypedValue;
+import android.view.Display;
 import android.view.Gravity;
 import android.view.KeyEvent;
+import android.view.Surface;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -658,20 +662,44 @@ public class OtherMods {
 			}
 		}
 	};
-	private static BroadcastReceiver mBRWMS = new BroadcastReceiver() {
-		public void onReceive(final Context context, Intent intent) {
-			String action = intent.getAction();
-			if (action != null && action.equals("com.sensetoolbox.six.REQUESTSCREENSHOT")) {
-				Bitmap bmp = (Bitmap)XposedHelpers.callStaticMethod(findClass("android.view.SurfaceControl", null), "screenshot",
-					context.getResources().getDisplayMetrics().widthPixels,
-					context.getResources().getDisplayMetrics().heightPixels);
-				if (bmp != null) {
-					Intent intentScr = new Intent("com.sensetoolbox.six.NEWSCREENSHOT");
-					intentScr.putExtra("bmp", bmp);
-					context.sendBroadcast(intentScr);
-				}
-			}
+	
+	private static Bitmap getScreenshot(Context ctx) {
+		Matrix matrix = new Matrix();
+		float af[] = new float[2];
+		af[0] = ctx.getResources().getDisplayMetrics().widthPixels;
+		af[1] = ctx.getResources().getDisplayMetrics().heightPixels;
+		Display display = ((WindowManager)ctx.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
+		float rotAngle = 0f;
+		switch (display.getRotation()) {
+			case Surface.ROTATION_270: rotAngle = 270f; break;
+			case Surface.ROTATION_180: rotAngle = 180f; break;
+			case Surface.ROTATION_90: rotAngle = 90f; break;
+			default: rotAngle = 0f;
 		}
+		if (rotAngle > 0f) {
+			matrix.reset();
+			matrix.preRotate(-rotAngle);
+			matrix.mapPoints(af);
+			af[0] = Math.abs(af[0]);
+			af[1] = Math.abs(af[1]);
+		}
+		Bitmap bmp = (Bitmap)XposedHelpers.callStaticMethod(findClass("android.view.SurfaceControl", null), "screenshot", (int)af[0], (int)af[1]);
+		if (bmp != null) {
+			if (rotAngle > 0f) {
+				Bitmap bmp1 = Bitmap.createBitmap(ctx.getResources().getDisplayMetrics().widthPixels, ctx.getResources().getDisplayMetrics().heightPixels, android.graphics.Bitmap.Config.ARGB_8888);
+				Canvas canvas = new Canvas(bmp1);
+				canvas.translate(bmp1.getWidth() / 2, bmp1.getHeight() / 2);
+				canvas.rotate(360f - rotAngle);
+				canvas.translate(-af[0] / 2f, -af[1] / 2f);
+				canvas.drawBitmap(bmp, 0f, 0f, null);
+				canvas.setBitmap(null);
+				bmp = bmp1;
+			}
+			Intent intentScr = new Intent("com.sensetoolbox.six.NEWSCREENSHOT");
+			intentScr.putExtra("bmp", bmp);
+			ctx.sendBroadcast(intentScr);
+		}
+		return bmp;
 	};
 	
 	private static boolean isAllowed(String pkgName) {
@@ -712,9 +740,7 @@ public class OtherMods {
 			
 			PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 			if (pm.isScreenOn()) {
-				Bitmap bmp = (Bitmap)XposedHelpers.callStaticMethod(findClass("android.view.SurfaceControl", null), "screenshot",
-						mContext.getResources().getDisplayMetrics().widthPixels,
-						mContext.getResources().getDisplayMetrics().heightPixels);
+				Bitmap bmp = getScreenshot(mContext);
 				if (bmp != null) intent.putExtra("bmp", bmp);
 			}
 			
@@ -821,7 +847,7 @@ public class OtherMods {
 				act.sendBroadcast(fullscreenIntent);
 			}
 		});
-		
+		/*
 		XposedBridge.hookAllConstructors(findClass("com.android.server.wm.WindowManagerService", null), new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -831,6 +857,7 @@ public class OtherMods {
 				ctx.registerReceiver(mBRWMS, intentfilter);
 			}
 		});
+		*/
 	}
 	
 	public static void execHook_NoChargerWarning(LoadPackageParam lpparam) {
