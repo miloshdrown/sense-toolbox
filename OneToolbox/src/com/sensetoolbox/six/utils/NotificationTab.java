@@ -51,7 +51,7 @@ public class NotificationTab extends Fragment {
 		return Math.round(getActivity().getResources().getDisplayMetrics().density * dimens);
 	}
 	
-	private void cancelNotification(DimmedActivity act, StatusBarNotification sbn) {
+	private void cancelNotification() {
 		Intent cancelIntent = new Intent("com.sensetoolbox.six.CLEARNOTIFICATION");
 		cancelIntent.putExtra("pkgName", sbn.getPackageName());
 		cancelIntent.putExtra("tag", sbn.getTag());
@@ -90,14 +90,16 @@ public class NotificationTab extends Fragment {
 									public void run() {
 										try {
 											Thread.sleep(500);
-											sbn.getNotification().contentIntent.send();
+											Intent sendContentIntent = new Intent("com.sensetoolbox.six.SENDCONTENTINTENT");
+											sendContentIntent.putExtra("contentIntent", sbn.getNotification().contentIntent);
+											act.sendBroadcast(sendContentIntent);
 										} catch (Exception e) {
 											e.printStackTrace();
 										}
 									}
 								}).start();
 								act.finish();
-								cancelNotification(act, sbn);
+								cancelNotification();
 							}
 						}
 					});
@@ -230,7 +232,7 @@ public class NotificationTab extends Fragment {
 						act.notifications.getCarouselHost().removeTabByTag(uniqueTag);
 					else if (!act.isFinishing())
 						act.finish();
-					cancelNotification(act, sbn);
+					cancelNotification();
 				}
 			});
 			
@@ -244,7 +246,7 @@ public class NotificationTab extends Fragment {
 				rimBtnSleep.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						cancelNotification(act, sbn);
+						cancelNotification();
 						GlobalActions.goToSleep(getActivity());
 						if (!act.isFinishing()) act.finish();
 					}

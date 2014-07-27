@@ -18,6 +18,7 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.app.KeyguardManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -656,6 +657,12 @@ public class OtherMods {
 					sendNotificationData(mNMSParam, true, true);
 				} else if (action.equals("com.sensetoolbox.six.CHANGEFULLSCREEN")) {
 					isInFullscreen = intent.getBooleanExtra("isInFullscreen", false);
+				} else if (action.equals("com.sensetoolbox.six.SENDCONTENTINTENT")) {
+					PendingIntent mIntent = intent.getParcelableExtra("contentIntent");
+					Object amn = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
+					XposedHelpers.callMethod(amn, "resumeAppSwitches");
+					XposedHelpers.callMethod(amn, "dismissKeyguardOnNextActivity");
+					mIntent.send(0);
 				}
 			} catch (Throwable t) {
 				XposedBridge.log(t);
@@ -828,6 +835,7 @@ public class OtherMods {
 				intentfilter.addAction("com.sensetoolbox.six.CLEARNOTIFICATION");
 				intentfilter.addAction("com.sensetoolbox.six.CHANGEFULLSCREEN");
 				intentfilter.addAction("com.sensetoolbox.six.PREFSUPDATED");
+				intentfilter.addAction("com.sensetoolbox.six.SENDCONTENTINTENT");
 				ctx.registerReceiver(mBR, intentfilter);
 				mNMSParam = param;
 			}

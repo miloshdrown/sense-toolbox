@@ -300,6 +300,8 @@
 	<string name="various_popupnotify_expand_summ">Always show expanded notification view.</string>
 	<string name="various_popupnotify_fullscreen_title">Respect fullscreen</string>
 	<string name="various_popupnotify_fullscreen_summ">Do not show popups when fullscreen app is currently active (does not apply to immersive apps with hidden status and navigation bars).</string>
+	<string name="various_popupnotify_backclick_title">Close all popups</string>
+	<string name="various_popupnotify_backclick_summ">Tap anywhere outside notification to close all popups at once.</string>
 	<string name="various_popupnotify_clock_title">Header content</string>
 	<string name="various_popupnotify_clock_summ">Show DashClock widget, time and date or nothing above popup.</string>
 	<string name="various_popupnotify_back_title">Background style</string>

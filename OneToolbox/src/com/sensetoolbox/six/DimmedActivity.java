@@ -7,6 +7,7 @@ import com.htc.fragment.widget.CarouselHost.OnTabChangeListener;
 import com.htc.fragment.widget.CarouselUtil;
 import com.sensetoolbox.six.utils.BlurBuilder;
 import com.sensetoolbox.six.utils.Helpers;
+import com.sensetoolbox.six.utils.NotificationTab;
 import com.sensetoolbox.six.utils.Notifications;
 import com.sensetoolbox.six.utils.Notifications.OnCarouselReadyListener;
 
@@ -38,6 +39,8 @@ import android.view.View.MeasureSpec;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup.LayoutParams;
 import android.view.WindowManager;
+import android.view.animation.AccelerateInterpolator;
+import android.view.animation.DecelerateInterpolator;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -47,6 +50,7 @@ import android.widget.TextView;
 
 public class DimmedActivity extends Activity {
 	int dialogType;
+	float density;
 	boolean isInLockscreen;
 	SharedPreferences prefs;
 	AppWidgetHost mAppWidgetHost = null;
@@ -90,8 +94,10 @@ public class DimmedActivity extends Activity {
 			ApmDialog rebD = new ApmDialog(this, dialogType);
 			rebD.show();
 		} else if (dType == 2) {
+			density = getResources().getDisplayMetrics().density;
 			getWindow().getDecorView().setPadding(-1, 0, -1, 0);
 			setContentView(R.layout.notifications);
+			if (prefs.getBoolean("pref_key_other_popupnotify_backclick", true))
 			findViewById(android.R.id.content).setOnTouchListener(new OnTouchListener() {
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
@@ -100,8 +106,6 @@ public class DimmedActivity extends Activity {
 					return true;
 				}
 			});
-			
-			float density = getResources().getDisplayMetrics().density;
 			
 			RelativeLayout time_date_widget = (RelativeLayout)findViewById(R.id.time_date_widget);
 			if (!isInLockscreen) {
@@ -154,15 +158,22 @@ public class DimmedActivity extends Activity {
 				lockIcon.setImageBitmap(lockBmp);
 				this.addContentView(lockIcon, new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM));
 				
-				TextView lockScr = new TextView(this);
-				lockScr.setGravity(Gravity.CENTER);
-				lockScr.setText(Helpers.l10n(this, R.string.popupnotify_taptolockscreen));
-				lockScr.setTextAppearance(this, R.style.lockscreen_text);
-				lockScr.setPadding(0, 0, 10, 36);
-				this.addContentView(lockScr, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM));
+				if (prefs.getBoolean("pref_key_other_popupnotify_backclick", true)) {
+					TextView lockScr = new TextView(this);
+					lockScr.setGravity(Gravity.CENTER);
+					lockScr.setText(Helpers.l10n(this, R.string.popupnotify_taptolockscreen));
+					lockScr.setTextAppearance(this, R.style.lockscreen_text);
+					lockScr.setPadding(0, 0, 10, 36);
+					this.addContentView(lockScr, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM));
+				}
 			}
 		} else finish();
 	}
+	
+	float initPos;
+	boolean isDragging = false;
+	LinearLayout carousel;
+	float cancelShift;
 	
 	@Override
 	public void onCreate(Bundle bundle) {
@@ -304,6 +315,53 @@ public class DimmedActivity extends Activity {
 			anim.setDuration(150);
 			anim.start();
 		}
+	}
+	
+	@Override
+	public boolean dispatchTouchEvent(MotionEvent ev) {
+		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+			initPos = ev.getRawY();
+			cancelShift = getResources().getDisplayMetrics().heightPixels / 5;
+			isDragging = false;
+			carousel = (LinearLayout)this.findViewById(R.id.carousel);
+		} else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+			float curPos = ev.getRawY() - initPos;
+			if (curPos > density * 30f) {
+				isDragging = true;
+				if (carousel != null) {
+					carousel.setTranslationY(curPos);
+					carousel.setAlpha(Math.max(0, cancelShift - curPos) / cancelShift);
+					return true;
+				}
+			}
+		} else if (ev.getAction() == MotionEvent.ACTION_UP) {
+			if (isDragging && carousel != null) {
+				boolean isCanceled = false;
+				if (ev.getRawY() - initPos > cancelShift) {
+					NotificationTab curTab = (NotificationTab)notifications.getCarouselHost().getCurrentTabFragment();
+					if (curTab != null) {
+						isCanceled = true;
+						curTab.cancelNotification();
+					}
+				}
+				if (isCanceled && notifications.getCarouselHost().getTabCount() == 1)
+					carousel.animate()
+					.setDuration(300)
+					.setInterpolator(new AccelerateInterpolator())
+					.alpha(0.0f)
+					.start();
+				else
+					carousel.animate()
+					.setDuration(500)
+					.setInterpolator(new DecelerateInterpolator())
+					.translationY(0)
+					.alpha(1.0f)
+					.start();
+				isDragging = false;
+				return true;
+			}
+		}
+		return super.dispatchTouchEvent(ev);
 	}
 	
 	@Override
