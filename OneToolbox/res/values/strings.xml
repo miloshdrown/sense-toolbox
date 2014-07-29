@@ -322,6 +322,7 @@
 	<string name="various_scron_summ">Show the \'Keep screen on\' option in development settings.</string>
 	<string name="various_apps_title">Show additional app details</string>
 	<string name="various_apps_summ">Add new fields to Settings > Apps:\n- button to launch an app\n- apk filename and path\n- data path\n- process name\n- user id\n- target SDK version</string>
+	<string name="various_mods_notifications">Notifications</string>
 	<string name="various_mods_calls">Calls</string>
 	<string name="various_largephoto_title">Caller photo</string>
 	<string name="various_largephoto_summ">Change the size of the photo displayed during incoming and outgoing calls.</string>
@@ -356,6 +357,9 @@
 	<string name="various_nolowbattwarn_summ">Turn off low battery popup dialog and sound tone.</string>
 	<string name="various_nochargerwarn_title">Disable slow charge warning</string>
 	<string name="various_nochargerwarn_summ">Turn off slow charging notification.</string>
+	<string name="various_ledtimeout_title">LED timeout</string>
+	<string name="various_ledtimeout_summ">Set the time LED will blink after notification is received.</string>
+	<string name="ledtimeoutpicker_switch">Enable custom timeout</string>
 
 	<string name="wakegestures_mod">Wake gestures</string>
 	<string name="wakegestures_haptic_title">Haptic feedback</string>

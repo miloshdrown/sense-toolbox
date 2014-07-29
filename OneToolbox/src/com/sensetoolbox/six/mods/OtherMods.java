@@ -855,17 +855,6 @@ public class OtherMods {
 				act.sendBroadcast(fullscreenIntent);
 			}
 		});
-		/*
-		XposedBridge.hookAllConstructors(findClass("com.android.server.wm.WindowManagerService", null), new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				Context ctx = (Context)param.args[0];
-				IntentFilter intentfilter = new IntentFilter();
-				intentfilter.addAction("com.sensetoolbox.six.REQUESTSCREENSHOT");
-				ctx.registerReceiver(mBRWMS, intentfilter);
-			}
-		});
-		*/
 	}
 	
 	public static void execHook_NoChargerWarning(LoadPackageParam lpparam) {
@@ -874,6 +863,15 @@ public class OtherMods {
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				int type = (Integer)param.args[1];
 				if (type == 1) param.setResult(null);
+			}
+		});
+	}
+	
+	public static void execHook_LEDNotifyTimeout() {
+		XposedBridge.hookAllConstructors(findClass("com.android.server.NotificationManagerService", null), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				XposedHelpers.setIntField(param.thisObject, "mFlashTimeout", XMain.pref.getInt("pref_key_other_ledtimeout_value", 5));
 			}
 		});
 	}

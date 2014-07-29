@@ -12,19 +12,20 @@ import java.lang.reflect.Method;
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.StructInputEvent;
+import com.sensetoolbox.six.utils.Version;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
 import android.view.KeyEvent;
-
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedBridge;
@@ -411,23 +412,31 @@ public class WakeGesturesMods {
 	}
 	
 	public static void execHook_LockScreenGestures(final LoadPackageParam lpparam) {
-		XposedHelpers.findAndHookMethod("com.htc.lockscreen.ctrl.LSState", lpparam.classLoader, "init", Context.class, Context.class, "com.android.internal.widget.LockPatternUtils", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				mEasyAccessCtrl = XposedHelpers.getObjectField(param.thisObject, "mEasyAccessCtrl");
-				Context mSysContext = (Context)param.args[0];
-				mLSClassLoader = lpparam.classLoader;
-				if (mSysContext != null) {
-					IntentFilter intentfilter = new IntentFilter();
-					intentfilter.addAction("com.sensetoolbox.six.MotionGesture");
-					mSysContext.registerReceiver(mBRLS, intentfilter);
-					if (!Helpers.isM8()) {
-						XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableEasyAccess", true);
-						XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableQuickCall", true);
-					}
-				} else XposedBridge.log("[S6T] mSysContext == null");
-			}
-		});
+		String lockUtilsClass = "com.android.internal.widget.LockPatternUtils";
+		if (new Version(Build.VERSION.RELEASE).compareTo(new Version("4.4.3")) >= 0)
+		lockUtilsClass = "com.htc.lockscreen.util.LockUtils";
+		
+		try {
+			XposedHelpers.findAndHookMethod("com.htc.lockscreen.ctrl.LSState", lpparam.classLoader, "init", Context.class, Context.class, lockUtilsClass, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					mEasyAccessCtrl = XposedHelpers.getObjectField(param.thisObject, "mEasyAccessCtrl");
+					Context mSysContext = (Context)param.args[0];
+					mLSClassLoader = lpparam.classLoader;
+					if (mSysContext != null) {
+						IntentFilter intentfilter = new IntentFilter();
+						intentfilter.addAction("com.sensetoolbox.six.MotionGesture");
+						mSysContext.registerReceiver(mBRLS, intentfilter);
+						if (!Helpers.isM8()) {
+							XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableEasyAccess", true);
+							XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableQuickCall", true);
+						}
+					} else XposedBridge.log("[S6T] mSysContext == null");
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 		
 		if (!Helpers.isM8()) {
 			XposedHelpers.findAndHookMethod("com.htc.lockscreen.ctrl.SettingObserver", lpparam.classLoader, "isEnableEasyAccess", new XC_MethodHook() {

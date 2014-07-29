@@ -155,8 +155,8 @@ public class ControlsMods {
 				case 10: GlobalActions.simulateMenu(mContext); break;
 				case 11: GlobalActions.openRecents(mContext); break;
 				case 12: Object amn2 = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
-						 XposedHelpers.callMethod(amn2, "dismissKeyguardOnNextActivity");
-						 GlobalActions.launchShortcut(mContext, 4); break;
+						XposedHelpers.callMethod(amn2, "dismissKeyguardOnNextActivity");
+						GlobalActions.launchShortcut(mContext, 4); break;
 			}
 		}
 	}
@@ -197,7 +197,7 @@ public class ControlsMods {
 	};
 	
 	public static void execHook_PowerFlash(LoadPackageParam lpparam) {
-	    final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
+		final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
 		findAndHookMethod(clsPWM, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -205,7 +205,7 @@ public class ControlsMods {
 				mPWMContext.registerReceiver(mScrOn, new IntentFilter(Intent.ACTION_SCREEN_ON));
 			}
 		});
-	    
+		
 		findAndHookMethod(clsPWM, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
@@ -331,7 +331,7 @@ public class ControlsMods {
 										}
 										isVolumePressed = false;
 										isWaitingForVolumeLongPressed = false;
-							        }
+									}
 								}, ViewConfiguration.getLongPressTimeout());
 							}
 							isWaitingForVolumeLongPressed = true;
@@ -348,7 +348,7 @@ public class ControlsMods {
 								if (isMusicActive) XposedHelpers.callMethod(param.thisObject, "handleVolumeKey", AudioManager.STREAM_MUSIC, keycode);
 								// If voice call is active while screen off by proximity sensor, adjust its volume
 								else if (isInCall) XposedHelpers.callMethod(param.thisObject, "handleVolumeKey", AudioManager.STREAM_VOICE_CALL, keycode);
-								// Use vol2wake in other cases 	
+								// Use vol2wake in other cases
 								else if (vol2wakeEnabled) {
 									mPowerManager.wakeUp(SystemClock.uptimeMillis());
 									//XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
@@ -398,47 +398,59 @@ public class ControlsMods {
 		if ((Integer)param.args[paramNum] != 0) try {
 			Context context = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 			int rotation = ((WindowManager)context.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay().getRotation();
-            if (rotation == Surface.ROTATION_90) param.args[paramNum] = -1 * (Integer)param.args[paramNum];
+			if (rotation == Surface.ROTATION_90) param.args[paramNum] = -1 * (Integer)param.args[paramNum];
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
 	}
 
-	public static boolean isBackPressed = false;
+	private static boolean isBackPressed = false;
+	private static void assignBackLongPress(final MethodHookParam param) {
+		final ImageView backButton = (ImageView) callMethod(param.thisObject, "getBackButton");
+		if (backButton != null) {
+			setObjectField(backButton, "mSupportsLongpress", true);
+			setObjectField(backButton, "mCheckLongPress", new Runnable() {
+				@Override
+				public void run() {
+					if (backButton.isPressed()) {
+						backButton.setPressed(false);
+						if (XposedHelpers.getIntField(backButton, "mCode") != 0) {
+							XposedHelpers.callMethod(backButton, "sendEvent", 1, 32);
+							XposedHelpers.callMethod(backButton, "sendAccessibilityEvent", 2);
+						}
+						XMain.pref.reload();
+						int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
+						Context mContext = backButton.getContext();
+						switch (pref_backlongpress) {
+							case 2: GlobalActions.expandNotifications(mContext); break;
+							case 3: GlobalActions.expandEQS(mContext); break;
+							case 4: GlobalActions.lockDevice(mContext); break;
+							case 5: GlobalActions.goToSleep(mContext); break;
+							case 6: GlobalActions.takeScreenshot(mContext); break;
+							case 7: GlobalActions.launchApp(mContext, 3); break; // No back key on lock screen
+							case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpress_toggle", "0"))); break;
+							case 9: GlobalActions.killForegroundApp(mContext); break;
+							case 10: GlobalActions.simulateMenu(mContext); break;
+							case 11: GlobalActions.openRecents(mContext); break;
+							case 12: GlobalActions.launchShortcut(mContext, 3); break; // No back key on lock screen
+						}
+					}
+				}
+			});
+		}
+	}
 	public static void execHook_M8BackLongpress(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
 			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				assignBackLongPress(param);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onSizeChanged", int.class, int.class, int.class, int.class, new XC_MethodHook() {
+			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				final ImageView backButton = (ImageView) callMethod(param.thisObject, "getBackButton");
-				if (backButton != null)
-				setObjectField(backButton, "mCheckLongPress", new Runnable() {
-					@Override
-					public void run() {
-						if (backButton.isPressed()) {
-							backButton.setPressed(false);
-							if (XposedHelpers.getIntField(backButton, "mCode") != 0) {
-								XposedHelpers.callMethod(backButton, "sendEvent", 1, 32);
-								XposedHelpers.callMethod(backButton, "sendAccessibilityEvent", 2);
-							}
-							XMain.pref.reload();
-							int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
-							Context mContext = backButton.getContext();
-							switch (pref_backlongpress) {
-								case 2: GlobalActions.expandNotifications(mContext); break;
-								case 3: GlobalActions.expandEQS(mContext); break;
-								case 4: GlobalActions.lockDevice(mContext); break;
-								case 5: GlobalActions.goToSleep(mContext); break;
-								case 6: GlobalActions.takeScreenshot(mContext); break;
-								case 7: GlobalActions.launchApp(mContext, 3); break; // No back key on lock screen
-								case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpress_toggle", "0"))); break;
-								case 9: GlobalActions.killForegroundApp(mContext); break;
-								case 10: GlobalActions.simulateMenu(mContext); break;
-								case 11: GlobalActions.openRecents(mContext); break;
-								case 12: GlobalActions.launchShortcut(mContext, 3); break; // No back key on lock screen
-							}
-						}
-					}
-				});
+				assignBackLongPress(param);
 			}
 		});
 		
@@ -473,7 +485,7 @@ public class ControlsMods {
 								XposedHelpers.callMethod(homeButton, "sendAccessibilityEvent", 2);
 							}
 							homeButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-		                    GlobalActions.simulateMenu(homeButton.getContext());
+							GlobalActions.simulateMenu(homeButton.getContext());
 						}
 					}
 				});
@@ -509,7 +521,7 @@ public class ControlsMods {
 				if (v != null) {
 					View b = (View) callMethod(v, "getHomeButton");
 					if (b != null) callMethod(b, "setOnTouchListener", new Object[]{ null });
-				}		
+				}
 			}
 		});
 	}
@@ -553,10 +565,10 @@ public class ControlsMods {
 	}
 
 	public static void execHook_SmallNavbar() {
-        XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-        XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
-        XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_height_landscape", modRes.fwd(R.dimen.navigation_bar_height_landscape));
-        XResources.setSystemWideReplacement("android", "dimen", "system_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
+		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+		XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
+		XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_height_landscape", modRes.fwd(R.dimen.navigation_bar_height_landscape));
+		XResources.setSystemWideReplacement("android", "dimen", "system_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
 	}
 	
 	public static void execHook_FixDialer(LoadPackageParam lpparam) {

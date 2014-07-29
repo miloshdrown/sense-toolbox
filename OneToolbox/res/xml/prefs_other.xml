@@ -22,16 +22,6 @@
 			android:title="@string/various_apps_title"
 			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
-			android:key="pref_key_other_mtpnotif"
-			android:summary="@string/various_mtpnotif_summ"
-			android:title="@string/various_mtpnotif_title"
-			android:defaultValue="false" />
-		<com.htc.preference.HtcCheckBoxPreference
-			android:key="pref_key_other_powersavenotif"
-			android:summary="@string/various_powersavenotif_summ"
-			android:title="@string/various_powersavenotif_title"
-			android:defaultValue="false" />
-		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_other_fastunlock"
 			android:summary="@string/various_fastunlock_summ"
 			android:title="@string/various_fastunlock_title"
@@ -51,6 +41,11 @@
 			android:summary="@string/various_securelock_summ"
 			android:title="@string/various_securelock_title"
 			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_allrotations"
+			android:summary="@string/various_allrotations_summ"
+			android:title="@string/various_allrotations_title"
+			android:defaultValue="false" />
 		<com.htc.preference.HtcListPreference
 			android:key="pref_key_other_keyslight"
 			android:summary="@string/various_keyslight_summ"
@@ -63,10 +58,18 @@
 			android:summary="@string/various_keyslight_auto_summ"
 			android:title="@string/various_keyslight_auto_title"
 			android:defaultValue="false" />
+		
+		<com.htc.preference.HtcPreferenceCategory
+			android:title="@string/various_mods_notifications" >
 		<com.htc.preference.HtcCheckBoxPreference
-			android:key="pref_key_other_allrotations"
-			android:summary="@string/various_allrotations_summ"
-			android:title="@string/various_allrotations_title"
+			android:key="pref_key_other_mtpnotif"
+			android:summary="@string/various_mtpnotif_summ"
+			android:title="@string/various_mtpnotif_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_powersavenotif"
+			android:summary="@string/various_powersavenotif_summ"
+			android:title="@string/various_powersavenotif_title"
 			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_other_nolowbattwarn"
@@ -78,6 +81,11 @@
 			android:summary="@string/various_nochargerwarn_summ"
 			android:title="@string/various_nochargerwarn_title"
 			android:defaultValue="false" />
+		<com.sensetoolbox.six.utils.LEDTimePicker
+			android:key="pref_key_other_ledtimeout"
+			android:summary="@string/various_ledtimeout_summ"
+			android:title="@string/various_ledtimeout_title" />
+		</com.htc.preference.HtcPreferenceCategory>
 		
 		<com.htc.preference.HtcPreferenceCategory
 			android:title="@string/various_mods_calls" >
