@@ -98,6 +98,8 @@
 	<string name="systemui_tsb_summ">Make status bar fully transparent in launcher, in apps with translucent statusbar and on lockscreen.</string>
 	<string name="systemui_tnb_title">Transparent notification background</string>
 	<string name="systemui_tnb_summ">Make the notification drawer background transparent.</string>
+	<string name="systemui_tnsb_title">Translucent notifications</string>
+	<string name="systemui_tnsb_summ">Remove background from all notifications.</string>
 	<string name="systemui_eqs">Extended Quick Settings</string>
 	<string name="systemui_brightqs_title">Brightness</string>
 	<string name="systemui_brightqs_summ">Configure brightness values for EQS tile.</string>
@@ -298,6 +300,10 @@
 	<string name="various_popupnotify_expand_summ">Always show expanded notification view.</string>
 	<string name="various_popupnotify_fullscreen_title">Respect fullscreen</string>
 	<string name="various_popupnotify_fullscreen_summ">Do not show popups when fullscreen app is currently active (does not apply to immersive apps with hidden status and navigation bars).</string>
+	<string name="various_popupnotify_lightup_title">Wake screen</string>
+	<string name="various_popupnotify_lightup_summ">Force screen light up on every popup.</string>
+	<string name="various_popupnotify_sleepmode_title">Unobtrusive mode</string>
+	<string name="various_popupnotify_sleepmode_summ">Display new popups only if screen is off.</string>
 	<string name="various_popupnotify_backclick_title">Close all popups</string>
 	<string name="various_popupnotify_backclick_summ">Tap anywhere outside notification to close all popups at once.</string>
 	<string name="various_popupnotify_clock_title">Header content</string>

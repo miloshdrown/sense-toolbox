@@ -742,10 +742,13 @@ public class OtherMods {
 			intent.putExtra("dialogType", 2);
 			mContext.sendBroadcast(intent);
 		} else {
+			PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+			boolean sleepMode = XMain.pref.getBoolean("pref_key_other_popupnotify_sleepmode", false);
+			if (pm.isScreenOn() && sleepMode) return;
+			
 			Intent intent = new Intent();
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			
-			PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 			if (pm.isScreenOn()) {
 				Bitmap bmp = getScreenshot(mContext);
 				if (bmp != null) intent.putExtra("bmp", bmp);

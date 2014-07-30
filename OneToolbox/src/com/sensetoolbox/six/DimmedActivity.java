@@ -94,6 +94,9 @@ public class DimmedActivity extends Activity {
 			ApmDialog rebD = new ApmDialog(this, dialogType);
 			rebD.show();
 		} else if (dType == 2) {
+			if (prefs.getBoolean("pref_key_other_popupnotify_lightup", false))
+			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
+
 			density = getResources().getDisplayMetrics().density;
 			getWindow().getDecorView().setPadding(-1, 0, -1, 0);
 			setContentView(R.layout.notifications);
@@ -170,8 +173,10 @@ public class DimmedActivity extends Activity {
 		} else finish();
 	}
 	
-	float initPos;
-	boolean isDragging = false;
+	float initPosX;
+	float initPosY;
+	boolean isDraggingVert = false;
+	boolean isDraggingHoriz = false;
 	LinearLayout carousel;
 	float cancelShift;
 	
@@ -241,6 +246,28 @@ public class DimmedActivity extends Activity {
 			public void onReady() {
 				notifications.getCarouselHost().showTabWidget(false);
 				notifications.getCarouselWidget().setBackgroundResource(R.color.popup_top_bottom_color);
+				notifications.getCarouselHost().findViewById(android.R.id.tabcontent).setOnTouchListener(new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent ev) {
+						if (!isDraggingHoriz && isDraggingVert) return true;
+						if (ev.getPointerCount() > 1) isDraggingHoriz = false;
+						if (ev.getPointerCount() == 1)
+						if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+							initPosX = ev.getRawX();
+							isDraggingHoriz = false;
+						} else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
+							float curPos = ev.getRawX() - initPosX;
+							if (curPos > density * 30f) isDraggingHoriz = true;
+						} else if (ev.getAction() == MotionEvent.ACTION_UP) {
+							if (isDraggingHoriz)
+								isDraggingHoriz = false;
+							else
+								v.performClick();
+						}
+						return false;
+					}
+				});
+				
 				int k = sbns.size();
 				for (int l = 0; l < k; l++) {
 					StatusBarNotification notifyRecord = sbns.get(l);
@@ -319,25 +346,28 @@ public class DimmedActivity extends Activity {
 	
 	@Override
 	public boolean dispatchTouchEvent(MotionEvent ev) {
+		if (!isDraggingVert && isDraggingHoriz) return super.dispatchTouchEvent(ev);
+		if (ev.getPointerCount() > 1) initPosY = ev.getRawY();
+		if (ev.getPointerCount() == 1)
 		if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-			initPos = ev.getRawY();
+			initPosY = ev.getRawY();
 			cancelShift = getResources().getDisplayMetrics().heightPixels / 5;
-			isDragging = false;
+			isDraggingVert = false;
 			carousel = (LinearLayout)this.findViewById(R.id.carousel);
 		} else if (ev.getAction() == MotionEvent.ACTION_MOVE) {
-			float curPos = ev.getRawY() - initPos;
+			float curPos = ev.getRawY() - initPosY;
 			if (curPos > density * 30f) {
-				isDragging = true;
+				isDraggingVert = true;
 				if (carousel != null) {
-					carousel.setTranslationY(curPos);
+					carousel.setTranslationY(curPos - density * 30f);
 					carousel.setAlpha(Math.max(0, cancelShift - curPos) / cancelShift);
 					return true;
 				}
 			}
 		} else if (ev.getAction() == MotionEvent.ACTION_UP) {
-			if (isDragging && carousel != null) {
+			if (isDraggingVert && carousel != null) {
 				boolean isCanceled = false;
-				if (ev.getRawY() - initPos > cancelShift) {
+				if (ev.getRawY() - initPosY > cancelShift) {
 					NotificationTab curTab = (NotificationTab)notifications.getCarouselHost().getCurrentTabFragment();
 					if (curTab != null) {
 						isCanceled = true;
@@ -357,7 +387,7 @@ public class DimmedActivity extends Activity {
 					.translationY(0)
 					.alpha(1.0f)
 					.start();
-				isDragging = false;
+				isDraggingVert = false;
 				return true;
 			}
 		}

@@ -468,6 +468,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if(pref.getBoolean("pref_key_other_nolowbattwarn", false))
 				SysUIMods.execHook_NoLowBatteryWarning(lpparam);
 			
+			if(pref.getBoolean("pref_key_sysui_tnsb", false))
+				SysUIMods.execHook_TranslucentNotifications(lpparam);
+			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 			CleanBeamMods.execHook_HideIcons(lpparam);
 		}

@@ -32,6 +32,7 @@ import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.content.res.XModuleResources;
 import android.database.ContentObserver;
+import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -48,6 +49,7 @@ import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
+import android.service.notification.StatusBarNotification;
 import android.text.TextUtils.TruncateAt;
 import android.text.method.SingleLineTransformationMethod;
 import android.util.SparseArray;
@@ -105,36 +107,11 @@ import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class SysUIMods {
-/*
-	public static void execHook_InvisiBar(final InitPackageResourcesParam resparam, final String MODULE_PATH, final int transparency) {
-		resparam.res.setReplacement("com.android.systemui", "drawable", "status_bar_background", new XResources.DrawableLoader() {
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
-				if (modRes.getIdentifier("status_bar_background", "drawable", "com.sensetoolbox.six") != 0) {
-					Drawable sb = modRes.getDrawable(R.drawable.status_bar_background);
-					sb.setAlpha(transparency);
-					return sb;
-				} else return null;
-			}
-		});
-		
-		//For 4.4.2 builds try to replace second drawable. Silently fail on older version
-		try {
-			resparam.res.setReplacement("com.android.systemui", "drawable", "status_bar_background_launcher", new XResources.DrawableLoader() {
-				@Override
-				public Drawable newDrawable(XResources res, int id)	throws Throwable {
-					XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
-					if (modRes.getIdentifier("status_bar_background", "drawable", "com.sensetoolbox.six") != 0) {
-						Drawable sb = modRes.getDrawable(R.drawable.status_bar_background);
-						sb.setAlpha(transparency);
-						return sb;
-					} else return null;
-				}
-			});
-		} catch (Throwable ignore){}
+
+	private static int densify(Context ctx, int dimens) {
+		return Math.round(ctx.getResources().getDisplayMetrics().density * dimens);
 	}
-*/
+	
 	public static void execHook_NoStatusBarBackground(InitPackageResourcesParam resparam) {
 		try {
 			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
@@ -1934,5 +1911,51 @@ public class SysUIMods {
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
+	}
+	
+	public static void execHook_TranslucentNotifications(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.BaseStatusBar", lpparam.classLoader, "createNotificationViews", IBinder.class, StatusBarNotification.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Object entry = param.getResult();
+				StatusBarNotification sbn = (StatusBarNotification)param.args[1];
+				if (entry == null) return;
+
+				View content = (View)XposedHelpers.getObjectField(entry, "content");
+				if (content != null) {
+				content.setBackgroundColor(Color.TRANSPARENT);
+					content.invalidate();
+				}
+				
+				View row = (View)XposedHelpers.getObjectField(entry, "row");
+				if (row != null) {
+					ArrayList<View> nViews = Helpers.getChildViewsRecursive(row);
+					for (View nView: nViews)
+					if (nView != null && nView.getResources() != null && nView.getId() > 0 && nView.getId() != 0xffffffff) try {
+						String name = nView.getResources().getResourceEntryName(nView.getId());
+						if (nView.getBackground() != null && nView.getVisibility() == 0 && !name.contains("glow") && !name.contains("icon")) {
+							nView.setBackgroundColor(Color.TRANSPARENT);
+							nView.destroyDrawingCache();
+							nView.invalidate();
+						}
+						
+						if (sbn != null && name.contains("icon")) {
+							ImageView icon = (ImageView)nView;
+							Context ctx = icon.getContext();
+							icon.setBackground(null);
+							icon.setImageDrawable(null);
+							if (sbn.getNotification().largeIcon != null) {
+								Bitmap newBmp = Bitmap.createScaledBitmap(sbn.getNotification().largeIcon, densify(ctx, 64), densify(ctx, 64), false);
+								icon.setImageBitmap(newBmp);
+							} else {
+								icon.setImageResource(sbn.getNotification().icon);
+							}
+						}
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+				}
+			}
+		});
 	}
 }

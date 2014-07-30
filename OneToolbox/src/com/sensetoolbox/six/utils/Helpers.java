@@ -65,6 +65,8 @@ import android.os.Environment;
 import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
@@ -623,5 +625,26 @@ public class Helpers {
 			// Theme 4
 			0x020301eb, 0x020301ef, 0x020301f3, 0x020301f7, 0x020301fb
 		});
+	}
+	
+	public static ArrayList<View> getChildViewsRecursive(View view) {
+		if (view instanceof ViewGroup) {
+			ArrayList<View> list2 = new ArrayList<View>();
+			ViewGroup viewgroup = (ViewGroup)view;
+			int i = 0;
+			do {
+				if (i >= viewgroup.getChildCount()) return list2;
+				View view1 = viewgroup.getChildAt(i);
+				ArrayList<View> list3 = new ArrayList<View>();
+				list3.add(view);
+				list3.addAll(getChildViewsRecursive(view1));
+				list2.addAll(list3);
+				i++;
+			} while (true);
+		} else {
+			ArrayList<View> list1 = new ArrayList<View>();
+			list1.add(view);
+			return list1;
+		}
 	}
 }

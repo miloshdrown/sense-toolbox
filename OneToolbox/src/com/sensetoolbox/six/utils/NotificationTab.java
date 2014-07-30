@@ -125,7 +125,7 @@ public class NotificationTab extends Fragment {
 										if (doubleSwipeFailed) return true;
 										touchCurrentPositionY = (int)event.getY(1);
 										int diff = touchCurrentPositionY - touchPositionY;
-										if (diff > 100 && !isInBigView) {
+										if (diff > getResources().getDisplayMetrics().density * 30f && !isInBigView) {
 											RemoteViews contentNew = sbn.getNotification().bigContentView;
 											if (contentNew != null) {
 												View localContent = contentNew.apply(act, tab);
@@ -134,11 +134,12 @@ public class NotificationTab extends Fragment {
 												isInBigView = true;
 												updateHeight(tab, uniqueTag);
 												updateIcon(act, pkgName, notifyRemote, sbn);
+												touchPositionY = touchCurrentPositionY;
 											} else {
 												Toast.makeText(getActivity(), Helpers.l10n(getActivity(), R.string.popupnotify_nobigview), Toast.LENGTH_SHORT).show();
 												doubleSwipeFailed = true;
 											}
-										} else if (diff < -100 && isInBigView) {
+										} else if (diff < getResources().getDisplayMetrics().density * -30f && isInBigView) {
 											RemoteViews contentNew = sbn.getNotification().contentView;
 											if (contentNew != null) {
 												View localContent = contentNew.apply(act, tab);
@@ -147,6 +148,7 @@ public class NotificationTab extends Fragment {
 												isInBigView = false;
 												updateHeight(tab, uniqueTag);
 												updateIcon(act, pkgName, notifyRemote, sbn);
+												touchPositionY = touchCurrentPositionY;
 											} else {
 												Toast.makeText(getActivity(), Helpers.l10n(getActivity(), R.string.popupnotify_noview), Toast.LENGTH_SHORT).show();
 												doubleSwipeFailed = true;
