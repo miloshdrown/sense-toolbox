@@ -87,7 +87,7 @@ public class ImageListPreference extends HtcListPreference {
 						img.getTileImageDrawable().clearColorFilter();
 				}
 
-				if (resourceIds[position] == R.drawable.stat_sys_wifi_signal_preview || resourceIds[position] == R.drawable.stat_sys_battery_preview)
+				if (resourceIds[position] == R.drawable.stat_sys_wifi_signal_preview || resourceIds[position] == R.drawable.stat_sys_battery_preview || resourceIds[position] == R.drawable.stat_sys_battery_preview2)
 					img.setTileImageDrawable(Helpers.dropIconShadow(getContext(), icon, true));
 				else if (resourceIds[position] == R.drawable.b_stat_sys_wifi_signal_4)
 					img.setTileImageDrawable(Helpers.dropIconShadow(getContext(), icon, false));

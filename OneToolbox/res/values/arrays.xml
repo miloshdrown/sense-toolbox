@@ -1,43 +1,45 @@
 <resources>
-    <string-array name="cam_actions">
-        <item >@string/array_cam_actions_shutter</item>
-        <item >@string/array_cam_actions_focus</item>
-        <item >@string/array_cam_actions_focusshutter</item>
-        <item >@string/array_cam_actions_video</item>
-        <item >@string/array_cam_actions_zoom_in</item>
-        <item >@string/array_cam_actions_zoom_out</item>
-        <item >@string/array_cam_actions_nothing</item>
-    </string-array>
-    <string-array name="cam_actions_val">
-        <item >1</item>
-        <item >2</item>
-        <item >5</item>
-        <item >3</item>
-        <item >6</item>
-        <item >7</item>
-        <item >4</item>
-    </string-array>
+	<string-array name="cam_actions">
+		<item >@string/array_cam_actions_shutter</item>
+		<item >@string/array_cam_actions_focus</item>
+		<item >@string/array_cam_actions_focusshutter</item>
+		<item >@string/array_cam_actions_video</item>
+		<item >@string/array_cam_actions_zoom_in</item>
+		<item >@string/array_cam_actions_zoom_out</item>
+		<item >@string/array_cam_actions_nothing</item>
+	</string-array>
+	<string-array name="cam_actions_val">
+		<item >1</item>
+		<item >2</item>
+		<item >5</item>
+		<item >3</item>
+		<item >6</item>
+		<item >7</item>
+		<item >4</item>
+	</string-array>
 
-    <string-array name="cleanbeam_battery">
-        <item >@string/array_default</item>
-        <item >@string/array_batt_icon_none</item>
-    </string-array>
-    <string-array name="cleanbeam_battery_val">
-        <item >1</item>
-        <item >4</item>
-    </string-array>
+	<string-array name="cleanbeam_battery">
+		<item >@string/array_default</item>
+		<item >@string/array_batt_icon_with_percentage</item>
+		<item >@string/array_batt_icon_none</item>
+	</string-array>
+	<string-array name="cleanbeam_battery_val">
+		<item >1</item>
+		<item >2</item>
+		<item >4</item>
+	</string-array>
 
 	<string-array name="cleanbeam_wifi">
-        <item >@string/array_default</item>
-        <item >@string/array_wifi_icon_style1</item>
-        <item >@string/array_wifi_icon_style2</item>
-    </string-array>
-    <string-array name="cleanbeam_wifi_val">
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-    </string-array>
-    <array name="cleanbeam_wifi_images">
+		<item >@string/array_default</item>
+		<item >@string/array_wifi_icon_style1</item>
+		<item >@string/array_wifi_icon_style2</item>
+	</string-array>
+	<string-array name="cleanbeam_wifi_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+	</string-array>
+	<array name="cleanbeam_wifi_images">
 		<item >@drawable/stat_sys_wifi_signal_preview</item>
 		<item >@drawable/stat_sys_wifi_signal_4</item>
 		<item >@drawable/b_stat_sys_wifi_signal_4</item>
@@ -48,265 +50,266 @@
 		<item >1</item>
 	</array>
 
-    <string-array name="systemui_clockstyle">
-        <item >@string/array_default</item>
-        <item >@string/array_clock_style_center</item>
-        <item >@string/array_clock_style_none</item>
-    </string-array>
-    <string-array name="systemui_clockstyle_val">
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-    </string-array>
+	<string-array name="systemui_clockstyle">
+		<item >@string/array_default</item>
+		<item >@string/array_clock_style_center</item>
+		<item >@string/array_clock_style_none</item>
+	</string-array>
+	<string-array name="systemui_clockstyle_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+	</string-array>
 
-    <string-array name="global_actions">
-        <item >@string/array_global_actions_none</item>
-        <item >@string/array_global_actions_notif</item>
-        <item >@string/array_global_actions_eqs</item>
-        <item >@string/array_global_actions_lock</item>
-        <item >@string/array_global_actions_sleep</item>
-        <item >@string/array_global_actions_screenshot</item>
-        <item >@string/array_global_actions_launch</item>
-        <item >@string/array_global_actions_shortcut</item>
-        <item >@string/array_global_actions_toggle</item>
-    </string-array>
-    <string-array name="global_actions_val">
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-        <item >4</item>
-        <item >5</item>
-        <item >6</item>
-        <item >7</item>
-        <item >12</item>
-        <item >8</item>
-    </string-array>
+	<string-array name="global_actions">
+		<item >@string/array_global_actions_none</item>
+		<item >@string/array_global_actions_notif</item>
+		<item >@string/array_global_actions_eqs</item>
+		<item >@string/array_global_actions_lock</item>
+		<item >@string/array_global_actions_sleep</item>
+		<item >@string/array_global_actions_screenshot</item>
+		<item >@string/array_global_actions_launch</item>
+		<item >@string/array_global_actions_shortcut</item>
+		<item >@string/array_global_actions_toggle</item>
+	</string-array>
+	<string-array name="global_actions_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+		<item >4</item>
+		<item >5</item>
+		<item >6</item>
+		<item >7</item>
+		<item >12</item>
+		<item >8</item>
+	</string-array>
 
-    <string-array name="global_toggles">
-        <item >@string/array_global_toggle_wifi</item>
-        <item >@string/array_global_toggle_bt</item>
-        <item >@string/array_global_toggle_gps</item>
-        <item >@string/array_global_toggle_nfc</item>
-        <item >@string/array_global_toggle_sound</item>
-        <item >@string/array_global_toggle_brightness</item>
-        <item >@string/array_global_toggle_rotation</item>
-        <item >@string/array_global_toggle_torch</item>
-        <item >@string/array_global_toggle_mobiledata</item>
-    </string-array>
-    <string-array name="global_toggles_val">
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-        <item >4</item>
-        <item >5</item>
-        <item >6</item>
-        <item >7</item>
-        <item >8</item>
-        <item >9</item>
-    </string-array>
+	<string-array name="global_toggles">
+		<item >@string/array_global_toggle_wifi</item>
+		<item >@string/array_global_toggle_bt</item>
+		<item >@string/array_global_toggle_gps</item>
+		<item >@string/array_global_toggle_nfc</item>
+		<item >@string/array_global_toggle_sound</item>
+		<item >@string/array_global_toggle_brightness</item>
+		<item >@string/array_global_toggle_rotation</item>
+		<item >@string/array_global_toggle_torch</item>
+		<item >@string/array_global_toggle_mobiledata</item>
+	</string-array>
+	<string-array name="global_toggles_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+		<item >4</item>
+		<item >5</item>
+		<item >6</item>
+		<item >7</item>
+		<item >8</item>
+		<item >9</item>
+	</string-array>
 	<array name="battery_images">
 		<item >@drawable/stat_sys_battery_preview</item>
+		<item >@drawable/stat_sys_battery_preview2</item>
 		<item ></item>
 	</array>
 	<string-array name="home_menu">
-        <item >@string/array_home_menu_apps</item>
-        <item >@string/array_home_menu_personalize</item>
-        <item >@string/array_home_menu_settings</item>
-        <item >@string/array_home_menu_wifi</item>
-        <item >@string/array_home_menu_apm</item>
-        <item >@string/array_home_menu_draglock</item>
-    </string-array>
-    <string-array name="recents_menu">
-        <item >@string/array_recents_menu_info</item>
-        <item >@string/array_recents_menu_playstore</item>
-        <item >@string/array_recents_menu_close</item>
-        <item >@string/array_recents_menu_closeothers</item>
-    </string-array>
-    <string-array name="various_screenon">
-        <item >@string/array_screen_anim_none</item>
-        <item >@string/array_screen_anim_fade</item>
-    </string-array>
-    <string-array name="various_screenon_val">
-        <item >0</item>
-        <item >2</item>
-    </string-array>
-    <string-array name="various_screenoff">
-        <item >@string/array_screen_anim_none</item>
-        <item >@string/array_screen_anim_fade</item>
-        <item >@string/array_screen_anim_crt</item>
-    </string-array>
-    <string-array name="various_screenoff_val">
-        <item >0</item>
-        <item >2</item>
-        <item >1</item>
-    </string-array>
+		<item >@string/array_home_menu_apps</item>
+		<item >@string/array_home_menu_personalize</item>
+		<item >@string/array_home_menu_settings</item>
+		<item >@string/array_home_menu_wifi</item>
+		<item >@string/array_home_menu_apm</item>
+		<item >@string/array_home_menu_draglock</item>
+	</string-array>
+	<string-array name="recents_menu">
+		<item >@string/array_recents_menu_info</item>
+		<item >@string/array_recents_menu_playstore</item>
+		<item >@string/array_recents_menu_close</item>
+		<item >@string/array_recents_menu_closeothers</item>
+	</string-array>
+	<string-array name="various_screenon">
+		<item >@string/array_screen_anim_none</item>
+		<item >@string/array_screen_anim_fade</item>
+	</string-array>
+	<string-array name="various_screenon_val">
+		<item >0</item>
+		<item >2</item>
+	</string-array>
+	<string-array name="various_screenoff">
+		<item >@string/array_screen_anim_none</item>
+		<item >@string/array_screen_anim_fade</item>
+		<item >@string/array_screen_anim_crt</item>
+	</string-array>
+	<string-array name="various_screenoff_val">
+		<item >0</item>
+		<item >2</item>
+		<item >1</item>
+	</string-array>
 
-    <string-array name="theme_colors">
-        <item >@string/array_color_blue</item>
-        <item >@string/array_color_green</item>
-        <item >@string/array_color_red</item>
-        <item >@string/array_color_orange</item>
-        <item >@string/array_color_white</item>
-    </string-array>
+	<string-array name="theme_colors">
+		<item >@string/array_color_blue</item>
+		<item >@string/array_color_green</item>
+		<item >@string/array_color_red</item>
+		<item >@string/array_color_orange</item>
+		<item >@string/array_color_white</item>
+	</string-array>
 
-    <string-array name="media_action">
-        <item >@string/array_media_none</item>
-        <item >@string/array_media_playpause</item>
-        <item >@string/array_media_next</item>
-        <item >@string/array_media_prev</item>
-    </string-array>
-    <string-array name="media_action_val">
-        <item >0</item>
-        <item >85</item>
-        <item >87</item>
-        <item >88</item>
-    </string-array>
+	<string-array name="media_action">
+		<item >@string/array_media_none</item>
+		<item >@string/array_media_playpause</item>
+		<item >@string/array_media_next</item>
+		<item >@string/array_media_prev</item>
+	</string-array>
+	<string-array name="media_action_val">
+		<item >0</item>
+		<item >85</item>
+		<item >87</item>
+		<item >88</item>
+	</string-array>
 
-    <string-array name="various_largephoto">
-        <item >@string/array_large_photo_default</item>
-        <item >@string/array_large_photo_rectangular</item>
-        <item >@string/array_large_photo_max</item>
-    </string-array>
-    <string-array name="various_largephoto_val">
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-    </string-array>
+	<string-array name="various_largephoto">
+		<item >@string/array_large_photo_default</item>
+		<item >@string/array_large_photo_rectangular</item>
+		<item >@string/array_large_photo_max</item>
+	</string-array>
+	<string-array name="various_largephoto_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+	</string-array>
 
-    <string-array name="systemui_statusheaderclick">
-        <item >@string/array_global_actions_none</item>
-        <item >@string/array_header_click_clock</item>
-        <item >@string/array_header_click_sysinfo</item>
-    </string-array>
-    <string-array name="systemui_statusheaderclick_val">
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-    </string-array>
+	<string-array name="systemui_statusheaderclick">
+		<item >@string/array_global_actions_none</item>
+		<item >@string/array_header_click_clock</item>
+		<item >@string/array_header_click_sysinfo</item>
+	</string-array>
+	<string-array name="systemui_statusheaderclick_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+	</string-array>
 
-    <string-array name="hideicons">
-        <item >@string/cleanbeam_headphone_title</item>
-        <item >@string/cleanbeam_beats_title</item>
-        <item >@string/cleanbeam_alarm_title</item>
-        <item >@string/cleanbeam_sync_title</item>
-        <item >@string/cleanbeam_gps_title</item>
-        <item >@string/cleanbeam_bt_title</item>
-        <item >@string/cleanbeam_screenshot_title</item>
-        <item >@string/cleanbeam_usb_title</item>
-        <item >@string/cleanbeam_powersave_title</item>
-        <item >@string/cleanbeam_nfc_title</item>
-        <item >@string/cleanbeam_dnd_title</item>
-    </string-array>
-    <string-array name="hideicons_val">
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-        <item >4</item>
-        <item >5</item>
-        <item >6</item>
-        <item >7</item>
-        <item >8</item>
-        <item >9</item>
-        <item >10</item>
-        <item >11</item>
-    </string-array>
+	<string-array name="hideicons">
+		<item >@string/cleanbeam_headphone_title</item>
+		<item >@string/cleanbeam_beats_title</item>
+		<item >@string/cleanbeam_alarm_title</item>
+		<item >@string/cleanbeam_sync_title</item>
+		<item >@string/cleanbeam_gps_title</item>
+		<item >@string/cleanbeam_bt_title</item>
+		<item >@string/cleanbeam_screenshot_title</item>
+		<item >@string/cleanbeam_usb_title</item>
+		<item >@string/cleanbeam_powersave_title</item>
+		<item >@string/cleanbeam_nfc_title</item>
+		<item >@string/cleanbeam_dnd_title</item>
+	</string-array>
+	<string-array name="hideicons_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+		<item >4</item>
+		<item >5</item>
+		<item >6</item>
+		<item >7</item>
+		<item >8</item>
+		<item >9</item>
+		<item >10</item>
+		<item >11</item>
+	</string-array>
 
-    <string-array name="various_keyslight">
-        <item >@string/array_default</item>
-        <item >@string/array_keyslight_dim</item>
-        <item >@string/array_keyslight_extradim</item>
-        <item >@string/array_keyslight_alwaysoff</item>
-    </string-array>
-    <string-array name="various_keyslight_val">
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-        <item >4</item>
-    </string-array>
+	<string-array name="various_keyslight">
+		<item >@string/array_default</item>
+		<item >@string/array_keyslight_dim</item>
+		<item >@string/array_keyslight_extradim</item>
+		<item >@string/array_keyslight_alwaysoff</item>
+	</string-array>
+	<string-array name="various_keyslight_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+		<item >4</item>
+	</string-array>
 
-    <string-array name="wakegest_actions">
-        <item >@string/array_wakegestures_disable</item>
-        <item >@string/array_wakegestures_wakeup</item>
-        <item >@string/array_wakegestures_wakeupbypass</item>
-        <item >@string/array_wakegestures_blinkfeed</item>
-        <item >@string/array_wakegestures_home</item>
-        <item >@string/array_wakegestures_quickcall</item>
-        <item >@string/array_wakegestures_appdrawer</item>
-        <item >@string/array_wakegestures_flashlight</item>
-        <item >@string/array_global_actions_notif</item>
-        <item >@string/array_global_actions_eqs</item>
-        <item >@string/array_global_actions_launch</item>
-        <item >@string/array_global_actions_shortcut</item>
-        <item >@string/array_media_playpause</item>
-        <item >@string/array_media_next</item>
-        <item >@string/array_media_prev</item>
-    </string-array>
-    <string-array name="wakegest_actions_val">
-        <item >0</item>
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-        <item >4</item>
-        <item >5</item>
-        <item >6</item>
-        <item >7</item>
-        <item >8</item>
-        <item >9</item>
-        <item >10</item>
-        <item >14</item>
-        <item >11</item>
-        <item >12</item>
-        <item >13</item>
-    </string-array>
+	<string-array name="wakegest_actions">
+		<item >@string/array_wakegestures_disable</item>
+		<item >@string/array_wakegestures_wakeup</item>
+		<item >@string/array_wakegestures_wakeupbypass</item>
+		<item >@string/array_wakegestures_blinkfeed</item>
+		<item >@string/array_wakegestures_home</item>
+		<item >@string/array_wakegestures_quickcall</item>
+		<item >@string/array_wakegestures_appdrawer</item>
+		<item >@string/array_wakegestures_flashlight</item>
+		<item >@string/array_global_actions_notif</item>
+		<item >@string/array_global_actions_eqs</item>
+		<item >@string/array_global_actions_launch</item>
+		<item >@string/array_global_actions_shortcut</item>
+		<item >@string/array_media_playpause</item>
+		<item >@string/array_media_next</item>
+		<item >@string/array_media_prev</item>
+	</string-array>
+	<string-array name="wakegest_actions_val">
+		<item >0</item>
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+		<item >4</item>
+		<item >5</item>
+		<item >6</item>
+		<item >7</item>
+		<item >8</item>
+		<item >9</item>
+		<item >10</item>
+		<item >14</item>
+		<item >11</item>
+		<item >12</item>
+		<item >13</item>
+	</string-array>
 
-    <string-array name="wakegest_m8stock_actions">
-        <item >@string/array_wakegestures_disable</item>
-        <item >@string/array_wakegestures_wakeup</item>
-        <item >@string/array_wakegestures_wakeupbypass</item>
-        <item >@string/array_wakegestures_blinkfeed</item>
-        <item >@string/array_wakegestures_home</item>
-        <item >@string/array_wakegestures_quickcall</item>
-        <item >@string/array_wakegestures_appdrawer</item>
-        <item >@string/array_global_actions_notif</item>
-        <item >@string/array_global_actions_eqs</item>
-        <item >@string/array_global_actions_launch</item>
-        <item >@string/array_global_actions_shortcut</item>
-    </string-array>
-    <string-array name="wakegest_m8stock_actions_val">
-        <item >0</item>
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-        <item >4</item>
-        <item >5</item>
-        <item >6</item>
-        <item >8</item>
-        <item >9</item>
-        <item >10</item>
-        <item >14</item>
-    </string-array>
+	<string-array name="wakegest_m8stock_actions">
+		<item >@string/array_wakegestures_disable</item>
+		<item >@string/array_wakegestures_wakeup</item>
+		<item >@string/array_wakegestures_wakeupbypass</item>
+		<item >@string/array_wakegestures_blinkfeed</item>
+		<item >@string/array_wakegestures_home</item>
+		<item >@string/array_wakegestures_quickcall</item>
+		<item >@string/array_wakegestures_appdrawer</item>
+		<item >@string/array_global_actions_notif</item>
+		<item >@string/array_global_actions_eqs</item>
+		<item >@string/array_global_actions_launch</item>
+		<item >@string/array_global_actions_shortcut</item>
+	</string-array>
+	<string-array name="wakegest_m8stock_actions_val">
+		<item >0</item>
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+		<item >4</item>
+		<item >5</item>
+		<item >6</item>
+		<item >8</item>
+		<item >9</item>
+		<item >10</item>
+		<item >14</item>
+	</string-array>
 
-    <string-array name="various_background_style">
-        <item >@string/array_popupbkg_dim</item>
-        <item >@string/array_popupbkg_blur</item>
-        <item >@string/array_popupbkg_blur_and_dim</item>
-    </string-array>
-    <string-array name="various_background_style_val">
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-    </string-array>
+	<string-array name="various_background_style">
+		<item >@string/array_popupbkg_dim</item>
+		<item >@string/array_popupbkg_blur</item>
+		<item >@string/array_popupbkg_blur_and_dim</item>
+	</string-array>
+	<string-array name="various_background_style_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+	</string-array>
 
-    <string-array name="various_clock_style">
-        <item >@string/array_popuphdr_empty</item>
-        <item >@string/array_popuphdr_datetime</item>
-        <item >@string/array_popuphdr_dashclock</item>
-    </string-array>
-    <string-array name="various_clock_style_val">
-        <item >1</item>
-        <item >2</item>
-        <item >3</item>
-    </string-array>
+	<string-array name="various_clock_style">
+		<item >@string/array_popuphdr_empty</item>
+		<item >@string/array_popuphdr_datetime</item>
+		<item >@string/array_popuphdr_dashclock</item>
+	</string-array>
+	<string-array name="various_clock_style_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+	</string-array>
 
-    <string-array name="empty_array"/>
+	<string-array name="empty_array"/>
 </resources>

@@ -463,6 +463,7 @@
 	<string name="array_cam_actions_zoom_out">Zoom out</string>
 	<string name="array_cam_actions_nothing">No change</string>
 	<string name="array_batt_icon_none">No icon</string>
+	<string name="array_batt_icon_with_percentage">With percentage</string>
 	<string name="array_wifi_icon_style1">Style 1</string>
 	<string name="array_wifi_icon_style2">Style 2</string>
 	<string name="array_clock_style_center">Center clock</string>

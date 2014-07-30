@@ -6,7 +6,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.res.TypedArray;
-import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
@@ -34,7 +33,7 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 
 	private HtcSeekBar hueSlider, satSlider, brightSlider;
 	private TextView hueTitleVal, satTitleVal, brightTitleVal;
-	private ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, icon9, icon10; 
+	private ImageView icon1, icon2, icon3, icon4, icon5, icon6, icon7, icon8, icon9, icon10;
 	private Context mContext;
 	private String mKey;
 	private int hueValue = 180;
@@ -51,8 +50,8 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		if (cf != null) icon.setColorFilter(cf);
 	}
 
-	public ColorPreference(Context context, AttributeSet attrs) { 
-		super(context, attrs); 
+	public ColorPreference(Context context, AttributeSet attrs) {
+		super(context, attrs);
 		mContext = context;
 		mKey = attrs.getAttributeValue(androidns, "key");
 		density = mContext.getResources().getDisplayMetrics().density;
@@ -60,10 +59,10 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 	}
 	
 	private int densify(int dimension) {
-		return Math.round(density * dimension);	
+		return Math.round(density * dimension);
 	}
 	
-	@Override 
+	@Override
 	protected View onCreateDialogView() {
 		prefs = getPreferenceManager().getSharedPreferences();
 		icons = new ArrayList<ImageView>();
@@ -123,10 +122,10 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		
 		View divider = new View(mContext);
 		LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 2);
-		params.setMargins(densify(16), densify(7), densify(16), densify(7));
+		params.setMargins(densify(1), densify(7), densify(1), densify(7));
 		divider.setLayoutParams(params);
 		divider.setPadding(0, 0, 0, 0);
-		divider.setBackgroundColor(Color.rgb(200, 200, 200));
+		divider.setBackgroundResource(mContext.getResources().getIdentifier("inset_list_divider", "drawable", "com.htc"));
 		layout.addView(divider);
 		
 		// Hue
@@ -231,10 +230,10 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		
 		View divider2 = new View(mContext);
 		LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 2);
-		params2.setMargins(densify(16), densify(7), densify(16), densify(7));
+		params2.setMargins(densify(1), densify(16), densify(1), densify(7));
 		divider2.setLayoutParams(params2);
 		divider2.setPadding(0, 0, 0, 0);
-		divider2.setBackgroundColor(Color.rgb(200, 200, 200));
+		divider2.setBackgroundResource(mContext.getResources().getIdentifier("inset_list_divider", "drawable", "com.htc"));
 		layout.addView(divider2);
 		
 		TextView presets = new TextView(mContext);
@@ -276,7 +275,7 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 				layout.addView(presetsContainer);
 				col = 0;
 			} else {
-				presetsContainer.addView(btn);				
+				presetsContainer.addView(btn);
 			}
 			col++;
 			cnt++;
@@ -389,7 +388,7 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 			cf = ColorFilterGenerator.adjustColor(brightValue - 100, 0, satValue - 100, hueValue - 180);
 		
 		int i = 0;
-		for (ImageView icon: icons) 
+		for (ImageView icon: icons)
 		if (icon != null) { icon.setImageResource(icons_res.get(i)); i++; icon.setColorFilter(cf); }
 		
 		if (brightValue == 200 && satValue == 0) {
@@ -406,9 +405,9 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 	@Override
 	protected void onSetInitialValue(boolean restore, Object defaultValue) {
 		super.onSetInitialValue(restore, defaultValue);
-    	hueValue = 180;
-    	satValue = 100;
-    	brightValue = 100;
+		hueValue = 180;
+		satValue = 100;
+		brightValue = 100;
 	}
 
 	@Override

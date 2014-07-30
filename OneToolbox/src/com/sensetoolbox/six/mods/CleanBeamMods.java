@@ -100,14 +100,11 @@ public class CleanBeamMods {
 	}
 
 	public static void execHook_BatteryIcon(InitPackageResourcesParam resparam, int battIcon) {
-//		XModuleResources modRes = XModuleResources.createInstance(MODULE_PATH, resparam.res);
-//		if (battIcon == 2) //2=b=percentage
-//		{
-//			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.b_stat_sys_battery));
-//			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.b_stat_sys_battery_charge));
-//		}
-		if (battIcon == 4) //No icon
-		{
+		if (battIcon == 2) {
+			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
+			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.stat_sys_battery));
+			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.stat_sys_battery_charge));
+		} else if (battIcon == 4) {
 			resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
 				@Override
 				public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
