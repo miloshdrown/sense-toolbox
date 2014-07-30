@@ -875,4 +875,13 @@ public class OtherMods {
 			}
 		});
 	}
+	
+	public static void execHook_LEDOnCharge() {
+		XposedBridge.hookAllConstructors(findClass("com.android.server.NotificationManagerService", null), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				XposedHelpers.setBooleanField(param.thisObject, "mFlashDuringPlugged", true);
+			}
+		});
+	}
 }

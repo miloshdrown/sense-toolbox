@@ -357,6 +357,8 @@
 	<string name="various_nolowbattwarn_summ">Turn off low battery popup dialog and sound tone.</string>
 	<string name="various_nochargerwarn_title">Disable slow charge warning</string>
 	<string name="various_nochargerwarn_summ">Turn off slow charging notification.</string>
+	<string name="various_ledoncharge_title">LED during charge</string>
+	<string name="various_ledoncharge_summ">Enable LED notifications while device is charging.</string>
 	<string name="various_ledtimeout_title">LED timeout</string>
 	<string name="various_ledtimeout_summ">Set the time LED will blink after notification is received.</string>
 	<string name="ledtimeoutpicker_switch">Enable custom timeout</string>

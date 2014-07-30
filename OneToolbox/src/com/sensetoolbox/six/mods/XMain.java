@@ -103,6 +103,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pref.getBoolean("pref_key_other_ledtimeout", false))
 			OtherMods.execHook_LEDNotifyTimeout();
+		
+		if (pref.getBoolean("pref_key_other_ledoncharge", false))
+			OtherMods.execHook_LEDOnCharge();
 	}
 	
 	@Override

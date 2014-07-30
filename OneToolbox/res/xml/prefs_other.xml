@@ -81,6 +81,11 @@
 			android:summary="@string/various_nochargerwarn_summ"
 			android:title="@string/various_nochargerwarn_title"
 			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_ledoncharge"
+			android:summary="@string/various_ledoncharge_summ"
+			android:title="@string/various_ledoncharge_title"
+			android:defaultValue="false" />
 		<com.sensetoolbox.six.utils.LEDTimePicker
 			android:key="pref_key_other_ledtimeout"
 			android:summary="@string/various_ledtimeout_summ"
