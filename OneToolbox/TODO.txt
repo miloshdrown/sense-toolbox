@@ -44,7 +44,7 @@ Current changelog
 [New] Notification LED blinking timeout
 [New] Battery with percentage
 [Fixed] Wake gestures on 4.4.3
-[Fixed] Back long press on HTC One M8 in landscape orientation
+[Fixed] Softkeys back long press in landscape orientation
 Popup notifications
    [New] Dismiss by dragging popup to bottom
    [New] Wake screen on every popup
