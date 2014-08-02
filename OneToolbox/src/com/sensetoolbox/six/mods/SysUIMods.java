@@ -1923,12 +1923,30 @@ public class SysUIMods {
 
 				View content = (View)XposedHelpers.getObjectField(entry, "content");
 				if (content != null) {
-				content.setBackgroundColor(Color.TRANSPARENT);
+					content.setBackgroundColor(Color.TRANSPARENT);
+					content.destroyDrawingCache();
 					content.invalidate();
 				}
 				
 				View row = (View)XposedHelpers.getObjectField(entry, "row");
 				if (row != null) {
+					ViewGroup adaptive = (ViewGroup)row.findViewById(row.getResources().getIdentifier("adaptive", "id", "com.android.systemui"));
+					if (adaptive != null && adaptive.getChildCount() > 1) {
+						View adaptiveChild = adaptive.getChildAt(1);
+						if (adaptiveChild.getBackground() != null)
+						if (adaptiveChild instanceof LinearLayout) {
+							LinearLayout adaptiveLL = (LinearLayout)adaptiveChild;
+							adaptiveLL.setBackgroundColor(Color.TRANSPARENT);
+							adaptiveLL.destroyDrawingCache();
+							adaptiveLL.invalidate();
+						} else if (adaptiveChild instanceof FrameLayout) {
+							FrameLayout adaptiveFL = (FrameLayout)adaptiveChild;
+							adaptiveFL.setBackgroundColor(Color.TRANSPARENT);
+							adaptiveFL.destroyDrawingCache();
+							adaptiveFL.invalidate();
+						}
+					}
+					
 					ArrayList<View> nViews = Helpers.getChildViewsRecursive(row);
 					for (View nView: nViews)
 					if (nView != null && nView.getResources() != null && nView.getId() > 0 && nView.getId() != 0xffffffff) try {
@@ -1944,9 +1962,15 @@ public class SysUIMods {
 							Context ctx = icon.getContext();
 							icon.setBackground(null);
 							icon.setImageDrawable(null);
-							if (sbn.getNotification().largeIcon != null) {
-								Bitmap newBmp = Bitmap.createScaledBitmap(sbn.getNotification().largeIcon, densify(ctx, 64), densify(ctx, 64), false);
-								icon.setImageBitmap(newBmp);
+							Bitmap largeIcon = sbn.getNotification().largeIcon;
+							if (largeIcon != null) {
+								int dimen = densify(ctx, 64);
+								if (largeIcon.getWidth() > dimen || largeIcon.getHeight() > dimen) {
+									Bitmap newBmp = Bitmap.createScaledBitmap(sbn.getNotification().largeIcon, dimen, dimen, false);
+									icon.setImageBitmap(newBmp);
+								} else {
+									icon.setImageBitmap(largeIcon);
+								}
 							} else {
 								icon.setImageResource(sbn.getNotification().icon);
 							}
@@ -1954,6 +1978,35 @@ public class SysUIMods {
 					} catch (Throwable t) {
 						XposedBridge.log(t);
 					}
+				}
+			}
+		});
+	}
+	
+	public static void execHook_TranslucentEQS(InitPackageResourcesParam resparam) {
+		try {
+			resparam.res.setReplacement("com.android.systemui", "drawable", "quick_settings_tile_background", Color.TRANSPARENT);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_TranslucentHorizEQS(InitPackageResourcesParam resparam) {
+		try {
+			resparam.res.setReplacement("com.android.systemui", "drawable", "quick_settings_minor_container_background", Color.TRANSPARENT);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_TranslucentHorizEQSCode(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				FrameLayout mStatusBarWindow = (FrameLayout) getObjectField(param.thisObject, "mStatusBarWindow");
+				if (mStatusBarWindow != null) {
+					LinearLayout qsMinorContainer = (LinearLayout)mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("quick_settings_minor_container", "id", "com.android.systemui"));
+					if (qsMinorContainer != null) qsMinorContainer.setShowDividers(0);
 				}
 			}
 		});

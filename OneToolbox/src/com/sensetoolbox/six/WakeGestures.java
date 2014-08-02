@@ -1,10 +1,14 @@
 package com.sensetoolbox.six;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -119,17 +123,29 @@ public class WakeGestures extends HtcPreferenceActivity {
 			logoPressActionPreference.setTitle(Helpers.l10n(this, R.string.wakegestures_volume_title));
 			logoPressActionPreference.setSummary(Helpers.l10n(this, R.string.wakegestures_volume_summ));
 			if (!Helpers.isWakeGestures()) {
-				swipeRightActionPreference.setEntries(R.array.wakegest_m8stock_actions);
+				List<String> newEntries = new ArrayList<String>();
+				TypedArray ids = getResources().obtainTypedArray(R.array.wakegest_m8stock_actions);
+				for (int i = 0; i < ids.length(); i++) {
+					int id = ids.getResourceId(i, 0);
+					if (id != 0)
+						newEntries.add(Helpers.l10n(this, id));
+					else
+						newEntries.add("???");
+				}
+				ids.recycle();
+				CharSequence[] wakegest_m8stock_actions_l10n = newEntries.toArray(new CharSequence[newEntries.size()]);
+				
+				swipeRightActionPreference.setEntries(wakegest_m8stock_actions_l10n);
 				swipeRightActionPreference.setEntryValues(R.array.wakegest_m8stock_actions_val);
-				swipeleftActionPreference.setEntries(R.array.wakegest_m8stock_actions);
+				swipeleftActionPreference.setEntries(wakegest_m8stock_actions_l10n);
 				swipeleftActionPreference.setEntryValues(R.array.wakegest_m8stock_actions_val);
-				swipeUpActionPreference.setEntries(R.array.wakegest_m8stock_actions);
+				swipeUpActionPreference.setEntries(wakegest_m8stock_actions_l10n);
 				swipeUpActionPreference.setEntryValues(R.array.wakegest_m8stock_actions_val);
-				swipeDownActionPreference.setEntries(R.array.wakegest_m8stock_actions);
+				swipeDownActionPreference.setEntries(wakegest_m8stock_actions_l10n);
 				swipeDownActionPreference.setEntryValues(R.array.wakegest_m8stock_actions_val);
-				doubleTapActionPreference.setEntries(R.array.wakegest_m8stock_actions);
+				doubleTapActionPreference.setEntries(wakegest_m8stock_actions_l10n);
 				doubleTapActionPreference.setEntryValues(R.array.wakegest_m8stock_actions_val);
-				logoPressActionPreference.setEntries(R.array.wakegest_m8stock_actions);
+				logoPressActionPreference.setEntries(wakegest_m8stock_actions_l10n);
 				logoPressActionPreference.setEntryValues(R.array.wakegest_m8stock_actions_val);
 			}
 		}
@@ -262,6 +278,11 @@ public class WakeGestures extends HtcPreferenceActivity {
 		launchAppsDoubleTap.setOnPreferenceClickListener(clickPref);
 		launchAppsLogoPress.setSummary(getAppName(this, prefs.getString("pref_key_wakegest_logo2wake_app", not_selected)));
 		launchAppsLogoPress.setOnPreferenceClickListener(clickPref);
+		
+		if (Helpers.isButterflyS()) {
+			if (logoPressActionPreference != null) ((HtcPreferenceScreen)findPreference("pref_key_wakegest")).removePreference(logoPressActionPreference);
+			if (launchAppsLogoPress != null) ((HtcPreferenceScreen)findPreference("pref_key_wakegest")).removePreference(launchAppsLogoPress);
+		}
 	}
 	
 	@Override

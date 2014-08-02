@@ -35,6 +35,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
@@ -446,10 +447,10 @@ public class OtherMods {
 			if (photoSize == 2) photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_rect); else
 			if (km.inKeyguardRestrictedInputMode()) {
 				photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_ls);
-				if (Helpers.isM8() && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false)) photoHeight += 54;
+				if ((Helpers.isM8() || Helpers.isDesire816()) && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false)) photoHeight += 54;
 			} else {
 				photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height);
-				if (Helpers.isM8())
+				if (Helpers.isM8() || Helpers.isDesire816())
 				if (XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false))
 					photoHeight -= 58;
 				else
@@ -742,16 +743,22 @@ public class OtherMods {
 			intent.putExtra("dialogType", 2);
 			mContext.sendBroadcast(intent);
 		} else {
-			PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+			boolean lightUpScreen = XMain.pref.getBoolean("pref_key_other_popupnotify_lightup", false);
 			boolean sleepMode = XMain.pref.getBoolean("pref_key_other_popupnotify_sleepmode", false);
-			if (pm.isScreenOn() && sleepMode) return;
-			
+
 			Intent intent = new Intent();
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			
+			PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 			if (pm.isScreenOn()) {
 				Bitmap bmp = getScreenshot(mContext);
 				if (bmp != null) intent.putExtra("bmp", bmp);
+			}
+			
+			if (pm.isScreenOn() && sleepMode) return;
+			if (lightUpScreen) {
+				pm.wakeUp(SystemClock.uptimeMillis());
+				pm.userActivity(SystemClock.uptimeMillis(), false);
 			}
 			
 			KeyguardManager kgMgr = (KeyguardManager)mContext.getSystemService(Context.KEYGUARD_SERVICE);

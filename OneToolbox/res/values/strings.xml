@@ -105,8 +105,12 @@
 	<string name="systemui_brightqs_summ">Configure brightness values for EQS tile.</string>
 	<string name="systemui_timeoutqs_title">Timeout</string>
 	<string name="systemui_timeoutqs_summ">Configure timeout values for EQS tile.</string>
+	<string name="systemui_teqs_title">Translucent EQS</string>
+	<string name="systemui_teqs_summ">Remove background from quick settings tiles.</string>
 	<string name="systemui_heqs_title">Horizontal EQS</string>
 	<string name="systemui_heqs_summ">Enable horizontal EQS. Your normal EQS will be there (scrollable).</string>
+	<string name="systemui_theqs_title">Translucent horizontal EQS</string>
+	<string name="systemui_theqs_summ">Remove background from horizontal quick settings.</string>
 	<string name="systemui_heqs_notext_title">Smaller horizontal EQS</string>
 	<string name="systemui_heqs_notext_summ">Removes the text from horizontal EQS.</string>
 	<string name="systemui_noeqs_title">Disable EQS panel</string>

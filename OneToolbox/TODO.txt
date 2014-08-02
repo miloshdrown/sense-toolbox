@@ -38,19 +38,14 @@ http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 Current changelog
 =================
 
-1.3.3
-[New] Translucent notifications background
-[New] LED notifications during charge (not working on some devices)
-[New] Notification LED blinking timeout
-[New] Battery with percentage
-[Fixed] Wake gestures on 4.4.3
-[Fixed] Softkeys back long press in landscape orientation
-Popup notifications
-   [New] Dismiss by dragging popup to bottom
-   [New] Wake screen on every popup
-   [New] Display popups only if screen is off
-   [Fixed] Dismiss lockscreen on main notification action
-
+1.3.4
+[New] Animate percentage battery during charge
+[New] Translucent EQS
+[New] Translucent horizontal EQS
+[Fixed] Screen light up on every popup notification
+[Fixed] Large photo and small soft keys on HTC Desire 816
+[Fixed] Translucent notifications background and icons scaling
+[Fixed] Localization
 
 ===========
 Translators
@@ -74,6 +69,19 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.3.3
+[New] Translucent notifications background
+[New] LED notifications during charge (not working on some devices)
+[New] Notification LED blinking timeout
+[New] Battery with percentage
+[Fixed] Wake gestures on 4.4.3
+[Fixed] Softkeys back long press in landscape orientation
+Popup notifications
+   [New] Dismiss by dragging popup to bottom
+   [New] Wake screen on every popup
+   [New] Display popups only if screen is off
+   [Fixed] Dismiss lockscreen on main notification action
 
 1.3.2
 [Fixed] Widgets and brightness slider background transparency

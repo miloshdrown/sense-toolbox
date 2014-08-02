@@ -199,6 +199,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_sysui_tsb", false))
 				SysUIMods.execHook_NoStatusBarBackground(resparam);
+			
+			if(pref.getBoolean("pref_key_sysui_teqs", false))
+				SysUIMods.execHook_TranslucentEQS(resparam);
+			
+			if(pref.getBoolean("pref_key_sysui_theqs", false))
+				SysUIMods.execHook_TranslucentHorizEQS(resparam);
 		}
 		
 		if (pkg.equals("com.android.settings"))
@@ -470,6 +476,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if(pref.getBoolean("pref_key_sysui_tnsb", false))
 				SysUIMods.execHook_TranslucentNotifications(lpparam);
+			
+			if(pref.getBoolean("pref_key_sysui_theqs", false))
+				SysUIMods.execHook_TranslucentHorizEQSCode(lpparam);
 			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 			CleanBeamMods.execHook_HideIcons(lpparam);

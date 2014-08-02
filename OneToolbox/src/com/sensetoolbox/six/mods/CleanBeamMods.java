@@ -103,7 +103,7 @@ public class CleanBeamMods {
 		if (battIcon == 2) {
 			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.stat_sys_battery));
-			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.stat_sys_battery_charge));
+			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.stat_sys_battery_charging));
 		} else if (battIcon == 4) {
 			resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
 				@Override

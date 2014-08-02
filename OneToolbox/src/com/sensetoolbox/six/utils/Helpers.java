@@ -203,7 +203,8 @@ public class Helpers {
 		
 		for (HtcPreference p: list) {
 			int titleResId = p.getTitleRes();
-			if (titleResId != 0) p.setTitle(l10n(act, titleResId));
+			if (titleResId == 0) continue;
+			p.setTitle(l10n(act, titleResId));
 			
 			CharSequence summ = p.getSummary();
 			if (summ != null && summ != "") {
@@ -499,6 +500,14 @@ public class Helpers {
 	
 	public static boolean isM8() {
 		return Build.DEVICE.contains("htc_m8");
+	}
+	
+	public static boolean isButterflyS() {
+		return Build.DEVICE.contains("dlxpul");
+	}
+	
+	public static boolean isDesire816() {
+		return Build.DEVICE.contains("htc_a5");
 	}
 	
 	public static boolean isNotM7() {

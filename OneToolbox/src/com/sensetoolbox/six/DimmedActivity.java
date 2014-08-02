@@ -94,9 +94,6 @@ public class DimmedActivity extends Activity {
 			ApmDialog rebD = new ApmDialog(this, dialogType);
 			rebD.show();
 		} else if (dType == 2) {
-			if (prefs.getBoolean("pref_key_other_popupnotify_lightup", false))
-			getWindow().addFlags(WindowManager.LayoutParams.FLAG_TURN_SCREEN_ON);
-
 			density = getResources().getDisplayMetrics().density;
 			getWindow().getDecorView().setPadding(-1, 0, -1, 0);
 			setContentView(R.layout.notifications);

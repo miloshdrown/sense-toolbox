@@ -645,7 +645,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				assist_cat.setTitle(Helpers.l10n(getActivity(), R.string.controls_mods_recentslongpress));
 				HtcListPreference assist = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
 				assist.setSummary(Helpers.l10n(getActivity(), R.string.controls_recentslongpressaction_summ));
-			} else
+			} else if (!Helpers.isDesire816())
 				((HtcPreferenceScreen) findPreference("pref_key_controls")).removePreference(findPreference("pref_key_controls_smallsoftkeys"));
 		}
 	}

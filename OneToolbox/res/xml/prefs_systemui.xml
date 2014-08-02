@@ -83,10 +83,21 @@
 			android:summary="@string/systemui_timeoutqs_summ"
 			android:title="@string/systemui_timeoutqs_title" />
 		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_sysui_teqs"
+			android:summary="@string/systemui_teqs_summ"
+			android:title="@string/systemui_teqs_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_sysui_minorqs"
 			android:summary="@string/systemui_heqs_summ"
 			android:title="@string/systemui_heqs_title"
 			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_sysui_theqs"
+			android:summary="@string/systemui_theqs_summ"
+			android:title="@string/systemui_theqs_title"
+			android:defaultValue="false"
+			android:dependency="pref_key_sysui_minorqs" />
 		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_sysui_minorqs_notext"
 			android:summary="@string/systemui_heqs_notext_summ"
