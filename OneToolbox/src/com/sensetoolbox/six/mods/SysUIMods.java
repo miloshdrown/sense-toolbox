@@ -29,6 +29,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
+import android.content.res.XResources;
 import android.content.res.Resources.Theme;
 import android.content.res.XModuleResources;
 import android.database.ContentObserver;
@@ -1981,6 +1982,20 @@ public class SysUIMods {
 				}
 			}
 		});
+	}
+	
+	public static void execHook_TranslucentNotificationsDividers() {
+		try {
+			XResources.hookSystemWideLayout("android", "layout", "notification_action_list", new XC_LayoutInflated() {
+				@Override
+				public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+					LinearLayout nal = (LinearLayout)liparam.view;
+					if (nal != null) nal.setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 	
 	public static void execHook_TranslucentEQS(InitPackageResourcesParam resparam) {

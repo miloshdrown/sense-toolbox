@@ -351,6 +351,8 @@
 	<string name="various_fastunlock_summ">Unlock device as soon as correct PIN or password are entered. HTC lockscreen only.</string>
 	<string name="various_ytwatermark_title">YouTube channel watermark</string>
 	<string name="various_ytwatermark_summ">Hide channel logo overlay on videos in YouTube app.</string>
+	<string name="various_contactsnocorner_title">Contacts photo frame</string>
+	<string name="various_contactsnocorner_summ">Remove a frame with bottom right corner from contacts\' photos.</string>
 	<string name="various_oldtoasts_title">Sense 6 styled toasts</string>
 	<string name="various_oldtoasts_summ">Make toasts darker with smaller rounded corners radius.</string>
 	<string name="various_securelock_title">Enhanced screen lock</string>

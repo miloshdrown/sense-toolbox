@@ -106,6 +106,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pref.getBoolean("pref_key_other_ledoncharge", false))
 			OtherMods.execHook_LEDOnCharge();
+		
+		if(pref.getBoolean("pref_key_sysui_tnsb", false))
+			SysUIMods.execHook_TranslucentNotificationsDividers();
+		
+		if (pref.getBoolean("pref_key_other_contactsnocorner", false))
+			OtherMods.execHook_ContactsNoCornerSystem();
 	}
 	
 	@Override
@@ -254,6 +260,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		{
 			if (pref.getBoolean("pref_key_other_ytwatermark", false))
 				OtherMods.execHook_YouTubeNoWatermark(resparam);
+		}
+		
+		if (pkg.equals("com.htc.contacts"))
+		{
+			if (pref.getBoolean("pref_key_other_contactsnocorner", false))
+				OtherMods.execHook_ContactsNoCorner(resparam);
 		}
 	}
 	

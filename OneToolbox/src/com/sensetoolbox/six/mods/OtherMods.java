@@ -31,6 +31,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
@@ -893,5 +894,22 @@ public class OtherMods {
 				XposedHelpers.setBooleanField(param.thisObject, "mFlashDuringPlugged", true);
 			}
 		});
+	}
+	
+	public static void execHook_ContactsNoCornerSystem() {
+		XResources.setSystemWideReplacement("com.htc:drawable/common_photo_frame_quick_contact_mask", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id) throws Throwable {
+				return new ColorDrawable(Color.TRANSPARENT);
+			}
+		});
+	}
+	
+	public static void execHook_ContactsNoCorner(final InitPackageResourcesParam resparam) {
+		if (resparam.packageName.equals("com.htc.contacts")) try {
+			resparam.res.setReplacement(resparam.packageName, "drawable", "common_photo_frame_quick_contact_mask", Color.TRANSPARENT);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 }
