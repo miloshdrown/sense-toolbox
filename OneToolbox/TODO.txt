@@ -3,36 +3,24 @@ Ideas
 =====
 
 - beats toggle
-- side way scrolling (Loads of work. probably not feasable...)
 - "is it possible to get Always extended lockscreen widget like there is in Orio Rom?"
 - Other apps in HTC lock screen notifications
 - HDMI output with screen off (Don't have such an adapter...)
-- Day of week next to clock (isn't the status bar crowded enough?
-- Battery bar
 - Exchange security mod
 - More options for brightnes slider
-- gallery statusbar transparency. (Saw today that's an issue with all components using SurfaceView. Saw it in FourSquare map view)
-- That mod: http://forum.xda-developers.com/showpost.php?p=45931184&postcount=46834 (No idea...)
+- That mod: http://forum.xda-developers.com/showpost.php?p=45931184&postcount=46834
 - Only one toast for group notifications
 - Small font also on home screens
 - 2 finger swipes
 - switch to zoe on camera volume buttons
 - Camera: Press both buttons for an action
 - Remove Sense lockscreen weather widget.
-- Remove clock in BF too
-- Pageless BF scrolling
+- Pageless BF scrolling, remove snap to block scrolling
 - https://www.youtube.com/watch?v=HfCa3JtGpxc
 - Change carrier label on lockscreen and notification drawer
-- Get rid of some useless icons like Beats and Headphone...
 - Auto close EQS after setting changed
-- Go to recent apps as swipe action (swipe where? all Sense swipes are not going to work for foreground apps, obviously, might just remove this todo)
-- Custom graphics (CleanBeam-styled?) for EQS
-- Optional dock swipe to menu (I don't think so :D)
-- Scrollable wallpaper
 - Owner/carrier info on Lockscreen
-- LED Notification thing: http://forum.xda-developers.com/showthread.php?p=49535219
 
-http://forum.xda-developers.com/showthread.php?t=2243705&highlight=prism+trans
 
 =================
 Current changelog
@@ -42,9 +30,13 @@ Current changelog
 [New] Animate percentage battery during charge
 [New] Translucent EQS
 [New] Translucent horizontal EQS
+[New] Remove frames with corners from contact photos
 [Fixed] Screen light up on every popup notification
+[Fixed] Show popups for missed calls even in unobtrusive mode
 [Fixed] Large photo and small soft keys on HTC Desire 816
 [Fixed] Translucent notifications background and icons scaling
+[Fixed] Horizontal EQS width and fading edge background
+[Fixed] Small navbar in landscape mode
 [Fixed] Localization
 
 ===========

@@ -86,12 +86,12 @@ public class GlobalActions {
 			}
 			
 			if (action.equals("com.sensetoolbox.six.mods.action.SimulateMenu")) {
-				new Thread(new Runnable() {         
-			        public void run() {
-			            Instrumentation inst = new Instrumentation();  
-			            inst.sendKeyDownUpSync(KeyEvent.KEYCODE_MENU);
-			        }   
-			    }).start();
+				new Thread(new Runnable() {
+					public void run() {
+						Instrumentation inst = new Instrumentation();
+						inst.sendKeyDownUpSync(KeyEvent.KEYCODE_MENU);
+					}
+				}).start();
 			}
 			
 			if (action.equals("com.sensetoolbox.six.mods.action.OpenRecents")) {
@@ -112,7 +112,7 @@ public class GlobalActions {
 				}
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.ToggleBluetooth")) {
-				BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();    
+				BluetoothAdapter mBluetoothAdapter = BluetoothAdapter.getDefaultAdapter();
 				if (mBluetoothAdapter.isEnabled()) {
 					mBluetoothAdapter.disable();
 					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_bt_off), Toast.LENGTH_SHORT).show();
@@ -289,7 +289,7 @@ public class GlobalActions {
 			} else if (isAllowed) {
 				// Removes from recents also
 				removeTask.invoke(am, Integer.valueOf(taskInfo.get(0).id), Integer.valueOf(1));
-				// Force closes all package parts 
+				// Force closes all package parts
 				forceStopPackage.invoke(am, thisPkg);
 			}
 			
@@ -299,7 +299,7 @@ public class GlobalActions {
 				Method getFunc = clsSP.getDeclaredMethod("get", String.class);
 				String haptic = (String)getFunc.invoke(null, "sys.psaver.haptic");
 				
-				if (haptic.equals("false")) {			
+				if (haptic.equals("false")) {
 					Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
 					vibe.vibrate(30);
 				}
@@ -319,7 +319,7 @@ public class GlobalActions {
 			newSet = String.format("%s,%s", beforeEnable, LocationManager.GPS_PROVIDER);
 		
 		try {
-			Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet);	
+			Settings.Secure.putString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED, newSet);
 		} catch(Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -331,7 +331,7 @@ public class GlobalActions {
 			String str = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
 			if (str == null)
 				str = "";
-			else {				
+			else {
 				String[] list = str.split (",");
 				str = "";
 
@@ -398,11 +398,11 @@ public class GlobalActions {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-		            IntentFilter intentfilter = new IntentFilter();
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.StartEasterEgg");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.RestartMessages");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.RestartPrism");
-		            mPWMContext.registerReceiver(mBRTools, intentfilter);
+					IntentFilter intentfilter = new IntentFilter();
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.StartEasterEgg");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.RestartMessages");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.RestartPrism");
+					mPWMContext.registerReceiver(mBRTools, intentfilter);
 				}
 			});
 		} catch (Throwable t) {
@@ -419,34 +419,34 @@ public class GlobalActions {
 					mPWM = param.thisObject;
 					//mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 					Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-		            IntentFilter intentfilter = new IntentFilter();
-		            
-		            // Actions
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.GoToSleep");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.LockDevice");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.TakeScreenshot");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.killForegroundApp");
-		            //intentfilter.addAction("com.sensetoolbox.six.mods.action.killForegroundAppShedule");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.SimulateMenu");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.OpenRecents");
-		            
-		            // Toggles
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleWiFi");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleBluetooth");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleGPS");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleNFC");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleSoundProfile");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleAutoBrightness");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleAutoRotation");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleFlashlight");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleMobileData");
-		            
-		            //APM
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.APMReboot");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.APMRebootRecovery");
-		            intentfilter.addAction("com.sensetoolbox.six.mods.action.APMRebootBootloader");
-		            
-		            mPWMContext.registerReceiver(mBR, intentfilter);
+					IntentFilter intentfilter = new IntentFilter();
+					
+					// Actions
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.GoToSleep");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.LockDevice");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.TakeScreenshot");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.killForegroundApp");
+					//intentfilter.addAction("com.sensetoolbox.six.mods.action.killForegroundAppShedule");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.SimulateMenu");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.OpenRecents");
+					
+					// Toggles
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleWiFi");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleBluetooth");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleGPS");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleNFC");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleSoundProfile");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleAutoBrightness");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleAutoRotation");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleFlashlight");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleMobileData");
+					
+					//APM
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.APMReboot");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.APMRebootRecovery");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.APMRebootBootloader");
+					
+					mPWMContext.registerReceiver(mBR, intentfilter);
 				}
 			});
 		} catch (Throwable t) {
@@ -493,7 +493,7 @@ public class GlobalActions {
 	
 	public static boolean lockDevice(Context context) {
 		try {
-            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.LockDevice"));
+			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.LockDevice"));
 			return true;
 		} catch (Throwable t) {
 			XposedBridge.log(t);
@@ -502,13 +502,13 @@ public class GlobalActions {
 	}
 	
 	public static boolean goToSleep(Context context) {
-        try {
-            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.GoToSleep"));
-        	return true;
-        } catch (Throwable t) {
-        	XposedBridge.log(t);
-            return false;
-        }
+		try {
+			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.GoToSleep"));
+			return true;
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+			return false;
+		}
 	}
 	
 	public static boolean launchApp(Context context, int action) {
@@ -568,66 +568,66 @@ public class GlobalActions {
 	}
 	
 	public static boolean takeScreenshot(Context context) {
-        try {
-            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.TakeScreenshot"));
-        	return true;
-        } catch (Throwable t) {
-        	XposedBridge.log(t);
-            return false;
-        }
+		try {
+			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.TakeScreenshot"));
+			return true;
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+			return false;
+		}
 	}
 	
 	public static boolean killForegroundApp(Context context) {
-        try {
-            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.killForegroundApp"));
-        	return true;
-        } catch (Throwable t) {
-        	XposedBridge.log(t);
-            return false;
-        }
+		try {
+			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.killForegroundApp"));
+			return true;
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+			return false;
+		}
 	}
 	
 	public static boolean simulateMenu(Context context) {
-        try {
-            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.SimulateMenu"));
-        	return true;
-        } catch (Throwable t) {
-        	XposedBridge.log(t);
-            return false;
-        }
+		try {
+			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.SimulateMenu"));
+			return true;
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+			return false;
+		}
 	}
 	
 	public static boolean openRecents(Context context) {
-        try {
-            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.OpenRecents"));
-        	return true;
-        } catch (Throwable t) {
-        	XposedBridge.log(t);
-            return false;
-        }
+		try {
+			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.OpenRecents"));
+			return true;
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+			return false;
+		}
 	}
 	
 	public static boolean toggleThis(Context context, int what) {
-        try {
-        	String whatStr = "WiFi";
-        	switch (what) {
-        		case 1: whatStr = "WiFi"; break;
-        		case 2: whatStr = "Bluetooth"; break;
-        		case 3: whatStr = "GPS"; break;
-        		case 4: whatStr = "NFC"; break;
-        		case 5: whatStr = "SoundProfile"; break;
-        		case 6: whatStr = "AutoBrightness"; break;
-        		case 7: whatStr = "AutoRotation"; break;
-        		case 8: whatStr = "Flashlight"; break;
-        		case 9: whatStr = "MobileData"; break;
-        		default: return false;
-        	}
-            context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.Toggle" + whatStr));
-        	return true;
-        } catch (Throwable t) {
-        	XposedBridge.log(t);
-            return false;
-        }
+		try {
+			String whatStr = "WiFi";
+			switch (what) {
+				case 1: whatStr = "WiFi"; break;
+				case 2: whatStr = "Bluetooth"; break;
+				case 3: whatStr = "GPS"; break;
+				case 4: whatStr = "NFC"; break;
+				case 5: whatStr = "SoundProfile"; break;
+				case 6: whatStr = "AutoBrightness"; break;
+				case 7: whatStr = "AutoRotation"; break;
+				case 8: whatStr = "Flashlight"; break;
+				case 9: whatStr = "MobileData"; break;
+				default: return false;
+			}
+			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.Toggle" + whatStr));
+			return true;
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+			return false;
+		}
 	}
 	
 	public static ColorFilter createColorFilter(boolean fromModule) {
@@ -645,7 +645,7 @@ public class GlobalActions {
 			if (PrefsFragment.prefs != null) {
 				brightness = PrefsFragment.prefs.getInt("pref_key_colorfilter_brightValue", 100) - 100;
 				saturation = PrefsFragment.prefs.getInt("pref_key_colorfilter_satValue", 100) - 100;
-				hue = PrefsFragment.prefs.getInt("pref_key_colorfilter_hueValue", 180) - 180;		
+				hue = PrefsFragment.prefs.getInt("pref_key_colorfilter_hueValue", 180) - 180;
 			}
 		}
 		
@@ -660,23 +660,23 @@ public class GlobalActions {
 	public static void sendMediaButton(KeyEvent keyEvent)
 	{
 		try {
-	        // Get binder from ServiceManager.checkService(String)
-	        IBinder iBinder  = (IBinder) Class.forName("android.os.ServiceManager")
-	        .getDeclaredMethod("checkService", String.class)
-	        .invoke(null, Context.AUDIO_SERVICE);
+			// Get binder from ServiceManager.checkService(String)
+			IBinder iBinder  = (IBinder) Class.forName("android.os.ServiceManager")
+			.getDeclaredMethod("checkService", String.class)
+			.invoke(null, Context.AUDIO_SERVICE);
 
-	        // get audioService from IAudioService.Stub.asInterface(IBinder)
-	        Object audioService  = Class.forName("android.media.IAudioService$Stub")
-	        .getDeclaredMethod("asInterface", IBinder.class)
-	        .invoke(null, iBinder);
+			// get audioService from IAudioService.Stub.asInterface(IBinder)
+			Object audioService  = Class.forName("android.media.IAudioService$Stub")
+			.getDeclaredMethod("asInterface", IBinder.class)
+			.invoke(null, iBinder);
 
-	        // Dispatch keyEvent using IAudioService.dispatchMediaKeyEvent(KeyEvent)
-	        Class.forName("android.media.IAudioService")
-	        .getDeclaredMethod("dispatchMediaKeyEvent", KeyEvent.class)
-	        .invoke(audioService, keyEvent);            
-	    }  catch (Throwable t) {
-	        XposedBridge.log(t);
-	    }
+			// Dispatch keyEvent using IAudioService.dispatchMediaKeyEvent(KeyEvent)
+			Class.forName("android.media.IAudioService")
+			.getDeclaredMethod("dispatchMediaKeyEvent", KeyEvent.class)
+			.invoke(audioService, keyEvent);
+		}  catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 	
 	public static void buttonBacklight(){
@@ -686,7 +686,7 @@ public class GlobalActions {
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 					Intent intent = new Intent("com.sensetoolbox.six.UPDATEBACKLIGHT");
-			        
+					
 					int sysUiVis = (Integer)param.args[0];
 					if (sysUiVis == 67108864 || sysUiVis == 0) return;
 					//XposedBridge.log("statusBarVisibilityChanged: " + String.valueOf(sysUiVis));
@@ -712,9 +712,9 @@ public class GlobalActions {
 						int newFlags = mWindowAttributes.flags & ~j | i & j;
 						
 						if (newFlags != 0 &&
-						   (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != WindowManager.LayoutParams.FLAG_FULLSCREEN &&
-						   (newFlags & WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN) == WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN &&
-						   (newFlags & WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR) == WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR) {
+						(newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != WindowManager.LayoutParams.FLAG_FULLSCREEN &&
+						(newFlags & WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN) == WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN &&
+						(newFlags & WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR) == WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR) {
 								//XposedBridge.log("setFlags FLAG_LAYOUT_*: " + String.valueOf(newFlags));
 								Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 								mContext.sendBroadcast(new Intent("com.sensetoolbox.six.UPDATEBACKLIGHT"));
@@ -731,7 +731,7 @@ public class GlobalActions {
 					int newFlags = act.getWindow().getAttributes().flags;
 					//XposedBridge.log("onResume flags: " + String.valueOf(newFlags));
 					Intent intent = new Intent("com.sensetoolbox.six.UPDATEBACKLIGHT");
-			        if (newFlags != 0 && (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN && !act.getPackageName().equals("com.android.systemui"))
+					if (newFlags != 0 && (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN && !act.getPackageName().equals("com.android.systemui"))
 					intent.putExtra("forceDisableBacklight", true);
 					act.sendBroadcast(intent);
 				}

@@ -1,25 +1,26 @@
 <resources>
 
-    <dimen name="sense_actionbar_height">54dp</dimen>
+	<dimen name="sense_actionbar_height">54dp</dimen>
 
-    <dimen name="celllayout_top_padding_port">0.0dip</dimen>
-    <dimen name="celllayout_bottom_padding_port">78.0dip</dimen>
-    <dimen name="workspace_height_gap_port">-1.0dip</dimen>
-    <dimen name="workspace_height_gap_fix">10.0dip</dimen>
-    <dimen name="app_icon_padding_top">20.0dip</dimen>
-    <dimen name="workspace_cell_height_port">120.0dip</dimen>
-    <dimen name="button_bar_height_without_padding">65.0dip</dimen>
+	<dimen name="celllayout_top_padding_port">0.0dip</dimen>
+	<dimen name="celllayout_bottom_padding_port">78.0dip</dimen>
+	<dimen name="workspace_height_gap_port">-1.0dip</dimen>
+	<dimen name="workspace_height_gap_fix">10.0dip</dimen>
+	<dimen name="app_icon_padding_top">20.0dip</dimen>
+	<dimen name="workspace_cell_height_port">120.0dip</dimen>
+	<dimen name="button_bar_height_without_padding">65.0dip</dimen>
 
-    <dimen name="photo_new_height">864.0px</dimen>
-    <dimen name="photo_new_height_rect">720.0px</dimen>
-    <dimen name="photo_new_height_ls">796.0px</dimen>
+	<dimen name="photo_new_height">864.0px</dimen>
+	<dimen name="photo_new_height_rect">720.0px</dimen>
+	<dimen name="photo_new_height_ls">796.0px</dimen>
 
-    <dimen name="people_info_top_margin">727.0px</dimen>
-    <dimen name="people_info_top_margin_rect">714.0px</dimen>
+	<dimen name="people_info_top_margin">727.0px</dimen>
+	<dimen name="people_info_top_margin_rect">714.0px</dimen>
 
 	<dimen name="lockscreen_10">25.0px</dimen>
 
 	<dimen name="navigation_bar_height">30dp</dimen>
-    <dimen name="navigation_bar_height_landscape">30dp</dimen>
+	<dimen name="navigation_bar_height_landscape">30dp</dimen>
+	<dimen name="navigation_bar_width">30dp</dimen>
 
 </resources>

@@ -215,13 +215,14 @@ public class SysUIMods {
 				{
 					LinearLayout tmp = (LinearLayout) qsContainer.getChildAt(k);
 					LinearLayout.LayoutParams tmpParams = (LinearLayout.LayoutParams) tmp.getLayoutParams();
-					tmpParams.width = (int) Math.floor(displayWidth / 5);
+					tmpParams.width = (int) Math.floor(displayWidth / 5 - 3);
 					tmp.setLayoutParams(tmpParams);
 					if(removeText)
 					{
-						tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_text", "id", "com.android.systemui")).setVisibility(View.GONE);;
+						View quick_setting_text = tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_text", "id", "com.android.systemui"));
+						if (quick_setting_text != null) quick_setting_text.setVisibility(View.GONE);
 						ImageView qsImg = (ImageView) tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_image", "id", "com.android.systemui"));
-						qsImg.setPadding(0, 0, 0, 20);
+						if (qsImg != null) qsImg.setPadding(0, 0, 0, 20);
 					}
 				}
 				qsContainer.invalidate();
@@ -240,11 +241,12 @@ public class SysUIMods {
 					if (qsContainer != null && notificationContainer != null)
 					{
 						HorizontalScrollView qsScroll = new HorizontalScrollView(mStatusBarWindow.getContext());
-						qsScroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+						qsScroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 						qsScroll.setFillViewport(true);
 						qsScroll.setHorizontalFadingEdgeEnabled(true);
 						qsScroll.setHorizontalScrollBarEnabled(false);
 						qsScroll.setOverScrollMode(View.OVER_SCROLL_NEVER);
+						qsScroll.setBackgroundColor(Color.rgb(22, 22, 22));
 
 						WindowManager wm = (WindowManager) mStatusBarWindow.getContext().getSystemService(Context.WINDOW_SERVICE);
 						Display display = wm.getDefaultDisplay();
@@ -256,11 +258,12 @@ public class SysUIMods {
 						{
 							LinearLayout tmp = (LinearLayout) qsContainer.getChildAt(i);
 							LinearLayout.LayoutParams tmpParams = (LinearLayout.LayoutParams) tmp.getLayoutParams();
-							tmpParams.width = (int) Math.floor(displayWidth / 5);
+							tmpParams.width = (int) Math.floor(displayWidth / 5 - 3);
 							tmp.setLayoutParams(tmpParams);
 							if(removeText)
 							{
-								tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_text", "id", "com.android.systemui")).setVisibility(View.GONE);;
+								View quick_setting_text = tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_text", "id", "com.android.systemui"));
+								if (quick_setting_text != null) quick_setting_text.setVisibility(View.GONE);
 								ImageView qsImg = (ImageView) tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_image", "id", "com.android.systemui"));
 								qsImg.setPadding(0, 0, 0, 20);
 							}
@@ -1341,7 +1344,7 @@ public class SysUIMods {
 	}
 	
 	private static Thread cpuThread = null;
-	private static boolean isThreadActive = false;;
+	private static boolean isThreadActive = false;
 	private static long workLast, totalLast, workC, totalC = 0;
 	private static int curFreq;
 	private static String curTemp;

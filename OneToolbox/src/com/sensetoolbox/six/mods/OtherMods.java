@@ -756,7 +756,14 @@ public class OtherMods {
 				if (bmp != null) intent.putExtra("bmp", bmp);
 			}
 			
-			if (pm.isScreenOn() && sleepMode) return;
+			boolean isFromPhone = false;
+			for (StatusBarNotification sbn: sbns)
+			if (sbn.getPackageName().equals("com.android.phone") && sbn.getNotification().actions.length >= 2) {
+				isFromPhone = true;
+				break;
+			}
+			
+			if (pm.isScreenOn() && sleepMode && !isFromPhone) return;
 			if (lightUpScreen) {
 				pm.wakeUp(SystemClock.uptimeMillis());
 				pm.userActivity(SystemClock.uptimeMillis(), false);
