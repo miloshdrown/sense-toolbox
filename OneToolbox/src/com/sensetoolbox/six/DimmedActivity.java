@@ -24,10 +24,12 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.service.notification.StatusBarNotification;
@@ -57,6 +59,9 @@ public class DimmedActivity extends Activity {
 	WindowManager.LayoutParams params;
 	String clearIntent = "com.sensetoolbox.six.UPDATENOTIFICATIONS";
 	IntentFilter filter = new IntentFilter(clearIntent);
+	Intent lastIntent;
+	boolean bkgPortrait = true;
+	BitmapDrawable blurredBkg = null;
 	public Notifications notifications = new Notifications();
 	public boolean sleepOnDismissLast = false;
 	public ArrayList<StatusBarNotification> sbns = null;
@@ -126,7 +131,7 @@ public class DimmedActivity extends Activity {
 			time_date_widget.setVisibility(View.VISIBLE);
 			
 			int headerStyle = Integer.parseInt(prefs.getString("pref_key_other_popupnotify_clock", "1"));
-			if (headerStyle == 1) {
+			if (headerStyle == 1 && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 				time_date_widget.setVisibility(View.GONE);
 			} else if (headerStyle == 3) {
 				AppWidgetManager mAppWidgetManager = AppWidgetManager.getInstance(this);
@@ -190,12 +195,16 @@ public class DimmedActivity extends Activity {
 		int headerStyle = Integer.parseInt(prefs.getString("pref_key_other_popupnotify_clock", "1"));
 		
 		final Intent intent = getIntent();
+		lastIntent = (Intent)intent.clone();
 		dialogType = intent.getIntExtra("dialogType", 1);
 		if (dialogType == 2) {
 			if (backStyle > 1 && pm.isScreenOn()) {
 				Bitmap bmp = (Bitmap)intent.getParcelableExtra("bmp");
-				if (bmp != null)
-				getWindow().setBackgroundDrawable(new BitmapDrawable(getResources(), BlurBuilder.blur(this, bmp, backStyle == 3 ? true : false)));
+				if (bmp != null) {
+					blurredBkg = new BitmapDrawable(getResources(), BlurBuilder.blur(this, bmp, backStyle == 3 ? true : false));
+					getWindow().setBackgroundDrawable(blurredBkg);
+				}
+				bkgPortrait = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? true : false);
 			} else if (headerStyle > 1) {
 				if (!isInLockscreen) getWindow().getDecorView().setBackgroundColor(Color.argb(170, 0, 0, 0));
 			}
@@ -212,6 +221,7 @@ public class DimmedActivity extends Activity {
 	
 	@Override
 	public void onNewIntent(Intent newIntent) {
+		lastIntent = (Intent)newIntent.clone();
 		super.onNewIntent(newIntent);
 		initNotifications(newIntent, false);
 	}
@@ -226,7 +236,7 @@ public class DimmedActivity extends Activity {
 		dialogType = dialogTypeNew;
 		if (dialogType != 2) return;
 		ArrayList<StatusBarNotification> sbnsNew = intent.getParcelableArrayListExtra("sbns");
-		if (sbnsNew.equals(sbns))
+		if (sbnsNew.equals(sbns) && !intent.getBooleanExtra("doRotate", false))
 			return;
 		else
 			sbns = sbnsNew;
@@ -389,6 +399,21 @@ public class DimmedActivity extends Activity {
 			}
 		}
 		return super.dispatchTouchEvent(ev);
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		if (dialogType == 2 && lastIntent != null) {
+			lastIntent.putExtra("doRotate", true);
+			createDialog(dialogType, lastIntent);
+			if (blurredBkg != null &&
+				(bkgPortrait && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ||
+				!bkgPortrait && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE))
+				getWindow().setBackgroundDrawable(blurredBkg);
+			else
+				getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+		}
 	}
 	
 	@Override

@@ -26,18 +26,20 @@ Ideas
 Current changelog
 =================
 
-1.3.4
+1.3.5
 [New] Animate percentage battery during charge
 [New] Translucent EQS
 [New] Translucent horizontal EQS
 [New] Remove frames with corners from contact photos
-[Fixed] Screen light up on every popup notification
-[Fixed] Show popups for missed calls even in unobtrusive mode
 [Fixed] Large photo and small soft keys on HTC Desire 816
 [Fixed] Translucent notifications background and icons scaling
 [Fixed] Horizontal EQS width and fading edge background
 [Fixed] Small navbar in landscape mode
 [Fixed] Localization
+Popup notifications
+	[Fixed] Screen light up on every popup notification
+	[Fixed] Show popups for missed calls even in unobtrusive mode
+	[Fixed] Smaller popup in landscape mode
 
 ===========
 Translators

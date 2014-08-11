@@ -72,6 +72,7 @@
         <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_glow_4.png" />
     </issue>
     <issue id="UselessParent">
+        <ignore path="res/layout-land/notifications.xml" />
         <ignore path="res/layout/notifications.xml" />
     </issue>
 </lint>
