@@ -743,7 +743,7 @@ public class OtherMods {
 			intent.putParcelableArrayListExtra("sbns", sbns);
 			intent.putExtra("dialogType", 2);
 			mContext.sendBroadcast(intent);
-		} else {
+		} else try {
 			boolean lightUpScreen = XMain.pref.getBoolean("pref_key_other_popupnotify_lightup", false);
 			boolean sleepMode = XMain.pref.getBoolean("pref_key_other_popupnotify_sleepmode", false);
 
@@ -758,7 +758,11 @@ public class OtherMods {
 			
 			boolean isFromPhone = false;
 			for (StatusBarNotification sbn: sbns)
-			if (sbn.getPackageName().equals("com.android.phone") && sbn.getNotification().actions.length >= 2) {
+			if (sbn != null &&
+				sbn.getNotification() != null &&
+				sbn.getNotification().actions != null &&
+				sbn.getPackageName().equals("com.android.phone") &&
+				sbn.getNotification().actions.length >= 2) {
 				isFromPhone = true;
 				break;
 			}
@@ -779,6 +783,8 @@ public class OtherMods {
 			
 			Bundle animate = ActivityOptions.makeCustomAnimation(mContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 			mContext.startActivity(intent, animate);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	
