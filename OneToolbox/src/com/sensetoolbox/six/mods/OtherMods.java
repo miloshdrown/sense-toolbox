@@ -760,9 +760,7 @@ public class OtherMods {
 			for (StatusBarNotification sbn: sbns)
 			if (sbn != null &&
 				sbn.getNotification() != null &&
-				sbn.getNotification().actions != null &&
-				sbn.getPackageName().equals("com.android.phone") &&
-				sbn.getNotification().actions.length >= 2) {
+				sbn.getPackageName().equals("com.android.phone")) {
 				isFromPhone = true;
 				break;
 			}

@@ -246,7 +246,10 @@ public class SysUIMods {
 						qsScroll.setHorizontalFadingEdgeEnabled(true);
 						qsScroll.setHorizontalScrollBarEnabled(false);
 						qsScroll.setOverScrollMode(View.OVER_SCROLL_NEVER);
-						qsScroll.setBackgroundColor(Color.rgb(22, 22, 22));
+						if (XMain.pref.getBoolean("pref_key_sysui_theqs", false))
+							qsScroll.setBackgroundColor(Color.TRANSPARENT);
+						else
+							qsScroll.setBackgroundColor(Color.rgb(22, 22, 22));
 
 						WindowManager wm = (WindowManager) mStatusBarWindow.getContext().getSystemService(Context.WINDOW_SERVICE);
 						Display display = wm.getDefaultDisplay();
