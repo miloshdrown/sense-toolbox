@@ -85,13 +85,14 @@ public class CleanBeamMods {
 						TextView clock0 = (TextView)mClockSet.get(0);
 						if (clock0 != null) clock0.setTextColor(themeColor);
 					}
-					
+					/*
 					TextView networkLabel = (TextView)XposedHelpers.getObjectField(param.thisObject, "networkLabel");
 					if (networkLabel != null) networkLabel.setTextColor(themeColor);
 					TextView carrierLabelL1 = (TextView)XposedHelpers.getObjectField(param.thisObject, "carrierLabelL1");
 					if (carrierLabelL1 != null) carrierLabelL1.setTextColor(themeColor);
 					TextView carrierLabelL2 = (TextView)XposedHelpers.getObjectField(param.thisObject, "carrierLabelL2");
 					if (carrierLabelL2 != null) carrierLabelL2.setTextColor(themeColor);
+					*/
 				} catch (Throwable t) {
 					XposedBridge.log(t);
 				}

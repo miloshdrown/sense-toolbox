@@ -295,6 +295,12 @@ public class DimmedActivity extends Activity {
 				curTabTag = tabTag;
 				View currentTabView = notifications.getCarouselHost().getCurrentTabFragment().getView();
 				if (currentTabView != null) {
+					if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+					currentTabView.measure(
+						MeasureSpec.makeMeasureSpec(Math.round(400 * getResources().getDisplayMetrics().density), MeasureSpec.AT_MOST),
+						MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+					);
+					else
 					currentTabView.measure(
 						MeasureSpec.makeMeasureSpec(getResources().getDisplayMetrics().widthPixels, MeasureSpec.AT_MOST),
 						MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)

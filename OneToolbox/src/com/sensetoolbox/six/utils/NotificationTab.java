@@ -12,6 +12,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.os.Bundle;
@@ -265,6 +266,12 @@ public class NotificationTab extends Fragment {
 	}
 	
 	private void updateHeight(LinearLayout tab, String uniqueTag) {
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
+			tab.measure(
+			MeasureSpec.makeMeasureSpec(Math.round(400 * getResources().getDisplayMetrics().density), MeasureSpec.AT_MOST),
+			MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+		);
+		else
 		tab.measure(
 			MeasureSpec.makeMeasureSpec(tab.getResources().getDisplayMetrics().widthPixels, MeasureSpec.AT_MOST),
 			MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)

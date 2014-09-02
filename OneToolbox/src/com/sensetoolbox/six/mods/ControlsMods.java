@@ -469,26 +469,36 @@ public class ControlsMods {
 	}
 	
 	public static boolean isHomePressed = false;
+	private static void assignHomeLongPress(final MethodHookParam param) {
+		final ImageView homeButton = (ImageView) callMethod(param.thisObject, "getHomeButton");
+		if (homeButton != null)
+		setObjectField(homeButton, "mCheckLongPress", new Runnable() {
+			@Override
+			public void run() {
+				if (homeButton.isPressed()) {
+					homeButton.setPressed(false);
+					if (XposedHelpers.getIntField(homeButton, "mCode") != 0) {
+						XposedHelpers.callMethod(homeButton, "sendEvent", 1, 32);
+						XposedHelpers.callMethod(homeButton, "sendAccessibilityEvent", 2);
+					}
+					homeButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+					GlobalActions.simulateMenu(homeButton.getContext());
+				}
+			}
+		});
+	}
 	public static void execHook_M8HomeLongpress(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				final ImageView homeButton = (ImageView) callMethod(param.thisObject, "getHomeButton");
-				if (homeButton != null)
-				setObjectField(homeButton, "mCheckLongPress", new Runnable() {
-					@Override
-					public void run() {
-						if (homeButton.isPressed()) {
-							homeButton.setPressed(false);
-							if (XposedHelpers.getIntField(homeButton, "mCode") != 0) {
-								XposedHelpers.callMethod(homeButton, "sendEvent", 1, 32);
-								XposedHelpers.callMethod(homeButton, "sendAccessibilityEvent", 2);
-							}
-							homeButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-							GlobalActions.simulateMenu(homeButton.getContext());
-						}
-					}
-				});
+				assignHomeLongPress(param);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onSizeChanged", int.class, int.class, int.class, int.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				assignHomeLongPress(param);
 			}
 		});
 		
@@ -527,26 +537,36 @@ public class ControlsMods {
 	}
 	
 	public static boolean isRecentsPressed = false;
+	private static void assignRecentsLongpress(final MethodHookParam param) {
+		final ImageView recentsButton = (ImageView) callMethod(param.thisObject, "getRecentsButton");
+		if (recentsButton != null)
+		setObjectField(recentsButton, "mCheckLongPress", new Runnable() {
+			@Override
+			public void run() {
+				if (recentsButton.isPressed()) {
+					recentsButton.setPressed(false);
+					if (XposedHelpers.getIntField(recentsButton, "mCode") != 0) {
+						XposedHelpers.callMethod(recentsButton, "sendEvent", 1, 32);
+						XposedHelpers.callMethod(recentsButton, "sendAccessibilityEvent", 2);
+					}
+					recentsButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
+					assistAndSearchPanelOverride(param);
+				}
+			}
+		});
+	}
 	public static void execHook_M8RecentsLongpress(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				final ImageView recentsButton = (ImageView) callMethod(param.thisObject, "getRecentsButton");
-				if (recentsButton != null)
-				setObjectField(recentsButton, "mCheckLongPress", new Runnable() {
-					@Override
-					public void run() {
-						if (recentsButton.isPressed()) {
-							recentsButton.setPressed(false);
-							if (XposedHelpers.getIntField(recentsButton, "mCode") != 0) {
-								XposedHelpers.callMethod(recentsButton, "sendEvent", 1, 32);
-								XposedHelpers.callMethod(recentsButton, "sendAccessibilityEvent", 2);
-							}
-							recentsButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
-							assistAndSearchPanelOverride(param);
-						}
-					}
-				});
+				assignRecentsLongpress(param);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onSizeChanged", int.class, int.class, int.class, int.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				assignRecentsLongpress(param);
 			}
 		});
 		

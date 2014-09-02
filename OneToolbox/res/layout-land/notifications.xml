@@ -6,7 +6,7 @@
 	<LinearLayout
 		android:layout_alignParentRight="true"
 		android:layout_centerVertical="true"
-		android:layout_width="360dp"
+		android:layout_width="400dp"
 		android:layout_height="wrap_content"
 		android:layout_gravity="right|center_vertical"
 		android:orientation="vertical"

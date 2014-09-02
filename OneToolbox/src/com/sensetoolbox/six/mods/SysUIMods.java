@@ -82,6 +82,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
@@ -563,7 +564,7 @@ public class SysUIMods {
 			LinearLayout sliderConatiner = new LinearLayout(ctw);
 			sliderConatiner = (LinearLayout) inflater.inflate(modRes.getLayout(R.layout.brightness_slider), panel, false);
 			sliderConatiner.setBackground(panel.getResources().getDrawable(panel.getResources().getIdentifier("common_app_bkg_top_src", "drawable", "com.htc")));
-			if (header != null && header.getBackground() != null) sliderConatiner.getBackground().setAlpha(header.getBackground().getAlpha());
+			if (header != null && header.getBackground() != null) sliderConatiner.setBackground(header.getBackground().mutate().getConstantState().newDrawable());
 			sliderConatiner.setTag("sliderConatiner");
 			sliderConatiner.setOnTouchListener(new OnTouchListener() {
 				@Override
@@ -717,12 +718,17 @@ public class SysUIMods {
 					
 					FrameLayout mStatusBarView = (FrameLayout)getObjectField(param.thisObject, "mStatusBarView");
 					LinearLayout systemIconArea = (LinearLayout)mStatusBarView.findViewById(mStatusBarView.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
+
+					RelativeLayout alignFrame = new RelativeLayout(mContext);
+					alignFrame.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 					
 					LinearLayout textFrame = new LinearLayout(mContext);
 					textFrame.setOrientation(LinearLayout.VERTICAL);
 					textFrame.setGravity(Gravity.CENTER_HORIZONTAL);
-					textFrame.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
-					
+					RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+					rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
+					textFrame.setLayoutParams(rlp);
+										
 					dataRateVal = new TextView(mContext);
 					dataRateVal.setVisibility(8);
 					dataRateVal.setTransformationMethod(SingleLineTransformationMethod.getInstance());
@@ -732,7 +738,7 @@ public class SysUIMods {
 					dataRateVal.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 					dataRateVal.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13.0f);
 					dataRateVal.setIncludeFontPadding(false);
-					dataRateVal.setPadding(0, 1, 5, 0);
+					dataRateVal.setPadding(0, 2, 5, 0);
 					dataRateVal.setLineSpacing(0, 0.9f);
 					//dataRateVal.setTypeface(null, Typeface.BOLD);
 					
@@ -745,12 +751,13 @@ public class SysUIMods {
 					dataRateUnits.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 					dataRateUnits.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10.0f);
 					dataRateUnits.setIncludeFontPadding(false);
-					dataRateUnits.setPadding(0, 0, 5, 1);
+					dataRateUnits.setPadding(0, 0, 5, 0);
 					dataRateUnits.setScaleY(0.9f);
 					
 					textFrame.addView(dataRateVal, 0);
 					textFrame.addView(dataRateUnits, 1);
-					systemIconArea.addView(textFrame, 0);
+					alignFrame.addView(textFrame);
+					systemIconArea.addView(alignFrame, 0);
 					
 					mHandler = new Handler();
 					mRunnable = new Runnable() {
@@ -1707,6 +1714,16 @@ public class SysUIMods {
 				}
 			});
 		}
+	}
+	
+	public static void execHook_Sense6ColorControlCustom443(final LoadPackageParam lpparam, final String pkgName) {
+		if (pkgName.equals("com.htc.android.worldclock") || pkgName.equals("com.htc.Weather"))
+		findAndHookMethod("com.htc.lib1.cc.c.c", lpparam.classLoader, "a", Context.class, int.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				replaceCustom(param, pkgName);
+			}
+		});
 	}
 	
 	public static void execHook_ChangeBrightnessQSTile(LoadPackageParam lpparam) {

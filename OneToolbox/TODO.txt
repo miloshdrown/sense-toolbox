@@ -21,25 +21,20 @@ Ideas
 - Auto close EQS after setting changed
 - Owner/carrier info on Lockscreen
 
+- Button in notification drawer header
+- Mount ISO image
+- Hidden HTC diagnostics
+- Toast app icon
+
 
 =================
 Current changelog
 =================
 
-1.3.5
-[New] Animate percentage battery during charge
-[New] Translucent EQS
-[New] Translucent horizontal EQS
-[New] Remove frames with corners from contact photos
-[Fixed] Large photo and small soft keys on HTC Desire 816
-[Fixed] Translucent notifications background and icons scaling
-[Fixed] Horizontal EQS width and fading edge background
-[Fixed] Small navbar in landscape mode
-[Fixed] Localization
-Popup notifications
-	[Fixed] Screen light up on every popup notification
-	[Fixed] Show popups for missed calls even in unobtrusive mode
-	[Fixed] Smaller popup in landscape mode
+[Fixed] Softkeys recents and home long press in landscape mode
+[Fixed] Popup notification height in landscape mode
+[Fixed][4.4.3] Sense 6 Themes and widget transparency.
+[New][4.4.3] Ability to change widget themes (add widget packages to the list) and the color of system controls (e.g. volume sliders, add Android System).
 
 ===========
 Translators
@@ -63,6 +58,24 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.3.5.1
+[Fixed] Translucent horizontal EQS
+
+1.3.5
+[New] Animate percentage battery during charge
+[New] Translucent EQS
+[New] Translucent horizontal EQS
+[New] Remove frames with corners from contact photos
+[Fixed] Large photo and small soft keys on HTC Desire 816
+[Fixed] Translucent notifications background and icons scaling
+[Fixed] Horizontal EQS width and fading edge background
+[Fixed] Small navbar in landscape mode
+[Fixed] Localization
+Popup notifications
+	[Fixed] Screen light up on every popup notification
+	[Fixed] Show popups for missed calls even in unobtrusive mode
+	[Fixed] Smaller popup in landscape mode
 
 1.3.3
 [New] Translucent notifications background

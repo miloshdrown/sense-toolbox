@@ -86,23 +86,23 @@ public class MessagingMods{
 	
 	public static void execHook_SmsAccents(LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.sense.mms.MmsConfig", lpparam.classLoader, "isSupportAccentConvert", new XC_MethodReplacement() {
-	        @Override
-	        protected Object replaceHookedMethod(MethodHookParam methodHookParam) throws Throwable {
-	            return Boolean.TRUE;
-	        }
-	    });
+			@Override
+			protected Object replaceHookedMethod(MethodHookParam methodHookParam) throws Throwable {
+				return Boolean.TRUE;
+			}
+		});
 	}
 	
 	public static void execHook_EASSecurityPartOne(LoadPackageParam lpparam) {
 		findAndHookMethod("android.app.admin.DevicePolicyManager", lpparam.classLoader, "isAdminActive", ComponentName.class, new XC_MethodHook() {
-	        @Override
-	        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-	        	ComponentName who = (ComponentName) param.args[0];
-	        	XposedBridge.log("isAdminActive() for class: " + who.getClassName() + " in package: " + who.getPackageName());
-	        	if(who.getClassName().equalsIgnoreCase("com.htc.android.mail.eassvc.provision.EASDeviceAdmin"))
-	        		param.setResult(true);
-	        }
-	    });
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				ComponentName who = (ComponentName) param.args[0];
+				XposedBridge.log("isAdminActive() for class: " + who.getClassName() + " in package: " + who.getPackageName());
+				if(who.getClassName().equalsIgnoreCase("com.htc.android.mail.eassvc.provision.EASDeviceAdmin"))
+					param.setResult(true);
+			}
+		});
 	}
 	
 	public static void execHook_EASSecurityPartTwo(LoadPackageParam lpparam) {
@@ -111,18 +111,18 @@ public class MessagingMods{
 		final Class<?> easprovisiondoc = findClass("com.htc.android.mail.eassvc.provision.EASProvisionDoc", lpparam.classLoader);
 		findAndHookMethod("com.htc.android.mail.eassvc.core.SyncManager", lpparam.classLoader, "downloadPolicy", exchangesyncsources, easpolicyset, new XC_MethodHook() {
 			@Override
-	        protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-	        	Object provDoc = getObjectField(param.args[1], "provisionDoc");
-	        	XposedBridge.log("Old provisionDoc: " + provDoc.toString());
-	        }
-	        @Override
-	        protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-	        	Object provisionDoc = findConstructorExact(easprovisiondoc).newInstance();
-	        	XposedBridge.log("Constructed new provisionDoc: " + provisionDoc);
-	        	setObjectField(param.args[1], "provisionDoc", provisionDoc);
-	        	Object provDoc = getObjectField(param.args[1], "provisionDoc");
-	        	XposedBridge.log("New provisionDoc: " + provDoc.toString());
-	        }
-	    });
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				Object provDoc = getObjectField(param.args[1], "provisionDoc");
+				XposedBridge.log("Old provisionDoc: " + provDoc.toString());
+			}
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Object provisionDoc = findConstructorExact(easprovisiondoc).newInstance();
+				XposedBridge.log("Constructed new provisionDoc: " + provisionDoc);
+				setObjectField(param.args[1], "provisionDoc", provisionDoc);
+				Object provDoc = getObjectField(param.args[1], "provisionDoc");
+				XposedBridge.log("New provisionDoc: " + provDoc.toString());
+			}
+		});
 	}
 }

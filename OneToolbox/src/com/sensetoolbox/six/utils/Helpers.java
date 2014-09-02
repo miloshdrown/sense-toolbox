@@ -514,6 +514,10 @@ public class Helpers {
 		return (!Build.DEVICE.contains("m7")); //|| Build.DEVICE.equals("m7cdug") || Build.DEVICE.equals("m7cdwg")
 	}
 	
+	public static boolean is443plus() {
+		return (new Version(Build.VERSION.RELEASE).compareTo(new Version("4.4.3")) >= 0 ? true : false);
+	}
+	
 	public static boolean isWakeGestures() {
 		String wake_gestures = "0";
 		try (BufferedReader br = new BufferedReader(new FileReader(new File("/sys/android_touch/wake_gestures")))) {

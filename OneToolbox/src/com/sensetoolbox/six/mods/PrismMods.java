@@ -93,10 +93,10 @@ public class PrismMods {
 				int wlId = viewRes.getIdentifier("widget_layout", "id", "com.htc.widget.weatherclock");
 				int dcId = viewRes.getIdentifier("digital_clock", "id", "com.htc.widget.weatherclock");
 				if (bgId != 0 && wlId != 0 && dcId != 0) {
-					RelativeLayout wl = (RelativeLayout) widgetView.findViewById(wlId);
-					RelativeLayout dc = (RelativeLayout) widgetView.findViewById(dcId);
+					RelativeLayout wl = (RelativeLayout)widgetView.findViewById(wlId);
+					RelativeLayout dc = (RelativeLayout)widgetView.findViewById(dcId);
 					if (wl != null && dc != null) {
-						ImageView bg = (ImageView) widgetView.findViewById(bgId);
+						ImageView bg = (ImageView)widgetView.findViewById(bgId);
 						if (bg != null) {
 							bg.setAlpha(1.0f);
 							if (bg.getBackground() != null) bg.getBackground().setAlpha(transparency);
@@ -107,6 +107,56 @@ public class PrismMods {
 		};
 		findAndHookMethod("com.htc.launcher.LauncherAppWidgetHostView", lpparam.classLoader, "onHierarchyViewAdded", View.class, View.class, hook);
 		findAndHookMethod("com.htc.launcher.LauncherAppWidgetHostView", lpparam.classLoader, "onHierarchyViewUpdated", View.class, hook);
+	}
+	
+	public static void execHook_invisiWidgetFix(LoadPackageParam lpparam) {
+		String className = "com.htc.widget.weatherclock.view.WeatherClock4x1View";
+		String methodName = "getControls";
+		String param2Name = "com.htc.widget.weatherclock.util.WidgetData";
+		String methodName2 = "getGraphicType";
+		if (Helpers.is443plus()) {
+			// Stupid HTC using ProGuard on widgets...
+			className = "com.htc.widget.weatherclock.a.d";
+			methodName = "a";
+			param2Name = "com.htc.widget.weatherclock.util.t";
+			methodName2 = "a";
+		}
+				
+		findAndHookMethod(className, lpparam.classLoader, methodName, Context.class, param2Name, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				Bundle result = (Bundle) param.getResult();
+				result.putInt("digital_background", result.getInt("background_night"));
+				result.putInt("background_day", result.getInt("background_night"));
+				result.putInt("point_day", result.getInt("point_night"));
+				result.putInt("divider_day", result.getInt("divider_night"));
+				result.putInt("text_day", result.getInt("text_night"));
+				result.putInt("error_day", result.getInt("error_night"));
+				result.putIntArray("number_day", result.getIntArray("number_night"));
+			}
+		});
+		
+		findAndHookMethod(className, lpparam.classLoader, methodName2, boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				param.args[0] = false;
+			}
+		});
+		/*
+		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherView", lpparam.classLoader, "getGraphicType", boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				param.args[0] = false;
+			}
+		});
+		
+		findAndHookMethod("com.htc.widget.weatherclock.util.WeatherBase", lpparam.classLoader, "getGraphicType", boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				param.args[0] = false;
+			}
+		});
+		*/
 	}
 	
 	public static void execHook_PreserveWallpaper(LoadPackageParam lpparam) {
@@ -952,43 +1002,6 @@ public class PrismMods {
 				sensorMgr.unregisterListener((ShakeManager) getAdditionalInstanceField(param.thisObject, shakeMgrKey));
 			}
 		});
-	}
-	
-	public static void execHook_invisiWidgetFix(LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherClock4x1View", lpparam.classLoader, "getControls", Context.class, "com.htc.widget.weatherclock.util.WidgetData", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				Bundle result = (Bundle) param.getResult();
-				result.putInt("background_day", result.getInt("background_night"));
-				result.putInt("point_day", result.getInt("point_night"));
-				result.putInt("divider_day", result.getInt("divider_night"));
-				result.putInt("text_day", result.getInt("text_night"));
-				result.putInt("error_day", result.getInt("error_night"));
-				result.putIntArray("number_day", result.getIntArray("number_night"));
-			}
-		});
-		
-		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherClock4x1View", lpparam.classLoader, "getGraphicType", boolean.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				param.args[0] = false;
-			}
-		});
-		/*
-		findAndHookMethod("com.htc.widget.weatherclock.view.WeatherView", lpparam.classLoader, "getGraphicType", boolean.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				param.args[0] = false;
-			}
-		});
-		
-		findAndHookMethod("com.htc.widget.weatherclock.util.WeatherBase", lpparam.classLoader, "getGraphicType", boolean.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				param.args[0] = false;
-			}
-		});
-		*/
 	}
 	
 	private static void changeDockState(MethodHookParam param) {

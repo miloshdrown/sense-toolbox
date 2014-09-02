@@ -12,14 +12,12 @@ import java.lang.reflect.Method;
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.StructInputEvent;
-import com.sensetoolbox.six.utils.Version;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.os.Build;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
@@ -413,8 +411,7 @@ public class WakeGesturesMods {
 	
 	public static void execHook_LockScreenGestures(final LoadPackageParam lpparam) {
 		String lockUtilsClass = "com.android.internal.widget.LockPatternUtils";
-		if (new Version(Build.VERSION.RELEASE).compareTo(new Version("4.4.3")) >= 0)
-		lockUtilsClass = "com.htc.lockscreen.util.LockUtils";
+		if (Helpers.is443plus()) lockUtilsClass = "com.htc.lockscreen.util.LockUtils";
 		
 		try {
 			XposedHelpers.findAndHookMethod("com.htc.lockscreen.ctrl.LSState", lpparam.classLoader, "init", Context.class, Context.class, lockUtilsClass, new XC_MethodHook() {

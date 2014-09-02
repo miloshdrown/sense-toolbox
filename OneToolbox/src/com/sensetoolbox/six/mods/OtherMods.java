@@ -180,7 +180,7 @@ public class OtherMods {
 								XposedHelpers.callMethod(param.thisObject, "setScreenOn", false);
 							} else {
 								Object displaypowerstate = mPowerState;
-									if ((Boolean)XposedHelpers.callMethod(displaypowerstate, "prepareElectronBeam", XMain.pref_screenoff) && (Boolean)XposedHelpers.callMethod(mPowerState, "isScreenOn"))
+								if ((Boolean)XposedHelpers.callMethod(displaypowerstate, "prepareElectronBeam", XMain.pref_screenoff) && (Boolean)XposedHelpers.callMethod(mPowerState, "isScreenOn"))
 									mElectronBeamOffAnimator.start();
 								else
 									mElectronBeamOffAnimator.end();
