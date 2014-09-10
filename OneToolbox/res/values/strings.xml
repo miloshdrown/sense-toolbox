@@ -29,7 +29,7 @@
 	<string name="crash_dialog">Sense Toolbox has just crashed!</string>
 	<string name="crash_dialog_manual">All necessary data was collected</string>
 	<string name="crash_dialog_manual_size">Generated report size</string>
-	<string name="crash_dialog_manual_desc">Describe you problem:</string>
+	<string name="crash_dialog_manual_desc">Describe your problem:</string>
 	<string name="crash_needs_inet">Internet connection is required</string>
 	<string name="crash_ignore">Ignore</string>
 	<string name="crash_send">Send report</string>
