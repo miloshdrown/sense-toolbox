@@ -106,7 +106,9 @@ public class DynamicPreference extends HtcListPreference {
 			itemTitle.setSecondaryTextVisibility(8);
 			
 			AppData ad = Helpers.launchableAppsList.get(position);
-			Bitmap icon = Helpers.memoryCache.get(ad.pkgName);
+			String cacheKey = ad.pkgName;
+			if (ad.actName != null) cacheKey += "|" + ad.actName;
+			Bitmap icon = Helpers.memoryCache.get(cacheKey);
 			if (icon == null)
 				(new BitmapCachedLoader(itemIcon, ad, mContext)).execute();
 			else

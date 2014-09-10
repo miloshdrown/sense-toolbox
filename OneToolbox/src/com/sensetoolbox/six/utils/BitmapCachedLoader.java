@@ -2,6 +2,7 @@ package com.sensetoolbox.six.utils;
 
 import java.lang.ref.WeakReference;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
@@ -31,25 +32,29 @@ public class BitmapCachedLoader extends AsyncTask<Void, Void, Bitmap> {
 	protected Bitmap doInBackground(Void... params) {
 		Bitmap bmp = null;
 		Drawable icon = null;
-		String pkgName = null;
+		String cacheKey = null;
 		int newIconSize = Math.round(ctx.getResources().getDisplayMetrics().density * 45.0f);
 		
 		AppData ad = ((AppData)appInfo.get());
 		if (ad != null) try {
-			icon = ctx.getPackageManager().getApplicationIcon(ad.pkgName);
-			pkgName = ad.pkgName;
+			if (ad.actName != null)
+			icon = ctx.getPackageManager().getActivityIcon(new ComponentName(ad.pkgName, ad.actName));
+			if (icon == null) icon = ctx.getPackageManager().getApplicationIcon(ad.pkgName);
+
+			if (ad.pkgName != null) cacheKey = ad.pkgName;
+			if (ad.actName != null) cacheKey += "|" + ad.actName;
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		
-		if (pkgName != null && icon != null && BitmapDrawable.class.isInstance(icon)) {
+		if (cacheKey != null && icon != null && BitmapDrawable.class.isInstance(icon)) {
 			bmp = ((BitmapDrawable)icon).getBitmap();
 			Matrix matrix = new Matrix();
 			matrix.postScale(((float)newIconSize) / bmp.getWidth(), ((float)newIconSize) / bmp.getHeight());
 			bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, false);
 			
 			if (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() > 8 * 1024 * 1024)
-				Helpers.memoryCache.put(pkgName, bmp);
+				Helpers.memoryCache.put(cacheKey, bmp);
 			else
 				Runtime.getRuntime().gc();
 		}

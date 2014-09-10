@@ -17,7 +17,7 @@ public class Notifications extends CarouselFragment {
 	
 	public interface OnCarouselReadyListener {
 		void onReady();
-    }
+	}
 	
 	public Notifications() {
 		super(DimmedActivity.class.getCanonicalName());
@@ -36,9 +36,9 @@ public class Notifications extends CarouselFragment {
 		final PackageManager pm = getActivity().getPackageManager();
 		ApplicationInfo ai;
 		try {
-		    ai = pm.getApplicationInfo(pkgName, 0);
+			ai = pm.getApplicationInfo(pkgName, 0);
 		} catch (Exception e) {
-		    ai = null;
+			ai = null;
 		}
 		String appName = (String) (ai != null ? pm.getApplicationLabel(ai) : pkgName);
 		
@@ -50,7 +50,7 @@ public class Notifications extends CarouselFragment {
 		fragBundle.putString("appName", appName);
 		tab.setArguments(fragBundle);
 		getCarouselHost().addTab(getActivity(), tab);
-    }
+	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -65,7 +65,7 @@ public class Notifications extends CarouselFragment {
 		super.onCreate(savedInstanceState);
 	}
 	
-    public void setOnCarouselReadyListener(OnCarouselReadyListener listener) {
-    	this.onReadyListener = listener;
-    }
+	public void setOnCarouselReadyListener(OnCarouselReadyListener listener) {
+		this.onReadyListener = listener;
+	}
 }

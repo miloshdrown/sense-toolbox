@@ -1,91 +1,104 @@
 <com.htc.preference.HtcPreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:key="prefs" >
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:key="prefs" >
 	
-    <com.htc.preference.HtcPreferenceCategory
-        android:title="@string/mods" >
-    <!-- 
-    <com.htc.preference.HtcPreferenceScreen 
-        android:title="@string/camera_mods"
-        android:key="pref_key_cam" />
+	<com.htc.preference.HtcPreferenceCategory
+		android:title="@string/mods" >
+	<!--
+	<com.htc.preference.HtcPreferenceScreen
+		android:title="@string/camera_mods"
+		android:key="pref_key_cam" />
 	-->
-    <com.htc.preference.HtcPreferenceScreen 
-        android:title="@string/systemui_mods"
-        android:key="pref_key_sysui" />
+	<com.htc.preference.HtcPreferenceScreen
+		android:title="@string/systemui_mods"
+		android:key="pref_key_sysui" />
 
-    <com.htc.preference.HtcPreferenceScreen
-        android:title="@string/cleanbeam_mods"
-        android:key="pref_key_cb" />
-    
-    <com.htc.preference.HtcPreferenceScreen 
-        android:title="@string/sense_mods"
-        android:key="pref_key_prism" />
-    
-    <com.htc.preference.HtcPreferenceScreen 
-        android:title="@string/message_mods"
-        android:key="pref_key_sms" />
+	<com.htc.preference.HtcPreferenceScreen
+		android:title="@string/cleanbeam_mods"
+		android:key="pref_key_cb" />
+	
+	<com.htc.preference.HtcPreferenceScreen
+		android:title="@string/sense_mods"
+		android:key="pref_key_prism" />
+	
+	<com.htc.preference.HtcPreferenceScreen
+		android:title="@string/message_mods"
+		android:key="pref_key_sms" />
 
-    <com.htc.preference.HtcPreferenceScreen 
-        android:title="@string/controls_mods"
-        android:key="pref_key_controls" />
-    
-    <com.htc.preference.HtcPreferenceScreen 
-        android:title="@string/various_mods"
-        android:key="pref_key_other" />
-    
-    <com.htc.preference.HtcPreferenceScreen 
-        android:title="@string/wakegestures_mod"
-        android:key="pref_key_wakegest" />
-    
-    <com.htc.preference.HtcPreferenceScreen
-        android:title="@string/persistent_mods"
-        android:key="pref_key_persist" />
-    </com.htc.preference.HtcPreferenceCategory>
-    
-    <com.htc.preference.HtcPreferenceCategory
-        android:title="@string/toolbox"
-        android:key="pref_key_toolbox">
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_toolbox_icon"
-            android:summary="@string/toolbox_show_icon_summ"
-            android:title="@string/toolbox_show_icon_title"
-            android:defaultValue="true" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_toolbox_lang"
-            android:summary="@string/toolbox_l10n_summ"
-            android:title="@string/toolbox_l10n_title" />
-    </com.htc.preference.HtcPreferenceCategory>
-        
-    <com.htc.preference.HtcPreferenceCategory
-        android:title="@string/support"
-        android:key="pref_key_support">
+	<com.htc.preference.HtcPreferenceScreen
+		android:title="@string/controls_mods"
+		android:key="pref_key_controls" />
+	
+	<com.htc.preference.HtcPreferenceScreen
+		android:title="@string/various_mods"
+		android:key="pref_key_other" />
+	
+	<com.htc.preference.HtcPreferenceScreen
+		android:title="@string/wakegestures_mod"
+		android:key="pref_key_wakegest" />
+	
+	<com.htc.preference.HtcPreferenceScreen
+		android:title="@string/persistent_mods"
+		android:key="pref_key_persist" />
+	</com.htc.preference.HtcPreferenceCategory>
+	
+	<com.htc.preference.HtcPreferenceCategory
+		android:title="@string/toolbox"
+		android:key="pref_key_toolbox">
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_toolbox_icon"
+			android:summary="@string/toolbox_show_icon_summ"
+			android:title="@string/toolbox_show_icon_title"
+			android:defaultValue="true" />
 		<com.htc.preference.HtcPreference
-            android:title="@string/support_s6t_title"
-            android:summary="@string/support_s6t_summ" >
+			android:key="pref_key_toolbox_lang"
+			android:summary="@string/toolbox_l10n_summ"
+			android:title="@string/toolbox_l10n_title" />
+	</com.htc.preference.HtcPreferenceCategory>
+	
+	<com.htc.preference.HtcPreferenceCategory
+		android:title="@string/troubleshoot"
+		android:key="pref_key_troubleshoot">
+		<com.htc.preference.HtcPreference
+			android:title="@string/support_bug_title"
+			android:summary="@string/support_bug_summ" >
 			<intent android:action="android.intent.action.VIEW"
-            android:data="http://sensetoolbox.com/" />
+			android:data="https://bitbucket.org/langerhans/sense-toolbox/issues/" />
 		</com.htc.preference.HtcPreference>
 		<com.htc.preference.HtcPreference
-            android:title="@string/support_bug_title"
-            android:summary="@string/support_bug_summ" >
+			android:key="pref_key_toolbox_sendreport"
+			android:title="@string/toolbox_acrasend_title"
+			android:summary="@string/toolbox_acrasend_summ" />
+		<com.htc.preference.HtcEditTextPreference
+			android:key="acra.user.email"
+			android:title="@string/toolbox_acramail_title"
+			android:summary="@string/toolbox_acramail_summ"	/>
+	</com.htc.preference.HtcPreferenceCategory>
+	
+	<com.htc.preference.HtcPreferenceCategory
+		android:title="@string/support"
+		android:key="pref_key_support">
+		<com.htc.preference.HtcPreference
+			android:title="@string/support_s6t_title"
+			android:summary="@string/support_s6t_summ" >
 			<intent android:action="android.intent.action.VIEW"
-            android:data="https://bitbucket.org/langerhans/sense-toolbox/issues/" />
+			android:data="http://sensetoolbox.com/" />
 		</com.htc.preference.HtcPreference>
 		<com.htc.preference.HtcPreference
-            android:title="@string/support_donate_title"
-            android:summary="@string/support_donate_summ" >
+			android:title="@string/support_donate_title"
+			android:summary="@string/support_donate_summ" >
 			<intent android:action="android.intent.action.VIEW"
-            android:data="http://sensetoolbox.com/donate" />
+			android:data="http://sensetoolbox.com/donate" />
 		</com.htc.preference.HtcPreference>
-		<com.htc.preference.HtcPreference 
-            android:title="@string/support_blog_title"
-            android:summary="@string/support_blog_summ" >
-    		<intent android:action="android.intent.action.VIEW"
-            android:data="http://android-revolution-hd.blogspot.de" />
+		<com.htc.preference.HtcPreference
+			android:title="@string/support_blog_title"
+			android:summary="@string/support_blog_summ" >
+			<intent android:action="android.intent.action.VIEW"
+			android:data="http://android-revolution-hd.blogspot.de" />
 		</com.htc.preference.HtcPreference>
 		
-    </com.htc.preference.HtcPreferenceCategory>
+	</com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>

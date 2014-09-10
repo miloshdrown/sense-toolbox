@@ -33,8 +33,8 @@ public class AboutScreen extends Activity {
 		findViewById(R.id.backLayer).setBackgroundResource(bkgResId);
 		findViewById(R.id.scrollView1).setBackgroundResource(bkgResId);
 		
-		Typeface face = Typeface.createFromAsset(getAssets(), "Roboto-Light.ttf");
-		 
+		Typeface face = Typeface.create("sans-serif-condensed", Typeface.NORMAL);
+		
 		TextView iv2 = (TextView)findViewById(R.id.textView2);
 		iv2.setPaintFlags(iv2.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		iv2.setTypeface(face);
@@ -63,13 +63,13 @@ public class AboutScreen extends Activity {
 		iv5.setText(Helpers.l10n(this, R.string.about_l10n_data_right));
 		
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
-        ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
-        ActionBarText actionBarText = new ActionBarText(this);    		        
-	    actionBarText.setPrimaryText(Helpers.l10n(this, R.string.app_about));
-	    actionBarContainer.addCenterView(actionBarText);
+		ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();
+		ActionBarText actionBarText = new ActionBarText(this);
+		actionBarText.setPrimaryText(Helpers.l10n(this, R.string.app_about));
+		actionBarContainer.addCenterView(actionBarText);
 		actionBarContainer.setBackUpEnabled(true);
 		
-        View homeBtn = actionBarContainer.getChildAt(0);
+		View homeBtn = actionBarContainer.getChildAt(0);
 		if (homeBtn != null) {
 			View.OnClickListener goBackFromEQS = new View.OnClickListener() {
 				@Override
@@ -81,16 +81,16 @@ public class AboutScreen extends Activity {
 		}
 		
 		//Add version name
-        try {
-        	TextView versionTv = (TextView)findViewById(R.id.textViewVersion);
+		try {
+			TextView versionTv = (TextView)findViewById(R.id.textViewVersion);
 			versionTv.setText(String.format(Helpers.l10n(this, R.string.about_version), getPackageManager().getPackageInfo(getPackageName(), 0).versionName, Helpers.buildVersion));
 			versionTv.setTypeface(face);
 			versionTv.setPaintFlags(iv02.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 			OnLongClickListener olcl = new OnLongClickListener(){
-			    public boolean onLongClick(View v) {
-			        sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.StartEasterEgg"));
-			    	return true;
-			    }
+				public boolean onLongClick(View v) {
+					sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.StartEasterEgg"));
+					return true;
+				}
 			};
 			versionTv.setLongClickable(true);
 			versionTv.setOnLongClickListener(olcl);

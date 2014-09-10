@@ -5,6 +5,7 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -47,6 +48,7 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.View;
+import android.view.View.OnLongClickListener;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.Window;
@@ -922,5 +924,62 @@ public class OtherMods {
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
+	}
+	
+	public static void execHook_ExtremePowerSaverRemap(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.powersavinglauncher.Workspace", lpparam.classLoader, "a",
+			View.class, long.class, int.class, int.class, int.class, int.class, int.class, boolean.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				XMain.pref.reload();
+				if (XMain.pref.getBoolean("eps_remap_active", false)) {
+					final View shortcut = (View)param.args[0];
+					if (shortcut != null) {
+						shortcut.setOnLongClickListener(new OnLongClickListener(){
+							@Override
+							public boolean onLongClick(View v) {
+								XposedHelpers.callStaticMethod(findClass("com.htc.powersavinglauncher.a.a", lpparam.classLoader), "a", shortcut.getContext(), 1);
+								return true;
+							}
+						});
+					}
+				}
+			}
+		});
+		
+		findAndHookMethod("com.htc.powersavinglauncher.b.b", lpparam.classLoader, "b", Context.class, int.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				@SuppressWarnings("unchecked")
+				ArrayList<Object> favs = (ArrayList<Object>)param.getResult();
+				XMain.pref.reload();
+				if (XMain.pref.getBoolean("eps_remap_active", false))
+				for (int i = 0; i <= 5; i++) try {
+					String pkgActName = XMain.pref.getString("eps_remap_cell" + String.valueOf(i + 1), null);
+					if (pkgActName != null) {
+						String[] pkgActArray = pkgActName.split("\\|");
+						Class<?> favCls = XposedHelpers.findClass("com.htc.powersavinglauncher.b.a", lpparam.classLoader);
+						Constructor<?> favCtr = favCls.getConstructor(int.class, int.class, int.class, int.class, int.class, int.class, int.class);
+						int cellX = 0, cellY = 0;
+						switch (i) {
+							case 0: cellX = 0; cellY = 0; break;
+							case 1: cellX = 1; cellY = 0; break;
+							case 2: cellX = 0; cellY = 1; break;
+							case 3: cellX = 1; cellY = 1; break;
+							case 4: cellX = 0; cellY = 2; break;
+							case 5: cellX = 1; cellY = 2; break;
+						}
+						Object fav = favCtr.newInstance(1, 0, cellX, cellY, 0, 0, -100);
+						XposedHelpers.callMethod(fav, "a", pkgActArray[0], pkgActArray[1]);
+						if (i >= favs.size())
+							favs.add(fav);
+						else
+							favs.set(i, fav);
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
 	}
 }

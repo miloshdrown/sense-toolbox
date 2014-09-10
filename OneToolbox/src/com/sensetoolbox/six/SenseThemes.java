@@ -3,8 +3,10 @@ package com.sensetoolbox.six;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
+import java.util.Map;
 
 import com.htc.app.HtcProgressDialog;
 import com.htc.gson.Gson;
@@ -96,6 +98,21 @@ public class SenseThemes extends Activity {
 		}
 	}
 	
+	public static class PackageLabel {
+		public String pkg;
+		public String label;
+		
+		public PackageLabel() {
+			super();
+		}
+		
+		public PackageLabel(String packg, String lbl) {
+			super();
+			this.pkg = packg;
+			this.label = lbl;
+		}
+	}
+	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -117,8 +134,6 @@ public class SenseThemes extends Activity {
 		OnOffSwitch.setEnabled(true);
 		actionBarContainer.addRightView(OnOffSwitch);
 		
-		final SenseThemes st = this;
-		
 		menuAll = new ActionBarItemView(this);
 		menuAll.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 		menuAll.setIcon(getResources().getIdentifier("icon_btn_edit_dark", "drawable", "com.htc"));
@@ -126,8 +141,8 @@ public class SenseThemes extends Activity {
 		menuAll.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				AppDetailDialog appDetailDialog = new AppDetailDialog(st, "replace_all");
-				appDetailDialog.setTitle(Helpers.l10n(st, R.string.sense_theme_replace_all));
+				AppDetailDialog appDetailDialog = new AppDetailDialog(SenseThemes.this, "replace_all");
+				appDetailDialog.setTitle(Helpers.l10n(SenseThemes.this, R.string.sense_theme_replace_all));
 				appDetailDialog.show();
 			}
 		});
@@ -140,12 +155,12 @@ public class SenseThemes extends Activity {
 		menuAdd.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				appAddDialog = new AppAddDialog(st);
-				appAddDialog.setTitle(Helpers.l10n(st, R.string.select_app));
+				appAddDialog = new AppAddDialog(SenseThemes.this);
+				appAddDialog.setTitle(Helpers.l10n(SenseThemes.this, R.string.select_app));
 				
 				if (Helpers.installedAppsList == null) {
-					final HtcProgressDialog dialog = new HtcProgressDialog(st);
-					dialog.setMessage(Helpers.l10n(st, R.string.loading_app_data));
+					final HtcProgressDialog dialog = new HtcProgressDialog(SenseThemes.this);
+					dialog.setMessage(Helpers.l10n(SenseThemes.this, R.string.loading_app_data));
 					dialog.setCancelable(false);
 					dialog.show();
 					appAddDialog.setOnShowListener(new OnShowListener() {
@@ -159,7 +174,7 @@ public class SenseThemes extends Activity {
 						@Override
 						public void run() {
 							try {
-								Helpers.getInstalledApps(st);
+								Helpers.getInstalledApps(SenseThemes.this);
 								runOnUiThread(new Runnable(){
 									@Override
 									public void run() {
@@ -203,7 +218,7 @@ public class SenseThemes extends Activity {
 		appsList.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				AppDetailDialog appDetailDialog = new AppDetailDialog(st, (String)view.getTag());
+				AppDetailDialog appDetailDialog = new AppDetailDialog(SenseThemes.this, (String)view.getTag());
 				HtcListItem2LineText title = (HtcListItem2LineText)view.findViewById(R.id.app_name);
 				appDetailDialog.setTitle(title.getPrimaryText());
 				appDetailDialog.show();
@@ -302,25 +317,27 @@ public class SenseThemes extends Activity {
 		}
 	}
 	
+	public static Map<String, String> labels = new HashMap<String, String>();
 	public class AscComparator implements Comparator<PackageTheme> {
 		@Override
 		public int compare(PackageTheme first, PackageTheme second) {
-			PackageManager pm = getPackageManager();
-			ApplicationInfo ai1; ApplicationInfo ai2;
-			try {
-				ai1 = pm.getApplicationInfo(first.getPkg(), 0);
-				ai2 = pm.getApplicationInfo(second.getPkg(), 0);
-			} catch (Exception e) {
-				ai1 = null;
-				ai2 = null;
-			}
-			String pkgTitle1 = (String) (ai1 != null ? pm.getApplicationLabel(ai1) : first + " [Uninstalled]");
-			String pkgTitle2 = (String) (ai2 != null ? pm.getApplicationLabel(ai2) : second + " [Uninstalled]");
-			return pkgTitle1.compareToIgnoreCase(pkgTitle2);
+			return labels.get(first.pkg).compareToIgnoreCase(labels.get(second.pkg));
 		}
 	}
 	
 	public void sortListArray() {
+		PackageManager pm = getPackageManager();
+		ApplicationInfo ai = null;
+		for (PackageTheme pkgth: pkgthm)
+		if (!labels.containsKey(pkgth.pkg)) {
+			try {
+				ai = pm.getApplicationInfo(pkgth.pkg, 0);
+			} catch (Exception e) {
+				ai = null;
+			}
+			String pkgTitle = (String)(ai != null ? pm.getApplicationLabel(ai) : pkgth.pkg + " [Uninstalled]");
+			labels.put(pkgth.pkg, pkgTitle);
+		}
 		Collections.sort(pkgthm, new AscComparator());
 	}
 	

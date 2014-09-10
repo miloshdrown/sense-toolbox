@@ -17,6 +17,9 @@
     <issue id="MissingPrefix">
         <ignore path="AndroidManifest.xml" />
     </issue>
+    <issue id="NestedWeights">
+        <ignore path="res/layout/epsremap.xml" />
+    </issue>
     <issue id="OldTargetApi">
         <ignore path="AndroidManifest.xml" />
     </issue>
@@ -73,6 +76,8 @@
     </issue>
     <issue id="UselessParent">
         <ignore path="res/layout-land/notifications.xml" />
+        <ignore path="res/layout/activity_popup_notify.xml" />
+        <ignore path="res/layout/epsremap.xml" />
         <ignore path="res/layout/notifications.xml" />
     </issue>
 </lint>

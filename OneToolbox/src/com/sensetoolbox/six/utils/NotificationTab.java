@@ -106,9 +106,11 @@ public class NotificationTab extends Fragment {
 					});
 					
 					FrameLayout sblec = (FrameLayout)notifyRemote.findViewById(getResources().getIdentifier("status_bar_latest_event_content", "id", "android"));
-					RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)sblec.getLayoutParams();
-					lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
-					sblec.setLayoutParams(lp);
+					if (sblec != null) {
+						RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)sblec.getLayoutParams();
+						lp.addRule(RelativeLayout.CENTER_IN_PARENT, RelativeLayout.TRUE);
+						sblec.setLayoutParams(lp);
+					}
 
 					notifyRemote.setOnTouchListener(new OnTouchListener() {
 						@Override
@@ -287,14 +289,16 @@ public class NotificationTab extends Fragment {
 			int iconResid = sbn.getNotification().icon;
 			if (iconResid != 0) {
 				ImageView icon = (ImageView)notifyRemote.findViewById(android.R.id.icon);
-				icon.setBackground(null);
-				icon.setImageDrawable(null);
-				if (sbn.getNotification().largeIcon != null) {
-					Bitmap newBmp = Bitmap.createScaledBitmap(sbn.getNotification().largeIcon, densify(50), densify(50), false);
-					icon.setImageBitmap(newBmp);
-					icon.setPadding(icon.getPaddingLeft(), densify(10), icon.getPaddingRight(), densify(10));
-				} else {
-					icon.setImageDrawable(sourceRes.getDrawable(iconResid));
+				if (icon != null) {
+					icon.setBackground(null);
+					icon.setImageDrawable(null);
+					if (sbn.getNotification().largeIcon != null) {
+						Bitmap newBmp = Bitmap.createScaledBitmap(sbn.getNotification().largeIcon, densify(50), densify(50), false);
+						icon.setImageBitmap(newBmp);
+						icon.setPadding(icon.getPaddingLeft(), densify(10), icon.getPaddingRight(), densify(10));
+					} else {
+						icon.setImageDrawable(sourceRes.getDrawable(iconResid));
+					}
 				}
 			}
 		} catch (Exception e) {

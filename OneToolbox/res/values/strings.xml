@@ -23,6 +23,19 @@
 	<string name="storage_cannot_restore">No settings backup found</string>
 	<string name="backup_ok">Settings were backed up successfully!</string>
 	<string name="restore_ok">Settings were successfully restored!</string>
+	<string name="no_root_summ">Root is required for this mod to work</string>
+	<string name="no_busybox_summ">BusyBox is required for this mod to work</string>
+	
+	<string name="crash_dialog">Sense Toolbox has just crashed!</string>
+	<string name="crash_dialog_manual">All necessary data was collected</string>
+	<string name="crash_dialog_manual_size">Generated report size</string>
+	<string name="crash_dialog_manual_desc">Describe you problem:</string>
+	<string name="crash_needs_inet">Internet connection is required</string>
+	<string name="crash_ignore">Ignore</string>
+	<string name="crash_send">Send report</string>
+	<string name="crash_result">Sending result</string>
+	<string name="crash_ok">Report was sent successfully!</string>
+	<string name="crash_error">Failed to send report</string>
 
 	<string name="warning">Warning!</string>
 	<string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 6 Toolbox module there and reboot.</string>
@@ -82,7 +95,7 @@
 
 	<string name="systemui_mods">Interface mods</string>
 	<string name="sense_themes_title">Sense themes</string>
-	<string name="sense_themes_summ">Change theme colors for every app.</string>
+	<string name="sense_themes_summ">Change theme for any Sense styled app.</string>
 	<string name="sense_themes_apply">Apply</string>
 	<string name="sense_themes_cancel">Cancel</string>
 	<string name="sense_theme_sep1">Theme</string>
@@ -320,6 +333,10 @@
 	<string name="various_popupnotify_bwlist_white_title">Whitelist</string>
 	<string name="various_popupnotify_bwlist_black_summ">All cancelable notifications will be shown in popups except those from selected apps. You can quickly blacklist app by long pressing Dismiss button in popup window.</string>
 	<string name="various_popupnotify_bwlist_white_summ">Popups will be shown only for notifications from selected apps.</string>
+	<string name="various_extremepower_title">EPS apps remap</string>
+	<string name="various_extremepower_summ">Choose 6 custom apps for extreme power saving mode</string>
+	<string name="various_extremepower_cell">Cell</string>
+	<string name="various_extremepower_hint">Extreme Power Saving mode can be turned off by long pressing any tile if this mod is active</string>
 	<string name="various_screenon_title">On animation</string>
 	<string name="various_screenon_summ">Animation for turning screen on</string>
 	<string name="various_screenoff_title">Off animation</string>
@@ -330,6 +347,7 @@
 	<string name="various_scron_summ">Show the \'Keep screen on\' option in development settings.</string>
 	<string name="various_apps_title">Show additional app details</string>
 	<string name="various_apps_summ">Add new fields to Settings > Apps:\n- button to launch an app\n- apk filename and path\n- data path\n- process name\n- user id\n- target SDK version</string>
+	<string name="various_mods_toasts">Toasts</string>
 	<string name="various_mods_notifications">Notifications</string>
 	<string name="various_mods_calls">Calls</string>
 	<string name="various_largephoto_title">Caller photo</string>
@@ -355,6 +373,8 @@
 	<string name="various_contactsnocorner_summ">Remove a frame with bottom right corner from contacts\' photos.</string>
 	<string name="various_oldtoasts_title">Sense 6 styled toasts</string>
 	<string name="various_oldtoasts_summ">Make toasts darker with smaller rounded corners radius.</string>
+	<string name="various_iconlabletoasts_title">Enhanced toasts</string>
+	<string name="various_iconlabletoasts_summ">Add application\'s icon and label to its toasts.</string>
 	<string name="various_securelock_title">Enhanced screen lock</string>
 	<string name="various_securelock_summ">Disable power menu and hardware reset notification while screen lock is active.</string>
 	<string name="various_keyslight_title">Hardware buttons backlight</string>
@@ -411,6 +431,12 @@
 	<string name="toolbox_l10n_summ">Download and update language pack.</string>
 	<string name="toolbox_l10n_btn">Update</string>
 
+	<string name="troubleshoot">Troubleshooting</string>
+	<string name="toolbox_acrasend_title">Send detailed report</string>
+	<string name="toolbox_acrasend_summ">Collect device and environment info, logcat and Xposed log, and send them to developer.\nInternet connection is required.</string>
+	<string name="toolbox_acramail_title">Feedback</string>
+	<string name="toolbox_acramail_summ">Enter your contact information and it will be included in detailed and crash reports.</string>
+	
 	<string name="support">Support</string>
 	<string name="support_s6t_title">Sense 6 Toolbox Site</string>
 	<string name="support_s6t_summ">Find infos and changelog for the app here.</string>
@@ -529,6 +555,9 @@
 	<string name="array_keyslight_dim">Dim</string>
 	<string name="array_keyslight_extradim">Extra dim</string>
 	<string name="array_keyslight_alwaysoff">Always off</string>
+	<string name="array_toasts_icon">Icon</string>
+	<string name="array_toasts_label">Label</string>
+	<string name="array_toasts_both">Icon and label</string>
 	<string name="array_wakegestures_disable">Disable</string>
 	<string name="array_wakegestures_wakeup">Wake up</string>
 	<string name="array_wakegestures_wakeupbypass">Wake up bypassing lockscreen</string>

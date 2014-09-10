@@ -40,10 +40,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		PackagePermissions.init();
 		GlobalActions.toolboxStuff();
 		
-		if(pref.getBoolean("pref_key_cb_beats", false))
+		if (pref.getBoolean("pref_key_cb_beats", false))
 			CleanBeamMods.execHook_BeatsIcon();
 		
-		if(pref.getBoolean("pref_key_other_movevol", false))
+		if (pref.getBoolean("pref_key_other_movevol", false))
 			OtherMods.execHook_MoveVolume(startupParam);
 		
 		pref_swipedown = Integer.parseInt(pref.getString("pref_key_prism_swipedownaction", "1"));
@@ -107,142 +107,134 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_other_ledoncharge", false))
 			OtherMods.execHook_LEDOnCharge();
 		
-		if(pref.getBoolean("pref_key_sysui_tnsb", false))
+		if (pref.getBoolean("pref_key_sysui_tnsb", false))
 			SysUIMods.execHook_TranslucentNotificationsDividers();
 		
 		if (pref.getBoolean("pref_key_other_contactsnocorner", false))
 			OtherMods.execHook_ContactsNoCornerSystem();
+		
+		if (Integer.parseInt(pref.getString("pref_key_other_iconlabletoasts", "1")) != 1)
+			SysUIMods.execHook_IconLabelToasts();
 	}
 	
 	@Override
 	public void handleInitPackageResources(InitPackageResourcesParam resparam) throws Throwable {
 		String pkg = resparam.packageName;
 		
-		if (pkg.equals("com.htc.launcher"))
-		{
+		if (pkg.equals("com.htc.launcher")) {
 			pref.reload();
-			if(pref.getBoolean("pref_key_prism_invisidrawer_enable", false))
+			if (pref.getBoolean("pref_key_prism_invisidrawer_enable", false))
 				PrismMods.execHook_InvisiDrawerRes(resparam);
 			
-			if(pref.getBoolean("pref_key_prism_invisifolders_enable", false))
-			{
+			if (pref.getBoolean("pref_key_prism_invisifolders_enable", false)) {
 				int transparency = pref.getInt("pref_key_prism_invisifolders", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiFolder(resparam, transparency);
 			}
 			
-			if(pref.getBoolean("pref_key_prism_invisifoldersbkg_enable", false))
-			{
+			if (pref.getBoolean("pref_key_prism_invisifoldersbkg_enable", false)) {
 				int transparency = pref.getInt("pref_key_prism_invisifoldersbkg", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiFolderBkg(resparam, transparency);
 			}
 			
-			if(pref.getBoolean("pref_key_prism_4x5homescreen", false))
+			if (pref.getBoolean("pref_key_prism_4x5homescreen", false))
 				PrismMods.execHook_HomeScreenGridSize(resparam);
 			
-			if(pref.getBoolean("pref_key_prism_gapfix", false) && !pref.getBoolean("pref_key_prism_4x5homescreen", false))
+			if (pref.getBoolean("pref_key_prism_gapfix", false) && !pref.getBoolean("pref_key_prism_4x5homescreen", false))
 				PrismMods.execHook_HomeScreenGapFix(resparam);
 			
 			PrismMods.execHook_AppDrawerGridSizesLayout(resparam);
 		}
 		
-		if (pkg.equals("com.android.systemui"))
-		{
-			if(pref.getBoolean("pref_key_sysui_invisinotify_enable", false))
-			{
+		if (pkg.equals("com.android.systemui")) {
+			if (pref.getBoolean("pref_key_sysui_invisinotify_enable", false)) {
 				int transparency = pref.getInt("pref_key_sysui_invisinotify", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				SysUIMods.execHook_InvisiNotify(resparam, transparency);
 			}
 			
-//			if(pref.getBoolean("pref_key_sysui_invisibar_enable", false))
-//			{
+//			if (pref.getBoolean("pref_key_sysui_invisibar_enable", false)) {
 //				int transparency = pref.getInt("pref_key_sysui_invisibar_new", 100);
 //				transparency = (int) Math.floor(transparency*2.55f);
 //				SysUIMods.execHook_InvisiBar(resparam, transparency);
 //			}
 			
-			if(Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")) != 1)
+			if (Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")) != 1)
 				CleanBeamMods.execHook_BatteryIcon(resparam, Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")));
 			
-			if(pref.getBoolean("pref_key_cb_signal", false))
+			if (pref.getBoolean("pref_key_cb_signal", false))
 				CleanBeamMods.execHook_SignalIcon(resparam);
 			
-			if(pref.getBoolean("pref_key_cb_headphone", false))
+			if (pref.getBoolean("pref_key_cb_headphone", false))
 				CleanBeamMods.execHook_HeadphoneIcon(resparam);
 			
-			if(pref.getBoolean("pref_key_cb_alarm", false))
+			if (pref.getBoolean("pref_key_cb_alarm", false))
 				CleanBeamMods.execHook_AlarmIcon(resparam);
 			
-			if(Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")) != 1)
+			if (Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")) != 1)
 				CleanBeamMods.execHook_WiFiIcon(resparam, Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")));
 			
-			if(pref.getBoolean("pref_key_cb_profile", false))
+			if (pref.getBoolean("pref_key_cb_profile", false))
 				CleanBeamMods.execHook_ProfileIcon(resparam);
 			
-			if(pref.getBoolean("pref_key_cb_sync", false))
+			if (pref.getBoolean("pref_key_cb_sync", false))
 				CleanBeamMods.execHook_SyncIcon(resparam);
 			
-			if(pref.getBoolean("pref_key_cb_gps", false))
+			if (pref.getBoolean("pref_key_cb_gps", false))
 				CleanBeamMods.execHook_GpsIcon(resparam);
 			
-			if(pref.getBoolean("pref_key_cb_bt", false))
+			if (pref.getBoolean("pref_key_cb_bt", false))
 				CleanBeamMods.execHook_BtIcon(resparam);
 			
-			if(pref.getBoolean("pref_key_cb_data", false))
+			if (pref.getBoolean("pref_key_cb_data", false))
 				CleanBeamMods.execHook_DataIcon(resparam);
 			
-			if(pref.getBoolean("pref_key_cb_screenshot", false))
+			if (pref.getBoolean("pref_key_cb_screenshot", false))
 				CleanBeamMods.execHook_ScreenshotIcon(resparam);
 			
-			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
+			if (Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockLayout(resparam);
 			
 			int headerClock = Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1"));
-			if(headerClock >= 2)
+			if (headerClock >= 2)
 				SysUIMods.execHook_NotifDrawerHeaderClock(resparam, headerClock);
 			
-			if(pref.getBoolean("pref_key_sysui_tsb", false))
+			if (pref.getBoolean("pref_key_sysui_tsb", false))
 				SysUIMods.execHook_NoStatusBarBackground(resparam);
 			
-			if(pref.getBoolean("pref_key_sysui_teqs", false))
+			if (pref.getBoolean("pref_key_sysui_teqs", false))
 				SysUIMods.execHook_TranslucentEQS(resparam);
 			
-			if(pref.getBoolean("pref_key_sysui_theqs", false))
+			if (pref.getBoolean("pref_key_sysui_theqs", false))
 				SysUIMods.execHook_TranslucentHorizEQS(resparam);
 		}
 		
-		if (pkg.equals("com.android.settings"))
-		{
-			if(pref.getBoolean("pref_key_cb_usb", false))
+		if (pkg.equals("com.android.settings")) {
+			if (pref.getBoolean("pref_key_cb_usb", false))
 				CleanBeamMods.execHook_USBIcon(resparam);
 			
-			if(pref.getBoolean("pref_key_cb_dnd", false))
+			if (pref.getBoolean("pref_key_cb_dnd", false))
 				CleanBeamMods.execHook_DNDIcon(resparam);
 		}
 		
-		if (pkg.equals("com.htc.htcpowermanager"))
-		{
-			if(pref.getBoolean("pref_key_cb_powersave", false))
+		if (pkg.equals("com.htc.htcpowermanager")) {
+			if (pref.getBoolean("pref_key_cb_powersave", false))
 				CleanBeamMods.execHook_PowerSaveIcon(resparam);
 		}
 		
-		if (pkg.equals("com.android.nfc"))
-		{
-			if(pref.getBoolean("pref_key_cb_nfc", false))
+		if (pkg.equals("com.android.nfc")) {
+			if (pref.getBoolean("pref_key_cb_nfc", false))
 				CleanBeamMods.execHook_NFCIcon(resparam);
 		}
 		
-		if (pkg.equals("com.android.providers.media"))
-		{
-			if(pref.getBoolean("pref_key_cb_mtp", false))
+		if (pkg.equals("com.android.providers.media")) {
+			if (pref.getBoolean("pref_key_cb_mtp", false))
 				CleanBeamMods.execHook_MTPIcon(resparam);
 		}
 		
-		if (pkg.equals("com.android.phone"))
-		{
-			if(pref.getBoolean("pref_key_cb_phone", false))
+		if (pkg.equals("com.android.phone")) {
+			if (pref.getBoolean("pref_key_cb_phone", false))
 				CleanBeamMods.execHook_PhoneIcons(resparam);
 			
 			int largePhoto = Integer.parseInt(pref.getString("pref_key_other_largephoto", "1"));
@@ -250,20 +242,17 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				OtherMods.execHook_LargePhoto(resparam, largePhoto);
 		}
 		
-		if (pkg.equals("com.htc.videohub.ui"))
-		{
-			if(pref.getBoolean("pref_key_cb_tv", false))
+		if (pkg.equals("com.htc.videohub.ui")) {
+			if (pref.getBoolean("pref_key_cb_tv", false))
 				CleanBeamMods.execHook_TvIcon(resparam);
 		}
 		
-		if (pkg.equals("com.google.android.youtube"))
-		{
+		if (pkg.equals("com.google.android.youtube")) {
 			if (pref.getBoolean("pref_key_other_ytwatermark", false))
 				OtherMods.execHook_YouTubeNoWatermark(resparam);
 		}
 		
-		if (pkg.equals("com.htc.contacts"))
-		{
+		if (pkg.equals("com.htc.contacts")) {
 			if (pref.getBoolean("pref_key_other_contactsnocorner", false))
 				OtherMods.execHook_ContactsNoCorner(resparam);
 		}
@@ -273,100 +262,101 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
 		String pkg = lpparam.packageName;
 		
-		if(pkg.equals("com.sensetoolbox.six")) {
+		if (pkg.equals("com.sensetoolbox.six")) {
 			GlobalActions.toolboxInit(lpparam);
 		}
 		
-		if(pkg.equals("com.android.providers.media")) {
-			if(pref.getBoolean("pref_key_other_mtpnotif", false))
+		if (pkg.equals("com.android.providers.media")) {
+			if (pref.getBoolean("pref_key_other_mtpnotif", false))
 				OtherMods.execHook_MTPNotif(lpparam);
 		}
 		
-		if(pkg.equals("com.htc.htcpowermanager")) {
-			if(pref.getBoolean("pref_key_other_powersavenotif", false))
+		if (pkg.equals("com.htc.htcpowermanager")) {
+			if (pref.getBoolean("pref_key_other_powersavenotif", false))
 				OtherMods.execHook_PowerSaverNotif(lpparam);
 		}
 		
-		if(pkg.equals("com.htc.sense.mms"))
-		{
+		if (pkg.equals("com.htc.powersavinglauncher")) {
+			if (pref.getBoolean("eps_remap_active", false))
+				OtherMods.execHook_ExtremePowerSaverRemap(lpparam);
+		}
+		
+		if (pkg.equals("com.htc.sense.mms")) {
 			pref.reload();
-			if(pref.getBoolean("pref_key_other_smscreenon", false))
+			if (pref.getBoolean("pref_key_other_smscreenon", false))
 				MessagingMods.execHook_smsscreenon(lpparam);
 			
-			if(pref.getBoolean("pref_key_sms_smsmmsconv", false))
+			if (pref.getBoolean("pref_key_sms_smsmmsconv", false))
 				MessagingMods.execHook_SmsMmsConv(lpparam);
 			
-			if(pref.getBoolean("pref_key_sms_toastnotification", false))
+			if (pref.getBoolean("pref_key_sms_toastnotification", false))
 				MessagingMods.execHook_ToastNotification(lpparam);
 			
-			if(pref.getBoolean("pref_key_sms_mmssize", false))
+			if (pref.getBoolean("pref_key_sms_mmssize", false))
 				MessagingMods.execHook_MmsSize(lpparam);
 			
-			if(pref.getBoolean("pref_key_sms_accents", false))
+			if (pref.getBoolean("pref_key_sms_accents", false))
 				MessagingMods.execHook_SmsAccents(lpparam);
 		}
 		
-		if(pkg.equals("com.htc.launcher"))
-		{
+		if (pkg.equals("com.htc.launcher")) {
 			pref.reload();
-			if(pref.getBoolean("pref_key_prism_invisiwidget_enable", false))
-			{
+			if (pref.getBoolean("pref_key_prism_invisiwidget_enable", false)) {
 				int transparency = pref.getInt("pref_key_prism_invisiwidget", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiWidget(lpparam, transparency);
 			}
 			
-			if(pref.getBoolean("pref_key_prism_folder20", false))
+			if (pref.getBoolean("pref_key_prism_folder20", false))
 				PrismMods.execHook_20Folder_code(lpparam);
 			
-//			if(pref.getBoolean("pref_key_sysui_invisibar_enable", false))
+//			if (pref.getBoolean("pref_key_sysui_invisibar_enable", false))
 //				PrismMods.execHookTSBFix(lpparam);
 			
-			if(pref.getBoolean("pref_key_prism_invisidrawer_enable", false))
-			{
+			if (pref.getBoolean("pref_key_prism_invisidrawer_enable", false)) {
 				int transparency = pref.getInt("pref_key_prism_invisidrawer", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				PrismMods.execHook_InvisiDrawerCode(lpparam, transparency);
 			}
 			
-			if(pref_swipedown != 1 || pref_swipeup != 1)
+			if (pref_swipedown != 1 || pref_swipeup != 1)
 				PrismMods.execHook_SwipeActions(lpparam);
 			
 			PrismMods.execHook_AppDrawerGridSizes(lpparam);
 			
-			if(pref.getBoolean("pref_key_prism_gridtinyfont", false))
+			if (pref.getBoolean("pref_key_prism_gridtinyfont", false))
 				PrismMods.execHook_AppDrawerGridTinyText(lpparam);
 			
-			if(pref_swiperight != 1 || pref_swipeleft != 1 || pref.getBoolean("pref_key_prism_homemenu", false))
+			if (pref_swiperight != 1 || pref_swipeleft != 1 || pref.getBoolean("pref_key_prism_homemenu", false))
 				PrismMods.execHook_DockSwipe(lpparam);
 			
-			if(pref.getBoolean("pref_key_prism_homemenu", false)) {
+			if (pref.getBoolean("pref_key_prism_homemenu", false)) {
 				PrismMods.execHook_HomeMenu(lpparam);
 				PrismMods.execHook_LauncherLock(lpparam);
 			}
 			
-			if(pref.getBoolean("pref_key_prism_sevenscreens", false))
+			if (pref.getBoolean("pref_key_prism_sevenscreens", false))
 				PrismMods.execHook_SevenScreens(lpparam);
 			
-			if(pref.getBoolean("pref_key_prism_4x5homescreen", false))
+			if (pref.getBoolean("pref_key_prism_4x5homescreen", false))
 				PrismMods.execHook_HomeScreenResizableWidgets(lpparam);
 			
-			if(pref.getBoolean("pref_key_prism_invisilabels", false))
+			if (pref.getBoolean("pref_key_prism_invisilabels", false))
 				PrismMods.execHook_invisiLabels(lpparam);
 			
-			if(pref.getBoolean("pref_key_prism_blinkfeednodock", false))
+			if (pref.getBoolean("pref_key_prism_blinkfeednodock", false))
 				PrismMods.execHook_BlinkFeedNoDock(lpparam);
 			
-			if(pref.getBoolean("pref_key_prism_blinkfeedimmersive", false))
+			if (pref.getBoolean("pref_key_prism_blinkfeedimmersive", false))
 				PrismMods.execHook_BlinkFeedImmersive(lpparam);
 			
-//			if(Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false)) //Le KitKat
+//			if (Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false)) //Le KitKat
 //				PrismMods.fixInvisibarKitKat(lpparam);
 			
-			if(pref_shake != 1)
+			if (pref_shake != 1)
 				PrismMods.execHook_ShakeAction(lpparam);
 			
-			if(pref.getBoolean("pref_key_prism_invisiactionbar", false))
+			if (pref.getBoolean("pref_key_prism_invisiactionbar", false))
 				PrismMods.execHook_ActionBarNoBkg(lpparam);
 			
 			//PrismMods.execHook_hotseatToggleBtn(lpparam);
@@ -383,15 +373,14 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				WakeGesturesMods.execHook_LockScreenGestures(lpparam);
 		}
 		
-		if (pkg.equals("com.android.settings"))
-		{
-			if(pref.getBoolean("pref_key_other_keepscreenon", false))
+		if (pkg.equals("com.android.settings")) {
+			if (pref.getBoolean("pref_key_other_keepscreenon", false))
 				SettingsMods.execHook_ScreenOn(lpparam);
 			
-			if(pref.getBoolean("pref_key_other_appdetails", false))
+			if (pref.getBoolean("pref_key_other_appdetails", false))
 				SettingsMods.execHook_Apps(lpparam);
 			
-			if(pref.getBoolean("pref_key_other_nochargerwarn", false))
+			if (pref.getBoolean("pref_key_other_nochargerwarn", false))
 				OtherMods.execHook_NoChargerWarning(lpparam);
 			
 			SettingsMods.execHook_AppFilter(lpparam);
@@ -406,103 +395,99 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				CamMods.execHook_VolKey(lpparam, volup, voldown);
 		}
 		
-		if (pkg.equals("com.android.systemui"))
-		{
-			if(pref.getBoolean("pref_key_sysui_invisinotify_enable", false))
-			{
+		if (pkg.equals("com.android.systemui")) {
+			if (pref.getBoolean("pref_key_sysui_invisinotify_enable", false)) {
 				int transparency = pref.getInt("pref_key_sysui_invisinotify", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				SysUIMods.execHook_InvisiNotifyCode(lpparam, transparency);
 			}
 			
-			if(pref.getBoolean("pref_key_sysui_noeqs", false))
+			if (pref.getBoolean("pref_key_sysui_noeqs", false))
 				SysUIMods.execHook_DisableEQS(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_minorqs", false))
-			{
+			if (pref.getBoolean("pref_key_sysui_minorqs", false)) {
 				SysUIMods.execHook_MinorEQS(lpparam, pref.getBoolean("pref_key_sysui_minorqs_notext", false));
 				SysUIMods.execHook_hEQSLongClick(lpparam);
 			}
 			
-			if(pref.getBoolean("pref_key_sysui_aosprecent", false))
+			if (pref.getBoolean("pref_key_sysui_aosprecent", false))
 				SysUIMods.execHook_AospRecent(lpparam);
 			
 			SysUIMods.execHook_RecentAppsInit(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_recentappsclear", false))
+			if (pref.getBoolean("pref_key_sysui_recentappsclear", false))
 				SysUIMods.execHook_RecentAppsClearTouch(lpparam);
 			
-			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
+			if (Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockAnimation(lpparam);
-			if(Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 3)
+			
+			if (Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 3)
 				SysUIMods.execHook_ClockRemove(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_ampmremove", false))
+			if (pref.getBoolean("pref_key_sysui_ampmremove", false))
 				SysUIMods.execHook_removeAMPM(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_brightslide", false))
+			if (pref.getBoolean("pref_key_sysui_brightslide", false))
 				SysUIMods.execHook_BrightnessSlider(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_dataratestatus", false))
+			if (pref.getBoolean("pref_key_sysui_dataratestatus", false))
 				SysUIMods.execHook_DataRateStatus(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_recentram", false))
+			if (pref.getBoolean("pref_key_sysui_recentram", false))
 				SysUIMods.execHook_RAMInRecents(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_alarmnotify", false))
+			if (pref.getBoolean("pref_key_sysui_alarmnotify", false))
 				SysUIMods.execHook_AlarmNotification(lpparam);
 			
-//			if(Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false))
+//			if (Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false))
 //				SysUIMods.execHookTSB442Fix(lpparam);
 			
-			if(Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1")) == 3)
+			if (Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1")) == 3)
 				SysUIMods.execHook_NotifDrawerHeaderSysInfo(lpparam);
 			
-			if(pref_homeassist != 1) {
+			if (pref_homeassist != 1) {
 				if (Helpers.isM8())
 					ControlsMods.execHook_M8RecentsLongpress(lpparam);
 				else
 					SysUIMods.execHook_OverrideAssist(lpparam);
 			}
 			
-			if(pref.getBoolean("pref_key_sysui_brightqs", false))
+			if (pref.getBoolean("pref_key_sysui_brightqs", false))
 				SysUIMods.execHook_ChangeBrightnessQSTile(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_timeoutqs", false))
+			if (pref.getBoolean("pref_key_sysui_timeoutqs", false))
 				SysUIMods.execHook_ChangeTimeoutQSTile(lpparam);
 			
-			if(pref_backlongpress != 1 && Helpers.isM8())
+			if (pref_backlongpress != 1 && Helpers.isM8())
 				ControlsMods.execHook_M8BackLongpress(lpparam);
 			
-			if(pref.getBoolean("pref_key_prism_homemenu", false) && Helpers.isM8())
+			if (pref.getBoolean("pref_key_prism_homemenu", false) && Helpers.isM8())
 				ControlsMods.execHook_M8HomeLongpress(lpparam);
 			
-			if(pref.getBoolean("pref_key_cb_texts", false))
+			if (pref.getBoolean("pref_key_cb_texts", false))
 				CleanBeamMods.execHook_StatusBarTexts(lpparam);
 			
-			if(pref.getBoolean("pref_key_controls_extendedpanel", false))
+			if (pref.getBoolean("pref_key_controls_extendedpanel", false))
 				SysUIMods.execHook_SearchGlowPadLaunch(lpparam);
 			
-			if(pref.getBoolean("pref_key_other_nolowbattwarn", false))
+			if (pref.getBoolean("pref_key_other_nolowbattwarn", false))
 				SysUIMods.execHook_NoLowBatteryWarning(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_tnsb", false))
+			if (pref.getBoolean("pref_key_sysui_tnsb", false))
 				SysUIMods.execHook_TranslucentNotifications(lpparam);
 			
-			if(pref.getBoolean("pref_key_sysui_theqs", false))
+			if (pref.getBoolean("pref_key_sysui_theqs", false))
 				SysUIMods.execHook_TranslucentHorizEQSCode(lpparam);
 			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 			CleanBeamMods.execHook_HideIcons(lpparam);
 		}
 		
-		if (pkg.equals("com.android.packageinstaller"))
-		{
+		if (pkg.equals("com.android.packageinstaller")) {
 			OtherMods.execHook_EnhancedInstaller(lpparam);
 		}
 		
-		if (pkg.equals("com.htc.android.mail"))
-		{
+		if (pkg.equals("com.htc.android.mail")) {
 			if (pref.getBoolean("pref_key_messaging_eassecurity", false))
 				MessagingMods.execHook_EASSecurityPartTwo(lpparam);
 		}
@@ -517,19 +502,17 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		}
 		
 		if (pkg.equals("com.htc.widget.weatherclock")) {
-			if(pref.getBoolean("pref_key_prism_invisiwidget_enable", false)) {
+			if (pref.getBoolean("pref_key_prism_invisiwidget_enable", false)) {
 				PrismMods.execHook_invisiWidgetFix(lpparam);
 			}
 		}
 		
-		if (pkg.equals("com.htc.htcdialer"))
-		{
+		if (pkg.equals("com.htc.htcdialer")) {
 			if (pref.getBoolean("pref_key_controls_smallsoftkeys", false))
 				ControlsMods.execHook_FixDialer(lpparam);
 		}
 		
-		if (lpparam.processName.equals("android"))
-		{
+		if (lpparam.processName.equals("android")) {
 			if (pref.getBoolean("pref_key_other_apm", false))
 				OtherMods.execHook_APM(lpparam);
 			

@@ -14,6 +14,8 @@ import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.acra.ACRA;
+
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -21,7 +23,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
@@ -168,10 +169,33 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			}
 		};
 		
+		HtcCheckBoxPreference.OnPreferenceClickListener sendCrashReport = new HtcCheckBoxPreference.OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(HtcPreference preference) {
+				ACRA.getErrorReporter().handleException(null);
+				return true;
+			}
+		};
+		
 		HtcCheckBoxPreference toolboxSettingsPreference = (HtcCheckBoxPreference) findPreference("pref_key_toolbox_icon");
 		toolboxSettingsPreference.setOnPreferenceChangeListener(toggleIcon);
 		HtcPreference toolboxLanguagePreference = (HtcPreference) findPreference("pref_key_toolbox_lang");
 		toolboxLanguagePreference.setOnPreferenceClickListener(openLang);
+		HtcPreference toolboxCrashReportPreference = (HtcPreference) findPreference("pref_key_toolbox_sendreport");
+		toolboxCrashReportPreference.setOnPreferenceClickListener(sendCrashReport);
+	}
+	
+	private static void removePref(HtcPreferenceFragmentExt frag, String prefName, String catName) {
+		if (frag.findPreference(prefName) != null)
+		((HtcPreferenceScreen) frag.findPreference(catName)).removePreference(frag.findPreference(prefName));
+	}
+	
+	private static void disablePref(HtcPreferenceFragmentExt frag, String prefName, int reasonText) {
+		HtcPreference pref = frag.findPreference(prefName);
+		if (pref != null) {
+			pref.setEnabled(false);
+			pref.setSummary(reasonText);
+		}
 	}
 	
 	public static class SysUIFragment extends HtcPreferenceFragmentExt {
@@ -307,7 +331,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					dp.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
 						@Override
 						public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-							preference.setSummary(getAppName(getActivity(), (String)newValue));
+							preference.setSummary(Helpers.getAppName(getActivity(), (String)newValue));
 							return true;
 						}
 					});
@@ -329,7 +353,6 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 									getActivity().runOnUiThread(new Runnable(){
 										@Override
 										public void run(){
-											dialog.dismiss();
 											dp.show();
 										}
 									});
@@ -385,27 +408,27 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			
 			String not_selected = Helpers.l10n(getActivity(), R.string.notselected);
 			
-			launchAppsSwipeDown.setSummary(getAppName(getActivity(), prefs.getString("pref_key_prism_swipedown_app", not_selected)));
+			launchAppsSwipeDown.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_prism_swipedown_app", not_selected)));
 			launchAppsSwipeDown.setOnPreferenceClickListener(clickPref);
 			toggleSwipeDown.setSummary(toggleSwipeDown.getEntry() == null ? not_selected: toggleSwipeDown.getEntry());
 			toggleSwipeDown.setOnPreferenceChangeListener(setEntryAsSummary);
 			
-			launchAppsSwipeUp.setSummary(getAppName(getActivity(), prefs.getString("pref_key_prism_swipeup_app", not_selected)));
+			launchAppsSwipeUp.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_prism_swipeup_app", not_selected)));
 			launchAppsSwipeUp.setOnPreferenceClickListener(clickPref);
 			toggleSwipeUp.setSummary(toggleSwipeUp.getEntry() == null ? not_selected: toggleSwipeUp.getEntry());
 			toggleSwipeUp.setOnPreferenceChangeListener(setEntryAsSummary);
 			
-			launchAppsSwipeRight.setSummary(getAppName(getActivity(), prefs.getString("pref_key_prism_swiperight_app", not_selected)));
+			launchAppsSwipeRight.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_prism_swiperight_app", not_selected)));
 			launchAppsSwipeRight.setOnPreferenceClickListener(clickPref);
 			toggleSwipeRight.setSummary(toggleSwipeRight.getEntry() == null ? not_selected: toggleSwipeRight.getEntry());
 			toggleSwipeRight.setOnPreferenceChangeListener(setEntryAsSummary);
 			
-			launchAppsSwipeLeft.setSummary(getAppName(getActivity(), prefs.getString("pref_key_prism_swipeleft_app", not_selected)));
+			launchAppsSwipeLeft.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_prism_swipeleft_app", not_selected)));
 			launchAppsSwipeLeft.setOnPreferenceClickListener(clickPref);
 			toggleSwipeLeft.setSummary(toggleSwipeLeft.getEntry() == null ? not_selected: toggleSwipeLeft.getEntry());
 			toggleSwipeLeft.setOnPreferenceChangeListener(setEntryAsSummary);
 
-			launchAppsShake.setSummary(getAppName(getActivity(), prefs.getString("pref_key_prism_shake_app", not_selected)));
+			launchAppsShake.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_prism_shake_app", not_selected)));
 			launchAppsShake.setOnPreferenceClickListener(clickPref);
 			toggleShake.setSummary(toggleShake.getEntry() == null ? not_selected: toggleShake.getEntry());
 			toggleShake.setOnPreferenceChangeListener(setEntryAsSummary);
@@ -482,7 +505,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				dp.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
 					@Override
 					public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-						preference.setSummary(getAppName(getActivity(), (String)newValue));
+						preference.setSummary(Helpers.getAppName(getActivity(), (String)newValue));
 						return true;
 					}
 				});
@@ -509,7 +532,6 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 								getActivity().runOnUiThread(new Runnable(){
 									@Override
 									public void run(){
-										dialog.dismiss();
 										dp.show();
 									}
 								});
@@ -613,12 +635,12 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 
 			String not_selected = Helpers.l10n(getActivity(), R.string.notselected);
 			
-			launchAppsBackLongPress.setSummary(getAppName(getActivity(), prefs.getString("pref_key_controls_backlongpress_app", not_selected)));
+			launchAppsBackLongPress.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_controls_backlongpress_app", not_selected)));
 			launchAppsBackLongPress.setOnPreferenceClickListener(clickPref);
 			toggleBackLongPress.setSummary(toggleBackLongPress.getEntry() == null ? not_selected: toggleBackLongPress.getEntry());
 			toggleBackLongPress.setOnPreferenceChangeListener(setEntryAsSummary);
 			
-			launchAppsHomeAssist.setSummary(getAppName(getActivity(), prefs.getString("pref_key_controls_homeassist_app", not_selected)));
+			launchAppsHomeAssist.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_controls_homeassist_app", not_selected)));
 			launchAppsHomeAssist.setOnPreferenceClickListener(clickPref);
 			toggleHomeAssist.setSummary(toggleHomeAssist.getEntry() == null ? not_selected: toggleHomeAssist.getEntry());
 			toggleHomeAssist.setOnPreferenceChangeListener(setEntryAsSummary);
@@ -640,13 +662,18 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				}
 			});
 			
+			if (!RootTools.isRootAvailable())
+				disablePref(this, "pref_key_controls_vol2wake", R.string.no_root_summ);
+			else if (!RootTools.isBusyboxAvailable())
+				disablePref(this, "pref_key_controls_vol2wake", R.string.no_busybox_summ);
+			
 			if (Helpers.isM8()) {
 				HtcPreferenceCategory assist_cat = (HtcPreferenceCategory) findPreference("pref_key_controls_home");
 				assist_cat.setTitle(Helpers.l10n(getActivity(), R.string.controls_mods_recentslongpress));
 				HtcListPreference assist = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
 				assist.setSummary(Helpers.l10n(getActivity(), R.string.controls_recentslongpressaction_summ));
 			} else if (!Helpers.isDesire816())
-				((HtcPreferenceScreen) findPreference("pref_key_controls")).removePreference(findPreference("pref_key_controls_smallsoftkeys"));
+				removePref(this, "pref_key_controls_smallsoftkeys", "pref_key_controls");
 		}
 	}
 	
@@ -665,8 +692,14 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			addPreferencesFromResource(R.xml.prefs_other);
 			
 			if (Helpers.isNotM7()) {
-				if (findPreference("pref_key_other_keyslight") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_keyslight"));
-				if (findPreference("pref_key_other_keyslight_auto") != null) ((HtcPreferenceScreen) findPreference("pref_key_other")).removePreference(findPreference("pref_key_other_keyslight_auto"));
+				removePref(this, "pref_key_other_keyslight", "pref_key_other");
+				removePref(this, "pref_key_other_keyslight_auto", "pref_key_other");
+			} else if (!RootTools.isRootAvailable()){
+				disablePref(this, "pref_key_other_keyslight",R.string.no_root_summ);
+				disablePref(this, "pref_key_other_keyslight_auto", R.string.no_root_summ);
+			} else if (!RootTools.isBusyboxAvailable()){
+				disablePref(this, "pref_key_other_keyslight", R.string.no_busybox_summ);
+				disablePref(this, "pref_key_other_keyslight_auto", R.string.no_busybox_summ);
 			}
 			
 			HtcListPreference.OnPreferenceChangeListener applyButtonsLight = new HtcListPreference.OnPreferenceChangeListener() {
@@ -688,6 +721,15 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				@Override
 				public boolean onPreferenceClick(HtcPreference arg0) {
 					getActivity().startActivity(new Intent(getActivity(), PopupNotify.class));
+					return true;
+				}
+			});
+			
+			HtcPreference extremePowerSaverPreference = (HtcPreference) findPreference("pref_key_other_extremepower");
+			extremePowerSaverPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+				@Override
+				public boolean onPreferenceClick(HtcPreference arg0) {
+					getActivity().startActivity(new Intent(getActivity(), EPSRemap.class));
 					return true;
 				}
 			});
@@ -849,25 +891,6 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				e.printStackTrace();
 			}
 		}
-	}
-	
-	public static CharSequence getAppName(Context ctx, String pkgActName) {
-		PackageManager pm = ctx.getPackageManager();
-		String not_selected = Helpers.l10n(ctx, R.string.notselected);
-		String[] pkgActArray = pkgActName.split("\\|");
-		ApplicationInfo ai = null;
-
-		if (pkgActArray.length >= 1)
-		if (!pkgActArray[0].trim().equals(""))
-		if (pkgActName.equals(not_selected))
-			ai = null;
-		else try {
-			ai = pm.getApplicationInfo(pkgActArray[0], 0);
-		} catch (Exception e) {
-			e.printStackTrace();
-			ai = null;
-		}
-		return (ai != null ? pm.getApplicationLabel(ai) : not_selected);
 	}
 	
 	boolean firstView = true;

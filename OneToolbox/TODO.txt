@@ -24,17 +24,22 @@ Ideas
 - Button in notification drawer header
 - Mount ISO image
 - Hidden HTC diagnostics
-- Toast app icon
+- More options for Sense themes override
 
 
 =================
 Current changelog
 =================
 
-[Fixed] Softkeys recents and home long press in landscape mode
-[Fixed] Popup notification height in landscape mode
-[Fixed][4.4.3] Sense 6 Themes and widget transparency.
-[New][4.4.3] Ability to change widget themes (add widget packages to the list) and the color of system controls (e.g. volume sliders, add Android System).
+1.4
+[New] Extreme Power Saving apps remap. All 6 apps (including Exit) can be changed. Long press any app tile to turn off EPS mode.
+[New] Add application's icon and label to its toasts
+[New] Extended troubleshooting functionality
+ - Send crash reports to developers if Toolbox stops working
+ - Manually send a detailed report with the problem description and your contacts
+[Fixed] Lock device action wasn't locking device with set timeout
+[Fixed] Wrong labels for some apps in Toolbox list preferences
+[Fixed] Some mods and UI fixes, speed optimizations
 
 ===========
 Translators
@@ -58,6 +63,12 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.3.6
+[Fixed] Softkeys recents and home long press in landscape mode
+[Fixed] Popup notification height in landscape mode
+[Fixed][4.4.3] Sense 6 Themes and widget transparency.
+[New][4.4.3] Ability to change widget themes (add widget packages to the list) and the color of system controls (e.g. volume sliders, add Android System).
 
 1.3.5.1
 [Fixed] Translucent horizontal EQS

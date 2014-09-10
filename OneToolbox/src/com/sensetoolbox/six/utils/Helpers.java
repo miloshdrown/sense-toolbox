@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -38,6 +39,7 @@ import com.sensetoolbox.six.mods.XMain;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -601,9 +603,12 @@ public class Helpers {
 		for (Iterator<ResolveInfo> iterator = packs.iterator(); iterator.hasNext();) try {
 			ResolveInfo resolveinfo = (ResolveInfo)iterator.next();
 			app = new AppData();
-			app.label = resolveinfo.loadLabel(pm).toString();
 			app.pkgName = resolveinfo.activityInfo.applicationInfo.packageName;
 			app.actName = resolveinfo.activityInfo.name;
+			if (app.actName != null)
+				app.label = (String)resolveinfo.activityInfo.loadLabel(pm);
+			else
+				app.label = resolveinfo.loadLabel(pm).toString();
 			Helpers.launchableAppsList.add(app);
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -613,6 +618,26 @@ public class Helpers {
 				return app1.label.compareToIgnoreCase(app2.label);
 			}
 		});
+	}
+	
+	public static CharSequence getAppName(Context ctx, String pkgActName) {
+		PackageManager pm = ctx.getPackageManager();
+		String not_selected = Helpers.l10n(ctx, R.string.notselected);
+		String[] pkgActArray = pkgActName.split("\\|");
+		ApplicationInfo ai = null;
+
+		if (!pkgActName.equals(not_selected))
+		if (pkgActArray.length >= 1 && pkgActArray[0] != null) try {
+			if (pkgActArray.length >= 2 && pkgActArray[1] != null && !pkgActArray[1].trim().equals("")) {
+				return pm.getActivityInfo(new ComponentName(pkgActArray[0], pkgActArray[1]), 0).loadLabel(pm).toString();
+			} else if (!pkgActArray[0].trim().equals("")) {
+				ai = pm.getApplicationInfo(pkgActArray[0], 0);
+				return (ai != null ? pm.getApplicationLabel(ai) : not_selected);
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return not_selected;
 	}
 	
 	static {
@@ -659,5 +684,15 @@ public class Helpers {
 			list1.add(view);
 			return list1;
 		}
+	}
+	
+	public static Map<String,String> getParamsAsStringString(Map<?, ?> parameters) throws UnsupportedEncodingException {
+		HashMap<String,String> result = new HashMap<String,String>();
+		for (final Object key : parameters.keySet()) {
+			final Object preliminaryValue = parameters.get(key);
+			final Object value = (preliminaryValue == null) ? "" : preliminaryValue;
+			result.put(key.toString(), value.toString());
+		}
+		return result;
 	}
 }

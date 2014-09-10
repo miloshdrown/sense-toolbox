@@ -14,6 +14,7 @@ import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
@@ -55,7 +56,9 @@ public class CleanBeamMods {
 		p.setARGB(255, 41, 142, 181);
 		p.setColorFilter(GlobalActions.createColorFilter(true));
 		canvas.drawPoint(0, 0, p);
-		return bmp.getPixel(0, 0);
+		int color = bmp.getPixel(0, 0);
+		if (color == 0) color = Color.WHITE;
+		return color;
 	}
 	
 	public static void execHook_StatusBarTexts(LoadPackageParam lpparam) {

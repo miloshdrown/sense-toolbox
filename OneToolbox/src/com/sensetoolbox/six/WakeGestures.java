@@ -6,13 +6,12 @@ import java.util.List;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.ApplicationInfo;
-import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.view.ViewGroup.LayoutParams;
 
 import com.htc.app.HtcProgressDialog;
 import com.htc.preference.HtcListPreference;
@@ -29,31 +28,13 @@ import com.htc.widget.HtcToggleButtonLight.OnCheckedChangeListener;
 import com.sensetoolbox.six.utils.AppShortcutAddDialog;
 import com.sensetoolbox.six.utils.DynamicPreference;
 import com.sensetoolbox.six.utils.Helpers;
+import com.sensetoolbox.six.utils.HtcPreferenceActivityEx;
 
-public class WakeGestures extends HtcPreferenceActivity {
+public class WakeGestures extends HtcPreferenceActivityEx {
 	SharedPreferences prefs;
 	HtcToggleButtonLight OnOffSwitch;
 	HtcListView prefListView;
 	int mThemeId = 0;
-	
-	public static CharSequence getAppName(Context ctx, String pkgActName) {
-		PackageManager pm = ctx.getPackageManager();
-		String not_selected = Helpers.l10n(ctx, R.string.notselected);
-		String[] pkgActArray = pkgActName.split("\\|");
-		ApplicationInfo ai = null;
-
-		if (pkgActArray.length >= 1)
-		if (!pkgActArray[0].trim().equals(""))
-		if (pkgActName.equals(not_selected))
-			ai = null;
-		else try {
-			ai = pm.getApplicationInfo(pkgActArray[0], 0);
-		} catch (Exception e) {
-			e.printStackTrace();
-			ai = null;
-		}
-		return (ai != null ? pm.getApplicationLabel(ai) : not_selected);
-	}
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -93,24 +74,11 @@ public class WakeGestures extends HtcPreferenceActivity {
 		int backResId = getResources().getIdentifier("common_app_bkg", "drawable", "com.htc");
 		findViewById(R.id.backLayer).setBackgroundResource(backResId);
 		
-		OnOffSwitch = new HtcToggleButtonLight(this);
-		OnOffSwitch.setLayoutParams(new android.widget.LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-		OnOffSwitch.setEnabled(true);
-		OnOffSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
-			@Override
-			public void onCheckedChanged(HtcToggleButtonLight toggle, boolean state) {
-				prefs.edit().putBoolean("wake_gestures_active", state).commit();
-				applyThemeState(state);
-			}
-		});
-		actionBarContainer.addRightView(OnOffSwitch);
-		
 		prefListView = (HtcListView)this.findViewById(android.R.id.list);
 		prefListView.setBackgroundResource(backResId);
 		prefListView.setDivider(getResources().getDrawable(getResources().getIdentifier("inset_list_divider", "drawable", "com.htc")));
 		prefListView.setDividerHeight(1);
 		prefListView.setFooterDividersEnabled(false);
-		applyThemeState(prefs.getBoolean("wake_gestures_active", false));
 		
 		final HtcListPreference swipeRightActionPreference = (HtcListPreference) findPreference("pref_key_wakegest_swiperight");
 		final HtcListPreference swipeleftActionPreference = (HtcListPreference) findPreference("pref_key_wakegest_swipeleft");
@@ -222,7 +190,7 @@ public class WakeGestures extends HtcPreferenceActivity {
 				dp.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
 					@Override
 					public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-						preference.setSummary(getAppName(act, (String)newValue));
+						preference.setSummary(Helpers.getAppName(act, (String)newValue));
 						return true;
 					}
 				});
@@ -266,23 +234,41 @@ public class WakeGestures extends HtcPreferenceActivity {
 			}
 		};
 		
-		launchAppsSwipeRight.setSummary(getAppName(this, prefs.getString("pref_key_wakegest_swiperight_app", not_selected)));
+		launchAppsSwipeRight.setSummary(Helpers.getAppName(this, prefs.getString("pref_key_wakegest_swiperight_app", not_selected)));
 		launchAppsSwipeRight.setOnPreferenceClickListener(clickPref);
-		launchAppsSwipeLeft.setSummary(getAppName(this, prefs.getString("pref_key_wakegest_swipeleft_app", not_selected)));
+		launchAppsSwipeLeft.setSummary(Helpers.getAppName(this, prefs.getString("pref_key_wakegest_swipeleft_app", not_selected)));
 		launchAppsSwipeLeft.setOnPreferenceClickListener(clickPref);
-		launchAppsSwipeUp.setSummary(getAppName(this, prefs.getString("pref_key_wakegest_swipeup_app", not_selected)));
+		launchAppsSwipeUp.setSummary(Helpers.getAppName(this, prefs.getString("pref_key_wakegest_swipeup_app", not_selected)));
 		launchAppsSwipeUp.setOnPreferenceClickListener(clickPref);
-		launchAppsSwipeDown.setSummary(getAppName(this, prefs.getString("pref_key_wakegest_swipedown_app", not_selected)));
+		launchAppsSwipeDown.setSummary(Helpers.getAppName(this, prefs.getString("pref_key_wakegest_swipedown_app", not_selected)));
 		launchAppsSwipeDown.setOnPreferenceClickListener(clickPref);
-		launchAppsDoubleTap.setSummary(getAppName(this, prefs.getString("pref_key_wakegest_dt2w_app", not_selected)));
+		launchAppsDoubleTap.setSummary(Helpers.getAppName(this, prefs.getString("pref_key_wakegest_dt2w_app", not_selected)));
 		launchAppsDoubleTap.setOnPreferenceClickListener(clickPref);
-		launchAppsLogoPress.setSummary(getAppName(this, prefs.getString("pref_key_wakegest_logo2wake_app", not_selected)));
+		launchAppsLogoPress.setSummary(Helpers.getAppName(this, prefs.getString("pref_key_wakegest_logo2wake_app", not_selected)));
 		launchAppsLogoPress.setOnPreferenceClickListener(clickPref);
 		
 		if (Helpers.isButterflyS()) {
 			if (logoPressActionPreference != null) ((HtcPreferenceScreen)findPreference("pref_key_wakegest")).removePreference(logoPressActionPreference);
 			if (launchAppsLogoPress != null) ((HtcPreferenceScreen)findPreference("pref_key_wakegest")).removePreference(launchAppsLogoPress);
 		}
+	}
+	
+	@Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		MenuInflater inflater = getMenuInflater();
+		inflater.inflate(R.menu.menu_sub, menu);
+		
+		OnOffSwitch = (HtcToggleButtonLight)menu.getItem(1).getActionView().findViewById(R.id.onoffSwitch);;
+		OnOffSwitch.setEnabled(true);
+		applyThemeState(prefs.getBoolean("wake_gestures_active", false));
+		OnOffSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+			@Override
+			public void onCheckedChanged(HtcToggleButtonLight toggle, boolean state) {
+				prefs.edit().putBoolean("wake_gestures_active", state).commit();
+				applyThemeState(state);
+			}
+		});
+		return true;
 	}
 	
 	@Override

@@ -79,6 +79,7 @@ import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
@@ -1981,7 +1982,7 @@ public class SysUIMods {
 							nView.invalidate();
 						}
 						
-						if (sbn != null && name.contains("icon")) {
+						if (sbn != null && name.contains("icon") && nView.getClass() == ImageView.class) {
 							ImageView icon = (ImageView)nView;
 							Context ctx = icon.getContext();
 							icon.setBackground(null);
@@ -2045,6 +2046,84 @@ public class SysUIMods {
 				if (mStatusBarWindow != null) {
 					LinearLayout qsMinorContainer = (LinearLayout)mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("quick_settings_minor_container", "id", "com.android.systemui"));
 					if (qsMinorContainer != null) qsMinorContainer.setShowDividers(0);
+				}
+			}
+		});
+	}
+	
+	private static ImageView createIcon(Context ctx, int baseSize) {
+		float density = ctx.getResources().getDisplayMetrics().density;
+		ImageView iv = new ImageView(ctx);
+		try {
+			iv.setImageDrawable(ctx.getPackageManager().getApplicationIcon(ctx.getPackageName()));
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+		iv.setScaleType(ScaleType.CENTER_INSIDE);
+		int size = Math.round(baseSize * density);
+		LinearLayout.LayoutParams lpi = new LinearLayout.LayoutParams(size, size);
+		if (baseSize > 30)
+			lpi.setMargins(0, Math.round(1 * density), Math.round(8 * density), 0);
+		else
+			lpi.setMargins(0, 0, Math.round(8 * density), 0);
+		lpi.gravity = Gravity.CENTER;
+		iv.setLayoutParams(lpi);
+			
+		return iv;
+	}
+	
+	private static TextView createLabel(Context ctx, TextView toastText) {
+		TextView tv = new TextView(ctx);
+		tv.setText(ctx.getApplicationInfo().loadLabel(ctx.getPackageManager()) + ":");
+		tv.setTextColor(Color.WHITE);
+		tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, toastText.getTextSize());
+		tv.setTypeface(toastText.getTypeface());
+		tv.setAlpha(0.6f);
+		return tv;
+	}
+	
+	public static void execHook_IconLabelToasts() {
+		XResources.hookSystemWideLayout("android", "layout", "transient_notification", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				XMain.pref.reload();
+				int option = Integer.parseInt(XMain.pref.getString("pref_key_other_iconlabletoasts", "1"));
+				if (option == 1) return;
+				Context ctx = liparam.view.getContext();
+				float density = ctx.getResources().getDisplayMetrics().density;
+				
+				TextView toastText = (TextView)liparam.view.findViewById(android.R.id.message);
+				LinearLayout.LayoutParams lpt = (LinearLayout.LayoutParams)toastText.getLayoutParams();
+				lpt.gravity = Gravity.CENTER;
+				
+				LinearLayout toast = ((LinearLayout)liparam.view);
+				toast.setGravity(Gravity.CENTER);
+				toast.setPadding(toast.getPaddingLeft() - Math.round(5 * density), toast.getPaddingTop(), toast.getPaddingRight(), toast.getPaddingBottom());
+				
+				switch (option) {
+					case 2:
+						ImageView iv = createIcon(ctx, 30);
+						toast.setOrientation(LinearLayout.HORIZONTAL);
+						toast.addView(iv, 0);
+						break;
+					case 3:
+						TextView tv = createLabel(ctx, toastText);
+						toast.setOrientation(LinearLayout.VERTICAL);
+						toast.addView(tv, 0);
+						break;
+					case 4:
+						LinearLayout textLabel = new LinearLayout(ctx);
+						textLabel.setOrientation(LinearLayout.VERTICAL);
+						ImageView iv2 = createIcon(ctx, 45);
+						TextView tv2 = createLabel(ctx, toastText);
+						
+						((LinearLayout)toastText.getParent()).removeAllViews();
+						textLabel.addView(tv2);
+						textLabel.addView(toastText);
+						toast.setOrientation(LinearLayout.HORIZONTAL);
+						toast.addView(iv2);
+						toast.addView(textLabel);
+						break;
 				}
 			}
 		});

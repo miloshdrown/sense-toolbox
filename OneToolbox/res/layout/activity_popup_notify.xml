@@ -1,54 +1,55 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/container"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    tools:context=".PopupNotify"
-    tools:ignore="MergeRootFrame" >
-    
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/backLayer" >
-        <FrameLayout
-            android:layout_width="match_parent"
-        	android:layout_height="wrap_content"
-        	android:paddingTop="5dp"
-        	android:paddingBottom="5dp"
-        	android:layout_gravity="top"
-        	android:id="@+id/experimentalFrame"
-        	android:background="@color/warning_background">
-        	<TextView
-        	    android:layout_width="wrap_content"
-        		android:layout_height="wrap_content"
-        		android:id="@+id/experimental"
-        		android:textSize="16sp"
-        		android:fontFamily="sans-serif-condensed"
-        		android:layout_gravity="center" />
-        </FrameLayout>
-        
-    	<com.htc.widget.HtcListView
-        	android:id="@android:id/list"
-        	android:layout_width="match_parent"
-        	android:layout_height="match_parent"
-	        android:background="@android:color/transparent"
-	        android:layout_below="@id/experimentalFrame" >
-    	</com.htc.widget.HtcListView>
-    	
-    	<TextView
-        	android:id="@+id/themehint"
-        	android:layout_width="match_parent"
-        	android:layout_height="match_parent"
-        	android:layout_gravity="center"
-        	android:gravity="center"
-	        android:padding="30dp"
-    	    android:text="@string/popupnotify_hint"
-	       	android:textAllCaps="true"
-        	android:textSize="18sp"
-        	android:textColor="@color/theme_hint"
-        	android:fontFamily="sans-serif-condensed" />
-    </RelativeLayout>
+	xmlns:tools="http://schemas.android.com/tools"
+	android:id="@+id/container"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
+	tools:context=".PopupNotify"
+	tools:ignore="MergeRootFrame" >
+	
+	<RelativeLayout
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:id="@+id/backLayer" >
+		<FrameLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:paddingTop="5dp"
+			android:paddingBottom="5dp"
+			android:layout_gravity="top"
+			android:id="@+id/experimentalFrame"
+			android:background="@color/warning_background"
+			android:visibility="gone" >
+			<TextView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/experimental"
+				android:textSize="16sp"
+				android:fontFamily="sans-serif-condensed"
+				android:layout_gravity="center" />
+		</FrameLayout>
+		
+		<com.htc.widget.HtcListView
+			android:id="@android:id/list"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:background="@android:color/transparent"
+			android:layout_below="@id/experimentalFrame" >
+		</com.htc.widget.HtcListView>
+		
+		<TextView
+			android:id="@+id/themehint"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:layout_gravity="center"
+			android:gravity="center"
+			android:padding="30dp"
+			android:text="@string/popupnotify_hint"
+			   android:textAllCaps="true"
+			android:textSize="18sp"
+			android:textColor="@color/theme_hint"
+			android:fontFamily="sans-serif-condensed" />
+	</RelativeLayout>
 </FrameLayout>
 

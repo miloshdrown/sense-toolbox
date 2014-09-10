@@ -52,9 +52,22 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 public class GlobalActions {
 
 	public static Object mPWM = null;
+	public static Object mDMS = null;
 	//public static Handler mHandler = null;
 	private static int mCurrentLEDLevel = 0;
 	
+	private static BroadcastReceiver mBRLock = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			try {
+				String action = intent.getAction();
+				if (action.equals("com.sensetoolbox.six.mods.action.LockDevice"))
+				if (mDMS != null) XposedHelpers.callMethod(mDMS, "lockNowUnchecked");
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	};
+			
 	private static BroadcastReceiver mBR = new BroadcastReceiver() {
 		public void onReceive(final Context context, Intent intent) {
 			try {
@@ -63,9 +76,6 @@ public class GlobalActions {
 			// Actions
 			if (action.equals("com.sensetoolbox.six.mods.action.GoToSleep")) {
 				((PowerManager)context.getSystemService(Context.POWER_SERVICE)).goToSleep(SystemClock.uptimeMillis());
-			}
-			if (action.equals("com.sensetoolbox.six.mods.action.LockDevice")) {
-				if (mPWM != null) XposedHelpers.callMethod(mPWM, "lockNow", new Object[]{ null });
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.TakeScreenshot")) {
 				if (mPWM != null) XposedHelpers.callMethod(mPWM, "takeScreenshot");
@@ -423,7 +433,6 @@ public class GlobalActions {
 					
 					// Actions
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.GoToSleep");
-					intentfilter.addAction("com.sensetoolbox.six.mods.action.LockDevice");
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.TakeScreenshot");
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.killForegroundApp");
 					//intentfilter.addAction("com.sensetoolbox.six.mods.action.killForegroundAppShedule");
@@ -447,6 +456,18 @@ public class GlobalActions {
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.APMRebootBootloader");
 					
 					mPWMContext.registerReceiver(mBR, intentfilter);
+				}
+			});
+			
+			final Class<?> clsDMS = findClass("com.android.server.DevicePolicyManagerService", null);
+			XposedBridge.hookAllConstructors(clsDMS, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					mDMS = param.thisObject;
+					Context mDMSContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					IntentFilter intentfilter = new IntentFilter();
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.LockDevice");
+					mDMSContext.registerReceiver(mBRLock, intentfilter);
 				}
 			});
 		} catch (Throwable t) {
