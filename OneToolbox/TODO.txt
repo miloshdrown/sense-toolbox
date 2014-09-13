@@ -37,6 +37,8 @@ Current changelog
 [New] Extended troubleshooting functionality
  - Send crash reports to developers if Toolbox stops working
  - Manually send a detailed report with the problem description and your contacts
+[Fixed] Hardware buttons backlight control stopped working after Toolbox reinstall
+[Fixed] Wake Gestures HTC Camera launch after last HTC Lock Screen update
 [Fixed] Lock device action wasn't locking device with set timeout
 [Fixed] Wrong labels for some apps in Toolbox list preferences
 [Fixed] Some mods and UI fixes, speed optimizations

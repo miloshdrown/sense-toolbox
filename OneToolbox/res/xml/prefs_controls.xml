@@ -1,111 +1,113 @@
 <com.htc.preference.HtcPreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
-    android:key="pref_key_controls">
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
+	android:key="pref_key_controls">
 		<com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_controls_vol2wake"
-            android:summary="@string/controls_vol2wake_summ"
-            android:title="@string/controls_vol2wake_title"
-            android:defaultValue="false" />
+			android:key="pref_key_controls_vol2wake"
+			android:summary="@string/controls_vol2wake_summ"
+			android:title="@string/controls_vol2wake_title"
+			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_controls_powerflash"
-            android:summary="@string/controls_powerflash_summ"
-            android:title="@string/controls_powerflash_title"
-            android:defaultValue="false" />
+			android:key="pref_key_controls_powerflash"
+			android:summary="@string/controls_powerflash_summ"
+			android:title="@string/controls_powerflash_title"
+			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_controls_swapvolume"
-            android:summary="@string/controls_swapvolume_summ"
-            android:title="@string/controls_swapvolume_title"
-            android:defaultValue="false" />
+			android:key="pref_key_controls_swapvolume"
+			android:summary="@string/controls_swapvolume_summ"
+			android:title="@string/controls_swapvolume_title"
+			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_controls_smallsoftkeys"
-            android:summary="@string/controls_smallsoftkeys_summ"
-            android:title="@string/controls_smallsoftkeys_title"
-            android:defaultValue="false" />
+			android:key="pref_key_controls_smallsoftkeys"
+			android:summary="@string/controls_smallsoftkeys_summ"
+			android:title="@string/controls_smallsoftkeys_title"
+			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_controls_extendedpanel"
-            android:summary="@string/controls_extendedpanel_summ"
-            android:title="@string/controls_extendedpanel_title"
-            android:defaultValue="false" />
-                
-        <com.htc.preference.HtcPreferenceCategory
-    	    android:title="@string/controls_mods_backlongpress"
-    	    android:key="pref_key_controls_back">
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_controls_backlongpressaction"
-            android:summary="@string/controls_backlongpressaction_summ"
-            android:title="@string/controls_backlongpressaction_title"
-            android:entries="@array/global_actions"
-            android:entryValues="@array/global_actions_val"
-            android:defaultValue="1" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_controls_backlongpress_app"
-			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_launch"
-            android:icon="@drawable/right_arrow" />
-        <com.sensetoolbox.six.utils.HtcListPreferencePlus
-            android:key="pref_key_controls_backlongpress_toggle"
-			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_toggle"
-            android:entries="@array/global_toggles"
-            android:entryValues="@array/global_toggles_val"
-            android:icon="@drawable/right_arrow" />
-        </com.htc.preference.HtcPreferenceCategory>
-        
-        <com.htc.preference.HtcPreferenceCategory
-    	    android:title="@string/controls_mods_homeassist"
-    	    android:key="pref_key_controls_home">
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_controls_homeassistaction"
-            android:summary="@string/controls_homeassistaction_summ"
-            android:title="@string/controls_homeassistaction_title"
-            android:entries="@array/global_actions"
-            android:entryValues="@array/global_actions_val"
-            android:defaultValue="1" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_controls_homeassist_app"
-			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_launch"
-            android:icon="@drawable/right_arrow" />
-        <com.sensetoolbox.six.utils.HtcListPreferencePlus
-            android:key="pref_key_controls_homeassist_toggle"
-			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_toggle"
-            android:entries="@array/global_toggles"
-            android:entryValues="@array/global_toggles_val"
-            android:icon="@drawable/right_arrow" />
-        </com.htc.preference.HtcPreferenceCategory>
-        
-        <com.htc.preference.HtcPreferenceCategory
-    	    android:title="@string/controls_mods_volume"
-    	    android:key="pref_key_controls_media">
+			android:key="pref_key_controls_extendedpanel"
+			android:summary="@string/controls_extendedpanel_summ"
+			android:title="@string/controls_extendedpanel_title"
+			android:defaultValue="false" />
+				
+		<com.htc.preference.HtcPreferenceCategory
+			android:title="@string/controls_mods_backlongpress"
+			android:key="pref_key_controls_back">
 		<com.htc.preference.HtcListPreference
-            android:key="pref_key_controls_camupaction"
-            android:summary="@string/controls_vol_up_cam_summ"
-            android:title="@string/controls_vol_up_cam_title"
-            android:entries="@array/cam_actions"
-            android:entryValues="@array/cam_actions_val"
-            android:defaultValue="4"/>
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_controls_camdownaction"
-            android:summary="@string/controls_vol_down_cam_summ"
-            android:title="@string/controls_vol_down_cam_title"
-            android:entries="@array/cam_actions"
-            android:entryValues="@array/cam_actions_val"
-            android:defaultValue="4" />
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_controls_mediaupaction"
-            android:summary="@string/controls_vol_up_media_summ"
-            android:title="@string/controls_vol_up_media_title"
-            android:entries="@array/media_action"
-            android:entryValues="@array/media_action_val"
-            android:defaultValue="0" />
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_controls_mediadownaction"
-            android:summary="@string/controls_vol_down_media_summ"
-            android:title="@string/controls_vol_down_media_title"
-            android:entries="@array/media_action"
-            android:entryValues="@array/media_action_val"
-            android:defaultValue="0" />
-        </com.htc.preference.HtcPreferenceCategory>
+			android:key="pref_key_controls_backlongpressaction"
+			android:summary="@string/controls_backlongpressaction_summ"
+			android:title="@string/controls_backlongpressaction_title"
+			android:entries="@array/global_actions"
+			android:entryValues="@array/global_actions_val"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_controls_backlongpress_app"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
+		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+			android:key="pref_key_controls_backlongpress_toggle"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_toggle"
+			android:entries="@array/global_toggles"
+			android:entryValues="@array/global_toggles_val"
+			android:icon="@drawable/right_arrow" />
+		</com.htc.preference.HtcPreferenceCategory>
+		
+		<com.htc.preference.HtcPreferenceCategory
+			android:title="@string/controls_mods_homeassist"
+			android:key="pref_key_controls_home">
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_homeassistaction"
+			android:summary="@string/controls_homeassistaction_summ"
+			android:title="@string/controls_homeassistaction_title"
+			android:entries="@array/global_actions"
+			android:entryValues="@array/global_actions_val"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_controls_homeassist_app"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
+		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+			android:key="pref_key_controls_homeassist_toggle"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_toggle"
+			android:entries="@array/global_toggles"
+			android:entryValues="@array/global_toggles_val"
+			android:icon="@drawable/right_arrow" />
+		</com.htc.preference.HtcPreferenceCategory>
+		
+		<com.htc.preference.HtcPreferenceCategory
+			android:title="@string/controls_mods_volume"
+			android:key="pref_key_controls_media">
+		<!--
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_camupaction"
+			android:summary="@string/controls_vol_up_cam_summ"
+			android:title="@string/controls_vol_up_cam_title"
+			android:entries="@array/cam_actions"
+			android:entryValues="@array/cam_actions_val"
+			android:defaultValue="4"/>
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_camdownaction"
+			android:summary="@string/controls_vol_down_cam_summ"
+			android:title="@string/controls_vol_down_cam_title"
+			android:entries="@array/cam_actions"
+			android:entryValues="@array/cam_actions_val"
+			android:defaultValue="4" />
+		-->
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_mediaupaction"
+			android:summary="@string/controls_vol_up_media_summ"
+			android:title="@string/controls_vol_up_media_title"
+			android:entries="@array/media_action"
+			android:entryValues="@array/media_action_val"
+			android:defaultValue="0" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_mediadownaction"
+			android:summary="@string/controls_vol_down_media_summ"
+			android:title="@string/controls_vol_down_media_title"
+			android:entries="@array/media_action"
+			android:entryValues="@array/media_action_val"
+			android:defaultValue="0" />
+		</com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>

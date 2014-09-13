@@ -4,6 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.util.Map;
 
 import org.acra.collector.CrashReportData;
@@ -92,7 +94,9 @@ public class CrashReportDialog extends Activity {
 				crashData.put(ReportField.CUSTOM_DATA, xposedLog);
 			persister.store(crashData, mReportFileName);
 		} catch (Exception e) {
-			ACRA.getErrorReporter().putCustomData("XPOSED_LOG", "Retrieval failed. " + e.getMessage());
+			StringWriter sw = new StringWriter();
+			e.printStackTrace(new PrintWriter(sw));
+			ACRA.getErrorReporter().putCustomData("XPOSED_LOG", "Retrieval failed. Stack trace:\n" + sw.toString());
 		}
 		SendWorker worker = ACRA.getErrorReporter().startSendingReports(false, true);
 		try {

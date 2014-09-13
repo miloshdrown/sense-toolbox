@@ -161,7 +161,7 @@ public class WakeGesturesMods {
 				
 				if (mEasyAccessCtrl == null) XposedBridge.log("Failed to start app using wake gesture!"); else
 				if (pkgAppArray[0].equals("com.htc.camera")) {
-					XposedHelpers.callMethod(mEasyAccessCtrl, "launchCamera", ctx);
+					XposedHelpers.callMethod(mEasyAccessCtrl, "launchCamera", ctx, true);
 				} else {
 					Intent appIntent = new Intent();
 					appIntent.setClassName(pkgAppArray[0], pkgAppArray[1]);

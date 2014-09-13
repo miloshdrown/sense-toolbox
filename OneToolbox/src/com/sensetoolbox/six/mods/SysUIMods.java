@@ -2062,7 +2062,7 @@ public class SysUIMods {
 		iv.setScaleType(ScaleType.CENTER_INSIDE);
 		int size = Math.round(baseSize * density);
 		LinearLayout.LayoutParams lpi = new LinearLayout.LayoutParams(size, size);
-		if (baseSize > 30)
+		if (baseSize > 22)
 			lpi.setMargins(0, Math.round(1 * density), Math.round(8 * density), 0);
 		else
 			lpi.setMargins(0, 0, Math.round(8 * density), 0);
@@ -2074,10 +2074,12 @@ public class SysUIMods {
 	
 	private static TextView createLabel(Context ctx, TextView toastText) {
 		TextView tv = new TextView(ctx);
+		tv.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		tv.setText(ctx.getApplicationInfo().loadLabel(ctx.getPackageManager()) + ":");
 		tv.setTextColor(Color.WHITE);
 		tv.setTextSize(TypedValue.COMPLEX_UNIT_PX, toastText.getTextSize());
 		tv.setTypeface(toastText.getTypeface());
+		tv.setSingleLine(true);
 		tv.setAlpha(0.6f);
 		return tv;
 	}
@@ -2094,15 +2096,15 @@ public class SysUIMods {
 				
 				TextView toastText = (TextView)liparam.view.findViewById(android.R.id.message);
 				LinearLayout.LayoutParams lpt = (LinearLayout.LayoutParams)toastText.getLayoutParams();
-				lpt.gravity = Gravity.CENTER;
+				lpt.gravity = Gravity.LEFT;
 				
 				LinearLayout toast = ((LinearLayout)liparam.view);
-				toast.setGravity(Gravity.CENTER);
+				toast.setGravity(Gravity.LEFT);
 				toast.setPadding(toast.getPaddingLeft() - Math.round(5 * density), toast.getPaddingTop(), toast.getPaddingRight(), toast.getPaddingBottom());
 				
 				switch (option) {
 					case 2:
-						ImageView iv = createIcon(ctx, 30);
+						ImageView iv = createIcon(ctx, 22);
 						toast.setOrientation(LinearLayout.HORIZONTAL);
 						toast.addView(iv, 0);
 						break;
@@ -2114,6 +2116,7 @@ public class SysUIMods {
 					case 4:
 						LinearLayout textLabel = new LinearLayout(ctx);
 						textLabel.setOrientation(LinearLayout.VERTICAL);
+						textLabel.setGravity(Gravity.LEFT);
 						ImageView iv2 = createIcon(ctx, 45);
 						TextView tv2 = createLabel(ctx, toastText);
 						

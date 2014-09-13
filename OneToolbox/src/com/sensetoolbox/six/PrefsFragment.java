@@ -27,6 +27,7 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.os.Process;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -553,7 +554,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				return true;
 			}
 		};
-		
+		/*
 		HtcPreference.OnPreferenceChangeListener camChangeListener = new HtcPreference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
@@ -561,7 +562,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				return true;
 			}
 		};
-		
+		*/
 		@Override
 		public void onCreate(Bundle savedInstanceState) {
 			super.onCreate(savedInstanceState, R.xml.prefs_controls);
@@ -610,8 +611,8 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			};
 			
 			HtcPreference vol2wakePref = findPreference("pref_key_controls_vol2wake");
-			HtcListPreference voldownPreference = (HtcListPreference) findPreference("pref_key_controls_camdownaction");
-			HtcListPreference volupPreference = (HtcListPreference) findPreference("pref_key_controls_camupaction");
+			//HtcListPreference voldownPreference = (HtcListPreference) findPreference("pref_key_controls_camdownaction");
+			//HtcListPreference volupPreference = (HtcListPreference) findPreference("pref_key_controls_camupaction");
 			HtcListPreference backLongPressActionPreference = (HtcListPreference) findPreference("pref_key_controls_backlongpressaction");
 			HtcListPreference homeAssistActionPreference = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
 			HtcPreference launchAppsBackLongPress = findPreference("pref_key_controls_backlongpress_app");
@@ -650,8 +651,8 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			if (homeAssistActionPreference.getValue().equals("7"))		launchAppsHomeAssist.setEnabled(true);		else launchAppsHomeAssist.setEnabled(false);
 			if (homeAssistActionPreference.getValue().equals("8"))		toggleHomeAssist.setEnabled(true);			else toggleHomeAssist.setEnabled(false);
 
-			voldownPreference.setOnPreferenceChangeListener(camChangeListener);
-			volupPreference.setOnPreferenceChangeListener(camChangeListener);
+			//voldownPreference.setOnPreferenceChangeListener(camChangeListener);
+			//volupPreference.setOnPreferenceChangeListener(camChangeListener);
 			backLongPressActionPreference.setOnPreferenceChangeListener(chooseAction);
 			homeAssistActionPreference.setOnPreferenceChangeListener(chooseAction);
 			vol2wakePref.setOnPreferenceClickListener(new HtcPreference.OnPreferenceClickListener(){
@@ -771,7 +772,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						};
 						*/
 						final String[] cmdsPerm = {
-							"chown " + String.valueOf(android.os.Process.myUid()) + " " + currents,
+							"chown " + String.valueOf(Process.myUid()) + " " + currents,
 							"chmod 644 " + currents,
 							"echo " + level + " > " + currents,
 							"chmod 444 " + currents
@@ -789,10 +790,11 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 								@Override
 								public void output(int id, String line) {
 									if (lineCnt2 == 0) try {
-										if (line.trim().equals("0") || line.trim().equals("1000")) {
+										if (!line.trim().equals(String.valueOf(Process.myUid()))) {
 											RootTools.getShell(true).add(new CommandCapture(0, 3000, cmdsPerm));
-										} else
+										} else {
 											RootTools.getShell(false).add(new CommandCapture(0, 3000, cmds));
+										}
 
 										// 500ms interval between backlight updates
 										new Thread() {
