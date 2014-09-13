@@ -1,5 +1,8 @@
 package com.sensetoolbox.six;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.htc.app.HtcProgressDialog;
 import com.htc.preference.HtcPreference;
 import com.htc.preference.HtcPreference.OnPreferenceChangeListener;
@@ -19,6 +22,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -77,6 +81,9 @@ public class EPSRemap extends HtcPreferenceActivityEx {
 		getPreferenceManager().setSharedPreferencesName("one_toolbox_prefs");
 		getPreferenceManager().setSharedPreferencesMode(1);
 		prefs = getPreferenceManager().getSharedPreferences();
+		
+		TextView hint = (TextView)findViewById(R.id.hint);
+		hint.setText(Helpers.l10n(this, R.string.various_extremepower_hint));
 				
 		for (int i = 1; i <= 6; i++) initCell(i);
 	}
@@ -149,7 +156,19 @@ public class EPSRemap extends HtcPreferenceActivityEx {
 		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(this);
 		final String title = Helpers.l10n(this, R.string.various_extremepower_cell) + " " + String.valueOf(id);
 		builder.setTitle(title);
-		builder.setItems(R.array.EPSRemaps, new DialogInterface.OnClickListener() {
+		
+		TypedArray ids = getResources().obtainTypedArray(R.array.EPSRemaps);
+		List<String> newEntries = new ArrayList<String>();
+		for (int i = 0; i < ids.length(); i++) {
+			int itemid = ids.getResourceId(i, 0);
+			if (itemid != 0)
+				newEntries.add(Helpers.l10n(this, itemid));
+			else
+				newEntries.add("???");
+		}
+		ids.recycle();
+		
+		builder.setItems(newEntries.toArray(new CharSequence[newEntries.size()]), new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				switch (which) {

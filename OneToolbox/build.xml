@@ -80,6 +80,7 @@
         <path id="project.all.jars.path">
                 <!-- un-comment below line if you want it-->
                 <pathelement path="libs/RootTools-3.4.jar"></pathelement>
+                <pathelement path="libs/acra-4.5.0.jar"></pathelement>
         </path>
     </target>
     <!-- Import the actual build file.
