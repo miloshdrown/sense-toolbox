@@ -42,7 +42,7 @@ public class AboutScreen extends Activity {
 		TextView iv3 = (TextView)findViewById(R.id.textView3);
 		iv3.setTypeface(face);
 		iv3.setText(Helpers.l10n(this, R.string.about_devs_names));
-		iv3.setText(iv3.getText() + "\n© 2013-2014");
+		iv3.setText(iv3.getText() + "\n\u00a9 2013-2014");
 		
 		TextView iv02 = (TextView)findViewById(R.id.TextView02);
 		iv02.setPaintFlags(iv02.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
