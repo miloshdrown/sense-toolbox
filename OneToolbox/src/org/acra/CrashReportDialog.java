@@ -147,7 +147,7 @@ public class CrashReportDialog extends Activity {
 			CrashReportPersister persister = new CrashReportPersister(getApplicationContext());
 			CrashReportData crashData = persister.load(mReportFileName);
 			String payload = new GsonBuilder().create().toJson(Helpers.getParamsAsStringString(crashData), Map.class);
-			int payloadSize = payload.getBytes().length;
+			int payloadSize = payload.getBytes("UTF-8").length;
 			if (crashData.getProperty(ReportField.STACK_TRACE).contains("Report requested by developer")) {
 				title = Helpers.l10n(this, R.string.popupnotify_blconfirm);
 				text = Helpers.createCenteredText(this, R.string.crash_dialog_manual);

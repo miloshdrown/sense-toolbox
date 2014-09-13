@@ -9,6 +9,7 @@ import org.acra.sender.ReportSenderException;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.protocol.HTTP;
 
 import com.htc.gson.GsonBuilder;
 import com.sensetoolbox.six.utils.Helpers;
@@ -25,7 +26,7 @@ public class CrashReport implements ReportSender {
 			HttpPost httpPost = new HttpPost(ACRA.getConfig().formUri());
 			//final String basicAuth = "Basic " + Base64.encodeToString("Sense6Toolbox:NotASecret".getBytes(), Base64.NO_WRAP);
 			
-			httpPost.setEntity(new StringEntity(json));
+			httpPost.setEntity(new StringEntity(json, HTTP.UTF_8));
 			httpPost.setHeader("Accept", "application/json");
 			httpPost.setHeader("Content-type", "application/json");
 			//httpPost.setHeader("Authorization", basicAuth);
