@@ -39,6 +39,7 @@ public class CrashReportDialog extends Activity {
 	private String mReportFileName;
 	private String xposedLog;
 	private HtcEditText desc;
+	private boolean isManualReport = false;
 	
 	private boolean isNetworkAvailable() {
 		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -148,7 +149,8 @@ public class CrashReportDialog extends Activity {
 			CrashReportData crashData = persister.load(mReportFileName);
 			String payload = new GsonBuilder().create().toJson(Helpers.getParamsAsStringString(crashData), Map.class);
 			int payloadSize = payload.getBytes("UTF-8").length;
-			if (crashData.getProperty(ReportField.STACK_TRACE).contains("Report requested by developer")) {
+			isManualReport = crashData.getProperty(ReportField.STACK_TRACE).contains("Report requested by developer");
+			if (isManualReport) {
 				title = Helpers.l10n(this, R.string.popupnotify_blconfirm);
 				text = Helpers.createCenteredText(this, R.string.crash_dialog_manual);
 				neutralText = Helpers.l10n(this, R.string.sense_themes_cancel);
@@ -201,11 +203,13 @@ public class CrashReportDialog extends Activity {
 		alertDlg.getButton(HtcAlertDialog.BUTTON_POSITIVE).setOnClickListener(new OnClickListener() {
 			@Override
 			public void onClick(View v) {
-				if (isNetworkAvailable()) {
+				if (isManualReport && desc != null && desc.getText().toString().trim().equals("")) {
+					Toast.makeText(CrashReportDialog.this, Helpers.l10n(CrashReportDialog.this, R.string.crash_needs_desc), Toast.LENGTH_LONG).show();
+				} else if (!isNetworkAvailable()) {
+					Toast.makeText(CrashReportDialog.this, Helpers.l10n(CrashReportDialog.this, R.string.crash_needs_inet), Toast.LENGTH_LONG).show();
+				} else {
 					alertDlg.dismiss();
 					sendCrash(xposedLog);
-				} else {
-					Toast.makeText(CrashReportDialog.this, Helpers.l10n(CrashReportDialog.this, R.string.crash_needs_inet), Toast.LENGTH_LONG).show();
 				}
 			}
 		});

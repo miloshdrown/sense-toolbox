@@ -31,6 +31,7 @@
 	<string name="crash_dialog_manual_size">Generated report size</string>
 	<string name="crash_dialog_manual_desc">Describe your problem:</string>
 	<string name="crash_needs_inet">Internet connection is required</string>
+	<string name="crash_needs_desc">Description cannot be blank</string>
 	<string name="crash_ignore">Ignore</string>
 	<string name="crash_send">Send report</string>
 	<string name="crash_result">Sending result</string>

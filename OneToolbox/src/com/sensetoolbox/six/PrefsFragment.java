@@ -16,6 +16,7 @@ import java.util.regex.Pattern;
 
 import org.acra.ACRA;
 
+import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -973,8 +974,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	public void checkForXposed() {
 		CommandCapture command = new CommandCapture(0, "/system/bin/app_process --xposedversion 2>/dev/null") {
 			@Override
-			public void output(int id, String line)
-			{
+			public void output(int id, String line) {
 				if (lineCount > 0) return;
 				Pattern pattern = Pattern.compile("Xposed version: (\\d+)");
 				Matcher matcher = pattern.matcher(line);
@@ -987,16 +987,18 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						e.printStackTrace();
 					}
 				}
+				final Activity act = getActivity();
+				if (act != null)
 				if (!isXposedInstalled) {
-					getActivity().runOnUiThread(new Runnable() {
+					act.runOnUiThread(new Runnable() {
 						public void run() {
-							showXposedDialog();
+							showXposedDialog(act);
 						}
 					});
 				} else if (!toolboxModuleActive) {
-					getActivity().runOnUiThread(new Runnable() {
+					act.runOnUiThread(new Runnable() {
 						public void run() {
-							showXposedDialog2();
+							showXposedDialog2(act);
 						}
 					});
 				}
@@ -1010,11 +1012,11 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		}
 	}
 
-	public void showXposedDialog() {
+	public void showXposedDialog(Activity act) {
 		try {
-			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
-			builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
-			builder.setMessage(Helpers.l10n(getActivity(), R.string.xposed_not_installed));
+			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(act);
+			builder.setTitle(Helpers.l10n(act, R.string.warning));
+			builder.setMessage(Helpers.l10n(act, R.string.xposed_not_installed));
 			builder.setIcon(android.R.drawable.ic_dialog_alert);
 			builder.setCancelable(true);
 			builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
@@ -1027,11 +1029,11 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		}
 	}
 	
-	public void showXposedDialog2() {
+	public void showXposedDialog2(Activity act) {
 		try {
-			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
-			builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
-			builder.setMessage(Helpers.l10n(getActivity(), R.string.module_not_active));
+			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(act);
+			builder.setTitle(Helpers.l10n(act, R.string.warning));
+			builder.setMessage(Helpers.l10n(act, R.string.module_not_active));
 			builder.setIcon(android.R.drawable.ic_dialog_alert);
 			builder.setCancelable(true);
 			builder.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {

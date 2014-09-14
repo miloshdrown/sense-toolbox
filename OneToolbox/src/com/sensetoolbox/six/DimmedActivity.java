@@ -278,7 +278,7 @@ public class DimmedActivity extends Activity {
 				int k = sbns.size();
 				for (int l = 0; l < k; l++) {
 					StatusBarNotification notifyRecord = sbns.get(l);
-					if (notifyRecord != null) {
+					if (notifyRecord != null && notifications.getCarouselHost().getTabCount() < 12) {
 						notifications.addTab(notifyRecord);
 						//Log.e(null, String.valueOf(l) + ": " + String.valueOf(notifyRecord.getNotification().priority));
 						if (selectLast) curTabTag = notifyRecord.getPackageName() + "_" + String.valueOf(notifyRecord.getId()) + "_" + String.valueOf(notifyRecord.getTag());
@@ -312,14 +312,18 @@ public class DimmedActivity extends Activity {
 		});
 		
 		String tagName = "carousel";
-		FragmentTransaction ft = getFragmentManager().beginTransaction();
-		if (getFragmentManager().findFragmentByTag(tagName) != null) {
-			ft.replace(R.id.carousel, notifications, tagName);
-		} else {
-			ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
-			ft.add(R.id.carousel, notifications, tagName);
+		try {
+			FragmentTransaction ft = getFragmentManager().beginTransaction();
+			if (getFragmentManager().findFragmentByTag(tagName) != null) {
+				ft.replace(R.id.carousel, notifications, tagName);
+			} else {
+				ft.setCustomAnimations(android.R.animator.fade_in, android.R.animator.fade_out);
+				ft.add(R.id.carousel, notifications, tagName);
+			}
+			ft.commit();
+		} catch (Exception e) {
+			e.printStackTrace();
 		}
-		ft.commit();
 		getFragmentManager().executePendingTransactions();
 	}
 	
@@ -424,25 +428,30 @@ public class DimmedActivity extends Activity {
 	
 	@Override
 	public void onRestart() {
+		super.onRestart();
 		if (getClass() == DimmedActivity.class) {
 			KeyguardManager kgMgr = (KeyguardManager)getSystemService(Context.KEYGUARD_SERVICE);
 			if (kgMgr.isKeyguardLocked()) finish();
 		}
 		startListen();
-		super.onRestart();
 	}
 	
 	@Override
 	public void onStop() {
 		super.onStop();
 		stopListen();
-		PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
-		if (pm.isScreenOn() && !isInLockscreen) finish();
+		//PowerManager pm = (PowerManager)getSystemService(Context.POWER_SERVICE);
+		//if (pm.isScreenOn() && !isInLockscreen) finish();
 	}
 	
 	@Override
 	public void finish() {
 		super.finish();
 		if (!isInLockscreen) overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// No call for super()
 	}
 }
