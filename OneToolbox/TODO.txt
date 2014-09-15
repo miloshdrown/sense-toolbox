@@ -31,6 +31,11 @@ Ideas
 Current changelog
 =================
 
+1.4.1
+[Fixed] Latest HTC Lock Screen update from Play Store (or stock from 4.4.3) is required for Wake Gestures to work
+[Fixed] Popup Notifications are dismissed when turning screen on from deep sleep
+[Fixed] Many bugs that were causing Toolbox crashes
+
 1.4
 [New] Extreme Power Saving apps remap. All 6 apps (including Exit) can be changed. Long press any app tile to turn off EPS mode.
 [New] Add application's icon and label to its toasts

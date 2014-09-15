@@ -35,7 +35,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		pref = new XSharedPreferences("com.sensetoolbox.six", "one_toolbox_prefs");
 		
-		senseVersion = new Version(pref.getString("pref_sense_version", "5.0"));
+		senseVersion = new Version(pref.getString("pref_sense_version", "6.0"));
 		
 		PackagePermissions.init();
 		GlobalActions.toolboxStuff();

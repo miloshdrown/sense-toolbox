@@ -4,6 +4,8 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
+import android.content.DialogInterface;
+import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -16,7 +18,9 @@ import com.htc.widget.ActionBarContainer;
 import com.htc.widget.ActionBarExt;
 import com.htc.widget.ActionBarItemView;
 import com.htc.widget.ActionBarText;
+import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.utils.Helpers;
+import com.sensetoolbox.six.utils.Version;
 
 public class MainActivity extends HtcPreferenceActivity {
 
@@ -85,6 +89,27 @@ public class MainActivity extends HtcPreferenceActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 
+		if (new Version(Helpers.getSenseVersion()).compareTo(new Version("6.0")) < 0) {
+			getActionBar().hide();
+			
+			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(this);
+			alert.setTitle(Helpers.l10n(this, R.string.warning));
+			alert.setView(Helpers.createCenteredText(this, R.string.wrong_sense_version));
+			alert.setOnDismissListener(new OnDismissListener() {
+				@Override
+				public void onDismiss(DialogInterface dialog) {
+					finish();
+				}
+			});
+			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					finish();
+				}
+			});
+			alert.show();
+			return;
+		}
+
 		// Apply Settings theme
 		mThemeId = Helpers.getCurrentTheme(this);
 		setTheme(mThemeId);
@@ -129,8 +154,10 @@ public class MainActivity extends HtcPreferenceActivity {
 	
 	protected void onResume() {
 		super.onResume();
-		int newThemeId = Helpers.getCurrentTheme(this);
-		if (newThemeId != mThemeId) recreate();
+		if (new Version(Helpers.getSenseVersion()).compareTo(new Version("6.0")) >= 0) {
+			int newThemeId = Helpers.getCurrentTheme(this);
+			if (newThemeId != mThemeId) recreate();
+		}
 	}
 	
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {

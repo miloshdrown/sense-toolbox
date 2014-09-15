@@ -410,11 +410,8 @@ public class WakeGesturesMods {
 	}
 	
 	public static void execHook_LockScreenGestures(final LoadPackageParam lpparam) {
-		String lockUtilsClass = "com.android.internal.widget.LockPatternUtils";
-		if (Helpers.is443plus()) lockUtilsClass = "com.htc.lockscreen.util.LockUtils";
-		
 		try {
-			XposedHelpers.findAndHookMethod("com.htc.lockscreen.ctrl.LSState", lpparam.classLoader, "init", Context.class, Context.class, lockUtilsClass, new XC_MethodHook() {
+			XposedHelpers.findAndHookMethod("com.htc.lockscreen.ctrl.LSState", lpparam.classLoader, "init", Context.class, Context.class, "com.htc.lockscreen.util.LockUtils", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 					mEasyAccessCtrl = XposedHelpers.getObjectField(param.thisObject, "mEasyAccessCtrl");

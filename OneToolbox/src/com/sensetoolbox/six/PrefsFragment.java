@@ -180,10 +180,13 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		};
 		
 		HtcCheckBoxPreference toolboxSettingsPreference = (HtcCheckBoxPreference) findPreference("pref_key_toolbox_icon");
+		if (toolboxSettingsPreference != null)
 		toolboxSettingsPreference.setOnPreferenceChangeListener(toggleIcon);
 		HtcPreference toolboxLanguagePreference = (HtcPreference) findPreference("pref_key_toolbox_lang");
+		if (toolboxLanguagePreference != null)
 		toolboxLanguagePreference.setOnPreferenceClickListener(openLang);
 		HtcPreference toolboxCrashReportPreference = (HtcPreference) findPreference("pref_key_toolbox_sendreport");
+		if (toolboxCrashReportPreference != null)
 		toolboxCrashReportPreference.setOnPreferenceClickListener(sendCrashReport);
 	}
 	

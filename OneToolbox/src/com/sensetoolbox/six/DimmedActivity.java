@@ -200,7 +200,7 @@ public class DimmedActivity extends Activity {
 		if (dialogType == 2) {
 			if (backStyle > 1 && pm.isScreenOn()) {
 				Bitmap bmp = (Bitmap)intent.getParcelableExtra("bmp");
-				if (bmp != null && !bmp.isRecycled()) {
+				if (bmp != null && !bmp.isRecycled() && Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() > 16 * 1024 * 1024) {
 					blurredBkg = new BitmapDrawable(getResources(), BlurBuilder.blur(this, bmp, backStyle == 3 ? true : false));
 					getWindow().setBackgroundDrawable(blurredBkg);
 				}
