@@ -27,6 +27,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	private static int pref_shake = 1;
 	public static int pref_screenon = 0;
 	public static int pref_screenoff = 0;
+	public static boolean pref_alarmnotify = false;
+	public static boolean pref_signalnotify = false;
 	public static Version senseVersion;
 	
 	@Override
@@ -436,8 +438,16 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_sysui_recentram", false))
 				SysUIMods.execHook_RAMInRecents(lpparam);
 			
-			if (pref.getBoolean("pref_key_sysui_alarmnotify", false))
+			pref_alarmnotify = pref.getBoolean("pref_key_sysui_alarmnotify", false);
+			if (pref_alarmnotify)
 				SysUIMods.execHook_AlarmNotification(lpparam);
+			
+			pref_signalnotify = pref.getBoolean("pref_key_sysui_signalnotify", false);
+			if (pref_signalnotify)
+				SysUIMods.execHook_SignalNotification(lpparam);
+			
+			if (pref_alarmnotify || pref_signalnotify)
+				SysUIMods.execHook_LabelsUpdate(lpparam);
 			
 //			if (Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false))
 //				SysUIMods.execHookTSB442Fix(lpparam);
@@ -478,6 +488,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_sysui_theqs", false))
 				SysUIMods.execHook_TranslucentHorizEQSCode(lpparam);
+			
+			int pref_footer = Integer.parseInt(pref.getString("pref_key_sysui_footeralpha", "1"));
+			if (pref_footer != 1)
+				SysUIMods.execHook_DrawerFooterDynamicAlpha(lpparam, pref_footer);
 			
 			SysUIMods.execHook_RecentsLongTap(lpparam);
 			CleanBeamMods.execHook_HideIcons(lpparam);

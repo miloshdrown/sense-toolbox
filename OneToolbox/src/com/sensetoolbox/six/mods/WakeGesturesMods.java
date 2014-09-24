@@ -7,7 +7,6 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
-import java.lang.reflect.Method;
 
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
@@ -215,20 +214,6 @@ public class WakeGesturesMods {
 		}
 	}
 	
-	public static void doHaptic(Context context) {
-		String haptic = "false";
-		try {
-			Class<?> clsSP = Class.forName("android.os.SystemProperties");
-			Method getFunc = clsSP.getDeclaredMethod("get", String.class);
-			haptic = (String)getFunc.invoke(null, "sys.psaver.haptic");
-		} catch (Exception e) {}
-		
-		if (haptic.equals("false")) {
-			Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-			vibe.vibrate(30);
-		}
-	}
-	
 	@SuppressLint("Wakelock")
 	public static void executeActionFor(MethodHookParam param, String prefName, long event_time, int action) {
 		if (prefName != null) {
@@ -275,7 +260,10 @@ public class WakeGesturesMods {
 					break;
 			};
 
-			if (isHaptic && XMain.pref.getBoolean("pref_key_wakegest_haptic", false)) doHaptic(mContext);
+			if (isHaptic && XMain.pref.getBoolean("pref_key_wakegest_haptic", false) && Helpers.getHTCHaptic(mContext)) {
+				Vibrator vibe = (Vibrator)mContext.getSystemService(Context.VIBRATOR_SERVICE);
+				vibe.vibrate(30);
+			}
 		}
 	}
 	

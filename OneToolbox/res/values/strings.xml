@@ -113,6 +113,8 @@
 	<string name="systemui_tsb_summ">Make status bar fully transparent in launcher, in apps with translucent statusbar and on lockscreen.</string>
 	<string name="systemui_tnb_title">Transparent notification background</string>
 	<string name="systemui_tnb_summ">Make the notification drawer background transparent.</string>
+	<string name="systemui_footeralpha_title">Transparent notification footer</string>
+	<string name="systemui_footeralpha_summ">Choose notification drawer footer transparency mode.</string>
 	<string name="systemui_tnsb_title">Translucent notifications</string>
 	<string name="systemui_tnsb_summ">Remove background from all notifications.</string>
 	<string name="systemui_eqs">Extended Quick Settings</string>
@@ -152,6 +154,8 @@
 	<string name="systemui_dataratestatus_summ">Add current download+upload speed to statusbar. Visible only when device is connected to any network.</string>
 	<string name="systemui_alarmnotify_title">Display next alarm</string>
 	<string name="systemui_alarmnotify_summ">Show next alarm time instead of carrier name in notification drawer.</string>
+	<string name="systemui_signalnotify_title">Display signal strength</string>
+	<string name="systemui_signalnotify_summ">Show current signal level next to carrier name in notification drawer.</string>
 	<string name="next_alarm">Next alarm</string>
 	<string name="brightpicker_switch">Enable custom levels</string>
 	<string name="brightpicker_desc">Choose four different values</string>
@@ -508,6 +512,8 @@
 	<string name="array_wifi_icon_style2">Style 2</string>
 	<string name="array_clock_style_center">Center clock</string>
 	<string name="array_clock_style_none">No clock</string>
+	<string name="array_footeralpha_style_dynamic">Dynamic transparency</string>
+	<string name="array_footeralpha_style_invis">Fully trnsparent</string>
 	<string name="array_global_actions_none">No action</string>
 	<string name="array_global_actions_notif">Expand notifications drawer</string>
 	<string name="array_global_actions_eqs">Expand EQS panel</string>

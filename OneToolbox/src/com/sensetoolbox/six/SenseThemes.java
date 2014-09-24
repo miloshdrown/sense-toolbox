@@ -166,7 +166,7 @@ public class SenseThemes extends Activity {
 					appAddDialog.setOnShowListener(new OnShowListener() {
 						@Override
 						public void onShow(DialogInterface dlg) {
-							dialog.dismiss();
+							if (SenseThemes.this != null && !SenseThemes.this.isFinishing() && dialog != null && dialog.isShowing()) dialog.dismiss();
 						}
 					});
 					

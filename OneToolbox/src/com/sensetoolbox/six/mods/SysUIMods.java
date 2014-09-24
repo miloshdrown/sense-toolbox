@@ -34,6 +34,7 @@ import android.content.res.Resources.Theme;
 import android.content.res.XModuleResources;
 import android.database.ContentObserver;
 import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
 import android.graphics.drawable.Drawable;
@@ -51,6 +52,9 @@ import android.os.IBinder;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.service.notification.StatusBarNotification;
+import android.telephony.PhoneStateListener;
+import android.telephony.SignalStrength;
+import android.telephony.TelephonyManager;
 import android.text.TextUtils.TruncateAt;
 import android.text.method.SingleLineTransformationMethod;
 import android.util.SparseArray;
@@ -1349,7 +1353,7 @@ public class SysUIMods {
 		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "handleSwipe", View.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				if (popup != null) popup.dismiss();
+				if (popup != null && popup.isShowing()) popup.dismiss();
 			}
 		});
 	}
@@ -1530,35 +1534,30 @@ public class SysUIMods {
 			TextView mNetworkTextView = (TextView)XposedHelpers.getObjectField(paramThisObject, "mNetworkTextView");
 			if (mPlmnLabel != null) {
 				String txt = getNextAlarm(mPlmnLabel.getContext());
-				if (txt != null && !txt.equals("")) mPlmnLabel.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
+				if (XMain.pref_alarmnotify && txt != null && !txt.equals("")) mPlmnLabel.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
+				else if (XMain.pref_signalnotify && !mPlmnLabel.getText().toString().contains("dBm"))
+				mPlmnLabel.setText(mPlmnLabel.getText() + getCurrentSignalLevel(mPlmnLabel.getContext()));
 			}
 			if (mSpnLabel != null) {
 				String txt = getNextAlarm(mSpnLabel.getContext());
-				if (txt != null && !txt.equals("")) mSpnLabel.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
+				if (XMain.pref_alarmnotify && txt != null && !txt.equals("")) mSpnLabel.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
+				else if (XMain.pref_signalnotify && !mSpnLabel.getText().toString().contains("dBm"))
+				mSpnLabel.setText(mSpnLabel.getText() + getCurrentSignalLevel(mSpnLabel.getContext()));
 			}
 			if (mNetworkTextView != null) {
 				String txt = getNextAlarm(mNetworkTextView.getContext());
-				if (txt != null && !txt.equals("")) mNetworkTextView.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
+				if (XMain.pref_alarmnotify && txt != null && !txt.equals("")) mNetworkTextView.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
+				else if (XMain.pref_signalnotify && !mNetworkTextView.getText().toString().contains("dBm"))
+				mNetworkTextView.setText(mNetworkTextView.getText() + getCurrentSignalLevel(mNetworkTextView.getContext()));
 			}
+			View vp = (View)((View)paramThisObject).getParent();
+			if (vp != null) vp.invalidate();
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
 	}
 	
-	public static void execHook_AlarmNotification(LoadPackageParam lpparam) {
-		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.phone.CarrierLabel", lpparam.classLoader), new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				try {
-					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-					if (mContext != null)
-					mContext.getContentResolver().registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, new SystemSettingsObserver(new Handler(), param.thisObject));
-				} catch (Throwable t) {
-					XposedBridge.log(t);
-				}
-			}
-		});
-		
+	public static void execHook_LabelsUpdate(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.CarrierLabel", lpparam.classLoader, "updateAirplaneMode", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -1577,6 +1576,71 @@ public class SysUIMods {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				updateLabel(param.thisObject);
+			}
+		});
+	}
+	
+	public static void execHook_AlarmNotification(LoadPackageParam lpparam) {
+		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.phone.CarrierLabel", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				try {
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					if (mContext != null)
+					mContext.getContentResolver().registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, new SystemSettingsObserver(new Handler(), param.thisObject));
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+	}
+	
+	public static class SignalListener extends PhoneStateListener {
+		Object thisObj = null;
+		public SignalListener(Object paramThisObject) {
+			super();
+			thisObj = paramThisObject;
+		}
+		
+		public void onSignalStrengthsChanged (SignalStrength signalStrength) {
+			if (thisObj != null) {
+				lastSignalStrength = signalStrength;
+				XposedHelpers.callMethod(thisObj, "triggerUpdate");
+			}
+		}
+	}
+	
+	private static SignalStrength lastSignalStrength = null;
+	private static String getCurrentSignalLevel(Context ctx) {
+		if (lastSignalStrength == null || Settings.Global.getInt(ctx.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, 0) != 0) {
+			lastSignalStrength = null;
+			return "";
+		}
+		TelephonyManager telMgr = (TelephonyManager)ctx.getSystemService(Context.TELEPHONY_SERVICE);
+		if (telMgr.getSimState() != TelephonyManager.SIM_STATE_READY) {
+			lastSignalStrength = null;
+			return "";
+		}
+		
+		int asu = (Integer)XposedHelpers.callMethod(lastSignalStrength, "getAsuLevel");
+		int dBm = (Integer)XposedHelpers.callMethod(lastSignalStrength, "getDbm");
+		return "  " + String.valueOf(dBm) + " dBm " + String.valueOf(asu) + " asu";
+	}
+	
+	public static void execHook_SignalNotification(LoadPackageParam lpparam) {
+		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.phone.CarrierLabel", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				try {
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					if (mContext != null) {
+						SignalListener signalListener = new SignalListener(param.thisObject);
+						TelephonyManager telephonyManager = (TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE);
+						telephonyManager.listen(signalListener, PhoneStateListener.LISTEN_SIGNAL_STRENGTHS);
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
 			}
 		});
 	}
@@ -2104,9 +2168,16 @@ public class SysUIMods {
 				
 				switch (option) {
 					case 2:
+						LinearLayout textOnly = new LinearLayout(ctx);
+						textOnly.setOrientation(LinearLayout.VERTICAL);
+						textOnly.setGravity(Gravity.LEFT);
 						ImageView iv = createIcon(ctx, 22);
+						
+						((LinearLayout)toastText.getParent()).removeAllViews();
+						textOnly.addView(toastText);
 						toast.setOrientation(LinearLayout.HORIZONTAL);
-						toast.addView(iv, 0);
+						toast.addView(iv);
+						toast.addView(textOnly);
 						break;
 					case 3:
 						TextView tv = createLabel(ctx, toastText);
@@ -2127,6 +2198,30 @@ public class SysUIMods {
 						toast.addView(iv2);
 						toast.addView(textLabel);
 						break;
+				}
+			}
+		});
+	}
+	
+	public static void execHook_DrawerFooterDynamicAlpha(LoadPackageParam lpparam, final int pref_footer) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.NotificationPanelView", lpparam.classLoader, "draw", Canvas.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				FrameLayout panelView = (FrameLayout)param.thisObject;
+				if (panelView == null) return;
+				View mHandleView = (View)XposedHelpers.getObjectField(panelView, "mHandleView");
+				if (mHandleView != null && mHandleView.getBackground() != null) {
+					if (pref_footer == 3) {
+						mHandleView.getBackground().setAlpha(0);
+					} else if (pref_footer == 2) {
+						float drawerHeight = (float)panelView.getMeasuredHeight();
+						float headerHeight = 85 * panelView.getResources().getDisplayMetrics().density;
+						
+						if (drawerHeight <= headerHeight)
+							mHandleView.getBackground().setAlpha(255);
+						else
+							mHandleView.getBackground().setAlpha(Math.round(255f * (1.0f - (drawerHeight - headerHeight) / ((float)panelView.getResources().getDisplayMetrics().heightPixels - headerHeight))));
+					}
 				}
 			}
 		});

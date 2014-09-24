@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.htc.fragment.widget.CarouselHost.OnTabChangeListener;
 import com.htc.fragment.widget.CarouselUtil;
+import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.utils.BlurBuilder;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.NotificationTab;
@@ -62,6 +63,7 @@ public class DimmedActivity extends Activity {
 	Intent lastIntent;
 	boolean bkgPortrait = true;
 	BitmapDrawable blurredBkg = null;
+	HtcAlertDialog currApm;
 	public Notifications notifications = new Notifications();
 	public boolean sleepOnDismissLast = false;
 	public ArrayList<StatusBarNotification> sbns = null;
@@ -97,7 +99,7 @@ public class DimmedActivity extends Activity {
 	private void createDialog(int dType, Intent intent) {
 		if (dType == 1) {
 			ApmDialog rebD = new ApmDialog(this, dialogType);
-			rebD.show();
+			currApm = rebD.show();
 		} else if (dType == 2) {
 			density = getResources().getDisplayMetrics().density;
 			getWindow().getDecorView().setPadding(-1, 0, -1, 0);
@@ -230,6 +232,12 @@ public class DimmedActivity extends Activity {
 	void initNotifications(final Intent intent, final boolean selectLast) {
 		int dialogTypeNew = intent.getIntExtra("dialogType", 1);
 		if (dialogType != dialogTypeNew) {
+			dialogType = dialogTypeNew;
+			if (dialogTypeNew == 2) {
+				if (this != null && !this.isFinishing() && currApm != null && currApm.isShowing()) currApm.dismiss();
+			} else if (dialogTypeNew == 1) {
+				((RelativeLayout)findViewById(R.id.carousel).getParent()).removeAllViews();
+			}
 			createDialog(dialogTypeNew, intent);
 			return;
 		}
@@ -276,9 +284,11 @@ public class DimmedActivity extends Activity {
 				});
 				
 				int k = sbns.size();
-				for (int l = 0; l < k; l++) {
+				int start = 0;
+				if (k > 12) start = k - 12;
+				for (int l = start; l < k; l++) {
 					StatusBarNotification notifyRecord = sbns.get(l);
-					if (notifyRecord != null && notifications.getCarouselHost().getTabCount() < 12) {
+					if (notifyRecord != null) {
 						notifications.addTab(notifyRecord);
 						//Log.e(null, String.valueOf(l) + ": " + String.valueOf(notifyRecord.getNotification().priority));
 						if (selectLast) curTabTag = notifyRecord.getPackageName() + "_" + String.valueOf(notifyRecord.getId()) + "_" + String.valueOf(notifyRecord.getTag());

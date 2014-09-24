@@ -88,6 +88,25 @@ public class CrashReportDialog extends Activity {
 		try {
 			CrashReportPersister persister = new CrashReportPersister(getApplicationContext());
 			CrashReportData crashData = persister.load(mReportFileName);
+			
+			String ROM = "";
+			Process ifc = null;
+			try {
+				ifc = Runtime.getRuntime().exec("getprop ro.product.version");
+				BufferedReader bis = new BufferedReader(new InputStreamReader(ifc.getInputStream()), 2048);
+				ROM = bis.readLine();
+			} catch (Exception e) {} finally {
+				if (ifc != null) ifc.destroy();
+			}
+			
+			String kernel = System.getProperty("os.version");
+			if (kernel == null) kernel = "";
+			
+			String buildData = crashData.get(ReportField.BUILD);
+			buildData += "ROM.VERSION=" + ROM + "\n";
+			buildData += "KERNEL.VERSION=" + kernel + "\n";
+			
+			crashData.put(ReportField.BUILD, buildData);
 			crashData.put(ReportField.USER_COMMENT, desc.getText().toString());
 			if (xposedLog == null || xposedLog.trim() == "")
 				crashData.put(ReportField.CUSTOM_DATA, "Xposed log is empty...");

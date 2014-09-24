@@ -64,6 +64,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.Settings;
 import android.util.LruCache;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -694,5 +695,13 @@ public class Helpers {
 			result.put(key.toString(), value.toString());
 		}
 		return result;
+	}
+	
+	public static boolean getHTCHaptic(Context ctx) {
+		Boolean haptic = true;
+		try {
+			haptic = (Settings.Secure.getInt(ctx.getContentResolver(), "powersaver_haptic_feedback") == 0);
+		} catch (Exception e) {}
+		return haptic;
 	}
 }

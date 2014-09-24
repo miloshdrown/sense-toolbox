@@ -305,11 +305,7 @@ public class GlobalActions {
 			
 			if (isLauncher || isAllowed) {
 				// Getting HTC Power Saver vibration state
-				Class<?> clsSP = Class.forName("android.os.SystemProperties");
-				Method getFunc = clsSP.getDeclaredMethod("get", String.class);
-				String haptic = (String)getFunc.invoke(null, "sys.psaver.haptic");
-				
-				if (haptic.equals("false")) {
+				if (Helpers.getHTCHaptic(context)) {
 					Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
 					vibe.vibrate(30);
 				}

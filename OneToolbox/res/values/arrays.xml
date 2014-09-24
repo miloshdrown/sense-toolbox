@@ -329,6 +329,17 @@
 		<item >3</item>
 		<item >4</item>
 	</string-array>
+	
+	<string-array name="systemui_footeralpha">
+		<item >@string/array_default</item>
+		<item >@string/array_footeralpha_style_dynamic</item>
+		<item >@string/array_footeralpha_style_invis</item>
+	</string-array>
+	<string-array name="systemui_footeralpha_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+	</string-array>
 
 	<string-array name="empty_array"/>
 </resources>

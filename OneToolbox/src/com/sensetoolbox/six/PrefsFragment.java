@@ -3,6 +3,7 @@ package com.sensetoolbox.six;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStreamReader;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -131,7 +132,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					center.setText(center.getText()  + " " + buildId + "\n(" + format.format(datetime) + ")");
 					alert.setView(center);
 				} catch (Exception e) {
-					e.printStackTrace();
+					if (!(e instanceof FileNotFoundException)) e.printStackTrace();
 				}
 				alert.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {}
@@ -162,8 +163,10 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				});
 				alert.setPositiveButton(Helpers.l10n(getActivity(), R.string.toolbox_l10n_btn), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						final DownloadAndUnZip downloadTask = new DownloadAndUnZip(getActivity());
-						downloadTask.execute("http://sensetoolbox.com/l10n/strings_sense6.zip");
+						if (getActivity() != null) {
+							final DownloadAndUnZip downloadTask = new DownloadAndUnZip(getActivity());
+							downloadTask.execute("http://sensetoolbox.com/l10n/strings_sense6.zip");
+						}
 					}
 				});
 				alert.show();

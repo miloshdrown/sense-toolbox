@@ -256,8 +256,10 @@ public class PopupNotify extends HtcPreferenceActivity {
 										bwlistApps.setEntries(entryLabels.toArray(new CharSequence[entries.size()]));
 										bwlistApps.setEntryValues(entryVals.toArray(new CharSequence[entryVals.size()]));
 										
-										dialog.dismiss();
-										if (bwlistApps.getDialog() != null) bwlistApps.getDialog().dismiss();
+										if (pn != null && !pn.isFinishing()) {
+											if (dialog != null && dialog.isShowing()) dialog.dismiss();
+											if (bwlistApps.getDialog() != null && bwlistApps.getDialog().isShowing()) bwlistApps.getDialog().dismiss();
+										}
 										bwlistApps.show();
 									}
 								});

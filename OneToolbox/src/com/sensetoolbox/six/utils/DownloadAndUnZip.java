@@ -8,6 +8,7 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.lang.ref.WeakReference;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.zip.ZipEntry;
@@ -23,11 +24,11 @@ import android.content.DialogInterface;
 import android.os.AsyncTask;
 
 public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
-	private Activity act;
+	WeakReference<Activity> act;
 	HtcProgressDialog mProgressDialog;
 
 	public DownloadAndUnZip(Activity act) {
-		this.act = act;
+		this.act = new WeakReference<Activity>(act);
 		final DownloadAndUnZip task = this;
 		mProgressDialog = new HtcProgressDialog(act);
 		mProgressDialog.setTitle(Helpers.l10n(act, R.string.download_title));
@@ -80,12 +81,13 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 				output.write(data, 0, count);
 			}
 		} catch (Exception e) {
-			act.runOnUiThread(new Runnable() {
+			if (act.get() != null && !act.get().isFinishing())
+			act.get().runOnUiThread(new Runnable() {
 				@Override
 				public void run() {
-					HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
-					alert.setTitle(Helpers.l10n(act, R.string.warning));
-					alert.setView(Helpers.createCenteredText(act, R.string.download_failed));
+					HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act.get());
+					alert.setTitle(Helpers.l10n(act.get(), R.string.warning));
+					alert.setView(Helpers.createCenteredText(act.get(), R.string.download_failed));
 					alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {}
 					});
@@ -123,54 +125,56 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 	@Override
 	protected void onPostExecute(String result) {
 		if (result != null) {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
-			
 			String buildIdBefore = "";
 			try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "version")))) {
 				buildIdBefore = br.readLine();
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-			if (unpackZip(Helpers.dataPath, "strings.zip")) {
-				String buildIdAfter = "";
-				try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "version")))) {
-					buildIdAfter = br.readLine();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-				
-				if (buildIdAfter == "") {
-					alert.setTitle(Helpers.l10n(act, R.string.warning));
-					alert.setView(Helpers.createCenteredText(act, R.string.download_version_problem));
-					alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {}
-					});
-				} else if (!buildIdBefore.equals(buildIdAfter)) {
-					alert.setTitle(Helpers.l10n(act, R.string.success));
-					alert.setView(Helpers.createCenteredText(act, R.string.download_succeeded));
-					alert.setCancelable(false);
-					alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) {
-							Helpers.l10n = null;
-							Helpers.cLang = "";
-							act.recreate();
-						}
-					});
+			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act.get());
+			boolean unpacked = unpackZip(Helpers.dataPath, "strings.zip");
+			if (act.get() != null && !act.get().isFinishing()) {
+				if (unpacked) {
+					String buildIdAfter = "";
+					try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "version")))) {
+						buildIdAfter = br.readLine();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+					
+					if (buildIdAfter == "") {
+						alert.setTitle(Helpers.l10n(act.get(), R.string.warning));
+						alert.setView(Helpers.createCenteredText(act.get(), R.string.download_version_problem));
+						alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {}
+						});
+					} else if (!buildIdBefore.equals(buildIdAfter)) {
+						alert.setTitle(Helpers.l10n(act.get(), R.string.success));
+						alert.setView(Helpers.createCenteredText(act.get(), R.string.download_succeeded));
+						alert.setCancelable(false);
+						alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {
+								Helpers.l10n = null;
+								Helpers.cLang = "";
+								act.get().recreate();
+							}
+						});
+					} else {
+						alert.setTitle(Helpers.l10n(act.get(), R.string.warning));
+						alert.setView(Helpers.createCenteredText(act.get(), R.string.download_same_version));
+						alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+							public void onClick(DialogInterface dialog, int whichButton) {}
+						});
+					}
 				} else {
-					alert.setTitle(Helpers.l10n(act, R.string.warning));
-					alert.setView(Helpers.createCenteredText(act, R.string.download_same_version));
+					alert.setTitle(Helpers.l10n(act.get(), R.string.warning));
+					alert.setView(Helpers.createCenteredText(act.get(), R.string.download_unzip_failed));
 					alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 						public void onClick(DialogInterface dialog, int whichButton) {}
 					});
 				}
-			} else {
-				alert.setTitle(Helpers.l10n(act, R.string.warning));
-				alert.setView(Helpers.createCenteredText(act, R.string.download_unzip_failed));
-				alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {}
-				});
+				alert.show();
 			}
-			alert.show();
 		}
 		mProgressDialog.dismiss();
 	}
