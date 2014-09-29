@@ -101,12 +101,14 @@
 	<string name="sense_themes_apply">Apply</string>
 	<string name="sense_themes_cancel">Cancel</string>
 	<string name="sense_theme_sep1">Theme</string>
+	<string name="sense_theme_sep2">Additional info</string>
 	<string name="sense_theme_remove">Remove</string>
 	<string name="sense_theme_color_header">Header</string>
 	<string name="sense_theme_color_controls">Controls</string>
 	<string name="sense_theme_color_bf">BlinkFeed</string>
 	<string name="sense_theme_package_has_profile">This app already has a profile</string>
 	<string name="sense_theme_hint">Enable theme colors override from the action bar above.\n\nSoft reboot will be required only once after you\'ve enabled override.</string>
+	<string name="sense_theme_infoIME">HTC keyboard inherits theme from its parent app, if that app is in the list (you can even add non-HTC apps). Theme above is used otherwise.</string>
 	<string name="sense_theme_replace_all">Change theme for all apps in the list</string>
 	<string name="systemui_statusbar">Status Bar and Notification Drawer</string>
 	<string name="systemui_tsb_title">Transparent status bar</string>

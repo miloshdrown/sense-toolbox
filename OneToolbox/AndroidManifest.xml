@@ -57,7 +57,7 @@
 			android:launchMode="singleInstance"
 			android:configChanges="keyboardHidden|orientation|screenSize"
 			android:excludeFromRecents="true"
-			android:noHistory="true" />
+			android:noHistory="false" />
 		<activity
 			android:theme="@style/InvisibleOnLockscreen"
 			android:name="com.sensetoolbox.six.DimmedActivityLS"

@@ -1,132 +1,132 @@
 <?xml version="1.0" encoding="utf-8"?>
 <GridLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fitsSystemWindows="true"
-    android:clipToPadding="true"
-    android:columnCount="1"
-    android:rowCount="2"
-    tools:context=".AboutScreen" >
+	xmlns:tools="http://schemas.android.com/tools"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:fitsSystemWindows="true"
+	android:clipToPadding="true"
+	android:columnCount="1"
+	android:rowCount="2"
+	tools:context=".AboutScreen" >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="fill_horizontal"
-        android:orientation="vertical"
-        android:id="@+id/backLayer"
-        android:paddingTop="15dp" >
+	<LinearLayout
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_gravity="fill_horizontal"
+		android:orientation="vertical"
+		android:id="@+id/backLayer"
+		android:paddingTop="15dp" >
 
-            <ImageView
-                android:id="@+id/imageView1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="20dp"
-                android:contentDescription="@string/app_about"
-                android:src="@drawable/ic_logo" />
+			<ImageView
+				android:id="@+id/imageView1"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="center_horizontal"
+				android:layout_marginBottom="20dp"
+				android:contentDescription="@string/app_about"
+				android:src="@drawable/ic_logo" />
 
-    </LinearLayout>
+	</LinearLayout>
 
-    <ScrollView
-        android:id="@+id/scrollView1"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_gravity="fill_horizontal|fill_vertical"
-        android:fillViewport="true"
-        android:scrollbarStyle="outsideOverlay"
-        android:scrollbars="vertical|none"
-        android:paddingLeft="20dp"
-        android:paddingRight="20dp"
-        android:paddingBottom="10dp"
-        android:paddingTop="0dp" >
+	<ScrollView
+		android:id="@+id/scrollView1"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:layout_gravity="fill_horizontal|fill_vertical"
+		android:fillViewport="true"
+		android:scrollbarStyle="outsideOverlay"
+		android:scrollbars="vertical|none"
+		android:paddingLeft="20dp"
+		android:paddingRight="20dp"
+		android:paddingBottom="10dp"
+		android:paddingTop="0dp" >
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_gravity="fill_horizontal"
-            android:orientation="vertical" >
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="fill_horizontal"
+			android:orientation="vertical" >
 
-            <TextView
-                android:id="@+id/textViewVersion"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:paddingTop="0dp"
-                android:text="@string/about_version"
-                android:textSize="20sp" />
+			<TextView
+				android:id="@+id/textViewVersion"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:paddingBottom="10dp"
+				android:paddingTop="0dp"
+				android:text="@string/about_version"
+				android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingTop="0dp"
-                android:text="@string/about_devs"
-                android:textSize="20sp" />
+			<TextView
+				android:id="@+id/textView2"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:paddingTop="0dp"
+				android:text="@string/about_devs"
+				android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/textView3"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="15dp"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:text="@string/about_devs_names"
-                android:textSize="18sp" />
+			<TextView
+				android:id="@+id/textView3"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:paddingBottom="15dp"
+				android:paddingLeft="20dp"
+				android:paddingTop="10dp"
+				android:text="@string/about_devs_names"
+				android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/TextView02"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:text="@string/about_thanks"
-                android:textSize="20sp" />
+			<TextView
+				android:id="@+id/TextView02"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:paddingBottom="10dp"
+				android:text="@string/about_thanks"
+				android:textSize="20sp" />
 
-            <TextView
-                android:id="@+id/TextView03"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill"
-                android:paddingBottom="15dp"
-                android:paddingLeft="20dp"
-                android:paddingTop="10dp"
-                android:text="@string/about_thanks_data"
-                android:textSize="18sp" />
+			<TextView
+				android:id="@+id/TextView03"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="fill"
+				android:paddingBottom="15dp"
+				android:paddingLeft="20dp"
+				android:paddingTop="10dp"
+				android:text="@string/about_thanks_data"
+				android:textSize="18sp" />
 
-            <TextView
-                android:id="@+id/TextView04"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:paddingBottom="10dp"
-                android:text="@string/about_l10n"
-                android:textSize="20sp" />
+			<TextView
+				android:id="@+id/TextView04"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:paddingBottom="10dp"
+				android:text="@string/about_l10n"
+				android:textSize="20sp" />
 
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_gravity="fill_horizontal" >
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_gravity="fill_horizontal" >
 
-                <TextView
-                    android:id="@+id/TextView4"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="fill"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="10dp"
-                    android:text="@string/about_l10n_data_left"
-                    android:textSize="18sp" />
+				<TextView
+					android:id="@+id/TextView4"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="fill"
+					android:paddingLeft="20dp"
+					android:paddingTop="10dp"
+					android:text="@string/about_l10n_data_left"
+					android:textSize="18sp" />
 
-                <TextView
-                    android:id="@+id/TextView5"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="fill"
-                    android:paddingLeft="20dp"
-                    android:paddingTop="10dp"
-                    android:text="@string/about_l10n_data_right"
-                    android:textSize="18sp" />
-            </LinearLayout>
-        </LinearLayout>
-    </ScrollView>
+				<TextView
+					android:id="@+id/TextView5"
+					android:layout_width="wrap_content"
+					android:layout_height="wrap_content"
+					android:layout_gravity="fill"
+					android:paddingLeft="20dp"
+					android:paddingTop="10dp"
+					android:text="@string/about_l10n_data_right"
+					android:textSize="18sp" />
+			</LinearLayout>
+		</LinearLayout>
+	</ScrollView>
 
 </GridLayout>

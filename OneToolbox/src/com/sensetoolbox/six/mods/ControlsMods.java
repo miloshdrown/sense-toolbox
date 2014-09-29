@@ -31,6 +31,7 @@ import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
 
@@ -608,4 +609,50 @@ public class ControlsMods {
 		findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "onLayout", boolean.class, int.class, int.class, int.class, int.class, hook);
 		findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "dispatchDraw", Canvas.class, hook);
 	}
+	/*
+	public static void execHook_VolumeCaret() {
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				
+				final KeyEvent keyEvent = (KeyEvent)param.args[0];
+				int keycode = keyEvent.getKeyCode();
+				int action = keyEvent.getAction();
+				int flags = keyEvent.getFlags();
+				
+				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
+					if (keycode == KeyEvent.KEYCODE_VOLUME_UP || keycode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+						InputMethodManager imm = (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+						Object mService = XposedHelpers.getObjectField(imm, "mService");
+						boolean mInputShown = XposedHelpers.getBooleanField(mService, "mInputShown");
+						if (mInputShown) {
+							if (action == KeyEvent.ACTION_DOWN)
+							if (keycode == KeyEvent.KEYCODE_VOLUME_UP) {
+								(new Instrumentation()).sendKeyDownUpSync(KeyEvent.KEYCODE_DPAD_LEFT);
+							} else if (keycode == KeyEvent.KEYCODE_VOLUME_DOWN) {
+								(new Instrumentation()).sendKeyDownUpSync(KeyEvent.KEYCODE_DPAD_RIGHT);
+							}
+							param.setResult(0);
+						}
+					}
+				}
+			}
+		});
+		
+		findAndHookMethod("android.inputmethodservice.InputMethodService", null, "onKeyDown", int.class, KeyEvent.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				XposedBridge.log("onKeyDown: " + String.valueOf((Integer)param.args[0]) + " | " + String.valueOf((KeyEvent)param.args[1]));
+			}
+		});
+		
+		findAndHookMethod("android.inputmethodservice.InputMethodService", null, "onKeyUp", int.class, KeyEvent.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				XposedBridge.log("onKeyUp: " + String.valueOf((Integer)param.args[0]) + " | " + String.valueOf((KeyEvent)param.args[1]));
+			}
+		});
+	}
+	*/
 }

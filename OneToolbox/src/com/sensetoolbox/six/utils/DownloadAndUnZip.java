@@ -176,7 +176,7 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 				alert.show();
 			}
 		}
-		mProgressDialog.dismiss();
+		if (act.get() != null && !act.get().isFinishing() && mProgressDialog.isShowing()) mProgressDialog.dismiss();
 	}
 	
 	private boolean unpackZip(String path, String zipname) {

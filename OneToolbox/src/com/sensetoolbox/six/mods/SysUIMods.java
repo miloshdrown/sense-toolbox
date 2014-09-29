@@ -722,10 +722,13 @@ public class SysUIMods {
 					connectivityManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 					
 					FrameLayout mStatusBarView = (FrameLayout)getObjectField(param.thisObject, "mStatusBarView");
+					//mStatusBarView.setBackgroundColor(Color.BLUE);
 					LinearLayout systemIconArea = (LinearLayout)mStatusBarView.findViewById(mStatusBarView.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
+					//systemIconArea.setBackgroundColor(Color.CYAN);
 
 					RelativeLayout alignFrame = new RelativeLayout(mContext);
 					alignFrame.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+					//alignFrame.setBackgroundColor(Color.RED);
 					
 					LinearLayout textFrame = new LinearLayout(mContext);
 					textFrame.setOrientation(LinearLayout.VERTICAL);
@@ -733,7 +736,8 @@ public class SysUIMods {
 					RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 					rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
 					textFrame.setLayoutParams(rlp);
-										
+					//textFrame.setBackgroundColor(Color.GREEN);
+					
 					dataRateVal = new TextView(mContext);
 					dataRateVal.setVisibility(8);
 					dataRateVal.setTransformationMethod(SingleLineTransformationMethod.getInstance());
@@ -746,6 +750,7 @@ public class SysUIMods {
 					dataRateVal.setPadding(0, 2, 5, 0);
 					dataRateVal.setLineSpacing(0, 0.9f);
 					//dataRateVal.setTypeface(null, Typeface.BOLD);
+					//dataRateVal.setBackgroundColor(Color.MAGENTA);
 					
 					dataRateUnits = new TextView(mContext);
 					dataRateUnits.setVisibility(8);
@@ -758,6 +763,7 @@ public class SysUIMods {
 					dataRateUnits.setIncludeFontPadding(false);
 					dataRateUnits.setPadding(0, 0, 5, 0);
 					dataRateUnits.setScaleY(0.9f);
+					//dataRateUnits.setBackgroundColor(Color.YELLOW);
 					
 					textFrame.addView(dataRateVal, 0);
 					textFrame.addView(dataRateUnits, 1);
@@ -1353,7 +1359,8 @@ public class SysUIMods {
 		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "handleSwipe", View.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				if (popup != null && popup.isShowing()) popup.dismiss();
+				Activity FxRecent = (Activity)param.thisObject;
+				if (FxRecent != null && !FxRecent.isFinishing() && popup != null && popup.isShowing()) popup.dismiss();
 			}
 		});
 	}
@@ -1756,19 +1763,53 @@ public class SysUIMods {
 		}
 	}
 	
+	private static void replaceCustomIME(MethodHookParam param, String pkgName) {
+		try {
+			Context ctx = (Context)param.args[0];
+			if (ctx == null) return;
+			final ActivityManager am = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);
+			final List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+			String appPkgName = taskInfo.get(0).topActivity.getPackageName();
+			
+			SparseArray<Object[]> styles = SenseThemes.getColors();
+			PackageTheme pt1 = Helpers.getThemeForPackageFromXposed(appPkgName);
+			String htc_theme = "";
+			if (pt1 != null) {
+				htc_theme = (String)styles.valueAt(pt1.getTheme())[2];
+			} else {
+				PackageTheme pt2 = Helpers.getThemeForPackageFromXposed(pkgName);
+				if (pt2 != null) htc_theme = (String)styles.valueAt(pt2.getTheme())[2];
+			}
+			
+			if (htc_theme != "") {
+				int htc_theme_id = ctx.getResources().getIdentifier(htc_theme, "style", pkgName);
+				if (htc_theme_id != 0) param.setResult(htc_theme_id);
+			}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
 	public static void execHook_Sense6ColorControlCustom(final LoadPackageParam lpparam, final String pkgName) {
 		if (pkgName.equals("com.htc.sense.ime")) {
 			findAndHookMethod("com.htc.sense.ime.HTCIMMData", lpparam.classLoader, "getThemeId", Context.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					replaceCustom(param, pkgName);
+					replaceCustomIME(param, pkgName);
 				}
 			});
 			// Proguarded piece of shit!
 			findAndHookMethod("com.htc.lib1.cc.c.b", lpparam.classLoader, "a", Context.class, int.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					replaceCustom(param, pkgName);
+					replaceCustomIME(param, pkgName);
+				}
+			});
+			
+			findAndHookMethod("com.htc.sense.ime.HTCIMEService", lpparam.classLoader, "onShowInputRequested", int.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					XposedHelpers.callStaticMethod(findClass("com.htc.sense.ime.HTCIMMData", lpparam.classLoader), "setThemeContext", param.thisObject);
 				}
 			});
 		} else {

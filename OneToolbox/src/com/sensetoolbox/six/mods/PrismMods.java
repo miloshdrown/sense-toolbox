@@ -851,6 +851,7 @@ public class PrismMods {
 		XposedBridge.hookAllConstructors(findClass("com.htc.launcher.folder.WorkspaceFolderIcon", lpparam.classLoader), new XC_MethodHook() {
 			@Override
 			public void afterHookedMethod(MethodHookParam param) throws Throwable {
+				if (param.thisObject != null)
 				setAdditionalInstanceField(param.thisObject, "workspaceFolder", true);
 			}
 		});
@@ -858,8 +859,9 @@ public class PrismMods {
 		findAndHookMethod("com.htc.launcher.folder.FolderIcon", lpparam.classLoader, "setTextVisible", boolean.class, new XC_MethodHook() {
 			@Override
 			public void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				if ((Boolean) getAdditionalInstanceField(param.thisObject, "workspaceFolder"))
-					param.args[0] = false;
+				if (param.thisObject == null) return;
+				Boolean workspaceFolder = (Boolean) getAdditionalInstanceField(param.thisObject, "workspaceFolder");
+				if (workspaceFolder != null && workspaceFolder) param.args[0] = false;
 			}
 		});
 	}

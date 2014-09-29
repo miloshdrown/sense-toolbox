@@ -49,6 +49,9 @@ public class PackagePermissions {
 							requestedPermissionsRequired.add(true);
 							requestedPermissions.add("com.htc.permission.APP_PLATFORM");
 							requestedPermissionsRequired.add(true);
+						} else if (pkgName.equalsIgnoreCase("com.htc.sense.ime")) {
+							requestedPermissions.add("android.permission.GET_TASKS");
+							requestedPermissionsRequired.add(true);
 						}
 						
 						setObjectField(param.args[0], "requestedPermissions", requestedPermissions);

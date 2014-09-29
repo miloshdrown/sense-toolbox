@@ -331,10 +331,10 @@ public class DimmedActivity extends Activity {
 				ft.add(R.id.carousel, notifications, tagName);
 			}
 			ft.commit();
+			getFragmentManager().executePendingTransactions();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		getFragmentManager().executePendingTransactions();
 	}
 	
 	public StatusBarNotification findInLatest(String pkgName, int id, String tag) {

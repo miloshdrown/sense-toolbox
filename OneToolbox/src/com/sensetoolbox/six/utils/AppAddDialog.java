@@ -1,6 +1,8 @@
 package com.sensetoolbox.six.utils;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -35,15 +37,20 @@ public class AppAddDialog extends HtcAlertDialog {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		installedAppsListThemable = new ArrayList<AppData>();
-		for (AppData app: Helpers.installedAppsList)
-		if (!app.pkgName.equals("com.sensetoolbox.six") &&
-			!app.pkgName.equals("com.htc.htcdialer") &&
-			!app.pkgName.equals("com.htc.htcpowermanager") &&
-			!app.pkgName.equals("com.htc.sdm") &&
-			!app.pkgName.equals("com.htc.home.personalize") &&
-			!app.pkgName.equals("com.htc.widget.notification") &&
-			!app.pkgName.equals("com.htc.sense.easyaccessservice"))
-		installedAppsListThemable.add(app);
+		if (Helpers.installedAppsList != null) {
+			List<AppData> synñedList = Collections.synchronizedList(Helpers.installedAppsList);
+			synchronized(synñedList) {
+				for (AppData app: synñedList)
+				if (!app.pkgName.equals("com.sensetoolbox.six") &&
+					!app.pkgName.equals("com.htc.htcdialer") &&
+					!app.pkgName.equals("com.htc.htcpowermanager") &&
+					!app.pkgName.equals("com.htc.sdm") &&
+					!app.pkgName.equals("com.htc.home.personalize") &&
+					!app.pkgName.equals("com.htc.widget.notification") &&
+					!app.pkgName.equals("com.htc.sense.easyaccessservice"))
+				installedAppsListThemable.add(app);
+			}
+		}
 		
 		final HtcListView listView = new HtcListView(this.getContext());
 		listView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));

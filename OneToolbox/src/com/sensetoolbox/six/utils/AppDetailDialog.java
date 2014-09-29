@@ -4,6 +4,7 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
+import android.widget.TextView;
 
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcListItemSeparator;
@@ -22,9 +23,9 @@ public class AppDetailDialog extends HtcAlertDialog {
 	}
 
 	@Override
-    protected void onCreate(Bundle savedInstanceState) {
+	protected void onCreate(Bundle savedInstanceState) {
 		float density = this.getContext().getResources().getDisplayMetrics().density;
-		//int pad5dp = Math.round(5 * density);
+		int pad5dp = Math.round(5 * density);
 		int pad10dp = Math.round(10 * density);
 		
 		LinearLayout globalLayout = new LinearLayout(this.getContext());
@@ -65,40 +66,54 @@ public class AppDetailDialog extends HtcAlertDialog {
 		globalLayout.addView(themeColorsLayout);
 		globalLayout.addView(themeBtnsLayout);
 		
+		if (pkgName.equals("com.htc.sense.ime")) {
+			HtcListItemSeparator separator2 = new HtcListItemSeparator(globalLayout.getContext());
+			separator2.setLayoutParams(lllp1);
+			separator2.setText(0, Helpers.l10n(this.getContext(), R.string.sense_theme_sep2));
+			
+			TextView infoIME = new TextView(globalLayout.getContext());
+			infoIME.setLayoutParams(lllp1);
+			infoIME.setText(Helpers.l10n(this.getContext(), R.string.sense_theme_infoIME));
+			infoIME.setPadding(pad10dp + pad5dp, pad10dp, pad10dp + pad5dp, pad10dp);
+			
+			globalLayout.addView(separator2);
+			globalLayout.addView(infoIME);
+		}
+		
 		this.setButton(DialogInterface.BUTTON_POSITIVE, Helpers.l10n(this.getContext(), R.string.sense_themes_apply), new DialogInterface.OnClickListener() {
-        	public void onClick(DialogInterface dialog, int whichButton) {
-        		if (pkgName.equals("replace_all")) {
-        			for (PackageTheme pt: SenseThemes.pkgthm) if (pt != null) pt.setTheme(cs.getSelectedTheme());
-        			stContext.savePkgs();
-    				stContext.notifyThemeChanged(pkgName);
-        		} else {
-        			PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);
-        			if (pt != null) {
-        				pt.setTheme(cs.getSelectedTheme());
-        				stContext.savePkgs();
-        				stContext.notifyThemeChanged(pkgName);
-        			}
-        		}
-        	}
-        });
+			public void onClick(DialogInterface dialog, int whichButton) {
+				if (pkgName.equals("replace_all")) {
+					for (PackageTheme pt: SenseThemes.pkgthm) if (pt != null) pt.setTheme(cs.getSelectedTheme());
+					stContext.savePkgs();
+					stContext.notifyThemeChanged(pkgName);
+				} else {
+					PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);
+					if (pt != null) {
+						pt.setTheme(cs.getSelectedTheme());
+						stContext.savePkgs();
+						stContext.notifyThemeChanged(pkgName);
+					}
+				}
+			}
+		});
 		
 		if (!pkgName.equals("replace_all"))
 		this.setButton(DialogInterface.BUTTON_NEUTRAL, Helpers.l10n(this.getContext(), R.string.sense_theme_remove), new DialogInterface.OnClickListener() {
-        	public void onClick(DialogInterface dialog, int whichButton) {
-        		PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);
-        		if (pt != null) {
-        			SenseThemes.pkgthm.remove(pt);
-        			stContext.savePkgs();
-        			stContext.updateListArray();
-        			stContext.notifyThemeChanged(pkgName);
-        		}
-        	}
-        });
+			public void onClick(DialogInterface dialog, int whichButton) {
+				PackageTheme pt = SenseThemes.arrayHasPkg(pkgName);
+				if (pt != null) {
+					SenseThemes.pkgthm.remove(pt);
+					stContext.savePkgs();
+					stContext.updateListArray();
+					stContext.notifyThemeChanged(pkgName);
+				}
+			}
+		});
 		
 		this.setButton(DialogInterface.BUTTON_NEGATIVE, Helpers.l10n(this.getContext(), R.string.sense_themes_cancel), new DialogInterface.OnClickListener() {
-        	public void onClick(DialogInterface dialog, int whichButton) {}
-        });
+			public void onClick(DialogInterface dialog, int whichButton) {}
+		});
 		this.setView(globalLayout);
-        super.onCreate(savedInstanceState);
+		super.onCreate(savedInstanceState);
 	}
 }
