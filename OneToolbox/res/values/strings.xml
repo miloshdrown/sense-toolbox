@@ -515,7 +515,7 @@
 	<string name="array_clock_style_center">Center clock</string>
 	<string name="array_clock_style_none">No clock</string>
 	<string name="array_footeralpha_style_dynamic">Dynamic transparency</string>
-	<string name="array_footeralpha_style_invis">Fully trnsparent</string>
+	<string name="array_footeralpha_style_invis">Fully transparent</string>
 	<string name="array_global_actions_none">No action</string>
 	<string name="array_global_actions_notif">Expand notifications drawer</string>
 	<string name="array_global_actions_eqs">Expand EQS panel</string>
