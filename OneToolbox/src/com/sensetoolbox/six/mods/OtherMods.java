@@ -36,6 +36,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
@@ -125,6 +126,14 @@ public class OtherMods {
 		try {
 			XposedHelpers.findAndHookMethod("com.htc.htcpowermanager.powersaver.PowerSaverNotificationService", lpparam.classLoader, "addNotification", XC_MethodReplacement.DO_NOTHING);
 			XposedHelpers.findAndHookMethod("com.htc.htcpowermanager.powersaver.PowerSaverNotificationService", lpparam.classLoader, "addNtfPowerJacket", int.class, int.class, XC_MethodReplacement.DO_NOTHING);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_InputMethodNotif() {
+		try {
+			XposedHelpers.findAndHookMethod("com.android.server.InputMethodManagerService", null, "setImeWindowStatus", IBinder.class, int.class, int.class, XC_MethodReplacement.DO_NOTHING);
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

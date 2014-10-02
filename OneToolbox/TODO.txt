@@ -34,6 +34,7 @@ Current changelog
 1.4.2
 [New] Show signal strength in notification drawer's footer
 [New] Notification drawer footer static and dynamic transparency
+[New] Hide Input Method notification
 [New] HTC Sense keyboard will now change its theme according to the theme of a parent app, if that app is added to the list. You can even add non-HTC apps.
 [Fixed] Power Saver vibration option didn't stick after turning off Extreme Power Saving mode
 [Fixed] Width of enhanced toasts with app icon

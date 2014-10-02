@@ -266,6 +266,7 @@ public class SysUIMods {
 						for(int i = 0; i < qsContainer.getChildCount(); i++)
 						{
 							LinearLayout tmp = (LinearLayout) qsContainer.getChildAt(i);
+							if (tmp == null) continue;
 							LinearLayout.LayoutParams tmpParams = (LinearLayout.LayoutParams) tmp.getLayoutParams();
 							tmpParams.width = (int) Math.floor(displayWidth / 5 - 3);
 							tmp.setLayoutParams(tmpParams);
@@ -274,7 +275,7 @@ public class SysUIMods {
 								View quick_setting_text = tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_text", "id", "com.android.systemui"));
 								if (quick_setting_text != null) quick_setting_text.setVisibility(View.GONE);
 								ImageView qsImg = (ImageView) tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_image", "id", "com.android.systemui"));
-								qsImg.setPadding(0, 0, 0, 20);
+								if (qsImg != null) qsImg.setPadding(0, 0, 0, 20);
 							}
 						}
 						
@@ -1769,6 +1770,7 @@ public class SysUIMods {
 			if (ctx == null) return;
 			final ActivityManager am = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);
 			final List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+			if (taskInfo.size() == 0 || taskInfo.get(0).topActivity == null) return;
 			String appPkgName = taskInfo.get(0).topActivity.getPackageName();
 			
 			SparseArray<Object[]> styles = SenseThemes.getColors();

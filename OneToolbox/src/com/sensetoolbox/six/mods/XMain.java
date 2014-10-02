@@ -117,6 +117,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (Integer.parseInt(pref.getString("pref_key_other_iconlabletoasts", "1")) != 1)
 			SysUIMods.execHook_IconLabelToasts();
+		
+		if (pref.getBoolean("pref_key_other_imenotif", false))
+			OtherMods.execHook_InputMethodNotif();
 	}
 	
 	@Override
