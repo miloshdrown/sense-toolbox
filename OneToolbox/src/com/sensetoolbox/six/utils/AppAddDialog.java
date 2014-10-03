@@ -38,9 +38,9 @@ public class AppAddDialog extends HtcAlertDialog {
 	protected void onCreate(Bundle savedInstanceState) {
 		installedAppsListThemable = new ArrayList<AppData>();
 		if (Helpers.installedAppsList != null) {
-			List<AppData> synñedList = Collections.synchronizedList(Helpers.installedAppsList);
-			synchronized(synñedList) {
-				for (AppData app: synñedList)
+			List<AppData> syncedList = Collections.synchronizedList(Helpers.installedAppsList);
+			synchronized(syncedList) {
+				for (AppData app: syncedList)
 				if (!app.pkgName.equals("com.sensetoolbox.six") &&
 					!app.pkgName.equals("com.htc.htcdialer") &&
 					!app.pkgName.equals("com.htc.htcpowermanager") &&
