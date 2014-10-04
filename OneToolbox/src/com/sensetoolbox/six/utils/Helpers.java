@@ -698,10 +698,12 @@ public class Helpers {
 	}
 	
 	public static boolean getHTCHaptic(Context ctx) {
-		Boolean haptic = true;
+		Boolean isHapticAllowed = true;
 		try {
-			haptic = (Settings.Secure.getInt(ctx.getContentResolver(), "powersaver_haptic_feedback") == 0);
+			boolean powersaver = (Settings.System.getInt(ctx.getContentResolver(), "user_powersaver_enable", 0) == 1);
+			boolean haptic = (Settings.Secure.getInt(ctx.getContentResolver(), "powersaver_haptic_feedback", 1) == 1);
+			if (powersaver && haptic) isHapticAllowed = false;
 		} catch (Exception e) {}
-		return haptic;
+		return isHapticAllowed;
 	}
 }
