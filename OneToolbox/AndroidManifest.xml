@@ -67,10 +67,10 @@
 			android:launchMode="singleInstance"
 			android:excludeFromRecents="true" />
 		<activity android:name="com.sensetoolbox.six.AboutScreen" android:screenOrientation="portrait" />
-		<activity android:name="com.sensetoolbox.six.SenseThemes" />
-		<activity android:name="com.sensetoolbox.six.PopupNotify" />
-		<activity android:name="com.sensetoolbox.six.EPSRemap" />
-		<activity android:name="com.sensetoolbox.six.WakeGestures" />
+		<activity android:name="com.sensetoolbox.six.SenseThemes" android:configChanges="keyboardHidden|orientation|screenSize" />
+		<activity android:name="com.sensetoolbox.six.PopupNotify" android:configChanges="keyboardHidden|orientation|screenSize"  />
+		<activity android:name="com.sensetoolbox.six.EPSRemap" android:configChanges="keyboardHidden|orientation|screenSize"  />
+		<activity android:name="com.sensetoolbox.six.WakeGestures" android:configChanges="keyboardHidden|orientation|screenSize" />
 		<activity
 			android:name="com.sensetoolbox.six.BlinkFeed"
 			android:label="BlinkFeed"
@@ -88,7 +88,8 @@
 			android:theme="@style/Invisible"
 			android:launchMode="singleInstance"
 			android:excludeFromRecents="true"
-			android:finishOnTaskLaunch="true" />
+			android:finishOnTaskLaunch="true"
+			android:configChanges="keyboardHidden|orientation|screenSize" />
 		<receiver android:name="com.sensetoolbox.six.PrefsFragment$HelperReceiver" android:exported="true">
 			<intent-filter>
 				<action android:name="com.sensetoolbox.six.UPDATEBACKLIGHT" />
