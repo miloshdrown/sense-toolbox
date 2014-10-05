@@ -31,6 +31,10 @@ Ideas
 Current changelog
 =================
 
+1.4.2.1
+[Fixed] Popup notifications orientation change
+[Fixed] 4x1 weather and clock widget background
+
 1.4.2
 [New] Show signal strength in notification drawer's footer
 [New] Notification drawer footer static and dynamic transparency

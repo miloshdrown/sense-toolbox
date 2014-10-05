@@ -29,6 +29,7 @@ import android.content.res.Configuration;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -73,6 +74,7 @@ public class DimmedActivity extends Activity {
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction() != null)
 			if (intent.getAction().equals(clearIntent)) {
+				lastIntent = (Intent)intent.clone();
 				initNotifications(intent, false);
 			}
 		}
@@ -108,9 +110,15 @@ public class DimmedActivity extends Activity {
 			findViewById(android.R.id.content).setOnTouchListener(new OnTouchListener() {
 				@Override
 				public boolean onTouch(View v, MotionEvent event) {
-					v.performClick();
-					finish();
-					return true;
+					// Check touch coordinates on screen - workaround for a bug with touch listeners after orientation change
+					int[] coords = {0, 0};
+					if (notifications != null) notifications.getCarouselHost().getLocationOnScreen(coords);
+					Rect loc = new Rect(coords[0], coords[1], coords[0] + notifications.getCarouselHost().getWidth(), coords[1] + notifications.getCarouselHost().getHeight());
+					if (!loc.contains((int)event.getRawX(), (int)event.getRawY())) {
+						v.performClick();
+						finish();
+						return true;
+					} else return false;
 				}
 			});
 			
