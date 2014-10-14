@@ -31,20 +31,13 @@ Ideas
 Current changelog
 =================
 
-1.4.2.1
-[Fixed] Popup notifications orientation change
-[Fixed] 4x1 weather and clock widget background
-
-1.4.2
-[New] Show signal strength in notification drawer's footer
-[New] Notification drawer footer static and dynamic transparency
-[New] Hide Input Method notification
-[New] HTC Sense keyboard will now change its theme according to the theme of a parent app, if that app is added to the list. You can even add non-HTC apps.
-[Fixed] Power Saver vibration option didn't stick after turning off Extreme Power Saving mode
-[Fixed] Width of enhanced toasts with app icon
-[Fixed] Displaying Popup Notification when APM dialog is visible
-[Fixed] Maximum number of popup notifications is 12 due to HTC tabs limitations, so only last 12 notifications will be shown
-[Fixed] Some bugs
+1.4.3
+[New] Additional actions for extended assist panel
+[New] Hide Wi-Fi notifications on Verizon devices
+[New] Make Music Channel (HTC music visualizations) available for any audio player
+[Fixed] 46% image in battery with percentages
+[Fixed] Problem description is required in any bug report (that way crash reports will be a lot more useful)
+[Fixed] Lots of bugs
 
 
 ===========
@@ -69,6 +62,21 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.4.2.1
+[Fixed] Popup notifications orientation change
+[Fixed] 4x1 weather and clock widget background
+
+1.4.2
+[New] Show signal strength in notification drawer's footer
+[New] Notification drawer footer static and dynamic transparency
+[New] Hide Input Method notification
+[New] HTC Sense keyboard will now change its theme according to the theme of a parent app, if that app is added to the list. You can even add non-HTC apps.
+[Fixed] Power Saver vibration option didn't stick after turning off Extreme Power Saving mode
+[Fixed] Width of enhanced toasts with app icon
+[Fixed] Displaying Popup Notification when APM dialog is visible
+[Fixed] Maximum number of popup notifications is 12 due to HTC tabs limitations, so only last 12 notifications will be shown
+[Fixed] Some bugs
 
 1.4.1
 [Fixed] Latest HTC Lock Screen update from Play Store (or stock from 4.4.3) is required for Wake Gestures to work

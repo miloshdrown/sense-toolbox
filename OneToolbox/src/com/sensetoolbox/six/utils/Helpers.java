@@ -231,6 +231,8 @@ public class Helpers {
 					entriesResName = "various_clock_style";
 				else if (titleResName.equals("various_popupnotify_back_title"))
 					entriesResName = "various_background_style";
+				else if (titleResName.equals("controls_extendedpanel_left_title") || titleResName.equals("controls_extendedpanel_right_title"))
+					entriesResName = "extendedpanel_actions";
 				else if (titleResName.contains("sense_") || titleResName.contains("controls_"))
 					entriesResName = "global_actions";
 				else if (titleResName.contains("wakegestures_"))

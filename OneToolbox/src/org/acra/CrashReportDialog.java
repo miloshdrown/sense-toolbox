@@ -26,8 +26,10 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.util.TypedValue;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.View.OnTouchListener;
 import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.widget.LinearLayout;
@@ -169,34 +171,51 @@ public class CrashReportDialog extends Activity {
 			String payload = new GsonBuilder().create().toJson(Helpers.getParamsAsStringString(crashData), Map.class);
 			int payloadSize = payload.getBytes("UTF-8").length;
 			isManualReport = crashData.getProperty(ReportField.STACK_TRACE).contains("Report requested by developer");
+			
+			TextView descText = new TextView(this);
+			descText.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			descText.setGravity(Gravity.LEFT);
+			descText.setPadding(densify(10), 0, densify(10), 0);
+			descText.setTextColor(text.getCurrentTextColor());
+			descText.setTextSize(TypedValue.COMPLEX_UNIT_PX, text.getTextSize() - 10);
+			
+			desc = new HtcEditText(this);
+			desc.setGravity(Gravity.TOP | Gravity.LEFT);
+			desc.setInputType(EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE);
+			desc.setSingleLine(false);
+			desc.setPadding(densify(5), densify(5), densify(5), densify(5));
+			
 			if (isManualReport) {
 				title = Helpers.l10n(this, R.string.popupnotify_blconfirm);
 				text = Helpers.createCenteredText(this, R.string.crash_dialog_manual);
 				neutralText = Helpers.l10n(this, R.string.sense_themes_cancel);
-				
-				TextView descText = new TextView(this);
-				descText.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 				descText.setText(Helpers.l10n(this, R.string.crash_dialog_manual_desc));
-				descText.setGravity(Gravity.LEFT);
-				descText.setPadding(densify(10), 0, densify(10), 0);
-				descText.setTextColor(text.getCurrentTextColor());
-				descText.setTextSize(TypedValue.COMPLEX_UNIT_PX, text.getTextSize() - 10);
-						
-				desc = new HtcEditText(this);
+				
 				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, densify(100));
 				lp.setMargins(densify(10), densify(5), densify(10), densify(10));
 				desc.setLayoutParams(lp);
-				desc.setGravity(Gravity.TOP | Gravity.LEFT);
-				desc.setInputType(EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE);
-				desc.setSingleLine(false);
-				desc.setPadding(densify(5), densify(5), densify(5), densify(5));
-						
-				dialogView.addView(text);
-				dialogView.addView(descText);
-				dialogView.addView(desc);
 			} else {
-				dialogView.addView(text);
+				descText.setText(Helpers.l10n(this, R.string.crash_dialog_manual_desc2));
+				
+				LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, densify(50));
+				lp.setMargins(densify(10), densify(5), densify(10), densify(10));
+				desc.setLayoutParams(lp);
+				desc.setFocusable(false);
+				desc.setFocusableInTouchMode(false);
+				desc.setOnTouchListener(new OnTouchListener() {
+					@Override
+					public boolean onTouch(View v, MotionEvent event) {
+						v.setFocusable(true);
+						v.setFocusableInTouchMode(true);
+						v.performClick();
+						return false;
+					}
+				});
 			}
+			
+			dialogView.addView(text);
+			dialogView.addView(descText);
+			dialogView.addView(desc);
 			text.setText(text.getText() + "\n" + Helpers.l10n(this, R.string.crash_dialog_manual_size) + ": " + String.valueOf(Math.round(payloadSize / 1024)) + " KB");
 		} catch (Exception e) {}
 		

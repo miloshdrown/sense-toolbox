@@ -64,10 +64,8 @@
 		android:key="pref_key_troubleshoot">
 		<com.htc.preference.HtcPreference
 			android:title="@string/support_bug_title"
-			android:summary="@string/support_bug_summ" >
-			<intent android:action="android.intent.action.VIEW"
-			android:data="https://bitbucket.org/langerhans/sense-toolbox/issues/" />
-		</com.htc.preference.HtcPreference>
+			android:summary="@string/support_bug_summ"
+			android:key="pref_key_issuetracker" />
 		<com.htc.preference.HtcPreference
 			android:key="pref_key_toolbox_sendreport"
 			android:title="@string/toolbox_acrasend_title"
@@ -83,22 +81,15 @@
 		android:key="pref_key_support">
 		<com.htc.preference.HtcPreference
 			android:title="@string/support_s6t_title"
-			android:summary="@string/support_s6t_summ" >
-			<intent android:action="android.intent.action.VIEW"
-			android:data="http://sensetoolbox.com/" />
-		</com.htc.preference.HtcPreference>
+			android:summary="@string/support_s6t_summ"
+			android:key="pref_key_toolboxsite" />
 		<com.htc.preference.HtcPreference
 			android:title="@string/support_donate_title"
-			android:summary="@string/support_donate_summ" >
-			<intent android:action="android.intent.action.VIEW"
-			android:data="http://sensetoolbox.com/donate" />
-		</com.htc.preference.HtcPreference>
+			android:summary="@string/support_donate_summ"
+			android:key="pref_key_donatepage" />
 		<com.htc.preference.HtcPreference
 			android:title="@string/support_blog_title"
-			android:summary="@string/support_blog_summ" >
-			<intent android:action="android.intent.action.VIEW"
-			android:data="http://android-revolution-hd.blogspot.de" />
-		</com.htc.preference.HtcPreference>
-		
+			android:summary="@string/support_blog_summ"
+			android:key="pref_key_ARHD" />
 	</com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>

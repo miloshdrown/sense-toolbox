@@ -1825,7 +1825,6 @@ public class SysUIMods {
 	}
 	
 	public static void execHook_Sense6ColorControlCustom443(final LoadPackageParam lpparam, final String pkgName) {
-		if (pkgName.equals("com.htc.android.worldclock") || pkgName.equals("com.htc.Weather"))
 		findAndHookMethod("com.htc.lib1.cc.c.c", lpparam.classLoader, "a", Context.class, int.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -1892,6 +1891,29 @@ public class SysUIMods {
 		return wm.getDefaultDisplay().getRotation();
 	}
 	
+	private static int getShortcutRes(int shortcut, boolean isLeft) {
+		int sRes = R.drawable.ic_action_apm;
+		if (isLeft) sRes = R.drawable.ic_action_voicedial;
+		switch (shortcut) {
+			case 1:
+				sRes = R.drawable.ic_action_apm;
+				break;
+			case 2:
+				sRes = R.drawable.ic_action_voicedial;
+				break;
+			case 3:
+				sRes = R.drawable.ic_action_blinkfeed;
+				break;
+			case 4:
+				sRes = R.drawable.ic_action_sleep;
+				break;
+			case 5:
+				sRes = R.drawable.ic_action_lock;
+				break;
+		}
+		return sRes;
+	}
+	
 	public static void execHook_SearchGlowPad() {
 		try {
 			XposedBridge.hookAllConstructors(findClass("com.android.internal.widget.multiwaveview.GlowPadView", null), new XC_MethodHook() {
@@ -1916,10 +1938,14 @@ public class SysUIMods {
 					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 					Class<?> TargetDrawable = findClass("com.android.internal.widget.multiwaveview.TargetDrawable", null);
 					
-					Object apm = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, R.drawable.ic_action_apm);
 					Object stock_assist = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(Resources.getSystem(), Resources.getSystem().getIdentifier("ic_action_assist_generic", "drawable", "android"));
-					Object voicedial = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, R.drawable.ic_action_voicedial);
 					Object dummy = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, 0);
+					
+					XMain.pref.reload();
+					int leftShortcut = Integer.parseInt(XMain.pref.getString("pref_key_controls_extendedpanel_left", "2"));
+					int rightShortcut = Integer.parseInt(XMain.pref.getString("pref_key_controls_extendedpanel_right", "1"));
+					Object leftObject = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, getShortcutRes(leftShortcut, true));
+					Object rightObject = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, getShortcutRes(rightShortcut, false));
 					
 					ArrayList<Object> arraylist = new ArrayList<Object>();
 					int rot = getRotation(param);
@@ -1927,25 +1953,25 @@ public class SysUIMods {
 						arraylist.add(dummy);
 						arraylist.add(dummy);
 						arraylist.add(dummy);
-						arraylist.add(apm);
+						arraylist.add(rightObject);
 						arraylist.add(stock_assist);
-						arraylist.add(voicedial);
+						arraylist.add(leftObject);
 						arraylist.add(dummy);
 						arraylist.add(dummy);
 					} else if (rot == 3) {
 						arraylist.add(stock_assist);
-						arraylist.add(voicedial);
+						arraylist.add(leftObject);
 						arraylist.add(dummy);
 						arraylist.add(dummy);
 						arraylist.add(dummy);
 						arraylist.add(dummy);
 						arraylist.add(dummy);
-						arraylist.add(apm);
+						arraylist.add(rightObject);
 					} else {
 						arraylist.add(dummy);
-						arraylist.add(apm);
+						arraylist.add(rightObject);
 						arraylist.add(stock_assist);
-						arraylist.add(voicedial);
+						arraylist.add(leftObject);
 						arraylist.add(dummy);
 						arraylist.add(dummy);
 						arraylist.add(dummy);
@@ -2003,6 +2029,19 @@ public class SysUIMods {
 							intent.putExtra("isKeyguardSecure", kgm.isKeyguardSecure());
 							intent.putExtra("isLockscreenDisable", !kgm.isKeyguardLocked());
 							ctx.startActivity(intent);
+							break;
+						case R.drawable.ic_action_blinkfeed:
+							Class<?> ActivityManagerNative2 = Class.forName("android.app.ActivityManagerNative");
+							Object activityManagerNative2 = XposedHelpers.callStaticMethod(ActivityManagerNative2, "getDefault");
+							XposedHelpers.callMethod(activityManagerNative2, "dismissKeyguardOnNextActivity");
+							Intent i = new Intent("android.intent.action.MAIN").addCategory("android.intent.category.HOME").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("action", 0);
+							ctx.startActivity(i);
+							break;
+						case R.drawable.ic_action_lock:
+							ctx.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.LockDevice"));
+							break;
+						case R.drawable.ic_action_sleep:
+							ctx.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.GoToSleep"));
 							break;
 					}
 				}

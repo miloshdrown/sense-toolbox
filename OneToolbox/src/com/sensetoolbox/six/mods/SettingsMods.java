@@ -40,7 +40,7 @@ public class SettingsMods {
 	public static void execHook_ScreenOn(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.settings.framework.flag.feature.HtcDisplayFeatureFlags", lpparam.classLoader, "supportStayAwake", Context.class, new XC_MethodHook(){
 			@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(true);
 			}
 		});
@@ -110,7 +110,7 @@ public class SettingsMods {
 		// Add and setup new menu item
 		findAndHookMethod("com.android.settings.applications.ManageApplicationsFragment", lpparam.classLoader, "onCreateOptionsMenu", Menu.class, MenuInflater.class, new XC_MethodHook(){
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				Menu mOptionsMenu = (Menu)XposedHelpers.getObjectField(param.thisObject, "mOptionsMenu");
 				if (mOptionsMenu != null) {
 					int mCurView = XposedHelpers.getIntField(param.thisObject, "mCurView");
@@ -126,7 +126,7 @@ public class SettingsMods {
 		
 		findAndHookMethod("com.android.settings.applications.ManageApplicationsFragment", lpparam.classLoader, "onOptionsItemSelected", MenuItem.class, new XC_MethodHook(){
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				int i = ((MenuItem)param.args[0]).getItemId();
 				if (i == 31337) {
 					showDisabledOnly = !showDisabledOnly;
@@ -162,7 +162,7 @@ public class SettingsMods {
 		// Apply custom filter after stock one
 		findAndHookMethod("com.android.settings.applications.ManageApplicationsFragment$ApplicationsAdapter", lpparam.classLoader, "applyPrefixFilter", CharSequence.class, ArrayList.class, new XC_MethodHook(){
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				@SuppressWarnings("unchecked")
 				ArrayList<Object> arraylist = (ArrayList<Object>)param.getResult();
 				ArrayList<Object> arraylist2 = new ArrayList<Object>();
@@ -183,20 +183,20 @@ public class SettingsMods {
 		
 		findAndHookMethod("com.android.settings.applications.InstalledAppDetails", lpparam.classLoader, "onHandleUiMessage", Message.class, new XC_MethodHook(){
 			@Override
-    		protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				// Change elements dynamically
 				Message msg = (Message)param.args[0];
 				if (msg == null) return;
-	            if (msg.what != 5 || apk_launch_btn == null) return;
-	            	
-	            Bundle bundle = (Bundle)msg.obj;
-	            int i = Integer.valueOf(bundle.getInt("widget_id_field")).intValue();
-	            //String s = bundle.getString("widget_text_field");
-	            //Boolean boolean1 = Boolean.valueOf(bundle.getBoolean("widget_enabled_field"));
-	            
-	            if (i == 107) 
-	            try {
-					final Intent mainActivity = theContext.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);				
+				if (msg.what != 5 || apk_launch_btn == null) return;
+					
+				Bundle bundle = (Bundle)msg.obj;
+				int i = Integer.valueOf(bundle.getInt("widget_id_field")).intValue();
+				//String s = bundle.getString("widget_text_field");
+				//Boolean boolean1 = Boolean.valueOf(bundle.getBoolean("widget_enabled_field"));
+				
+				if (i == 107)
+				try {
+					final Intent mainActivity = theContext.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);
 					if (mainActivity == null)
 						apk_launch_btn.setEnabled(false);
 					else {
@@ -208,18 +208,18 @@ public class SettingsMods {
 							}
 						});
 					}
-	            } catch (Throwable t) {
-	            	XposedBridge.log(t);
-	            }
-	            
-	            if (i == 103)
-	            try {
-	            	int j = bundle.getInt("widget_visibility_field");
-	            	if (j == 8) {
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+				
+				if (i == 103)
+				try {
+					int j = bundle.getInt("widget_visibility_field");
+					if (j == 8) {
 						LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
 						lp.setMargins(0, 0, 0, 0);
 						apk_launch_btn.setLayoutParams(lp);
-	            	}
+					}
 					if (uninstall_start_item != null) {
 						if (!apk_launch_btn.isEnabled() && j != 0)
 						uninstall_start_item.setVisibility(8);
@@ -230,7 +230,7 @@ public class SettingsMods {
 			}
 			
 			@Override
-    		protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				// Add new options to App Details view
 				Message msg = (Message)param.args[0];
 				if (msg == null) return;
@@ -303,7 +303,7 @@ public class SettingsMods {
 					
 					apk_launch_btn = new HtcRimButton(theContext);
 					
-					final Intent mainActivity = theContext.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);				
+					final Intent mainActivity = theContext.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);
 					apk_launch_btn.setText(Helpers.xl10n(modRes, R.string.appdetails_launch));
 					if (mainActivity == null)
 						apk_launch_btn.setEnabled(false);
@@ -313,7 +313,7 @@ public class SettingsMods {
 							public void onClick(View v) {
 								theContext.startActivity(mainActivity);
 							}
-						});				
+						});
 					
 					LinearLayout.LayoutParams htclp1 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);
 					LinearLayout.LayoutParams htclp2 = new LinearLayout.LayoutParams(0, LinearLayout.LayoutParams.WRAP_CONTENT, 1);

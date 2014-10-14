@@ -87,7 +87,7 @@ public class PrismMods {
 		XC_MethodHook hook = new XC_MethodHook() {
 			@Override
 			public void afterHookedMethod(MethodHookParam param) throws Throwable {
-				ViewGroup widgetView = param.args.length == 2 ? (ViewGroup) param.args[1] : (ViewGroup) param.args[0];
+				View widgetView = param.args.length == 2 ? (View) param.args[1] : (View) param.args[0];
 				Resources viewRes = widgetView.getResources();
 				int bgId = viewRes.getIdentifier("background_panel", "id", "com.htc.widget.weatherclock");
 				int wlId = viewRes.getIdentifier("widget_layout", "id", "com.htc.widget.weatherclock");

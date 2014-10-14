@@ -340,6 +340,21 @@
 		<item >2</item>
 		<item >3</item>
 	</string-array>
+	
+	<string-array name="extendedpanel_actions">
+		<item >@string/various_apm_title</item>
+		<item >@string/array_wakegestures_quickcall</item>
+		<item >@string/array_wakegestures_blinkfeed</item>
+		<item >@string/array_global_actions_sleep</item>
+		<item >@string/array_global_actions_lock</item>
+	</string-array>
+	<string-array name="extendedpanel_actions_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+		<item >4</item>
+		<item >5</item>
+	</string-array>
 
 	<string-array name="empty_array"/>
 </resources>

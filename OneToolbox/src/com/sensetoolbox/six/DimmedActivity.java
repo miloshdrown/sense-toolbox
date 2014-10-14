@@ -339,7 +339,6 @@ public class DimmedActivity extends Activity {
 				ft.add(R.id.carousel, notifications, tagName);
 			}
 			ft.commit();
-			getFragmentManager().executePendingTransactions();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -364,6 +363,7 @@ public class DimmedActivity extends Activity {
 			int newHeight = height + CarouselUtil.Dimen.getWidgetHeight(this, false);
 			
 			final LinearLayout carousel = (LinearLayout)this.findViewById(R.id.carousel);
+			if (carousel == null) return;
 			ValueAnimator anim = ValueAnimator.ofInt(carousel.getMeasuredHeight(), newHeight);
 			anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 				@Override

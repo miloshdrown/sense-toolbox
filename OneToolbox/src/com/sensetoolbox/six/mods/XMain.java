@@ -56,7 +56,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		pref_homeassist = Integer.parseInt(pref.getString("pref_key_controls_homeassistaction", "1"));
 		pref_shake = Integer.parseInt(pref.getString("pref_key_prism_shakeaction", "1"));
 		
-		if (pref.getBoolean("popup_notify_active", false) || pref.getBoolean("pref_key_other_apm", false) || pref.getBoolean("pref_key_prism_homemenu", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1)
+		if (pref.getBoolean("pref_key_controls_extendedpanel", false) || pref.getBoolean("popup_notify_active", false) || pref.getBoolean("pref_key_other_apm", false) || pref.getBoolean("pref_key_prism_homemenu", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1)
 			GlobalActions.setupPWM();
 		
 		if (pref_backlongpress != 1 || pref_homeassist != 1)
@@ -120,6 +120,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pref.getBoolean("pref_key_other_imenotif", false))
 			OtherMods.execHook_InputMethodNotif();
+		
+		if (pref.getBoolean("pref_key_other_vzwnotif", false))
+			OtherMods.execHook_VZWWiFiNotif();
 	}
 	
 	@Override
@@ -388,12 +391,19 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_nochargerwarn", false))
 				OtherMods.execHook_NoChargerWarning(lpparam);
 			
+			if (pref.getBoolean("pref_key_other_musicchannel", false))
+				OtherMods.execHook_MusicChannel(lpparam, false);
+			
 			SettingsMods.execHook_AppFilter(lpparam);
 			SettingsMods.execHook_UnhidePrefs(lpparam);
 		}
 		
-		if (pkg.equals("com.android.camera"))
-		{
+		if (pkg.equals("com.htc.musicenhancer")) {
+			if (pref.getBoolean("pref_key_other_musicchannel", false))
+				OtherMods.execHook_MusicChannel(lpparam, true);
+		}
+		
+		if (pkg.equals("com.android.camera")) {
 			int voldown = Integer.parseInt(pref.getString("pref_key_controls_camdownaction", "4"));
 			int volup = Integer.parseInt(pref.getString("pref_key_controls_camupaction", "4"));
 			if (!(voldown == 4 && volup == 4))
@@ -516,6 +526,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_other_rejectedcall", false))
 				OtherMods.execHook_RejectCallSilently(lpparam);
+			
+			//OtherMods.execHook_USSD(lpparam);
 		}
 		
 		if (pkg.equals("com.htc.widget.weatherclock")) {

@@ -27,6 +27,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.Process;
@@ -191,6 +192,55 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		HtcPreference toolboxCrashReportPreference = (HtcPreference) findPreference("pref_key_toolbox_sendreport");
 		if (toolboxCrashReportPreference != null)
 		toolboxCrashReportPreference.setOnPreferenceClickListener(sendCrashReport);
+		
+		HtcPreference issueTrackerPreference = findPreference("pref_key_issuetracker");
+		issueTrackerPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(HtcPreference pref) {
+				openURL("https://bitbucket.org/langerhans/sense-toolbox/issues/");
+				return true;
+			}
+		});
+		HtcPreference toolboxSitePreference = findPreference("pref_key_toolboxsite");
+		toolboxSitePreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(HtcPreference pref) {
+				openURL("http://sensetoolbox.com/");
+				return true;
+			}
+		});
+		HtcPreference donatePagePreference = findPreference("pref_key_donatepage");
+		donatePagePreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(HtcPreference pref) {
+				openURL("http://sensetoolbox.com/donate");
+				return true;
+			}
+		});
+		HtcPreference ARHDPreference = findPreference("pref_key_ARHD");
+		ARHDPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(HtcPreference pref) {
+				openURL("http://android-revolution-hd.blogspot.de");
+				return true;
+			}
+		});
+	}
+	
+	private void openURL(String url) {
+		Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		if (uriIntent.resolveActivity(getActivity().getPackageManager()) != null) {
+			startActivity(uriIntent);
+		} else {
+			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
+			alert.setTitle(Helpers.l10n(getActivity(), R.string.warning));
+			alert.setView(Helpers.createCenteredText(getActivity(), R.string.no_browser));
+			alert.setCancelable(true);
+			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {}
+			});
+			alert.show();
+		}
 	}
 	
 	private static void removePref(HtcPreferenceFragmentExt frag, String prefName, String catName) {

@@ -25,11 +25,13 @@
 	<string name="restore_ok">Settings were successfully restored!</string>
 	<string name="no_root_summ">Root is required for this mod to work</string>
 	<string name="no_busybox_summ">BusyBox is required for this mod to work</string>
+	<string name="no_browser">Browser app is required to open URLs</string>
 	
 	<string name="crash_dialog">Sense Toolbox has just crashed!</string>
 	<string name="crash_dialog_manual">All necessary data was collected</string>
 	<string name="crash_dialog_manual_size">Generated report size</string>
-	<string name="crash_dialog_manual_desc">Describe your problem:</string>
+	<string name="crash_dialog_manual_desc">Describe your problem (in English if possible):</string>
+	<string name="crash_dialog_manual_desc2">Describe your actions that led to this crash\n(in English if possible):</string>
 	<string name="crash_needs_inet">Internet connection is required</string>
 	<string name="crash_needs_desc">Description cannot be blank</string>
 	<string name="crash_ignore">Ignore</string>
@@ -310,6 +312,10 @@
 	<string name="controls_smallsoftkeys_summ">Reduce the height of the softkey bar.</string>
 	<string name="controls_extendedpanel_title">Extended assist panel</string>
 	<string name="controls_extendedpanel_summ">Add Voice Dial and APM shortcuts to ring selector on swipe up from Home.</string>
+	<string name="controls_extendedpanel_left_title">Left shortcut</string>
+	<string name="controls_extendedpanel_left_summ">Define an action for left shortcut in extended assist panel.</string>
+	<string name="controls_extendedpanel_right_title">Right shortcut</string>
+	<string name="controls_extendedpanel_right_summ">Define an action for right shortcut in extended assist panel.</string>
 
 	<string name="kill_foreground">Kill foreground app</string>
 	<string name="open_menu">Open menu</string>
@@ -375,6 +381,8 @@
 	<string name="various_powersavenotif_summ">Disable Power Saver notification.</string>
 	<string name="various_imenotif_title">Hide Input Method notification</string>
 	<string name="various_imenotif_summ">Disable Input Method notification.</string>
+	<string name="various_vzwnotif_title">Hide Wi-Fi notifications</string>
+	<string name="various_vzwnotif_summ">Disable Wi-Fi notifications on Verizon devices.</string>
 	<string name="various_fastunlock_title">Fast unlock</string>
 	<string name="various_fastunlock_summ">Unlock device as soon as correct PIN or password are entered. HTC lockscreen only.</string>
 	<string name="various_ytwatermark_title">YouTube channel watermark</string>
@@ -391,6 +399,8 @@
 	<string name="various_keyslight_summ">Change backlight brightness for buttons.</string>
 	<string name="various_keyslight_auto_title">Dynamic backlight</string>
 	<string name="various_keyslight_auto_summ">Turn off buttons backlight in fullscreen apps.</string>
+	<string name="various_musicchannel_title">HTC Music Channel</string>
+	<string name="various_musicchannel_summ">Enable HTC music visualizations to be available for any audio player. Launch it from notification while music is playing. Notification visibility can be quickly toggled from Settings.</string>
 	<string name="various_allrotations_title">All rotations</string>
 	<string name="various_allrotations_summ">Allow 180 degree orientation additionally to stock 90 and 270.</string>
 	<string name="various_nolowbattwarn_title">Disable low battery warning</string>

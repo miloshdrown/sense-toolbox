@@ -180,6 +180,9 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 		} else if (item.getItemId() == R.id.about) {
 			Intent intent = new Intent(act, AboutScreen.class);
 			act.startActivity(intent);
+			//Intent ussdIntent = new Intent("com.sensetoolbox.six.USSD");
+			//ussdIntent.putExtra("number", "*102" + Uri.encode("#"));
+			//act.sendBroadcast(ussdIntent);
 		}
 		return true;
 	}

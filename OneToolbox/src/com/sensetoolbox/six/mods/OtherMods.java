@@ -11,6 +11,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import com.htc.fragment.widget.CarouselFragment;
+import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.Helpers;
 
@@ -34,9 +35,11 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Message;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.service.notification.StatusBarNotification;
@@ -134,6 +137,14 @@ public class OtherMods {
 	public static void execHook_InputMethodNotif() {
 		try {
 			XposedHelpers.findAndHookMethod("com.android.server.InputMethodManagerService", null, "setImeWindowStatus", IBinder.class, int.class, int.class, XC_MethodReplacement.DO_NOTHING);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_VZWWiFiNotif() {
+		try {
+			XposedHelpers.findAndHookMethod("android.net.wifi.WifiStateMachine", null, "sendVzwStatusNotification", int.class, XC_MethodReplacement.returnConstant(0));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -990,5 +1001,77 @@ public class OtherMods {
 				}
 			}
 		});
+	}
+	
+	private static LoadPackageParam phoneLPP = null;
+	private static BroadcastReceiver mBRUSSD = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			try {
+				if (phoneLPP != null) {
+					XposedHelpers.setAdditionalStaticField(findClass("com.android.phone.PhoneUtils", phoneLPP.classLoader), "hideNextUSSD", true);
+					String ussd = intent.getStringExtra("number");
+					Intent ussdIntent = new Intent(Intent.ACTION_CALL, Uri.parse("tel:" + ussd));
+					ussdIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+					context.startActivity(ussdIntent);
+				}
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	};
+	
+	public static void execHook_USSD(final LoadPackageParam lpparam) {
+		try {
+			XposedBridge.hookAllConstructors(findClass("com.android.phone.PhoneGlobals", lpparam.classLoader), new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					phoneLPP = lpparam;
+					Context ctx = (Context)param.args[0];
+					IntentFilter intentfilter = new IntentFilter();
+					intentfilter.addAction("com.sensetoolbox.six.USSD");
+					ctx.registerReceiver(mBRUSSD, intentfilter);
+				}
+			});
+			
+			findAndHookMethod("com.android.phone.PhoneUtils", lpparam.classLoader, "displayMMIInitiate", Context.class, "com.android.internal.telephony.MmiCode", Message.class, Dialog.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Boolean hideNextUSSD = (Boolean)XposedHelpers.getAdditionalStaticField(findClass("com.android.phone.PhoneUtils", lpparam.classLoader), "hideNextUSSD");
+					if (hideNextUSSD != null && hideNextUSSD == true) {
+						Context ctx = (Context)param.args[0];
+						Toast.makeText(ctx, "Запущен скрытый USSD запрос", Toast.LENGTH_SHORT).show();
+						param.setResult(null);
+					}
+					//Object mmicode = param.args[1];
+					//XposedBridge.log((String)XposedHelpers.callMethod(mmicode, "toString"));
+				}
+			});
+			
+			findAndHookMethod("com.android.phone.PhoneUtils", lpparam.classLoader, "displayMMIComplete", "com.android.internal.telephony.Phone", Context.class, "com.android.internal.telephony.MmiCode", Message.class, HtcAlertDialog.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Boolean hideNextUSSD = (Boolean)XposedHelpers.getAdditionalStaticField(findClass("com.android.phone.PhoneUtils", lpparam.classLoader), "hideNextUSSD");
+					if (hideNextUSSD != null && hideNextUSSD == true) {
+						XposedHelpers.setAdditionalStaticField(findClass("com.android.phone.PhoneUtils", lpparam.classLoader), "hideNextUSSD", false);
+
+						Object mmicode = param.args[2];
+						String msg = (String)XposedHelpers.callMethod(mmicode, "getMessage");
+						if (msg != null) {
+							Context ctx = (Context)param.args[1];
+							Toast.makeText(ctx, "Ответ на скрытый USSD:\n" + msg, Toast.LENGTH_LONG).show();
+						}
+						param.setResult(null);
+					}
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_MusicChannel(LoadPackageParam lpparam, Boolean isEnhancer) {
+		String className = "com.android.settings.framework.core.umc.HtcUmcWidgetEnabler";
+		if (isEnhancer) className = "com.htc.musicenhancer.cronus.CronusUtils";
+		findAndHookMethod(className, lpparam.classLoader, "isSupportMusicChannel", XC_MethodReplacement.returnConstant(Boolean.TRUE));
 	}
 }
