@@ -6,11 +6,11 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.findConstructorExact;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
-
 import android.content.ComponentName;
 import android.content.Context;
 import android.net.Uri;
 import de.robv.android.xposed.XC_MethodHook;
+import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
@@ -35,6 +35,17 @@ public class MessagingMods{
 		});
 	}
 
+	private static void changeToastReport(LoadPackageParam lpparam, MethodHookParam param) {
+		String toast1 = ((Context) param.args[0]).getString((Integer) param.args[1]) + "\n";
+		String toast2 = ((Context) param.args[0]).getString((Integer) param.args[2]);
+		String uri;
+		if ((Boolean) param.args[5])
+			uri = "content://mms/" + Long.toString((Long) param.args[4]);
+		else
+			uri = "content://sms/" + Long.toString((Long) param.args[4]);
+		callStaticMethod(findClass("com.htc.sense.mms.transaction.MessagingNotification", lpparam.classLoader), "showToast", Uri.parse(uri), toast1 + toast2);
+	}
+	
 	public static void execHook_ToastNotification(final LoadPackageParam lpparam) {
 		//Sending reports
 		findAndHookMethod("com.htc.sense.mms.transaction.MessagingNotification", lpparam.classLoader, "showSendNotification", Context.class, Uri.class, long.class, new XC_MethodReplacement() {
@@ -47,20 +58,23 @@ public class MessagingMods{
 		});
 		
 		//Delivery reports
-		findAndHookMethod("com.htc.sense.mms.transaction.MessagingNotification", lpparam.classLoader, "showReportNotification", Context.class, int.class, int.class, long.class, long.class, boolean.class, new XC_MethodReplacement() {
-			@Override
-			protected Object replaceHookedMethod(MethodHookParam param)	throws Throwable {
-				String toast1 = ((Context) param.args[0]).getString((Integer) param.args[1]) + "\n";
-				String toast2 = ((Context) param.args[0]).getString((Integer) param.args[2]);
-				String uri;
-				if((Boolean) param.args[5])
-					uri = "content://mms/" + Long.toString((Long) param.args[4]);
-				else
-					uri = "content://sms/" + Long.toString((Long) param.args[4]);
-				callStaticMethod(findClass("com.htc.sense.mms.transaction.MessagingNotification", lpparam.classLoader), "showToast", Uri.parse(uri), toast1 + toast2);
-				return null;
-			}
-		});
+		try {
+			findAndHookMethod("com.htc.sense.mms.transaction.MessagingNotification", lpparam.classLoader, "showReportNotification", Context.class, int.class, int.class, long.class, long.class, boolean.class, new XC_MethodReplacement() {
+				@Override
+				protected Object replaceHookedMethod(MethodHookParam param)	throws Throwable {
+					changeToastReport(lpparam, param);
+					return null;
+				}
+			});
+		} catch (Throwable t) {
+			findAndHookMethod("com.htc.sense.mms.transaction.MessagingNotification", lpparam.classLoader, "showReportNotification", Context.class, int.class, int.class, long.class, long.class, boolean.class, int.class, new XC_MethodReplacement() {
+				@Override
+				protected Object replaceHookedMethod(MethodHookParam param)	throws Throwable {
+					changeToastReport(lpparam, param);
+					return null;
+				}
+			});
+		}
 	}
 
 	public static void execHook_MmsSize(LoadPackageParam lpparam) {

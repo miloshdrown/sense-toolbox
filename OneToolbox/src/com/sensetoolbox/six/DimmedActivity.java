@@ -83,7 +83,7 @@ public class DimmedActivity extends Activity {
 	private void startListen() {
 		try {
 			this.registerReceiver(helperReceiver, filter);
-			if (mAppWidgetHost != null ) mAppWidgetHost.startListening();
+			if (mAppWidgetHost != null) mAppWidgetHost.startListening();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -92,7 +92,7 @@ public class DimmedActivity extends Activity {
 	private void stopListen() {
 		if (helperReceiver != null) try {
 			this.unregisterReceiver(helperReceiver);
-			if (mAppWidgetHost != null ) mAppWidgetHost.stopListening();
+			if (mAppWidgetHost != null) mAppWidgetHost.stopListening();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -302,8 +302,9 @@ public class DimmedActivity extends Activity {
 						if (selectLast) curTabTag = notifyRecord.getPackageName() + "_" + String.valueOf(notifyRecord.getId()) + "_" + String.valueOf(notifyRecord.getTag());
 					}
 				}
-				if (curTabTag != null)
-				notifications.getCarouselHost().setCurrentTabByTag(curTabTag);
+				if (curTabTag != null) try {
+					notifications.getCarouselHost().setCurrentTabByTag(curTabTag);
+				} catch (Throwable t) {}
 			}
 		});
 		
@@ -362,16 +363,16 @@ public class DimmedActivity extends Activity {
 			// Add carousel header height
 			int newHeight = height + CarouselUtil.Dimen.getWidgetHeight(this, false);
 			
-			final LinearLayout carousel = (LinearLayout)this.findViewById(R.id.carousel);
-			if (carousel == null) return;
-			ValueAnimator anim = ValueAnimator.ofInt(carousel.getMeasuredHeight(), newHeight);
+			final LinearLayout carouselLayout = (LinearLayout)this.findViewById(R.id.carousel);
+			if (carouselLayout == null) return;
+			ValueAnimator anim = ValueAnimator.ofInt(carouselLayout.getMeasuredHeight(), newHeight);
 			anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
 				@Override
 				public void onAnimationUpdate(ValueAnimator valueAnimator) {
 					int val = (Integer) valueAnimator.getAnimatedValue();
-					LayoutParams layoutParams = carousel.getLayoutParams();
+					LayoutParams layoutParams = carouselLayout.getLayoutParams();
 					layoutParams.height = val;
-					carousel.setLayoutParams(layoutParams);
+					carouselLayout.setLayoutParams(layoutParams);
 				}
 			});
 			anim.setDuration(150);

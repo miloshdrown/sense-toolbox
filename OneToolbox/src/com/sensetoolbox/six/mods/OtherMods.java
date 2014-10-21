@@ -481,29 +481,40 @@ public class OtherMods {
 			}
 		
 			if (mPhotoParent != null)
-				if (mPhotoParent instanceof RelativeLayout) {
-					RelativeLayout mPhotoFrame = (RelativeLayout)mPhotoParent;
-					if (mPhotoFrame.getParent() instanceof LinearLayout) {
-						LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams)mPhotoFrame.getLayoutParams();
-						params1.height = photoHeight;
-						mPhotoFrame.setLayoutParams(params1);
-					} else if (mPhotoFrame.getParent() instanceof RelativeLayout) {
-						RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams)mPhotoFrame.getLayoutParams();
-						params1.height = photoHeight;
-						mPhotoFrame.setLayoutParams(params1);
-					}
-				} else if (mPhotoParent instanceof FrameLayout) {
-					FrameLayout mPhotoFrame = (FrameLayout)mPhotoParent;
-					FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams)mPhotoFrame.getLayoutParams();
+			if (mPhotoParent instanceof RelativeLayout) {
+				RelativeLayout mPhotoFrame = (RelativeLayout)mPhotoParent;
+				if (mPhotoFrame.getParent() instanceof LinearLayout) {
+					LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams)mPhotoFrame.getLayoutParams();
+					params1.height = photoHeight;
+					mPhotoFrame.setLayoutParams(params1);
+				} else if (mPhotoFrame.getParent() instanceof RelativeLayout) {
+					RelativeLayout.LayoutParams params1 = (RelativeLayout.LayoutParams)mPhotoFrame.getLayoutParams();
 					params1.height = photoHeight;
 					mPhotoFrame.setLayoutParams(params1);
 				}
+			} else if (mPhotoParent instanceof FrameLayout) {
+				FrameLayout mPhotoFrame = (FrameLayout)mPhotoParent;
+				FrameLayout.LayoutParams params1 = (FrameLayout.LayoutParams)mPhotoFrame.getLayoutParams();
+				params1.height = photoHeight;
+				mPhotoFrame.setLayoutParams(params1);
+			} else if (mPhotoParent instanceof LinearLayout) {
+				LinearLayout mPhotoFrame = (LinearLayout)mPhotoParent;
+				LinearLayout.LayoutParams params1 = (LinearLayout.LayoutParams)mPhotoFrame.getLayoutParams();
+				params1.height = photoHeight;
+				mPhotoFrame.setLayoutParams(params1);
+			}
 				
-				if (mPhoto != null) {
+			if (mPhoto != null) {
+				if (mPhoto.getParent() instanceof LinearLayout) {
+					LinearLayout.LayoutParams params2 = (LinearLayout.LayoutParams)mPhoto.getLayoutParams();
+					params2.height = photoHeight;
+					mPhoto.setLayoutParams(params2);
+				} else if (mPhoto.getParent() instanceof RelativeLayout) {
 					RelativeLayout.LayoutParams params2 = (RelativeLayout.LayoutParams)mPhoto.getLayoutParams();
 					params2.height = photoHeight;
 					mPhoto.setLayoutParams(params2);
 				}
+			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -696,7 +707,7 @@ public class OtherMods {
 	
 	private static Bitmap getScreenshot(Context ctx) {
 		Matrix matrix = new Matrix();
-		float af[] = new float[2];
+		float[] af = new float[2];
 		af[0] = ctx.getResources().getDisplayMetrics().widthPixels;
 		af[1] = ctx.getResources().getDisplayMetrics().heightPixels;
 		Display display = ((WindowManager)ctx.getSystemService(Context.WINDOW_SERVICE)).getDefaultDisplay();
@@ -737,10 +748,7 @@ public class OtherMods {
 		HashSet<String> appsList = (HashSet<String>)XMain.pref.getStringSet("pref_key_other_popupnotify_bwlist_apps", new HashSet<String>());
 		boolean isInList = appsList.contains(pkgName);
 		boolean isWhitelist = XMain.pref.getBoolean("pref_key_other_popupnotify_bwlist", false);
-		if ((isWhitelist && isInList) || (!isWhitelist && !isInList))
-			return true;
-		else
-			return false;
+		return ((isWhitelist && isInList) || (!isWhitelist && !isInList));
 	}
 	
 	private static ArrayList<StatusBarNotification> makeSbnsArray(Object nmsObj) {
@@ -1037,7 +1045,7 @@ public class OtherMods {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					Boolean hideNextUSSD = (Boolean)XposedHelpers.getAdditionalStaticField(findClass("com.android.phone.PhoneUtils", lpparam.classLoader), "hideNextUSSD");
-					if (hideNextUSSD != null && hideNextUSSD == true) {
+					if (hideNextUSSD != null && hideNextUSSD) {
 						Context ctx = (Context)param.args[0];
 						Toast.makeText(ctx, "Запущен скрытый USSD запрос", Toast.LENGTH_SHORT).show();
 						param.setResult(null);
@@ -1051,7 +1059,7 @@ public class OtherMods {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					Boolean hideNextUSSD = (Boolean)XposedHelpers.getAdditionalStaticField(findClass("com.android.phone.PhoneUtils", lpparam.classLoader), "hideNextUSSD");
-					if (hideNextUSSD != null && hideNextUSSD == true) {
+					if (hideNextUSSD != null && hideNextUSSD) {
 						XposedHelpers.setAdditionalStaticField(findClass("com.android.phone.PhoneUtils", lpparam.classLoader), "hideNextUSSD", false);
 
 						Object mmicode = param.args[2];

@@ -7,12 +7,12 @@ public class Version implements Comparable<Version> {
 		return this.version;
 	}
 
-	public Version(String version) {
-		if (version == null)
+	public Version(String versionStr) {
+		if (versionStr == null)
 			throw new IllegalArgumentException("Version can not be null");
-        if (!version.matches("[0-9]+(\\.[0-9]+)*"))
-        	throw new IllegalArgumentException("Invalid version format");
-        this.version = version;
+		if (!versionStr.matches("[0-9]+(\\.[0-9]+)*"))
+			throw new IllegalArgumentException("Invalid version format");
+		this.version = versionStr;
 	}
 
 	@Override public int compareTo(Version that) {

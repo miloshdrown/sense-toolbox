@@ -155,16 +155,12 @@ public class SysUIMods {
 				int[] paramArgs;
 				Class<?> CustomizationUtil = findClass("com.android.systemui.CustomizationUtil", lpparam.classLoader);
 				Object hcr = callStaticMethod(CustomizationUtil, "getReader");
-				if(param.args[0] == null)
-				{
-					if(hcr == null)
+				if (param.args[0] == null) {
+					if (hcr == null)
 						paramArgs = QS_DEFAULT;
 					else
-					{
 						paramArgs = (int[]) callMethod(hcr, "readIntArray", "quick_setting_items", QS_DEFAULT);
-					}
-				}else
-				{
+				} else {
 					paramArgs = (int[]) param.args[0];
 				}
 				
@@ -177,8 +173,7 @@ public class SysUIMods {
 					i = QS_MAPPING_ONE.length;
 				
 				int j = 0;
-				for (int k = paramArgs.length; j < k; j++)
-				{
+				for (int k = paramArgs.length; j < k; j++) {
 					int i1 = paramArgs[j];
 					if (i1 >= 0 && i1 < i)
 					if (QS_MAPPING_MULTI != null)
@@ -188,8 +183,7 @@ public class SysUIMods {
 				}
 				qsContent2 = new ArrayList<String>();
 				int l = 0;
-				do
-				{
+				do {
 					if (l >= qsContent.size())
 						break;
 					if (!((String)qsContent.get(l)).equals("user_card"))
@@ -217,14 +211,12 @@ public class SysUIMods {
 				Point displaySize = new Point();
 				display.getSize(displaySize);
 				int displayWidth = displaySize.x;
-				for(int k = 0; k < qsContainer.getChildCount(); k++)
-				{
+				for(int k = 0; k < qsContainer.getChildCount(); k++) {
 					LinearLayout tmp = (LinearLayout) qsContainer.getChildAt(k);
 					LinearLayout.LayoutParams tmpParams = (LinearLayout.LayoutParams) tmp.getLayoutParams();
 					tmpParams.width = (int) Math.floor(displayWidth / 5 - 3);
 					tmp.setLayoutParams(tmpParams);
-					if(removeText)
-					{
+					if (removeText) {
 						View quick_setting_text = tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_text", "id", "com.android.systemui"));
 						if (quick_setting_text != null) quick_setting_text.setVisibility(View.GONE);
 						ImageView qsImg = (ImageView) tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_image", "id", "com.android.systemui"));
@@ -240,12 +232,10 @@ public class SysUIMods {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				FrameLayout mStatusBarWindow = (FrameLayout) getObjectField(param.thisObject, "mStatusBarWindow");
-				if (mStatusBarWindow != null)
-				{
+				if (mStatusBarWindow != null) {
 					LinearLayout qsContainer = (LinearLayout) mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("quick_settings_minor_container", "id", "com.android.systemui"));
 					LinearLayout notificationContainer = (LinearLayout) mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("notification_container", "id", "com.android.systemui"));
-					if (qsContainer != null && notificationContainer != null)
-					{
+					if (qsContainer != null && notificationContainer != null) {
 						HorizontalScrollView qsScroll = new HorizontalScrollView(mStatusBarWindow.getContext());
 						qsScroll.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 						qsScroll.setFillViewport(true);
@@ -263,15 +253,13 @@ public class SysUIMods {
 						display.getSize(displaySize);
 						int displayWidth = displaySize.x;
 						
-						for(int i = 0; i < qsContainer.getChildCount(); i++)
-						{
+						for(int i = 0; i < qsContainer.getChildCount(); i++) {
 							LinearLayout tmp = (LinearLayout) qsContainer.getChildAt(i);
 							if (tmp == null) continue;
 							LinearLayout.LayoutParams tmpParams = (LinearLayout.LayoutParams) tmp.getLayoutParams();
 							tmpParams.width = (int) Math.floor(displayWidth / 5 - 3);
 							tmp.setLayoutParams(tmpParams);
-							if(removeText)
-							{
+							if (removeText) {
 								View quick_setting_text = tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_text", "id", "com.android.systemui"));
 								if (quick_setting_text != null) quick_setting_text.setVisibility(View.GONE);
 								ImageView qsImg = (ImageView) tmp.findViewById(tmp.getResources().getIdentifier("quick_setting_image", "id", "com.android.systemui"));
@@ -374,9 +362,7 @@ public class SysUIMods {
 					fillView.setLayoutParams(new LayoutParams(500, LayoutParams.MATCH_PARENT));
 					fillView.setId(0x999999);
 					statusBarContents.addView(fillView, statusBarContents.indexOfChild(systemIconArea));
-					
-				}else
-				{
+				} else {
 					XposedBridge.log("[S6T] Center Clock Error: One or more layouts or views not found");
 				}
 			}
@@ -388,59 +374,50 @@ public class SysUIMods {
 	 * @param viewToUpdate 0 = iconMerger; 1 = signalClusterView
 	 * @param param params of the hooked method
 	 */
-	private static void updateFillView(int viewToUpdate, MethodHookParam param)
-	{
+	private static void updateFillView(int viewToUpdate, MethodHookParam param) {
 		//iconMerger needs to be retrieved, where we can use the current object for signal cluster
 		LinearLayout startView = (LinearLayout) ((viewToUpdate == 0) ? getObjectField(param.thisObject, "mNotificationIcons") : param.thisObject);
-		if (startView != null)
-		{
+		if (startView != null) {
 			//signal cluster is one step deeper in the view hierarchy...
 			FrameLayout statusBar = (viewToUpdate == 0) ? ((FrameLayout)startView.getParent().getParent().getParent()) : ((FrameLayout)startView.getParent().getParent().getParent().getParent());
-			if(statusBar != null)
-			{
+			if (statusBar != null) {
 				LinearLayout systemIconArea = (LinearLayout) statusBar.findViewById(statusBar.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
-				if(systemIconArea != null)
-				{
+				if (systemIconArea != null) {
 					LinearLayout fillView = (LinearLayout) statusBar.findViewById(0x999999);
-					if(fillView != null)
-					{
+					if (fillView != null) {
 						TextView clock = (TextView) statusBar.findViewById(statusBar.getResources().getIdentifier("clock", "id", "com.android.systemui"));
-						if(clock != null)
-						{
+						if (clock != null) {
 							int systemIconAreaLeft = systemIconArea.getLeft();
 							int clockContainerLeft = clock.getLeft();
 							LayoutParams fillViewParams = fillView.getLayoutParams();
 							fillViewParams.width = systemIconAreaLeft - clockContainerLeft;
 							fillView.setLayoutParams(fillViewParams);
 							fillView.invalidate();
-						}else XposedBridge.log("clockContainer = null");
-					}else XposedBridge.log("fillView = null");
-				}else XposedBridge.log("systemIconArea = null");
-			}else XposedBridge.log("statusBar = null");
-		}else XposedBridge.log("startView = null");
+						} else XposedBridge.log("clockContainer = null");
+					} else XposedBridge.log("fillView = null");
+				} else XposedBridge.log("systemIconArea = null");
+			} else XposedBridge.log("statusBar = null");
+		} else XposedBridge.log("startView = null");
 	}
 	
 	public static void execHook_CenterClockAnimation(LoadPackageParam lpparam) {
 		//Listen for icon changes and update the width of the fill view
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateNotificationIcons", new XC_MethodHook(){
 			@Override
-			protected void beforeHookedMethod(MethodHookParam param)
-			{
+			protected void beforeHookedMethod(MethodHookParam param) {
 				updateFillView(0, param);
 			}
 		});
 		findAndHookMethod("com.android.systemui.statusbar.HtcGenericSignalClusterView", lpparam.classLoader, "apply", new XC_MethodHook(){
 			@Override
-			protected void beforeHookedMethod(MethodHookParam param)
-			{
+			protected void beforeHookedMethod(MethodHookParam param) {
 				updateFillView(1, param);
 			}
 		});
 		
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateResources", new XC_MethodHook(){
 			@Override
-			protected void afterHookedMethod(MethodHookParam param)
-			{
+			protected void afterHookedMethod(MethodHookParam param) {
 				updateFillView(0, param);
 			}
 		});
@@ -448,8 +425,7 @@ public class SysUIMods {
 		try {
 			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "refreshAllIconsForLayout", LinearLayout.class, new XC_MethodHook(){
 				@Override
-				protected void afterHookedMethod(MethodHookParam param)
-				{
+				protected void afterHookedMethod(MethodHookParam param) {
 					updateFillView(0, param);
 				}
 			});
@@ -471,8 +447,7 @@ public class SysUIMods {
 		//Get what we need
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook(){
 			@Override
-			protected void afterHookedMethod(MethodHookParam param)
-			{
+			protected void afterHookedMethod(MethodHookParam param) {
 				stuff.statusbar = param.thisObject;
 				stuff.ctx = (Context)getObjectField(stuff.statusbar, "mContext");
 				stuff.res = stuff.ctx.getResources();
@@ -486,8 +461,7 @@ public class SysUIMods {
 		//And now the 3 Ticker hooks
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar$MyTicker", lpparam.classLoader, "tickerStarting", new XC_MethodHook(){
 			@Override
-			protected void afterHookedMethod(MethodHookParam param)
-			{
+			protected void afterHookedMethod(MethodHookParam param) {
 				stuff.clock_container.setVisibility(View.GONE);
 				Animation ani = (Animation) callMethod(stuff.statusbar, "loadAnim", stuff.animOut, null);
 				stuff.clock_container.startAnimation(ani);
@@ -496,8 +470,7 @@ public class SysUIMods {
 		
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar$MyTicker", lpparam.classLoader, "tickerDone", new XC_MethodHook(){
 			@Override
-			protected void afterHookedMethod(MethodHookParam param)
-			{
+			protected void afterHookedMethod(MethodHookParam param) {
 				stuff.clock_container.setVisibility(View.VISIBLE);
 				Animation ani = (Animation) callMethod(stuff.statusbar, "loadAnim", stuff.animIn, null);
 				stuff.clock_container.startAnimation(ani);
@@ -506,8 +479,7 @@ public class SysUIMods {
 		
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar$MyTicker", lpparam.classLoader, "tickerHalting", new XC_MethodHook(){
 			@Override
-			protected void afterHookedMethod(MethodHookParam param)
-			{
+			protected void afterHookedMethod(MethodHookParam param) {
 				stuff.clock_container.setVisibility(View.VISIBLE);
 				Animation ani = (Animation) callMethod(stuff.statusbar, "loadAnim", stuff.animFade, null);
 				stuff.clock_container.startAnimation(ani);
@@ -518,8 +490,7 @@ public class SysUIMods {
 	public static void execHook_removeAMPM(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook(){
 			@Override
-			protected void afterHookedMethod(MethodHookParam param)
-			{
+			protected void afterHookedMethod(MethodHookParam param) {
 				String newTime = ((TextView)param.thisObject).getText().toString().replaceAll("(?i)am|pm", "").trim();
 				((TextView)param.thisObject).setText(newTime);
 			}
@@ -839,10 +810,10 @@ public class SysUIMods {
 		public SettingsObserver(Handler handler) {
 			super(handler);
 		}
-		public void setup(HtcCheckBox cb, HtcSeekBar sb, ContentResolver cr) {
-			this.cb = cb;
-			this.sb = sb;
-			this.cr = cr;
+		public void setup(HtcCheckBox cbx, HtcSeekBar sbr, ContentResolver crr) {
+			this.cb = cbx;
+			this.sb = sbr;
+			this.cr = crr;
 		}
 		@Override
 		public void onChange(boolean selfChange) {
@@ -899,38 +870,33 @@ public class SysUIMods {
 					@SuppressLint("DefaultLocale")
 					public boolean onLongClick(View v) {
 						String clickedTile = (String) getObjectField(thisTile, "tileLabel");
-						if (!clickedTile.equals("") && !(clickedTile == null))
-						{
+						if (!clickedTile.equals("") && !(clickedTile == null)) {
 							String intentPkg = "";
 							String intentClass = "";
 							Intent settingIntent = null;
-							if (clickedTile.equals("apn")) {intentPkg = "com.android.settings"; intentClass = "com.android.settings.CdmaApnSettings";}
-							if (clickedTile.equals("auto_sync")) {intentClass = "android.settings.SYNC_SETTINGS";}
-							if (clickedTile.equals("bluetooth")) {intentClass = "android.settings.BLUETOOTH_SETTINGS";}
-							if (clickedTile.equals("brightness")) {settingIntent = new Intent("android.settings.DISPLAY_SETTINGS"); settingIntent.putExtra(":android:show_preference", "brightness");}
-							if (clickedTile.equals("do_not_disturb")) {intentClass = "com.htc.settings.DND_SETTINGS";}
-							if (clickedTile.equals("gps")) {intentClass = "android.settings.LOCATION_SOURCE_SETTINGS";}
-							if (clickedTile.equals("mobile_data")) {intentPkg = "com.android.phone"; intentClass = "com.android.phone.MobileNetworkSettings";}
-							if (clickedTile.equals("power_saver")) {intentPkg = "com.htc.htcpowermanager"; intentClass = "com.htc.htcpowermanager.powersaver.PowerSaverActivity";}
-							if (clickedTile.equals("power_saver_ex")) {intentClass = "com.htc.htcpowermanager.EXTREME_POWER_SAVER_CONFIRM";}
+							if (clickedTile.equals("apn")) { intentPkg = "com.android.settings"; intentClass = "com.android.settings.CdmaApnSettings"; }
+							if (clickedTile.equals("auto_sync")) intentClass = "android.settings.SYNC_SETTINGS";
+							if (clickedTile.equals("bluetooth")) intentClass = "android.settings.BLUETOOTH_SETTINGS";
+							if (clickedTile.equals("brightness")) { settingIntent = new Intent("android.settings.DISPLAY_SETTINGS"); settingIntent.putExtra(":android:show_preference", "brightness"); }
+							if (clickedTile.equals("do_not_disturb")) intentClass = "com.htc.settings.DND_SETTINGS";
+							if (clickedTile.equals("gps")) intentClass = "android.settings.LOCATION_SOURCE_SETTINGS";
+							if (clickedTile.equals("mobile_data")) { intentPkg = "com.android.phone"; intentClass = "com.android.phone.MobileNetworkSettings"; }
+							if (clickedTile.equals("power_saver")) { intentPkg = "com.htc.htcpowermanager"; intentClass = "com.htc.htcpowermanager.powersaver.PowerSaverActivity"; }
+							if (clickedTile.equals("power_saver_ex")) intentClass = "com.htc.htcpowermanager.EXTREME_POWER_SAVER_CONFIRM";
 							if (clickedTile.equals("screenshot")) {
 								int mBucketId = -1;
 								File file = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES), "Screenshots");
-								if (file != null)
-								{
-									mBucketId = file.getAbsolutePath().toLowerCase().hashCode();
-								}
+								if (file != null) mBucketId = file.getAbsolutePath().toLowerCase().hashCode();
 								settingIntent = new Intent("com.htc.album.action.VIEW_FOLDER_IN_THUMBNAIL");
 								settingIntent.putExtra("folder_type", (new StringBuilder()).append("collection_regular_bucket ").append(mBucketId).append(" Screenshots").toString());
 								settingIntent.putExtra("entry_from", "Screenshots");
 								settingIntent.setDataAndType(null, "image/*");
 								settingIntent.setFlags(0x14000000);
 							}
-							if (clickedTile.equals("wifi")) {intentClass = "android.settings.WIFI_SETTINGS";}
-							if (clickedTile.equals("wifi_hotspot")) {intentPkg = "com.htc.WifiRouter"; intentClass = "com.htc.WifiRouter.WifiRouter";}
+							if (clickedTile.equals("wifi")) intentClass = "android.settings.WIFI_SETTINGS";
+							if (clickedTile.equals("wifi_hotspot")) { intentPkg = "com.htc.WifiRouter"; intentClass = "com.htc.WifiRouter.WifiRouter"; }
 							Object viewTag = thisTile.getTag();
-							if (viewTag != null)
-							{
+							if (viewTag != null) {
 								if (!intentPkg.equals(""))
 									callMethod(viewTag, "startSettingsActivity", intentPkg, intentClass);
 								else if (!(settingIntent == null))
@@ -976,11 +942,11 @@ public class SysUIMods {
 	static boolean killedEmAll = false;
 	
 	// Exterminate! - Daleks
-	private static void terminateAll(int animType) throws InvocationTargetException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
+	private static void terminateAll(int animType) throws InvocationTargetException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
 		terminateAll(animType, null);
 	}
 	
-	private static void terminateAll(int animType, final ViewGroup currApp) throws InvocationTargetException, IllegalArgumentException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
+	private static void terminateAll(int animType, final ViewGroup currApp) throws InvocationTargetException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
 		ArrayList<?> taskDescriptionsArray = (ArrayList<?>)XposedHelpers.getObjectField(gridViewObject, "mRecentTaskDescriptions");
 		if ((taskDescriptionsArray == null) || (taskDescriptionsArray.size() == 0))	{
 			// Recent array is empty, resuming last activity
@@ -1014,12 +980,12 @@ public class SysUIMods {
 						AnimationSet localAnimationSet = new AnimationSet(true);
 						Animation fadeOut = AnimationUtils.loadAnimation(gridViewContext, android.R.anim.fade_out);
 						if (animType == 0) {
-							fadeOut.setDuration(220l);
+							fadeOut.setDuration(220L);
 							fadeOut.setStartOffset(cnt * 30);
 							fadeOut.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
 							
 							TranslateAnimation drop = new TranslateAnimation(0.0F, 0.0F, 0.0F, 100.0f);
-							drop.setDuration(220l);
+							drop.setDuration(220L);
 							drop.setStartOffset(cnt * 30);
 							drop.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
 							localAnimationSet.addAnimation(drop);
@@ -1065,7 +1031,7 @@ public class SysUIMods {
 					XposedHelpers.callMethod(gridViewObject, "handleOnClick", currApp);
 				}
 			};
-			handler.postDelayed(runnable, 300l + (i - 1) * 30l);
+			handler.postDelayed(runnable, 300L + (i - 1) * 30L);
 		}
 	}
 	
@@ -1135,16 +1101,14 @@ public class SysUIMods {
 			
 			final int action = ev.getAction();
 			switch (action & MotionEvent.ACTION_MASK) {
-			case MotionEvent.ACTION_DOWN: {
-			}
-			case MotionEvent.ACTION_POINTER_DOWN: {
-				if (ev.getPointerCount() == 2)
-				try {
-					param.setResult(Boolean.valueOf(true));
-				} catch (Throwable thw) {
-					param.setThrowable(thw);
-				}
-			}
+				case MotionEvent.ACTION_DOWN:
+				case MotionEvent.ACTION_POINTER_DOWN:
+					if (ev.getPointerCount() == 2)
+					try {
+						param.setResult(Boolean.valueOf(true));
+					} catch (Throwable thw) {
+						param.setThrowable(thw);
+					}
 			}
 		}
 	}
@@ -1159,7 +1123,7 @@ public class SysUIMods {
 		
 		@Override
 		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-			if (killedEmAll == true) return;
+			if (killedEmAll) return;
 
 			initDetectors(param);
 			ev = (MotionEvent)param.args[0];
@@ -1210,8 +1174,8 @@ public class SysUIMods {
 					if (taskdescription == null) return null;
 					ResolveInfo resolveInfo = (ResolveInfo)XposedHelpers.getObjectField(taskdescription, "resolveInfo");
 					
-					final ActivityManager am = (ActivityManager)theView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
-					if (pos == 0 || procs == null) procs = am.getRunningAppProcesses();
+					final ActivityManager amgr = (ActivityManager)theView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+					if (pos == 0 || procs == null) procs = amgr.getRunningAppProcesses();
 					
 					final List<Integer> pids_mem = new ArrayList<Integer>();
 					for (ActivityManager.RunningAppProcessInfo process: procs)
@@ -1379,7 +1343,7 @@ public class SysUIMods {
 		try {
 			readStream = new BufferedReader(new FileReader("/proc/stat"));
 			String line = readStream.readLine();
-			if (line != null ) {
+			if (line != null) {
 				a = line.split("[ ]+", 9);
 				work = Long.parseLong(a[1]) + Long.parseLong(a[2]) + Long.parseLong(a[3]);
 				total = work + Long.parseLong(a[4]) + Long.parseLong(a[5]) + Long.parseLong(a[6]) + Long.parseLong(a[7]);
@@ -1610,7 +1574,7 @@ public class SysUIMods {
 			thisObj = paramThisObject;
 		}
 		
-		public void onSignalStrengthsChanged (SignalStrength signalStrength) {
+		public void onSignalStrengthsChanged(SignalStrength signalStrength) {
 			if (thisObj != null) {
 				lastSignalStrength = signalStrength;
 				XposedHelpers.callMethod(thisObj, "triggerUpdate");
@@ -1768,8 +1732,8 @@ public class SysUIMods {
 		try {
 			Context ctx = (Context)param.args[0];
 			if (ctx == null) return;
-			final ActivityManager am = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);
-			final List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
+			final ActivityManager amgr = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);
+			final List<ActivityManager.RunningTaskInfo> taskInfo = amgr.getRunningTasks(1);
 			if (taskInfo.size() == 0 || taskInfo.get(0).topActivity == null) return;
 			String appPkgName = taskInfo.get(0).topActivity.getPackageName();
 			

@@ -258,10 +258,9 @@ public class CleanBeamMods {
 
 	public static void execHook_WiFiIcon(InitPackageResourcesParam resparam, final int i) {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
-		if (i==2)
-		{
+		if (i == 2) {
 			wifiBase = "stat_sys_wifi_signal_";
-		} else if (i==3) {
+		} else if (i == 3) {
 			wifiBase = "b_stat_sys_wifi_signal_";
 		}
 		
@@ -272,7 +271,7 @@ public class CleanBeamMods {
 			resparam.res.setReplacement("com.android.systemui", "drawable", s, new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
-					Drawable db = applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + "glow_" + s.substring(s.length()-1), "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
+					Drawable db = applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + "glow_" + s.substring(s.length() - 1), "drawable", "com.sensetoolbox.six")), (i == 2) ? true : false);
 					return db;
 				}
 			});
@@ -283,7 +282,7 @@ public class CleanBeamMods {
 			resparam.res.setReplacement("com.android.systemui", "drawable", s, new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
-					Drawable db = applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + s.substring(s.length()-1), "drawable", "com.sensetoolbox.six")), (i == 2)?true:false);
+					Drawable db = applyTheme(modRes.getDrawable(modRes.getIdentifier(wifiBase + s.substring(s.length() - 1), "drawable", "com.sensetoolbox.six")), (i == 2) ? true : false);
 					return db;
 				}
 			});
@@ -374,8 +373,7 @@ public class CleanBeamMods {
 			}
 		}
 		
-		for(final Entry<String, Integer> icon : dataIcons.entrySet())
-		{
+		for(final Entry<String, Integer> icon : dataIcons.entrySet()) {
 			resparam.res.setReplacement("com.android.systemui", "drawable", icon.getKey(), new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {

@@ -258,7 +258,7 @@ public class WakeGestures extends HtcPreferenceActivityEx {
 		MenuInflater inflater = getMenuInflater();
 		inflater.inflate(R.menu.menu_sub, menu);
 		
-		OnOffSwitch = (HtcToggleButtonLight)menu.getItem(1).getActionView().findViewById(R.id.onoffSwitch);;
+		OnOffSwitch = (HtcToggleButtonLight)menu.getItem(1).getActionView().findViewById(R.id.onoffSwitch);
 		OnOffSwitch.setEnabled(true);
 		applyThemeState(prefs.getBoolean("wake_gestures_active", false));
 		OnOffSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){

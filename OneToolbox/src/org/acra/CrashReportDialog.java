@@ -86,7 +86,7 @@ public class CrashReportDialog extends Activity {
 	}
 	
 	@SuppressLint("SdCardPath")
-	private void sendCrash(final String xposedLog) {
+	private void sendCrash(final String xposedLogStr) {
 		try {
 			CrashReportPersister persister = new CrashReportPersister(getApplicationContext());
 			CrashReportData crashData = persister.load(mReportFileName);
@@ -110,10 +110,10 @@ public class CrashReportDialog extends Activity {
 			
 			crashData.put(ReportField.BUILD, buildData);
 			crashData.put(ReportField.USER_COMMENT, desc.getText().toString());
-			if (xposedLog == null || xposedLog.trim() == "")
+			if (xposedLogStr == null || xposedLogStr.trim() == "")
 				crashData.put(ReportField.CUSTOM_DATA, "Xposed log is empty...");
 			else
-				crashData.put(ReportField.CUSTOM_DATA, xposedLog);
+				crashData.put(ReportField.CUSTOM_DATA, xposedLogStr);
 			persister.store(crashData, mReportFileName);
 		} catch (Exception e) {
 			StringWriter sw = new StringWriter();

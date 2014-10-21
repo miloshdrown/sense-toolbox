@@ -63,10 +63,10 @@ import com.stericson.RootTools.execution.CommandCapture;
 
 public class PrefsFragment extends HtcPreferenceFragmentExt {
 	
-	static public SharedPreferences prefs = null;
-	static public String lastShortcutKey = null;
-	static public String lastShortcutKeyContents = null;
-	static public AppShortcutAddDialog shortcutDlg = null;
+	public static SharedPreferences prefs = null;
+	public static String lastShortcutKey = null;
+	public static String lastShortcutKeyContents = null;
+	public static AppShortcutAddDialog shortcutDlg = null;
 	private boolean toolboxModuleActive = false;
 	
 	@Override
@@ -139,14 +139,14 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					public void onClick(DialogInterface dialog, int whichButton) {}
 				});
 				alert.setNeutralButton(Helpers.l10n(getActivity(), R.string.remove), new DialogInterface.OnClickListener() {
-					void DeleteRecursive(File fileOrDirectory) {
-						if (fileOrDirectory.isDirectory()) for (File child: fileOrDirectory.listFiles()) DeleteRecursive(child);
+					void deleteRecursive(File fileOrDirectory) {
+						if (fileOrDirectory.isDirectory()) for (File child: fileOrDirectory.listFiles()) deleteRecursive(child);
 						fileOrDirectory.delete();
 					}
 					
 					public void onClick(DialogInterface dialog, int whichButton) {
 						File tmp = new File(Helpers.dataPath);
-						DeleteRecursive(tmp);
+						deleteRecursive(tmp);
 						
 						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
 						alert.setTitle(Helpers.l10n(getActivity(), R.string.success));
@@ -818,7 +818,8 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					String level = "20";
 					if (pref_keyslight == 2) level = "7";
 					else if (pref_keyslight == 3) level = "3";
-					else if (pref_keyslight == 4) level = "0";
+					else if (pref_keyslight == 4) level = "1";
+					else if (pref_keyslight == 5) level = "0";
 					
 					if (!line.trim().equals(level) || applyNoMatterWhat) {
 						/*
@@ -888,7 +889,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		}
 	}
 	
-	static public class HelperReceiver extends BroadcastReceiver {
+	public static class HelperReceiver extends BroadcastReceiver {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction() != null)
@@ -909,7 +910,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						forceDisableBacklight = intent.getBooleanExtra("forceDisableBacklight", false);
 					
 					if (forceDisableBacklight)
-						setButtonBacklightTo(4, false);
+						setButtonBacklightTo(5, false);
 					else
 						setButtonBacklightTo(thepref, false);
 				}
@@ -921,10 +922,8 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	 * Enables or diables the init script for vol2wake
 	 * @param newState true to enable, false to disable
 	 */
-	private static void initScriptHandler(Boolean newState)
-	{
-		if(newState)
-		{
+	private static void initScriptHandler(Boolean newState) {
+		if (newState) {
 			CommandCapture command = new CommandCapture(0,
 					"mount -o rw,remount /system",
 					"echo \"#!/system/bin/sh\n\necho 1 > /sys/keyboard/vol_wakeup\nchmod 444 /sys/keyboard/vol_wakeup\" > /etc/init.d/89s5tvol2wake",
@@ -936,9 +935,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
-		}
-		else
-		{
+		} else {
 			CommandCapture command = new CommandCapture(0,
 					"mount -o rw,remount /system",
 					"rm -f /etc/init.d/89s5tvol2wake",
@@ -1000,7 +997,9 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					OnClickListener dismissDialogClickListener = new OnClickListener() {
 						@Override
 						public void onClick(View v) {
-							getFragmentManager().popBackStack();
+							try {
+								getFragmentManager().popBackStack();
+							} catch (Throwable t) {}
 						}
 					};
 					

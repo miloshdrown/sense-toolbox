@@ -71,7 +71,7 @@ public class ControlsMods {
 						XMain.pref.reload();
 						if (Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1")) != 1 && keycode == KeyEvent.KEYCODE_BACK) {
 							if (action == KeyEvent.ACTION_DOWN) isBackLongPressed = false;
-							if (action == KeyEvent.ACTION_UP && isBackLongPressed == true) param.setResult(0);
+							if (action == KeyEvent.ACTION_UP && isBackLongPressed) param.setResult(0);
 						}
 					}
 				}
@@ -94,7 +94,7 @@ public class ControlsMods {
 						int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 						if (pref_backlongpress != 1 && keycode == KeyEvent.KEYCODE_BACK) {
 							if (action == KeyEvent.ACTION_DOWN && repeats >= 5) {
-								if (isBackLongPressed == false) {
+								if (!isBackLongPressed) {
 									Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 									switch (pref_backlongpress) {
 										case 2: GlobalActions.expandNotifications(mContext); break;
@@ -115,7 +115,7 @@ public class ControlsMods {
 								return;
 							}
 							if (action == KeyEvent.ACTION_UP) {
-								if (isBackLongPressed == true) {
+								if (isBackLongPressed) {
 									isBackLongPressed = false;
 									param.setResult(-1L);
 								}
@@ -231,6 +231,7 @@ public class ControlsMods {
 							isPowerLongPressed = false;
 							
 							mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+							int longPressDelay = (XMain.pref.getBoolean("pref_key_controls_powerflash_delay", false) ? ViewConfiguration.getLongPressTimeout() * 3 : ViewConfiguration.getLongPressTimeout()) + 500;
 							// Post only one delayed runnable that waits for long press timeout
 							if (!isWaitingForPowerLongPressed)
 							mHandler.postDelayed(new Runnable(){
@@ -256,7 +257,7 @@ public class ControlsMods {
 									isPowerPressed = false;
 									isWaitingForPowerLongPressed = false;
 								}
-							}, ViewConfiguration.getLongPressTimeout() + 200);
+							}, longPressDelay);
 							isWaitingForPowerLongPressed = true;
 							param.setResult(0);
 						}

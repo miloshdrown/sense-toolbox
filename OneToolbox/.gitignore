@@ -17,3 +17,4 @@ gen/
 .classpath
 .project
 .externalToolBuilders/
+.checkstyle

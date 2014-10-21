@@ -35,6 +35,10 @@ Current changelog
 [New] Additional actions for extended assist panel
 [New] Hide Wi-Fi notifications on Verizon devices
 [New] Make Music Channel (HTC music visualizations) available for any audio player
+[New] Increased long press delay option for Quick Flashlight mod
+[New] Additional backlight brightness level (minimum)
+[Fixed] Toast delivery reports
+[Fixed] Large photo on lock screen
 [Fixed] 46% image in battery with percentages
 [Fixed] Problem description is required in any bug report (that way crash reports will be a lot more useful)
 [Fixed] Lots of bugs

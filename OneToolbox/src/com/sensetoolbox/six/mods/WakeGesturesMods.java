@@ -258,7 +258,7 @@ public class WakeGesturesMods {
 					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 88));
 					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 88));
 					break;
-			};
+			}
 
 			if (isHaptic && XMain.pref.getBoolean("pref_key_wakegest_haptic", false) && Helpers.getHTCHaptic(mContext)) {
 				Vibrator vibe = (Vibrator)mContext.getSystemService(Context.VIBRATOR_SERVICE);
@@ -267,10 +267,10 @@ public class WakeGesturesMods {
 		}
 	}
 	
-	final protected static char[] hexArray = "0123456789ABCDEF".toCharArray();
+	static final char[] hexArray = "0123456789ABCDEF".toCharArray();
 	public static String bytesToHex(byte[] bytes) {
 		char[] hexChars = new char[bytes.length * 2];
-		for ( int j = 0; j < bytes.length; j++ ) {
+		for (int j = 0; j < bytes.length; j++) {
 			int v = bytes[j] & 0xFF;
 			hexChars[j * 2] = hexArray[v >>> 4];
 			hexChars[j * 2 + 1] = hexArray[v & 0x0F];
@@ -301,7 +301,7 @@ public class WakeGesturesMods {
 	public static Thread createThread(final MethodHookParam param) throws Throwable {
 		Thread th = new Thread(new Runnable() {
 			File file = new File("/dev/input/event" + getEventDevice());
-			final byte event[] = new byte[4 * 2 + 2 + 2 + 4];
+			final byte[] event = new byte[4 * 2 + 2 + 2 + 4];
 			BufferedInputStream bfin = new BufferedInputStream(new FileInputStream(file));
 			StructInputEvent input_event = null;
 			
@@ -377,7 +377,7 @@ public class WakeGesturesMods {
 				if (mCurrentLEDLevel > 0) {
 					mCurrentLEDLevel = 0;
 					GlobalActions.setFlashlight(0);
-				};
+				}
 				if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
 				Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "eventXthread");
 				if (th != null) {

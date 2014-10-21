@@ -297,6 +297,8 @@
 	<string name="controls_vol2wake_summ">Wake your phone with the volume keys. Needs Root! Make a FULL reboot to apply!</string>
 	<string name="controls_powerflash_title">Quick flashlight</string>
 	<string name="controls_powerflash_summ">Long press power button while screen is off to turn flashlight on and off.</string>
+	<string name="controls_powerflash_delay_title">Longer quick flashlight delay</string>
+	<string name="controls_powerflash_delay_summ">Increases the power button long press delay.</string>
 	<string name="controls_swapvolume_title">Swap volume buttons in CCW landscape</string>
 	<string name="controls_swapvolume_summ">Match volume up/down with slider movements to the right/left in counterclockwise landscape.</string>
 	<string name="controls_mods_volume">Volume keys</string>
@@ -576,6 +578,7 @@
 	<string name="array_header_click_sysinfo">Show/hide CPU and RAM info, open Clock app by tapping on current time</string>
 	<string name="array_keyslight_dim">Dim</string>
 	<string name="array_keyslight_extradim">Extra dim</string>
+	<string name="array_keyslight_maxdim">Barely visible</string>
 	<string name="array_keyslight_alwaysoff">Always off</string>
 	<string name="array_toasts_icon">Icon</string>
 	<string name="array_toasts_label">Label</string>

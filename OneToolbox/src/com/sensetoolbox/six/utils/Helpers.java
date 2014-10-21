@@ -106,8 +106,7 @@ public class Helpers {
 				int eventType = parser.getEventType();
 				
 				while ((eventType = parser.next()) != XmlPullParser.END_DOCUMENT)
-				if (eventType == XmlPullParser.START_TAG)
-				if (parser.getName().equalsIgnoreCase("string"))
+				if (eventType == XmlPullParser.START_TAG && parser.getName().equalsIgnoreCase("string"))
 				l10n.put(parser.getAttributeValue(null, "name"), parser.nextText().replace("\\'", "'").replace("\\\"", "\"").replace("\\n", "\n"));
 				
 				cLang = lang;
@@ -531,7 +530,7 @@ public class Helpers {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (wake_gestures != null && wake_gestures.equals("1")) return true; else return false;
+		return (wake_gestures != null && wake_gestures.equals("1"));
 	}
 	
 	public static void processResult(Activity act, int requestCode, int resultCode, Intent data) {

@@ -1,8 +1,9 @@
 package com.sensetoolbox.six.crashreport;
 
-import org.acra.*;
-import org.acra.sender.*;
-import org.acra.annotation.*;
+import org.acra.ACRA;
+import org.acra.ReportingInteractionMode;
+import org.acra.annotation.ReportsCrashes;
+import org.acra.sender.HttpSender;
 
 import com.sensetoolbox.six.R;
 

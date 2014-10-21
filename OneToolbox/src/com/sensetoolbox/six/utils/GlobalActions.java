@@ -338,7 +338,7 @@ public class GlobalActions {
 			if (str == null)
 				str = "";
 			else {
-				String[] list = str.split (",");
+				String[] list = str.split(",");
 				str = "";
 
 				int j = 0;
@@ -674,8 +674,7 @@ public class GlobalActions {
 			return ColorFilterGenerator.adjustColor(brightness, 0, saturation, hue);
 	}
 	
-	public static void sendMediaButton(KeyEvent keyEvent)
-	{
+	public static void sendMediaButton(KeyEvent keyEvent) {
 		try {
 			// Get binder from ServiceManager.checkService(String)
 			IBinder iBinder  = (IBinder) Class.forName("android.os.ServiceManager")

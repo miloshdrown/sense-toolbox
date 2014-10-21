@@ -166,7 +166,7 @@ public class SenseThemes extends Activity {
 					appAddDialog.setOnShowListener(new OnShowListener() {
 						@Override
 						public void onShow(DialogInterface dlg) {
-							if (SenseThemes.this != null && !SenseThemes.this.isFinishing() && dialog != null && dialog.isShowing()) dialog.dismiss();
+							if (SenseThemes.this != null && !SenseThemes.this.isFinishing() && dialog != null && dialog.isShowing()) try { dialog.dismiss(); } catch (Throwable t) {}
 						}
 					});
 					
@@ -357,8 +357,8 @@ public class SenseThemes extends Activity {
 	
 	public void updateListArray() {
 		loadPkgs();
-		ListView appsList = (ListView)findViewById(R.id.appslist);
-		AppsAdapter aa = (AppsAdapter)appsList.getAdapter();
+		ListView appsListView = (ListView)findViewById(R.id.appslist);
+		AppsAdapter aa = (AppsAdapter)appsListView.getAdapter();
 		aa.updateWith(pkgthm);
 	}
 	
@@ -373,7 +373,7 @@ public class SenseThemes extends Activity {
 		sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.RestartPrism"));
 	}
 	
-	public synchronized static SparseArray<Object[]> getColors() {
+	public static synchronized SparseArray<Object[]> getColors() {
 		if (colors == null) {
 			colors = new SparseArray<Object[]>();
 			

@@ -282,18 +282,18 @@ public class NotificationTab extends Fragment {
 		((DimmedActivity)getActivity()).updateTabHeight(uniqueTag, tab.getMeasuredHeight());
 	}
 	
-	private void updateIcon(DimmedActivity act, String pkgName, RelativeLayout notifyRemote, StatusBarNotification sbn) {
+	private void updateIcon(DimmedActivity dimact, String pkgName, RelativeLayout notifyRemote, StatusBarNotification sbnn) {
 		try {
-			PackageManager manager = act.getPackageManager();
+			PackageManager manager = dimact.getPackageManager();
 			Resources sourceRes = manager.getResourcesForApplication(pkgName);
-			int iconResid = sbn.getNotification().icon;
+			int iconResid = sbnn.getNotification().icon;
 			if (iconResid != 0) {
 				ImageView icon = (ImageView)notifyRemote.findViewById(android.R.id.icon);
 				if (icon != null) {
 					icon.setBackground(null);
 					icon.setImageDrawable(null);
-					if (sbn.getNotification().largeIcon != null) {
-						Bitmap newBmp = Bitmap.createScaledBitmap(sbn.getNotification().largeIcon, densify(50), densify(50), false);
+					if (sbnn.getNotification().largeIcon != null) {
+						Bitmap newBmp = Bitmap.createScaledBitmap(sbnn.getNotification().largeIcon, densify(50), densify(50), false);
 						icon.setImageBitmap(newBmp);
 						icon.setPadding(icon.getPaddingLeft(), densify(10), icon.getPaddingRight(), densify(10));
 					} else {

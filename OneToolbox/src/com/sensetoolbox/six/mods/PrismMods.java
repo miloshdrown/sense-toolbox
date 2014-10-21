@@ -769,9 +769,9 @@ public class PrismMods {
 		}
 	}
 	
-	public static void createAndShowPopup(ViewGroup m_workspace, final Activity launcher) {
+	public static void createAndShowPopup(ViewGroup m_workspace, final Activity launcherAct) {
 		ViewGroup m_workspace_local = m_workspace;
-		if (m_workspace_local == null) if (launcher != null) m_workspace_local = (ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace");
+		if (m_workspace_local == null) if (launcherAct != null) m_workspace_local = (ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace");
 		if (m_workspace_local == null) return;
 		createPopup(m_workspace_local);
 		
@@ -785,15 +785,15 @@ public class PrismMods {
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 				popup.dismiss();
 				if (position == 0) {
-					launcher.startActivity(new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
+					launcherAct.startActivity(new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
 				} else if (position == 1) {
-					launcher.startActivity((new Intent("android.intent.action.MAIN")).setAction("com.htc.personalize.ACTION_HOMEPERSONALIZE"));
+					launcherAct.startActivity((new Intent("android.intent.action.MAIN")).setAction("com.htc.personalize.ACTION_HOMEPERSONALIZE"));
 				} else if (position == 2) {
-					launcher.startActivity(new Intent(Settings.ACTION_SETTINGS));
+					launcherAct.startActivity(new Intent(Settings.ACTION_SETTINGS));
 				} else if (position == 3) {
-					launcher.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
+					launcherAct.startActivity(new Intent(Settings.ACTION_WIFI_SETTINGS));
 				} else if (position == 4) {
-					OtherMods.startAPM(launcher);
+					OtherMods.startAPM(launcherAct);
 				} else if (position == 5) {
 					Settings.System.putString(view.getContext().getContentResolver(), "lock_homescreen_dragging", String.valueOf(!Boolean.parseBoolean(Settings.System.getString(view.getContext().getContentResolver(), "lock_homescreen_dragging"))));
 				}
@@ -933,8 +933,8 @@ public class PrismMods {
 		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "isDraggingEnabled", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				Activity launcher = (Activity)param.thisObject;
-				if (launcher != null && isLauncherLocked(launcher)) param.setResult(false);
+				Activity launcherAct = (Activity)param.thisObject;
+				if (launcherAct != null && isLauncherLocked(launcherAct)) param.setResult(false);
 			}
 		});
 		
@@ -942,9 +942,9 @@ public class PrismMods {
 		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "showAddToHome", boolean.class, boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				Activity launcher = (Activity)param.thisObject;
-				if (launcher != null && isLauncherLocked(launcher)) {
-					showLockedWarning(launcher);
+				Activity launcherAct = (Activity)param.thisObject;
+				if (launcherAct != null && isLauncherLocked(launcherAct)) {
+					showLockedWarning(launcherAct);
 					param.setResult(null);
 				}
 			}
@@ -959,9 +959,9 @@ public class PrismMods {
 					if (s.equals("android.intent.action.MAIN")) {
 						boolean isAddToHome = intent.getBooleanExtra("personalize_add_to_home", false);
 						if (isAddToHome) {
-							Activity launcher = (Activity)param.thisObject;
-							if (launcher != null && isLauncherLocked(launcher)) {
-								showLockedWarning(launcher);
+							Activity launcherAct = (Activity)param.thisObject;
+							if (launcherAct != null && isLauncherLocked(launcherAct)) {
+								showLockedWarning(launcherAct);
 								param.setResult(null);
 							}
 						}
@@ -973,15 +973,13 @@ public class PrismMods {
 		});
 	}
 	
-	public static void execHook_ShakeAction(final LoadPackageParam lpparam)
-	{
+	public static void execHook_ShakeAction(final LoadPackageParam lpparam) {
 		final String shakeMgrKey = "S6T_SHAKE_MGR";
 		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onResume", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				ShakeManager shakeMgr = (ShakeManager) getAdditionalInstanceField(param.thisObject, shakeMgrKey);
-				if(shakeMgr == null)
-				{
+				if (shakeMgr == null) {
 					shakeMgr = new ShakeManager((Context) param.thisObject);
 					setAdditionalInstanceField(param.thisObject, shakeMgrKey, shakeMgr);
 				}
@@ -1077,24 +1075,19 @@ public class PrismMods {
 					boolean animate = (boolean) param.args[0];
 					int add = 70;
 					
-					if (animate)
-					{
-						if (hotseat.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-						{
+					if (animate) {
+						if (hotseat.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 							hotseat.setTranslationX(0.0F);
 							hotseat.animate().translationY(hotseat.getMeasuredHeight() + add).setDuration(duration);
-						} else
-						{
+						} else {
 							hotseat.setTranslationY(0.0F);
 							hotseat.animate().translationX(hotseat.getMeasuredWidth() + add).setDuration(duration);
 						}
 					} else
-					if (hotseat.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT)
-					{
+					if (hotseat.getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
 						hotseat.setTranslationX(0.0F);
 						hotseat.setTranslationY(hotseat.getMeasuredHeight() + add);
-					} else
-					{
+					} else {
 						hotseat.setTranslationY(0.0F);
 						hotseat.setTranslationX(hotseat.getMeasuredWidth() + add);
 					}

@@ -27,12 +27,12 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 	WeakReference<Activity> act;
 	HtcProgressDialog mProgressDialog;
 
-	public DownloadAndUnZip(Activity act) {
-		this.act = new WeakReference<Activity>(act);
+	public DownloadAndUnZip(Activity actzip) {
+		this.act = new WeakReference<Activity>(actzip);
 		final DownloadAndUnZip task = this;
-		mProgressDialog = new HtcProgressDialog(act);
-		mProgressDialog.setTitle(Helpers.l10n(act, R.string.download_title));
-		mProgressDialog.setMessage(Helpers.l10n(act, R.string.download_desc));
+		mProgressDialog = new HtcProgressDialog(actzip);
+		mProgressDialog.setTitle(Helpers.l10n(actzip, R.string.download_title));
+		mProgressDialog.setMessage(Helpers.l10n(actzip, R.string.download_desc));
 		mProgressDialog.setIndeterminate(true);
 		mProgressDialog.setProgressStyle(ProgressDialog.STYLE_HORIZONTAL);
 		mProgressDialog.setCancelable(true);
@@ -68,7 +68,7 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 			tmp.setExecutable(true, false);
 			output = new FileOutputStream(Helpers.dataPath + "strings.zip", false);
 
-			byte data[] = new byte[4096];
+			byte[] data = new byte[4096];
 			long total = 0;
 			int count;
 			while ((count = input.read(data)) != -1) {

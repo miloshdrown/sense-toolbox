@@ -53,16 +53,16 @@ public class ShakeManager implements SensorEventListener {
 	@Override
 	public void onSensorChanged(SensorEvent se) {
 		updateAccelParameters(se.values[0], se.values[1], se.values[2]);
-        if ((!shakeInitiated) && isAccelerationChanged())
-		    shakeInitiated = true; 
+		if ((!shakeInitiated) && isAccelerationChanged())
+			shakeInitiated = true;
 		else if ((shakeInitiated) && isAccelerationChanged())
-		    executeShakeActionDelayed();
+			executeShakeActionDelayed();
 		else if ((shakeInitiated) && (!isAccelerationChanged()))
-		    shakeInitiated = false;
+			shakeInitiated = false;
 	}
 
 	private void updateAccelParameters(float xNewAccel, float yNewAccel, float zNewAccel) {
-		if (firstUpdate) {  
+		if (firstUpdate) {
 			xPreviousAccel = xNewAccel;
 			yPreviousAccel = yNewAccel;
 			zPreviousAccel = zNewAccel;
@@ -88,8 +88,7 @@ public class ShakeManager implements SensorEventListener {
 	
 	private void executeShakeActionDelayed() {
 		long now = System.currentTimeMillis();
-		if (now - lastShakeEvent > shakeEventThrottle)
-		{
+		if (now - lastShakeEvent > shakeEventThrottle) {
 			lastShakeEvent = now;
 			executeShakeAction();
 		}
