@@ -1047,7 +1047,7 @@ public class OtherMods {
 					Boolean hideNextUSSD = (Boolean)XposedHelpers.getAdditionalStaticField(findClass("com.android.phone.PhoneUtils", lpparam.classLoader), "hideNextUSSD");
 					if (hideNextUSSD != null && hideNextUSSD) {
 						Context ctx = (Context)param.args[0];
-						Toast.makeText(ctx, "Запущен скрытый USSD запрос", Toast.LENGTH_SHORT).show();
+						Toast.makeText(ctx, "Executing hidden USSD request", Toast.LENGTH_SHORT).show();
 						param.setResult(null);
 					}
 					//Object mmicode = param.args[1];
@@ -1066,7 +1066,7 @@ public class OtherMods {
 						String msg = (String)XposedHelpers.callMethod(mmicode, "getMessage");
 						if (msg != null) {
 							Context ctx = (Context)param.args[1];
-							Toast.makeText(ctx, "Ответ на скрытый USSD:\n" + msg, Toast.LENGTH_LONG).show();
+							Toast.makeText(ctx, "Response to hidden USSD:\n" + msg, Toast.LENGTH_LONG).show();
 						}
 						param.setResult(null);
 					}
