@@ -39,7 +39,8 @@ Current changelog
 [New] Additional backlight brightness level (minimum)
 [Fixed] Toast delivery reports
 [Fixed] Large photo on lock screen
-[Fixed] 46% image in battery with percentages
+[Fixed] 46% battery image
+[Fixed] White line in dialer with small soft keys
 [Fixed] Problem description is required in any bug report (that way crash reports will be a lot more useful)
 [Fixed] Lots of bugs
 

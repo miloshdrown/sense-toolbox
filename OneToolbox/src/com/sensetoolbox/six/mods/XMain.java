@@ -536,7 +536,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			}
 		}
 		
-		if (pkg.equals("com.htc.htcdialer")) {
+		if (pkg.equals("com.htc.htcdialer") || pkg.equals("com.htc.contacts")) {
 			if (pref.getBoolean("pref_key_controls_smallsoftkeys", false))
 				ControlsMods.execHook_FixDialer(lpparam);
 		}
@@ -572,12 +572,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		}
 		
 		if (pref.getBoolean("themes_active", false))
-		if (pkg.equals("com.htc.launcher") || pkg.equals("com.htc.videohub.ui") || pkg.equals("com.htc.album") || pkg.equals("com.htc.sense.ime")) {
+		if (pkg.equals("com.htc.android.worldclock") ||
+			pkg.equals("com.htc.Weather") ||
+			pkg.equals("com.htc.launcher") ||
+			pkg.equals("com.htc.videohub.ui") ||
+			pkg.equals("com.htc.album") ||
+			pkg.equals("com.htc.sense.ime"))
 			SysUIMods.execHook_Sense6ColorControlCustom(lpparam, pkg);
-		} else if (Helpers.is443plus()) {
-			if (pkg.equals("com.htc.android.worldclock") || pkg.equals("com.htc.Weather"))
-			SysUIMods.execHook_Sense6ColorControlCustom443(lpparam, pkg);
-		}
 		
 		if (pkg.equals("com.htc.sense.easyaccessservice")) {
 			if (pref.getBoolean("wake_gestures_active", false) && Helpers.isM8())

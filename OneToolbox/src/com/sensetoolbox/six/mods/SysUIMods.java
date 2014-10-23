@@ -1182,7 +1182,7 @@ public class SysUIMods {
 					if (process.processName.equals(resolveInfo.activityInfo.processName))
 					if (!pids_mem.contains(process.pid)) pids_mem.add(process.pid);
 					
-					MemoryInfo[] mi = am.getProcessMemoryInfo(toIntArray(pids_mem));
+					MemoryInfo[] mi = amgr.getProcessMemoryInfo(toIntArray(pids_mem));
 					int memTotal = 0;
 					for (MemoryInfo memInfo: mi) memTotal += memInfo.getTotalPss();
 					
@@ -1310,7 +1310,7 @@ public class SysUIMods {
 								
 								Object mRecentGridView = XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mRecentGridView");
 								XposedHelpers.setBooleanField(mRecentGridView, "isDragging", true);
-								popup.showAtLocation(theView, Gravity.TOP|Gravity.LEFT, Math.round(theView.getX() - theWidth/4), Math.round(theView.getY() - 20 * density));
+								popup.showAtLocation(theView, Gravity.TOP|Gravity.START, Math.round(theView.getX() - theWidth/4), Math.round(theView.getY() - 20 * density));
 								return true;
 							} catch (Exception e) {
 								return false;
@@ -1718,13 +1718,17 @@ public class SysUIMods {
 	}
 	
 	private static void replaceCustom(MethodHookParam param, String pkgName) {
-		SparseArray<Object[]> styles = SenseThemes.getColors();
-		PackageTheme pt = Helpers.getThemeForPackageFromXposed(pkgName);
-		if (pt != null) {
-			Context ctx = (Context)param.args[0];
-			String htc_theme = (String)styles.valueAt(pt.getTheme())[2];
-			int htc_theme_id = ctx.getResources().getIdentifier(htc_theme, "style", pkgName);
-			if (htc_theme_id != 0) param.setResult(htc_theme_id);
+		try {
+			SparseArray<Object[]> styles = SenseThemes.getColors();
+			PackageTheme pt = Helpers.getThemeForPackageFromXposed(pkgName);
+			if (pt != null) {
+				Context ctx = (Context)param.args[0];
+				String htc_theme = (String)styles.valueAt(pt.getTheme())[2];
+				int htc_theme_id = ctx.getResources().getIdentifier(htc_theme, "style", pkgName);
+				if (htc_theme_id != 0) param.setResult(htc_theme_id);
+			}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 	}
 	
@@ -1779,22 +1783,28 @@ public class SysUIMods {
 				}
 			});
 		} else {
-			findAndHookMethod("com.htc.lib1.cc.util.HtcCommonUtil", lpparam.classLoader, "getHtcThemeId", Context.class, int.class, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					replaceCustom(param, pkgName);
+			try {
+				findAndHookMethod("com.htc.lib1.cc.util.HtcCommonUtil", lpparam.classLoader, "getHtcThemeId", Context.class, int.class, new XC_MethodHook() {
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+						replaceCustom(param, pkgName);
+					}
+				});
+			} catch (Throwable t1) {
+				try {
+					findAndHookMethod("com.htc.lib1.cc.c.c", lpparam.classLoader, "a", Context.class, int.class, new XC_MethodHook() {
+						@Override
+						protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+							replaceCustom(param, pkgName);
+						}
+					});
+				} catch (Throwable t2) {
+					XposedBridge.log("Both theme hooks failed:");
+					XposedBridge.log(t1);
+					XposedBridge.log(t2);
 				}
-			});
-		}
-	}
-	
-	public static void execHook_Sense6ColorControlCustom443(final LoadPackageParam lpparam, final String pkgName) {
-		findAndHookMethod("com.htc.lib1.cc.c.c", lpparam.classLoader, "a", Context.class, int.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				replaceCustom(param, pkgName);
 			}
-		});
+		}
 	}
 	
 	public static void execHook_ChangeBrightnessQSTile(LoadPackageParam lpparam) {
@@ -2206,17 +2216,17 @@ public class SysUIMods {
 				
 				TextView toastText = (TextView)liparam.view.findViewById(android.R.id.message);
 				LinearLayout.LayoutParams lpt = (LinearLayout.LayoutParams)toastText.getLayoutParams();
-				lpt.gravity = Gravity.LEFT;
+				lpt.gravity = Gravity.START;
 				
 				LinearLayout toast = ((LinearLayout)liparam.view);
-				toast.setGravity(Gravity.LEFT);
+				toast.setGravity(Gravity.START);
 				toast.setPadding(toast.getPaddingLeft() - Math.round(5 * density), toast.getPaddingTop(), toast.getPaddingRight(), toast.getPaddingBottom());
 				
 				switch (option) {
 					case 2:
 						LinearLayout textOnly = new LinearLayout(ctx);
 						textOnly.setOrientation(LinearLayout.VERTICAL);
-						textOnly.setGravity(Gravity.LEFT);
+						textOnly.setGravity(Gravity.START);
 						ImageView iv = createIcon(ctx, 22);
 						
 						((LinearLayout)toastText.getParent()).removeAllViews();
@@ -2233,7 +2243,7 @@ public class SysUIMods {
 					case 4:
 						LinearLayout textLabel = new LinearLayout(ctx);
 						textLabel.setOrientation(LinearLayout.VERTICAL);
-						textLabel.setGravity(Gravity.LEFT);
+						textLabel.setGravity(Gravity.START);
 						ImageView iv2 = createIcon(ctx, 45);
 						TextView tv2 = createLabel(ctx, toastText);
 						
