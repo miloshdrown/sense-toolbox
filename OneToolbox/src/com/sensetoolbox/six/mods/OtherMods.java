@@ -35,6 +35,10 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
@@ -42,6 +46,7 @@ import android.os.IBinder;
 import android.os.Message;
 import android.os.PowerManager;
 import android.os.SystemClock;
+import android.os.Vibrator;
 import android.service.notification.StatusBarNotification;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
@@ -470,10 +475,10 @@ public class OtherMods {
 			if (photoSize == 2) photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_rect); else
 			if (km.inKeyguardRestrictedInputMode()) {
 				photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_ls);
-				if ((Helpers.isM8() || Helpers.isDesire816()) && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false)) photoHeight += 54;
+				if ((Helpers.isM8() || Helpers.isE8() || Helpers.isDesire816()) && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false)) photoHeight += 54;
 			} else {
 				photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height);
-				if (Helpers.isM8() || Helpers.isDesire816())
+				if (Helpers.isM8() || Helpers.isE8() || Helpers.isDesire816())
 				if (XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false))
 					photoHeight -= 58;
 				else
@@ -905,6 +910,103 @@ public class OtherMods {
 				else
 					fullscreenIntent.putExtra("isInFullscreen", false);
 				act.sendBroadcast(fullscreenIntent);
+			}
+		});
+	}
+	
+	private static int notificationsCount = 0;
+	private static void processNotificationData(final MethodHookParam param) {
+		try {
+			final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+			Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+			notificationsCount = 0;
+			
+			if (mContext != null && mHandler != null)
+			mHandler.post(new Runnable() {
+				public void run() {
+					@SuppressWarnings("unchecked")
+					ArrayList<Object> notifications = (ArrayList<Object>)XposedHelpers.getObjectField(param.thisObject, "mNotificationList");
+					if (notifications != null)
+					for (int l = 0; l < notifications.size(); l++) {
+						StatusBarNotification sbnrec = (StatusBarNotification)XposedHelpers.getObjectField(notifications.get(l), "sbn");
+						if (sbnrec != null && sbnrec.isClearable() && !sbnrec.isOngoing()) notificationsCount++;
+					}
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	private static SensorManager mSensorManager;
+	private static Sensor accSensor;
+	private static Sensor magnetSensor;
+	private static float[] rotationMatrix = new float[9];
+	private static class TiltListener implements SensorEventListener {
+		Context ctx;
+		float[] gravity;
+		float[] magnetic;
+		float[] orientation = new float[3];
+		double pitch;
+		
+		int position = 0;
+		
+		TiltListener(Context context) {
+			ctx = context;
+		}
+		
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+		
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+			if (event.sensor.getType() == Sensor.TYPE_GRAVITY) gravity = event.values.clone();
+			if (event.sensor.getType() == Sensor.TYPE_MAGNETIC_FIELD) magnetic = event.values.clone();
+
+			if (gravity != null && magnetic != null && SensorManager.getRotationMatrix(rotationMatrix, null, gravity, magnetic)) {
+				SensorManager.getOrientation(rotationMatrix, orientation);
+				pitch = Math.toDegrees(orientation[1]);
+				int newPos = -1;
+				if (Math.abs(pitch) < 20f) newPos = 0;
+				else if (Math.abs(pitch) > 35f) newPos = 1;
+				
+				if (newPos != -1 && newPos != position) {
+					position = newPos;
+					if (newPos == 1 && notificationsCount > 0 && ctx != null) {
+						Vibrator vibe = (Vibrator)ctx.getSystemService(Context.VIBRATOR_SERVICE);
+						vibe.vibrate(30);
+					}
+				}
+			}
+		}
+	}
+	
+	public static void execHook_HapticNotify() {
+		XposedBridge.hookAllConstructors(findClass("com.android.server.NotificationManagerService", null), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Context ctx = (Context)param.args[0];
+				mSensorManager = (SensorManager)ctx.getSystemService(Context.SENSOR_SERVICE);
+				accSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_GRAVITY);
+				magnetSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+				
+				TiltListener tiltListener = new TiltListener(ctx);
+				mSensorManager.registerListener(tiltListener, accSensor, SensorManager.SENSOR_DELAY_NORMAL);
+				mSensorManager.registerListener(tiltListener, magnetSensor, SensorManager.SENSOR_DELAY_NORMAL);
+			}
+		});
+		
+		findAndHookMethod("com.android.server.NotificationManagerService", null, "notifyPostedLocked", "com.android.server.NotificationManagerService.NotificationRecord", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				processNotificationData(param);
+			}
+		});
+		
+		findAndHookMethod("com.android.server.NotificationManagerService", null, "notifyRemovedLocked", "com.android.server.NotificationManagerService.NotificationRecord", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				processNotificationData(param);
 			}
 		});
 	}

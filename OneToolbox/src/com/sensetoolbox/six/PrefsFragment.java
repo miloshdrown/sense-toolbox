@@ -291,7 +291,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			ColorPreference colorChanger = (ColorPreference) findPreference("pref_key_colorfilter");
 			colorChanger.applyThemes();
 			
-			if (Helpers.isM8()) {
+			if (Helpers.isM8() || Helpers.isE8()) {
 				HtcCheckBoxPreference beats = (HtcCheckBoxPreference) findPreference("pref_key_cb_beats");
 				beats.setTitle(beats.getTitle().toString().replace("Beats", "Boomsound"));
 				beats.setSummary(beats.getSummary().toString().replace("Beats", "Boomsound"));
@@ -725,7 +725,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			else if (!RootTools.isBusyboxAvailable())
 				disablePref(this, "pref_key_controls_vol2wake", R.string.no_busybox_summ);
 			
-			if (Helpers.isM8()) {
+			if (Helpers.isM8() || Helpers.isE8()) {
 				HtcPreferenceCategory assist_cat = (HtcPreferenceCategory) findPreference("pref_key_controls_home");
 				assist_cat.setTitle(Helpers.l10n(getActivity(), R.string.controls_mods_recentslongpress));
 				HtcListPreference assist = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
@@ -974,7 +974,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				case "pref_key_other": replaceTo = new OtherFragment(); break;
 				case "pref_key_persist": replaceTo = new PersistFragment(); break;
 				case "pref_key_wakegest":
-					if (Helpers.isWakeGestures() || Helpers.isM8()) {
+					if (Helpers.isWakeGestures() || Helpers.isM8() || Helpers.isE8()) {
 						getActivity().startActivity(new Intent(getActivity(), WakeGestures.class));
 					} else {
 						HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());

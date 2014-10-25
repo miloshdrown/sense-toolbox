@@ -53,16 +53,11 @@ public class Notifications extends CarouselFragment {
 	}
 	
 	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
+	public void onResume() {
+		super.onResume();
 		getCarouselHost().setBackgroundResource(R.color.popup_center_color);
 		if (onReadyListener != null) onReadyListener.onReady();
 		isLoaded = true;
-	}
-	
-	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState);
 	}
 	
 	public void setOnCarouselReadyListener(OnCarouselReadyListener listener) {

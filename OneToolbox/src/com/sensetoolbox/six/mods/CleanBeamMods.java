@@ -222,7 +222,7 @@ public class CleanBeamMods {
 
 	public static void execHook_BeatsIcon() {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-		if (!Helpers.isM8()) {
+		if (!Helpers.isM8() && !Helpers.isE8()) {
 			XResources.setSystemWideReplacement("com.htc.framework", "drawable", "stat_notify_beats_red", new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {

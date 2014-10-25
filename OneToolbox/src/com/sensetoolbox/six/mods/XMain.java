@@ -88,7 +88,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_controls_smallsoftkeys", false))
 			ControlsMods.execHook_SmallNavbar();
 		
-		if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures() && !Helpers.isM8())
+		if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures() && !Helpers.isM8() && !Helpers.isE8())
 			WakeGesturesMods.execHook_InitListener();
 		
 		if (pref.getBoolean("pref_key_controls_extendedpanel", false))
@@ -123,6 +123,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pref.getBoolean("pref_key_other_vzwnotif", false))
 			OtherMods.execHook_VZWWiFiNotif();
+		
+		//OtherMods.execHook_HapticNotify();
 	}
 	
 	@Override
@@ -371,7 +373,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		}
 		
 		if (pkg.equals("com.htc.lockscreen")) {
-			if (pref_homeassist != 1 && !Helpers.isM8())
+			if (pref_homeassist != 1 && !Helpers.isM8() && !Helpers.isE8())
 				ControlsMods.execHook_dieGoogleNow(lpparam);
 			
 			if (pref.getBoolean("pref_key_other_fastunlock", false))
@@ -469,7 +471,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				SysUIMods.execHook_NotifDrawerHeaderSysInfo(lpparam);
 			
 			if (pref_homeassist != 1) {
-				if (Helpers.isM8())
+				if (Helpers.isM8() || Helpers.isE8())
 					ControlsMods.execHook_M8RecentsLongpress(lpparam);
 				else
 					SysUIMods.execHook_OverrideAssist(lpparam);
@@ -481,10 +483,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_sysui_timeoutqs", false))
 				SysUIMods.execHook_ChangeTimeoutQSTile(lpparam);
 			
-			if (pref_backlongpress != 1 && Helpers.isM8())
+			if (pref_backlongpress != 1 && (Helpers.isM8() || Helpers.isE8()))
 				ControlsMods.execHook_M8BackLongpress(lpparam);
 			
-			if (pref.getBoolean("pref_key_prism_homemenu", false) && Helpers.isM8())
+			if (pref.getBoolean("pref_key_prism_homemenu", false) && (Helpers.isM8() || Helpers.isE8()))
 				ControlsMods.execHook_M8HomeLongpress(lpparam);
 			
 			if (pref.getBoolean("pref_key_cb_texts", false))
@@ -581,7 +583,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			SysUIMods.execHook_Sense6ColorControlCustom(lpparam, pkg);
 		
 		if (pkg.equals("com.htc.sense.easyaccessservice")) {
-			if (pref.getBoolean("wake_gestures_active", false) && Helpers.isM8())
+			if (pref.getBoolean("wake_gestures_active", false) && (Helpers.isM8() || Helpers.isE8()))
 				WakeGesturesMods.execHook_EasyAccessService(lpparam);
 		}
 	}

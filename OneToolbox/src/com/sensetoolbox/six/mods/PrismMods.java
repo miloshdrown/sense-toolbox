@@ -465,7 +465,7 @@ public class PrismMods {
 					if (itemlabel != null) {
 						if (gridSizeVal == 3 || gridSizeVal == 4) {
 							itemlabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, 0.9f * itemlabel.getTextSize());
-							if (Helpers.isM8()) {
+							if (Helpers.isM8() || Helpers.isE8()) {
 								itemlabel.setSingleLine(true);
 								itemlabel.setEllipsize(TruncateAt.END);
 							}
@@ -1062,7 +1062,7 @@ public class PrismMods {
 			}
 		});
 		
-		if (Helpers.isM8()) {
+		if (Helpers.isM8() || Helpers.isE8()) {
 			findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "hide", boolean.class, new XC_MethodReplacement() {
 				@Override
 				protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {

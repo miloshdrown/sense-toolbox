@@ -87,7 +87,7 @@ public class WakeGestures extends HtcPreferenceActivityEx {
 		final HtcListPreference doubleTapActionPreference = (HtcListPreference) findPreference("pref_key_wakegest_dt2w");
 		final HtcListPreference logoPressActionPreference = (HtcListPreference) findPreference("pref_key_wakegest_logo2wake");
 		
-		if (Helpers.isM8()) {
+		if (Helpers.isM8() || Helpers.isE8()) {
 			logoPressActionPreference.setTitle(Helpers.l10n(this, R.string.wakegestures_volume_title));
 			logoPressActionPreference.setSummary(Helpers.l10n(this, R.string.wakegestures_volume_summ));
 			if (!Helpers.isWakeGestures()) {

@@ -506,6 +506,10 @@ public class Helpers {
 		return Build.DEVICE.contains("htc_m8");
 	}
 	
+	public static boolean isE8() {
+		return Build.DEVICE.contains("htc_mec");
+	}
+	
 	public static boolean isButterflyS() {
 		return Build.DEVICE.contains("dlxpul");
 	}

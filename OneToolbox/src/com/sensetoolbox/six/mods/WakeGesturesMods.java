@@ -130,7 +130,7 @@ public class WakeGesturesMods {
 	
 	private static String getPkgAppName(int action) {
 		XMain.pref.reload();
-		if (Helpers.isM8()) {
+		if (Helpers.isM8() || Helpers.isE8()) {
 			switch (action) {
 				case 2: case 24: return XMain.pref.getString("pref_key_wakegest_swipeup_app", null);
 				case 3: case 25: return XMain.pref.getString("pref_key_wakegest_swipedown_app", null);
@@ -176,7 +176,7 @@ public class WakeGesturesMods {
 	
 	private static String getShortcutIntent(int action) {
 		XMain.pref.reload();
-		if (Helpers.isM8()) {
+		if (Helpers.isM8() || Helpers.isE8()) {
 			switch (action) {
 				case 2: case 24: return XMain.pref.getString("pref_key_wakegest_swipeup_shortcut_intent", null);
 				case 3: case 25: return XMain.pref.getString("pref_key_wakegest_swipedown_shortcut_intent", null);
@@ -409,7 +409,7 @@ public class WakeGesturesMods {
 						IntentFilter intentfilter = new IntentFilter();
 						intentfilter.addAction("com.sensetoolbox.six.MotionGesture");
 						mSysContext.registerReceiver(mBRLS, intentfilter);
-						if (!Helpers.isM8()) {
+						if (!Helpers.isM8() && !Helpers.isE8()) {
 							XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableEasyAccess", true);
 							XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableQuickCall", true);
 						}
@@ -420,7 +420,7 @@ public class WakeGesturesMods {
 			XposedBridge.log(t);
 		}
 		
-		if (!Helpers.isM8()) {
+		if (!Helpers.isM8() && !Helpers.isE8()) {
 			XposedHelpers.findAndHookMethod("com.htc.lockscreen.ctrl.SettingObserver", lpparam.classLoader, "isEnableEasyAccess", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
