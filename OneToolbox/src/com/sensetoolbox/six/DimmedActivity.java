@@ -112,12 +112,14 @@ public class DimmedActivity extends Activity {
 				public boolean onTouch(View v, MotionEvent event) {
 					// Check touch coordinates on screen - workaround for a bug with touch listeners after orientation change
 					int[] coords = {0, 0};
-					if (notifications != null) notifications.getCarouselHost().getLocationOnScreen(coords);
-					Rect loc = new Rect(coords[0], coords[1], coords[0] + notifications.getCarouselHost().getWidth(), coords[1] + notifications.getCarouselHost().getHeight());
-					if (!loc.contains((int)event.getRawX(), (int)event.getRawY())) {
-						v.performClick();
-						finish();
-						return true;
+					if (notifications != null && notifications.isLoaded) {
+						notifications.getCarouselHost().getLocationOnScreen(coords);
+						Rect loc = new Rect(coords[0], coords[1], coords[0] + notifications.getCarouselHost().getWidth(), coords[1] + notifications.getCarouselHost().getHeight());
+						if (!loc.contains((int)event.getRawX(), (int)event.getRawY())) {
+							v.performClick();
+							finish();
+							return true;
+						} else return false;
 					} else return false;
 				}
 			});
@@ -267,6 +269,7 @@ public class DimmedActivity extends Activity {
 		notifications.setOnCarouselReadyListener(new OnCarouselReadyListener() {
 			@Override
 			public void onReady() {
+				if (!notifications.isLoaded) return;
 				notifications.getCarouselHost().showTabWidget(false);
 				notifications.getCarouselWidget().setBackgroundResource(R.color.popup_top_bottom_color);
 				notifications.getCarouselHost().findViewById(android.R.id.tabcontent).setOnTouchListener(new OnTouchListener() {
@@ -312,6 +315,7 @@ public class DimmedActivity extends Activity {
 			@Override
 			public void onTabChanged(String tabTag) {
 				curTabTag = tabTag;
+				if (!notifications.isLoaded) return;
 				View currentTabView = notifications.getCarouselHost().getCurrentTabFragment().getView();
 				if (currentTabView != null) {
 					if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE)
@@ -340,6 +344,7 @@ public class DimmedActivity extends Activity {
 				ft.add(R.id.carousel, notifications, tagName);
 			}
 			ft.commit();
+			getFragmentManager().executePendingTransactions();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -359,7 +364,7 @@ public class DimmedActivity extends Activity {
 	}
 	
 	public void updateTabHeight(String uniqueTag, int height) {
-		if (notifications.getCarouselHost().getCurrentTabTag().equals(uniqueTag)) {
+		if (notifications.isLoaded && notifications.getCarouselHost().getCurrentTabTag().equals(uniqueTag)) {
 			// Add carousel header height
 			int newHeight = height + CarouselUtil.Dimen.getWidgetHeight(this, false);
 			
@@ -403,14 +408,14 @@ public class DimmedActivity extends Activity {
 		} else if (ev.getAction() == MotionEvent.ACTION_UP) {
 			if (isDraggingVert && carousel != null) {
 				boolean isCanceled = false;
-				if (ev.getRawY() - initPosY > cancelShift) {
+				if (ev.getRawY() - initPosY > cancelShift && notifications.isLoaded) {
 					NotificationTab curTab = (NotificationTab)notifications.getCarouselHost().getCurrentTabFragment();
 					if (curTab != null) {
 						isCanceled = true;
 						curTab.cancelNotification();
 					}
 				}
-				if (isCanceled && notifications.getCarouselHost().getTabCount() == 1)
+				if (isCanceled && notifications.isLoaded && notifications.getCarouselHost().getTabCount() == 1)
 					carousel.animate()
 					.setDuration(300)
 					.setInterpolator(new AccelerateInterpolator())

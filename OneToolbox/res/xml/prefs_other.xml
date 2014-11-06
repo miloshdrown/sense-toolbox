@@ -125,6 +125,12 @@
 			android:key="pref_key_other_ledtimeout"
 			android:summary="@string/various_ledtimeout_summ"
 			android:title="@string/various_ledtimeout_title" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_screendelete"
+			android:summary="@string/various_screendelete_summ"
+			android:title="@string/various_screendelete_title"
+			android:defaultValue="false" />
+		
 		</com.htc.preference.HtcPreferenceCategory>
 		
 		<com.htc.preference.HtcPreferenceCategory

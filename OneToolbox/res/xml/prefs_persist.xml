@@ -1,25 +1,21 @@
 <com.htc.preference.HtcPreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
-    android:key="pref_key_persist">
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_persist_appdrawer_grid"
-            android:summary="@string/persist_adgrid_summ"
-            android:title="@string/persist_adgrid_title" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_persist_unhideprefs"
-            android:summary="@string/persist_unhideprefs_summ"
-            android:title="@string/persist_unhideprefs_title" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_persist_appfilter"
-            android:summary="@string/persist_appfilter_summ"
-            android:title="@string/persist_appfilter_title" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_persist_recentslongtap"
-            android:summary="@string/persist_recentslongtap_summ"
-            android:title="@string/persist_recentslongtap_title" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_persist_installer"
-            android:summary="@string/persist_installer_summ"
-            android:title="@string/persist_installer_title" />
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
+	android:key="pref_key_persist">
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_persist_appdrawer_grid"
+			android:summary="@string/persist_adgrid_summ"
+			android:title="@string/persist_adgrid_title" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_persist_unhideprefs"
+			android:summary="@string/persist_unhideprefs_summ"
+			android:title="@string/persist_unhideprefs_title" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_persist_appfilter"
+			android:summary="@string/persist_appfilter_summ"
+			android:title="@string/persist_appfilter_title" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_persist_installer"
+			android:summary="@string/persist_installer_summ"
+			android:title="@string/persist_installer_title" />
 </com.htc.preference.HtcPreferenceScreen>

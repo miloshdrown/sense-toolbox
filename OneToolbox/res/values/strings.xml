@@ -84,6 +84,7 @@
 	<string name="okay">Okay</string>
 	<string name="close_camera">Make sure to close camera from recent apps!</string>
 	<string name="remove">Remove</string>
+	<string name="delete">Delete</string>
 	<string name="yes">Yes</string>
 	<string name="no">No</string>
 	<string name="hotreboot_explain_prefs">This will soft reboot your device.\nContinue?</string>
@@ -161,6 +162,7 @@
 	<string name="systemui_signalnotify_title">Display signal strength</string>
 	<string name="systemui_signalnotify_summ">Show current signal level next to carrier name in notification drawer.</string>
 	<string name="next_alarm">Next alarm</string>
+	<string name="header_longclick_ussd_processing">Retrieving data&#8230;</string>
 	<string name="brightpicker_switch">Enable custom levels</string>
 	<string name="brightpicker_desc">Choose four different values</string>
 	<string name="brightpicker_warn_text">All brightness values must be different</string>
@@ -186,6 +188,7 @@
 	<string name="cleanbeam_headphone_title">Headphone</string>
 	<string name="cleanbeam_headphone_summ">Enable CleanBeam headphone icons.</string>
 	<string name="cleanbeam_beats_title">Beats</string>
+	<string name="cleanbeam_soundhide_title">Beats/BoomSound/LiveStage/Clari-Fi</string>
 	<string name="cleanbeam_beats_summ">Enable CleanBeam beats icons.</string>
 	<string name="cleanbeam_profile_title">Sound profile</string>
 	<string name="cleanbeam_profile_summ">Enable CleanBeam sound profile icons.</string>
@@ -322,6 +325,7 @@
 	<string name="kill_foreground">Kill foreground app</string>
 	<string name="open_menu">Open menu</string>
 	<string name="open_recents">Show recent apps</string>
+	<string name="switch_to_previous">Switch to previous app</string>
 
 	<string name="various_mods">Various mods</string>
 	<string name="various_mods_screenanim">Screen animations</string>
@@ -414,6 +418,8 @@
 	<string name="various_ledtimeout_title">LED timeout</string>
 	<string name="various_ledtimeout_summ">Set the time LED will blink after notification is received.</string>
 	<string name="ledtimeoutpicker_switch">Enable custom timeout</string>
+	<string name="various_screendelete_title">Screenshot deletion</string>
+	<string name="various_screendelete_summ">Add Delete action to the screenshot notification.</string>
 
 	<string name="wakegestures_mod">Wake gestures</string>
 	<string name="wakegestures_haptic_title">Haptic feedback</string>

@@ -31,22 +31,15 @@ Ideas
 Current changelog
 =================
 
-1.4.3.1
+1.4.4
+[New] "Switch to previous app" action
+[New] Option to delete taken screenshot from notififcation
+[New] Hide BoomSound, LiveStage and Clari-Fi icons
+[Changed] Recents popup menu mod moved from Always active to Interface mods
+[Fixed] Wake gestures support with different lockscreen versions
 [Fixed] HTC One E8 detection
-
-1.4.3
-[New] Additional actions for extended assist panel
-[New] Hide Wi-Fi notifications on Verizon devices
-[New] Make Music Channel (HTC music visualizations) available for any audio player
-[New] Increased long press delay option for Quick Flashlight mod
-[New] Additional backlight brightness level (minimum)
-[Fixed] Toast delivery reports
-[Fixed] Large photo on lock screen
-[Fixed] 46% battery image
-[Fixed] White line in dialer with small soft keys
-[Fixed] Problem description is required in any bug report (that way crash reports will be a lot more useful)
-[Fixed] Lots of bugs
-
+[Fixed] RTL bugs (including traffic meter width)
+[Fixed] Popup Notifications crash (countless attempt)
 
 ===========
 Translators
@@ -70,6 +63,19 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.4.3
+[New] Additional actions for extended assist panel
+[New] Hide Wi-Fi notifications on Verizon devices
+[New] Make Music Channel (HTC music visualizations) available for any audio player
+[New] Increased long press delay option for Quick Flashlight mod
+[New] Additional backlight brightness level (minimum)
+[Fixed] Toast delivery reports
+[Fixed] Large photo on lock screen
+[Fixed] 46% battery image
+[Fixed] White line in dialer with small soft keys
+[Fixed] Problem description is required in any bug report (that way crash reports will be a lot more useful)
+[Fixed] Lots of bugs
 
 1.4.2.1
 [Fixed] Popup notifications orientation change

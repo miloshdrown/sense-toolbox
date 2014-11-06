@@ -405,7 +405,7 @@ public class OtherMods {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
 				ImageView watermark = (ImageView)liparam.view.findViewById(resparam.res.getIdentifier("featured_channel_watermark", "id", "com.google.android.youtube"));
-				watermark.setAlpha(0f);
+				if (watermark != null) watermark.setAlpha(0f);
 			}
 		});
 	}
@@ -705,7 +705,10 @@ public class OtherMods {
 					mIntent.send(0);
 				}
 			} catch (Throwable t) {
-				XposedBridge.log(t);
+				if (mNMSParam != null)
+					sendNotificationData(mNMSParam, true, true);
+				else
+					XposedBridge.log(t);
 			}
 		}
 	};
@@ -1012,13 +1015,17 @@ public class OtherMods {
 	}
 	
 	public static void execHook_NoChargerWarning(LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.settings.NSReceiver", lpparam.classLoader, "showVZWChargerNotification", Context.class, int.class, boolean.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				int type = (Integer)param.args[1];
-				if (type == 1) param.setResult(null);
-			}
-		});
+		try {
+			findAndHookMethod("com.android.settings.NSReceiver", lpparam.classLoader, "showVZWChargerNotification", Context.class, int.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					int type = (Integer)param.args[1];
+					if (type == 1) param.setResult(null);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 	
 	public static void execHook_LEDNotifyTimeout() {
@@ -1138,7 +1145,7 @@ public class OtherMods {
 					phoneLPP = lpparam;
 					Context ctx = (Context)param.args[0];
 					IntentFilter intentfilter = new IntentFilter();
-					intentfilter.addAction("com.sensetoolbox.six.USSD");
+					intentfilter.addAction("com.sensetoolbox.six.USSD_REQ");
 					ctx.registerReceiver(mBRUSSD, intentfilter);
 				}
 			});
@@ -1164,11 +1171,18 @@ public class OtherMods {
 					if (hideNextUSSD != null && hideNextUSSD) {
 						XposedHelpers.setAdditionalStaticField(findClass("com.android.phone.PhoneUtils", lpparam.classLoader), "hideNextUSSD", false);
 
+						Context ctx = (Context)param.args[1];
 						Object mmicode = param.args[2];
 						String msg = (String)XposedHelpers.callMethod(mmicode, "getMessage");
 						if (msg != null) {
-							Context ctx = (Context)param.args[1];
-							Toast.makeText(ctx, "Response to hidden USSD:\n" + msg, Toast.LENGTH_LONG).show();
+							//Toast.makeText(ctx, "Response to hidden USSD:\n" + msg, Toast.LENGTH_LONG).show();
+							Intent ussdRespIntent = new Intent("com.sensetoolbox.six.USSD_RESP");
+							ussdRespIntent.putExtra("response", msg);
+							ctx.sendBroadcast(ussdRespIntent);
+						} else {
+							Intent ussdRespIntent = new Intent("com.sensetoolbox.six.USSD_RESP");
+							ussdRespIntent.putExtra("response", "");
+							ctx.sendBroadcast(ussdRespIntent);
 						}
 						param.setResult(null);
 					}

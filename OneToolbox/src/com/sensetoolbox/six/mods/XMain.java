@@ -508,7 +508,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref_footer != 1)
 				SysUIMods.execHook_DrawerFooterDynamicAlpha(lpparam, pref_footer);
 			
-			SysUIMods.execHook_RecentsLongTap(lpparam);
+			if (pref.getBoolean("pref_key_other_screendelete", false))
+				SysUIMods.execHook_ScreenshotDelete(lpparam);
+			
+			if (pref.getBoolean("pref_key_sysui_recentslongtap", false))
+				SysUIMods.execHook_RecentsLongTap(lpparam);
+			
 			CleanBeamMods.execHook_HideIcons(lpparam);
 		}
 		

@@ -490,7 +490,7 @@ public class CleanBeamMods {
 				String mSlot = (String)XposedHelpers.getObjectField(statusIcon, "mSlot");
 				if (mSlot != null) {
 					if (iconsToHide.contains("1") && mSlot.equals("headset_plug") ||
-						iconsToHide.contains("2") && mSlot.equals("beats_effect") ||
+						iconsToHide.contains("2") && (mSlot.equals("beats_effect") || mSlot.equals("signal_doctor")) ||
 						iconsToHide.contains("3") && mSlot.equals("alarm_clock") ||
 						iconsToHide.contains("4") && mSlot.equals("sync_active") ||
 						iconsToHide.contains("5") && mSlot.equals("gps") ||

@@ -55,9 +55,9 @@ public class Notifications extends CarouselFragment {
 	@Override
 	public void onResume() {
 		super.onResume();
+		isLoaded = true;
 		getCarouselHost().setBackgroundResource(R.color.popup_center_color);
 		if (onReadyListener != null) onReadyListener.onReady();
-		isLoaded = true;
 	}
 	
 	public void setOnCarouselReadyListener(OnCarouselReadyListener listener) {

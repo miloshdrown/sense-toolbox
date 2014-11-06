@@ -21,6 +21,9 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
 import android.content.ContentResolver;
@@ -697,7 +700,7 @@ public class SysUIMods {
 					//mStatusBarView.setBackgroundColor(Color.BLUE);
 					LinearLayout systemIconArea = (LinearLayout)mStatusBarView.findViewById(mStatusBarView.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
 					//systemIconArea.setBackgroundColor(Color.CYAN);
-
+					
 					RelativeLayout alignFrame = new RelativeLayout(mContext);
 					alignFrame.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 					//alignFrame.setBackgroundColor(Color.RED);
@@ -706,7 +709,7 @@ public class SysUIMods {
 					textFrame.setOrientation(LinearLayout.VERTICAL);
 					textFrame.setGravity(Gravity.CENTER_HORIZONTAL);
 					RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-					rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
+					//rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
 					textFrame.setLayoutParams(rlp);
 					//textFrame.setBackgroundColor(Color.GREEN);
 					
@@ -792,9 +795,7 @@ public class SysUIMods {
 						}
 					};
 					
-					IntentFilter intentfilter = new IntentFilter();
-					intentfilter.addAction("android.net.conn.CONNECTIVITY_CHANGE");
-					mContext.registerReceiver(connectChanged, intentfilter);
+					mContext.registerReceiver(connectChanged, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
 				} catch (Throwable t) {
 					XposedBridge.log(t);
 				}
@@ -1332,6 +1333,7 @@ public class SysUIMods {
 	
 	private static Thread cpuThread = null;
 	private static boolean isThreadActive = false;
+	private static int USSDState = 0;
 	private static long workLast, totalLast, workC, totalC = 0;
 	private static int curFreq;
 	private static String curTemp;
@@ -1374,19 +1376,40 @@ public class SysUIMods {
 		}
 	}
 	
+	private static TextView dateView;
+	private static BroadcastReceiver mBRUSSD = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			try {
+				String resp = intent.getStringExtra("response");
+				if (resp == null || resp.equals(""))
+					XposedBridge.log("Empty USSD response!");
+				else if (dateView != null) {
+					dateView.setText(resp);
+					USSDState = 2;
+				}
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	};
+	
 	public static void execHook_NotifDrawerHeaderSysInfo(final LoadPackageParam lpparam) {
 		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.policy.DateView", lpparam.classLoader), new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				final TextView date = (TextView)param.thisObject;
+				dateView = (TextView)param.thisObject;
 				OnClickListener ocl = new OnClickListener() {
 					@Override
 					public void onClick(View v) {
+						if (USSDState == 1) return;
 						if (cpuThread != null && cpuThread.isAlive()) {
 							Thread tmpThread = cpuThread;
 							cpuThread = null;
 							tmpThread.interrupt();
 							isThreadActive = false;
+							XposedHelpers.callMethod(param.thisObject, "updateClock");
+						} else if (USSDState == 2) {
+							USSDState = 0;
 							XposedHelpers.callMethod(param.thisObject, "updateClock");
 						} else {
 							cpuThread = new Thread(new Runnable() {
@@ -1394,11 +1417,11 @@ public class SysUIMods {
 									try {
 										while (Thread.currentThread() == cpuThread) {
 											readCPU();
-											date.getHandler().post(new Runnable() {
+											dateView.getHandler().post(new Runnable() {
 												@Override
 												public void run() {
 													ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
-													ActivityManager activityManager = (ActivityManager)date.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+													ActivityManager activityManager = (ActivityManager)dateView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
 													activityManager.getMemoryInfo(mi);
 													long availableMegs = mi.availMem / 1048576L;
 													long totalMegs = mi.totalMem / 1048576L;
@@ -1406,7 +1429,7 @@ public class SysUIMods {
 													XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 													String MB = Helpers.xl10n(modRes, R.string.ram_mb);
 													String MHz = Helpers.xl10n(modRes, R.string.cpu_mhz);
-													date.setText("CPU " + String.valueOf(Math.round(workC * 100 / (float)totalC)) + "% " + String.valueOf(curFreq) + MHz + " " + curTemp + "\u00B0C" + "\n" + "RAM " + String.valueOf(availableMegs) + MB + " / " + String.valueOf(totalMegs) + MB);
+													dateView.setText("CPU " + String.valueOf(Math.round(workC * 100 / (float)totalC)) + "% " + String.valueOf(curFreq) + MHz + " " + curTemp + "\u00B0C" + "\n" + "RAM " + String.valueOf(availableMegs) + MB + " / " + String.valueOf(totalMegs) + MB);
 												}
 											});
 											Thread.sleep(1000);
@@ -1419,14 +1442,36 @@ public class SysUIMods {
 						}
 					}
 				};
-				date.setOnClickListener(ocl);
+				dateView.setOnClickListener(ocl);
+				
+				OnLongClickListener olcl = new OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View v) {
+						if (cpuThread != null && cpuThread.isAlive()) {
+							Thread tmpThread = cpuThread;
+							cpuThread = null;
+							tmpThread.interrupt();
+							isThreadActive = false;
+						}
+						USSDState = 1;
+						
+						XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+						dateView.setText(Helpers.xl10n(modRes, R.string.header_longclick_ussd_processing));
+						Intent ussdReqIntent = new Intent("com.sensetoolbox.six.USSD_REQ");
+						ussdReqIntent.putExtra("number", "*102" + Uri.encode("#"));
+						dateView.getContext().sendBroadcast(ussdReqIntent);
+						return false;
+					}
+				};
+				dateView.setOnLongClickListener(olcl);
+				dateView.getContext().registerReceiver(mBRUSSD, new IntentFilter("com.sensetoolbox.six.USSD_RESP"));
 			}
 		});
 		
 		findAndHookMethod("com.android.systemui.statusbar.policy.DateView", lpparam.classLoader, "updateClock", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				if (isThreadActive) param.setResult(null);
+				if (isThreadActive || USSDState > 0) param.setResult(null);
 			}
 		});
 	}
@@ -1799,9 +1844,7 @@ public class SysUIMods {
 						}
 					});
 				} catch (Throwable t2) {
-					XposedBridge.log("Both theme hooks failed:");
-					XposedBridge.log(t1);
-					XposedBridge.log(t2);
+					XposedBridge.log("Both getHtcThemeId hooks failed");
 				}
 			}
 		}
@@ -2279,6 +2322,48 @@ public class SysUIMods {
 							mHandleView.getBackground().setAlpha(Math.round(255f * (1.0f - (drawerHeight - headerHeight) / ((float)panelView.getResources().getDisplayMetrics().heightPixels - headerHeight))));
 					}
 				}
+			}
+		});
+	}
+	
+	public static BroadcastReceiver mBRScrDelete = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			try {
+				Uri uri = intent.getParcelableExtra("screenshot_file");
+				if (uri != null) context.getContentResolver().delete(uri, null, null);
+				((NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE)).cancel(789);
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	};
+
+	public static void execHook_ScreenshotDelete(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.screenshot.SaveImageInBackgroundTask", lpparam.classLoader, "doInBackground", "com.android.systemui.screenshot.SaveImageInBackgroundData[]", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Notification.Builder mNotificationBuilder = (Notification.Builder)XposedHelpers.getObjectField(param.thisObject, "mNotificationBuilder");
+				if (mNotificationBuilder != null) try {
+					Object[] saveImageData = (Object[])param.args[0];
+					Context ctx = (Context)XposedHelpers.getObjectField(saveImageData[0], "context");
+					Uri uri = (Uri)XposedHelpers.getObjectField(saveImageData[0], "imageUri");
+					if (ctx != null && uri != null) {
+						XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+						Intent intent = new Intent("com.sensetoolbox.six.DELETE_SCREENSHOT");
+						intent.putExtra("screenshot_file", uri);
+						mNotificationBuilder.addAction(android.R.drawable.ic_menu_delete, Helpers.xl10n(modRes, R.string.delete), PendingIntent.getBroadcast(ctx, 0, intent, 0x10000000));
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.screenshot.ScreenshotService", lpparam.classLoader, "start", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				mContext.registerReceiver(mBRScrDelete, new IntentFilter("com.sensetoolbox.six.DELETE_SCREENSHOT"));
 			}
 		});
 	}

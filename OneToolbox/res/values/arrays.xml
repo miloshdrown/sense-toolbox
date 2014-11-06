@@ -189,7 +189,7 @@
 
 	<string-array name="hideicons">
 		<item >@string/cleanbeam_headphone_title</item>
-		<item >@string/cleanbeam_beats_title</item>
+		<item >@string/cleanbeam_soundhide_title</item>
 		<item >@string/cleanbeam_alarm_title</item>
 		<item >@string/cleanbeam_sync_title</item>
 		<item >@string/cleanbeam_gps_title</item>

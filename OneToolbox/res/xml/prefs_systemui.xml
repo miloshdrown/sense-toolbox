@@ -148,5 +148,11 @@
 			android:title="@string/systemui_hqthumbs_title"
 			android:defaultValue="false"
 			android:dependency="pref_key_sysui_aosprecent" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_sysui_recentslongtap"
+			android:summary="@string/persist_recentslongtap_summ"
+			android:title="@string/persist_recentslongtap_title"
+			android:defaultValue="false"
+			android:dependency="pref_key_sysui_aosprecent" />
 		</com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>

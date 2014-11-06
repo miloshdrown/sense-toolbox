@@ -521,13 +521,6 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	}
 	
 	public static class ControlsFragment extends HtcPreferenceFragmentExt {
-		private static CharSequence[] addToArray(CharSequence[] cs, int position, String toAdd) {
-			List<CharSequence> entries = new ArrayList<CharSequence>(Arrays.asList(cs));
-			entries.add(position, toAdd);
-			CharSequence[] entriesNew = entries.toArray(new CharSequence[entries.size()]);
-			return entriesNew;
-		}
-		
 		OnPreferenceChangeListener setEntryAsSummary = new OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
@@ -678,14 +671,20 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			HtcListPreferencePlus toggleHomeAssist = (HtcListPreferencePlus) findPreference("pref_key_controls_homeassist_toggle");
 			
 			// Insert new option to controls listprefs
-			CharSequence[] entries = backLongPressActionPreference.getEntries();
-			entries = addToArray(entries, 5, Helpers.l10n(getActivity(), R.string.kill_foreground));
-			entries = addToArray(entries, 6, Helpers.l10n(getActivity(), R.string.open_menu));
-			entries = addToArray(entries, 7, Helpers.l10n(getActivity(), R.string.open_recents));
-			CharSequence[] entryVals = backLongPressActionPreference.getEntryValues();
-			entryVals = addToArray(entryVals, 5, "9");
-			entryVals = addToArray(entryVals, 6, "10");
-			entryVals = addToArray(entryVals, 7, "11");
+			List<CharSequence> entriesCS = new ArrayList<CharSequence>(Arrays.asList(backLongPressActionPreference.getEntries()));
+			entriesCS.add(5, Helpers.l10n(getActivity(), R.string.kill_foreground));
+			entriesCS.add(6, Helpers.l10n(getActivity(), R.string.open_menu));
+			entriesCS.add(7, Helpers.l10n(getActivity(), R.string.open_recents));
+			entriesCS.add(8, Helpers.l10n(getActivity(), R.string.switch_to_previous));
+			CharSequence[] entries = entriesCS.toArray(new CharSequence[entriesCS.size()]);
+
+			List<CharSequence> entryValsCS = new ArrayList<CharSequence>(Arrays.asList(backLongPressActionPreference.getEntryValues()));
+			entryValsCS.add(5, "9");
+			entryValsCS.add(6, "10");
+			entryValsCS.add(7, "11");
+			entryValsCS.add(8, "13");
+			CharSequence[] entryVals = entryValsCS.toArray(new CharSequence[entryValsCS.size()]);
+			
 			backLongPressActionPreference.setEntries(entries);
 			backLongPressActionPreference.setEntryValues(entryVals);
 			homeAssistActionPreference.setEntries(entries);

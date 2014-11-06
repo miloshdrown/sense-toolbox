@@ -11,6 +11,7 @@ import java.util.List;
 
 import android.app.Activity;
 import android.app.ActivityManager;
+import android.app.ActivityManager.RecentTaskInfo;
 import android.app.Instrumentation;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
@@ -106,6 +107,52 @@ public class GlobalActions {
 			
 			if (action.equals("com.sensetoolbox.six.mods.action.OpenRecents")) {
 				if (mPWM != null) XposedHelpers.callMethod(mPWM, "toggleRecentApps");
+			}
+			
+			if (action.equals("com.sensetoolbox.six.mods.action.SwitchToPrevApp")) {
+				PackageManager pm = context.getPackageManager();
+				Intent intent_home = new Intent(Intent.ACTION_MAIN);
+				intent_home.addCategory(Intent.CATEGORY_HOME);
+				intent_home.addCategory(Intent.CATEGORY_DEFAULT);
+				List<ResolveInfo> launcherList = pm.queryIntentActivities(intent_home, 0);
+				
+				ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+				List<RecentTaskInfo> rti = am.getRecentTasks(9, 0);
+				
+				Intent recentIntent;
+				boolean isFirstRecent = true;
+				for (RecentTaskInfo rtitem: rti) try {
+					if (isFirstRecent) {
+						isFirstRecent = false;
+						continue;
+					}
+					
+					boolean isLauncher = false;
+					recentIntent = new Intent(rtitem.baseIntent);
+					if (rtitem.origActivity != null) recentIntent.setComponent(rtitem.origActivity);
+					ComponentName resolvedAct = recentIntent.resolveActivity(pm);
+					
+					if (resolvedAct != null)
+					for (ResolveInfo launcher: launcherList)
+					if (launcher.activityInfo.packageName.equals(resolvedAct.getPackageName())) {
+						isLauncher = true;
+						break;
+					}
+					
+					if (!isLauncher) {
+						if (Helpers.getHTCHaptic(context)) {
+							Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
+							vibe.vibrate(20);
+						}
+						if (rtitem.id >= 0)
+							am.moveTaskToFront(rtitem.id, 0);
+						else
+							context.startActivity(recentIntent);
+						break;
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
 			}
 			
 			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
@@ -434,6 +481,7 @@ public class GlobalActions {
 					//intentfilter.addAction("com.sensetoolbox.six.mods.action.killForegroundAppShedule");
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.SimulateMenu");
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.OpenRecents");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.SwitchToPrevApp");
 					
 					// Toggles
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleWiFi");
@@ -617,6 +665,16 @@ public class GlobalActions {
 	public static boolean openRecents(Context context) {
 		try {
 			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.OpenRecents"));
+			return true;
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+			return false;
+		}
+	}
+	
+	public static boolean switchToPrevApp(Context context) {
+		try {
+			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.SwitchToPrevApp"));
 			return true;
 		} catch (Throwable t) {
 			XposedBridge.log(t);

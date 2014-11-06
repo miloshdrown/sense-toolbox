@@ -108,6 +108,7 @@ public class ControlsMods {
 										case 10: GlobalActions.simulateMenu(mContext); break;
 										case 11: GlobalActions.openRecents(mContext); break;
 										case 12: XposedHelpers.callMethod(param.thisObject, "dismissKeyguardLw"); GlobalActions.launchShortcut(mContext, 3); break;
+										case 13: GlobalActions.switchToPrevApp(mContext); break;
 									}
 								}
 								isBackLongPressed = true;
@@ -158,6 +159,7 @@ public class ControlsMods {
 				case 12: Object amn2 = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
 						XposedHelpers.callMethod(amn2, "dismissKeyguardOnNextActivity");
 						GlobalActions.launchShortcut(mContext, 4); break;
+				case 13: GlobalActions.switchToPrevApp(mContext); break;
 			}
 		}
 	}
@@ -435,6 +437,7 @@ public class ControlsMods {
 							case 10: GlobalActions.simulateMenu(mContext); break;
 							case 11: GlobalActions.openRecents(mContext); break;
 							case 12: GlobalActions.launchShortcut(mContext, 3); break; // No back key on lock screen
+							case 13: GlobalActions.switchToPrevApp(mContext); break;
 						}
 					}
 				}
@@ -595,7 +598,7 @@ public class ControlsMods {
 	}
 	
 	public static void execHook_FixDialer(LoadPackageParam lpparam) {
-		XC_MethodHook hook =  new XC_MethodHook() {
+		XC_MethodHook hook = new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				RelativeLayout thisView = (RelativeLayout) param.thisObject;
@@ -605,10 +608,12 @@ public class ControlsMods {
 				thisView.invalidate();
 			}
 		};
-		findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "initContactDetailPhotoView", Context.class, hook);
-		findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "onConfigurationChanged", Configuration.class, hook);
-		findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "onLayout", boolean.class, int.class, int.class, int.class, int.class, hook);
-		findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "dispatchDraw", Canvas.class, hook);
+		try {
+			findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "initContactDetailPhotoView", Context.class, hook);
+			findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "onConfigurationChanged", Configuration.class, hook);
+			findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "onLayout", boolean.class, int.class, int.class, int.class, int.class, hook);
+			findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "dispatchDraw", Canvas.class, hook);
+		} catch (Throwable t) {}
 	}
 	/*
 	public static void execHook_VolumeCaret() {
