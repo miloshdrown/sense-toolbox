@@ -528,8 +528,11 @@ public class CleanBeamMods {
 					if (notifIcon != null) {
 						String mSlot = (String)XposedHelpers.getObjectField(notifIcon, "mSlot");
 						if (mSlot != null && iconsToHide != null) {
+							if (iconsToHide.contains("8")) try {
+								int usbResId = notifIcon.getContext().getPackageManager().getResourcesForApplication("com.android.settings").getIdentifier("stat_sys_data_usb", "drawable", "com.android.settings");
+								if (mSlot.equals("com.android.settings/0x" + Integer.toHexString(usbResId))) notifIcon.setVisibility(View.GONE);
+							} catch (Throwable t) {} else
 							if (iconsToHide.contains("7") && mSlot.equals("com.android.systemui/0x315") ||
-								iconsToHide.contains("8") && mSlot.equals("com.android.settings/0x7f0201b4") ||
 								iconsToHide.contains("9") && mSlot.equals("com.htc.htcpowermanager/0x3e8") ||
 								iconsToHide.contains("11") && mSlot.equals("com.android.settings/0x1")) notifIcon.setVisibility(View.GONE);
 						}

@@ -47,7 +47,6 @@ import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.os.Bundle;
 import android.os.Debug.MemoryInfo;
 import android.os.Environment;
 import android.os.Handler;
@@ -319,19 +318,6 @@ public class SysUIMods {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(false);
-			}
-		});
-		
-		//Fix for FC on Sense 5.5
-		findAndHookMethod("com.android.systemui.recent.RecentsActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				BroadcastReceiver mIntentReceiver = (BroadcastReceiver) getObjectField(param.thisObject, "mIntentReceiver");
-				IntentFilter mIntentFilter = (IntentFilter) getObjectField(param.thisObject, "mIntentFilter");
-				if(mIntentReceiver != null && mIntentFilter != null) {
-					Activity thisActivity = (Activity) param.thisObject;
-					thisActivity.registerReceiver(mIntentReceiver, mIntentFilter);
-				}
 			}
 		});
 	}
@@ -1326,7 +1312,7 @@ public class SysUIMods {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				Activity FxRecent = (Activity)param.thisObject;
-				if (FxRecent != null && !FxRecent.isFinishing() && popup != null && popup.isShowing()) popup.dismiss();
+				if (FxRecent != null && !FxRecent.isFinishing() && popup != null && popup.isShowing()) try { popup.dismiss(); } catch (Throwable t) {}
 			}
 		});
 	}
@@ -1377,6 +1363,7 @@ public class SysUIMods {
 	}
 	
 	private static TextView dateView;
+	/*
 	private static BroadcastReceiver mBRUSSD = new BroadcastReceiver() {
 		public void onReceive(final Context context, Intent intent) {
 			try {
@@ -1392,7 +1379,7 @@ public class SysUIMods {
 			}
 		}
 	};
-	
+	*/
 	public static void execHook_NotifDrawerHeaderSysInfo(final LoadPackageParam lpparam) {
 		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.policy.DateView", lpparam.classLoader), new XC_MethodHook() {
 			@Override
@@ -1443,7 +1430,7 @@ public class SysUIMods {
 					}
 				};
 				dateView.setOnClickListener(ocl);
-				
+				/*
 				OnLongClickListener olcl = new OnLongClickListener() {
 					@Override
 					public boolean onLongClick(View v) {
@@ -1465,6 +1452,7 @@ public class SysUIMods {
 				};
 				dateView.setOnLongClickListener(olcl);
 				dateView.getContext().registerReceiver(mBRUSSD, new IntentFilter("com.sensetoolbox.six.USSD_RESP"));
+				*/
 			}
 		});
 		

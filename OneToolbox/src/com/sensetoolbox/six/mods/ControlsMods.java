@@ -615,6 +615,16 @@ public class ControlsMods {
 			findAndHookMethod("com.htc.htcdialer.widget.ContactDetailPhotoView", lpparam.classLoader, "dispatchDraw", Canvas.class, hook);
 		} catch (Throwable t) {}
 	}
+	
+	public static void execHook_KeysHapticFeedback() {
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "getSystemVibrationDurationInt", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				int duration = XMain.pref.getInt("pref_key_controls_keyshaptic", 15);
+				param.setResult(duration);
+			}
+		});
+	}
 	/*
 	public static void execHook_VolumeCaret() {
 		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {

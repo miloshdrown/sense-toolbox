@@ -7,5 +7,7 @@
 	
 	<declare-styleable name="SeekBarPreference">
 		<attr name="enableKey" format="string" />
+		<attr name="dialogEnableMessage" format="string" />
+		<attr name="hapticPref" format="boolean" />
 	</declare-styleable>
 </resources>

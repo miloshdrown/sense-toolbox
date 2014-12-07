@@ -1,7 +1,9 @@
 package com.sensetoolbox.six.utils;
 
+import java.lang.reflect.Method;
 import java.util.HashSet;
 
+import com.htc.fragment.widget.CarouselHost;
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcRimButton;
 import com.sensetoolbox.six.DimmedActivity;
@@ -233,11 +235,19 @@ public class NotificationTab extends Fragment {
 			rimBtn.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
-					if (act.sbns.size() > 1)
-						act.notifications.getCarouselHost().removeTabByTag(uniqueTag);
-					else if (!act.isFinishing())
-						act.finish();
-					cancelNotification();
+					try {
+						if (act.sbns.size() > 1) {
+							Method getTabSpec = CarouselHost.class.getDeclaredMethod("getTabSpec", String.class);
+							getTabSpec.setAccessible(true);
+							CarouselHost cHost = act.notifications.getCarouselHost();
+							if (cHost != null && cHost.getTabCount() > 0 && getTabSpec.invoke(cHost, uniqueTag) != null)
+							cHost.removeTabByTag(uniqueTag);
+						} else if (!act.isFinishing())
+							act.finish();
+						cancelNotification();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
 				}
 			});
 			

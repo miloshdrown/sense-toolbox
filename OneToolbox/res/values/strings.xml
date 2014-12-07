@@ -321,6 +321,11 @@
 	<string name="controls_extendedpanel_left_summ">Define an action for left shortcut in extended assist panel.</string>
 	<string name="controls_extendedpanel_right_title">Right shortcut</string>
 	<string name="controls_extendedpanel_right_summ">Define an action for right shortcut in extended assist panel.</string>
+	<string name="controls_keyshaptic_title">Keys haptic feedback</string>
+	<string name="controls_keyshaptic_summ">Define the vibration duration for navigation keys.</string>
+	<string name="controls_keyshaptic_desc">Vibration duration</string>
+	<string name="controls_keyshaptic_testbtn">Test current value</string>
+	<string name="seekbar_mod_enable">Enable mod</string>
 
 	<string name="kill_foreground">Kill foreground app</string>
 	<string name="open_menu">Open menu</string>

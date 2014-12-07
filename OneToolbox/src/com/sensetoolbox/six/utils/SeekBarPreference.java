@@ -1,18 +1,20 @@
 package com.sensetoolbox.six.utils;
 
-/* The following code was written by Matthew Wiggins 
- * and is released under the APACHE 2.0 license 
- * 
+/* The following code was written by Matthew Wiggins
+ * and is released under the APACHE 2.0 license
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
  */
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.FrameLayout.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.SeekBar;
@@ -22,6 +24,7 @@ import com.htc.preference.HtcDialogPreference;
 import com.htc.widget.HtcCheckBox;
 import com.htc.widget.HtcCompoundButton;
 import com.htc.widget.HtcCompoundButton.OnCheckedChangeListener;
+import com.htc.widget.HtcRimButton;
 import com.htc.widget.HtcSeekBar;
 import com.sensetoolbox.six.R;
 
@@ -30,11 +33,12 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 	private static final String toolboxns="http://schemas.android.com/apk/res/com.sensetoolbox.six";
 
 	private SeekBar mSeekBar;
-	private TextView mSplashText,mValueText;
+	private HtcRimButton testBtn;
+	private TextView mSplashText, mValueText;
 	private Context mContext;
 	private float density = 3;
 	
-	private String mDialogMessage, mSuffix;
+	private String mDialogMessage, mDialogEnableMessage, mSuffix;
 	private int mDefault, mMax, mValue = 0;
 
 	private LinearLayout mCheckBoxContainer;
@@ -42,27 +46,30 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 	private HtcCheckBox mPrefSwitch;
 	private String mEnableKey;
 	private boolean mIsEnabled;
-	private int mSeekBarValue;
 	private boolean mEnableValue;
+	private boolean mHapticPref;
+	private int mSeekBarValue;
 
-	public SeekBarPreference(Context context, AttributeSet attrs) { 
-		super(context,attrs); 
+	public SeekBarPreference(Context context, AttributeSet attrs) {
+		super(context,attrs);
 		mContext = context;
 
+		mDialogEnableMessage = (String) Helpers.l10n(context, attrs.getAttributeResourceValue(toolboxns, "dialogEnableMessage", R.string.transparency_enable));
 		mDialogMessage = (String) Helpers.l10n(context, attrs.getAttributeResourceValue(androidns, "dialogMessage", R.string.transparency_msg));
 		this.setDialogTitle(Helpers.l10n(context, this.getTitleRes()));
-		mSuffix = attrs.getAttributeValue(androidns,"text");
-		mDefault = attrs.getAttributeIntValue(androidns,"defaultValue", 0);
-		mMax = attrs.getAttributeIntValue(androidns,"max", 100);
+		mSuffix = attrs.getAttributeValue(androidns, "text");
+		mDefault = attrs.getAttributeIntValue(androidns, "defaultValue", 0);
+		mMax = attrs.getAttributeIntValue(androidns, "max", 100);
 		mEnableKey = attrs.getAttributeValue(toolboxns, "enableKey");
+		mHapticPref = attrs.getAttributeBooleanValue(toolboxns, "hapticPref", false);
 		density = mContext.getResources().getDisplayMetrics().density;
 	}
 	
 	private int densify(int dimension) {
-		return Math.round(density * dimension);	
+		return Math.round(density * dimension);
 	}
 
-	@Override 
+	@Override
 	protected View onCreateDialogView() {
 		LinearLayout.LayoutParams params;
 		LinearLayout layout = new LinearLayout(mContext);
@@ -97,7 +104,7 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 		mPrefSwitch.setChecked(mIsEnabled);
 		
 		mEnableText = new TextView(mContext);
-		mEnableText.setText(Helpers.l10n(mContext, R.string.transparency_enable));
+		mEnableText.setText(mDialogEnableMessage);
 		mEnableText.setTextSize(20f);
 		mEnableText.setPadding(densify(5), 0, 0, densify(2));
 		mEnableText.setOnClickListener(new OnClickListener() {
@@ -133,6 +140,29 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 		
 		mSeekBar.setMax(mMax);
 		mSeekBar.setProgress(mValue);
+		mValueText.setText(mSuffix == null ? String.valueOf(mValue) : String.valueOf(mValue).concat(mSuffix));
+		
+		if (mHapticPref) {
+			FrameLayout btnFrame = new FrameLayout(mContext);
+			btnFrame.setPadding(densify(16), densify(12), densify(16), densify(3));
+			
+			testBtn = new HtcRimButton(mContext);
+			testBtn.setText(Helpers.l10n(mContext, R.string.controls_keyshaptic_testbtn));
+			testBtn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Vibrator vibe = (Vibrator)mContext.getSystemService(Context.VIBRATOR_SERVICE);
+					vibe.vibrate(mSeekBarValue);
+				}
+			});
+			if (mValue == 0)
+				testBtn.setVisibility(View.GONE);
+			else
+				testBtn.setVisibility(View.VISIBLE);
+			btnFrame.addView(testBtn, new FrameLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+			
+			innerLayout.addView(btnFrame, new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+		}
 		
 		layout.addView(innerLayout);
 		return layout;
@@ -148,7 +178,7 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 		}
 	}
 
-	@Override 
+	@Override
 	protected void onBindDialogView(View v) {
 		super.onBindDialogView(v);
 		mSeekBar.setMax(mMax);
@@ -158,16 +188,26 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 	@Override
 	protected void onSetInitialValue(boolean restore, Object defaultValue) {
 		super.onSetInitialValue(restore, defaultValue);
-		if (restore) 
+		if (restore)
 			mValue = shouldPersist() ? getPersistedInt(mDefault) : 0;
-		else 
+		else
 			mValue = (Integer)defaultValue;
 	}
 
 	public void onProgressChanged(SeekBar seek, int value, boolean fromTouch) {
-		String t = String.valueOf(value);
+		int newVal = value;
+		if (mHapticPref) {
+			newVal = newVal / 5;
+			newVal = newVal * 5;
+			if (testBtn != null)
+			if (newVal == 0)
+				testBtn.setVisibility(View.GONE);
+			else
+				testBtn.setVisibility(View.VISIBLE);
+		}
+		String t = String.valueOf(newVal);
 		mValueText.setText(mSuffix == null ? t : t.concat(mSuffix));
-		mSeekBarValue = value;
+		mSeekBarValue = newVal;
 	}
 	public void onStartTrackingTouch(SeekBar seek) {}
 	public void onStopTrackingTouch(SeekBar seek) {}
@@ -175,9 +215,9 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 	public void setMax(int max) { mMax = max; }
 	public int getMax() { return mMax; }
 
-	public void setProgress(int progress) { 
+	public void setProgress(int progress) {
 		mValue = progress;
-		if (mSeekBar != null) mSeekBar.setProgress(progress); 
+		if (mSeekBar != null) mSeekBar.setProgress(progress);
 	}
 	public int getProgress() { return mValue; }
 }

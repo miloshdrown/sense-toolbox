@@ -8,6 +8,7 @@ import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashSet;
 
 import com.htc.fragment.widget.CarouselFragment;
@@ -29,6 +30,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
+import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -40,6 +42,8 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -47,6 +51,7 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
@@ -1197,5 +1202,135 @@ public class OtherMods {
 		String className = "com.android.settings.framework.core.umc.HtcUmcWidgetEnabler";
 		if (isEnhancer) className = "com.htc.musicenhancer.cronus.CronusUtils";
 		findAndHookMethod(className, lpparam.classLoader, "isSupportMusicChannel", XC_MethodReplacement.returnConstant(Boolean.TRUE));
+	}
+	
+	private static void refreshQSMCView(Object thisObject) {
+		Context mContext = (Context)XposedHelpers.getObjectField(thisObject, "mContext");
+		LinearLayout QSMC = (LinearLayout)thisObject;
+		int music_channel_state = Settings.System.getInt(mContext.getContentResolver(), "htc_universal_music_channel", 1);
+				
+		int qsind = mContext.getResources().getIdentifier("quick_setting_indicator", "id", "com.android.systemui");
+		View quick_setting_indicator = null;
+		if (qsind != 0) quick_setting_indicator = QSMC.findViewById(qsind);
+		if (quick_setting_indicator != null)
+		XposedHelpers.callMethod(quick_setting_indicator, "setLevel", music_channel_state, 1);
+		
+		int qsimg = mContext.getResources().getIdentifier("quick_setting_image", "id", "com.android.systemui");
+		View quick_setting_image = null;
+		if (qsimg != 0) quick_setting_image = QSMC.findViewById(qsimg);
+		if (quick_setting_image != null)
+		XposedHelpers.callMethod(quick_setting_image, "setOverlayEnable", music_channel_state == 1 ? true : false);
+	}
+	
+	static class SystemSettingsObserver extends ContentObserver {
+		Object thisObj = null;
+		public SystemSettingsObserver(Handler h, Object paramThisObject) {
+			super(h);
+			thisObj = paramThisObject;
+		}
+		
+		@Override
+		public boolean deliverSelfNotifications() {
+			return true;
+		}
+		
+		@Override
+		public void onChange(boolean selfChange, Uri uri) {
+			super.onChange(selfChange);
+			try {
+				String uriPart = uri.getLastPathSegment();
+				if (uriPart != null && uriPart.equals("htc_universal_music_channel"))
+				if (thisObj != null) refreshQSMCView(thisObj);
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	}
+	
+	public static void execHook_MusicChannelEQSTile(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettings", lpparam.classLoader, "getQSAvailableList", Context.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				int[] ai = (int[])param.getResult();
+				if (ai != null && ai.length > 0 && !Arrays.asList(ai).contains(17)) {
+					ai = Arrays.copyOf(ai, ai.length + 1);
+					ai[ai.length - 1] = 17;
+					param.setResult(ai);
+				}
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.quicksetting.QuickSettingMusicChannel", lpparam.classLoader, "onAttachedToWindow", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				final LinearLayout QSMC = (LinearLayout)param.thisObject;
+				
+				mContext.getContentResolver().registerContentObserver(Settings.System.CONTENT_URI, true, new SystemSettingsObserver(new Handler(), param.thisObject));
+				refreshQSMCView(param.thisObject);
+				
+				QSMC.setOnClickListener(new View.OnClickListener() {
+					public void onClick(View view) {
+						(new AsyncTask<Void,Void,Void>() {
+							@Override
+							protected Void doInBackground(Void... params) {
+								int newState = Settings.System.getInt(mContext.getContentResolver(), "htc_universal_music_channel", 1) == 1 ? 0 : 1;
+								Settings.System.putInt(mContext.getContentResolver(), "htc_universal_music_channel", newState);
+								
+								if (newState == 1)
+								mContext.startService(new Intent("com.htc.musicenhancer.action.UNIVERSAL_MUSIC_CHANNEL"));
+								
+								return null;
+							}
+						}).execute(new Void[0]);
+					}
+				});
+				
+				QSMC.setLongClickable(true);
+				QSMC.setOnLongClickListener(new View.OnLongClickListener() {
+					@Override
+					public boolean onLongClick(View v) {
+						Intent umc = new Intent("com.htc.music.intent.action.UMC_SETTINGS");
+						umc.addCategory("android.intent.category.DEFAULT");
+						umc.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+						mContext.startActivity(umc);
+						
+						try {
+							Object sbservice = v.getContext().getSystemService("statusbar");
+							Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+							Method hidesb;
+							if (Build.VERSION.SDK_INT >= 17)
+								hidesb = statusbarManager.getMethod("collapsePanels");
+							else
+								hidesb = statusbarManager.getMethod("collapse");
+							hidesb.setAccessible(true);
+							hidesb.invoke(sbservice);
+						} catch (Throwable t) {}
+						return true;
+					}
+				});
+			}
+		});
+	}
+	
+	public static void execHook_MusicChannelEQSTileIcon(final InitPackageResourcesParam resparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.android.systemui", "drawable", "icon_btn_dummy", modRes.fwd(R.drawable.icon_btn_music_channel_light));
+		resparam.res.hookLayout("com.android.systemui", "layout", "quick_settings_tile_music_channel", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				ImageView quick_setting_image = (ImageView)liparam.view.findViewById(resparam.res.getIdentifier("quick_setting_image", "id", "com.android.systemui"));
+				if (quick_setting_image != null)
+				quick_setting_image.setImageDrawable(modRes.getDrawable(R.drawable.icon_btn_music_channel_dark_xl));
+			}
+		});
+		resparam.res.hookLayout("com.android.systemui", "layout", "quick_settings_tile_music_channel_minor", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				ImageView quick_setting_image = (ImageView)liparam.view.findViewById(resparam.res.getIdentifier("quick_setting_image", "id", "com.android.systemui"));
+				if (quick_setting_image != null)
+				quick_setting_image.setImageDrawable(modRes.getDrawable(R.drawable.icon_btn_music_channel_dark_l));
+			}
+		});
 	}
 }

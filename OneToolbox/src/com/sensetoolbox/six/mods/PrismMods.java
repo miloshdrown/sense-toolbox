@@ -436,6 +436,8 @@ public class PrismMods {
 	// Add 5x5, 4x6 and 5x6 grid options to dialog
 	public static void execHook_AppDrawerGridSizesLayout(final InitPackageResourcesParam resparam) {
 		int apps_grid_option = resparam.res.getIdentifier("apps_grid_options", "array", "com.htc.launcher");
+		if (apps_grid_option == 0)
+		apps_grid_option = resparam.res.getIdentifier("apps_grid_option", "array", "com.htc.launcher");
 		String[] gridSizes = resparam.res.getStringArray(apps_grid_option);
 		
 		final int n = gridSizes.length;

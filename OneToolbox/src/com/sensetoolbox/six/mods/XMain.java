@@ -124,6 +124,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_other_vzwnotif", false))
 			OtherMods.execHook_VZWWiFiNotif();
 		
+		if (pref.getBoolean("pref_key_controls_keyshaptic_enable", false))
+			ControlsMods.execHook_KeysHapticFeedback();
+		
 		//OtherMods.execHook_HapticNotify();
 	}
 	
@@ -218,6 +221,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_sysui_theqs", false))
 				SysUIMods.execHook_TranslucentHorizEQS(resparam);
+			
+			if (pref.getBoolean("pref_key_other_musicchannel", false))
+				OtherMods.execHook_MusicChannelEQSTileIcon(resparam);
 		}
 		
 		if (pkg.equals("com.android.settings")) {
@@ -513,6 +519,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_sysui_recentslongtap", false))
 				SysUIMods.execHook_RecentsLongTap(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_musicchannel", false))
+				OtherMods.execHook_MusicChannelEQSTile(lpparam);
 			
 			CleanBeamMods.execHook_HideIcons(lpparam);
 		}

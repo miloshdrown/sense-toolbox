@@ -100,6 +100,7 @@ public class DimmedActivity extends Activity {
 	
 	private void createDialog(int dType, Intent intent) {
 		if (dType == 1) {
+			getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 			ApmDialog rebD = new ApmDialog(this, dialogType);
 			currApm = rebD.show();
 		} else if (dType == 2) {
@@ -221,7 +222,7 @@ public class DimmedActivity extends Activity {
 				if (!isInLockscreen) getWindow().getDecorView().setBackgroundColor(Color.argb(170, 0, 0, 0));
 			}
 			if (!isInLockscreen) overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-		}
+		} else getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 		
 		super.onCreate(bundle);
 		if (isInLockscreen && this.getClass() == DimmedActivityLS.class)
@@ -447,7 +448,7 @@ public class DimmedActivity extends Activity {
 				getWindow().setBackgroundDrawable(blurredBkg);
 			else
 				getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-		}
+		} else getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 	}
 	
 	@Override

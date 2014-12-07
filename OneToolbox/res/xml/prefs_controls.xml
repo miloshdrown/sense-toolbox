@@ -49,6 +49,17 @@
 			android:entryValues="@array/extendedpanel_actions_val"
 			android:defaultValue="1"
 			android:dependency="pref_key_controls_extendedpanel" />
+		<com.sensetoolbox.six.utils.SeekBarPreference
+			android:key="pref_key_controls_keyshaptic"
+			android:title="@string/controls_keyshaptic_title"
+			android:summary="@string/controls_keyshaptic_summ"
+			toolbox:dialogEnableMessage="@string/seekbar_mod_enable"
+			android:dialogMessage="@string/controls_keyshaptic_desc"
+			android:defaultValue="15"
+			android:text=" ms"
+			android:max="100"
+			toolbox:hapticPref="true"
+			toolbox:enableKey="pref_key_controls_keyshaptic_enable"/>
 				
 		<com.htc.preference.HtcPreferenceCategory
 			android:title="@string/controls_mods_backlongpress"

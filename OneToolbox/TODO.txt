@@ -31,15 +31,11 @@ Ideas
 Current changelog
 =================
 
-1.4.4
-[New] "Switch to previous app" action
-[New] Option to delete taken screenshot from notififcation
-[New] Hide BoomSound, LiveStage and Clari-Fi icons
-[Changed] Recents popup menu mod moved from Always active to Interface mods
-[Fixed] Wake gestures support with different lockscreen versions
-[Fixed] HTC One E8 detection
-[Fixed] RTL bugs (including traffic meter width)
-[Fixed] Popup Notifications crash (countless attempt)
+1.4.5
+[New] Option for navigation keys haptic feedback duration
+[Changed] Music Channel mod also has an EQS tile
+[Fixed] Hide USB icon
+[Fixed] Various mod fixes
 
 ===========
 Translators
@@ -63,6 +59,16 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.4.4
+[New] "Switch to previous app" action
+[New] Option to delete taken screenshot from notification
+[New] Hide BoomSound, LiveStage and Clari-Fi icons
+[Changed] Recents popup menu mod moved from Always active to Interface mods
+[Fixed] Wake gestures support with different lockscreen versions
+[Fixed] HTC One E8 detection
+[Fixed] RTL bugs (including traffic meter width)
+[Fixed] Popup Notifications crash (countless attempt)
 
 1.4.3
 [New] Additional actions for extended assist panel

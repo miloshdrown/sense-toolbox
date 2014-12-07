@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.sensetoolbox.six"
-	android:versionCode="18"
-	android:versionName="1.4.4" >
+	android:versionCode="19"
+	android:versionName="1.4.5" >
 
 	<uses-sdk
 		android:minSdkVersion="19"
@@ -15,6 +15,7 @@
 	<uses-permission android:name="android.permission.BIND_APPWIDGET" />
 	<uses-permission android:name="android.permission.READ_LOGS" />
 	<uses-permission android:name="android.permission.DUMP" />
+	<uses-permission android:name="android.permission.VIBRATE" />
 
 	<application
 		android:allowBackup="false"
