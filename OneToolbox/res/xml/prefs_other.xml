@@ -82,10 +82,6 @@
 		
 		<com.htc.preference.HtcPreferenceCategory
 			android:title="@string/various_mods_notifications" >
-		<com.htc.preference.HtcPreference
-			android:key="pref_key_other_popupnotify"
-			android:title="@string/various_popupnotify_title"
-			android:summary="@string/various_popupnotify_summ" />
 		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_other_mtpnotif"
 			android:summary="@string/various_mtpnotif_summ"

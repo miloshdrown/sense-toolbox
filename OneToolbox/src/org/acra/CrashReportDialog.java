@@ -6,11 +6,10 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.util.Map;
 
 import org.acra.collector.CrashReportData;
 
-import com.htc.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcEditText;
 import com.sensetoolbox.six.R;
@@ -167,7 +166,8 @@ public class CrashReportDialog extends Activity {
 		try {
 			CrashReportPersister persister = new CrashReportPersister(getApplicationContext());
 			CrashReportData crashData = persister.load(mReportFileName);
-			String payload = new GsonBuilder().create().toJson(Helpers.getParamsAsStringString(crashData), Map.class);
+			ObjectMapper mapper = new ObjectMapper();
+			String payload = mapper.writeValueAsString(Helpers.getParamsAsStringString(crashData));
 			int payloadSize = payload.getBytes("UTF-8").length;
 			boolean isManualReport = crashData.getProperty(ReportField.STACK_TRACE).contains("Report requested by developer");
 			

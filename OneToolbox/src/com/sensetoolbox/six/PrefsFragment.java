@@ -95,6 +95,15 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			showRestoreInfoDialog();
 		}
 		
+		HtcPreference popupNotifyPreference = (HtcPreference) findPreference("pref_key_other_popupnotify");
+		popupNotifyPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+			@Override
+			public boolean onPreferenceClick(HtcPreference arg0) {
+				getActivity().startActivity(new Intent(getActivity(), PopupNotify.class));
+				return true;
+			}
+		});
+		
 		//Add version name to support title
 		try {
 			HtcPreferenceCategory supportCat = (HtcPreferenceCategory) findPreference("pref_key_support");
@@ -772,15 +781,6 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			
 			HtcListPreference keysLightPreference = (HtcListPreference) findPreference("pref_key_other_keyslight");
 			if (keysLightPreference != null) keysLightPreference.setOnPreferenceChangeListener(applyButtonsLight);
-			
-			HtcPreference popupNotifyPreference = (HtcPreference) findPreference("pref_key_other_popupnotify");
-			popupNotifyPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
-				@Override
-				public boolean onPreferenceClick(HtcPreference arg0) {
-					getActivity().startActivity(new Intent(getActivity(), PopupNotify.class));
-					return true;
-				}
-			});
 			
 			HtcPreference extremePowerSaverPreference = (HtcPreference) findPreference("pref_key_other_extremepower");
 			extremePowerSaverPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){

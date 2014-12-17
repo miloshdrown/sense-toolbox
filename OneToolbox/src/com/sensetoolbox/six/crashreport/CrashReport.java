@@ -1,7 +1,5 @@
 package com.sensetoolbox.six.crashreport;
 
-import java.util.Map;
-
 import org.acra.ACRA;
 import org.acra.collector.CrashReportData;
 import org.acra.sender.ReportSender;
@@ -11,7 +9,7 @@ import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.protocol.HTTP;
 
-import com.htc.gson.GsonBuilder;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sensetoolbox.six.utils.Helpers;
 
 public class CrashReport implements ReportSender {
@@ -20,7 +18,8 @@ public class CrashReport implements ReportSender {
 	@Override
 	public void send(CrashReportData report) throws ReportSenderException {
 		try {
-			String json = new GsonBuilder().create().toJson(Helpers.getParamsAsStringString(report), Map.class);
+			ObjectMapper mapper = new ObjectMapper();
+			String json = mapper.writeValueAsString(Helpers.getParamsAsStringString(report));
 
 			DefaultHttpClient http = new DefaultHttpClient();
 			HttpPost httpPost = new HttpPost(ACRA.getConfig().formUri());
