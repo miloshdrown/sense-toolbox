@@ -59,7 +59,6 @@ import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils.TruncateAt;
 import android.text.method.SingleLineTransformationMethod;
-import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
 import android.view.Display;
@@ -101,7 +100,6 @@ import com.htc.widget.HtcPopupWindow;
 import com.htc.widget.HtcCompoundButton.OnCheckedChangeListener;
 import com.htc.widget.HtcSeekBar;
 import com.sensetoolbox.six.R;
-import com.sensetoolbox.six.SenseThemes;
 import com.sensetoolbox.six.SenseThemes.PackageTheme;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.PopupAdapter;
@@ -521,10 +519,7 @@ public class SysUIMods {
 			// Inflate the slider layout using current theme
 			ContextThemeWrapper ctw = new ContextThemeWrapper(panel.getContext(), HtcWrapConfiguration.getHtcThemeId(panel.getContext(), 0));
 			PackageTheme pt = Helpers.getThemeForPackageFromXposed(ctw.getPackageName());
-			if (pt != null) {
-				SparseArray<Object[]> styles = SenseThemes.getColors();
-				ctw.setTheme(styles.keyAt(pt.getTheme()));
-			}
+			if (pt != null) ctw.setTheme(Helpers.colors.keyAt(pt.getTheme()));
 			
 			LayoutInflater inflater = LayoutInflater.from(ctw);
 			LinearLayout sliderConatiner = new LinearLayout(ctw);
@@ -1691,11 +1686,10 @@ public class SysUIMods {
 		if (Helpers.allStyles.contains(style)) {
 			PackageTheme pt = Helpers.getThemeForPackageFromXposed(((Context)param.thisObject).getPackageName());
 			if (pt != null) {
-				SparseArray<Object[]> styles = SenseThemes.getColors();
 				if (theme != null) {
-					theme.applyStyle(styles.keyAt(pt.getTheme()), true);
+					theme.applyStyle(Helpers.colors.keyAt(pt.getTheme()), true);
 					param.setResult(null);
-				} else param.args[0] = styles.keyAt(pt.getTheme());
+				} else param.args[0] = Helpers.colors.keyAt(pt.getTheme());
 			}
 		}
 	}
@@ -1714,8 +1708,7 @@ public class SysUIMods {
 					
 					PackageTheme pt = Helpers.getThemeForPackageFromXposed(pkgName);
 					if (pt != null && resType.equals("color") && resName.equals("overlay_color")) {
-						SparseArray<Object[]> styles = SenseThemes.getColors();
-						styles.keyAt(pt.getTheme());
+						Helpers.colors.keyAt(pt.getTheme());
 						param.setResult(null);
 					}
 				}
@@ -1741,7 +1734,7 @@ public class SysUIMods {
 					Context ctx = (Context)param.args[0];
 					if (ctx != null && ctx.getPackageName().equals("android")) {
 						PackageTheme pt = Helpers.getThemeForPackageFromXposed("android");
-						if (pt != null) param.setResult(SenseThemes.getColors().keyAt(pt.getTheme()));
+						if (pt != null) param.setResult(Helpers.colors.keyAt(pt.getTheme()));
 					}
 				}
 			});
@@ -1752,11 +1745,10 @@ public class SysUIMods {
 	
 	private static void replaceCustom(MethodHookParam param, String pkgName) {
 		try {
-			SparseArray<Object[]> styles = SenseThemes.getColors();
 			PackageTheme pt = Helpers.getThemeForPackageFromXposed(pkgName);
 			if (pt != null) {
 				Context ctx = (Context)param.args[0];
-				String htc_theme = (String)styles.valueAt(pt.getTheme())[2];
+				String htc_theme = (String)Helpers.colors.valueAt(pt.getTheme())[0];
 				int htc_theme_id = ctx.getResources().getIdentifier(htc_theme, "style", pkgName);
 				if (htc_theme_id != 0) param.setResult(htc_theme_id);
 			}
@@ -1774,16 +1766,14 @@ public class SysUIMods {
 			if (taskInfo.size() == 0 || taskInfo.get(0).topActivity == null) return;
 			String appPkgName = taskInfo.get(0).topActivity.getPackageName();
 			
-			SparseArray<Object[]> styles = SenseThemes.getColors();
 			PackageTheme pt1 = Helpers.getThemeForPackageFromXposed(appPkgName);
 			String htc_theme = "";
 			if (pt1 != null) {
-				htc_theme = (String)styles.valueAt(pt1.getTheme())[2];
+				htc_theme = (String)Helpers.colors.valueAt(pt1.getTheme())[0];
 			} else {
 				PackageTheme pt2 = Helpers.getThemeForPackageFromXposed(pkgName);
-				if (pt2 != null) htc_theme = (String)styles.valueAt(pt2.getTheme())[2];
+				if (pt2 != null) htc_theme = (String)Helpers.colors.valueAt(pt2.getTheme())[0];
 			}
-			
 			if (htc_theme != "") {
 				int htc_theme_id = ctx.getResources().getIdentifier(htc_theme, "style", pkgName);
 				if (htc_theme_id != 0) param.setResult(htc_theme_id);

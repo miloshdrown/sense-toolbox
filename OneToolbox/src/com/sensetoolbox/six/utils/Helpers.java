@@ -19,9 +19,8 @@ import java.util.Map;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.htc.configuration.HtcWrapConfiguration;
-import com.htc.gson.Gson;
-import com.htc.gson.reflect.TypeToken;
 import com.htc.preference.HtcListPreference;
 import com.htc.preference.HtcMultiSelectListPreference;
 import com.htc.preference.HtcPreference;
@@ -33,7 +32,6 @@ import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.MainActivity;
 import com.sensetoolbox.six.PrefsFragment;
 import com.sensetoolbox.six.R;
-import com.sensetoolbox.six.SenseThemes;
 import com.sensetoolbox.six.SenseThemes.PackageTheme;
 import com.sensetoolbox.six.mods.XMain;
 
@@ -46,6 +44,7 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.content.res.XModuleResources;
 import android.graphics.Bitmap;
@@ -66,6 +65,7 @@ import android.os.Build;
 import android.os.Environment;
 import android.provider.Settings;
 import android.util.LruCache;
+import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.View;
@@ -76,7 +76,7 @@ import android.widget.TextView;
 
 public class Helpers {
 	
-	static List<PackageTheme> cached_pkgthm = null;
+	static List<PackageTheme> cached_pkgthm = new ArrayList<PackageTheme>();
 	static String cached_str;
 	public static ArrayList<AppData> installedAppsList = null;
 	public static ArrayList<AppData> launchableAppsList = null;
@@ -95,6 +95,7 @@ public class Helpers {
 		}
 	};
 	public static List<Integer> allStyles;
+	public static SparseArray<Object[]> colors = new SparseArray<Object[]>();
 
 	private static synchronized boolean preloadLang(String lang) {
 		try {
@@ -315,11 +316,11 @@ public class Helpers {
 	
 	public static synchronized int getCurrentTheme(Context context) {
 		String current_str = context.getSharedPreferences("one_toolbox_prefs", 1).getString("pkgthm", "");
-		if (cached_pkgthm == null || !current_str.equals(cached_str)) {
-			if (current_str != null && !current_str.equals(""))
-				cached_pkgthm = new Gson().fromJson(current_str, new TypeToken<ArrayList<PackageTheme>>(){}.getType());
-			else
-				cached_pkgthm = new ArrayList<PackageTheme>();
+		if (!current_str.equals(cached_str)) {
+			if (current_str != null && !current_str.equals("")) try {
+				ObjectMapper mapper = new ObjectMapper();
+				cached_pkgthm = mapper.readValue(current_str, mapper.getTypeFactory().constructCollectionType(List.class, PackageTheme.class));
+			} catch (Exception e) {}
 			cached_str = current_str;
 		}
 		
@@ -331,7 +332,7 @@ public class Helpers {
 		}
 		
 		if (ptOut != null)
-			return SenseThemes.getColors().keyAt(ptOut.getTheme());
+			return colors.keyAt(ptOut.getTheme());
 		else
 			return HtcWrapConfiguration.getHtcThemeId(context, 0);
 	}
@@ -339,20 +340,20 @@ public class Helpers {
 	public static PackageTheme getThemeForPackageFromXposed(String pkgName) {
 		XMain.pref.reload();
 		if (XMain.pref.getBoolean("themes_active", false)) {
-			String tmp = XMain.pref.getString("pkgthm", null);
+			String current_str = XMain.pref.getString("pkgthm", "");
+			if (!current_str.equals(XMain.xcached_str)) {
+				if (current_str != null && !current_str.equals("")) try {
+					XMain.xcached_pkgthm = XMain.mapper.readValue(current_str, XMain.mapper.getTypeFactory().constructCollectionType(List.class, PackageTheme.class));
+				} catch (Exception e) {}
+				XMain.xcached_str = current_str;
+			}
 			
-			List<PackageTheme> pkgthm;
-			if (tmp != null)
-				pkgthm = new Gson().fromJson(tmp, new TypeToken<ArrayList<PackageTheme>>(){}.getType());
-			else
-				pkgthm = new ArrayList<PackageTheme>();
-			
-			for (PackageTheme pt: pkgthm) if (pt.getPkg() != null)
-				if (pt.getPkg().equals(pkgName) ||
-						(pt.getPkg().equals("com.htc.contacts") && pkgName.equals("com.htc.htcdialer")) ||
-						(pt.getPkg().equals("com.android.settings") && (pkgName.equals("com.htc.htcpowermanager") || pkgName.equals("com.htc.sdm") || pkgName.equals("com.htc.home.personalize") || pkgName.equals("com.htc.widget.notification") || pkgName.equals("com.htc.sense.easyaccessservice")))) {
-					return pt;
-				}
+			for (PackageTheme pt: XMain.xcached_pkgthm) if (pt.getPkg() != null)
+			if (pt.getPkg().equals(pkgName) ||
+				(pt.getPkg().equals("com.htc.contacts") && pkgName.equals("com.htc.htcdialer")) ||
+				(pt.getPkg().equals("com.android.settings") && Arrays.asList("com.htc.htcpowermanager", "com.htc.sdm", "com.htc.home.personalize", "com.htc.widget.notification", "com.htc.sense.easyaccessservice").contains(pkgName))) {
+				return pt;
+			}
 		}
 		return null;
 	}
@@ -646,29 +647,65 @@ public class Helpers {
 		return not_selected;
 	}
 	
+	public static int getStyleId(String styleName) {
+		return Resources.getSystem().getIdentifier(styleName, "style", "com.htc");
+	}
+	
 	static {
-		if (new Version(Build.VERSION.RELEASE).compareTo(new Version("4.4.3")) >= 0)
 		allStyles = Arrays.asList(new Integer[] {
 			// Theme 1
-			0x02030069, 0x0203012d, 0x0203012e, 0x0203012f, 0x02030130,
+			getStyleId("HtcDeviceDefault"),
+			getStyleId("HtcDeviceDefault.CategoryOne"),
+			getStyleId("HtcDeviceDefault.CategoryTwo"),
+			getStyleId("HtcDeviceDefault.CategoryThree"),
+			getStyleId("HtcDeviceDefault.CategoryFour"),
 			// Theme 2
-			0x020301c5, 0x020301c9, 0x020301cd, 0x020301d1, 0x020301d5,
+			getStyleId("ThemeOne"),
+			getStyleId("ThemeOne.CategoryOne"),
+			getStyleId("ThemeOne.CategoryTwo"),
+			getStyleId("ThemeOne.CategoryThree"),
+			getStyleId("ThemeOne.CategoryFour"),
 			// Theme 3
-			0x020301d9, 0x020301dd, 0x020301e1, 0x020301e5, 0x020301e9,
+			getStyleId("ThemeTwo"),
+			getStyleId("ThemeTwo.CategoryOne"),
+			getStyleId("ThemeTwo.CategoryTwo"),
+			getStyleId("ThemeTwo.CategoryThree"),
+			getStyleId("ThemeTwo.CategoryFour"),
 			// Theme 4
-			0x020301ed, 0x020301f1, 0x020301f5, 0x020301f9, 0x020301fd
+			getStyleId("ThemeThree"),
+			getStyleId("ThemeThree.CategoryOne"),
+			getStyleId("ThemeThree.CategoryTwo"),
+			getStyleId("ThemeThree.CategoryThree"),
+			getStyleId("ThemeThree.CategoryFour"),
 		});
-		else
-		allStyles = Arrays.asList(new Integer[] {
-			// Theme 1
-			0x02030069, 0x0203012d, 0x0203012e, 0x0203012f, 0x02030130,
-			// Theme 2
-			0x020301c3, 0x020301c7, 0x020301cb, 0x020301cf, 0x020301d3,
-			// Theme 3
-			0x020301d7, 0x020301db, 0x020301df, 0x020301e3, 0x020301e7,
-			// Theme 4
-			0x020301eb, 0x020301ef, 0x020301f3, 0x020301f7, 0x020301fb
-		});
+		
+		// Theme 1
+		//colors.put(allStyles.get(0), new Object[]{ "HtcDeviceDefault", 0xff252525, 0xff4ea770, 0xff141414 });
+		colors.put(allStyles.get(1), new Object[]{ "HtcDeviceDefault.CategoryOne", 0xff0086cb, 0xff0086cb, 0xff4b4b4b });
+		colors.put(allStyles.get(2), new Object[]{ "HtcDeviceDefault.CategoryTwo", 0xff4ea770, 0xff4ea770, 0xff4b4b4b });
+		colors.put(allStyles.get(3), new Object[]{ "HtcDeviceDefault.CategoryThree", 0xffff5d3d, 0xffff5d3d, 0xff787878 });
+		colors.put(allStyles.get(4), new Object[]{ "HtcDeviceDefault.CategoryFour", 0xff252525, 0xff4ea770, 0xff4ea770 });
+
+		// Theme 2
+		//colors.put(allStyles.get(5), new Object[]{ "ThemeOne", 0xff252525, 0xffff813d, 0xff141414 });
+		colors.put(allStyles.get(6), new Object[]{ "ThemeOne.CategoryOne", 0xffffa63d, 0xffffa63d, 0xff4b4b4b });
+		colors.put(allStyles.get(7), new Object[]{ "ThemeOne.CategoryTwo", 0xffe74457, 0xffe74457, 0xff4b4b4b });
+		colors.put(allStyles.get(8), new Object[]{ "ThemeOne.CategoryThree", 0xfff64541, 0xfff64541, 0xff787878 });
+		colors.put(allStyles.get(9), new Object[]{ "ThemeOne.CategoryFour", 0xff252525, 0xffff813d, 0xffff813d });
+		
+		// Theme 3
+		//colors.put(allStyles.get(10), new Object[]{ "ThemeTwo", 0xff252525, 0xff6658cf, 0xff141414 });
+		colors.put(allStyles.get(11), new Object[]{ "ThemeTwo.CategoryOne", 0xff0761B9, 0xff0761b9, 0xff4b4b4b });
+		colors.put(allStyles.get(12), new Object[]{ "ThemeTwo.CategoryTwo", 0xff07B7B9, 0xff07b7b9, 0xff4b4b4b });
+		colors.put(allStyles.get(13), new Object[]{ "ThemeTwo.CategoryThree", 0xffA325A3, 0xffa325a3, 0xff787878 });
+		colors.put(allStyles.get(14), new Object[]{ "ThemeTwo.CategoryFour", 0xff252525, 0xff6658cf, 0xff6658cf });
+
+		// Theme 4
+		//colors.put(allStyles.get(15), new Object[]{ "ThemeThree", 0xff252525, 0xff4ea770, 0xff141414 });
+		//colors.put(allStyles.get(16), new Object[]{ "ThemeThree.CategoryOne", 0xff252525, 0xff4ea770, 0xff4b4b4b });
+		//colors.put(allStyles.get(17), new Object[]{ "ThemeThree.CategoryTwo", 0xff252525, 0xff4ea770, 0xff4b4b4b });
+		//colors.put(allStyles.get(18), new Object[]{ "ThemeThree.CategoryThree", 0xff252525, 0xff4ea770, 0xff787878 });
+		//colors.put(allStyles.get(19), new Object[]{ "ThemeThree.CategoryFour", 0xff252525, 0xff4ea770, 0xff252525 });
 	}
 	
 	public static ArrayList<View> getChildViewsRecursive(View view) {

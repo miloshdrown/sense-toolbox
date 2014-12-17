@@ -1,9 +1,11 @@
 package com.sensetoolbox.six;
 
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.htc.fragment.widget.CarouselHost.OnTabChangeListener;
+import com.htc.fragment.widget.CarouselHost;
 import com.htc.fragment.widget.CarouselUtil;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.utils.BlurBuilder;
@@ -241,7 +243,10 @@ public class DimmedActivity extends Activity {
 	
 	String curTabTag = null;
 	void initNotifications(final Intent intent, final boolean selectLast) {
-		int dialogTypeNew = intent.getIntExtra("dialogType", 1);
+		int dialogTypeNew = 1;
+		try {
+			dialogTypeNew = intent.getIntExtra("dialogType", 1);
+		} catch (Exception e) {}
 		if (dialogType != dialogTypeNew) {
 			dialogType = dialogTypeNew;
 			if (dialogTypeNew == 2) {
@@ -307,6 +312,9 @@ public class DimmedActivity extends Activity {
 					}
 				}
 				if (curTabTag != null) try {
+					Method getTabSpec = CarouselHost.class.getDeclaredMethod("getTabSpec", String.class);
+					getTabSpec.setAccessible(true);
+					if (getTabSpec.invoke(notifications.getCarouselHost(), curTabTag) != null)
 					notifications.getCarouselHost().setCurrentTabByTag(curTabTag);
 				} catch (Throwable t) {}
 			}

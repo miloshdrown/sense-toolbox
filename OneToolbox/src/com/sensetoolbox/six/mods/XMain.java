@@ -1,7 +1,12 @@
 package com.sensetoolbox.six.mods;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import android.content.res.XResources;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.sensetoolbox.six.SenseThemes.PackageTheme;
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.PackagePermissions;
@@ -30,6 +35,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	public static boolean pref_alarmnotify = false;
 	public static boolean pref_signalnotify = false;
 	public static Version senseVersion;
+	public static ObjectMapper mapper = new ObjectMapper();
+	public static List<PackageTheme> xcached_pkgthm = new ArrayList<PackageTheme>();
+	public static String xcached_str;
 	
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
@@ -124,7 +132,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_other_vzwnotif", false))
 			OtherMods.execHook_VZWWiFiNotif();
 		
-		if (pref.getBoolean("pref_key_controls_keyshaptic_enable", false))
+		if (pref.getBoolean("pref_key_controls_keyshaptic_enable", false) ||
+			pref.getBoolean("pref_key_controls_longpresshaptic_enable", false) ||
+			pref.getBoolean("pref_key_controls_keyboardhaptic_enable", false))
 			ControlsMods.execHook_KeysHapticFeedback();
 		
 		//OtherMods.execHook_HapticNotify();
@@ -595,6 +605,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			pkg.equals("com.htc.album") ||
 			pkg.equals("com.htc.sense.ime"))
 			SysUIMods.execHook_Sense6ColorControlCustom(lpparam, pkg);
+		
+		if (pkg.equals("com.htc.sense.ime")) {
+			if (pref.getBoolean("pref_key_controls_keyboardhaptic_enable", false))
+				ControlsMods.execHook_KeyboardHapticFeedback(lpparam);
+		}
 		
 		if (pkg.equals("com.htc.sense.easyaccessservice")) {
 			if (pref.getBoolean("wake_gestures_active", false) && (Helpers.isM8() || Helpers.isE8()))

@@ -323,6 +323,10 @@
 	<string name="controls_extendedpanel_right_summ">Define an action for right shortcut in extended assist panel.</string>
 	<string name="controls_keyshaptic_title">Keys haptic feedback</string>
 	<string name="controls_keyshaptic_summ">Define the vibration duration for navigation keys.</string>
+	<string name="controls_longpresshaptic_title">Long press haptic feedback</string>
+	<string name="controls_longpresshaptic_summ">Define the vibration duration for long press.</string>
+	<string name="controls_keyboardhaptic_title">Sense keyboard haptic feedback</string>
+	<string name="controls_keyboardhaptic_summ">Define the vibration duration for Sense keyboard.</string>
 	<string name="controls_keyshaptic_desc">Vibration duration</string>
 	<string name="controls_keyshaptic_testbtn">Test current value</string>
 	<string name="seekbar_mod_enable">Enable mod</string>

@@ -44,6 +44,7 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 	private LinearLayout mCheckBoxContainer;
 	private TextView mEnableText;
 	private HtcCheckBox mPrefSwitch;
+	private String mKey;
 	private String mEnableKey;
 	private boolean mIsEnabled;
 	private boolean mEnableValue;
@@ -60,6 +61,7 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 		mSuffix = attrs.getAttributeValue(androidns, "text");
 		mDefault = attrs.getAttributeIntValue(androidns, "defaultValue", 0);
 		mMax = attrs.getAttributeIntValue(androidns, "max", 100);
+		mKey = attrs.getAttributeValue(androidns, "key");
 		mEnableKey = attrs.getAttributeValue(toolboxns, "enableKey");
 		mHapticPref = attrs.getAttributeBooleanValue(toolboxns, "hapticPref", false);
 		density = mContext.getResources().getDisplayMetrics().density;
@@ -152,7 +154,12 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 				@Override
 				public void onClick(View v) {
 					Vibrator vibe = (Vibrator)mContext.getSystemService(Context.VIBRATOR_SERVICE);
-					vibe.vibrate(mSeekBarValue);
+					if (mKey.equals("pref_key_controls_keyshaptic"))
+						vibe.vibrate(new long[] { 0, mSeekBarValue, 0, 0 }, -1);
+					else if (mKey.equals("pref_key_controls_longpresshaptic"))
+						vibe.vibrate(new long[] { 0, 1, 20, mSeekBarValue }, -1);
+					else if (mKey.equals("pref_key_controls_keyboardhaptic"))
+						vibe.vibrate(mSeekBarValue);
 				}
 			});
 			if (mValue == 0)

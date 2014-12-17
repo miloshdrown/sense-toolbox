@@ -8,7 +8,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.shapes.RectShape;
-import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,7 +18,6 @@ import android.widget.TextView;
 
 import com.htc.widget.HtcListView;
 import com.sensetoolbox.six.R;
-import com.sensetoolbox.six.SenseThemes;
 
 public class ColorSelect extends HtcListView {
 	private int selected = 0;
@@ -36,7 +34,7 @@ public class ColorSelect extends HtcListView {
 		super(ctx);
 		selected = selectedTheme;
 		final ColorSelect cs = this;
-		setAdapter(new ColorArrayAdapter(ctx, SenseThemes.getColors(), selected, isBF));
+		setAdapter(new ColorArrayAdapter(ctx, selected, isBF));
 		this.setOverScrollMode(ListView.OVER_SCROLL_NEVER);
 		this.setOnItemClickListener(new OnItemClickListener() {
 			@Override
@@ -54,27 +52,25 @@ public class ColorSelect extends HtcListView {
 	
 	private class ColorArrayAdapter extends BaseAdapter {
 		
-		final SparseArray<Object[]> items;
 		private LayoutInflater mInflater;
 		//Context mContext = null;
 		boolean isBlinkfeed = false;
 
-		public ColorArrayAdapter(Context context, SparseArray<Object[]> colors, int i, boolean isBF) {
+		public ColorArrayAdapter(Context context, int i, boolean isBF) {
 			//mContext = context;
-			items = colors;
 			selected = i;
 			mInflater = LayoutInflater.from(context);
 			isBlinkfeed = isBF;
 		}
 		
 		public int getCount() {
-			return items.size();
+			return Helpers.colors.size();
 		}
-		 
+		
 		public Object[] getItem(int position) {
-			return items.get(items.keyAt(position));
+			return Helpers.colors.valueAt(position);
 		}
-		 
+		
 		public long getItemId(int position) {
 			return position;
 		}
@@ -92,8 +88,8 @@ public class ColorSelect extends HtcListView {
 			borderColor.getPaint().setStyle(Style.STROKE);
 			borderColor.getPaint().setStrokeWidth(2);
 			
-			int item0 = (Integer)getItem(position)[0];
-			int item1 = (Integer)getItem(position)[1];
+			int item0 = (Integer)getItem(position)[1];
+			int item1 = (Integer)getItem(position)[2];
 			int item2 = (Integer)getItem(position)[3];
 			
 			ColorFrameLayout colorHeader = (ColorFrameLayout)row.findViewById(R.id.header_color);

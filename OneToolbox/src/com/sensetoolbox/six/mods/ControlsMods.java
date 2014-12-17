@@ -617,11 +617,39 @@ public class ControlsMods {
 	}
 	
 	public static void execHook_KeysHapticFeedback() {
-		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "getSystemVibrationDurationInt", new XC_MethodHook() {
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
 			@Override
-			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				int duration = XMain.pref.getInt("pref_key_controls_keyshaptic", 15);
-				param.setResult(duration);
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				try {
+					if (XMain.pref.getBoolean("pref_key_controls_keyshaptic_enable", false)) {
+						int duration_keys = XMain.pref.getInt("pref_key_controls_keyshaptic", 15);
+						XposedHelpers.setObjectField(param.thisObject, "mVirtualKeyVibePattern", new long[] { 0, duration_keys, 0, 0 });
+					}
+					if (XMain.pref.getBoolean("pref_key_controls_longpresshaptic_enable", false)) {
+						int duration_long = XMain.pref.getInt("pref_key_controls_longpresshaptic", 21);
+						XposedHelpers.setObjectField(param.thisObject, "mLongPressVibePattern", new long[] { 0, 1, 20, duration_long });
+					}
+					if (XMain.pref.getBoolean("pref_key_controls_keyboardhaptic_enable", false)) {
+						int duration_keyb = XMain.pref.getInt("pref_key_controls_keyboardhaptic", 15);
+						XposedHelpers.setObjectField(param.thisObject, "mKeyboardTapVibePattern", new long[] { duration_keyb });
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+	}
+	
+	public static void execHook_KeyboardHapticFeedback(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.sense.ime.HTCIMMData", lpparam.classLoader, "getACCvalue", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				try {
+					int duration_keyb = XMain.pref.getInt("pref_key_controls_keyboardhaptic", 15);
+					XposedHelpers.setStaticIntField(findClass("com.htc.sense.ime.HTCIMMData", lpparam.classLoader), "sVibrationDuration", duration_keyb);
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
 			}
 		});
 	}
