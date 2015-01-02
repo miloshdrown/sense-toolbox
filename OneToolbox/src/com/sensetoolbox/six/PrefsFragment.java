@@ -1,17 +1,9 @@
 package com.sensetoolbox.six;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
-import java.util.Locale;
-import java.util.TimeZone;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,7 +22,6 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.os.PowerManager;
 import android.os.Process;
 import android.view.View;
@@ -39,7 +30,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
@@ -58,7 +48,6 @@ import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.utils.ApkInstaller;
 import com.sensetoolbox.six.utils.AppShortcutAddDialog;
 import com.sensetoolbox.six.utils.ColorPreference;
-import com.sensetoolbox.six.utils.DownloadAndUnZip;
 import com.sensetoolbox.six.utils.DynamicPreference;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.HtcListPreferencePlus;
@@ -103,11 +92,23 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			showRestoreInfoDialog();
 		}
 		
-		(new Handler()).postDelayed(new Runnable() {
+		(new Thread() {
+			@Override
 			public void run() {
-				showTip(0);
+				do {
+					try {
+						Thread.sleep(500);
+					} catch (InterruptedException e) {}
+				} while (getActivity() == null);
+
+				getActivity().runOnUiThread(new Runnable() {
+					@Override
+					public void run() {
+						showTip(0);
+					}
+				});
 			}
-		}, 500L);
+		}).start();
 		
 		HtcPreference popupNotifyPreference = (HtcPreference) findPreference("pref_key_other_popupnotify");
 		popupNotifyPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
@@ -142,58 +143,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		HtcCheckBoxPreference.OnPreferenceClickListener openLang = new HtcCheckBoxPreference.OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(HtcPreference preference) {
-				HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
-				alert.setTitle(Helpers.l10n(act, R.string.toolbox_l10n_title));
-				String buildId = "?";
-				int timeStamp = 0;
-				try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "version")))) {
-					buildId = br.readLine();
-					timeStamp = Integer.parseInt(br.readLine());
-					Date datetime = new Date((long)timeStamp * 1000);
-					SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz", Locale.getDefault());
-					format.setTimeZone(TimeZone.getTimeZone("UTC"));
-					TextView center = Helpers.createCenteredText(act, R.string.download_current_ver);
-					center.setText(center.getText()  + " " + buildId + "\n(" + format.format(datetime) + ")");
-					alert.setView(center);
-				} catch (Exception e) {
-					if (!(e instanceof FileNotFoundException)) e.printStackTrace();
-				}
-				alert.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {}
-				});
-				alert.setNeutralButton(Helpers.l10n(act, R.string.remove), new DialogInterface.OnClickListener() {
-					void deleteRecursive(File fileOrDirectory) {
-						if (fileOrDirectory.isDirectory()) for (File child: fileOrDirectory.listFiles()) deleteRecursive(child);
-						fileOrDirectory.delete();
-					}
-					
-					public void onClick(DialogInterface dialog, int whichButton) {
-						File tmp = new File(Helpers.dataPath);
-						deleteRecursive(tmp);
-						
-						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
-						alert.setTitle(Helpers.l10n(act, R.string.success));
-						alert.setView(Helpers.createCenteredText(act, R.string.download_removed));
-						alert.setCancelable(false);
-						alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-							public void onClick(DialogInterface dialog, int whichButton) {
-								Helpers.l10n = null;
-								Helpers.cLang = "";
-								act.recreate();
-							}
-						});
-						alert.show();
-					}
-				});
-				alert.setPositiveButton(Helpers.l10n(act, R.string.toolbox_l10n_btn), new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {
-						if (act != null) {
-							final DownloadAndUnZip downloadTask = new DownloadAndUnZip(act);
-							downloadTask.execute("http://sensetoolbox.com/l10n/strings_sense6.zip");
-						}
-					}
-				});
-				alert.show();
+				Helpers.openLangDialog(getActivity());
 				return true;
 			}
 		};
@@ -281,13 +231,10 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	
 	private void reloadTip(int step) {
 		if (step == 0) {
-			if (rebootTip != null) {
-				rebootTip.setOnShowcaseEventListener(null);
-				rebootTip.hide();
-			}
+			if (rebootTip != null) rebootTip.close();
 			showTip(0);
 		} if (step == 1) {
-			if (backupTip != null) backupTip.hide();
+			if (backupTip != null) backupTip.close();
 			showTip(1);
 		}
 	}

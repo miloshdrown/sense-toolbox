@@ -228,7 +228,7 @@ public class EPSRemap extends HtcPreferenceActivityEx {
 				}
 			}
 		});
-		builder.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+		builder.setNeutralButton(R.string.sense_themes_cancel, new DialogInterface.OnClickListener() {
 			@Override
 			public void onClick(DialogInterface dialog, int which) {
 				dialog.dismiss();

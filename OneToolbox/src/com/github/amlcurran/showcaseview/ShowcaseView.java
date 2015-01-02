@@ -37,6 +37,7 @@ import android.widget.RelativeLayout;
 import com.github.amlcurran.showcaseview.targets.Target;
 import com.htc.widget.HtcRimButton;
 import com.sensetoolbox.six.R;
+import com.sensetoolbox.six.utils.Helpers;
 
 import static com.github.amlcurran.showcaseview.AnimationFactory.AnimationEndListener;
 import static com.github.amlcurran.showcaseview.AnimationFactory.AnimationStartListener;
@@ -48,8 +49,10 @@ public class ShowcaseView extends RelativeLayout
 		implements View.OnTouchListener, ShowcaseViewApi {
 
 	private static final int HOLO_BLUE = Color.parseColor("#33B5E5");
-
+	
+	private static Activity activity = null;
 	private final HtcRimButton mEndButton;
+	private final HtcRimButton mTranslateButton;
 	private final TextDrawer textDrawer;
 	private final ShowcaseDrawer showcaseDrawer;
 	private final ShowcaseAreaCalculator showcaseAreaCalculator;
@@ -104,6 +107,7 @@ public class ShowcaseView extends RelativeLayout
 		fadeOutMillis = getResources().getInteger(android.R.integer.config_mediumAnimTime);
 
 		mEndButton = (HtcRimButton) LayoutInflater.from(context).inflate(R.layout.showcase_button, null);
+		mTranslateButton = (HtcRimButton) LayoutInflater.from(context).inflate(R.layout.showcase_button, null);
 		if (newStyle) {
 			showcaseDrawer = new NewShowcaseDrawer(getResources());
 		} else {
@@ -133,6 +137,20 @@ public class ShowcaseView extends RelativeLayout
 				mEndButton.setOnClickListener(hideOnClickListener);
 			}
 			addView(mEndButton);
+			
+			RelativeLayout.LayoutParams lps2 = (LayoutParams) generateDefaultLayoutParams();
+			lps2.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+			lps2.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+			lps2.setMargins(margin, margin, margin, margin);
+			mTranslateButton.setLayoutParams(lps2);
+			mTranslateButton.setText(Helpers.l10n(this.getContext(), R.string.about_l10n));
+			mTranslateButton.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Helpers.openLangDialog(activity);
+				}
+			});
+			addView(mTranslateButton);
 		}
 
 	}
@@ -292,6 +310,11 @@ public class ShowcaseView extends RelativeLayout
 		mEventListener.onShowcaseViewHide(this);
 		fadeOutShowcase();
 	}
+	
+	public void close() {
+		clearBitmap();
+		hideImmediate();
+	}
 
 	private void clearBitmap() {
 		if (bitmapBuffer != null && !bitmapBuffer.isRecycled()) {
@@ -346,8 +369,8 @@ public class ShowcaseView extends RelativeLayout
 		return blockTouches && distanceFromFocus > showcaseDrawer.getBlockedRadius();
 	}
 
-	private static void insertShowcaseView(ShowcaseView showcaseView, Activity activity) {
-		((ViewGroup) activity.getWindow().getDecorView()).addView(showcaseView);
+	private static void insertShowcaseView(ShowcaseView showcaseView, Activity act) {
+		((ViewGroup) act.getWindow().getDecorView()).addView(showcaseView);
 		if (!showcaseView.hasShot()) {
 			showcaseView.show();
 		} else {
@@ -389,14 +412,13 @@ public class ShowcaseView extends RelativeLayout
 	public static class Builder {
 
 		final ShowcaseView showcaseView;
-		private final Activity activity;
 
 		public Builder(Activity act) {
 			this(act, false);
 		}
 
 		public Builder(Activity act, boolean useNewStyle) {
-			this.activity = act;
+			activity = act;
 			this.showcaseView = new ShowcaseView(act, useNewStyle);
 			this.showcaseView.setTarget(Target.NONE);
 		}

@@ -3,18 +3,23 @@ package com.sensetoolbox.six.utils;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
+import java.util.TimeZone;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -267,6 +272,61 @@ public class Helpers {
 				}
 			}
 		}
+	}
+	
+	public static void openLangDialog(final Activity act) {
+		HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
+		alert.setTitle(l10n(act, R.string.toolbox_l10n_title));
+		String buildId = "?";
+		int timeStamp = 0;
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath + "version")))) {
+			buildId = br.readLine();
+			timeStamp = Integer.parseInt(br.readLine());
+			Date datetime = new Date((long)timeStamp * 1000);
+			SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz", Locale.getDefault());
+			format.setTimeZone(TimeZone.getTimeZone("UTC"));
+			TextView center = createCenteredText(act, R.string.download_current_ver);
+			center.setText(center.getText()  + " " + buildId + "\n(" + format.format(datetime) + ")");
+			alert.setView(center);
+		} catch (Exception e) {
+			if (!(e instanceof FileNotFoundException)) e.printStackTrace();
+		}
+		alert.setNegativeButton(R.string.sense_themes_cancel, new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {}
+		});
+		alert.setNeutralButton(l10n(act, R.string.remove), new DialogInterface.OnClickListener() {
+			void deleteRecursive(File fileOrDirectory) {
+				if (fileOrDirectory.isDirectory()) for (File child: fileOrDirectory.listFiles()) deleteRecursive(child);
+				fileOrDirectory.delete();
+			}
+			
+			public void onClick(DialogInterface dialog, int whichButton) {
+				File tmp = new File(dataPath);
+				deleteRecursive(tmp);
+				
+				HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
+				alert.setTitle(l10n(act, R.string.success));
+				alert.setView(createCenteredText(act, R.string.download_removed));
+				alert.setCancelable(false);
+				alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						l10n = null;
+						cLang = "";
+						act.recreate();
+					}
+				});
+				alert.show();
+			}
+		});
+		alert.setPositiveButton(l10n(act, R.string.toolbox_l10n_btn), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				if (act != null) {
+					final DownloadAndUnZip downloadTask = new DownloadAndUnZip(act);
+					downloadTask.execute("http://sensetoolbox.com/l10n/strings_sense6.zip");
+				}
+			}
+		});
+		alert.show();
 	}
 
 	public static boolean isXposedInstalled(Context ctx) {

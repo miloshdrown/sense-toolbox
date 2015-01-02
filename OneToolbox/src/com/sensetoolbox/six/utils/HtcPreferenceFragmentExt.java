@@ -172,7 +172,7 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 					}
 				}
 			});
-			alert.setNeutralButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
+			alert.setNeutralButton(R.string.sense_themes_cancel, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
 			alert.show();

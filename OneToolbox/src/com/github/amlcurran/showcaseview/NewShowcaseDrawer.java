@@ -63,12 +63,12 @@ class NewShowcaseDrawer extends StandardShowcaseDrawer {
 
 	@Override
 	public int getShowcaseHeight() {
-		return (int)outerY;
+		return 5;
 	}
 
 	@Override
 	public float getBlockedRadius() {
-		return innerX;
+		return innerY;
 	}
 
 	@Override
