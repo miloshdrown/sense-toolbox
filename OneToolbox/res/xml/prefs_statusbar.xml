@@ -136,6 +136,15 @@
 			android:key="pref_key_hide_icons"
 			android:entries="@array/hideicons"
 			android:entryValues="@array/hideicons_val" />
+		<com.sensetoolbox.six.utils.SeekBarPreference
+			android:key="pref_key_statusbar_selectivealarmicon"
+			android:title="@string/selectivealarmicon_title"
+			android:summary="@string/selectivealarmicon_summ"
+			android:dialogMessage="@string/alarm_interval"
+			toolbox:dialogEnableMessage="@string/seekbar_mod_enable"
+			android:defaultValue="24"
+			android:max="48"
+			toolbox:enableKey="pref_key_statusbar_selectivealarmicon_enable"/>
 		<com.htc.preference.HtcPreference
 			android:title="@string/cleanbeam_sunbeam_title"
 			android:summary="@string/cleanbeam_sunbeam_summ"

@@ -32,6 +32,11 @@
 			android:title="@string/various_ytwatermark_title"
 			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_psscrolltotop"
+			android:summary="@string/various_psscrolltotop_summ"
+			android:title="@string/various_psscrolltotop_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_other_contactsnocorner"
 			android:summary="@string/various_contactsnocorner_summ"
 			android:title="@string/various_contactsnocorner_title"

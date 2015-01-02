@@ -1,3 +1,5 @@
 package com.sensetoolbox.six;
 
-public class GateWay {}
+import android.app.Activity;
+
+public class GateWay extends Activity {}

@@ -33,6 +33,8 @@ Current changelog
 
 1.4.5
 [New] Haptic feedback duration options for navigation keys, long press and Sense keyboard
+[New] Display alarm icon only for defined number of hours before alarm
+[New] Tap statusbar to scroll to top in Google Play Store
 [Changed] EQS tile added for Music Channel mod
 [Changed] Sense 6 themes performance and compatibility improvements
 [Fixed] Hide USB icon

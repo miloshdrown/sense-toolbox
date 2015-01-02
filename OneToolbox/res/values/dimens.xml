@@ -23,4 +23,11 @@
 	<dimen name="navigation_bar_height_landscape">30dp</dimen>
 	<dimen name="navigation_bar_width">30dp</dimen>
 
+	<dimen name="button_margin">24dp</dimen>
+	<dimen name="text_padding">24dp</dimen>
+	<dimen name="showcase_x_inner">60dp</dimen>
+	<dimen name="showcase_x_outer">90dp</dimen>
+	<dimen name="showcase_y_inner">60dp</dimen>
+	<dimen name="showcase_y_outer">90dp</dimen>
+	
 </resources>

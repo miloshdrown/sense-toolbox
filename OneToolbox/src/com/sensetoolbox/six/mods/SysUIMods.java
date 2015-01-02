@@ -749,7 +749,7 @@ public class SysUIMods {
 										dataRateVal.setText(spd.get(0));
 										dataRateUnits.setText(spd.get(1));
 										if (XMain.pref.getBoolean("pref_key_cb_texts", false)) {
-											int themeColor = CleanBeamMods.getThemeColor();
+											int themeColor = StatusbarMods.getThemeColor();
 											dataRateVal.setTextColor(themeColor);
 											dataRateUnits.setTextColor(themeColor);
 										}
@@ -1522,10 +1522,6 @@ public class SysUIMods {
 		}
 	}
 	
-	private static String getNextAlarm(Context ctx) {
-		return Settings.System.getString(ctx.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
-	}
-	
 	private static void updateLabel(Object paramThisObject) {
 		try {
 			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
@@ -1533,19 +1529,19 @@ public class SysUIMods {
 			TextView mSpnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mSpnLabel");
 			TextView mNetworkTextView = (TextView)XposedHelpers.getObjectField(paramThisObject, "mNetworkTextView");
 			if (mPlmnLabel != null) {
-				String txt = getNextAlarm(mPlmnLabel.getContext());
+				String txt = Helpers.getNextAlarm(mPlmnLabel.getContext());
 				if (XMain.pref_alarmnotify && txt != null && !txt.equals("")) mPlmnLabel.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
 				else if (XMain.pref_signalnotify && !mPlmnLabel.getText().toString().contains("dBm"))
 				mPlmnLabel.setText(mPlmnLabel.getText() + getCurrentSignalLevel(mPlmnLabel.getContext()));
 			}
 			if (mSpnLabel != null) {
-				String txt = getNextAlarm(mSpnLabel.getContext());
+				String txt = Helpers.getNextAlarm(mSpnLabel.getContext());
 				if (XMain.pref_alarmnotify && txt != null && !txt.equals("")) mSpnLabel.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
 				else if (XMain.pref_signalnotify && !mSpnLabel.getText().toString().contains("dBm"))
 				mSpnLabel.setText(mSpnLabel.getText() + getCurrentSignalLevel(mSpnLabel.getContext()));
 			}
 			if (mNetworkTextView != null) {
-				String txt = getNextAlarm(mNetworkTextView.getContext());
+				String txt = Helpers.getNextAlarm(mNetworkTextView.getContext());
 				if (XMain.pref_alarmnotify && txt != null && !txt.equals("")) mNetworkTextView.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
 				else if (XMain.pref_signalnotify && !mNetworkTextView.getText().toString().contains("dBm"))
 				mNetworkTextView.setText(mNetworkTextView.getText() + getCurrentSignalLevel(mNetworkTextView.getContext()));

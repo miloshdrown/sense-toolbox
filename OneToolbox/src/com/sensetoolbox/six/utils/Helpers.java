@@ -748,4 +748,18 @@ public class Helpers {
 		} catch (Exception e) {}
 		return isHapticAllowed;
 	}
+	
+	public static String getNextAlarm(Context ctx) {
+		if (ctx != null)
+			return Settings.System.getString(ctx.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
+		else
+			return null;
+	}
+	
+	public static long getNextAlarmTime(Context ctx) {
+		if (ctx != null)
+			return Settings.System.getLong(ctx.getContentResolver(), "next_alarm_time", -1);
+		else
+			return -1;
+	}
 }

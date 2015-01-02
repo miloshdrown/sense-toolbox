@@ -72,7 +72,9 @@ import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
@@ -104,7 +106,7 @@ public class OtherMods {
 	public static void startAPM(Context ctx){
 		try {
 			Intent intent = new Intent();
-			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.DimmedActivity");
 			intent.putExtra("dialogType", 1);
 			ctx.startActivity(intent);
@@ -780,12 +782,17 @@ public class OtherMods {
 		return sbns;
 	}
 	
-	private static void sendSbnsArray(ArrayList<StatusBarNotification> sbns, Context mContext, boolean asBroadcast) {
+	private static void sendSbnsArray(ArrayList<StatusBarNotification> sbns, final Context mContext, boolean asBroadcast) {
 		if (asBroadcast) {
-			Intent intent = new Intent("com.sensetoolbox.six.UPDATENOTIFICATIONS");
+			final Intent intent = new Intent("com.sensetoolbox.six.UPDATENOTIFICATIONS");
 			intent.putParcelableArrayListExtra("sbns", sbns);
 			intent.putExtra("dialogType", 2);
-			mContext.sendBroadcast(intent);
+			if (Settings.System.getInt(mContext.getContentResolver(), "popup_notifications_visible", 0) == 1) mContext.sendBroadcast(intent); else
+			(new Handler()).postDelayed(new Runnable() {
+				public void run() {
+					mContext.sendBroadcast(intent);
+				}
+			}, 300L);
 		} else try {
 			boolean lightUpScreen = XMain.pref.getBoolean("pref_key_other_popupnotify_lightup", false);
 			boolean sleepMode = XMain.pref.getBoolean("pref_key_other_popupnotify_sleepmode", false);
@@ -801,10 +808,12 @@ public class OtherMods {
 			
 			boolean isFromPhone = false;
 			for (StatusBarNotification sbn: sbns)
-			if (sbn != null &&
-				sbn.getNotification() != null &&
-				sbn.getPackageName().equals("com.android.phone")) {
+			if (sbn != null && sbn.getNotification() != null && sbn.getPackageName().equals("com.android.phone")) {
 				isFromPhone = true;
+				if (sbn.getNotification().icon == mContext.getResources().getIdentifier("stat_sys_warning", "drawable", "android")) {
+					XposedBridge.log("Ignoring notification: " + sbn.getNotification().toString());
+					return;
+				}
 				break;
 			}
 			
@@ -1330,6 +1339,86 @@ public class OtherMods {
 				ImageView quick_setting_image = (ImageView)liparam.view.findViewById(resparam.res.getIdentifier("quick_setting_image", "id", "com.android.systemui"));
 				if (quick_setting_image != null)
 				quick_setting_image.setImageDrawable(modRes.getDrawable(R.drawable.icon_btn_music_channel_dark_l));
+			}
+		});
+	}
+	
+	public static StatusBarTapReceiver sbtReceiver = new StatusBarTapReceiver();
+	public static Activity mainAct = null;
+	public static Activity reviewAct = null;
+	
+	public static class StatusBarTapReceiver extends BroadcastReceiver {
+		@Override
+		public void onReceive(Context context, Intent intent) {
+			if (mainAct != null) try {
+				View details_expanded_scroller = mainAct.findViewById(mainAct.getResources().getIdentifier("details_expanded_scroller", "id", "com.android.vending"));
+				if (details_expanded_scroller != null && details_expanded_scroller instanceof ScrollView) ((ScrollView)details_expanded_scroller).smoothScrollTo(0, 0);
+				
+				View bucket_list_view = mainAct.findViewById(mainAct.getResources().getIdentifier("bucket_list_view", "id", "com.android.vending"));
+				if (bucket_list_view != null && bucket_list_view instanceof ListView) ((ListView)bucket_list_view).smoothScrollToPosition(0);
+				
+				View details_scroller = mainAct.findViewById(mainAct.getResources().getIdentifier("details_scroller", "id", "com.android.vending"));
+				if (details_scroller != null && details_scroller instanceof ScrollView) ((ScrollView)details_scroller).smoothScrollTo(0, 0);
+				
+				View page_content = mainAct.findViewById(mainAct.getResources().getIdentifier("page_content", "id", "com.android.vending"));
+				if (page_content != null && page_content instanceof ScrollView) ((ScrollView)page_content).smoothScrollTo(0, 0);
+				
+				ViewGroup viewpager = (ViewGroup)mainAct.findViewById(mainAct.getResources().getIdentifier("viewpager", "id", "com.android.vending"));
+				if (viewpager != null) {
+					int pages = viewpager.getChildCount();
+					for (int pg = 0; pg < pages; pg++) {
+						View page = viewpager.getChildAt(pg);
+						if (page != null)
+						if (page instanceof ListView) ((ListView)page).smoothScrollToPosition(0); else {
+							View bucket_list_view2 = page.findViewById(mainAct.getResources().getIdentifier("bucket_list_view", "id", "com.android.vending"));
+							if (bucket_list_view2 != null && bucket_list_view2 instanceof ListView) ((ListView)bucket_list_view2).smoothScrollToPosition(0);
+							
+							View my_apps_content_list = page.findViewById(mainAct.getResources().getIdentifier("my_apps_content_list", "id", "com.android.vending"));
+							if (my_apps_content_list != null && my_apps_content_list instanceof ListView) ((ListView)my_apps_content_list).smoothScrollToPosition(0);
+						}
+					}
+				}
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+			
+			if (reviewAct != null) try {
+				View all_reviews_list = reviewAct.findViewById(reviewAct.getResources().getIdentifier("all_reviews_list", "id", "com.android.vending"));
+				if (all_reviews_list != null && all_reviews_list instanceof ListView) ((ListView)all_reviews_list).smoothScrollToPosition(0);
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	}
+	
+	public static void execHook_PSScroll(LoadPackageParam lpparam) {
+		findAndHookMethod("com.google.android.finsky.activities.MainActivity", lpparam.classLoader, "onResume", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				mainAct = (Activity)param.thisObject;
+				if (mainAct != null) try {
+					mainAct.registerReceiver(sbtReceiver, new IntentFilter("com.htc.intent.action.STATUS_BAR_TAP_EVENT"), "com.htc.permission.APP_PLATFORM", null);
+				} catch (Throwable t) {}
+			}
+		});
+		
+		findAndHookMethod("com.google.android.finsky.activities.MainActivity", lpparam.classLoader, "onPause", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				mainAct = (Activity)param.thisObject;
+				if (mainAct != null) try {
+					mainAct.unregisterReceiver(sbtReceiver);
+				} catch (Throwable t) {}
+			}
+		});
+		
+		findAndHookMethod("com.google.android.finsky.activities.ReviewsActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				reviewAct = (Activity)param.thisObject;
+				if (reviewAct != null) try {
+					reviewAct.registerReceiver(sbtReceiver, new IntentFilter("com.htc.intent.action.STATUS_BAR_TAP_EVENT"), "com.htc.permission.APP_PLATFORM", null);
+				} catch (Throwable t) {}
 			}
 		});
 	}

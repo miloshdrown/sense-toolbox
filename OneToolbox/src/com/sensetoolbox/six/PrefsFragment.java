@@ -27,8 +27,10 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.os.Process;
 import android.view.View;
@@ -40,6 +42,9 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
 import com.htc.app.HtcProgressDialog;
 import com.htc.preference.HtcCheckBoxPreference;
 import com.htc.preference.HtcListPreference;
@@ -68,17 +73,20 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	public static String lastShortcutKeyContents = null;
 	public static AppShortcutAddDialog shortcutDlg = null;
 	private boolean toolboxModuleActive = false;
+	private ShowcaseView rebootTip = null;
+	private ShowcaseView backupTip = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState, R.xml.preferences);
+		final Activity act = getActivity();
 		
-		if (!Helpers.isXposedInstalled(getActivity())) {
-			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
-			builder.setTitle(Helpers.l10n(getActivity(), R.string.xposed_not_found));
-			builder.setMessage(Helpers.l10n(getActivity(), R.string.xposed_not_found_explain));
+		if (!Helpers.isXposedInstalled(act)) {
+			HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(act);
+			builder.setTitle(Helpers.l10n(act, R.string.xposed_not_found));
+			builder.setMessage(Helpers.l10n(act, R.string.xposed_not_found_explain));
 			builder.setIcon(android.R.drawable.ic_dialog_alert);
-			builder.setNeutralButton(Helpers.l10n(getActivity(), R.string.okay), null);
+			builder.setNeutralButton(Helpers.l10n(act, R.string.okay), null);
 			HtcAlertDialog dlg = builder.create();
 			dlg.show();
 		} else checkForXposed();
@@ -95,11 +103,17 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			showRestoreInfoDialog();
 		}
 		
+		(new Handler()).postDelayed(new Runnable() {
+			public void run() {
+				showTip(0);
+			}
+		}, 500L);
+		
 		HtcPreference popupNotifyPreference = (HtcPreference) findPreference("pref_key_other_popupnotify");
 		popupNotifyPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
 			@Override
 			public boolean onPreferenceClick(HtcPreference arg0) {
-				getActivity().startActivity(new Intent(getActivity(), PopupNotify.class));
+				act.startActivity(new Intent(act, PopupNotify.class));
 				return true;
 			}
 		});
@@ -107,7 +121,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		//Add version name to support title
 		try {
 			HtcPreferenceCategory supportCat = (HtcPreferenceCategory) findPreference("pref_key_support");
-			supportCat.setTitle(String.format(Helpers.l10n(getActivity(), R.string.support_version), getActivity().getPackageManager().getPackageInfo(getActivity().getPackageName(), 0).versionName));
+			supportCat.setTitle(String.format(Helpers.l10n(act, R.string.support_version), act.getPackageManager().getPackageInfo(act.getPackageName(), 0).versionName));
 		} catch (NameNotFoundException e) {
 			//Shouldn't happen...
 			e.printStackTrace();
@@ -116,11 +130,11 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		HtcCheckBoxPreference.OnPreferenceChangeListener toggleIcon = new HtcCheckBoxPreference.OnPreferenceChangeListener() {
 			@Override
 			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-				PackageManager pm = getActivity().getPackageManager();
+				PackageManager pm = act.getPackageManager();
 				if ((Boolean)newValue)
-					pm.setComponentEnabledSetting(new ComponentName(getActivity(), GateWay.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+					pm.setComponentEnabledSetting(new ComponentName(act, GateWay.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 				else
-					pm.setComponentEnabledSetting(new ComponentName(getActivity(), GateWay.class), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+					pm.setComponentEnabledSetting(new ComponentName(act, GateWay.class), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 				return true;
 			}
 		};
@@ -128,8 +142,8 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		HtcCheckBoxPreference.OnPreferenceClickListener openLang = new HtcCheckBoxPreference.OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(HtcPreference preference) {
-				HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-				alert.setTitle(Helpers.l10n(getActivity(), R.string.toolbox_l10n_title));
+				HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
+				alert.setTitle(Helpers.l10n(act, R.string.toolbox_l10n_title));
 				String buildId = "?";
 				int timeStamp = 0;
 				try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "version")))) {
@@ -138,7 +152,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					Date datetime = new Date((long)timeStamp * 1000);
 					SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz", Locale.getDefault());
 					format.setTimeZone(TimeZone.getTimeZone("UTC"));
-					TextView center = Helpers.createCenteredText(getActivity(), R.string.download_current_ver);
+					TextView center = Helpers.createCenteredText(act, R.string.download_current_ver);
 					center.setText(center.getText()  + " " + buildId + "\n(" + format.format(datetime) + ")");
 					alert.setView(center);
 				} catch (Exception e) {
@@ -147,7 +161,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				alert.setNegativeButton(android.R.string.cancel, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {}
 				});
-				alert.setNeutralButton(Helpers.l10n(getActivity(), R.string.remove), new DialogInterface.OnClickListener() {
+				alert.setNeutralButton(Helpers.l10n(act, R.string.remove), new DialogInterface.OnClickListener() {
 					void deleteRecursive(File fileOrDirectory) {
 						if (fileOrDirectory.isDirectory()) for (File child: fileOrDirectory.listFiles()) deleteRecursive(child);
 						fileOrDirectory.delete();
@@ -157,24 +171,24 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						File tmp = new File(Helpers.dataPath);
 						deleteRecursive(tmp);
 						
-						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-						alert.setTitle(Helpers.l10n(getActivity(), R.string.success));
-						alert.setView(Helpers.createCenteredText(getActivity(), R.string.download_removed));
+						HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
+						alert.setTitle(Helpers.l10n(act, R.string.success));
+						alert.setView(Helpers.createCenteredText(act, R.string.download_removed));
 						alert.setCancelable(false);
 						alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								Helpers.l10n = null;
 								Helpers.cLang = "";
-								getActivity().recreate();
+								act.recreate();
 							}
 						});
 						alert.show();
 					}
 				});
-				alert.setPositiveButton(Helpers.l10n(getActivity(), R.string.toolbox_l10n_btn), new DialogInterface.OnClickListener() {
+				alert.setPositiveButton(Helpers.l10n(act, R.string.toolbox_l10n_btn), new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
-						if (getActivity() != null) {
-							final DownloadAndUnZip downloadTask = new DownloadAndUnZip(getActivity());
+						if (act != null) {
+							final DownloadAndUnZip downloadTask = new DownloadAndUnZip(act);
 							downloadTask.execute("http://sensetoolbox.com/l10n/strings_sense6.zip");
 						}
 					}
@@ -236,6 +250,55 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		});
 	}
 	
+	private void showTip(int step) {
+		if (step == 0) {
+			rebootTip = new ShowcaseView.Builder(getActivity(), true)
+			.setTarget(new ActionItemTarget(getActivity(), R.id.softreboot))
+			.singleShot(100)
+			.setContentTitle(Helpers.l10n(getActivity(), R.string.soft_reboot))
+			.setContentText(Helpers.l10n(getActivity(), R.string.soft_reboot_tip))
+			.setShowcaseEventListener(new OnShowcaseEventListener() {
+				@Override
+				public void onShowcaseViewShow(ShowcaseView showcaseView) {}
+				
+				@Override
+				public void onShowcaseViewHide(ShowcaseView showcaseView) {}
+				
+				@Override
+				public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+					showTip(1);
+				}
+			}).build();
+		} if (step == 1) {
+			backupTip = new ShowcaseView.Builder(getActivity(), true)
+			.setTarget(new ActionItemTarget(getActivity(), R.id.backuprestore))
+			.singleShot(101)
+			.setContentTitle(Helpers.l10n(getActivity(), R.string.backup_restore))
+			.setContentText(Helpers.l10n(getActivity(), R.string.backup_restore_tip))
+			.build();
+		}
+	}
+	
+	private void reloadTip(int step) {
+		if (step == 0) {
+			if (rebootTip != null) {
+				rebootTip.setOnShowcaseEventListener(null);
+				rebootTip.hide();
+			}
+			showTip(0);
+		} if (step == 1) {
+			if (backupTip != null) backupTip.hide();
+			showTip(1);
+		}
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		if (backupTip != null && backupTip.isShowing()) reloadTip(1);
+		else if (rebootTip != null && rebootTip.isShowing()) reloadTip(0);
+	}
+	
 	private void openURL(String url) {
 		Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
 		if (uriIntent.resolveActivity(getActivity().getPackageManager()) != null) {
@@ -257,7 +320,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		((HtcPreferenceScreen) frag.findPreference(catName)).removePreference(frag.findPreference(prefName));
 	}
 	
-	private static void disablePref(HtcPreferenceFragmentExt frag, String prefName, int reasonText) {
+	private static void disablePref(HtcPreferenceFragmentExt frag, String prefName, String reasonText) {
 		HtcPreference pref = frag.findPreference(prefName);
 		if (pref != null) {
 			pref.setEnabled(false);
@@ -729,9 +792,9 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			});
 			
 			if (!RootTools.isRootAvailable())
-				disablePref(this, "pref_key_controls_vol2wake", R.string.no_root_summ);
+				disablePref(this, "pref_key_controls_vol2wake", Helpers.l10n(getActivity(), R.string.no_root_summ));
 			else if (!RootTools.isBusyboxAvailable())
-				disablePref(this, "pref_key_controls_vol2wake", R.string.no_busybox_summ);
+				disablePref(this, "pref_key_controls_vol2wake", Helpers.l10n(getActivity(), R.string.no_busybox_summ));
 			
 			if (Helpers.isM8() || Helpers.isE8()) {
 				HtcPreferenceCategory assist_cat = (HtcPreferenceCategory) findPreference("pref_key_controls_home");
@@ -761,11 +824,11 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 				removePref(this, "pref_key_other_keyslight", "pref_key_other");
 				removePref(this, "pref_key_other_keyslight_auto", "pref_key_other");
 			} else if (!RootTools.isRootAvailable()){
-				disablePref(this, "pref_key_other_keyslight",R.string.no_root_summ);
-				disablePref(this, "pref_key_other_keyslight_auto", R.string.no_root_summ);
+				disablePref(this, "pref_key_other_keyslight", Helpers.l10n(getActivity(), R.string.no_root_summ));
+				disablePref(this, "pref_key_other_keyslight_auto", Helpers.l10n(getActivity(), R.string.no_root_summ));
 			} else if (!RootTools.isBusyboxAvailable()){
-				disablePref(this, "pref_key_other_keyslight", R.string.no_busybox_summ);
-				disablePref(this, "pref_key_other_keyslight_auto", R.string.no_busybox_summ);
+				disablePref(this, "pref_key_other_keyslight", Helpers.l10n(getActivity(), R.string.no_busybox_summ));
+				disablePref(this, "pref_key_other_keyslight_auto", Helpers.l10n(getActivity(), R.string.no_busybox_summ));
 			}
 			
 			HtcListPreference.OnPreferenceChangeListener applyButtonsLight = new HtcListPreference.OnPreferenceChangeListener() {

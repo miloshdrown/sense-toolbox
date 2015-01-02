@@ -3,8 +3,12 @@ package com.sensetoolbox.six.mods;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 
 import java.lang.reflect.Field;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
+import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -12,12 +16,17 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
+import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
+import android.os.Handler;
+import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -35,7 +44,7 @@ import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResou
 import de.robv.android.xposed.callbacks.XC_LayoutInflated;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
-public class CleanBeamMods {
+public class StatusbarMods {
 	private static String wifiBase = "";
 	
 	private static Drawable applyTheme(Drawable icon, boolean useOriginal) {
@@ -537,6 +546,121 @@ public class CleanBeamMods {
 								iconsToHide.contains("11") && mSlot.equals("com.android.settings/0x1")) notifIcon.setVisibility(View.GONE);
 						}
 					}
+				}
+			}
+		});
+	}
+	
+	static class SystemSettingsObserver extends ContentObserver {
+		Object thisObj = null;
+		public SystemSettingsObserver(Handler h, Object paramThisObject) {
+			super(h);
+			thisObj = paramThisObject;
+		}
+		
+		@Override
+		public boolean deliverSelfNotifications() {
+			return true;
+		}
+		
+		@Override
+		public void onChange(boolean selfChange, Uri uri) {
+			super.onChange(selfChange);
+			try {
+				String uriPart = uri.getLastPathSegment();
+				if (uriPart != null && uriPart.equals(Settings.System.NEXT_ALARM_FORMATTED))
+				if (thisObj != null) {
+					Context mContext = (Context)XposedHelpers.getObjectField(thisObj, "mContext");
+					String nextAlarm = Helpers.getNextAlarm(mContext);
+					if (nextAlarm != null && !nextAlarm.equals("")) {
+						Intent intent = new Intent("android.intent.action.ALARM_CHANGED");
+						intent.putExtra("alarmSet", true);
+						XposedHelpers.callMethod(thisObj, "updateAlarm", intent);
+					}
+				}
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	}
+	
+	public static void execHook_SmartAlarm(LoadPackageParam lpparam) {
+		XposedBridge.hookAllConstructors(XposedHelpers.findClass("com.android.systemui.statusbar.phone.HtcPhoneStatusBarPolicy", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				if (mContext != null)
+				mContext.getContentResolver().registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, new SystemSettingsObserver(new Handler(), param.thisObject));
+			}
+		});
+		
+		XposedHelpers.findAndHookMethod("com.android.systemui.statusbar.phone.HtcPhoneStatusBarPolicy", lpparam.classLoader, "updateAlarm", Intent.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				XMain.pref.reload();
+				if (!XMain.pref.getBoolean("pref_key_statusbar_selectivealarmicon_enable", false)) return;
+				float interval = (float)XMain.pref.getInt("pref_key_statusbar_selectivealarmicon", 24);
+				
+				Intent intent = (Intent)param.args[0];
+				boolean flag = false;
+				if (intent != null) flag = intent.getBooleanExtra("alarmSet", false);
+				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				String nextAlarm = Helpers.getNextAlarm(mContext);
+				long nextAlarmTime = Helpers.getNextAlarmTime(mContext);
+				long nowTime = (new Date()).getTime();
+				if (flag && mContext != null)
+				if (nextAlarmTime != -1) {
+					long diffMSec = nextAlarmTime - nowTime;
+					float diffHours = (diffMSec - 59 * 1000) / (1000f * 60f * 60f);
+			
+					if (diffHours <= interval)
+						intent.putExtra("alarmSet", true);
+					else
+						intent.putExtra("alarmSet", false);
+					
+					param.args[0] = intent;
+				} else if (nextAlarm != null && !nextAlarm.equals("")) {
+					String format = "E " + ((SimpleDateFormat)DateFormat.getTimeFormat(mContext)).toLocalizedPattern();
+					Date nextAlarmDate = (new SimpleDateFormat(format, Locale.getDefault())).parse(nextAlarm);
+					
+					Calendar nextAlarmCal = Calendar.getInstance();
+					Calendar nextAlarmIncomplete = Calendar.getInstance();
+					nextAlarmIncomplete.setTime(nextAlarmDate);
+
+					int[] fieldsToCopy = { Calendar.HOUR_OF_DAY, Calendar.MINUTE, Calendar.DAY_OF_WEEK};
+					for (int field : fieldsToCopy) nextAlarmCal.set(field, nextAlarmIncomplete.get(field));
+					nextAlarmCal.set(Calendar.SECOND, 0);
+					if (nextAlarmCal.before(Calendar.getInstance())) nextAlarmCal.add(Calendar.DATE, 7);
+					
+					nextAlarmTime = nextAlarmCal.getTimeInMillis();
+					if (nextAlarmTime < nowTime) nextAlarmTime += 7 * 24 * 60 * 60 * 1000;
+					
+					long diffMSec = nextAlarmTime - nowTime;
+					float diffHours = (diffMSec - 59 * 1000) / (1000f * 60f * 60f);
+				
+					if (diffHours <= interval)
+						intent.putExtra("alarmSet", true);
+					else
+						intent.putExtra("alarmSet", false);
+					
+					param.args[0] = intent;
+				}
+			}
+		});
+		
+		XposedHelpers.findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateClockTime", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) {
+				try {
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					String nextAlarm = Helpers.getNextAlarm(mContext);
+					if (mContext != null && nextAlarm != null && !nextAlarm.equals("")) {
+						Intent intent = new Intent("android.intent.action.ALARM_CHANGED");
+						intent.putExtra("alarmSet", true);
+						mContext.sendBroadcast(intent);
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
 				}
 			}
 		});

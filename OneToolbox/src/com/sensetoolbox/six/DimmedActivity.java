@@ -36,6 +36,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
 import android.util.Log;
 import android.view.Gravity;
@@ -85,25 +86,23 @@ public class DimmedActivity extends Activity {
 	private void startListen() {
 		try {
 			this.registerReceiver(helperReceiver, filter);
+			Settings.System.putInt(getContentResolver(), "popup_notifications_visible", 1);
 			if (mAppWidgetHost != null) mAppWidgetHost.startListening();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {}
 	}
 	
 	private void stopListen() {
 		if (helperReceiver != null) try {
 			this.unregisterReceiver(helperReceiver);
+			Settings.System.putInt(getContentResolver(), "popup_notifications_visible", 0);
 			if (mAppWidgetHost != null) mAppWidgetHost.stopListening();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
+		} catch (Exception e) {}
 	}
 	
 	private void createDialog(int dType, Intent intent) {
 		if (dType == 1) {
 			getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-			ApmDialog rebD = new ApmDialog(this, dialogType);
+			ApmDialog rebD = new ApmDialog(this, dType);
 			currApm = rebD.show();
 		} else if (dType == 2) {
 			density = getResources().getDisplayMetrics().density;
@@ -479,6 +478,7 @@ public class DimmedActivity extends Activity {
 	
 	@Override
 	public void finish() {
+		stopListen();
 		super.finish();
 		if (!isInLockscreen) overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 	}

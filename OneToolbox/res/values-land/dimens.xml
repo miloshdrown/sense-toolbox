@@ -1,0 +1,8 @@
+<resources>
+
+	<dimen name="showcase_x_inner">180dp</dimen>
+	<dimen name="showcase_x_outer">200dp</dimen>
+	<dimen name="showcase_y_inner">70dp</dimen>
+	<dimen name="showcase_y_outer">90dp</dimen>
+	
+</resources>
