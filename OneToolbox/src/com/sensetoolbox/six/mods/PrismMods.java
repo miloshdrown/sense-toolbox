@@ -187,7 +187,7 @@ public class PrismMods {
 		findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "setMultiplePage", boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				param.setResult(true);
+				param.setResult(null);
 			}
 		});
 		
