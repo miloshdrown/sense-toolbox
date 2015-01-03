@@ -621,7 +621,14 @@ public class StatusbarMods {
 					param.args[0] = intent;
 				} else if (nextAlarm != null && !nextAlarm.equals("")) {
 					String format = "E " + ((SimpleDateFormat)DateFormat.getTimeFormat(mContext)).toLocalizedPattern();
-					Date nextAlarmDate = (new SimpleDateFormat(format, Locale.getDefault())).parse(nextAlarm);
+					Date nextAlarmDate;
+					try {
+						nextAlarmDate = (new SimpleDateFormat(format, Locale.getDefault())).parse(nextAlarm);
+					} catch (Throwable t) {
+						nextAlarm = nextAlarm.replace("AM", " AM");
+						nextAlarm = nextAlarm.replace("PM", " PM");
+						nextAlarmDate = (new SimpleDateFormat(format, Locale.getDefault())).parse(nextAlarm);
+					}
 					
 					Calendar nextAlarmCal = Calendar.getInstance();
 					Calendar nextAlarmIncomplete = Calendar.getInstance();
