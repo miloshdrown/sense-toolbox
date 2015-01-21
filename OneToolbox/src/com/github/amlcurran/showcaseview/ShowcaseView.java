@@ -16,6 +16,8 @@
 
 package com.github.amlcurran.showcaseview;
 
+import java.lang.ref.SoftReference;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -73,19 +75,19 @@ public class ShowcaseView extends RelativeLayout
 	private boolean hasAlteredText = false;
 	private boolean hasNoTarget = false;
 	private boolean shouldCentreText;
-	private Bitmap bitmapBuffer;
+	private SoftReference<Bitmap> bitmapBuffer;
 
 	// Animation items
 	private long fadeInMillis;
 	private long fadeOutMillis;
 	private boolean isShowing;
 
-	protected ShowcaseView(Context context, boolean newStyle) {
+	protected ShowcaseView(Context context, int newStyle) {
 		this(context, null, R.styleable.CustomTheme_showcaseViewStyle, newStyle);
 	}
 
 	@SuppressLint("InflateParams")
-	protected ShowcaseView(Context context, AttributeSet attrs, int defStyle, boolean newStyle) {
+	protected ShowcaseView(Context context, AttributeSet attrs, int defStyle, int newStyle) {
 		super(context, attrs, defStyle);
 
 		ApiUtils apiUtils = new ApiUtils();
@@ -108,11 +110,7 @@ public class ShowcaseView extends RelativeLayout
 
 		mEndButton = (HtcRimButton) LayoutInflater.from(context).inflate(R.layout.showcase_button, null);
 		mTranslateButton = (HtcRimButton) LayoutInflater.from(context).inflate(R.layout.showcase_button, null);
-		if (newStyle) {
-			showcaseDrawer = new NewShowcaseDrawer(getResources());
-		} else {
-			showcaseDrawer = new StandardShowcaseDrawer(getResources());
-		}
+		showcaseDrawer = new NewShowcaseDrawer(getResources(), newStyle);
 		textDrawer = new TextDrawer(getResources(), showcaseAreaCalculator, getContext());
 
 		updateStyle(styled, false);
@@ -204,17 +202,14 @@ public class ShowcaseView extends RelativeLayout
 	}
 
 	private void updateBitmap() {
-		if (bitmapBuffer == null || haveBoundsChanged()) {
-			if (bitmapBuffer != null) bitmapBuffer.recycle();
+		if (bitmapBuffer == null || (bitmapBuffer.get() != null && haveBoundsChanged())) {
 			if (getMeasuredWidth() > 0 && getMeasuredHeight() > 0)
-			bitmapBuffer = Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(), Bitmap.Config.ARGB_8888);
-
+			bitmapBuffer = new SoftReference<Bitmap>(Bitmap.createBitmap(getMeasuredWidth(), getMeasuredHeight(), Bitmap.Config.ARGB_8888));
 		}
 	}
 
 	private boolean haveBoundsChanged() {
-		return getMeasuredWidth() != bitmapBuffer.getWidth() ||
-				getMeasuredHeight() != bitmapBuffer.getHeight();
+		return getMeasuredWidth() != bitmapBuffer.get().getWidth() || getMeasuredHeight() != bitmapBuffer.get().getHeight();
 	}
 
 	public boolean hasShowcaseView() {
@@ -281,18 +276,18 @@ public class ShowcaseView extends RelativeLayout
 
 	@Override
 	protected void dispatchDraw(Canvas canvas) {
-		if (showcaseX < 0 || showcaseY < 0 || shotStateStore.hasShot() || bitmapBuffer == null) {
+		if (showcaseX < 0 || showcaseY < 0 || shotStateStore.hasShot() || bitmapBuffer == null || bitmapBuffer.get() == null) {
 			super.dispatchDraw(canvas);
 			return;
 		}
 
 		//Draw background color
-		showcaseDrawer.erase(bitmapBuffer);
+		showcaseDrawer.erase(bitmapBuffer.get());
 
 		// Draw the showcase drawable
 		if (!hasNoTarget) {
-			showcaseDrawer.drawShowcase(bitmapBuffer, showcaseX, showcaseY, scaleMultiplier);
-			showcaseDrawer.drawToCanvas(canvas, bitmapBuffer);
+			showcaseDrawer.drawShowcase(bitmapBuffer.get(), showcaseX, showcaseY, scaleMultiplier);
+			showcaseDrawer.drawToCanvas(canvas, bitmapBuffer.get());
 		}
 
 		// Draw the text on the screen, recalculating its position if necessary
@@ -304,23 +299,16 @@ public class ShowcaseView extends RelativeLayout
 
 	@Override
 	public void hide() {
-		clearBitmap();
 		// If the type is set to one-shot, store that it has shot
 		shotStateStore.storeShot();
 		mEventListener.onShowcaseViewHide(this);
 		fadeOutShowcase();
+		System.gc();
 	}
 	
 	public void close() {
-		clearBitmap();
 		hideImmediate();
-	}
-
-	private void clearBitmap() {
-		if (bitmapBuffer != null && !bitmapBuffer.isRecycled()) {
-			bitmapBuffer.recycle();
-			bitmapBuffer = null;
-		}
+		System.gc();
 	}
 
 	private void fadeOutShowcase() {
@@ -414,10 +402,10 @@ public class ShowcaseView extends RelativeLayout
 		final ShowcaseView showcaseView;
 
 		public Builder(Activity act) {
-			this(act, false);
+			this(act, 0);
 		}
 
-		public Builder(Activity act, boolean useNewStyle) {
+		public Builder(Activity act, int useNewStyle) {
 			activity = act;
 			this.showcaseView = new ShowcaseView(act, useNewStyle);
 			this.showcaseView.setTarget(Target.NONE);

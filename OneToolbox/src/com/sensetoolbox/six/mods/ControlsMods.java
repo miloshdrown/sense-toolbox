@@ -5,7 +5,6 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
-
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -20,7 +19,6 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.SystemClock;
-import android.os.PowerManager.WakeLock;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -34,6 +32,7 @@ import android.widget.RelativeLayout;
 
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
+import com.sensetoolbox.six.utils.Helpers;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
@@ -50,7 +49,6 @@ public class ControlsMods {
 	private static boolean isVolumeLongPressed = false;
 	private static boolean isWaitingForPowerLongPressed = false;
 	private static boolean isWaitingForVolumeLongPressed = false;
-	private static int mFlashlightLevel = 0;
 	
 	public static void setupPWMKeys() {
 		try {
@@ -186,16 +184,15 @@ public class ControlsMods {
 	}
 	
 	static Handler mHandler;
-	static WakeLock mWakeLock;
 	
 	// Release wakelock and turn off flashlight on screen on
 	private static BroadcastReceiver mScrOn = new BroadcastReceiver() {
 		public void onReceive(final Context context, Intent intent) {
-			if (mFlashlightLevel > 0) {
-				mFlashlightLevel = 0;
+			if (Helpers.mFlashlightLevel > 0) {
+				Helpers.mFlashlightLevel = 0;
 				GlobalActions.setFlashlight(0);
 			}
-			if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
+			if (Helpers.mWakeLock != null && Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 		}
 	};
 	
@@ -243,18 +240,18 @@ public class ControlsMods {
 									if (isPowerPressed) {
 										isPowerLongPressed = true;
 										
-										if (mWakeLock == null)
-										mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T PowerFlash");
+										if (Helpers.mWakeLock == null)
+											Helpers.mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T Flashlight");
 											
-										if (mFlashlightLevel == 0) {
-											mFlashlightLevel = 127;
-											if (!mWakeLock.isHeld()) mWakeLock.acquire(600000);
+										if (Helpers.mFlashlightLevel == 0 || !Helpers.mWakeLock.isHeld()) {
+											Helpers.mFlashlightLevel = 127;
+											if (!Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.acquire(600000);
 										} else {
-											mFlashlightLevel = 0;
-											if (mWakeLock.isHeld()) mWakeLock.release();
+											Helpers.mFlashlightLevel = 0;
+											if (Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 										}
 										
-										GlobalActions.setFlashlight(mFlashlightLevel);
+										GlobalActions.setFlashlight(Helpers.mFlashlightLevel);
 									}
 									isPowerPressed = false;
 									isWaitingForPowerLongPressed = false;
@@ -265,9 +262,9 @@ public class ControlsMods {
 						}
 						if (action == KeyEvent.ACTION_UP) {
 							if (isPowerPressed && !isPowerLongPressed) try {
-								mFlashlightLevel = 0;
+								Helpers.mFlashlightLevel = 0;
 								GlobalActions.setFlashlight(0);
-								if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
+								if (Helpers.mWakeLock != null && Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 								//XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
 								//XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
 								mPowerManager.wakeUp(SystemClock.uptimeMillis());

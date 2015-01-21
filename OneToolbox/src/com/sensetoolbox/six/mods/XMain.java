@@ -271,6 +271,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pkg.equals("com.htc.videohub.ui")) {
 			if (pref.getBoolean("pref_key_cb_tv", false))
 				StatusbarMods.execHook_TvIcon(resparam);
+			
+			if (pref.getBoolean("pref_key_sysui_tnsb", false))
+				SysUIMods.execHook_TranslucentNotificationsTV(resparam);
 		}
 		
 		if (pkg.equals("com.google.android.youtube")) {

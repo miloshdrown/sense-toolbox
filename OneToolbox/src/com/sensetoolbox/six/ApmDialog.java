@@ -19,16 +19,16 @@ import com.sensetoolbox.six.utils.Helpers;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
-public class ApmDialog extends HtcAlertDialog.Builder {
+public class APMDialog extends HtcAlertDialog.Builder {
 	
-	public ApmDialog(final Context context, final int dType) {
+	public APMDialog(final Context context) {
 		super(context);
 		
 		this.setTitle(Helpers.l10n(context, R.string.apm_title));
 		this.setOnCancelListener(new OnCancelListener(){
 			@Override
 			public void onCancel(DialogInterface dialog) {
-				if (dType == 1) ((Activity)context).finish();
+				((Activity)context).finish();
 			}
 		});
 		
@@ -130,7 +130,7 @@ public class ApmDialog extends HtcAlertDialog.Builder {
 					((Activity)context).sendBroadcast(blIntent);
 					break;
 				}
-				if (dType == 1) ((Activity)context).finish();
+				((Activity)context).finish();
 			}
 		});
 	}

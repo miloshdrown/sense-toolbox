@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.sensetoolbox.six"
-	android:versionCode="19"
-	android:versionName="1.4.5" >
+	android:versionCode="20"
+	android:versionName="1.4.6" >
 
 	<uses-sdk
 		android:minSdkVersion="19"
@@ -50,6 +50,15 @@
 				<category android:name="android.intent.category.LAUNCHER" />
 			</intent-filter>
 		</activity>
+		<activity
+			android:theme="@style/Invisible"
+			android:name="com.sensetoolbox.six.APMActivity"
+			android:exported="true"
+			android:launchMode="singleInstance"
+			android:showOnLockScreen="true"
+			android:configChanges="keyboardHidden|orientation|screenSize"
+			android:excludeFromRecents="true"
+			android:noHistory="false" />
 		<activity
 			android:theme="@style/Invisible"
 			android:name="com.sensetoolbox.six.DimmedActivity"

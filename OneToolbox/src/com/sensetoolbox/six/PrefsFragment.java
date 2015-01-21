@@ -9,6 +9,7 @@ import java.util.regex.Pattern;
 
 import org.acra.ACRA;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.FragmentTransaction;
 import android.content.BroadcastReceiver;
@@ -22,8 +23,10 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.os.Process;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
@@ -35,6 +38,7 @@ import android.widget.Toast;
 import com.github.amlcurran.showcaseview.OnShowcaseEventListener;
 import com.github.amlcurran.showcaseview.ShowcaseView;
 import com.github.amlcurran.showcaseview.targets.ActionItemTarget;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.htc.app.HtcProgressDialog;
 import com.htc.preference.HtcCheckBoxPreference;
 import com.htc.preference.HtcListPreference;
@@ -64,6 +68,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	private boolean toolboxModuleActive = false;
 	private ShowcaseView rebootTip = null;
 	private ShowcaseView backupTip = null;
+	private ShowcaseView feedbackTip = null;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -91,25 +96,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 			prefs.edit().putBoolean("pref_key_was_restore", false).commit();
 			showRestoreInfoDialog();
 		}
-		
-		(new Thread() {
-			@Override
-			public void run() {
-				do {
-					try {
-						Thread.sleep(500);
-					} catch (InterruptedException e) {}
-				} while (getActivity() == null);
 
-				getActivity().runOnUiThread(new Runnable() {
-					@Override
-					public void run() {
-						showTip(0);
-					}
-				});
-			}
-		}).start();
-		
 		HtcPreference popupNotifyPreference = (HtcPreference) findPreference("pref_key_other_popupnotify");
 		popupNotifyPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
 			@Override
@@ -200,13 +187,17 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 		});
 	}
 	
-	private void showTip(int step) {
+	private void showTip(final int step) {
+		final Activity act = getActivity();
+		if (act == null) return;
+		SharedPreferences ipref = act.getSharedPreferences("showcase_internal", Context.MODE_PRIVATE);
 		if (step == 0) {
-			rebootTip = new ShowcaseView.Builder(getActivity(), true)
-			.setTarget(new ActionItemTarget(getActivity(), R.id.softreboot))
+			if (ipref.getBoolean("hasShot100", false)) showTip(1); else
+			rebootTip = new ShowcaseView.Builder(act, step)
+			.setTarget(new ActionItemTarget(act, R.id.softreboot))
 			.singleShot(100)
-			.setContentTitle(Helpers.l10n(getActivity(), R.string.soft_reboot))
-			.setContentText(Helpers.l10n(getActivity(), R.string.soft_reboot_tip))
+			.setContentTitle(Helpers.l10n(act, R.string.soft_reboot))
+			.setContentText(Helpers.l10n(act, R.string.soft_reboot_tip))
 			.setShowcaseEventListener(new OnShowcaseEventListener() {
 				@Override
 				public void onShowcaseViewShow(ShowcaseView showcaseView) {}
@@ -219,31 +210,97 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					showTip(1);
 				}
 			}).build();
-		} if (step == 1) {
-			backupTip = new ShowcaseView.Builder(getActivity(), true)
-			.setTarget(new ActionItemTarget(getActivity(), R.id.backuprestore))
+		} else if (step == 1) {
+			if (ipref.getBoolean("hasShot101", false)) showTip(2); else
+			backupTip = new ShowcaseView.Builder(act, step)
+			.setTarget(new ActionItemTarget(act, R.id.backuprestore))
 			.singleShot(101)
-			.setContentTitle(Helpers.l10n(getActivity(), R.string.backup_restore))
-			.setContentText(Helpers.l10n(getActivity(), R.string.backup_restore_tip))
-			.build();
+			.setContentTitle(Helpers.l10n(act, R.string.backup_restore))
+			.setContentText(Helpers.l10n(act, R.string.backup_restore_tip))
+			.setShowcaseEventListener(new OnShowcaseEventListener() {
+				@Override
+				public void onShowcaseViewShow(ShowcaseView showcaseView) {}
+				
+				@Override
+				public void onShowcaseViewHide(ShowcaseView showcaseView) {}
+				
+				@Override
+				public void onShowcaseViewDidHide(ShowcaseView showcaseView) {
+					showTip(2);
+				}
+			}).build();
+		} else if (step == 2) {
+			if (ipref.getBoolean("hasShot102", false)) return;
+			final int offsetTop = Math.round(getResources().getDisplayMetrics().heightPixels / 3);
+			this.getHtcListView().setOnTouchListener(new View.OnTouchListener() {
+				@Override
+				@SuppressLint("ClickableViewAccessibility")
+				public boolean onTouch(View v, MotionEvent event) {
+					return (event.getAction() == MotionEvent.ACTION_MOVE);
+				}
+			});
+			this.getHtcListView().smoothScrollToPositionFromTop(16, offsetTop);
+			this.getHtcListView().postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					getHtcListView().setSelectionFromTop(16, offsetTop);
+					int pos = 16 - PrefsFragment.this.getHtcListView().getFirstVisiblePosition();
+					View feedback = null;
+					if (pos < PrefsFragment.this.getHtcListView().getChildCount())
+					feedback = PrefsFragment.this.getHtcListView().getChildAt(pos);
+					
+					if (feedback == null) {
+						PrefsFragment.this.getHtcListView().setSelection(0);
+						getHtcListView().setOnTouchListener(null);
+					} else
+					feedbackTip = new ShowcaseView.Builder(act, step)
+					.setTarget(new ViewTarget(feedback))
+					.singleShot(102)
+					.setContentTitle(Helpers.l10n(act, R.string.toolbox_acramail_tip_title))
+					.setContentText(Helpers.l10n(act, R.string.toolbox_acramail_tip))
+					.setShowcaseEventListener(new OnShowcaseEventListener() {
+						@Override
+						public void onShowcaseViewShow(ShowcaseView showcaseView) {}
+						
+						@Override
+						public void onShowcaseViewHide(ShowcaseView showcaseView) {
+							PrefsFragment.this.getHtcListView().setSelection(0);
+							getHtcListView().setOnTouchListener(null);
+						}
+						
+						@Override
+						public void onShowcaseViewDidHide(ShowcaseView showcaseView) {}
+					}).build();
+				}
+			}, 500);
 		}
 	}
 	
-	private void reloadTip(int step) {
-		if (step == 0) {
-			if (rebootTip != null) rebootTip.close();
-			showTip(0);
-		} if (step == 1) {
-			if (backupTip != null) backupTip.close();
-			showTip(1);
-		}
-	}
+	int reloadTip = -1;
 	
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		if (backupTip != null && backupTip.isShowing()) reloadTip(1);
-		else if (rebootTip != null && rebootTip.isShowing()) reloadTip(0);
+		reloadTip = -1;
+		
+		if (feedbackTip != null && feedbackTip.isShowing()) {
+			feedbackTip.close();
+			reloadTip = 2;
+		} else if (backupTip != null && backupTip.isShowing()) {
+			backupTip.close();
+			reloadTip = 1;
+		} else if (rebootTip != null && rebootTip.isShowing()) {
+			rebootTip.close();
+			reloadTip = 0;
+		}
+		
+		if (reloadTip >= 0)
+		new Handler().post(new Runnable() {
+			@Override
+			public void run() {
+				showTip(reloadTip);
+			}
+		});
 	}
 	
 	private void openURL(String url) {
@@ -963,6 +1020,15 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
+		((FrameLayout)getActivity().findViewById(R.id.fragment_container)).getChildAt(0).setBackgroundResource(getResources().getIdentifier("common_app_bkg", "drawable", "com.htc"));
+		
+		view.post(new Runnable() {
+			@Override
+			public void run() {
+				showTip(0);
+			}
+		});
+		
 		if (!firstView) ((MainActivity)getActivity()).setActionBarText(null);
 		firstView = false;
 	}

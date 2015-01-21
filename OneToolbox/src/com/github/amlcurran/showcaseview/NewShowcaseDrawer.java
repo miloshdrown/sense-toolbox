@@ -29,17 +29,25 @@ import android.graphics.RectF;
 class NewShowcaseDrawer extends StandardShowcaseDrawer {
 
 	private static final int ALPHA_60_PERCENT = 153;
-	private final float outerX;
-	private final float innerX;
-	private final float outerY;
-	private final float innerY;
+	private float outerX;
+	private float innerX;
+	private float outerY;
+	private float innerY;
 
-	public NewShowcaseDrawer(Resources resources) {
+	public NewShowcaseDrawer(Resources resources, int newStyle) {
 		super(resources);
-		outerX = resources.getDimension(R.dimen.showcase_x_outer);
-		innerX = resources.getDimension(R.dimen.showcase_x_inner);
-		outerY = resources.getDimension(R.dimen.showcase_y_outer);
-		innerY = resources.getDimension(R.dimen.showcase_y_inner);
+		
+		if (newStyle == 2) {
+			outerX = resources.getDisplayMetrics().widthPixels + 20;
+			innerX = resources.getDisplayMetrics().widthPixels;
+			outerY = resources.getDimension(R.dimen.showcase_y2_outer);
+			innerY = resources.getDimension(R.dimen.showcase_y2_inner);
+		} else {
+			outerX = resources.getDimension(R.dimen.showcase_x_outer);
+			innerX = resources.getDimension(R.dimen.showcase_x_inner);
+			outerY = resources.getDimension(R.dimen.showcase_y_outer);
+			innerY = resources.getDimension(R.dimen.showcase_y_inner);
+		}
 	}
 
 	@Override
@@ -54,6 +62,7 @@ class NewShowcaseDrawer extends StandardShowcaseDrawer {
 		bufferCanvas.drawRoundRect(new RectF(x - outerX/2f, y - outerY/2f, x + outerX/2f , y + outerY/2f), 25, 25, eraserPaint);
 		eraserPaint.setAlpha(0);
 		bufferCanvas.drawRoundRect(new RectF(x - innerX/2f, y - innerY/2f, x + innerX/2f , y + innerY/2f), 25, 25, eraserPaint);
+		bufferCanvas = null;
 	}
 
 	@Override

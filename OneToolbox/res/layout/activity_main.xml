@@ -4,8 +4,4 @@
 	android:layout_height="match_parent"
 	android:fitsSystemWindows="true"
 	android:id="@+id/fragment_container">
-	<com.htc.widget.HtcListView
-		android:layout_width="match_parent"
-		android:layout_height="match_parent"
-		android:id="@android:id/list" />
 </FrameLayout>

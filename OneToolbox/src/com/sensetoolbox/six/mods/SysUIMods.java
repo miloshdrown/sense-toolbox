@@ -1728,8 +1728,12 @@ public class SysUIMods {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					Context ctx = (Context)param.args[0];
-					if (ctx != null && ctx.getPackageName().equals("android")) {
+					if (ctx != null)
+					if (ctx.getPackageName().equals("android")) {
 						PackageTheme pt = Helpers.getThemeForPackageFromXposed("android");
+						if (pt != null) param.setResult(Helpers.colors.keyAt(pt.getTheme()));
+					} else if (ctx.getPackageName().equals("com.htc.camera")) {
+						PackageTheme pt = Helpers.getThemeForPackageFromXposed("com.htc.camera");
 						if (pt != null) param.setResult(Helpers.colors.keyAt(pt.getTheme()));
 					}
 				}
@@ -2154,6 +2158,14 @@ public class SysUIMods {
 					if (nal != null) nal.setShowDividers(LinearLayout.SHOW_DIVIDER_NONE);
 				}
 			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_TranslucentNotificationsTV(InitPackageResourcesParam resparam) {
+		try {
+			resparam.res.setReplacement("com.htc.videohub.ui", "drawable", "notification_bg", Color.TRANSPARENT);
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

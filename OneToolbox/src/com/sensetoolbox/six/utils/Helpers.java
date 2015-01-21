@@ -68,6 +68,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Environment;
+import android.os.PowerManager.WakeLock;
 import android.provider.Settings;
 import android.util.LruCache;
 import android.util.SparseArray;
@@ -101,6 +102,8 @@ public class Helpers {
 	};
 	public static List<Integer> allStyles;
 	public static SparseArray<Object[]> colors = new SparseArray<Object[]>();
+	public static int mFlashlightLevel = 0;
+	public static WakeLock mWakeLock;
 
 	private static synchronized boolean preloadLang(String lang) {
 		try {
@@ -202,10 +205,10 @@ public class Helpers {
 		return list;
 	}
 	
-	public static void applyLang(HtcPreferenceActivity act, HtcPreferenceFragmentExt frag) {
+	public static void applyLang(Activity act, HtcPreferenceFragmentExt frag) {
 		ArrayList<HtcPreference> list;
 		if (frag == null)
-			list = getPreferenceList(act.getPreferenceScreen(), new ArrayList<HtcPreference>());
+			list = getPreferenceList(((HtcPreferenceActivity)act).getPreferenceScreen(), new ArrayList<HtcPreference>());
 		else
 			list = getPreferenceList(frag.getPreferenceScreen(), new ArrayList<HtcPreference>());
 		

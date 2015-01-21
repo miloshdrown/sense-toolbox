@@ -8,7 +8,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
-import com.htc.preference.HtcPreferenceActivity;
 import com.htc.preference.HtcPreferenceFragment;
 import com.htc.preference.HtcPreferenceManager;
 import com.htc.widget.HtcAlertDialog;
@@ -215,6 +214,6 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 	@Override
 	public void addPreferencesFromResource(int resId) {
 		super.addPreferencesFromResource(resId);
-		Helpers.applyLang((HtcPreferenceActivity)this.getActivity(), this);
+		Helpers.applyLang(this.getActivity(), this);
 	}
 }

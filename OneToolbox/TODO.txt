@@ -31,14 +31,11 @@ Ideas
 Current changelog
 =================
 
-1.4.5
-[New] Haptic feedback duration options for navigation keys, long press and Sense keyboard
-[New] Display alarm icon only for defined number of hours before alarm
-[New] Tap statusbar to scroll to top in Google Play Store
-[Changed] EQS tile added for Music Channel mod
-[Changed] Sense 6 themes performance and compatibility improvements
-[Fixed] Hide USB icon
-[Fixed] Various mod fixes
+1.4.6
+[Fixed] Sense 6 theme override support for Camera app
+[Fixed] Correct interaction of Power Flashlight and Wake Gestures Flashlight mods
+[Fixed] Transparent background for TV notification
+[Fixed] Bugs and crashes
 
 ===========
 Translators
@@ -64,9 +61,11 @@ Old Changelogs
 ==============
 
 1.4.5
-[New] Option for navigation keys haptic feedback duration
-[Changed] EQS tile for Music Channel mod
-[Changed] Sense 6 themes performance improvements
+[New] Haptic feedback duration options for navigation keys, long press and Sense keyboard
+[New] Display alarm icon only for defined number of hours before alarm
+[New] Tap statusbar to scroll to top in Google Play Store
+[Changed] EQS tile added for Music Channel mod
+[Changed] Sense 6 themes performance and compatibility improvements
 [Fixed] Hide USB icon
 [Fixed] Various mod fixes
 

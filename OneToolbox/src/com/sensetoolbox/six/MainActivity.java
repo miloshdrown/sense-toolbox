@@ -4,16 +4,16 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
 
-import com.htc.preference.HtcPreferenceActivity;
 import com.htc.widget.ActionBarContainer;
 import com.htc.widget.ActionBarExt;
 import com.htc.widget.ActionBarItemView;
@@ -22,7 +22,7 @@ import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.Version;
 
-public class MainActivity extends HtcPreferenceActivity {
+public class MainActivity extends Activity {
 
 	//public static boolean isRootAccessGiven = false;
 	private int mThemeId = 0;
@@ -88,6 +88,28 @@ public class MainActivity extends HtcPreferenceActivity {
 	
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		
+		if (Build.VERSION.SDK_INT >= 21) {
+			getActionBar().hide();
+			
+			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(this);
+			alert.setTitle(Helpers.l10n(this, R.string.not_compatible));
+			alert.setView(Helpers.createCenteredText(this, R.string.not_compatible_desc));
+			alert.setCancelable(false);
+			alert.setOnDismissListener(new OnDismissListener() {
+				@Override
+				public void onDismiss(DialogInterface dialog) {
+					finish();
+				}
+			});
+			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {
+					finish();
+				}
+			});
+			alert.show();
+			return;
+		}
 
 		if (new Version(Helpers.getSenseVersion()).compareTo(new Version("6.0")) < 0) {
 			getActionBar().hide();
@@ -95,6 +117,7 @@ public class MainActivity extends HtcPreferenceActivity {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(this);
 			alert.setTitle(Helpers.l10n(this, R.string.warning));
 			alert.setView(Helpers.createCenteredText(this, R.string.wrong_sense_version));
+			alert.setCancelable(false);
 			alert.setOnDismissListener(new OnDismissListener() {
 				@Override
 				public void onDismiss(DialogInterface dialog) {
@@ -149,12 +172,11 @@ public class MainActivity extends HtcPreferenceActivity {
 		setContentView(R.layout.activity_main);
 		
 		getFragmentManager().beginTransaction().replace(R.id.fragment_container, new PrefsFragment()).commit();
-		((FrameLayout)findViewById(R.id.fragment_container)).getChildAt(0).setBackgroundResource(getResources().getIdentifier("common_app_bkg", "drawable", "com.htc"));
 	}
 	
 	protected void onResume() {
 		super.onResume();
-		if (new Version(Helpers.getSenseVersion()).compareTo(new Version("6.0")) >= 0) {
+		if (Build.VERSION.SDK_INT < 21 && new Version(Helpers.getSenseVersion()).compareTo(new Version("6.0")) >= 0) {
 			int newThemeId = Helpers.getCurrentTheme(this);
 			if (newThemeId != mThemeId) recreate();
 		}

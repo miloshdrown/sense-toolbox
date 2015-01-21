@@ -107,8 +107,7 @@ public class OtherMods {
 		try {
 			Intent intent = new Intent();
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
-			intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.DimmedActivity");
-			intent.putExtra("dialogType", 1);
+			intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.APMActivity");
 			ctx.startActivity(intent);
 		} catch(Throwable t) {
 			XposedBridge.log(t);
@@ -786,7 +785,6 @@ public class OtherMods {
 		if (asBroadcast) {
 			final Intent intent = new Intent("com.sensetoolbox.six.UPDATENOTIFICATIONS");
 			intent.putParcelableArrayListExtra("sbns", sbns);
-			intent.putExtra("dialogType", 2);
 			if (Settings.System.getInt(mContext.getContentResolver(), "popup_notifications_visible", 0) == 1) mContext.sendBroadcast(intent); else
 			(new Handler()).postDelayed(new Runnable() {
 				public void run() {
@@ -829,7 +827,6 @@ public class OtherMods {
 			else
 				intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.DimmedActivity");
 			intent.putParcelableArrayListExtra("sbns", sbns);
-			intent.putExtra("dialogType", 2);
 			
 			Bundle animate = ActivityOptions.makeCustomAnimation(mContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
 			mContext.startActivity(intent, animate);

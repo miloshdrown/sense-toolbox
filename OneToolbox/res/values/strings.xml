@@ -81,6 +81,8 @@
 
 	<string name="mods">Mods</string>
 
+	<string name="not_compatible">Incompatible Android version</string>
+	<string name="not_compatible_desc">Current Sense 6 Toolbox version is not working on Android 5.0</string>
 	<string name="xposed_not_found">Xposed Installer not found</string>
 	<string name="xposed_not_found_explain">It looks like you don\'t have Xposed Installed.\n\nPlease note that the mods on this page will only work with Xposed!\n\nXposed is available in the ARHD installer.</string>
 	<string name="okay">Okay</string>
@@ -480,6 +482,8 @@
 	<string name="toolbox_acrasend_summ">Collect device and environment info, logcat and Xposed log, and send them to developer.\nInternet connection is required.</string>
 	<string name="toolbox_acramail_title">Feedback</string>
 	<string name="toolbox_acramail_summ">Enter your contact information and it will be included in detailed and crash reports.</string>
+	<string name="toolbox_acramail_tip_title">Contact information</string>
+	<string name="toolbox_acramail_tip">It\'s absolutely necessary to fill this in if you expect to receive replies to your crash reports. Use e-mail, ICQ, XDA or 4PDA nickname.\nTap Feedback below to do it now.</string>
 	
 	<string name="support">Support</string>
 	<string name="support_s6t_title">Sense 6 Toolbox Site</string>

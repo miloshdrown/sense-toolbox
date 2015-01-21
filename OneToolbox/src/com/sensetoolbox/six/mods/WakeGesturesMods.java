@@ -34,8 +34,6 @@ public class WakeGesturesMods {
 	private static boolean mPaused = false;
 	private static Object mEasyAccessCtrl = null;
 	private static ClassLoader mLSClassLoader = null;
-	private static int mCurrentLEDLevel = 0;
-	private static WakeLock mWakeLock;
 	private static BroadcastReceiver mBRLS = new BroadcastReceiver() {
 		public void onReceive(final Context context, Intent intent) {
 			try {
@@ -232,15 +230,15 @@ public class WakeGesturesMods {
 				case 6: doWakeUp(param.thisObject, event_time_local); sendLockScreenIntentOpenAppDrawer(mContext); break;
 				case 7:
 					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
-					if (mWakeLock == null) mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T GestureFlash");
-					if (mCurrentLEDLevel == 0) {
-						mCurrentLEDLevel = 127;
-						if (!mWakeLock.isHeld()) mWakeLock.acquire(600000);
+					if (Helpers.mWakeLock == null) Helpers.mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T Flashlight");
+					if (Helpers.mFlashlightLevel == 0 || !Helpers.mWakeLock.isHeld()) {
+						Helpers.mFlashlightLevel = 127;
+						if (!Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.acquire(6000);
 					} else {
-						mCurrentLEDLevel = 0;
-						if (mWakeLock.isHeld()) mWakeLock.release();
+						Helpers.mFlashlightLevel = 0;
+						if (Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 					}
-					GlobalActions.setFlashlight(mCurrentLEDLevel);
+					GlobalActions.setFlashlight(Helpers.mFlashlightLevel);
 					break;
 				case 8: doWakeUp(param.thisObject, event_time_local); GlobalActions.expandNotifications(mContext); break;
 				case 9: doWakeUp(param.thisObject, event_time_local); GlobalActions.expandEQS(mContext); break;
@@ -374,11 +372,11 @@ public class WakeGesturesMods {
 		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "finishScreenTurningOn", "android.view.WindowManagerPolicy.ScreenOnListener", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				if (mCurrentLEDLevel > 0) {
-					mCurrentLEDLevel = 0;
+				if (Helpers.mFlashlightLevel > 0) {
+					Helpers.mFlashlightLevel = 0;
 					GlobalActions.setFlashlight(0);
 				}
-				if (mWakeLock != null && mWakeLock.isHeld()) mWakeLock.release();
+				if (Helpers.mWakeLock != null && Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 				Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "eventXthread");
 				if (th != null) {
 					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");

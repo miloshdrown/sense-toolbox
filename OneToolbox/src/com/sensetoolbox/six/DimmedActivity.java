@@ -7,7 +7,6 @@ import java.util.List;
 import com.htc.fragment.widget.CarouselHost.OnTabChangeListener;
 import com.htc.fragment.widget.CarouselHost;
 import com.htc.fragment.widget.CarouselUtil;
-import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.utils.BlurBuilder;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.NotificationTab;
@@ -56,7 +55,6 @@ import android.widget.TextClock;
 import android.widget.TextView;
 
 public class DimmedActivity extends Activity {
-	int dialogType;
 	float density;
 	boolean isInLockscreen;
 	SharedPreferences prefs;
@@ -67,7 +65,6 @@ public class DimmedActivity extends Activity {
 	Intent lastIntent;
 	boolean bkgPortrait = true;
 	BitmapDrawable blurredBkg = null;
-	HtcAlertDialog currApm;
 	public Notifications notifications = new Notifications();
 	public boolean sleepOnDismissLast = false;
 	public ArrayList<StatusBarNotification> sbns = null;
@@ -99,94 +96,87 @@ public class DimmedActivity extends Activity {
 		} catch (Exception e) {}
 	}
 	
-	private void createDialog(int dType, Intent intent) {
-		if (dType == 1) {
-			getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-			ApmDialog rebD = new ApmDialog(this, dType);
-			currApm = rebD.show();
-		} else if (dType == 2) {
-			density = getResources().getDisplayMetrics().density;
-			getWindow().getDecorView().setPadding(-1, 0, -1, 0);
-			setContentView(R.layout.notifications);
-			if (prefs.getBoolean("pref_key_other_popupnotify_backclick", true))
-			findViewById(android.R.id.content).setOnTouchListener(new OnTouchListener() {
-				@Override
-				public boolean onTouch(View v, MotionEvent event) {
-					// Check touch coordinates on screen - workaround for a bug with touch listeners after orientation change
-					int[] coords = {0, 0};
-					if (notifications != null && notifications.isLoaded) {
-						notifications.getCarouselHost().getLocationOnScreen(coords);
-						Rect loc = new Rect(coords[0], coords[1], coords[0] + notifications.getCarouselHost().getWidth(), coords[1] + notifications.getCarouselHost().getHeight());
-						if (!loc.contains((int)event.getRawX(), (int)event.getRawY())) {
-							v.performClick();
-							finish();
-							return true;
-						} else return false;
+	private void createDialog(Intent intent) {
+		density = getResources().getDisplayMetrics().density;
+		getWindow().getDecorView().setPadding(-1, 0, -1, 0);
+		setContentView(R.layout.notifications);
+		if (prefs.getBoolean("pref_key_other_popupnotify_backclick", true))
+		findViewById(android.R.id.content).setOnTouchListener(new OnTouchListener() {
+			@Override
+			public boolean onTouch(View v, MotionEvent event) {
+				// Check touch coordinates on screen - workaround for a bug with touch listeners after orientation change
+				int[] coords = {0, 0};
+				if (notifications != null && notifications.isLoaded) {
+					notifications.getCarouselHost().getLocationOnScreen(coords);
+					Rect loc = new Rect(coords[0], coords[1], coords[0] + notifications.getCarouselHost().getWidth(), coords[1] + notifications.getCarouselHost().getHeight());
+					if (!loc.contains((int)event.getRawX(), (int)event.getRawY())) {
+						v.performClick();
+						finish();
+						return true;
 					} else return false;
-				}
-			});
-			
-			RelativeLayout time_date_widget = (RelativeLayout)findViewById(R.id.time_date_widget);
-			if (!isInLockscreen) {
-				RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)time_date_widget.getLayoutParams();
-				lp.topMargin = Math.round(density * 15);
-				time_date_widget.setLayoutParams(lp);
+				} else return false;
 			}
+		});
 			
-			TextClock time = (TextClock)findViewById(R.id.time);
-			TextClock date_dayofweek = (TextClock)findViewById(R.id.date_dayofweek);
-			TextClock date_day = (TextClock)findViewById(R.id.date_day);
-			TextClock date_month = (TextClock)findViewById(R.id.date_month);
+		RelativeLayout time_date_widget = (RelativeLayout)findViewById(R.id.time_date_widget);
+		if (!isInLockscreen) {
+			RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)time_date_widget.getLayoutParams();
+			lp.topMargin = Math.round(density * 15);
+			time_date_widget.setLayoutParams(lp);
+		}
 			
-			time.setTextSize(24.2f * density);
-			date_dayofweek.setTextSize(5.2f * density);
-			date_day.setTextSize(5.2f * density);
-			date_month.setTextSize(5.2f * density);
-			time_date_widget.setVisibility(View.VISIBLE);
+		TextClock time = (TextClock)findViewById(R.id.time);
+		TextClock date_dayofweek = (TextClock)findViewById(R.id.date_dayofweek);
+		TextClock date_day = (TextClock)findViewById(R.id.date_day);
+		TextClock date_month = (TextClock)findViewById(R.id.date_month);
 			
-			int headerStyle = Integer.parseInt(prefs.getString("pref_key_other_popupnotify_clock", "1"));
-			if (headerStyle == 1 && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
-				time_date_widget.setVisibility(View.GONE);
-			} else if (headerStyle == 3) {
-				AppWidgetManager mAppWidgetManager = AppWidgetManager.getInstance(this);
-				mAppWidgetHost = new AppWidgetHost(this, 1);
-				int appWidgetId = mAppWidgetHost.allocateAppWidgetId();
-				mAppWidgetHost.startListening();
+		time.setTextSize(24.2f * density);
+		date_dayofweek.setTextSize(5.2f * density);
+		date_day.setTextSize(5.2f * density);
+		date_month.setTextSize(5.2f * density);
+		time_date_widget.setVisibility(View.VISIBLE);
+			
+		int headerStyle = Integer.parseInt(prefs.getString("pref_key_other_popupnotify_clock", "1"));
+		if (headerStyle == 1 && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT) {
+			time_date_widget.setVisibility(View.GONE);
+		} else if (headerStyle == 3) {
+			AppWidgetManager mAppWidgetManager = AppWidgetManager.getInstance(this);
+			mAppWidgetHost = new AppWidgetHost(this, 1);
+			int appWidgetId = mAppWidgetHost.allocateAppWidgetId();
+			mAppWidgetHost.startListening();
 				
-				List<AppWidgetProviderInfo> widgets = mAppWidgetManager.getInstalledProviders();
-				for (int i = 0; i < widgets.size(); i++) {
-					AppWidgetProviderInfo appWidgetInfo = widgets.get(i);
-					if (appWidgetInfo.provider.flattenToString().equals("net.nurik.roman.dashclock/com.google.android.apps.dashclock.WidgetProvider")) {
-						AppWidgetHostView hostView = mAppWidgetHost.createView(this, appWidgetId, appWidgetInfo);
-						hostView.setAppWidget(appWidgetId, appWidgetInfo);
-						hostView.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+			List<AppWidgetProviderInfo> widgets = mAppWidgetManager.getInstalledProviders();
+			for (int i = 0; i < widgets.size(); i++) {
+				AppWidgetProviderInfo appWidgetInfo = widgets.get(i);
+				if (appWidgetInfo.provider.flattenToString().equals("net.nurik.roman.dashclock/com.google.android.apps.dashclock.WidgetProvider")) {
+					AppWidgetHostView hostView = mAppWidgetHost.createView(this, appWidgetId, appWidgetInfo);
+					hostView.setAppWidget(appWidgetId, appWidgetInfo);
+					hostView.setLayoutParams(new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-						time_date_widget.removeAllViews();
-						time_date_widget.addView(hostView);
-
-						if (!mAppWidgetManager.bindAppWidgetIdIfAllowed(appWidgetId, appWidgetInfo.provider)) Log.e(null, "No permission to bind widgets!");
-						break;
-					}
+					time_date_widget.removeAllViews();
+					time_date_widget.addView(hostView);
+					if (!mAppWidgetManager.bindAppWidgetIdIfAllowed(appWidgetId, appWidgetInfo.provider)) Log.e(null, "No permission to bind widgets!");
+				break;
 				}
 			}
+		}
 			
-			initNotifications(intent, true);
-			if (isInLockscreen) {
-				Bitmap lockBmp = BitmapFactory.decodeResource(getResources(), R.drawable.lockscreen_icon_locked);
-				ImageView lockIcon = new ImageView(this);
-				lockIcon.setImageBitmap(lockBmp);
-				this.addContentView(lockIcon, new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM));
+		initNotifications(intent, true);
+		if (isInLockscreen) {
+			Bitmap lockBmp = BitmapFactory.decodeResource(getResources(), R.drawable.lockscreen_icon_locked);
+			ImageView lockIcon = new ImageView(this);
+			lockIcon.setImageBitmap(lockBmp);
+			this.addContentView(lockIcon, new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM));
 				
-				if (prefs.getBoolean("pref_key_other_popupnotify_backclick", true)) {
-					TextView lockScr = new TextView(this);
-					lockScr.setGravity(Gravity.CENTER);
-					lockScr.setText(Helpers.l10n(this, R.string.popupnotify_taptolockscreen));
-					lockScr.setTextAppearance(this, R.style.lockscreen_text);
-					lockScr.setPadding(0, 0, 10, 36);
-					this.addContentView(lockScr, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM));
-				}
+			if (prefs.getBoolean("pref_key_other_popupnotify_backclick", true)) {
+				TextView lockScr = new TextView(this);
+				lockScr.setGravity(Gravity.CENTER);
+				lockScr.setText(Helpers.l10n(this, R.string.popupnotify_taptolockscreen));
+				lockScr.setTextAppearance(this, R.style.lockscreen_text);
+				lockScr.setPadding(0, 0, 10, 36);
+				this.addContentView(lockScr, new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT, Gravity.CENTER_HORIZONTAL | Gravity.BOTTOM));
 			}
-		} else finish();
+		}
 	}
 	
 	float initPosX;
@@ -210,27 +200,25 @@ public class DimmedActivity extends Activity {
 		
 		final Intent intent = getIntent();
 		lastIntent = (Intent)intent.clone();
-		dialogType = intent.getIntExtra("dialogType", 1);
-		if (dialogType == 2) {
-			if (backStyle > 1 && pm.isScreenOn()) {
-				Bitmap bmp = (Bitmap)intent.getParcelableExtra("bmp");
-				if (bmp != null && !bmp.isRecycled() && Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() > 16 * 1024 * 1024) {
-					blurredBkg = new BitmapDrawable(getResources(), BlurBuilder.blur(this, bmp, backStyle == 3 ? true : false));
-					getWindow().setBackgroundDrawable(blurredBkg);
-				}
-				bkgPortrait = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? true : false);
-			} else if (headerStyle > 1) {
-				if (!isInLockscreen) getWindow().getDecorView().setBackgroundColor(Color.argb(170, 0, 0, 0));
+		
+		if (backStyle > 1 && pm.isScreenOn()) {
+			Bitmap bmp = (Bitmap)intent.getParcelableExtra("bmp");
+			if (bmp != null && !bmp.isRecycled() && Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() > 16 * 1024 * 1024) {
+				blurredBkg = new BitmapDrawable(getResources(), BlurBuilder.blur(this, bmp, backStyle == 3 ? true : false));
+				getWindow().setBackgroundDrawable(blurredBkg);
 			}
-			if (!isInLockscreen) overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-		} else getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+			bkgPortrait = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? true : false);
+		} else if (headerStyle > 1) {
+			if (!isInLockscreen) getWindow().getDecorView().setBackgroundColor(Color.argb(170, 0, 0, 0));
+		}
+		if (!isInLockscreen) overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 		
 		super.onCreate(bundle);
 		if (isInLockscreen && this.getClass() == DimmedActivityLS.class)
 		getWindow().addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED);
 		
 		startListen();
-		createDialog(dialogType, intent);
+		createDialog(intent);
 	}
 	
 	@Override
@@ -242,22 +230,6 @@ public class DimmedActivity extends Activity {
 	
 	String curTabTag = null;
 	void initNotifications(final Intent intent, final boolean selectLast) {
-		int dialogTypeNew = 1;
-		try {
-			dialogTypeNew = intent.getIntExtra("dialogType", 1);
-		} catch (Exception e) {}
-		if (dialogType != dialogTypeNew) {
-			dialogType = dialogTypeNew;
-			if (dialogTypeNew == 2) {
-				if (this != null && !this.isFinishing() && currApm != null && currApm.isShowing()) currApm.dismiss();
-			} else if (dialogTypeNew == 1) {
-				((RelativeLayout)findViewById(R.id.carousel).getParent()).removeAllViews();
-			}
-			createDialog(dialogTypeNew, intent);
-			return;
-		}
-		dialogType = dialogTypeNew;
-		if (dialogType != 2) return;
 		ArrayList<StatusBarNotification> sbnsNew = intent.getParcelableArrayListExtra("sbns");
 		if (sbnsNew.equals(sbns) && !intent.getBooleanExtra("doRotate", false))
 			return;
@@ -446,9 +418,9 @@ public class DimmedActivity extends Activity {
 	@Override
 	public void onConfigurationChanged(Configuration newConfig) {
 		super.onConfigurationChanged(newConfig);
-		if (dialogType == 2 && lastIntent != null) {
+		if (lastIntent != null) {
 			lastIntent.putExtra("doRotate", true);
-			createDialog(dialogType, lastIntent);
+			createDialog(lastIntent);
 			if (blurredBkg != null &&
 				(bkgPortrait && getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ||
 				!bkgPortrait && getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE))
