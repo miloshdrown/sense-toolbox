@@ -233,7 +233,7 @@ public class WakeGesturesMods {
 					if (Helpers.mWakeLock == null) Helpers.mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T Flashlight");
 					if (Helpers.mFlashlightLevel == 0 || !Helpers.mWakeLock.isHeld()) {
 						Helpers.mFlashlightLevel = 127;
-						if (!Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.acquire(6000);
+						if (!Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.acquire(600000);
 					} else {
 						Helpers.mFlashlightLevel = 0;
 						if (Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
