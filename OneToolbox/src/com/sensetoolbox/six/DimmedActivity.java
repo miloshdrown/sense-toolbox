@@ -202,10 +202,12 @@ public class DimmedActivity extends Activity {
 		lastIntent = (Intent)intent.clone();
 		
 		if (backStyle > 1 && pm.isScreenOn()) {
-			Bitmap bmp = (Bitmap)intent.getParcelableExtra("bmp");
-			if (bmp != null && !bmp.isRecycled() && Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() > 16 * 1024 * 1024) {
-				blurredBkg = new BitmapDrawable(getResources(), BlurBuilder.blur(this, bmp, backStyle == 3 ? true : false));
-				getWindow().setBackgroundDrawable(blurredBkg);
+			if (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() > 16 * 1024 * 1024) {
+				Bitmap bmp = (Bitmap)intent.getParcelableExtra("bmp");
+				if (bmp != null && !bmp.isRecycled()) {
+					blurredBkg = new BitmapDrawable(getResources(), BlurBuilder.blur(this, bmp, backStyle == 3 ? true : false));
+					getWindow().setBackgroundDrawable(blurredBkg);
+				}
 			}
 			bkgPortrait = (getResources().getConfiguration().orientation == Configuration.ORIENTATION_PORTRAIT ? true : false);
 		} else if (headerStyle > 1) {
