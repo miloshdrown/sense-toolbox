@@ -233,15 +233,17 @@ public class DimmedActivity extends Activity {
 	String curTabTag = null;
 	void initNotifications(final Intent intent, final boolean selectLast) {
 		ArrayList<StatusBarNotification> sbnsNew = intent.getParcelableArrayListExtra("sbns");
+		if (sbnsNew != null)
 		if (sbnsNew.equals(sbns) && !intent.getBooleanExtra("doRotate", false))
 			return;
 		else
 			sbns = sbnsNew;
 		
-		if (sbns.size() == 0) {
+		if (sbnsNew == null || sbns.size() == 0) {
 			finish();
 			return;
 		}
+		
 		if (notifications.isLoaded) curTabTag = notifications.getCarouselHost().getCurrentTabTag();
 		
 		notifications = new Notifications();

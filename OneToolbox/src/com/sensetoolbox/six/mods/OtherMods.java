@@ -28,6 +28,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
+import android.content.res.AssetFileDescriptor;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.database.ContentObserver;
@@ -41,6 +42,8 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.media.AudioManager;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -133,6 +136,18 @@ public class OtherMods {
 			});
 		} catch (Throwable t) {
 			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_DNDNotif(LoadPackageParam lpparam) {
+		try {
+			XposedHelpers.findAndHookMethod("com.android.settings.framework.app.HtcDndCommandService", lpparam.classLoader, "addNotification", int.class, boolean.class, XC_MethodReplacement.DO_NOTHING);
+		} catch (Throwable t1) {
+			try {
+				XposedHelpers.findAndHookMethod("com.android.settings.framework.app.HtcDndCommandService", lpparam.classLoader, "addNotification", int.class, XC_MethodReplacement.DO_NOTHING);
+			} catch (Throwable t2) {
+				XposedBridge.log(t2);
+			}
 		}
 	}
 		
@@ -1416,6 +1431,64 @@ public class OtherMods {
 				if (reviewAct != null) try {
 					reviewAct.registerReceiver(sbtReceiver, new IntentFilter("com.htc.intent.action.STATUS_BAR_TAP_EVENT"), "com.htc.permission.APP_PLATFORM", null);
 				} catch (Throwable t) {}
+			}
+		});
+	}
+	
+	public static MediaPlayer mMediaPlayer;
+	public static void startSilentMP(boolean loop) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+		try {
+			if (mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
+			if (!mMediaPlayer.isPlaying()) {
+				mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+				AssetFileDescriptor afd = modRes.getAssets().openFd("silent1sec.mp3");
+				mMediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
+				mMediaPlayer.setLooping(loop);
+				mMediaPlayer.prepare();
+				mMediaPlayer.start();
+			}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void stopSilentMP() {
+		if (mMediaPlayer != null) {
+			if (mMediaPlayer.isPlaying()) mMediaPlayer.stop();
+			mMediaPlayer.release();
+			mMediaPlayer = null;
+		}
+	}
+	
+	public static void execHook_SoundPicker(LoadPackageParam lpparam) {
+		findAndHookMethod("com.htc.sdm.soundpicker.SoundPickerAdapter", lpparam.classLoader, "startMediaPlayer", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				startSilentMP(false);
+			}
+		});
+		
+		findAndHookMethod("com.htc.sdm.soundpicker.SoundPickerAdapter", lpparam.classLoader, "stopMediaPlayer", boolean.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				stopSilentMP();
+			}
+		});
+	}
+	
+	public static void execHook_BeatsRingtone(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.phone.Ringer", lpparam.classLoader, "makeLooper", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				startSilentMP(true);
+			}
+		});
+		
+		findAndHookMethod("com.android.phone.Ringer", lpparam.classLoader, "stopRing", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				stopSilentMP();
 			}
 		});
 	}

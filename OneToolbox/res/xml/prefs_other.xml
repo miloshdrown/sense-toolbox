@@ -93,6 +93,11 @@
 			android:title="@string/various_mtpnotif_title"
 			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_dndnotif"
+			android:summary="@string/various_dndnotif_summ"
+			android:title="@string/various_dndnotif_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_other_powersavenotif"
 			android:summary="@string/various_powersavenotif_summ"
 			android:title="@string/various_powersavenotif_title"
@@ -147,6 +152,11 @@
 			android:key="pref_key_other_rejectedcall"
 			android:summary="@string/various_rejectedcall_summ"
 			android:title="@string/various_rejectedcall_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_ringerbeats"
+			android:summary="@string/various_ringerbeats_summ"
+			android:title="@string/various_ringerbeats_title"
 			android:defaultValue="false" />
 		</com.htc.preference.HtcPreferenceCategory>
 			

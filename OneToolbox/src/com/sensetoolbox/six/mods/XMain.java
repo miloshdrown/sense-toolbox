@@ -415,6 +415,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_musicchannel", false))
 				OtherMods.execHook_MusicChannel(lpparam, false);
 			
+			if (pref.getBoolean("pref_key_other_dndnotif", false))
+				OtherMods.execHook_DNDNotif(lpparam);
+			
 			SettingsMods.execHook_AppFilter(lpparam);
 			SettingsMods.execHook_UnhidePrefs(lpparam);
 		}
@@ -559,6 +562,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_rejectedcall", false))
 				OtherMods.execHook_RejectCallSilently(lpparam);
 			
+			if (pref.getBoolean("pref_key_other_ringerbeats", false))
+				OtherMods.execHook_BeatsRingtone(lpparam);
+			
 			//OtherMods.execHook_USSD(lpparam);
 		}
 		
@@ -609,6 +615,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			pkg.equals("com.htc.launcher") ||
 			pkg.equals("com.htc.videohub.ui") ||
 			pkg.equals("com.htc.album") ||
+			pkg.equals("com.htc.camera") ||
 			pkg.equals("com.htc.sense.ime"))
 			SysUIMods.execHook_Sense6ColorControlCustom(lpparam, pkg);
 		
@@ -625,6 +632,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pkg.equals("com.android.vending")) {
 			if (pref.getBoolean("pref_key_other_psscrolltotop", false))
 				OtherMods.execHook_PSScroll(lpparam);
+		}
+		
+		if (pkg.equals("com.htc.sdm")) {
+			if (pref.getBoolean("pref_key_other_ringerbeats", false))
+				OtherMods.execHook_SoundPicker(lpparam);
 		}
 	}
 }

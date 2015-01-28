@@ -390,6 +390,8 @@
 	<string name="various_largephoto_summ">Change the size of the photo displayed during incoming and outgoing calls.</string>
 	<string name="various_rejectedcall_title">Disable rejected call reminder</string>
 	<string name="various_rejectedcall_summ">Don\'t show missed call notification for manually rejected incoming calls. They will be added to call history as normal finished calls.</string>
+	<string name="various_ringerbeats_title">Beats for ringtones</string>
+	<string name="various_ringerbeats_summ">EXPERIMENTAL!\nEnable Beats during incoming calls and in ringtone picker.</string>
 	<string name="various_mods_volume">Volume</string>
 	<string name="various_volsnd_title">Disable volume change sound</string>
 	<string name="various_volsnd_summ">Check to disable the sound on volume change.</string>
@@ -399,6 +401,8 @@
 	<string name="various_movevol_summ">Make volume dialog bottom aligned so it won\'t block the view.</string>
 	<string name="various_mtpnotif_title">Hide MTP notification</string>
 	<string name="various_mtpnotif_summ">Make MTP service background and disable notification.</string>
+	<string name="various_dndnotif_title">Hide DND notification</string>
+	<string name="various_dndnotif_summ">Disable Do Not Disturb notification.</string>
 	<string name="various_powersavenotif_title">Hide Power Saver notification</string>
 	<string name="various_powersavenotif_summ">Disable Power Saver notification.</string>
 	<string name="various_imenotif_title">Hide Input Method notification</string>
