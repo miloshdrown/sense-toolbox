@@ -1,5 +1,6 @@
 package com.sensetoolbox.six.mods;
 
+import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 
 import java.io.BufferedInputStream;
@@ -7,22 +8,39 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileReader;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
 
+import com.htc.preference.HtcPreferenceFrameLayout.LayoutParams;
+import com.htc.widget.HtcAlertDialog;
+import com.htc.widget.HtcListItem;
+import com.htc.widget.HtcListItem2LineText;
+import com.htc.widget.HtcListItemColorIcon;
+import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.StructInputEvent;
+import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.execution.CommandCapture;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.XModuleResources;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
+import android.text.TextUtils;
 import android.view.KeyEvent;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AbsListView;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedBridge;
@@ -158,7 +176,7 @@ public class WakeGesturesMods {
 				
 				if (mEasyAccessCtrl == null) XposedBridge.log("Failed to start app using wake gesture!"); else
 				if (pkgAppArray[0].equals("com.htc.camera")) {
-					XposedHelpers.callMethod(mEasyAccessCtrl, "launchCamera", ctx, true);
+					XposedHelpers.callMethod(mEasyAccessCtrl, "launchCamera", ctx, false);
 				} else {
 					Intent appIntent = new Intent();
 					appIntent.setClassName(pkgAppArray[0], pkgAppArray[1]);
@@ -307,9 +325,10 @@ public class WakeGesturesMods {
 			public void run() {
 				Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
 				while (true) try {
-					if (bfin.read(event) > 0) {
+					if (Thread.currentThread().isInterrupted()) break;
+					if (bfin.read(event) > 0 && !isOnLockdown) {
 						input_event = new StructInputEvent(event);
-						//XposedBridge.log("event3: " + bytesToHex(event));
+						//XposedBridge.log("event: " + bytesToHex(event));
 						//XposedBridge.log("[S6T @ " + String.valueOf(SystemClock.uptimeMillis()) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
 						if (input_event != null && input_event.type == 0x02 && input_event.code == 0x0b) {
 							XMain.pref.reload();
@@ -334,8 +353,9 @@ public class WakeGesturesMods {
 						} catch (Exception e) {}
 					}
 				} catch (Throwable t) {
-					XposedBridge.log(t);
-					try { if (bfin != null) bfin.close(); } catch (Exception e) {}
+					try {
+						if (bfin != null) bfin.close();
+					} catch (Exception e) {}
 					break;
 				}
 			}
@@ -346,18 +366,190 @@ public class WakeGesturesMods {
 		return th;
 	}
 	
+	public static boolean isOnLockdown = false;
+	public static boolean lockOnNextScrOff = false;
+	public static List<Integer> sequence = new ArrayList<Integer>();
+	public static int touchScreenWidth = 0;
+	public static int touchScreenHeight = 0;
+	private static BroadcastReceiver mBRLD = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			goToSleep(context);
+		}
+	};
+	
+	public static void goToSleep(Context mContext) {
+		try {
+			lockOnNextScrOff = true;
+			PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+			pm.goToSleep(SystemClock.uptimeMillis());
+		} catch(Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void fillTouchscreenDimen(String device, final String event) {
+		CommandCapture command = new CommandCapture(0, "getevent -p /dev/input/event" + device + " | grep " + event + " | cut -d ',' -f 3 | cut -d ' ' -f 3") {
+			int lineCount = 0;
+			
+			@Override
+			public void output(int id, String line) {
+				if (lineCount > 0) return;
+				try {
+					if (event.equals("0035")) touchScreenWidth = Integer.parseInt(line.trim());
+					if (event.equals("0036")) touchScreenHeight = Integer.parseInt(line.trim());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+				lineCount++;
+			}
+		};
+		try {
+			RootTools.getShell(false).add(command);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	private static String getTouchscreenDevice() {
+		String eventnum = "3";
+		File[] files = (new File("/sys/class/input")).listFiles();
+		for (File fl: files)
+		if (fl.getName().contains("input")) try {
+			File inputname = new File(fl.getAbsolutePath() + "/name");
+			if (inputname.exists())
+			try (BufferedReader br = new BufferedReader(new FileReader(inputname))) {
+				String line = br.readLine();
+				if (line != null && line.trim().contains("touchscreen")) {
+					String tmp = fl.getName().replace("input", "");
+					Integer.parseInt(tmp);
+					eventnum = tmp;
+					break;
+				}
+			}
+		} catch (Throwable t) {}
+		return eventnum;
+	}
+	
+	public static Runnable clearSequence = new Runnable() {
+		@Override
+		public void run() {
+			sequence.clear();
+		}
+	};
+	
+	public static Thread createTouchscreenThread(final MethodHookParam param) throws Throwable {
+		sequence.clear();
+		String device = getTouchscreenDevice();
+		fillTouchscreenDimen(device, "0035");
+		fillTouchscreenDimen(device, "0036");
+
+		Thread th_touch = new Thread(new Runnable() {
+			final File file_touch = new File("/dev/input/event" + getTouchscreenDevice());
+			final byte[] event_touch = new byte[4 * 2 + 2 + 2 + 4];
+			BufferedInputStream bfin_touch = new BufferedInputStream(new FileInputStream(file_touch));
+			StructInputEvent input_event_touch = null;
+			int slot = 0;
+			int tapX = 0;
+			int tapY = 0;
+			boolean isTapped = false;
+			
+			@Override
+			public void run() {
+				isOnLockdown = true;
+				Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
+				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+				PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+				while (true) try {
+					if (Thread.currentThread().isInterrupted()) break;
+					if (bfin_touch.read(event_touch) > 0 && !pm.isScreenOn()) {
+						input_event_touch = new StructInputEvent(event_touch);
+						//XposedBridge.log("event_touch: " + bytesToHex(event_touch));
+						//XposedBridge.log("[S6T @ " + String.valueOf(SystemClock.uptimeMillis()) + "] input_event: type " + input_event_touch.type_name + " code " + input_event_touch.code_name + " value " + String.valueOf(input_event_touch.value));
+					
+						if (input_event_touch.type == 0x03 && input_event_touch.code == 0x2f) slot = input_event_touch.value;
+						if (slot == 0) {
+							if (input_event_touch.type == 0x03 && input_event_touch.code == 0x39)
+								if (input_event_touch.value == -1)
+									isTapped = false;
+								else
+									isTapped = true;
+							
+							if (isTapped) {
+								if (input_event_touch.type == 0x03) {
+									if (input_event_touch.code == 0x35) tapX = input_event_touch.value;
+									if (input_event_touch.code == 0x36) tapY = input_event_touch.value;
+								}
+								if (input_event_touch.type == 0x00 && input_event_touch.code == 0x00) {
+									isTapped = false;
+									//XposedBridge.log(String.valueOf(tapX) + ":" + String.valueOf(tapY) + " max " + String.valueOf(touchScreenWidth) + ":" + String.valueOf(touchScreenHeight));
+									if (tapX < touchScreenWidth/2 && tapY < touchScreenHeight/2) sequence.add(1);
+									else if (tapX > touchScreenWidth/2 && tapY < touchScreenHeight/2) sequence.add(2);
+									else if (tapX < touchScreenWidth/2 && tapY > touchScreenHeight/2) sequence.add(3);
+									else if (tapX > touchScreenWidth/2 && tapY > touchScreenHeight/2) sequence.add(4);
+									
+									ArrayList<String> prefSequence = new ArrayList<String>(Arrays.asList(XMain.pref.getString("touch_lock_sequence", "").split(",")));
+									String seq;
+									String seqPart;
+									if (sequence.size() >= prefSequence.size()) {
+										seq = TextUtils.join(" ", sequence.subList(sequence.size() - prefSequence.size(), sequence.size())).trim();
+										seqPart = TextUtils.join(" ", sequence.subList(sequence.size() - prefSequence.size() + 1, sequence.size())).trim();
+									} else {
+										seq = TextUtils.join(" ", sequence).trim();
+										seqPart = seq;
+									}
+									
+									String prefSeq = TextUtils.join(" ", prefSequence).trim();
+									String prefSeqPart = TextUtils.join(" ", prefSequence.subList(0, prefSequence.size() - 1)).trim();
+									XposedBridge.log(seq + "   !   " + prefSeq);
+									if (seqPart.equals(prefSeqPart)) {
+										XposedBridge.log("S6T TouchLockAttempt");
+										WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T TouchLockAttempt");
+										wl.acquire(2000);
+									}
+									
+									if (seq.equals(prefSeq)) {
+										isOnLockdown = false;
+										doWakeUp(param.thisObject, SystemClock.uptimeMillis());
+										if (Helpers.getHTCHaptic(mContext)) {
+											Vibrator vibe = (Vibrator)mContext.getSystemService(Context.VIBRATOR_SERVICE);
+											vibe.vibrate(50);
+										}
+									} else if (mHandler != null) {
+										mHandler.removeCallbacks(clearSequence);
+										mHandler.postDelayed(clearSequence, 2000);
+									}
+								}
+							}
+						}
+					} else Thread.sleep(100);
+				} catch (Throwable t) {
+					try {
+						if (bfin_touch != null) bfin_touch.close();
+					} catch (Exception e) {}
+					break;
+				}
+			}
+		});
+		th_touch.setPriority(Thread.MAX_PRIORITY);
+		th_touch.setName("S6T_TouchLock");
+		XposedHelpers.setAdditionalInstanceField(param.thisObject, "eventXthreadtouch", th_touch);
+		return th_touch;
+	}
+	
 	public static void execHook_InitListener() {
 		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurnedOff", int.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "eventXthread");
-				PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 				if (th != null) {
+					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 					if (!th.isAlive()) {
 						try {
 							th.start();
 						} catch (Exception e) {
 							th.interrupt();
+							th = null;
 							XposedBridge.log("Resetting gesture listener thread...");
 							createThread(param).start();
 						}
@@ -377,12 +569,11 @@ public class WakeGesturesMods {
 					GlobalActions.setFlashlight(0);
 				}
 				if (Helpers.mWakeLock != null && Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
+				
+				PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 				Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "eventXthread");
-				if (th != null) {
-					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
-					if (mPowerManager.isScreenOn()) synchronized (mPauseLock) {
-						mPaused = true;
-					}
+				if (th != null && mPowerManager.isScreenOn()) synchronized (mPauseLock) {
+					mPaused = true;
 				}
 			}
 		});
@@ -391,6 +582,129 @@ public class WakeGesturesMods {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				createThread(param);
+			}
+		});
+	}
+	
+	public static void execHook_InitTouchLockListener() {
+		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				IntentFilter intentfilter = new IntentFilter();
+				intentfilter.addAction("com.sensetoolbox.six.mods.action.LockDownDevice");
+				mContext.registerReceiver(mBRLD, intentfilter);
+			}
+		});
+		
+		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurnedOff", int.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				Thread th_touch = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "eventXthreadtouch");
+				if (th_touch != null && !th_touch.isInterrupted()) {
+					th_touch.interrupt();
+					th_touch = null;
+				}
+				if (lockOnNextScrOff) {
+					lockOnNextScrOff = false;
+					XMain.pref.reload();
+					if (XMain.pref.getBoolean("touch_lock_active", false))
+						createTouchscreenThread(param).start();
+					else
+						isOnLockdown = false;
+				}
+			}
+		});
+		
+		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "finishScreenTurningOn", "android.view.WindowManagerPolicy.ScreenOnListener", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+				
+				Thread th_touch = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "eventXthreadtouch");
+				if (th_touch != null && !th_touch.isInterrupted() && mPowerManager.isScreenOn()) {
+					th_touch.interrupt();
+					th_touch = null;
+				}
+				sequence.clear();
+				isOnLockdown = false;
+			}
+		});
+		
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+				if (isOnLockdown && !mPowerManager.isScreenOn()) param.setResult(0);
+			}
+		});
+		
+		findAndHookMethod("com.android.server.power.PowerManagerService", null, "wakeUp", long.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				boolean isScreenOn = (Boolean)XposedHelpers.callMethod(param.thisObject, "isScreenOn");
+				if (isOnLockdown && !isScreenOn) param.setResult(null);
+			}
+		});
+		findAndHookMethod("com.android.server.power.PowerManagerService", null, "wakeUpInternal", long.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				boolean isScreenOn = (boolean)XposedHelpers.callMethod(param.thisObject, "isScreenOn");
+				if (isOnLockdown && !isScreenOn) param.setResult(null);
+			}
+		});
+		findAndHookMethod("com.android.server.power.PowerManagerService", null, "wakeUpFromNative", long.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				boolean isScreenOn = (boolean)XposedHelpers.callMethod(param.thisObject, "isScreenOn");
+				if (isOnLockdown && !isScreenOn) param.setResult(null);
+			}
+		});
+		findAndHookMethod("com.android.server.power.PowerManagerService", null, "wakeUpNoUpdateLocked", long.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				boolean isScreenOn = (boolean)XposedHelpers.callMethod(param.thisObject, "isScreenOn");
+				if (isOnLockdown && !isScreenOn) param.setResult(false);
+			}
+		});
+		
+		findAndHookMethod("com.android.internal.policy.impl.GlobalActions", null, "handleShow", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				if (mContext == null) return;
+				
+				XMain.pref.reload();
+				if (!XMain.pref.getBoolean("touch_lock_active", false)) return;
+
+				AbsListView.LayoutParams lp1 = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+				HtcListItem listitem = new HtcListItem(mContext);
+				listitem.setEnabled(true);
+				listitem.setClickable(true);
+				listitem.setLayoutParams(lp1);
+				listitem.setOnClickListener(new OnClickListener() {
+					@Override
+					public void onClick(View v) {
+						goToSleep(mContext);
+					}
+				});
+				
+				HtcListItemColorIcon lockImg = new HtcListItemColorIcon(mContext);
+				//AbsListView.LayoutParams lp2 = new AbsListView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				//lockImg.setLayoutParams(lp2);
+				//lockImg.setPadding(0, 0, 0, Math.round(mContext.getResources().getDisplayMetrics().density * 40));
+				XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+				lockImg.setColorIconImageDrawable(modRes.getDrawable(R.drawable.apm_touchlock));
+				lockImg.setEnabled(true);
+				
+				HtcListItem2LineText lockTitle = new HtcListItem2LineText(mContext);
+				lockTitle.setPrimaryText(modRes.getString(R.string.various_touchlock_title));
+				lockTitle.setSecondaryText(modRes.getString(R.string.touchlock_power_summary));
+				
+				listitem.addView(lockImg);
+				listitem.addView(lockTitle);
+				HtcAlertDialog mDialog = (HtcAlertDialog)XposedHelpers.getObjectField(param.thisObject, "mDialog");
+				mDialog.getListView().addFooterView(listitem);
 			}
 		});
 	}

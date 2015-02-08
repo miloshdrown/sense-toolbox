@@ -31,11 +31,13 @@ Ideas
 Current changelog
 =================
 
-1.4.6
-[Fixed] Sense 6 theme override support for Camera app
-[Fixed] Correct interaction of Power Flashlight and Wake Gestures Flashlight mods
-[Fixed] Transparent background for TV notification
-[Fixed] Bugs and crashes
+1.4.7
+[New] Touch lock mod
+[New] Select app to open screenshots
+[New] Hide Do Not Disturb notification
+[Fixed] Switching to front camera when launched by Wake gestures
+[Fixed] Next alarm and signal level labels while in roaming
+
 
 ===========
 Translators
@@ -59,6 +61,12 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.4.6
+[Fixed] Sense 6 theme override support for Camera app
+[Fixed] Correct interaction of Power Flashlight and Wake Gestures Flashlight mods
+[Fixed] Transparent background for TV notification
+[Fixed] Bugs and crashes
 
 1.4.5
 [New] Haptic feedback duration options for navigation keys, long press and Sense keyboard

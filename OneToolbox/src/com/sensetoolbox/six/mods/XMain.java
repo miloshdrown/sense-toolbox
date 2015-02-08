@@ -99,6 +99,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures() && !Helpers.isM8() && !Helpers.isE8())
 			WakeGesturesMods.execHook_InitListener();
 		
+		if (pref.getBoolean("touch_lock_active", false) && Helpers.isWakeGestures())
+			WakeGesturesMods.execHook_InitTouchLockListener();
+		
 		if (pref.getBoolean("pref_key_controls_extendedpanel", false))
 			SysUIMods.execHook_SearchGlowPad();
 		
@@ -542,6 +545,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_statusbar_selectivealarmicon_enable", false))
 				StatusbarMods.execHook_SmartAlarm(lpparam);
 			
+			if (pref.getBoolean("pref_key_other_screenopen", false))
+				OtherMods.execHook_ScreenshotViewer(lpparam);
+			
 			StatusbarMods.execHook_HideIcons(lpparam);
 		}
 		
@@ -561,9 +567,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_other_rejectedcall", false))
 				OtherMods.execHook_RejectCallSilently(lpparam);
-			
-			if (pref.getBoolean("pref_key_other_ringerbeats", false))
-				OtherMods.execHook_BeatsRingtone(lpparam);
 			
 			//OtherMods.execHook_USSD(lpparam);
 		}
@@ -632,11 +635,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pkg.equals("com.android.vending")) {
 			if (pref.getBoolean("pref_key_other_psscrolltotop", false))
 				OtherMods.execHook_PSScroll(lpparam);
-		}
-		
-		if (pkg.equals("com.htc.sdm")) {
-			if (pref.getBoolean("pref_key_other_ringerbeats", false))
-				OtherMods.execHook_SoundPicker(lpparam);
 		}
 	}
 }

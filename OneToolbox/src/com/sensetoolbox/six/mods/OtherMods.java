@@ -10,6 +10,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 
 import com.htc.fragment.widget.CarouselFragment;
 import com.htc.widget.HtcAlertDialog;
@@ -21,6 +22,8 @@ import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
 import android.app.KeyguardManager;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
@@ -28,7 +31,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageInfo;
-import android.content.res.AssetFileDescriptor;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.database.ContentObserver;
@@ -42,8 +47,6 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.media.AudioManager;
-import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -1435,60 +1438,65 @@ public class OtherMods {
 		});
 	}
 	
-	public static MediaPlayer mMediaPlayer;
-	public static void startSilentMP(boolean loop) {
-		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-		try {
-			if (mMediaPlayer == null) mMediaPlayer = new MediaPlayer();
-			if (!mMediaPlayer.isPlaying()) {
-				mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
-				AssetFileDescriptor afd = modRes.getAssets().openFd("silent1sec.mp3");
-				mMediaPlayer.setDataSource(afd.getFileDescriptor(), afd.getStartOffset(), afd.getLength());
-				mMediaPlayer.setLooping(loop);
-				mMediaPlayer.prepare();
-				mMediaPlayer.start();
-			}
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-	}
-	
-	public static void stopSilentMP() {
-		if (mMediaPlayer != null) {
-			if (mMediaPlayer.isPlaying()) mMediaPlayer.stop();
-			mMediaPlayer.release();
-			mMediaPlayer = null;
-		}
-	}
-	
-	public static void execHook_SoundPicker(LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.sdm.soundpicker.SoundPickerAdapter", lpparam.classLoader, "startMediaPlayer", new XC_MethodHook() {
+	public static void execHook_ScreenshotViewer(final LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.screenshot.SaveImageInBackgroundTask", lpparam.classLoader, "onPostExecute", "com.android.systemui.screenshot.SaveImageInBackgroundData", new XC_MethodReplacement() {
 			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				startSilentMP(false);
-			}
-		});
-		
-		findAndHookMethod("com.htc.sdm.soundpicker.SoundPickerAdapter", lpparam.classLoader, "stopMediaPlayer", boolean.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				stopSilentMP();
-			}
-		});
-	}
-	
-	public static void execHook_BeatsRingtone(LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.phone.Ringer", lpparam.classLoader, "makeLooper", new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				startSilentMP(true);
-			}
-		});
-		
-		findAndHookMethod("com.android.phone.Ringer", lpparam.classLoader, "stopRing", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				stopSilentMP();
+			protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
+				try {
+					Object saveimageinbackgrounddata = param.args[0];
+					if ((Boolean)XposedHelpers.callMethod(param.thisObject, "isCancelled")) {
+						Runnable finisher = (Runnable)XposedHelpers.getObjectField(saveimageinbackgrounddata, "finisher");
+						finisher.run();
+						XposedHelpers.callMethod(saveimageinbackgrounddata, "clearImage");
+						XposedHelpers.callMethod(saveimageinbackgrounddata, "clearContext");
+						return null;
+					}
+					int result = (Integer)XposedHelpers.getObjectField(saveimageinbackgrounddata, "result");
+					if (result > 0) {
+						XposedHelpers.callStaticMethod(
+							findClass("com.android.systemui.screenshot.GlobalScreenshot", lpparam.classLoader),
+							"notifyScreenshotError",
+							XposedHelpers.getObjectField(saveimageinbackgrounddata, "context"),
+							XposedHelpers.getObjectField(param.thisObject, "mNotificationManager")
+						);
+					} else {
+						Context context = (Context)XposedHelpers.getObjectField(saveimageinbackgrounddata, "context");
+						Resources resources = context.getResources();
+						
+						Intent intent = new Intent();
+						intent.setAction(Intent.ACTION_VIEW);
+						Uri imageUri = (Uri)XposedHelpers.getObjectField(saveimageinbackgrounddata, "imageUri");
+						intent.setDataAndType(imageUri, "image/*");
+
+						Notification.Builder mNotificationBuilder = (Notification.Builder)XposedHelpers.getObjectField(param.thisObject, "mNotificationBuilder");
+						mNotificationBuilder.setContentTitle(resources.getString(resources.getIdentifier("screenshot_saved_title", "string", "com.android.systemui")))
+											.setContentText(resources.getString(resources.getIdentifier("screenshot_saved_text", "string", "com.android.systemui")))
+											.setWhen(System.currentTimeMillis())
+											.setAutoCancel(true);
+						
+						PackageManager manager = context.getPackageManager();
+						List<ResolveInfo> info = manager.queryIntentActivities(intent, PackageManager.MATCH_DEFAULT_ONLY);
+						if (info.isEmpty()) {
+							XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+							Toast.makeText(context, Helpers.xl10n(modRes, R.string.various_screenopen_noapps), Toast.LENGTH_LONG).show();
+							mNotificationBuilder.setContentIntent(PendingIntent.getActivity(context, 0, new Intent(), 0));
+						} else {
+							mNotificationBuilder.setContentIntent(PendingIntent.getActivity(context, 0, intent, 0));
+						}
+						
+						Notification notification = mNotificationBuilder.build();
+						notification.flags = 0xffffffdf & notification.flags;
+						NotificationManager mNotificationManager = (NotificationManager)XposedHelpers.getObjectField(param.thisObject, "mNotificationManager");
+						int mNotificationId = (Integer)XposedHelpers.getObjectField(param.thisObject, "mNotificationId");
+						mNotificationManager.notify(mNotificationId, notification);
+					}
+					Runnable finisher = (Runnable)XposedHelpers.getObjectField(saveimageinbackgrounddata, "finisher");
+					finisher.run();
+					XposedHelpers.callMethod(saveimageinbackgrounddata, "clearContext");
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+				return null;
 			}
 		});
 	}

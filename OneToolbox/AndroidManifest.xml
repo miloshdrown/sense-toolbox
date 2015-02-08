@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.sensetoolbox.six"
-	android:versionCode="20"
-	android:versionName="1.4.6" >
+	android:versionCode="21"
+	android:versionName="1.4.7" >
 
 	<uses-sdk
 		android:minSdkVersion="19"
@@ -79,8 +79,9 @@
 			android:excludeFromRecents="true" />
 		<activity android:name="com.sensetoolbox.six.AboutScreen" android:screenOrientation="portrait" />
 		<activity android:name="com.sensetoolbox.six.SenseThemes" android:configChanges="keyboardHidden|orientation|screenSize" />
-		<activity android:name="com.sensetoolbox.six.PopupNotify" android:configChanges="keyboardHidden|orientation|screenSize"  />
-		<activity android:name="com.sensetoolbox.six.EPSRemap" android:configChanges="keyboardHidden|orientation|screenSize"  />
+		<activity android:name="com.sensetoolbox.six.PopupNotify" android:configChanges="keyboardHidden|orientation|screenSize" />
+		<activity android:name="com.sensetoolbox.six.EPSRemap" android:configChanges="keyboardHidden|orientation|screenSize" />
+		<activity android:name="com.sensetoolbox.six.TouchLock" android:configChanges="keyboardHidden|orientation|screenSize" />
 		<activity android:name="com.sensetoolbox.six.WakeGestures" android:configChanges="keyboardHidden|orientation|screenSize" />
 		<activity
 			android:name="com.sensetoolbox.six.BlinkFeed"

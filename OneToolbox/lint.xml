@@ -18,6 +18,8 @@
         <ignore path="AndroidManifest.xml" />
     </issue>
     <issue id="NestedWeights">
+        <ignore path="res/layout/activity_eps_remap.xml" />
+        <ignore path="res/layout/activity_touch_lock.xml" />
         <ignore path="res/layout/epsremap.xml" />
     </issue>
     <issue id="OldTargetApi">
@@ -76,7 +78,9 @@
     </issue>
     <issue id="UselessParent">
         <ignore path="res/layout-land/notifications.xml" />
+        <ignore path="res/layout/activity_eps_remap.xml" />
         <ignore path="res/layout/activity_popup_notify.xml" />
+        <ignore path="res/layout/activity_touch_lock.xml" />
         <ignore path="res/layout/epsremap.xml" />
         <ignore path="res/layout/notifications.xml" />
     </issue>

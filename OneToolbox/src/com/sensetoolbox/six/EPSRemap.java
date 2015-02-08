@@ -9,7 +9,6 @@ import com.htc.preference.HtcPreference.OnPreferenceChangeListener;
 import com.htc.preference.HtcPreferenceScreen;
 import com.htc.widget.ActionBarContainer;
 import com.htc.widget.ActionBarExt;
-import com.htc.widget.ActionBarItemView;
 import com.htc.widget.ActionBarText;
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcToggleButtonLight;
@@ -35,7 +34,6 @@ import android.widget.TextView;
 
 public class EPSRemap extends HtcPreferenceActivityEx {
 	int mThemeId = 0;
-	ActionBarItemView reboot;
 	SharedPreferences prefs;
 	HtcToggleButtonLight OnOffSwitch;
 	int[][] cellArray = {
@@ -75,7 +73,7 @@ public class EPSRemap extends HtcPreferenceActivityEx {
 			homeBtn.setOnClickListener(goBack);
 		}
 		
-		setContentView(R.layout.epsremap);
+		setContentView(R.layout.activity_eps_remap);
 		// Hidden prefscreen to assign DynamicPreference
 		addPreferencesFromResource(R.xml.dummy);
 		getPreferenceManager().setSharedPreferencesName("one_toolbox_prefs");

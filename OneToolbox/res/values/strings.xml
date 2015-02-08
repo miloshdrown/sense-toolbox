@@ -28,6 +28,8 @@
 	<string name="no_root_summ">Root is required for this mod to work</string>
 	<string name="no_busybox_summ">BusyBox is required for this mod to work</string>
 	<string name="no_browser">Browser app is required to open URLs</string>
+	<string name="no_clock_apps">No clock apps found</string>
+	<string name="define_lock_seq">Define sequence</string>
 	
 	<string name="crash_dialog">Sense Toolbox has just crashed!</string>
 	<string name="crash_dialog_manual">All necessary data was collected</string>
@@ -373,6 +375,8 @@
 	<string name="various_extremepower_summ">Choose 6 custom apps for extreme power saving mode</string>
 	<string name="various_extremepower_cell">Cell</string>
 	<string name="various_extremepower_hint">Extreme Power Saving mode can be turned off by long pressing any tile if this mod is active</string>
+	<string name="various_touchlock_title">Touch lock</string>
+	<string name="various_touchlock_summ">Lock device until proper sequence of taps is performed</string>
 	<string name="various_screenon_title">On animation</string>
 	<string name="various_screenon_summ">Animation for turning screen on</string>
 	<string name="various_screenoff_title">Off animation</string>
@@ -390,8 +394,6 @@
 	<string name="various_largephoto_summ">Change the size of the photo displayed during incoming and outgoing calls.</string>
 	<string name="various_rejectedcall_title">Disable rejected call reminder</string>
 	<string name="various_rejectedcall_summ">Don\'t show missed call notification for manually rejected incoming calls. They will be added to call history as normal finished calls.</string>
-	<string name="various_ringerbeats_title">Beats for ringtones</string>
-	<string name="various_ringerbeats_summ">EXPERIMENTAL!\nEnable Beats during incoming calls and in ringtone picker.</string>
 	<string name="various_mods_volume">Volume</string>
 	<string name="various_volsnd_title">Disable volume change sound</string>
 	<string name="various_volsnd_summ">Check to disable the sound on volume change.</string>
@@ -442,6 +444,9 @@
 	<string name="ledtimeoutpicker_switch">Enable custom timeout</string>
 	<string name="various_screendelete_title">Screenshot deletion</string>
 	<string name="various_screendelete_summ">Add Delete action to the screenshot notification.</string>
+	<string name="various_screenopen_title">Select app to view screenshots</string>
+	<string name="various_screenopen_summ">Change screenshot notification to use viewer app selection dialog.</string>
+	<string name="various_screenopen_noapps">No apps found to view this screenshot</string>
 
 	<string name="wakegestures_mod">Wake gestures</string>
 	<string name="wakegestures_haptic_title">Haptic feedback</string>
@@ -460,7 +465,14 @@
 	<string name="wakegestures_logopress_summ">Action for logo long press</string>
 	<string name="wakegestures_volume_title">Volume keys</string>
 	<string name="wakegestures_volume_summ">Action for pressing volume keys in landscape</string>
-	<string name="wakegestures_not_supported">Wake gestures require kernel support, ask your kernel developer to add it or use ElementalX 14.7+</string>
+	<string name="wakegestures_not_supported">Wake gestures require kernel support, ask your kernel developer to add it or use latest ElementalX</string>
+	
+	<string name="touchlock_not_supported">Touch lock mod requires kernel with Wake gestures support, ask your kernel developer to add it or use latest ElementalX</string>
+	<string name="touchlock_hint">Tap the second icon above to start recording sequence. Tap it again to save. 12 steps max. Lockdown can be enabled from Power and Home popup menus.</string>
+	<string name="touchlock_seq">Current sequence</string>
+	<string name="touchlock_not_defined">not defined</string>
+	<string name="touchlock_power_summary">Complete device lockdown</string>
+	<string name="touchlock_hint_mod">Enable touch lock from the action bar above.\n\nSoft reboot will be required only once after that.</string>
 
 	<string name="persistent_mods">Always active mods</string>
 	<string name="persist_adgrid_title">App drawer grid size</string>
@@ -585,6 +597,7 @@
 	<string name="array_home_menu_apm">APM</string>
 	<string name="array_home_menu_draglock">Lock launcher</string>
 	<string name="array_home_menu_dragunlock">Unlock launcher</string>
+	<string name="array_home_menu_lockdown">Lock down device</string>
 	<string name="array_recents_menu_info">Show info</string>
 	<string name="array_recents_menu_playstore">Play Store</string>
 	<string name="array_recents_menu_close">Close</string>

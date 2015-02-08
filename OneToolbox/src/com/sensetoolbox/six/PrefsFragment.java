@@ -1061,6 +1061,19 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 						dlg.show();
 					}
 					break;
+				case "pref_key_touchlock":
+					if (Helpers.isWakeGestures()) {
+						getActivity().startActivity(new Intent(getActivity(), TouchLock.class));
+					} else {
+						HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
+						builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));
+						builder.setMessage(Helpers.l10n(getActivity(), R.string.touchlock_not_supported));
+						builder.setIcon(android.R.drawable.ic_dialog_alert);
+						builder.setNeutralButton(Helpers.l10n(getActivity(), R.string.okay), null);
+						HtcAlertDialog dlg = builder.create();
+						dlg.show();
+					}
+					break;
 			}
 			
 			if (replaceTo != null) {

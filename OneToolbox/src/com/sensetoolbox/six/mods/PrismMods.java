@@ -779,7 +779,11 @@ public class PrismMods {
 		
 		ListView options = new ListView(m_workspace_local.getContext());
 		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-		ListAdapter listAdapter = new PopupAdapter(options.getContext(), Helpers.xl10n_array(modRes, R.array.home_menu), false);
+		String[] menu_items = Helpers.xl10n_array(modRes, R.array.home_menu);
+		XMain.pref.reload();
+		if (!Helpers.isWakeGestures() || !XMain.pref.getBoolean("touch_lock_active", false))
+		menu_items = Arrays.copyOf(menu_items, menu_items.length - 1);
+		ListAdapter listAdapter = new PopupAdapter(options.getContext(), menu_items, false);
 		options.setFocusableInTouchMode(true);
 		options.setAdapter(listAdapter);
 		options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -797,7 +801,9 @@ public class PrismMods {
 				} else if (position == 4) {
 					OtherMods.startAPM(launcherAct);
 				} else if (position == 5) {
-					Settings.System.putString(view.getContext().getContentResolver(), "lock_homescreen_dragging", String.valueOf(!Boolean.parseBoolean(Settings.System.getString(view.getContext().getContentResolver(), "lock_homescreen_dragging"))));
+					Settings.System.putString(launcherAct.getContentResolver(), "lock_homescreen_dragging", String.valueOf(!Boolean.parseBoolean(Settings.System.getString(launcherAct.getContentResolver(), "lock_homescreen_dragging"))));
+				} else if (position == 6) {
+					launcherAct.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.LockDownDevice"));
 				}
 			}
 		});

@@ -44,6 +44,11 @@
 		android:title="@string/persistent_mods"
 		android:key="pref_key_persist" />
 	
+	<com.htc.preference.HtcPreferenceScreen
+		android:title="@string/various_touchlock_title"
+		android:summary="@string/various_touchlock_summ"
+		android:key="pref_key_touchlock" />
+		
 	<com.htc.preference.HtcPreference
 		android:key="pref_key_other_popupnotify"
 		android:title="@string/various_popupnotify_title"

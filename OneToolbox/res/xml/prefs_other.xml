@@ -136,7 +136,11 @@
 			android:summary="@string/various_screendelete_summ"
 			android:title="@string/various_screendelete_title"
 			android:defaultValue="false" />
-		
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_screenopen"
+			android:summary="@string/various_screenopen_summ"
+			android:title="@string/various_screenopen_title"
+			android:defaultValue="false" />
 		</com.htc.preference.HtcPreferenceCategory>
 		
 		<com.htc.preference.HtcPreferenceCategory
@@ -152,11 +156,6 @@
 			android:key="pref_key_other_rejectedcall"
 			android:summary="@string/various_rejectedcall_summ"
 			android:title="@string/various_rejectedcall_title"
-			android:defaultValue="false" />
-		<com.htc.preference.HtcCheckBoxPreference
-			android:key="pref_key_other_ringerbeats"
-			android:summary="@string/various_ringerbeats_summ"
-			android:title="@string/various_ringerbeats_title"
 			android:defaultValue="false" />
 		</com.htc.preference.HtcPreferenceCategory>
 			

@@ -1314,7 +1314,7 @@ public class SysUIMods {
 	
 	private static Thread cpuThread = null;
 	private static boolean isThreadActive = false;
-	private static int USSDState = 0;
+	//private static int USSDState = 0;
 	private static long workLast, totalLast, workC, totalC = 0;
 	private static int curFreq;
 	private static String curTemp;
@@ -1383,16 +1383,16 @@ public class SysUIMods {
 				OnClickListener ocl = new OnClickListener() {
 					@Override
 					public void onClick(View v) {
-						if (USSDState == 1) return;
+						//if (USSDState == 1) return;
 						if (cpuThread != null && cpuThread.isAlive()) {
 							Thread tmpThread = cpuThread;
 							cpuThread = null;
 							tmpThread.interrupt();
 							isThreadActive = false;
 							XposedHelpers.callMethod(param.thisObject, "updateClock");
-						} else if (USSDState == 2) {
-							USSDState = 0;
-							XposedHelpers.callMethod(param.thisObject, "updateClock");
+						//} else if (USSDState == 2) {
+						//	USSDState = 0;
+						//	XposedHelpers.callMethod(param.thisObject, "updateClock");
 						} else {
 							cpuThread = new Thread(new Runnable() {
 								public void run() {
@@ -1454,11 +1454,59 @@ public class SysUIMods {
 		findAndHookMethod("com.android.systemui.statusbar.policy.DateView", lpparam.classLoader, "updateClock", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				if (isThreadActive || USSDState > 0) param.setResult(null);
+				if (isThreadActive/* || USSDState > 0*/) param.setResult(null);
 			}
 		});
 	}
-	
+	/*
+	public static void chooseClockApp(Context ctx) {
+		Intent intentTimeSet = new Intent("android.intent.action.TIME_SET");
+		Intent intentAlarmSet = new Intent("android.intent.action.SET_ALARM");
+		Intent intentAllApps = new Intent("android.intent.action.MAIN");
+		intentAllApps.addCategory("android.intent.category.LAUNCHER");
+		
+		PackageManager pm = ctx.getPackageManager();
+		List<ResolveInfo> resInfoTime = pm.queryBroadcastReceivers(intentTimeSet, 0);
+		List<ResolveInfo> resInfoAlarm = pm.queryIntentActivities(intentAlarmSet, 0);
+		List<ResolveInfo> resInfoAllApps = pm.queryIntentActivities(intentAllApps, 0);
+		
+		List<String> pkgAlarm = new ArrayList<String>();
+		for (ResolveInfo ri: resInfoAlarm) pkgAlarm.add(ri.activityInfo.packageName);
+		
+		List<ResolveInfo> resInfo = new ArrayList<ResolveInfo>();
+		for (ResolveInfo ri: resInfoTime)
+		if (pkgAlarm.contains(ri.activityInfo.packageName))	resInfo.add(ri);
+		
+		for (ResolveInfo ri: resInfoAllApps) {
+			String pkgName = ri.activityInfo.applicationInfo.packageName;
+			String label = ri.activityInfo.applicationInfo.loadLabel(pm).toString().toLowerCase(Locale.getDefault());
+			if (pkgName.contains("clock") || pkgName.contains("alarm") || pkgName.contains("time") ||
+				label.contains("clock") || label.contains("alarm") || label.contains("time")) resInfo.add(ri);
+		}
+		
+		if (resInfo.size() == 0) {
+			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+			Toast.makeText(ctx, Helpers.xl10n(modRes, R.string.no_clock_apps), Toast.LENGTH_LONG).show();
+			return;
+		}
+		
+		HashMap<String,Intent> intentList = new HashMap<String,Intent>();
+		String packageName0 = resInfo.get(0).activityInfo.applicationInfo.packageName;
+		Intent intentClock0 = pm.getLaunchIntentForPackage(packageName0);
+		
+		for (int i = 1; i < resInfo.size(); i++) {
+			ResolveInfo ri = resInfo.get(i);
+			String packageName = ri.activityInfo.applicationInfo.packageName;
+			Intent intentClock = pm.getLaunchIntentForPackage(packageName);
+			if (intentClock != null && !packageName.equals(packageName0)) intentList.put(packageName, intentClock);
+		}
+		
+		Intent openInChooser = Intent.createChooser(intentClock0, "Select app");
+		Intent[] extraIntents = intentList.values().toArray(new Intent[intentList.size()]);
+		openInChooser.putExtra(Intent.EXTRA_INITIAL_INTENTS, extraIntents);
+		ctx.startActivity(openInChooser);
+	}
+	*/
 	public static void execHook_NotifDrawerHeaderClock(final InitPackageResourcesParam resparam, final int headerClock) {
 		resparam.res.hookLayout("com.android.systemui", "layout", "status_bar_expanded_header", new XC_LayoutInflated() {
 			@Override
@@ -1530,9 +1578,7 @@ public class SysUIMods {
 			TextView mNetworkTextView = (TextView)XposedHelpers.getObjectField(paramThisObject, "mNetworkTextView");
 			if (mPlmnLabel != null) {
 				String txt = Helpers.getNextAlarm(mPlmnLabel.getContext());
-				if (XMain.pref_alarmnotify && txt != null && !txt.equals("")) mPlmnLabel.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
-				else if (XMain.pref_signalnotify && !mPlmnLabel.getText().toString().contains("dBm"))
-				mPlmnLabel.setText(mPlmnLabel.getText() + getCurrentSignalLevel(mPlmnLabel.getContext()));
+				if (XMain.pref_alarmnotify && txt != null && !txt.equals("")) mPlmnLabel.setText("");
 			}
 			if (mSpnLabel != null) {
 				String txt = Helpers.getNextAlarm(mSpnLabel.getContext());
