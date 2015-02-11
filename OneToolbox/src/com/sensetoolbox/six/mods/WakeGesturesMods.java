@@ -30,12 +30,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.XModuleResources;
+import android.os.Binder;
 import android.os.Handler;
 import android.os.PowerManager;
 import android.os.Process;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
+import android.provider.Settings;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.View;
@@ -377,6 +379,20 @@ public class WakeGesturesMods {
 		}
 	};
 	
+	public static void setLockdown(Context ctx, boolean isOn) {
+		isOnLockdown = isOn;
+		if (ctx != null) try {
+			long ident = Binder.clearCallingIdentity();
+			try {
+				Settings.System.putString(ctx.getContentResolver(), "device_locked_state", Boolean.toString(isOn));
+			} finally {
+				Binder.restoreCallingIdentity(ident);
+			}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
 	public static void goToSleep(Context mContext) {
 		try {
 			lockOnNextScrOff = true;
@@ -455,9 +471,9 @@ public class WakeGesturesMods {
 			
 			@Override
 			public void run() {
-				isOnLockdown = true;
 				Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
 				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				setLockdown(mContext, true);
 				Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 				PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 				while (true) try {
@@ -503,13 +519,12 @@ public class WakeGesturesMods {
 									String prefSeqPart = TextUtils.join(" ", prefSequence.subList(0, prefSequence.size() - 1)).trim();
 									XposedBridge.log(seq + "   !   " + prefSeq);
 									if (seqPart.equals(prefSeqPart)) {
-										XposedBridge.log("S6T TouchLockAttempt");
 										WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T TouchLockAttempt");
 										wl.acquire(2000);
 									}
 									
 									if (seq.equals(prefSeq)) {
-										isOnLockdown = false;
+										setLockdown(mContext, false);
 										doWakeUp(param.thisObject, SystemClock.uptimeMillis());
 										if (Helpers.getHTCHaptic(mContext)) {
 											Vibrator vibe = (Vibrator)mContext.getSystemService(Context.VIBRATOR_SERVICE);
@@ -597,6 +612,33 @@ public class WakeGesturesMods {
 			}
 		});
 		
+		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager.BootCompletedReceiver", null, "onReceive", Context.class, Intent.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				final Context context = (Context)param.args[0];
+				Intent intent = (Intent)param.args[1];
+				
+				if (context != null && intent != null && intent.getAction() != null && intent.getAction().equals("com.htc.intent.action.HTC_BOOT_COMPLETED")) {
+					long ident = Binder.clearCallingIdentity();
+					boolean shouldBeLocked = false;
+					try {
+						shouldBeLocked = Boolean.parseBoolean(Settings.System.getString(context.getContentResolver(), "device_locked_state"));
+					} finally {
+						Binder.restoreCallingIdentity(ident);
+					}
+					if (shouldBeLocked) {
+						Handler mHandler = (Handler)XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mHandler");
+						if (mHandler != null) mHandler.postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								goToSleep(context);
+							}
+						}, 5000);
+					}
+				}
+			}
+		});
+
 		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurnedOff", int.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
@@ -611,7 +653,7 @@ public class WakeGesturesMods {
 					if (XMain.pref.getBoolean("touch_lock_active", false))
 						createTouchscreenThread(param).start();
 					else
-						isOnLockdown = false;
+						setLockdown((Context)XposedHelpers.getObjectField(param.thisObject, "mContext"), false);
 				}
 			}
 		});
@@ -627,7 +669,12 @@ public class WakeGesturesMods {
 					th_touch = null;
 				}
 				sequence.clear();
-				isOnLockdown = false;
+				
+				boolean mBootCompleted = (Boolean)XposedHelpers.getObjectField(param.thisObject, "mBootCompleted");
+				if (mBootCompleted && mPowerManager.isScreenOn()) {
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					setLockdown(mContext, false);
+				}
 			}
 		});
 		
