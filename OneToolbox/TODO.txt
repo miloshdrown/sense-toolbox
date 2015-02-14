@@ -37,6 +37,9 @@ Current changelog
 [New] Hide Do Not Disturb notification
 [Fixed] Switching to front camera when launched by Wake gestures
 [Fixed] Next alarm and signal level labels while in roaming
+[Fixed] Selected USB icon prevents other icons from hiding
+[Fixed] Music Channel mod on some devices
+[Fixed] Toolbox UI for different background colors
 
 
 ===========

@@ -46,7 +46,7 @@
 			android:gravity="center"
 			android:padding="30dp"
 			android:text="@string/popupnotify_hint"
-			   android:textAllCaps="true"
+			android:textAllCaps="true"
 			android:textSize="18sp"
 			android:textColor="@color/theme_hint"
 			android:fontFamily="sans-serif-condensed" />

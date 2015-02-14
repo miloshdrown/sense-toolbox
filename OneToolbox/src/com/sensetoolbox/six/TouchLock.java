@@ -170,7 +170,6 @@ public class TouchLock extends Activity {
 		cell4text.setText("4");
 		
 		int backResId = getResources().getIdentifier("common_app_bkg", "drawable", "com.htc");
-		
 		modHint = (TextView)findViewById(R.id.modhint);
 		modHint.setBackgroundResource(backResId);
 		modHint.setText(Helpers.l10n(this, R.string.touchlock_hint_mod));
@@ -180,6 +179,7 @@ public class TouchLock extends Activity {
 		experimental.setTextColor(getResources().getColor(android.R.color.background_light));
 		
 		gridBkg = (LinearLayout)findViewById(R.id.gridBkg);
+		gridBkg.setBackgroundResource(backResId);
 		
 		boolean state = prefs.getBoolean("touch_lock_active", false);
 		applyState(state);
@@ -218,18 +218,18 @@ public class TouchLock extends Activity {
 			if (isRecording && OnOffSwitch.isChecked())
 			switch (event.getAction()) {
 				case 0:
-					v.setBackgroundColor(0xff434343);
+					v.setBackgroundColor(0x7f888888);
 					if (v.getTag() != null) {
 						sequence.add((String)v.getTag());
 						updateSequenceText();
 						if (sequence.size() >= 12) {
-							v.setBackgroundColor(0xff141414);
+							v.setBackgroundColor(0x7f666666);
 							menuDefine.callOnClick();
 						}
 					}
 					break;
 				case 1:
-					v.setBackgroundColor(0xff141414);
+					v.setBackgroundColor(0x7f666666);
 					break;
 			}
 			v.performClick();

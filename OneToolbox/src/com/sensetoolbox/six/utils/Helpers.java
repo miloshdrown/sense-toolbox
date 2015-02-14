@@ -289,12 +289,13 @@ public class Helpers {
 			SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz", Locale.getDefault());
 			format.setTimeZone(TimeZone.getTimeZone("UTC"));
 			TextView center = createCenteredText(act, R.string.download_current_ver);
-			center.setText(center.getText()  + " " + buildId + "\n(" + format.format(datetime) + ")");
+			center.setText(center.getText()  + " " + buildId + "\n" + format.format(datetime));
 			alert.setView(center);
 		} catch (Exception e) {
+			alert.setView(createCenteredText(act, R.string.download_update));
 			if (!(e instanceof FileNotFoundException)) e.printStackTrace();
 		}
-		alert.setNegativeButton(R.string.sense_themes_cancel, new DialogInterface.OnClickListener() {
+		alert.setNegativeButton(l10n(act, R.string.sense_themes_cancel), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {}
 		});
 		alert.setNeutralButton(l10n(act, R.string.remove), new DialogInterface.OnClickListener() {

@@ -6,7 +6,7 @@
 	<string name="about_version">Version: %1$s (build %2$s)</string>
 	<string name="support_version">Support (App Version: %1$s)</string>
 	<string name="soft_reboot">Soft Reboot</string>
-	<string name="soft_reboot_tip">\nMost of the Toolbox mods require soft reboot to be enabled or disabled, but some mods with a list of options require it only once after activation, then changing options will have an immediate effect.\n\nList of such mods:\nWake gesture actions, all swipe and key actions, Enhanced toasts,\nEPS apps remap, Sense themes, Popup Notifications</string>
+	<string name="soft_reboot_tip">\nMost of the Toolbox mods require soft reboot to be enabled or disabled, but some mods with a list of options require it only once after activation, then changing options will have an immediate effect.\n\nList of such mods:\nWake gesture actions, all swipe and key actions, Enhanced toasts,\nEPS apps remap, Sense themes, Popup notifications, Touch lock</string>
 	<string name="restart_prism">Restart launcher</string>
 	<string name="restarted_prism">Launcher was restarted</string>
 	<string name="restart_messages">Restart Messages</string>
@@ -51,6 +51,7 @@
 	<string name="no_currents">Buttons backlight control not found. Your device may be uncompatible with this mod.</string>
 	<string name="backup_restore_info">Your settings have been restored via Google Cloud Backup. If you had Vol2wake enabled, please re-enable it manually. Please do a full reboot after enabling the Toolbox Xposed module.</string>
 	<string name="download_current_ver">Installed update:</string>
+	<string name="download_update">No translations found\nTap Update to download</string>
 	<string name="download_title">Sense Toolbox localization</string>
 	<string name="download_desc">Downloading translations&#8230;</string>
 	<string name="download_failed">Download failed, check connection</string>

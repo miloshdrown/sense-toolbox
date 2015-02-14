@@ -36,6 +36,7 @@ public class EPSRemap extends HtcPreferenceActivityEx {
 	int mThemeId = 0;
 	SharedPreferences prefs;
 	HtcToggleButtonLight OnOffSwitch;
+	LinearLayout gridBkg;
 	int[][] cellArray = {
 		{ 0, 0, 0 },
 		{ R.id.cell1, R.id.cell1img, R.id.cell1txt },
@@ -80,14 +81,17 @@ public class EPSRemap extends HtcPreferenceActivityEx {
 		getPreferenceManager().setSharedPreferencesMode(1);
 		prefs = getPreferenceManager().getSharedPreferences();
 		
+		int backResId = getResources().getIdentifier("common_app_bkg", "drawable", "com.htc");
+		gridBkg = (LinearLayout)findViewById(R.id.gridBkg);
+		gridBkg.setBackgroundResource(backResId);
+		
 		TextView hint = (TextView)findViewById(R.id.hint);
 		hint.setText(Helpers.l10n(this, R.string.various_extremepower_hint));
-				
+		
 		for (int i = 1; i <= 6; i++) initCell(i);
 	}
 	
 	private void applyState(boolean state) {
-		LinearLayout gridBkg = (LinearLayout)findViewById(R.id.gridBkg);
 		gridBkg.setEnabled(state);
 		OnOffSwitch.setChecked(state);
 		LinearLayout row1 = (LinearLayout)findViewById(R.id.row1);
@@ -110,10 +114,10 @@ public class EPSRemap extends HtcPreferenceActivityEx {
 			if (OnOffSwitch.isChecked())
 			switch (event.getAction()) {
 				case 0:
-					v.setBackgroundColor(0xff434343);
+					v.setBackgroundColor(0x7f888888);
 					break;
 				case 1:
-					v.setBackgroundColor(0xff141414);
+					v.setBackgroundColor(0x7f666666);
 					editApp(v, (int)v.getTag());
 					break;
 			}

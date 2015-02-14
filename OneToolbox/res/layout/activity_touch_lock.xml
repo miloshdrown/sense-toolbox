@@ -7,7 +7,7 @@
 	android:fitsSystemWindows="true"
 	tools:context=".EPSRemap"
 	tools:ignore="MergeRootFrame" >
-<TextView
+	<TextView
 		android:id="@+id/modhint"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
@@ -23,8 +23,7 @@
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	android:id="@+id/gridBkg"
-	android:background="#ff000000" >
+	android:id="@+id/gridBkg" >
 	<FrameLayout
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
@@ -64,17 +63,19 @@
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
 		android:baselineAligned="false" >
 
 		<LinearLayout
 			android:id="@+id/cell1"
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
-			android:layout_marginBottom="2dp"
-			android:layout_marginEnd="2dp"
-			android:layout_marginTop="4dp"
+			android:layout_marginBottom="5dp"
+			android:layout_marginEnd="5dp"
+			android:layout_marginTop="5dp"
 			android:layout_weight="1"
-			android:background="#141414"
+			android:background="#7F666666"
 			android:gravity="center"
 			android:orientation="vertical" >
 
@@ -86,7 +87,7 @@
 				android:gravity="center_horizontal"
 				android:text=""
 				android:textColor="@android:color/white"
-				android:textSize="64sp" />
+				android:textSize="54sp" />
 
 		</LinearLayout>
 
@@ -94,11 +95,11 @@
 			android:id="@+id/cell2"
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
-			android:layout_marginBottom="2dp"
-			android:layout_marginStart="2dp"
-			android:layout_marginTop="4dp"
+			android:layout_marginBottom="5dp"
+			android:layout_marginStart="5dp"
+			android:layout_marginTop="5dp"
 			android:layout_weight="1"
-			android:background="#141414"
+			android:background="#7F666666"
 			android:gravity="center"
 			android:orientation="vertical" >
 
@@ -110,7 +111,7 @@
 				android:gravity="center_horizontal"
 				android:text=""
 				android:textColor="@android:color/white"
-				android:textSize="64sp" />
+				android:textSize="54sp" />
 
 		</LinearLayout>
 	</LinearLayout>
@@ -120,17 +121,19 @@
 		android:layout_width="match_parent"
 		android:layout_height="0dp"
 		android:layout_weight="1"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
 		android:baselineAligned="false" >
 
 		<LinearLayout
 			android:id="@+id/cell3"
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
-			android:layout_marginBottom="2dp"
-			android:layout_marginEnd="2dp"
-			android:layout_marginTop="2dp"
+			android:layout_marginBottom="5dp"
+			android:layout_marginEnd="5dp"
+			android:layout_marginTop="5dp"
 			android:layout_weight="1"
-			android:background="#141414"
+			android:background="#7F666666"
 			android:gravity="center"
 			android:orientation="vertical" >
 
@@ -142,7 +145,7 @@
 				android:gravity="center_horizontal"
 				android:text=""
 				android:textColor="@android:color/white"
-				android:textSize="64sp" />
+				android:textSize="54sp" />
 
 		</LinearLayout>
 
@@ -150,11 +153,11 @@
 			android:id="@+id/cell4"
 			android:layout_width="0dp"
 			android:layout_height="match_parent"
-			android:layout_marginBottom="2dp"
-			android:layout_marginStart="2dp"
-			android:layout_marginTop="2dp"
+			android:layout_marginBottom="5dp"
+			android:layout_marginStart="5dp"
+			android:layout_marginTop="5dp"
 			android:layout_weight="1"
-			android:background="#141414"
+			android:background="#7F666666"
 			android:gravity="center"
 			android:orientation="vertical" >
 
@@ -166,7 +169,7 @@
 				android:gravity="center_horizontal"
 				android:text=""
 				android:textColor="@android:color/white"
-				android:textSize="64sp" />
+				android:textSize="54sp" />
 
 		</LinearLayout>
 
@@ -176,7 +179,7 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:paddingTop="5dp"
-		android:paddingBottom="5dp"
+		android:paddingBottom="10dp"
 		android:paddingLeft="10dp"
 		android:paddingRight="10dp"
 		android:layout_gravity="bottom"

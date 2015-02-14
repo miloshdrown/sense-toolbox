@@ -239,12 +239,12 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 					return (event.getAction() == MotionEvent.ACTION_MOVE);
 				}
 			});
-			this.getHtcListView().smoothScrollToPositionFromTop(16, offsetTop);
+			this.getHtcListView().smoothScrollToPositionFromTop(17, offsetTop);
 			this.getHtcListView().postDelayed(new Runnable() {
 				@Override
 				public void run() {
-					getHtcListView().setSelectionFromTop(16, offsetTop);
-					int pos = 16 - PrefsFragment.this.getHtcListView().getFirstVisiblePosition();
+					getHtcListView().setSelectionFromTop(17, offsetTop);
+					int pos = 17 - PrefsFragment.this.getHtcListView().getFirstVisiblePosition();
 					View feedback = null;
 					if (pos < PrefsFragment.this.getHtcListView().getChildCount())
 					feedback = PrefsFragment.this.getHtcListView().getChildAt(pos);
@@ -1020,7 +1020,7 @@ public class PrefsFragment extends HtcPreferenceFragmentExt {
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
-		((FrameLayout)getActivity().findViewById(R.id.fragment_container)).getChildAt(0).setBackgroundResource(getResources().getIdentifier("common_app_bkg", "drawable", "com.htc"));
+		((FrameLayout)getActivity().findViewById(R.id.fragment_container)).setBackgroundResource(getResources().getIdentifier("common_app_bkg", "drawable", "com.htc"));
 		
 		view.post(new Runnable() {
 			@Override

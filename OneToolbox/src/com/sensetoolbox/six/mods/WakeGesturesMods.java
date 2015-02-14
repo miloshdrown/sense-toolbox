@@ -517,7 +517,7 @@ public class WakeGesturesMods {
 									
 									String prefSeq = TextUtils.join(" ", prefSequence).trim();
 									String prefSeqPart = TextUtils.join(" ", prefSequence.subList(0, prefSequence.size() - 1)).trim();
-									XposedBridge.log(seq + "   !   " + prefSeq);
+									//XposedBridge.log(seq + "   !   " + prefSeq);
 									if (seqPart.equals(prefSeqPart)) {
 										WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T TouchLockAttempt");
 										wl.acquire(2000);
@@ -650,7 +650,7 @@ public class WakeGesturesMods {
 				if (lockOnNextScrOff) {
 					lockOnNextScrOff = false;
 					XMain.pref.reload();
-					if (XMain.pref.getBoolean("touch_lock_active", false))
+					if (XMain.pref.getBoolean("touch_lock_active", false) && !XMain.pref.getString("touch_lock_sequence", "").trim().equals(""))
 						createTouchscreenThread(param).start();
 					else
 						setLockdown((Context)XposedHelpers.getObjectField(param.thisObject, "mContext"), false);
@@ -745,8 +745,8 @@ public class WakeGesturesMods {
 				lockImg.setEnabled(true);
 				
 				HtcListItem2LineText lockTitle = new HtcListItem2LineText(mContext);
-				lockTitle.setPrimaryText(modRes.getString(R.string.various_touchlock_title));
-				lockTitle.setSecondaryText(modRes.getString(R.string.touchlock_power_summary));
+				lockTitle.setPrimaryText(Helpers.xl10n(modRes, R.string.various_touchlock_title));
+				lockTitle.setSecondaryText(Helpers.xl10n(modRes, R.string.touchlock_power_summary));
 				
 				listitem.addView(lockImg);
 				listitem.addView(lockTitle);

@@ -1272,17 +1272,31 @@ public class OtherMods {
 	}
 	
 	public static void execHook_MusicChannelEQSTile(LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettings", lpparam.classLoader, "getQSAvailableList", Context.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				int[] ai = (int[])param.getResult();
-				if (ai != null && ai.length > 0 && !Arrays.asList(ai).contains(17)) {
-					ai = Arrays.copyOf(ai, ai.length + 1);
-					ai[ai.length - 1] = 17;
-					param.setResult(ai);
+		try {
+			findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettings", lpparam.classLoader, "getQSAvailableList", Context.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					int[] ai = (int[])param.getResult();
+					if (ai != null && ai.length > 0 && !Arrays.asList(ai).contains(17)) {
+						ai = Arrays.copyOf(ai, ai.length + 1);
+						ai[ai.length - 1] = 17;
+						param.setResult(ai);
+					}
 				}
-			}
-		});
+			});
+		} catch (Throwable t) {
+			findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettings", lpparam.classLoader, "getQSAvailableList", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					int[] ai = (int[])param.getResult();
+					if (ai != null && ai.length > 0 && !Arrays.asList(ai).contains(17)) {
+						ai = Arrays.copyOf(ai, ai.length + 1);
+						ai[ai.length - 1] = 17;
+						param.setResult(ai);
+					}
+				}
+			});
+		}
 		
 		findAndHookMethod("com.android.systemui.statusbar.quicksetting.QuickSettingMusicChannel", lpparam.classLoader, "onAttachedToWindow", new XC_MethodHook() {
 			@Override
