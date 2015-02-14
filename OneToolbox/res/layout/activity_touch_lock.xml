@@ -87,7 +87,8 @@
 				android:gravity="center_horizontal"
 				android:text=""
 				android:textColor="@android:color/white"
-				android:textSize="54sp" />
+				android:textSize="56sp"
+				android:includeFontPadding="false" />
 
 		</LinearLayout>
 
@@ -111,7 +112,8 @@
 				android:gravity="center_horizontal"
 				android:text=""
 				android:textColor="@android:color/white"
-				android:textSize="54sp" />
+				android:textSize="56sp"
+				android:includeFontPadding="false" />
 
 		</LinearLayout>
 	</LinearLayout>
@@ -145,7 +147,8 @@
 				android:gravity="center_horizontal"
 				android:text=""
 				android:textColor="@android:color/white"
-				android:textSize="54sp" />
+				android:textSize="56sp"
+				android:includeFontPadding="false" />
 
 		</LinearLayout>
 
@@ -169,7 +172,8 @@
 				android:gravity="center_horizontal"
 				android:text=""
 				android:textColor="@android:color/white"
-				android:textSize="54sp" />
+				android:textSize="56sp"
+				android:includeFontPadding="false" />
 
 		</LinearLayout>
 

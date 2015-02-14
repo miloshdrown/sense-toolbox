@@ -21,6 +21,7 @@ import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.view.Menu;
@@ -126,17 +127,42 @@ public class EPSRemap extends HtcPreferenceActivityEx {
 		}
 	};
 	
+	private void alignCell(int cellnum) {
+		LinearLayout cell = (LinearLayout)findViewById(cellArray[cellnum][0]);
+		ImageView cellimg = (ImageView)findViewById(cellArray[cellnum][1]);
+		float density = getResources().getDisplayMetrics().density;
+		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)cellimg.getLayoutParams();
+		
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			cell.setOrientation(LinearLayout.HORIZONTAL);
+			lp.setMargins(0, 0, Math.round(20 * density), 0);
+		} else {
+			cell.setOrientation(LinearLayout.VERTICAL);
+			lp.setMargins(0, 0, 0, Math.round(10 * density));
+		}
+		
+		cellimg.setLayoutParams(lp);
+	}
+	
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		for (int i = 1; i <= 6; i++) alignCell(i);
+	}
+	
 	private void initCell(int cellnum) {
 		String pkgActName = prefs.getString("eps_remap_cell" + String.valueOf(cellnum), null);
 		updateCell(cellnum, pkgActName);
 		
 		int cellid = cellArray[cellnum][0];
-		final LinearLayout cell = (LinearLayout)findViewById(cellid);
+		LinearLayout cell = (LinearLayout)findViewById(cellid);
 		cell.setTag(cellnum);
 		cell.setOnTouchListener(otl);
+		alignCell(cellnum);
 	}
 	
 	private void updateCell(int cellnum, String pkgActName) {
+		alignCell(cellnum);
 		int cellimgid = cellArray[cellnum][1];
 		int celltxtid = cellArray[cellnum][2];
 		try {
