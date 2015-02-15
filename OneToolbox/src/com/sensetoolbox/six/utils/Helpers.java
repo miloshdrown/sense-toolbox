@@ -304,7 +304,9 @@ public class Helpers {
 			
 			String l10ncount = "";
 			if (l10n != null) {
-				String percentage = percentageFormat.format((float)l10n.size() / strings_total * 100.0f);
+				float floatPercentage = (float)l10n.size() / strings_total * 100.0f;
+				if (floatPercentage > 100f) floatPercentage = 100f;
+				String percentage = percentageFormat.format(floatPercentage);
 				l10ncount = "\n" + l10n(act, R.string.toolbox_l10n_ready) + ": " + percentage + "%";
 			} else if (cLang.equals("not_found"))
 				l10ncount = "\n" + l10n(act, R.string.toolbox_l10n_ready) + ": 0%";
