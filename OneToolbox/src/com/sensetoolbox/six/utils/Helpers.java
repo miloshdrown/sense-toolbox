@@ -8,6 +8,8 @@ import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
+import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -88,6 +90,7 @@ public class Helpers {
 	public static ArrayList<AppData> launchableAppsList = null;
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
+	public static float strings_total = 614.0f;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static String buildVersion = "JENKINSBUILDNUMBERGOESHERE";
@@ -108,7 +111,7 @@ public class Helpers {
 	private static synchronized boolean preloadLang(String lang) {
 		try {
 			if (l10n == null) {
-				FileInputStream in_s = new FileInputStream(Helpers.dataPath + "values-" + lang + "/strings.xml");
+				FileInputStream in_s = new FileInputStream(Helpers.dataPath + "values-" + lang.replace("_", "-r") + "/strings.xml");
 				XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
 				l10n = new HashMap<String, String>();
 				parser.setInput(in_s, null);
@@ -289,7 +292,24 @@ public class Helpers {
 			SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz", Locale.getDefault());
 			format.setTimeZone(TimeZone.getTimeZone("UTC"));
 			TextView center = createCenteredText(act, R.string.download_current_ver);
-			center.setText(center.getText()  + " " + buildId + "\n" + format.format(datetime));
+			
+			DecimalFormatSymbols dotSep = new DecimalFormatSymbols(Locale.getDefault());
+			dotSep.setDecimalSeparator('.');
+			dotSep.setGroupingSeparator(' ');
+			DecimalFormat percentageFormat = new DecimalFormat("0.0", dotSep);
+			percentageFormat.setMinimumFractionDigits(0);
+			percentageFormat.setMaximumFractionDigits(1);
+			percentageFormat.setMinimumIntegerDigits(1);
+			percentageFormat.setMaximumIntegerDigits(3);
+			
+			String l10ncount = "";
+			if (l10n != null) {
+				String percentage = percentageFormat.format((float)l10n.size() / strings_total * 100.0f);
+				l10ncount = "\n" + l10n(act, R.string.toolbox_l10n_ready) + ": " + percentage + "%";
+			} else if (cLang.equals("not_found"))
+				l10ncount = "\n" + l10n(act, R.string.toolbox_l10n_ready) + ": 0%";
+			
+			center.setText(center.getText()  + " " + buildId + "\n" + format.format(datetime) + l10ncount);
 			alert.setView(center);
 		} catch (Exception e) {
 			alert.setView(createCenteredText(act, R.string.download_update));

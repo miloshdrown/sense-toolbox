@@ -35,6 +35,7 @@ Current changelog
 [New] Touch lock mod
 [New] Select app to open screenshots
 [New] Hide Do Not Disturb notification
+[New] Info about currently used translation progress
 [Fixed] Switching to front camera when launched by Wake gestures
 [Fixed] Next alarm and signal level labels while in roaming
 [Fixed] Selected USB icon prevents other icons from hiding

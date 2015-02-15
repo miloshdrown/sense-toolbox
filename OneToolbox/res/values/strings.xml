@@ -493,6 +493,7 @@
 	<string name="toolbox_l10n_title">Localization</string>
 	<string name="toolbox_l10n_summ">Download and update language pack.</string>
 	<string name="toolbox_l10n_btn">Update</string>
+	<string name="toolbox_l10n_ready">Translated strings</string>
 
 	<string name="troubleshoot">Troubleshooting</string>
 	<string name="toolbox_acrasend_title">Send detailed report</string>
