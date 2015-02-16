@@ -484,13 +484,9 @@ public class OtherMods {
 			if (photoSize == 2) resId = R.dimen.people_info_top_margin_rect;
 			resparam.res.setReplacement("com.android.phone", "dimen", "photo_frame_height", modRes.fwd(resId));
 			resparam.res.setReplacement("com.android.phone", "dimen", "lockscreen_10", modRes.fwd(R.dimen.lockscreen_10));
-			resparam.res.setReplacement("com.android.phone", "dimen", "incoming_call_slot_name_title_layout_height", modRes.fwd(R.dimen.incoming_call_slot_name_title_layout_height));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
-		try {
-			resparam.res.setReplacement("com.android.phone", "dimen", "dualsim_incoming_call_slot_name_height", modRes.fwd(R.dimen.dualsim_incoming_call_slot_name_height));
-		} catch (Throwable t) {}
 	}
 	
 	private static void setPhotoHeight(ImageView mPhoto, int photoSize){
@@ -608,6 +604,40 @@ public class OtherMods {
 							newLayout.setPadding(newLayout.getPaddingLeft(), mActionBar.getResources().getDimensionPixelSize(resourceId), newLayout.getPaddingRight(), newLayout.getPaddingBottom());
 						}
 					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+		
+		findAndHookMethod("com.android.phone.InCallScreen", lpparam.classLoader, "createReminderView", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				try {
+					RelativeLayout mReminder = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mReminder");
+					if (mReminder != null) {
+						int resourceId = mReminder.getResources().getIdentifier("photo_view_root", "id", "com.android.phone");
+						Object photo_view_root = null;
+						if (resourceId > 0) photo_view_root = mReminder.findViewById(resourceId);
+						else XposedBridge.log("resourceId == 0");
+						
+						if (photo_view_root != null && photo_view_root instanceof LinearLayout){
+							RelativeLayout newLayout = new RelativeLayout(mReminder.getContext());
+							ViewParent prnt = ((LinearLayout)photo_view_root).getParent();
+							if (prnt != null && prnt instanceof LinearLayout) {
+								((LinearLayout)prnt).removeView((LinearLayout)photo_view_root);
+								newLayout.addView((LinearLayout)photo_view_root);
+								((LinearLayout)prnt).addView(newLayout);
+								newLayout.bringToFront();
+								newLayout.setPadding(
+									newLayout.getPaddingLeft(),
+									Math.round(mReminder.getResources().getDisplayMetrics().density * 36),
+									newLayout.getPaddingRight(),
+									newLayout.getPaddingBottom()
+								);
+							} else XposedBridge.log("prnt == null or not LinearLayout");
+						} else XposedBridge.log("photo_view_root == null or not LinearLayout");
+					} else XposedBridge.log("mReminder == null");
 				} catch (Throwable t) {
 					XposedBridge.log(t);
 				}
