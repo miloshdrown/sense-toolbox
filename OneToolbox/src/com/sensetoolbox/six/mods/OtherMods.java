@@ -616,15 +616,15 @@ public class OtherMods {
 				try {
 					RelativeLayout mReminder = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mReminder");
 					if (mReminder != null) {
-						TextView slot_name = (TextView)mReminder.findViewById(mReminder.getResources().getIdentifier("slot_name", "id", "com.android.phone"));
+						LinearLayout photo_view_root = (LinearLayout)mReminder.findViewById(mReminder.getResources().getIdentifier("photo_view_root", "id", "com.android.phone"));
 						XposedBridge.log("setting top padding!");
 						
-						if (slot_name != null)
-						slot_name.setPadding(
-							slot_name.getPaddingLeft(),
-							Math.round(mReminder.getResources().getDisplayMetrics().density * 36),
-							slot_name.getPaddingRight(),
-							slot_name.getPaddingBottom()
+						if (photo_view_root != null)
+						photo_view_root.setPadding(
+							photo_view_root.getPaddingLeft(),
+							Math.round(photo_view_root.getResources().getDisplayMetrics().density * 36),
+							photo_view_root.getPaddingRight(),
+							photo_view_root.getPaddingBottom()
 						); else XposedBridge.log("slot_name == null");
 					} else XposedBridge.log("mReminder == null");
 				} catch (Throwable t) {
