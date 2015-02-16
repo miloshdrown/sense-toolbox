@@ -616,20 +616,17 @@ public class OtherMods {
 				try {
 					RelativeLayout mReminder = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mReminder");
 					if (mReminder != null) {
-						int resourceId = mReminder.getResources().getIdentifier("slot_name", "id", "com.android.phone");
-						TextView slot_name = null;
-						if (resourceId > 0) slot_name = (TextView)mReminder.findViewById(resourceId);
-						else XposedBridge.log("resourceId == 0");
+						TextView slot_name = (TextView)mReminder.findViewById(mReminder.getResources().getIdentifier("slot_name", "id", "com.android.phone"));
 						XposedBridge.log("starting");
 						
 						if (slot_name != null) {
-							ViewParent prnt = slot_name.getParent();
+							LinearLayout photo_view_root = (LinearLayout)mReminder.findViewById(mReminder.getResources().getIdentifier("photo_view_root", "id", "com.android.phone"));
 							XposedBridge.log("slot_name found");
-							if (prnt != null && prnt instanceof LinearLayout) {
+							if (photo_view_root != null) {
 								XposedBridge.log("remove slot_name");
-								((LinearLayout)prnt).removeView(slot_name);
+								photo_view_root.removeView(slot_name);
 								XposedBridge.log("add slot_name to index 1");
-								((LinearLayout)prnt).addView(slot_name, 1);
+								photo_view_root.addView(slot_name, 1);
 							} else XposedBridge.log("prnt == null or not LinearLayout");
 						} else XposedBridge.log("slot_name == null");
 					} else XposedBridge.log("mReminder == null");
