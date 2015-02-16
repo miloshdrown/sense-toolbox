@@ -478,15 +478,19 @@ public class OtherMods {
 	}
 	
 	public static void execHook_LargePhoto(final InitPackageResourcesParam resparam, int photoSize) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		try {
-			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 			int resId = R.dimen.people_info_top_margin;
 			if (photoSize == 2) resId = R.dimen.people_info_top_margin_rect;
 			resparam.res.setReplacement("com.android.phone", "dimen", "photo_frame_height", modRes.fwd(resId));
 			resparam.res.setReplacement("com.android.phone", "dimen", "lockscreen_10", modRes.fwd(R.dimen.lockscreen_10));
+			resparam.res.setReplacement("com.android.phone", "dimen", "incoming_call_slot_name_title_layout_height", modRes.fwd(R.dimen.incoming_call_slot_name_title_layout_height));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
+		try {
+			resparam.res.setReplacement("com.android.phone", "dimen", "dualsim_incoming_call_slot_name_height", modRes.fwd(R.dimen.dualsim_incoming_call_slot_name_height));
+		} catch (Throwable t) {}
 	}
 	
 	private static void setPhotoHeight(ImageView mPhoto, int photoSize){
