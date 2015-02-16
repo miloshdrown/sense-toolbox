@@ -617,15 +617,20 @@ public class OtherMods {
 					RelativeLayout mReminder = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mReminder");
 					if (mReminder != null) {
 						LinearLayout photo_view_root = (LinearLayout)mReminder.findViewById(mReminder.getResources().getIdentifier("photo_view_root", "id", "com.android.phone"));
-						XposedBridge.log("setting top padding!");
-						
 						if (photo_view_root != null)
 						photo_view_root.setPadding(
 							photo_view_root.getPaddingLeft(),
-							Math.round(photo_view_root.getResources().getDisplayMetrics().density * 36),
+							Math.round(photo_view_root.getResources().getDisplayMetrics().density * 25),
 							photo_view_root.getPaddingRight(),
 							photo_view_root.getPaddingBottom()
-						); else XposedBridge.log("slot_name == null");
+						); else XposedBridge.log("photo_view_root == null");
+						
+						TextView slot_name = (TextView)mReminder.findViewById(mReminder.getResources().getIdentifier("slot_name", "id", "com.android.phone"));
+						if (slot_name != null) {
+							slot_name.setPadding(slot_name.getPaddingLeft(), 0, slot_name.getPaddingRight(), 0);
+							slot_name.setIncludeFontPadding(false);
+							slot_name.setHeight(Math.round(photo_view_root.getResources().getDisplayMetrics().density * 28));
+						} else XposedBridge.log("slot_name == null");
 					} else XposedBridge.log("mReminder == null");
 				} catch (Throwable t) {
 					XposedBridge.log(t);
