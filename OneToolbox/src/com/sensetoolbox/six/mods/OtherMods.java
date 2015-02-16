@@ -623,18 +623,19 @@ public class OtherMods {
 						
 						if (slot_name != null) {
 							RelativeLayout newLayout = new RelativeLayout(mReminder.getContext());
-							LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-							lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
-							lp.topMargin = Math.round(mReminder.getResources().getDisplayMetrics().density * 36);
-							newLayout.setLayoutParams(lp);
+							newLayout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 							ViewParent prnt = slot_name.getParent();
 							if (prnt != null && prnt instanceof LinearLayout) {
 								((LinearLayout)prnt).removeView(slot_name);
 								newLayout.addView(slot_name);
+								RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+								lp2.topMargin = Math.round(mReminder.getResources().getDisplayMetrics().density * 36);
+								lp2.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+								slot_name.setLayoutParams(lp2);
 								((LinearLayout)prnt).addView(newLayout, 0);
 								newLayout.bringToFront();
 							} else XposedBridge.log("prnt == null or not LinearLayout");
-						} else XposedBridge.log("photo_view_root == null or not LinearLayout");
+						} else XposedBridge.log("slot_name == null");
 					} else XposedBridge.log("mReminder == null");
 				} catch (Throwable t) {
 					XposedBridge.log(t);
