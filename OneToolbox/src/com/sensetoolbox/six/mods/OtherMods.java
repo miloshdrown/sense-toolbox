@@ -632,7 +632,7 @@ public class OtherMods {
 								lp2.topMargin = Math.round(mReminder.getResources().getDisplayMetrics().density * 36);
 								lp2.addRule(RelativeLayout.ALIGN_PARENT_TOP);
 								slot_name.setLayoutParams(lp2);
-								((LinearLayout)prnt).addView(newLayout, 0);
+								((LinearLayout)prnt).addView(newLayout);
 								newLayout.bringToFront();
 							} else XposedBridge.log("prnt == null or not LinearLayout");
 						} else XposedBridge.log("slot_name == null");
