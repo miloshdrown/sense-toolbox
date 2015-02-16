@@ -616,25 +616,23 @@ public class OtherMods {
 				try {
 					RelativeLayout mReminder = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mReminder");
 					if (mReminder != null) {
-						int resourceId = mReminder.getResources().getIdentifier("photo_view_root", "id", "com.android.phone");
-						Object photo_view_root = null;
-						if (resourceId > 0) photo_view_root = mReminder.findViewById(resourceId);
+						int resourceId = mReminder.getResources().getIdentifier("slot_name", "id", "com.android.phone");
+						TextView slot_name = null;
+						if (resourceId > 0) slot_name = (TextView)mReminder.findViewById(resourceId);
 						else XposedBridge.log("resourceId == 0");
 						
-						if (photo_view_root != null && photo_view_root instanceof LinearLayout){
+						if (slot_name != null) {
 							RelativeLayout newLayout = new RelativeLayout(mReminder.getContext());
-							ViewParent prnt = ((LinearLayout)photo_view_root).getParent();
+							LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+							lp.gravity = Gravity.TOP | Gravity.CENTER_HORIZONTAL;
+							lp.topMargin = Math.round(mReminder.getResources().getDisplayMetrics().density * 36);
+							newLayout.setLayoutParams(lp);
+							ViewParent prnt = slot_name.getParent();
 							if (prnt != null && prnt instanceof LinearLayout) {
-								((LinearLayout)prnt).removeView((LinearLayout)photo_view_root);
-								newLayout.addView((LinearLayout)photo_view_root);
-								((LinearLayout)prnt).addView(newLayout);
+								((LinearLayout)prnt).removeView(slot_name);
+								newLayout.addView(slot_name);
+								((LinearLayout)prnt).addView(newLayout, 0);
 								newLayout.bringToFront();
-								newLayout.setPadding(
-									newLayout.getPaddingLeft(),
-									Math.round(mReminder.getResources().getDisplayMetrics().density * 36),
-									newLayout.getPaddingRight(),
-									newLayout.getPaddingBottom()
-								);
 							} else XposedBridge.log("prnt == null or not LinearLayout");
 						} else XposedBridge.log("photo_view_root == null or not LinearLayout");
 					} else XposedBridge.log("mReminder == null");
