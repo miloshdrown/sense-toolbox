@@ -620,21 +620,23 @@ public class OtherMods {
 						TextView slot_name = null;
 						if (resourceId > 0) slot_name = (TextView)mReminder.findViewById(resourceId);
 						else XposedBridge.log("resourceId == 0");
+						XposedBridge.log("starting");
 						
 						if (slot_name != null) {
 							RelativeLayout newLayout = new RelativeLayout(mReminder.getContext());
 							newLayout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 							ViewParent prnt = slot_name.getParent();
+							XposedBridge.log("slot_name found");
 							if (prnt != null && prnt instanceof LinearLayout) {
+								XposedBridge.log("remove slot_name");
 								((LinearLayout)prnt).removeView(slot_name);
-								TextView test = new TextView(mReminder.getContext());
-								test.setText("Test this shit!");
 								RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-								lp2.topMargin = Math.round(mReminder.getResources().getDisplayMetrics().density * 36);
-								lp2.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-								test.setLayoutParams(lp2);
-								//slot_name.setLayoutParams(lp2);
-								newLayout.addView(test);
+								//lp2.topMargin = Math.round(mReminder.getResources().getDisplayMetrics().density * 36);
+								//lp2.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+								slot_name.setLayoutParams(lp2);
+								XposedBridge.log("adding new element!");
+								newLayout.addView(slot_name);
+								XposedBridge.log("adding new layout!");
 								((LinearLayout)prnt).addView(newLayout);
 								newLayout.bringToFront();
 							} else XposedBridge.log("prnt == null or not LinearLayout");
