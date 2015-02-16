@@ -623,23 +623,13 @@ public class OtherMods {
 						XposedBridge.log("starting");
 						
 						if (slot_name != null) {
-							RelativeLayout newLayout = new RelativeLayout(mReminder.getContext());
-							newLayout.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
-							ViewParent prnt = slot_name.getParent();
-							XposedBridge.log("slot_name found");
-							if (prnt != null && prnt instanceof LinearLayout) {
-								XposedBridge.log("remove slot_name");
-								((LinearLayout)prnt).removeView(slot_name);
-								RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-								//lp2.topMargin = Math.round(mReminder.getResources().getDisplayMetrics().density * 36);
-								//lp2.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-								slot_name.setLayoutParams(lp2);
-								XposedBridge.log("adding new element!");
-								newLayout.addView(slot_name);
-								XposedBridge.log("adding new layout!");
-								((LinearLayout)prnt).addView(newLayout);
-								newLayout.bringToFront();
-							} else XposedBridge.log("prnt == null or not LinearLayout");
+							XposedBridge.log("set padding");
+							slot_name.setPadding(
+								slot_name.getPaddingLeft(),
+								Math.round(slot_name.getResources().getDisplayMetrics().density * 36),
+								slot_name.getPaddingRight(),
+								slot_name.getPaddingBottom()
+							);
 						} else XposedBridge.log("slot_name == null");
 					} else XposedBridge.log("mReminder == null");
 				} catch (Throwable t) {
