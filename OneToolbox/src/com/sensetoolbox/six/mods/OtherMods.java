@@ -627,11 +627,14 @@ public class OtherMods {
 							ViewParent prnt = slot_name.getParent();
 							if (prnt != null && prnt instanceof LinearLayout) {
 								((LinearLayout)prnt).removeView(slot_name);
-								newLayout.addView(slot_name);
+								TextView test = new TextView(mReminder.getContext());
+								test.setText("Test this shit!");
 								RelativeLayout.LayoutParams lp2 = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 								lp2.topMargin = Math.round(mReminder.getResources().getDisplayMetrics().density * 36);
 								lp2.addRule(RelativeLayout.ALIGN_PARENT_TOP);
-								slot_name.setLayoutParams(lp2);
+								test.setLayoutParams(lp2);
+								//slot_name.setLayoutParams(lp2);
+								newLayout.addView(test);
 								((LinearLayout)prnt).addView(newLayout);
 								newLayout.bringToFront();
 							} else XposedBridge.log("prnt == null or not LinearLayout");
