@@ -613,6 +613,11 @@ public class Helpers {
 		return (new Version(Build.VERSION.RELEASE).compareTo(new Version("4.4.3")) >= 0 ? true : false);
 	}
 	
+	public static boolean isDualSIM() {
+		String dev_name = Build.DEVICE.toLowerCase(Locale.getDefault());
+		return dev_name.contains("dug") || dev_name.contains("dwg") || dev_name.contains("dtu");
+	}
+	
 	public static boolean isWakeGestures() {
 		String wake_gestures = "0";
 		try (BufferedReader br = new BufferedReader(new FileReader(new File("/sys/android_touch/wake_gestures")))) {

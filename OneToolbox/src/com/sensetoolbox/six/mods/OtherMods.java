@@ -489,7 +489,7 @@ public class OtherMods {
 			XposedBridge.log(t);
 		}
 		
-		try {
+		if (Helpers.isDualSIM()) try {
 			resparam.res.setReplacement("com.android.phone", "dimen", "text_size_incoming_call_slot_name", modRes.fwd(R.dimen.text_size_incoming_call_slot_name));
 			resparam.res.setReplacement("com.android.phone", "dimen", "dualsim_incoming_call_slot_name_height", modRes.fwd(R.dimen.dualsim_incoming_call_slot_name_height));
 			resparam.res.setReplacement("com.android.phone", "dimen", "incoming_call_slot_name_title_layout_height", modRes.fwd(R.dimen.incoming_call_slot_name_title_layout_height));
@@ -619,27 +619,28 @@ public class OtherMods {
 			}
 		});
 		
+		if (Helpers.isDualSIM())
 		findAndHookMethod("com.android.phone.InCallScreen", lpparam.classLoader, "createReminderView", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
 					RelativeLayout mReminder = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mReminder");
 					if (mReminder != null) {
-						LinearLayout photo_view_root = (LinearLayout)mReminder.findViewById(mReminder.getResources().getIdentifier("photo_view_root", "id", "com.android.phone"));
+						View photo_view_root = (View)mReminder.findViewById(mReminder.getResources().getIdentifier("photo_view_root", "id", "com.android.phone"));
 						if (photo_view_root != null)
 						photo_view_root.setPadding(
 							photo_view_root.getPaddingLeft(),
 							Math.round(photo_view_root.getResources().getDisplayMetrics().density * 25),
 							photo_view_root.getPaddingRight(),
 							photo_view_root.getPaddingBottom()
-						); else XposedBridge.log("photo_view_root == null");
+						);
 						
 						TextView slot_name = (TextView)mReminder.findViewById(mReminder.getResources().getIdentifier("slot_name", "id", "com.android.phone"));
 						if (slot_name != null) {
 							slot_name.setPadding(slot_name.getPaddingLeft(), 0, slot_name.getPaddingRight(), 0);
 							slot_name.setIncludeFontPadding(false);
-						} else XposedBridge.log("slot_name == null");
-					} else XposedBridge.log("mReminder == null");
+						}
+					}
 				} catch (Throwable t) {
 					XposedBridge.log(t);
 				}
