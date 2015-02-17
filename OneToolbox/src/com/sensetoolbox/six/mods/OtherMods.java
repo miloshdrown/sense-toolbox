@@ -484,6 +484,15 @@ public class OtherMods {
 			if (photoSize == 2) resId = R.dimen.people_info_top_margin_rect;
 			resparam.res.setReplacement("com.android.phone", "dimen", "photo_frame_height", modRes.fwd(resId));
 			resparam.res.setReplacement("com.android.phone", "dimen", "lockscreen_10", modRes.fwd(R.dimen.lockscreen_10));
+			resparam.res.setReplacement("com.android.phone", "dimen", "dualsim_incoming_call_slot_name_height", modRes.fwd(R.dimen.dualsim_incoming_call_slot_name_height));
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+		
+		try {
+			resparam.res.setReplacement("com.android.phone", "dimen", "text_size_incoming_call_slot_name", modRes.fwd(R.dimen.text_size_incoming_call_slot_name));
+			resparam.res.setReplacement("com.android.phone", "dimen", "dualsim_incoming_call_slot_name_height", modRes.fwd(R.dimen.dualsim_incoming_call_slot_name_height));
+			resparam.res.setReplacement("com.android.phone", "dimen", "incoming_call_slot_name_title_layout_height", modRes.fwd(R.dimen.incoming_call_slot_name_title_layout_height));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -629,7 +638,6 @@ public class OtherMods {
 						if (slot_name != null) {
 							slot_name.setPadding(slot_name.getPaddingLeft(), 0, slot_name.getPaddingRight(), 0);
 							slot_name.setIncludeFontPadding(false);
-							slot_name.setHeight(Math.round(photo_view_root.getResources().getDisplayMetrics().density * 28));
 						} else XposedBridge.log("slot_name == null");
 					} else XposedBridge.log("mReminder == null");
 				} catch (Throwable t) {

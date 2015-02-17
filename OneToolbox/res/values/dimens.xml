@@ -18,8 +18,9 @@
 	<dimen name="people_info_top_margin_rect">714.0px</dimen>
 
 	<dimen name="lockscreen_10">25.0px</dimen>
-	<dimen name="dualsim_incoming_call_slot_name_height">108.0dip</dimen>
-	<dimen name="incoming_call_slot_name_title_layout_height">108.0dip</dimen>
+	<dimen name="text_size_incoming_call_slot_name">14sp</dimen>
+	<dimen name="incoming_call_slot_name_title_layout_height">28.0dip</dimen>
+	<dimen name="dualsim_incoming_call_slot_name_height">28.0dip</dimen>
 
 	<dimen name="navigation_bar_height">30dp</dimen>
 	<dimen name="navigation_bar_height_landscape">30dp</dimen>
