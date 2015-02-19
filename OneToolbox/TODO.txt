@@ -31,6 +31,10 @@ Ideas
 Current changelog
 =================
 
+1.4.7.1
+[Fixed] Next alarm and signal level labels in notification drawer's footer
+[Fixed] Large photo mod - carrier name label on lockscreen on Dual SIM devices
+
 1.4.7
 [New] Touch lock mod
 [New] Select app to open screenshots
