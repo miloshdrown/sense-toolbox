@@ -97,7 +97,7 @@ public class Helpers {
 	public static float strings_total = 614.0f;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
-	public static String buildVersion = "JENKINSBUILDNUMBERGOESHERE";
+	public static String buildVersion = "228";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
 		@Override
 		protected int sizeOf(String key, Bitmap icon) {

@@ -12,10 +12,6 @@
     <fail message="sdk.dir path is not defined!" unless="sdk.dir" />
     <fail message="lib.dir path is not defined!" unless="lib.dir" />
 
-    <target name="-pre-build">
-        <property environment="env" />
-		<replace file="src/com/sensetoolbox/six/utils/Helpers.java" token="JENKINSBUILDNUMBERGOESHERE" value="${env.BUILD_NUMBER}"/>
-    </target>
 	<target name="-pre-compile">
         <path id="project.all.jars.path.tmp">
             <pathelement path="${toString:project.all.jars.path}" />
