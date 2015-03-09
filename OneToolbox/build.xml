@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="Sense 6 Toolbox" default="help">
-    <property file="local.properties" />
+    <property file="/home/git/android/sign.properties" />
     <property file="ant.properties" />
 	<property name="lib.dir" location="/home/git/android/libs-external-sense6/" />
     <property name="sdk.dir" location="/home/git/android/android-sdk-linux/" />
