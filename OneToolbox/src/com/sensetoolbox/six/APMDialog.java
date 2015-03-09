@@ -1,6 +1,7 @@
 package com.sensetoolbox.six;
 
 import java.util.ArrayList;
+
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListItemTileImage;
@@ -115,8 +117,7 @@ public class APMDialog extends HtcAlertDialog.Builder {
 					break;
 				case 1:
 					try {
-						CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
-						RootTools.getShell(true).add(command);
+						RootTools.getShell(true).add(new CommandCapture(0, "setprop ctl.restart zygote"));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

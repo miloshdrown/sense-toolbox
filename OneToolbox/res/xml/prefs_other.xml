@@ -86,7 +86,8 @@
 		</com.htc.preference.HtcPreferenceCategory>
 		
 		<com.htc.preference.HtcPreferenceCategory
-			android:title="@string/various_mods_notifications" >
+			android:title="@string/various_mods_notifications"
+			android:key="pref_various_mods_notifications" >
 		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_other_mtpnotif"
 			android:summary="@string/various_mtpnotif_summ"
@@ -194,5 +195,16 @@
 				android:entries="@array/various_screenoff"
 				android:entryValues="@array/various_screenoff_val"
 				android:defaultValue="0" />
+			<com.sensetoolbox.six.utils.SeekBarPreference
+				android:key="pref_key_other_screenanim_duration"
+				android:title="@string/various_screenanim_duration_title"
+				android:summary="@string/various_screenanim_duration_summ"
+				toolbox:dialogEnableMessage="@string/seekbar_mod_enable"
+				android:dialogMessage="@string/various_screenanim_desc"
+				android:defaultValue="250"
+				android:text=" ms"
+				android:max="1000"
+				toolbox:animPref="true"
+				toolbox:enableKey="pref_key_other_screenanim_duration_enable"/>
 		</com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>

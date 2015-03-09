@@ -31,20 +31,8 @@ Ideas
 Current changelog
 =================
 
-1.4.7.1
-[Fixed] Next alarm and signal level labels in notification drawer's footer
-[Fixed] Large photo mod - carrier name label on lockscreen on Dual SIM devices
+1.5.0 beta
 
-1.4.7
-[New] Touch lock mod
-[New] Select app to open screenshots
-[New] Hide Do Not Disturb notification
-[New] Info about currently used translation progress
-[Fixed] Switching to front camera when launched by Wake gestures
-[Fixed] Next alarm and signal level labels while in roaming
-[Fixed] Selected USB icon prevents other icons from hiding
-[Fixed] Music Channel mod on some devices
-[Fixed] Toolbox UI for different background colors
 
 
 ===========
@@ -69,6 +57,21 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.4.7.1
+[Fixed] Next alarm and signal level labels in notification drawer's footer
+[Fixed] Large photo mod - carrier name label on lockscreen on Dual SIM devices
+
+1.4.7
+[New] Touch lock mod
+[New] Select app to open screenshots
+[New] Hide Do Not Disturb notification
+[New] Info about currently used translation progress
+[Fixed] Switching to front camera when launched by Wake gestures
+[Fixed] Next alarm and signal level labels while in roaming
+[Fixed] Selected USB icon prevents other icons from hiding
+[Fixed] Music Channel mod on some devices
+[Fixed] Toolbox UI for different background colors
 
 1.4.6
 [Fixed] Sense 6 theme override support for Camera app

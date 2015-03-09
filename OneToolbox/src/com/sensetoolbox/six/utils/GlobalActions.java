@@ -35,13 +35,14 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.provider.Settings;
+import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
-import com.sensetoolbox.six.PrefsFragment;
+import com.sensetoolbox.six.MainFragment;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.mods.XMain;
 
@@ -54,15 +55,33 @@ public class GlobalActions {
 
 	public static Object mPWM = null;
 	public static Object mDMS = null;
+	public static Object mPSB = null;
 	//public static Handler mHandler = null;
 	private static int mCurrentLEDLevel = 0;
 	
 	private static BroadcastReceiver mBRLock = new BroadcastReceiver() {
 		public void onReceive(final Context context, Intent intent) {
 			try {
-				String action = intent.getAction();
-				if (action.equals("com.sensetoolbox.six.mods.action.LockDevice"))
 				if (mDMS != null) XposedHelpers.callMethod(mDMS, "lockNowUnchecked");
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	};
+	
+	private static BroadcastReceiver mBRDrawer = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			try {
+				String action = intent.getAction();
+				if (mPSB != null)
+				if (action.equals("com.sensetoolbox.six.mods.action.ExpandNotifications"))
+					XposedHelpers.callMethod(mPSB, "animateExpandNotificationsPanel");
+				else if (action.equals("com.sensetoolbox.six.mods.action.ExpandSettings")) {
+					if (Helpers.isLP())
+						XposedHelpers.callMethod(mPSB, "animateExpandSettingsPanelInternal");
+					else
+						XposedHelpers.callMethod(mPSB, "animateExpandSettingsPanel");
+				}
 			} catch (Throwable t) {
 				XposedBridge.log(t);
 			}
@@ -76,7 +95,7 @@ public class GlobalActions {
 			String action = intent.getAction();
 			// Actions
 			if (action.equals("com.sensetoolbox.six.mods.action.GoToSleep")) {
-				((PowerManager)context.getSystemService(Context.POWER_SERVICE)).goToSleep(SystemClock.uptimeMillis());
+				XposedHelpers.callMethod(((PowerManager)context.getSystemService(Context.POWER_SERVICE)), "goToSleep", SystemClock.uptimeMillis());
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.TakeScreenshot")) {
 				if (mPWM != null) XposedHelpers.callMethod(mPWM, "takeScreenshot");
@@ -117,7 +136,8 @@ public class GlobalActions {
 				List<ResolveInfo> launcherList = pm.queryIntentActivities(intent_home, 0);
 				
 				ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
-				List<RecentTaskInfo> rti = am.getRecentTasks(9, 0);
+				@SuppressWarnings("deprecation")
+				List<RecentTaskInfo> rti = am.getRecentTasks(Integer.MAX_VALUE, 0);
 				
 				Intent recentIntent;
 				boolean isFirstRecent = true;
@@ -257,37 +277,57 @@ public class GlobalActions {
 				setFlashlight(mCurrentLEDLevel);
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.ToggleMobileData")) {
-				ConnectivityManager dataManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
-				Method setMTE = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", boolean.class);
-				Method getMTE = ConnectivityManager.class.getDeclaredMethod("getMobileDataEnabled");
-				setMTE.setAccessible(true);
-				getMTE.setAccessible(true);
+				if (Helpers.isLP()) {
+					TelephonyManager telManager = (TelephonyManager)context.getSystemService(Context.TELEPHONY_SERVICE);
+					Method setMTE = TelephonyManager.class.getDeclaredMethod("setDataEnabled", boolean.class);
+					Method getMTE = TelephonyManager.class.getDeclaredMethod("getDataEnabled");
+					setMTE.setAccessible(true);
+					getMTE.setAccessible(true);
 					
-				if ((Boolean)getMTE.invoke(dataManager)) {
-					setMTE.invoke(dataManager, false);
-					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_mobiledata_off), Toast.LENGTH_SHORT).show();
+					if ((Boolean)getMTE.invoke(telManager)) {
+						setMTE.invoke(telManager, false);
+						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_mobiledata_off), Toast.LENGTH_SHORT).show();
+					} else {
+						setMTE.invoke(telManager, true);
+						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_mobiledata_on), Toast.LENGTH_SHORT).show();
+					}
 				} else {
-					setMTE.invoke(dataManager, true);
-					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_mobiledata_on), Toast.LENGTH_SHORT).show();
+					ConnectivityManager dataManager = (ConnectivityManager)context.getSystemService(Context.CONNECTIVITY_SERVICE);
+					Method setMTE = ConnectivityManager.class.getDeclaredMethod("setMobileDataEnabled", boolean.class);
+					Method getMTE = ConnectivityManager.class.getDeclaredMethod("getMobileDataEnabled");
+					setMTE.setAccessible(true);
+					getMTE.setAccessible(true);
+					
+					if ((Boolean)getMTE.invoke(dataManager)) {
+						setMTE.invoke(dataManager, false);
+						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_mobiledata_off), Toast.LENGTH_SHORT).show();
+					} else {
+						setMTE.invoke(dataManager, true);
+						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_mobiledata_on), Toast.LENGTH_SHORT).show();
+					}
 				}
 			}
+			
+			String className = "com.htc.app.HtcShutdownThread";
+			if (Helpers.isLP()) className = "com.android.internal.policy.impl.HtcShutdown.HtcShutdownThread";
+			
 			if (action.equals("com.sensetoolbox.six.mods.action.APMReboot")) {
-				setStaticObjectField(findClass("com.htc.app.HtcShutdownThread", null), "mRebootReason", "oem-11");
-				setStaticBooleanField(findClass("com.htc.app.HtcShutdownThread", null), "mReboot", true);
-				setStaticBooleanField(findClass("com.htc.app.HtcShutdownThread", null), "mRebootSafeMode", false);
-				callStaticMethod(findClass("com.htc.app.HtcShutdownThread", null), "shutdownInner", context, false);
+				setStaticObjectField(findClass(className, null), "mRebootReason", "oem-11");
+				setStaticBooleanField(findClass(className, null), "mReboot", true);
+				setStaticBooleanField(findClass(className, null), "mRebootSafeMode", false);
+				callStaticMethod(findClass(className, null), "shutdownInner", context, false);
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.APMRebootRecovery")) {
-				setStaticObjectField(findClass("com.htc.app.HtcShutdownThread", null), "mRebootReason", "recovery");
-				setStaticBooleanField(findClass("com.htc.app.HtcShutdownThread", null), "mReboot", true);
-				setStaticBooleanField(findClass("com.htc.app.HtcShutdownThread", null), "mRebootSafeMode", false);
-				callStaticMethod(findClass("com.htc.app.HtcShutdownThread", null), "shutdownInner", context, false);
+				setStaticObjectField(findClass(className, null), "mRebootReason", "recovery");
+				setStaticBooleanField(findClass(className, null), "mReboot", true);
+				setStaticBooleanField(findClass(className, null), "mRebootSafeMode", false);
+				callStaticMethod(findClass(className, null), "shutdownInner", context, false);
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.APMRebootBootloader")) {
-				setStaticObjectField(findClass("com.htc.app.HtcShutdownThread", null), "mRebootReason", "bootloader");
-				setStaticBooleanField(findClass("com.htc.app.HtcShutdownThread", null), "mReboot", true);
-				setStaticBooleanField(findClass("com.htc.app.HtcShutdownThread", null), "mRebootSafeMode", false);
-				callStaticMethod(findClass("com.htc.app.HtcShutdownThread", null), "shutdownInner", context, false);
+				setStaticObjectField(findClass(className, null), "mRebootReason", "bootloader");
+				setStaticBooleanField(findClass(className, null), "mReboot", true);
+				setStaticBooleanField(findClass(className, null), "mRebootSafeMode", false);
+				callStaticMethod(findClass(className, null), "shutdownInner", context, false);
 			}
 			
 			} catch(Throwable t) {
@@ -322,6 +362,7 @@ public class GlobalActions {
 	private static void removeTask(Context context) {
 		try {
 			final ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
+			@SuppressWarnings("deprecation")
 			final List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
 			final Method removeTask = am.getClass().getMethod("removeTask", new Class[] { int.class, int.class });
 			final Method forceStopPackage = am.getClass().getMethod("forceStopPackage", new Class[] { String.class });
@@ -342,7 +383,7 @@ public class GlobalActions {
 			if (thisPkg.equalsIgnoreCase("com.htc.android.worldclock")) isAllowed = false;
 			
 			if (isLauncher) {
-				((PowerManager)context.getSystemService(Context.POWER_SERVICE)).goToSleep(SystemClock.uptimeMillis());
+				XposedHelpers.callMethod(((PowerManager)context.getSystemService(Context.POWER_SERVICE)), "goToSleep", SystemClock.uptimeMillis());
 			} else if (isAllowed) {
 				// Removes from recents also
 				removeTask.invoke(am, Integer.valueOf(taskInfo.get(0).id), Integer.valueOf(1));
@@ -408,7 +449,7 @@ public class GlobalActions {
 	
 	public static void toolboxInit(LoadPackageParam lpparam) {
 		try {
-			XposedHelpers.findAndHookMethod("com.sensetoolbox.six.PrefsFragment", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+			XposedHelpers.findAndHookMethod("com.sensetoolbox.six.MainFragment", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					XposedHelpers.setBooleanField(param.thisObject, "toolboxModuleActive", true);
@@ -502,36 +543,44 @@ public class GlobalActions {
 					mPWMContext.registerReceiver(mBR, intentfilter);
 				}
 			});
-			
-			final Class<?> clsDMS = findClass("com.android.server.DevicePolicyManagerService", null);
-			XposedBridge.hookAllConstructors(clsDMS, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					mDMS = param.thisObject;
-					Context mDMSContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-					IntentFilter intentfilter = new IntentFilter();
-					intentfilter.addAction("com.sensetoolbox.six.mods.action.LockDevice");
-					mDMSContext.registerReceiver(mBRLock, intentfilter);
-				}
-			});
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
+	}
+	
+	public static void setupDMS(LoadPackageParam lpparam) {
+		String className = "com.android.server.DevicePolicyManagerService";
+		if (Helpers.isLP()) className = "com.android.server.devicepolicy.DevicePolicyManagerService";
+		XposedBridge.hookAllConstructors(findClass(className, lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				mDMS = param.thisObject;
+				Context mDMSContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				IntentFilter intentfilter = new IntentFilter();
+				intentfilter.addAction("com.sensetoolbox.six.mods.action.LockDevice");
+				mDMSContext.registerReceiver(mBRLock, intentfilter);
+			}
+		});
+	}
+	
+	public static void setupPSB(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				mPSB = param.thisObject;
+				Context mPSBContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				IntentFilter intentfilter = new IntentFilter();
+				intentfilter.addAction("com.sensetoolbox.six.mods.action.ExpandNotifications");
+				intentfilter.addAction("com.sensetoolbox.six.mods.action.ExpandSettings");
+				mPSBContext.registerReceiver(mBRDrawer, intentfilter);
+			}
+		});
 	}
 
 	// Actions
 	public static boolean expandNotifications(Context context) {
 		try {
-			Object sbservice = context.getSystemService("statusbar");
-			Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-			Method showsb;
-			if (Build.VERSION.SDK_INT >= 17) {
-				showsb = statusbarManager.getMethod("expandNotificationsPanel");
-			} else {
-				showsb = statusbarManager.getMethod("expand");
-			}
-			showsb.setAccessible(true);
-			showsb.invoke(sbservice);
+			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.ExpandNotifications"));
 			return true;
 		} catch (Throwable t) {
 			XposedBridge.log(t);
@@ -541,15 +590,8 @@ public class GlobalActions {
 	
 	public static boolean expandEQS(Context context) {
 		try {
-			Object sbservice = context.getSystemService("statusbar");
-			Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-			if (Build.VERSION.SDK_INT >= 17) {
-				Method showeqs;
-				showeqs = statusbarManager.getMethod("expandSettingsPanel");
-				showeqs.setAccessible(true);
-				showeqs.invoke(sbservice);
-				return true;
-			} else return false;
+			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.ExpandSettings"));
+			return false;
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 			return false;
@@ -717,10 +759,10 @@ public class GlobalActions {
 				hue = XMain.pref.getInt("pref_key_colorfilter_hueValue", 180) - 180;
 			}
 		} else {
-			if (PrefsFragment.prefs != null) {
-				brightness = PrefsFragment.prefs.getInt("pref_key_colorfilter_brightValue", 100) - 100;
-				saturation = PrefsFragment.prefs.getInt("pref_key_colorfilter_satValue", 100) - 100;
-				hue = PrefsFragment.prefs.getInt("pref_key_colorfilter_hueValue", 180) - 180;
+			if (MainFragment.prefs != null) {
+				brightness = MainFragment.prefs.getInt("pref_key_colorfilter_brightValue", 100) - 100;
+				saturation = MainFragment.prefs.getInt("pref_key_colorfilter_satValue", 100) - 100;
+				hue = MainFragment.prefs.getInt("pref_key_colorfilter_hueValue", 180) - 180;
 			}
 		}
 		
@@ -732,30 +774,27 @@ public class GlobalActions {
 			return ColorFilterGenerator.adjustColor(brightness, 0, saturation, hue);
 	}
 	
-	public static void sendMediaButton(KeyEvent keyEvent) {
+	public static void sendMediaButton(Context ctx, KeyEvent keyEvent) {
 		try {
-			// Get binder from ServiceManager.checkService(String)
-			IBinder iBinder  = (IBinder) Class.forName("android.os.ServiceManager")
-			.getDeclaredMethod("checkService", String.class)
-			.invoke(null, Context.AUDIO_SERVICE);
-
-			// get audioService from IAudioService.Stub.asInterface(IBinder)
-			Object audioService  = Class.forName("android.media.IAudioService$Stub")
-			.getDeclaredMethod("asInterface", IBinder.class)
-			.invoke(null, iBinder);
-
-			// Dispatch keyEvent using IAudioService.dispatchMediaKeyEvent(KeyEvent)
-			Class.forName("android.media.IAudioService")
-			.getDeclaredMethod("dispatchMediaKeyEvent", KeyEvent.class)
-			.invoke(audioService, keyEvent);
+			if (Build.VERSION.SDK_INT >= 19) {
+				AudioManager am = (AudioManager)ctx.getSystemService(Context.AUDIO_SERVICE);
+				if (ctx != null) am.dispatchMediaKeyEvent(keyEvent);
+			} else {
+				// Get binder from ServiceManager.checkService(String)
+				IBinder iBinder  = (IBinder) Class.forName("android.os.ServiceManager").getDeclaredMethod("checkService", String.class).invoke(null, Context.AUDIO_SERVICE);
+				// Get audioService from IAudioService.Stub.asInterface(IBinder)
+				Object audioService  = Class.forName("android.media.IAudioService$Stub").getDeclaredMethod("asInterface", IBinder.class).invoke(null, iBinder);
+				// Dispatch keyEvent using IAudioService.dispatchMediaKeyEvent(KeyEvent)
+				Class.forName("android.media.IAudioService").getDeclaredMethod("dispatchMediaKeyEvent", KeyEvent.class).invoke(audioService, keyEvent);
+			}
 		}  catch (Throwable t) {
 			XposedBridge.log(t);
 		}
 	}
 	
-	public static void buttonBacklight(){
+	public static void buttonBacklightService(LoadPackageParam lpparam) {
 		try {
-			findAndHookMethod("com.android.server.wm.WindowManagerService", null, "statusBarVisibilityChanged", int.class, new XC_MethodHook() {
+			findAndHookMethod("com.android.server.wm.WindowManagerService", lpparam.classLoader, "statusBarVisibilityChanged", int.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
@@ -773,7 +812,13 @@ public class GlobalActions {
 					mContext.sendBroadcast(intent);
 				}
 			});
-			
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void buttonBacklightSystem(){
+		try {
 			findAndHookMethod(Window.class, "setFlags", int.class, int.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {

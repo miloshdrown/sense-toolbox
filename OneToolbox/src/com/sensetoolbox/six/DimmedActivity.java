@@ -187,6 +187,7 @@ public class DimmedActivity extends Activity {
 	float cancelShift;
 	
 	@Override
+	@SuppressWarnings("deprecation")
 	public void onCreate(Bundle bundle) {
 		KeyguardManager kgMgr = (KeyguardManager)getSystemService(Context.KEYGUARD_SERVICE);
 		isInLockscreen = false;

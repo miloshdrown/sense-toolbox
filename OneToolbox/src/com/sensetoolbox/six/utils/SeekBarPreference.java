@@ -8,6 +8,7 @@ package com.sensetoolbox.six.utils;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Vibrator;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -49,6 +50,7 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 	private boolean mIsEnabled;
 	private boolean mEnableValue;
 	private boolean mHapticPref;
+	private boolean mAnimPref;
 	private int mSeekBarValue;
 
 	public SeekBarPreference(Context context, AttributeSet attrs) {
@@ -64,6 +66,7 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 		mKey = attrs.getAttributeValue(androidns, "key");
 		mEnableKey = attrs.getAttributeValue(toolboxns, "enableKey");
 		mHapticPref = attrs.getAttributeBooleanValue(toolboxns, "hapticPref", false);
+		mAnimPref = attrs.getAttributeBooleanValue(toolboxns, "animPref", false);
 		density = mContext.getResources().getDisplayMetrics().density;
 	}
 	
@@ -154,7 +157,9 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 				@Override
 				public void onClick(View v) {
 					Vibrator vibe = (Vibrator)mContext.getSystemService(Context.VIBRATOR_SERVICE);
-					if (mKey.equals("pref_key_controls_keyshaptic"))
+					if (Helpers.isLP())
+						vibe.vibrate(mSeekBarValue);
+					else if (mKey.equals("pref_key_controls_keyshaptic"))
 						vibe.vibrate(new long[] { 0, mSeekBarValue, 0, 0 }, -1);
 					else if (mKey.equals("pref_key_controls_longpresshaptic"))
 						vibe.vibrate(new long[] { 0, 1, 20, mSeekBarValue }, -1);
@@ -182,6 +187,7 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 			persistInt(mSeekBarValue);
 			getEditor().putBoolean(mEnableKey, mEnableValue).commit();
 			callChangeListener(Integer.valueOf(mSeekBarValue));
+			if (mAnimPref) mContext.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.UpdateAnimDuration"));
 		}
 	}
 
@@ -211,6 +217,9 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 				testBtn.setVisibility(View.GONE);
 			else
 				testBtn.setVisibility(View.VISIBLE);
+		} else if (mAnimPref) {
+			newVal = newVal / 50;
+			newVal = newVal * 50;
 		}
 		String t = String.valueOf(newVal);
 		mValueText.setText(mSuffix == null ? t : t.concat(mSuffix));

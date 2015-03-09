@@ -107,8 +107,8 @@ public class MessagingMods{
 		});
 	}
 	
-	public static void execHook_EASSecurityPartOne(LoadPackageParam lpparam) {
-		findAndHookMethod("android.app.admin.DevicePolicyManager", lpparam.classLoader, "isAdminActive", ComponentName.class, new XC_MethodHook() {
+	public static void execHook_EASSecurityPartOne() {
+		findAndHookMethod("android.app.admin.DevicePolicyManager", null, "isAdminActive", ComponentName.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				ComponentName who = (ComponentName) param.args[0];

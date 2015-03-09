@@ -77,10 +77,10 @@ public class ColorSelect extends HtcListView {
 
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View row;
-			if (isBlinkfeed)
+			if (convertView == null)
 				row = mInflater.inflate(R.layout.htc_list_item_colors_with_bf, parent, false);
 			else
-				row = mInflater.inflate(R.layout.htc_list_item_colors, parent, false);
+				row = convertView;
 
 			Drawable[] layers = new Drawable[2];
 			ShapeDrawable borderColor = new ShapeDrawable(new RectShape());
@@ -106,44 +106,43 @@ public class ColorSelect extends HtcListView {
 			
 			TextView colorHeaderTitle = (TextView)row.findViewById(R.id.header_color_title);
 			colorHeaderTitle.setText(Helpers.l10n(colorHeaderTitle.getContext(), R.string.sense_theme_color_header));
-			if (item0 == 0xff252525)
+			if (item0 == 0xff252525 || item0 == 0xff255999 || item0 == 0xff062a30)
 				colorHeaderTitle.setTextColor(0xffdfdfdf);
 			else
 				colorHeaderTitle.setTextColor(0xff161616);
 				
 			TextView controlsHeaderTitle = (TextView)row.findViewById(R.id.controls_color_title);
 			controlsHeaderTitle.setText(Helpers.l10n(controlsHeaderTitle.getContext(), R.string.sense_theme_color_controls));
-			if (item1 == 0xff252525)
+			if (item1 == 0xff252525 || item1 == 0xff255999 || item1 == 0xff062a30)
 				controlsHeaderTitle.setTextColor(0xffdfdfdf);
 			else
 				controlsHeaderTitle.setTextColor(0xff161616);
 			
-			if (isBlinkfeed) {
-				ColorFrameLayout colorBlinkfeed = (ColorFrameLayout)row.findViewById(R.id.blinkfeed_color);
-				layers[0] = new ColorDrawable(item2);
-				layers[1] = borderColor;
-				LayerDrawable compositeBlinkfeed = new LayerDrawable(layers);
-				colorBlinkfeed.setBackground(compositeBlinkfeed);
-				
-				TextView blinkfeedHeaderTitle = (TextView)row.findViewById(R.id.blinkfeed_color_title);
-				blinkfeedHeaderTitle.setText(Helpers.l10n(blinkfeedHeaderTitle.getContext(), R.string.sense_theme_color_bf));
-				if (item2 <= 0xff4b4b4b)
-					blinkfeedHeaderTitle.setTextColor(0xffdfdfdf);
-				else
-					blinkfeedHeaderTitle.setTextColor(0xff161616);
-				
-				if (position == selected)
-					colorBlinkfeed.setTag(new boolean[] { true, isBlinkfeed });
-				else
-					colorBlinkfeed.setTag(new boolean[] { false, isBlinkfeed });
-			}
+			TextView blinkfeedHeaderTitle = (TextView)row.findViewById(R.id.blinkfeed_color_title);
+			ColorFrameLayout colorBlinkfeed = (ColorFrameLayout)row.findViewById(R.id.blinkfeed_color);
+			layers[0] = new ColorDrawable(item2);
+			layers[1] = borderColor;
+			LayerDrawable compositeBlinkfeed = new LayerDrawable(layers);
+			colorBlinkfeed.setBackground(compositeBlinkfeed);
 			
+			if (item2 <= 0xff4b4b4b)
+				blinkfeedHeaderTitle.setTextColor(0xffdfdfdf);
+			else
+				blinkfeedHeaderTitle.setTextColor(0xff161616);
+			
+			if (isBlinkfeed)
+				blinkfeedHeaderTitle.setText(Helpers.l10n(blinkfeedHeaderTitle.getContext(), R.string.sense_theme_color_bf));
+			else
+				blinkfeedHeaderTitle.setText(Helpers.l10n(blinkfeedHeaderTitle.getContext(), R.string.sense_theme_color_misc));
+						
 			if (position == selected) {
-				colorHeader.setTag(new boolean[] { true, isBlinkfeed });
-				colorControls.setTag(new boolean[] { true, isBlinkfeed });
+				colorHeader.setTag(true);
+				colorControls.setTag(true);
+				colorBlinkfeed.setTag(true);
 			} else {
-				colorHeader.setTag(new boolean[] { false, isBlinkfeed });
-				colorControls.setTag(new boolean[] { false, isBlinkfeed });
+				colorHeader.setTag(false);
+				colorControls.setTag(false);
+				colorBlinkfeed.setTag(false);
 			}
 			
 			return row;

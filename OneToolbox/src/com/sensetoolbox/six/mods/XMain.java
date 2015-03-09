@@ -34,6 +34,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	public static int pref_screenoff = 0;
 	public static boolean pref_alarmnotify = false;
 	public static boolean pref_signalnotify = false;
+	public static boolean prefs_pwm = false;
 	public static Version senseVersion;
 	public static ObjectMapper mapper = new ObjectMapper();
 	public static List<PackageTheme> xcached_pkgthm = new ArrayList<PackageTheme>();
@@ -42,19 +43,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
 		MODULE_PATH = startupParam.modulePath;
-		
 		pref = new XSharedPreferences("com.sensetoolbox.six", "one_toolbox_prefs");
-		
 		senseVersion = new Version(pref.getString("pref_sense_version", "6.0"));
 		
-		PackagePermissions.init();
 		GlobalActions.toolboxStuff();
-		
-		if (pref.getBoolean("pref_key_cb_beats", false))
-			StatusbarMods.execHook_BeatsIcon();
-		
-		if (pref.getBoolean("pref_key_other_movevol", false))
-			OtherMods.execHook_MoveVolume(startupParam);
 		
 		pref_swipedown = Integer.parseInt(pref.getString("pref_key_prism_swipedownaction", "1"));
 		pref_swipeup = Integer.parseInt(pref.getString("pref_key_prism_swipeupaction", "1"));
@@ -63,20 +55,28 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		pref_backlongpress = Integer.parseInt(pref.getString("pref_key_controls_backlongpressaction", "1"));
 		pref_homeassist = Integer.parseInt(pref.getString("pref_key_controls_homeassistaction", "1"));
 		pref_shake = Integer.parseInt(pref.getString("pref_key_prism_shakeaction", "1"));
+		pref_screenon = Integer.parseInt(pref.getString("pref_key_other_screenon", "0"));
+		pref_screenoff = Integer.parseInt(pref.getString("pref_key_other_screenoff", "0"));
+		prefs_pwm = pref.getBoolean("pref_key_controls_extendedpanel", false) || pref.getBoolean("popup_notify_active", false) || pref.getBoolean("pref_key_other_apm", false) || pref.getBoolean("pref_key_prism_homemenu", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1;
 		
-		if (pref.getBoolean("pref_key_controls_extendedpanel", false) || pref.getBoolean("popup_notify_active", false) || pref.getBoolean("pref_key_other_apm", false) || pref.getBoolean("pref_key_prism_homemenu", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1)
+		if (prefs_pwm)
 			GlobalActions.setupPWM();
 		
 		if (pref_backlongpress != 1 || pref_homeassist != 1)
 			ControlsMods.setupPWMKeys();
 		
-		pref_screenon = Integer.parseInt(pref.getString("pref_key_other_screenon", "0"));
-		pref_screenoff = Integer.parseInt(pref.getString("pref_key_other_screenoff", "0"));
-		
-		if (pref_screenon != 0 || pref_screenoff != 0) {
-			XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", false);
-			OtherMods.ScreenAnim();
+		if ((pref_screenon != 0 || pref_screenoff != 0)) {
+			if (Helpers.isLP())
+				OtherMods.execHook_ScreenColorFadeFix();
+			else
+				OtherMods.execHook_ScreenAnim();
 		}
+		
+		if (pref.getBoolean("pref_key_cb_beats", false))
+			StatusbarMods.execHook_BeatsIcon();
+		
+		if (!Helpers.isLP() && pref.getBoolean("pref_key_other_movevol", false))
+			OtherMods.execHook_MoveVolume();
 		
 		if (pref.getBoolean("pref_key_other_volsafe", false))
 			XResources.setSystemWideReplacement("android", "bool", "config_safe_media_volume_enabled", false);
@@ -88,7 +88,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			OtherMods.execHook_EnhancedSecurity();
 		
 		if (pref.getBoolean("pref_key_other_keyslight_auto", false))
-			GlobalActions.buttonBacklight();
+			GlobalActions.buttonBacklightSystem();
 		
 		if (pref.getBoolean("themes_active", false))
 			SysUIMods.execHook_Sense6ColorControl();
@@ -96,10 +96,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_controls_smallsoftkeys", false))
 			ControlsMods.execHook_SmallNavbar();
 		
-		if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures() && !Helpers.isM8() && !Helpers.isE8())
+		if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures() && !Helpers.isEight())
 			WakeGesturesMods.execHook_InitListener();
 		
-		if (pref.getBoolean("touch_lock_active", false) && Helpers.isWakeGestures())
+		if (pref.getBoolean("wake_gestures_active", false) && pref.getBoolean("touch_lock_active", false) && Helpers.isWakeGestures())
 			WakeGesturesMods.execHook_InitTouchLockListener();
 		
 		if (pref.getBoolean("pref_key_controls_extendedpanel", false))
@@ -108,17 +108,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_other_allrotations", false))
 			OtherMods.execHook_AllRotations();
 		
-		if (pref.getBoolean("pref_key_sysui_hqthumbs", false))
-			SysUIMods.execHook_HDThumbnails();
-		
 		if (pref.getBoolean("popup_notify_active", false))
 			OtherMods.execHook_PopupNotify();
-		
-		if (pref.getBoolean("pref_key_other_ledtimeout", false))
-			OtherMods.execHook_LEDNotifyTimeout();
-		
-		if (pref.getBoolean("pref_key_other_ledoncharge", false))
-			OtherMods.execHook_LEDOnCharge();
 		
 		if (pref.getBoolean("pref_key_sysui_tnsb", false))
 			SysUIMods.execHook_TranslucentNotificationsDividers();
@@ -129,9 +120,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (Integer.parseInt(pref.getString("pref_key_other_iconlabletoasts", "1")) != 1)
 			SysUIMods.execHook_IconLabelToasts();
 		
-		if (pref.getBoolean("pref_key_other_imenotif", false))
-			OtherMods.execHook_InputMethodNotif();
-		
 		if (pref.getBoolean("pref_key_other_vzwnotif", false))
 			OtherMods.execHook_VZWWiFiNotif();
 		
@@ -139,6 +127,34 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			pref.getBoolean("pref_key_controls_longpresshaptic_enable", false) ||
 			pref.getBoolean("pref_key_controls_keyboardhaptic_enable", false))
 			ControlsMods.execHook_KeysHapticFeedback();
+		
+		if (pref.getBoolean("pref_key_other_apm", false))
+			OtherMods.execHook_APM();
+		
+		if (!Helpers.isLP() && pref.getBoolean("pref_key_other_volsound", false))
+			OtherMods.execHook_VolSound();
+		
+		boolean vol2wakeEnabled = pref.getBoolean("pref_key_controls_vol2wake", false);
+		if (vol2wakeEnabled)
+			ControlsMods.execHook_Vol2Wake();
+		
+		if (pref.getBoolean("pref_key_controls_powerflash", false))
+			ControlsMods.execHook_PowerFlash();
+		
+		if (Integer.parseInt(pref.getString("pref_key_controls_mediadownaction", "0")) != 0 || Integer.parseInt(pref.getString("pref_key_controls_mediaupaction", "0")) != 0)
+			ControlsMods.execHook_VolumeMediaButtons(vol2wakeEnabled);
+		
+		if (pref.getBoolean("pref_key_messaging_eassecurity", false))
+			MessagingMods.execHook_EASSecurityPartOne();
+		
+		if (pref.getBoolean("pref_key_other_volsafe", false))
+			OtherMods.execHook_SafeVolume();
+		
+		if (pref.getBoolean("pref_key_controls_swapvolume", false))
+			ControlsMods.exec_SwapVolumeCCWLand();
+		
+//	    if (pref.getBoolean("pref_key_sysui_invisibar_enable", false) && Build.VERSION.SDK_INT >= 19)
+//	    	SysUIMods.execHook_anotherTSB44Fix(lpparam);
 		
 		//OtherMods.execHook_HapticNotify();
 	}
@@ -174,7 +190,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		}
 		
 		if (pkg.equals("com.android.systemui")) {
-			if (pref.getBoolean("pref_key_sysui_invisinotify_enable", false)) {
+			if (!Helpers.isLP() && pref.getBoolean("pref_key_sysui_invisinotify_enable", false)) {
 				int transparency = pref.getInt("pref_key_sysui_invisinotify", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
 				SysUIMods.execHook_InvisiNotify(resparam, transparency);
@@ -298,6 +314,37 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			GlobalActions.toolboxInit(lpparam);
 		}
 		
+		if (pkg.equals("android") && lpparam.processName.equals("android")) {
+			PackagePermissions.init(lpparam);
+			
+			if (prefs_pwm)
+				GlobalActions.setupDMS(lpparam);
+			
+			if ((pref_screenon != 0 || pref_screenoff != 0) && Helpers.isLP())
+				OtherMods.execHook_ScreenColorFade(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_keyslight_auto", false))
+				GlobalActions.buttonBacklightService(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_imenotif", false))
+				OtherMods.execHook_InputMethodNotif(lpparam);
+			
+			if (pref.getBoolean("pref_key_sysui_hqthumbs", false))
+				SysUIMods.execHook_HDThumbnails(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_ledtimeout", false))
+				OtherMods.execHook_LEDNotifyTimeout(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_ledoncharge", false))
+				OtherMods.execHook_LEDOnCharge(lpparam);
+			
+			if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures() && Helpers.isLP())
+				WakeGesturesMods.execHook_InitBootListener(lpparam);
+			
+			if (pref.getBoolean("wake_gestures_active", false) && pref.getBoolean("touch_lock_active", false) && Helpers.isWakeGestures() && Helpers.isLP())
+				WakeGesturesMods.execHook_InitTouchServerListener(lpparam);
+		}
+		
 		if (pkg.equals("com.android.providers.media")) {
 			if (pref.getBoolean("pref_key_other_mtpnotif", false))
 				OtherMods.execHook_MTPNotif(lpparam);
@@ -395,7 +442,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		}
 		
 		if (pkg.equals("com.htc.lockscreen")) {
-			if (pref_homeassist != 1 && !Helpers.isM8() && !Helpers.isE8())
+			if (pref_homeassist != 1 && !Helpers.isLP() && !Helpers.isEight())
 				ControlsMods.execHook_dieGoogleNow(lpparam);
 			
 			if (pref.getBoolean("pref_key_other_fastunlock", false))
@@ -438,6 +485,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		}
 		
 		if (pkg.equals("com.android.systemui")) {
+			if (prefs_pwm)
+				GlobalActions.setupPSB(lpparam);
+			
 			if (pref.getBoolean("pref_key_sysui_invisinotify_enable", false)) {
 				int transparency = pref.getInt("pref_key_sysui_invisinotify", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
@@ -454,11 +504,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_sysui_aosprecent", false))
 				SysUIMods.execHook_AospRecent(lpparam);
-			
-			SysUIMods.execHook_RecentAppsInit(lpparam);
-			
-			if (pref.getBoolean("pref_key_sysui_recentappsclear", false))
-				SysUIMods.execHook_RecentAppsClearTouch(lpparam);
 			
 			if (Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockAnimation(lpparam);
@@ -496,8 +541,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				SysUIMods.execHook_NotifDrawerHeaderSysInfo(lpparam);
 			
 			if (pref_homeassist != 1) {
-				if (Helpers.isM8() || Helpers.isE8())
-					ControlsMods.execHook_M8RecentsLongpress(lpparam);
+				if (Helpers.isEight())
+					ControlsMods.execHook_RecentsLongpressEight(lpparam);
 				else
 					SysUIMods.execHook_OverrideAssist(lpparam);
 			}
@@ -508,11 +553,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_sysui_timeoutqs", false))
 				SysUIMods.execHook_ChangeTimeoutQSTile(lpparam);
 			
-			if (pref_backlongpress != 1 && (Helpers.isM8() || Helpers.isE8()))
-				ControlsMods.execHook_M8BackLongpress(lpparam);
+			if (pref_backlongpress != 1 && Helpers.isEight())
+				ControlsMods.execHook_BackLongpressEight(lpparam);
 			
-			if (pref.getBoolean("pref_key_prism_homemenu", false) && (Helpers.isM8() || Helpers.isE8()))
-				ControlsMods.execHook_M8HomeLongpress(lpparam);
+			if (pref.getBoolean("pref_key_prism_homemenu", false) && Helpers.isEight())
+				ControlsMods.execHook_HomeLongpressEight(lpparam);
 			
 			if (pref.getBoolean("pref_key_cb_texts", false))
 				StatusbarMods.execHook_StatusBarTexts(lpparam);
@@ -536,6 +581,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_screendelete", false))
 				SysUIMods.execHook_ScreenshotDelete(lpparam);
 			
+			if (pref.getBoolean("pref_key_sysui_recentappsclear", false) || pref.getBoolean("pref_key_sysui_recentslongtap", false))
+				SysUIMods.execHook_RecentAppsInit(lpparam);
+			
+			if (pref.getBoolean("pref_key_sysui_recentappsclear", false))
+				SysUIMods.execHook_RecentAppsClearTouch(lpparam);
+			
 			if (pref.getBoolean("pref_key_sysui_recentslongtap", false))
 				SysUIMods.execHook_RecentsLongTap(lpparam);
 			
@@ -547,6 +598,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_other_screenopen", false))
 				OtherMods.execHook_ScreenshotViewer(lpparam);
+			
+			if (Helpers.isLP() && pref.getBoolean("pref_key_other_movevol", false))
+				OtherMods.execHook_MoveVolume(lpparam);
+			
+			if (Helpers.isLP() && pref.getBoolean("pref_key_other_volsound", false))
+				OtherMods.execHook_VolSound(lpparam);
 			
 			StatusbarMods.execHook_HideIcons(lpparam);
 		}
@@ -582,44 +639,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				ControlsMods.execHook_FixDialer(lpparam);
 		}
 		
-		if (lpparam.processName.equals("android")) {
-			if (pref.getBoolean("pref_key_other_apm", false))
-				OtherMods.execHook_APM(lpparam);
-			
-			if (pref.getBoolean("pref_key_other_volsound", false))
-				OtherMods.execHook_VolSound(lpparam);
-			
-			boolean vol2wakeEnabled = pref.getBoolean("pref_key_controls_vol2wake", false);
-			if (vol2wakeEnabled)
-				ControlsMods.execHook_Vol2Wake(lpparam);
-			
-			if (pref.getBoolean("pref_key_controls_powerflash", false))
-				ControlsMods.execHook_PowerFlash(lpparam);
-			
-			if (Integer.parseInt(pref.getString("pref_key_controls_mediadownaction", "0")) != 0 || Integer.parseInt(pref.getString("pref_key_controls_mediaupaction", "0")) != 0)
-				ControlsMods.execHook_VolumeMediaButtons(lpparam, vol2wakeEnabled);
-			
-			if (pref.getBoolean("pref_key_messaging_eassecurity", false))
-				MessagingMods.execHook_EASSecurityPartOne(lpparam);
-			
-			if (pref.getBoolean("pref_key_other_volsafe", false))
-				OtherMods.execHook_SafeVolume(lpparam);
-			
-			if (pref.getBoolean("pref_key_controls_swapvolume", false))
-				ControlsMods.exec_SwapVolumeCCWLand(lpparam);
-			
-//		    if (pref.getBoolean("pref_key_sysui_invisibar_enable", false) && Build.VERSION.SDK_INT >= 19)
-//		    	SysUIMods.execHook_anotherTSB44Fix(lpparam);
-		}
-		
 		if (pref.getBoolean("themes_active", false))
-		if (pkg.equals("com.htc.android.worldclock") ||
-			pkg.equals("com.htc.Weather") ||
-			pkg.equals("com.htc.launcher") ||
-			pkg.equals("com.htc.videohub.ui") ||
-			pkg.equals("com.htc.album") ||
-			pkg.equals("com.htc.camera") ||
-			pkg.equals("com.htc.sense.ime"))
+		if (pkg.startsWith("com.htc.") || pkg.equals("com.android.systemui"))
 			SysUIMods.execHook_Sense6ColorControlCustom(lpparam, pkg);
 		
 		if (pkg.equals("com.htc.sense.ime")) {
@@ -628,7 +649,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		}
 		
 		if (pkg.equals("com.htc.sense.easyaccessservice")) {
-			if (pref.getBoolean("wake_gestures_active", false) && (Helpers.isM8() || Helpers.isE8()))
+			if (pref.getBoolean("wake_gestures_active", false) && Helpers.isEight())
 				WakeGesturesMods.execHook_EasyAccessService(lpparam);
 		}
 		

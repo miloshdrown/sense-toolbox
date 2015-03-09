@@ -23,7 +23,6 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -55,17 +54,12 @@ public class TouchLock extends Activity {
 		actionBarText.setPrimaryText(Helpers.l10n(this, R.string.various_touchlock_title));
 		actionBarContainer.addCenterView(actionBarText);
 		actionBarContainer.setBackUpEnabled(true);
-		
-		View homeBtn = actionBarContainer.getChildAt(0);
-		if (homeBtn != null) {
-			OnClickListener goBack = new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					finish();
-				}
-			};
-			homeBtn.setOnClickListener(goBack);
-		}
+		actionBarContainer.setBackUpOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		
 		OnOffSwitch = new HtcToggleButtonLight(this);
 		OnOffSwitch.setLayoutParams(new android.widget.LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -218,18 +212,18 @@ public class TouchLock extends Activity {
 			if (isRecording && OnOffSwitch.isChecked())
 			switch (event.getAction()) {
 				case 0:
-					v.setBackgroundColor(0x7f888888);
+					v.setBackgroundColor(0xff888888);
 					if (v.getTag() != null) {
 						sequence.add((String)v.getTag());
 						updateSequenceText();
 						if (sequence.size() >= 12) {
-							v.setBackgroundColor(0x7f666666);
+							v.setBackgroundColor(0xff666666);
 							menuDefine.callOnClick();
 						}
 					}
 					break;
 				case 1:
-					v.setBackgroundColor(0x7f666666);
+					v.setBackgroundColor(0xff666666);
 					break;
 			}
 			v.performClick();

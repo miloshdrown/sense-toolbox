@@ -79,11 +79,11 @@
     <target name="-post-compile">
         <path id="project.all.jars.path">
                 <!-- un-comment below line if you want it-->
-                <pathelement path="libs/RootTools-3.4.jar"></pathelement>
+                <pathelement path="libs/RootTools-3.5.jar"></pathelement>
                 <pathelement path="libs/acra-4.5.0.jar"></pathelement>
-                <pathelement path="libs/jackson-annotations-2.4.4.jar"></pathelement>
-                <pathelement path="libs/jackson-core-2.4.4.jar"></pathelement>
-                <pathelement path="libs/jackson-databind-2.4.4.jar"></pathelement>
+                <pathelement path="libs/jackson-annotations-2.5.1.jar"></pathelement>
+                <pathelement path="libs/jackson-core-2.5.1.jar"></pathelement>
+                <pathelement path="libs/jackson-databind-2.5.1.jar"></pathelement>
         </path>
     </target>
     <!-- Import the actual build file.

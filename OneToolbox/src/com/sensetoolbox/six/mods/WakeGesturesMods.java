@@ -106,7 +106,7 @@ public class WakeGesturesMods {
 	private static void doWakeUp(Object thisObject, long atTime) {
 		PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(thisObject, "mPowerManager");
 		if (mPowerManager != null) {
-			mPowerManager.wakeUp(atTime);
+			XposedHelpers.callMethod(mPowerManager, "wakeUp", atTime);
 			WakeLock wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "S6T WakeUpSleepy");
 			wl.acquire(1000);
 		}
@@ -148,7 +148,7 @@ public class WakeGesturesMods {
 	
 	private static String getPkgAppName(int action) {
 		XMain.pref.reload();
-		if (Helpers.isM8() || Helpers.isE8()) {
+		if (Helpers.isEight()) {
 			switch (action) {
 				case 2: case 24: return XMain.pref.getString("pref_key_wakegest_swipeup_app", null);
 				case 3: case 25: return XMain.pref.getString("pref_key_wakegest_swipedown_app", null);
@@ -194,7 +194,7 @@ public class WakeGesturesMods {
 	
 	private static String getShortcutIntent(int action) {
 		XMain.pref.reload();
-		if (Helpers.isM8() || Helpers.isE8()) {
+		if (Helpers.isEight()) {
 			switch (action) {
 				case 2: case 24: return XMain.pref.getString("pref_key_wakegest_swipeup_shortcut_intent", null);
 				case 3: case 25: return XMain.pref.getString("pref_key_wakegest_swipedown_shortcut_intent", null);
@@ -265,16 +265,16 @@ public class WakeGesturesMods {
 				case 10: doWakeUp(param.thisObject, event_time_local); sendLockScreenIntentLaunchApp(mContext, action); break;
 				case 14: doWakeUp(param.thisObject, event_time_local); sendLockScreenIntentLaunchShortcut(mContext, action); break;
 				case 11:
-					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 85));
-					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 85));
+					GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_DOWN, 85));
+					GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_UP, 85));
 					break;
 				case 12:
-					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 87));
-					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 87));
+					GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_DOWN, 87));
+					GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_UP, 87));
 					break;
 				case 13:
-					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, 88));
-					GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, 88));
+					GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_DOWN, 88));
+					GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_UP, 88));
 					break;
 			}
 
@@ -391,24 +391,32 @@ public class WakeGesturesMods {
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
+		
+		String val;
+		if (isOn) val = "1"; else val = "0";
+		CommandCapture command = new CommandCapture(0, "echo " + val + " > /sys/android_touch/knockcode");
+		try {
+			RootTools.getShell(true).add(command);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 	
 	public static void goToSleep(Context mContext) {
 		try {
 			lockOnNextScrOff = true;
-			PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
-			pm.goToSleep(SystemClock.uptimeMillis());
+			XposedHelpers.callMethod((PowerManager)mContext.getSystemService(Context.POWER_SERVICE), "goToSleep", SystemClock.uptimeMillis());
 		} catch(Throwable t) {
 			XposedBridge.log(t);
 		}
 	}
 	
 	public static void fillTouchscreenDimen(String device, final String event) {
-		CommandCapture command = new CommandCapture(0, "getevent -p /dev/input/event" + device + " | grep " + event + " | cut -d ',' -f 3 | cut -d ' ' -f 3") {
+		CommandCapture command = new CommandCapture(0, "getevent -p /dev/input/event" + device + " 2>/dev/null | grep " + event + " | cut -d ',' -f 3 | cut -d ' ' -f 3") {
 			int lineCount = 0;
 			
 			@Override
-			public void output(int id, String line) {
+			public void commandOutput(int id, String line) {
 				if (lineCount > 0) return;
 				try {
 					if (event.equals("0035")) touchScreenWidth = Integer.parseInt(line.trim());
@@ -470,6 +478,7 @@ public class WakeGesturesMods {
 			boolean isTapped = false;
 			
 			@Override
+			@SuppressWarnings("deprecation")
 			public void run() {
 				Process.setThreadPriority(Process.THREAD_PRIORITY_URGENT_DISPLAY);
 				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
@@ -552,8 +561,9 @@ public class WakeGesturesMods {
 		return th_touch;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static void execHook_InitListener() {
-		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurnedOff", int.class, new XC_MethodHook() {
+		XC_MethodHook hook = new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				Thread th = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "eventXthread");
@@ -574,9 +584,13 @@ public class WakeGesturesMods {
 					}
 				} else createThread(param).start();
 			}
-		});
+		};
 		
-		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "finishScreenTurningOn", "android.view.WindowManagerPolicy.ScreenOnListener", new XC_MethodHook() {
+		Object[] argsAndHook = { int.class, hook };
+		if (Helpers.isLP()) argsAndHook = new Object[] { hook };
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurnedOff", argsAndHook);
+		
+		XC_MethodHook hook2 = new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				if (Helpers.mFlashlightLevel > 0) {
@@ -591,7 +605,11 @@ public class WakeGesturesMods {
 					mPaused = true;
 				}
 			}
-		});
+		};
+		
+		Object[] argsAndHook2 = { "android.view.WindowManagerPolicy.ScreenOnListener", hook2 };
+		if (Helpers.isLP()) argsAndHook2 = new Object[] { hook2 };
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "finishScreenTurningOn", argsAndHook2);
 		
 		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
 			@Override
@@ -612,34 +630,7 @@ public class WakeGesturesMods {
 			}
 		});
 		
-		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager.BootCompletedReceiver", null, "onReceive", Context.class, Intent.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				final Context context = (Context)param.args[0];
-				Intent intent = (Intent)param.args[1];
-				
-				if (context != null && intent != null && intent.getAction() != null && intent.getAction().equals("com.htc.intent.action.HTC_BOOT_COMPLETED")) {
-					long ident = Binder.clearCallingIdentity();
-					boolean shouldBeLocked = false;
-					try {
-						shouldBeLocked = Boolean.parseBoolean(Settings.System.getString(context.getContentResolver(), "device_locked_state"));
-					} finally {
-						Binder.restoreCallingIdentity(ident);
-					}
-					if (shouldBeLocked) {
-						Handler mHandler = (Handler)XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mHandler");
-						if (mHandler != null) mHandler.postDelayed(new Runnable() {
-							@Override
-							public void run() {
-								goToSleep(context);
-							}
-						}, 5000);
-					}
-				}
-			}
-		});
-
-		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurnedOff", int.class, new XC_MethodHook() {
+		XC_MethodHook hook = new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				Thread th_touch = (Thread)XposedHelpers.getAdditionalInstanceField(param.thisObject, "eventXthreadtouch");
@@ -650,16 +641,20 @@ public class WakeGesturesMods {
 				if (lockOnNextScrOff) {
 					lockOnNextScrOff = false;
 					XMain.pref.reload();
-					if (XMain.pref.getBoolean("touch_lock_active", false) && !XMain.pref.getString("touch_lock_sequence", "").trim().equals(""))
+					if (XMain.pref.getBoolean("touch_lock_active", false) && !XMain.pref.getString("touch_lock_sequence", "").trim().equals("")) {
 						createTouchscreenThread(param).start();
-					else
+					} else
 						setLockdown((Context)XposedHelpers.getObjectField(param.thisObject, "mContext"), false);
 				}
 			}
-		});
+		};
+		Object[] argsAndHook = { int.class, hook };
+		if (Helpers.isLP()) argsAndHook = new Object[] { hook };
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurnedOff", argsAndHook);
 		
-		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "finishScreenTurningOn", "android.view.WindowManagerPolicy.ScreenOnListener", new XC_MethodHook() {
+		XC_MethodHook hook2 = new XC_MethodHook() {
 			@Override
+			@SuppressWarnings("deprecation")
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 				
@@ -670,50 +665,27 @@ public class WakeGesturesMods {
 				}
 				sequence.clear();
 				
-				boolean mBootCompleted = (Boolean)XposedHelpers.getObjectField(param.thisObject, "mBootCompleted");
-				if (mBootCompleted && mPowerManager.isScreenOn()) {
+				if (mPowerManager.isScreenOn()) {
 					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 					setLockdown(mContext, false);
 				}
 			}
-		});
+		};
+		Object[] argsAndHook2 = { "android.view.WindowManagerPolicy.ScreenOnListener", hook2 };
+		if (Helpers.isLP()) argsAndHook2 = new Object[] { hook2 };
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "finishScreenTurningOn", argsAndHook2);
 		
-		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
+		XC_MethodHook hook3 = new XC_MethodHook() {
 			@Override
+			@SuppressWarnings("deprecation")
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 				if (isOnLockdown && !mPowerManager.isScreenOn()) param.setResult(0);
 			}
-		});
-		
-		findAndHookMethod("com.android.server.power.PowerManagerService", null, "wakeUp", long.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				boolean isScreenOn = (Boolean)XposedHelpers.callMethod(param.thisObject, "isScreenOn");
-				if (isOnLockdown && !isScreenOn) param.setResult(null);
-			}
-		});
-		findAndHookMethod("com.android.server.power.PowerManagerService", null, "wakeUpInternal", long.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				boolean isScreenOn = (boolean)XposedHelpers.callMethod(param.thisObject, "isScreenOn");
-				if (isOnLockdown && !isScreenOn) param.setResult(null);
-			}
-		});
-		findAndHookMethod("com.android.server.power.PowerManagerService", null, "wakeUpFromNative", long.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				boolean isScreenOn = (boolean)XposedHelpers.callMethod(param.thisObject, "isScreenOn");
-				if (isOnLockdown && !isScreenOn) param.setResult(null);
-			}
-		});
-		findAndHookMethod("com.android.server.power.PowerManagerService", null, "wakeUpNoUpdateLocked", long.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				boolean isScreenOn = (boolean)XposedHelpers.callMethod(param.thisObject, "isScreenOn");
-				if (isOnLockdown && !isScreenOn) param.setResult(false);
-			}
-		});
+		};
+		Object[] argsAndHook3 = { KeyEvent.class, int.class, boolean.class, hook3 };
+		if (Helpers.isLP()) argsAndHook3 = new Object[] { KeyEvent.class, int.class, hook3 };
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", argsAndHook3);
 		
 		findAndHookMethod("com.android.internal.policy.impl.GlobalActions", null, "handleShow", new XC_MethodHook() {
 			@Override
@@ -765,11 +737,95 @@ public class WakeGesturesMods {
 				IntentFilter intentfilter = new IntentFilter();
 				intentfilter.addAction("com.sensetoolbox.six.MotionGesture");
 				mSysContext.registerReceiver(mBRLS, intentfilter);
-				if (!Helpers.isM8() && !Helpers.isE8()) {
+				if (!Helpers.isEight()) {
 					XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableEasyAccess", true);
 					XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableQuickCall", true);
 				}
 			} else XposedBridge.log("[S6T] mSysContext == null");
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_InitBootListener(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.server.am.ActivityManagerService", lpparam.classLoader, "enableScreenAfterBoot", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					XMain.pref.reload();
+					if (XMain.pref.getBoolean("wake_gestures_active", false)) {
+						Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+						if (mHandler != null)
+						mHandler.postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								Helpers.setWakeGestures(true);
+							}
+						}, 1000);
+					}
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_InitTouchServerListener(LoadPackageParam lpparam) {
+		try {
+			XC_MethodHook hook = new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					boolean isScreenOn = false;
+					if (Helpers.isLP())
+						isScreenOn = (Boolean)XposedHelpers.callMethod(param.thisObject, "isInteractiveInternal");
+					else
+						isScreenOn = (Boolean)XposedHelpers.callMethod(param.thisObject, "isScreenOn");
+					if (isOnLockdown && !isScreenOn) param.setResult(null);
+				}
+			};
+			Object[] argsAndHook = { long.class, hook };
+			if (Helpers.isLP()) argsAndHook = new Object[] { long.class, int.class, hook };
+			findAndHookMethod("com.android.server.power.PowerManagerService", lpparam.classLoader, "wakeUpInternal", argsAndHook);
+			
+			XC_MethodHook hook2 = new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					boolean isScreenOn = false;
+					if (Helpers.isLP())
+						isScreenOn = (Boolean)XposedHelpers.callMethod(param.thisObject, "isInteractiveInternal");
+					else
+						isScreenOn = (Boolean)XposedHelpers.callMethod(param.thisObject, "isScreenOn");
+					if (isOnLockdown && !isScreenOn) param.setResult(false);
+				}
+			};
+			Object[] argsAndHook2 = { long.class, hook2 };
+			if (Helpers.isLP()) argsAndHook2 = new Object[] { long.class, int.class, hook2 };
+			findAndHookMethod("com.android.server.power.PowerManagerService", lpparam.classLoader, "wakeUpNoUpdateLocked", argsAndHook2);
+			
+			findAndHookMethod("com.android.server.am.ActivityManagerService", lpparam.classLoader, "enableScreenAfterBoot", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					if (mContext != null) {
+						long ident = Binder.clearCallingIdentity();
+						boolean shouldBeLocked = false;
+						try {
+							shouldBeLocked = Boolean.parseBoolean(Settings.System.getString(mContext.getContentResolver(), "device_locked_state"));
+						} finally {
+							Binder.restoreCallingIdentity(ident);
+						}
+						if (shouldBeLocked) {
+							Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+							if (mHandler != null) mHandler.postDelayed(new Runnable() {
+								@Override
+								public void run() {
+									goToSleep(mContext);
+								}
+							}, 1000);
+						}
+					}
+				}
+			});
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -796,7 +852,7 @@ public class WakeGesturesMods {
 			}
 		}
 		
-		if (!Helpers.isM8() && !Helpers.isE8()) {
+		if (!Helpers.isEight()) {
 			XposedHelpers.findAndHookMethod("com.htc.lockscreen.ctrl.SettingObserver", lpparam.classLoader, "isEnableEasyAccess", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {

@@ -21,6 +21,7 @@
         <ignore path="res/layout/activity_eps_remap.xml" />
         <ignore path="res/layout/activity_touch_lock.xml" />
         <ignore path="res/layout/epsremap.xml" />
+        <ignore path="res/layout/fragment_eps_remap.xml" />
     </issue>
     <issue id="OldTargetApi">
         <ignore path="AndroidManifest.xml" />

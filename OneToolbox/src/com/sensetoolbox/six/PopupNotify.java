@@ -36,7 +36,6 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.TextView;
 
@@ -74,22 +73,17 @@ public class PopupNotify extends HtcPreferenceActivity {
 		actionBarText.setPrimaryText(Helpers.l10n(this, R.string.various_popupnotify_title));
 		actionBarContainer.addCenterView(actionBarText);
 		actionBarContainer.setBackUpEnabled(true);
+		actionBarContainer.setBackUpOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		
 		OnOffSwitch = new HtcToggleButtonLight(this);
 		OnOffSwitch.setLayoutParams(new android.widget.LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 		OnOffSwitch.setEnabled(true);
 		actionBarContainer.addRightView(OnOffSwitch);
-		
-		View homeBtn = actionBarContainer.getChildAt(0);
-		if (homeBtn != null) {
-			OnClickListener goBack = new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					finish();
-				}
-			};
-			homeBtn.setOnClickListener(goBack);
-		}
 		
 		final PopupNotify pn = this;
 		

@@ -26,7 +26,7 @@ import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListItemTileImage;
 import com.htc.widget.HtcListView;
 import com.htc.widget.HtcRadioButton;
-import com.sensetoolbox.six.PrefsFragment;
+import com.sensetoolbox.six.MainFragment;
 import com.sensetoolbox.six.R;
 
 public class AppShortcutAddDialog extends HtcAlertDialog {
@@ -71,8 +71,8 @@ public class AppShortcutAddDialog extends HtcAlertDialog {
 				Intent createShortcutIntent = new Intent(Intent.ACTION_CREATE_SHORTCUT);
 				ComponentName cn = new ComponentName(shortcuts.get(position).activityInfo.packageName, shortcuts.get(position).activityInfo.name);
 				createShortcutIntent.setComponent(cn);
-				PrefsFragment.lastShortcutKey = key;
-				PrefsFragment.lastShortcutKeyContents = shortcuts.get(position).activityInfo.packageName + "|" + shortcuts.get(position).activityInfo.name;
+				MainFragment.lastShortcutKey = key;
+				MainFragment.lastShortcutKeyContents = shortcuts.get(position).activityInfo.packageName + "|" + shortcuts.get(position).activityInfo.name;
 				act.startActivityForResult(createShortcutIntent, 7350);
 			}
 		});

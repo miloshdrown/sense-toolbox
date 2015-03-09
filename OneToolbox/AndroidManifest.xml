@@ -1,11 +1,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.sensetoolbox.six"
-	android:versionCode="21"
-	android:versionName="1.4.7" >
+	android:versionCode="22"
+	android:versionName="1.5 β" >
 
 	<uses-sdk
 		android:minSdkVersion="19"
-		android:targetSdkVersion="19" />
+		android:targetSdkVersion="21" />
 	<uses-permission android:name="android.permission.ACCESS_SUPERUSER"/>
 	<uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 	<uses-permission android:name="android.permission.INTERNET"/>
@@ -51,10 +51,16 @@
 			</intent-filter>
 		</activity>
 		<activity
+			android:name="com.sensetoolbox.six.SubActivity"
+			android:label="@string/app_name"
+			android:icon="@drawable/ic_launcher"
+			android:configChanges="keyboardHidden|orientation|screenSize" >
+		</activity>
+		<activity
 			android:theme="@style/Invisible"
 			android:name="com.sensetoolbox.six.APMActivity"
 			android:exported="true"
-			android:launchMode="singleInstance"
+			android:launchMode="singleTask"
 			android:showOnLockScreen="true"
 			android:configChanges="keyboardHidden|orientation|screenSize"
 			android:excludeFromRecents="true"
@@ -64,7 +70,7 @@
 			android:name="com.sensetoolbox.six.DimmedActivity"
 			android:exported="true"
 			android:showOnLockScreen="false"
-			android:launchMode="singleInstance"
+			android:launchMode="singleTask"
 			android:configChanges="keyboardHidden|orientation|screenSize"
 			android:excludeFromRecents="true"
 			android:noHistory="false" />
@@ -75,14 +81,12 @@
 			android:showOnLockScreen="true"
 			android:screenOrientation="portrait"
 			android:configChanges="keyboardHidden|orientation|screenSize"
-			android:launchMode="singleInstance"
+			android:launchMode="singleTask"
 			android:excludeFromRecents="true" />
 		<activity android:name="com.sensetoolbox.six.AboutScreen" android:screenOrientation="portrait" />
 		<activity android:name="com.sensetoolbox.six.SenseThemes" android:configChanges="keyboardHidden|orientation|screenSize" />
 		<activity android:name="com.sensetoolbox.six.PopupNotify" android:configChanges="keyboardHidden|orientation|screenSize" />
-		<activity android:name="com.sensetoolbox.six.EPSRemap" android:configChanges="keyboardHidden|orientation|screenSize" />
 		<activity android:name="com.sensetoolbox.six.TouchLock" android:configChanges="keyboardHidden|orientation|screenSize" />
-		<activity android:name="com.sensetoolbox.six.WakeGestures" android:configChanges="keyboardHidden|orientation|screenSize" />
 		<activity
 			android:name="com.sensetoolbox.six.BlinkFeed"
 			android:label="BlinkFeed"
@@ -90,7 +94,7 @@
 			android:enabled="false"
 			android:excludeFromRecents="true"
 			android:theme="@style/Invisible"
-			android:launchMode="singleInstance" >
+			android:launchMode="singleTask" >
 			<intent-filter>
 				<action android:name="android.intent.action.MAIN" />
 				<category android:name="android.intent.category.LAUNCHER" />
@@ -98,11 +102,11 @@
 		</activity>
 		<activity android:name="org.acra.CrashReportDialog"
 			android:theme="@style/Invisible"
-			android:launchMode="singleInstance"
+			android:launchMode="singleTask"
 			android:excludeFromRecents="true"
 			android:finishOnTaskLaunch="true"
 			android:configChanges="keyboardHidden|orientation|screenSize" />
-		<receiver android:name="com.sensetoolbox.six.PrefsFragment$HelperReceiver" android:exported="true">
+		<receiver android:name="com.sensetoolbox.six.MainFragment$HelperReceiver" android:exported="true">
 			<intent-filter>
 				<action android:name="com.sensetoolbox.six.UPDATEBACKLIGHT" />
 				<action android:name="android.intent.action.BOOT_COMPLETED" />

@@ -42,7 +42,7 @@ public class AboutScreen extends Activity {
 		TextView iv3 = (TextView)findViewById(R.id.textView3);
 		iv3.setTypeface(face);
 		iv3.setText(Helpers.l10n(this, R.string.about_devs_names));
-		iv3.setText(iv3.getText() + "\n\u00a9 2013-2014");
+		iv3.setText(iv3.getText() + "\n\u00a9 2013-2015");
 		
 		TextView iv02 = (TextView)findViewById(R.id.TextView02);
 		iv02.setPaintFlags(iv02.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
@@ -69,17 +69,12 @@ public class AboutScreen extends Activity {
 		actionBarText.setPrimaryText(Helpers.l10n(this, R.string.app_about));
 		actionBarContainer.addCenterView(actionBarText);
 		actionBarContainer.setBackUpEnabled(true);
-		
-		View homeBtn = actionBarContainer.getChildAt(0);
-		if (homeBtn != null) {
-			View.OnClickListener goBackFromEQS = new View.OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					finish();
-				}
-			};
-			homeBtn.setOnClickListener(goBackFromEQS);
-		}
+		actionBarContainer.setBackUpOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		
 		//Add version name
 		try {

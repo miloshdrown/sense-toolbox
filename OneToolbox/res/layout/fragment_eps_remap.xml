@@ -1,17 +1,28 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-	xmlns:tools="http://schemas.android.com/tools"
-	android:id="@+id/container"
-	android:layout_width="match_parent"
-	android:layout_height="match_parent"
-	android:fitsSystemWindows="true"
-	tools:context=".EPSRemap"
-	tools:ignore="MergeRootFrame" >
 <LinearLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:tools="http://schemas.android.com/tools"
 	android:layout_width="match_parent"
 	android:layout_height="match_parent"
 	android:orientation="vertical"
-	android:id="@+id/gridBkg" >
+	android:id="@+id/backLayer">
+	<TextView
+		android:id="@+id/themehint"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:layout_gravity="center"
+		android:gravity="center"
+		android:padding="30dp"
+		android:text="@string/wakegestures_hint"
+		android:textAllCaps="true"
+		android:textSize="18sp"
+		android:textColor="@color/theme_hint"
+		android:fontFamily="sans-serif-condensed" />
+<LinearLayout
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:id="@+id/contents"
+	android:orientation="vertical">
 	<FrameLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
@@ -54,7 +65,7 @@
 			android:layout_marginEnd="5dp"
 			android:layout_marginTop="4dp"
 			android:layout_weight="1"
-			android:background="#7F666666"
+			android:background="#FF666666"
 			android:gravity="center"
 			android:orientation="vertical" >
 
@@ -86,7 +97,7 @@
 			android:layout_marginStart="5dp"
 			android:layout_marginTop="4dp"
 			android:layout_weight="1"
-			android:background="#7F666666"
+			android:background="#FF666666"
 			android:gravity="center"
 			android:orientation="vertical" >
 
@@ -128,7 +139,7 @@
 			android:layout_marginEnd="5dp"
 			android:layout_marginTop="5dp"
 			android:layout_weight="1"
-			android:background="#7F666666"
+			android:background="#FF666666"
 			android:gravity="center"
 			android:orientation="vertical" >
 
@@ -160,7 +171,7 @@
 			android:layout_marginStart="5dp"
 			android:layout_marginTop="5dp"
 			android:layout_weight="1"
-			android:background="#7F666666"
+			android:background="#FF666666"
 			android:gravity="center"
 			android:orientation="vertical" >
 
@@ -203,7 +214,7 @@
 			android:layout_marginEnd="5dp"
 			android:layout_marginTop="5dp"
 			android:layout_weight="1"
-			android:background="#7F666666"
+			android:background="#FF666666"
 			android:gravity="center"
 			android:orientation="vertical" >
 
@@ -234,7 +245,7 @@
 			android:layout_marginStart="5dp"
 			android:layout_marginTop="5dp"
 			android:layout_weight="1"
-			android:background="#7F666666"
+			android:background="#FF666666"
 			android:gravity="center"
 			android:orientation="vertical" >
 
@@ -261,4 +272,4 @@
 	</LinearLayout>
 
 </LinearLayout>
-</FrameLayout>
+</LinearLayout>

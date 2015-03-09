@@ -7,7 +7,8 @@
 			android:title="@string/sense_themes_title"
 			android:summary="@string/sense_themes_summ" />
 		<com.htc.preference.HtcPreferenceCategory
-			android:title="@string/systemui_statusbar">
+			android:title="@string/systemui_statusbar"
+			android:key="pref_systemui_statusbar">
 <!--    <com.sensetoolbox.six.utils.SeekBarPreference
 			android:key="pref_key_sysui_invisibar_new"
 			android:title="@string/systemui_tsb_title"
@@ -85,7 +86,8 @@
 		</com.htc.preference.HtcPreferenceCategory>
 		
 		<com.htc.preference.HtcPreferenceCategory
-			android:title="@string/systemui_eqs">
+			android:title="@string/systemui_eqs"
+			android:key="pref_systemui_eqs">
 		<com.sensetoolbox.six.utils.BrightnessPicker
 			android:key="pref_key_sysui_brightqs"
 			android:summary="@string/systemui_brightqs_summ"
@@ -114,7 +116,8 @@
 			android:key="pref_key_sysui_minorqs_notext"
 			android:summary="@string/systemui_heqs_notext_summ"
 			android:title="@string/systemui_heqs_notext_title"
-			android:defaultValue="false" />
+			android:defaultValue="false"
+			android:dependency="pref_key_sysui_minorqs" />
 		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_sysui_noeqs"
 			android:summary="@string/systemui_noeqs_summ"
@@ -123,7 +126,8 @@
 		</com.htc.preference.HtcPreferenceCategory>
 		
 		<com.htc.preference.HtcPreferenceCategory
-			android:title="@string/systemui_recent">
+			android:title="@string/systemui_recent"
+			android:key="pref_systemui_recent">
 		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_sysui_aosprecent"
 			android:summary="@string/systemui_aosp_summ"

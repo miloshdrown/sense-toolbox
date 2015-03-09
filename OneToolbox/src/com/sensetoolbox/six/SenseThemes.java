@@ -35,7 +35,6 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
@@ -126,6 +125,12 @@ public class SenseThemes extends Activity {
 		actionBarText.setPrimaryText(Helpers.l10n(this, R.string.sense_themes_title));
 		actionBarContainer.addCenterView(actionBarText);
 		actionBarContainer.setBackUpEnabled(true);
+		actionBarContainer.setBackUpOnClickListener(new View.OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				finish();
+			}
+		});
 		
 		OnOffSwitch = new HtcToggleButtonLight(this);
 		OnOffSwitch.setLayoutParams(new android.widget.LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
@@ -188,17 +193,6 @@ public class SenseThemes extends Activity {
 			}
 		});
 		actionBarContainer.addRightView(menuAdd);
-		
-		View homeBtn = actionBarContainer.getChildAt(0);
-		if (homeBtn != null) {
-			OnClickListener goBack = new OnClickListener() {
-				@Override
-				public void onClick(View v) {
-					finish();
-				}
-			};
-			homeBtn.setOnClickListener(goBack);
-		}
 		
 		prefs = getSharedPreferences("one_toolbox_prefs", 1);
 		loadPkgs();

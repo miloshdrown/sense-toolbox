@@ -6,7 +6,7 @@
 	<string name="about_version">Version: %1$s (build %2$s)</string>
 	<string name="support_version">Support (App Version: %1$s)</string>
 	<string name="soft_reboot">Soft Reboot</string>
-	<string name="soft_reboot_tip">\nMost of the Toolbox mods require soft reboot to be enabled or disabled, but some mods with a list of options require it only once after activation, then changing options will have an immediate effect.\n\nList of such mods:\nWake gesture actions, all swipe and key actions, Enhanced toasts,\nEPS apps remap, Sense themes, Popup notifications, Touch lock</string>
+	<string name="soft_reboot_tip">\nMost of the Toolbox mods require soft reboot to be enabled or disabled, but some mods with a list of options require it only once after activation, then changing options will have an immediate effect.\n\nList of such mods:\nWake gesture actions, all swipe and key actions, Enhanced toasts, EPS apps remap, Sense themes, Popup notifications, Touch lock</string>
 	<string name="restart_prism">Restart launcher</string>
 	<string name="restarted_prism">Launcher was restarted</string>
 	<string name="restart_messages">Restart Messages</string>
@@ -117,8 +117,9 @@
 	<string name="sense_theme_color_header">Header</string>
 	<string name="sense_theme_color_controls">Controls</string>
 	<string name="sense_theme_color_bf">BlinkFeed</string>
+	<string name="sense_theme_color_misc">Misc</string>
 	<string name="sense_theme_package_has_profile">This app already has a profile</string>
-	<string name="sense_theme_hint">Enable theme colors override from the action bar above.\n\nSoft reboot will be required only once after you\'ve enabled override.</string>
+	<string name="sense_theme_hint">Enable theme colors override from the action bar above.\n\nSoft reboot will be required only once after that.</string>
 	<string name="sense_theme_infoIME">HTC keyboard inherits theme from its parent app, if that app is in the list (you can even add non-HTC apps). Theme above is used otherwise.</string>
 	<string name="sense_theme_replace_all">Change theme for all apps in the list</string>
 	<string name="systemui_statusbar">Status Bar and Notification Drawer</string>
@@ -326,7 +327,7 @@
 	<string name="controls_smallsoftkeys_title">Small softkeys</string>
 	<string name="controls_smallsoftkeys_summ">Reduce the height of the softkey bar.</string>
 	<string name="controls_extendedpanel_title">Extended assist panel</string>
-	<string name="controls_extendedpanel_summ">Add Voice Dial and APM shortcuts to ring selector on swipe up from Home.</string>
+	<string name="controls_extendedpanel_summ">Add 2 additional shortcuts to the selector on swipe up from Home.</string>
 	<string name="controls_extendedpanel_left_title">Left shortcut</string>
 	<string name="controls_extendedpanel_left_summ">Define an action for left shortcut in extended assist panel.</string>
 	<string name="controls_extendedpanel_right_title">Right shortcut</string>
@@ -376,12 +377,16 @@
 	<string name="various_extremepower_summ">Choose 6 custom apps for extreme power saving mode</string>
 	<string name="various_extremepower_cell">Cell</string>
 	<string name="various_extremepower_hint">Extreme Power Saving mode can be turned off by long pressing any tile if this mod is active</string>
+	<string name="various_eps_hint">Enable EPS remap from the action bar above.\n\nSoft reboot will be required only once after that.</string>
 	<string name="various_touchlock_title">Touch lock</string>
 	<string name="various_touchlock_summ">Lock device until proper sequence of taps is performed</string>
 	<string name="various_screenon_title">On animation</string>
 	<string name="various_screenon_summ">Animation for turning screen on</string>
 	<string name="various_screenoff_title">Off animation</string>
 	<string name="various_screenoff_summ">Animation for turning screen off</string>
+	<string name="various_screenanim_duration_title">Animation duration</string>
+	<string name="various_screenanim_duration_summ">Configure animation length</string>
+	<string name="various_screenanim_desc">0 value will disable animations</string>
 	<string name="various_apm_title">APM</string>
 	<string name="various_apm_summ">Enable or disable Advanced Power Menu\nIf you have the native APM installed, better keep this disabled.</string>
 	<string name="various_scron_title">Enable \'Keep screen on\'</string>
@@ -467,6 +472,7 @@
 	<string name="wakegestures_volume_title">Volume keys</string>
 	<string name="wakegestures_volume_summ">Action for pressing volume keys in landscape</string>
 	<string name="wakegestures_not_supported">Wake gestures require kernel support, ask your kernel developer to add it or use latest ElementalX</string>
+	<string name="wakegestures_hint">Enable Wake gestures from the action bar above.\n\nSoft reboot will be required only once after that.</string>
 	
 	<string name="touchlock_not_supported">Touch lock mod requires kernel with Wake gestures support, ask your kernel developer to add it or use latest ElementalX</string>
 	<string name="touchlock_hint">Tap the second icon above to start recording sequence. Tap it again to save. 12 steps max. Lockdown can be enabled from Power and Home popup menus.</string>
@@ -607,6 +613,7 @@
 	<string name="array_screen_anim_none">None</string>
 	<string name="array_screen_anim_fade">Fade</string>
 	<string name="array_screen_anim_crt">CRT</string>
+	<string name="array_screen_anim_colorfade">Color Fade</string>
 	<string name="array_color_blue">Blue</string>
 	<string name="array_color_green">Green</string>
 	<string name="array_color_red">Red</string>
@@ -620,7 +627,7 @@
 	<string name="array_large_photo_rectangular">Rectangular</string>
 	<string name="array_large_photo_max">Maximum</string>
 	<string name="array_header_click_clock">Open Clock app</string>
-	<string name="array_header_click_sysinfo">Show/hide CPU and RAM info, open Clock app by tapping on current time</string>
+	<string name="array_header_click_sysinfo">Time: Open Clock app\nDate: Show/hide CPU and RAM info</string>
 	<string name="array_keyslight_dim">Dim</string>
 	<string name="array_keyslight_extradim">Extra dim</string>
 	<string name="array_keyslight_maxdim">Barely visible</string>

@@ -115,7 +115,7 @@ public class PrismMods {
 		String getControlsMethod = "getControls";
 		String WidgetDataClass = "com.htc.widget.weatherclock.util.WidgetData";
 		String getGraphicTypeMethod = "getGraphicType";
-		if (Helpers.is443plus()) {
+		if (Helpers.is443plus() && !Helpers.isLP()) {
 			// Stupid HTC using ProGuard on widgets...
 			WeatherClock4x1ViewClass = "com.htc.widget.weatherclock.a.d";
 			getControlsMethod = "a";
@@ -442,9 +442,9 @@ public class PrismMods {
 		
 		final int n = gridSizes.length;
 		gridSizes = Arrays.copyOf(gridSizes, n + 3);
-		gridSizes[n] = "5 × 5";
-		gridSizes[n + 1] = "4 × 6";
-		gridSizes[n + 2] = "5 × 6";
+		gridSizes[n] = "5 \u00d7 5";
+		gridSizes[n + 1] = "4 \u00d7 6";
+		gridSizes[n + 2] = "5 \u00d7 6";
 		
 		resparam.res.setReplacement(apps_grid_option, gridSizes);
 	}
@@ -467,7 +467,7 @@ public class PrismMods {
 					if (itemlabel != null) {
 						if (gridSizeVal == 3 || gridSizeVal == 4) {
 							itemlabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, 0.9f * itemlabel.getTextSize());
-							if (Helpers.isM8() || Helpers.isE8()) {
+							if (Helpers.isEight()) {
 								itemlabel.setSingleLine(true);
 								itemlabel.setEllipsize(TruncateAt.END);
 							}
@@ -1070,7 +1070,7 @@ public class PrismMods {
 			}
 		});
 		
-		if (Helpers.isM8() || Helpers.isE8()) {
+		if (Helpers.isEight()) {
 			findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "hide", boolean.class, new XC_MethodReplacement() {
 				@Override
 				protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {

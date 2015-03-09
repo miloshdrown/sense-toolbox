@@ -10,14 +10,14 @@
 	<dimen name="workspace_cell_height_port">120.0dip</dimen>
 	<dimen name="button_bar_height_without_padding">65.0dip</dimen>
 
-	<dimen name="photo_new_height">864.0px</dimen>
-	<dimen name="photo_new_height_rect">720.0px</dimen>
-	<dimen name="photo_new_height_ls">796.0px</dimen>
+	<dimen name="photo_new_height">1297.0px</dimen>
+	<dimen name="photo_new_height_rect">1080.0px</dimen>
+	<dimen name="photo_new_height_ls">1194.0px</dimen>
 
-	<dimen name="people_info_top_margin">727.0px</dimen>
-	<dimen name="people_info_top_margin_rect">714.0px</dimen>
+	<dimen name="people_info_top_margin">1090.0px</dimen>
+	<dimen name="people_info_top_margin_rect">1070.0px</dimen>
 
-	<dimen name="lockscreen_10">25.0px</dimen>
+	<dimen name="lockscreen_10">81.0px</dimen>
 	<dimen name="text_size_incoming_call_slot_name">13sp</dimen>
 	<dimen name="incoming_call_slot_name_title_layout_height">24.0dip</dimen>
 	<dimen name="dualsim_incoming_call_slot_name_height">24.0dip</dimen>

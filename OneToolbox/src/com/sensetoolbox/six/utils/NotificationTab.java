@@ -54,6 +54,7 @@ public class NotificationTab extends Fragment {
 		return Math.round(getActivity().getResources().getDisplayMetrics().density * dimens);
 	}
 	
+	@SuppressWarnings("deprecation")
 	public void cancelNotification() {
 		Intent cancelIntent = new Intent("com.sensetoolbox.six.CLEARNOTIFICATION");
 		cancelIntent.putExtra("pkgName", sbn.getPackageName());

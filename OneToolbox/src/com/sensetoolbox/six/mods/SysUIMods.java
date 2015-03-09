@@ -14,6 +14,7 @@ import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 import android.animation.ObjectAnimator;
@@ -40,13 +41,14 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
-import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Debug.MemoryInfo;
 import android.os.Environment;
 import android.os.Handler;
@@ -280,35 +282,48 @@ public class SysUIMods {
 		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-				View bg = liparam.view.findViewById(resparam.res.getIdentifier("notification_panel", "id", "com.android.systemui"));
-				bg.getBackground().setAlpha(transparency);
+				View notification_panel = liparam.view.findViewById(resparam.res.getIdentifier("notification_panel", "id", "com.android.systemui"));
+				notification_panel.getBackground().setAlpha(transparency);
 			}
 		});
 	}
 	
 	public static void execHook_InvisiNotifyCode(final LoadPackageParam lpparam, final int transparency) {
-		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBarView", lpparam.classLoader, "panelExpansionChanged", "com.android.systemui.statusbar.phone.PanelView", float.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				try {
-					FrameLayout panelview = (FrameLayout)param.args[0];
-					FrameLayout mFadingPanel= (FrameLayout)XposedHelpers.getObjectField(param.thisObject, "mFadingPanel");
-					int mScrimColor = (Integer)XposedHelpers.getObjectField(param.thisObject, "mScrimColor");
-					boolean mShouldFade = (Boolean)XposedHelpers.getObjectField(param.thisObject, "mShouldFade");
-					
-					if (panelview == mFadingPanel && mScrimColor != 0 && mShouldFade) {
-						Object mBar = XposedHelpers.getObjectField(param.thisObject, "mBar");
-						if (mBar != null) {
-							FrameLayout mStatusBarWindow = (FrameLayout)XposedHelpers.getObjectField(mBar, "mStatusBarWindow");
-							if (mStatusBarWindow != null && mStatusBarWindow.getBackground() != null)
-							mStatusBarWindow.getBackground().setAlpha(Math.round(mStatusBarWindow.getBackground().getAlpha() * (transparency + 191)/446));
-						}
+		if (Helpers.isLP()) {
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					FrameLayout mStatusBarWindow = (FrameLayout)XposedHelpers.getObjectField(param.thisObject, "mStatusBarWindow");
+					if (mStatusBarWindow != null) {
+						View scrim_behind = mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("scrim_behind", "id", "com.android.systemui"));
+						if (scrim_behind != null) scrim_behind.setAlpha(transparency / 255f);
 					}
-				} catch (Throwable t) {
-					XposedBridge.log(t);
 				}
-			}
-		});
+			});
+		} else {
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBarView", lpparam.classLoader, "panelExpansionChanged", "com.android.systemui.statusbar.phone.PanelView", float.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					try {
+						FrameLayout panelview = (FrameLayout)param.args[0];
+						FrameLayout mFadingPanel = (FrameLayout)XposedHelpers.getObjectField(param.thisObject, "mFadingPanel");
+						int mScrimColor = (Integer)XposedHelpers.getObjectField(param.thisObject, "mScrimColor");
+						boolean mShouldFade = (Boolean)XposedHelpers.getObjectField(param.thisObject, "mShouldFade");
+						
+						if (panelview == mFadingPanel && mScrimColor != 0 && mShouldFade) {
+							Object mBar = XposedHelpers.getObjectField(param.thisObject, "mBar");
+							if (mBar != null) {
+								FrameLayout mStatusBarWindow = (FrameLayout)XposedHelpers.getObjectField(mBar, "mStatusBarWindow");
+								if (mStatusBarWindow != null && mStatusBarWindow.getBackground() != null)
+								mStatusBarWindow.getBackground().setAlpha(Math.round(mStatusBarWindow.getBackground().getAlpha() * (transparency + 191)/446));
+							}
+						}
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+				}
+			});
+		}
 	}
 	
 	public static void execHook_AospRecent(final LoadPackageParam lpparam) {
@@ -324,13 +339,12 @@ public class SysUIMods {
 		resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-				FrameLayout statusBar = (FrameLayout) liparam.view.findViewById(resparam.res.getIdentifier("status_bar", "id", "com.android.systemui"));
-				TextView clock = (TextView) liparam.view.findViewById(resparam.res.getIdentifier("clock", "id", "com.android.systemui"));
-				LinearLayout systemIconArea = (LinearLayout) liparam.view.findViewById(resparam.res.getIdentifier("system_icon_area", "id", "com.android.systemui"));
-				LinearLayout statusBarContents = (LinearLayout) liparam.view.findViewById(resparam.res.getIdentifier("status_bar_contents", "id", "com.android.systemui"));
+				FrameLayout statusBar = (FrameLayout)liparam.view.findViewById(resparam.res.getIdentifier("status_bar", "id", "com.android.systemui"));
+				TextView clock = (TextView)liparam.view.findViewById(resparam.res.getIdentifier("clock", "id", "com.android.systemui"));
+				LinearLayout systemIconArea = (LinearLayout)liparam.view.findViewById(resparam.res.getIdentifier("system_icon_area", "id", "com.android.systemui"));
+				LinearLayout statusBarContents = (LinearLayout)liparam.view.findViewById(resparam.res.getIdentifier("status_bar_contents", "id", "com.android.systemui"));
 				
-				if(statusBar != null && clock != null && systemIconArea != null && statusBarContents != null)
-				{
+				if (statusBar != null && clock != null && systemIconArea != null && statusBarContents != null) {
 					clock.setGravity(Gravity.CENTER);
 					clock.setPadding(0, 0, 0, 0);
 					LinearLayout clockContainer = new LinearLayout(clock.getContext());
@@ -356,67 +370,56 @@ public class SysUIMods {
 		});
 	}
 	
-	/**
-	 * Updates the fillView to make the notification icons move to the left
-	 * @param viewToUpdate 0 = iconMerger; 1 = signalClusterView
-	 * @param param params of the hooked method
-	 */
-	private static void updateFillView(int viewToUpdate, MethodHookParam param) {
-		//iconMerger needs to be retrieved, where we can use the current object for signal cluster
-		LinearLayout startView = (LinearLayout) ((viewToUpdate == 0) ? getObjectField(param.thisObject, "mNotificationIcons") : param.thisObject);
-		if (startView != null) {
-			//signal cluster is one step deeper in the view hierarchy...
-			FrameLayout statusBar = (viewToUpdate == 0) ? ((FrameLayout)startView.getParent().getParent().getParent()) : ((FrameLayout)startView.getParent().getParent().getParent().getParent());
-			if (statusBar != null) {
-				LinearLayout systemIconArea = (LinearLayout) statusBar.findViewById(statusBar.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
-				if (systemIconArea != null) {
-					LinearLayout fillView = (LinearLayout) statusBar.findViewById(0x999999);
-					if (fillView != null) {
-						TextView clock = (TextView) statusBar.findViewById(statusBar.getResources().getIdentifier("clock", "id", "com.android.systemui"));
-						if (clock != null) {
-							int systemIconAreaLeft = systemIconArea.getLeft();
-							int clockContainerLeft = clock.getLeft();
-							LayoutParams fillViewParams = fillView.getLayoutParams();
-							fillViewParams.width = systemIconAreaLeft - clockContainerLeft;
-							fillView.setLayoutParams(fillViewParams);
-							fillView.invalidate();
-						} else XposedBridge.log("clockContainer = null");
-					} else XposedBridge.log("fillView = null");
-				} else XposedBridge.log("systemIconArea = null");
-			} else XposedBridge.log("statusBar = null");
-		} else XposedBridge.log("startView = null");
+	private static void updateFillView(MethodHookParam param) {
+		FrameLayout mStatusBarView = (FrameLayout)XposedHelpers.getObjectField(param.thisObject, "mStatusBarView");
+		if (mStatusBarView != null) {
+			LinearLayout systemIconArea = (LinearLayout)mStatusBarView.findViewById(mStatusBarView.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
+			if (systemIconArea != null) {
+				LinearLayout fillView = (LinearLayout)mStatusBarView.findViewById(0x999999);
+				if (fillView != null) {
+					TextView clock = (TextView)mStatusBarView.findViewById(mStatusBarView.getResources().getIdentifier("clock", "id", "com.android.systemui"));
+					if (clock != null) {
+						int systemIconAreaLeft = systemIconArea.getLeft();
+						int clockContainerLeft = clock.getLeft();
+						LayoutParams fillViewParams = fillView.getLayoutParams();
+						fillViewParams.width = systemIconAreaLeft - clockContainerLeft;
+						fillView.setLayoutParams(fillViewParams);
+						fillView.invalidate();
+					}
+				}
+			}
+		}
 	}
 	
 	public static void execHook_CenterClockAnimation(LoadPackageParam lpparam) {
 		//Listen for icon changes and update the width of the fill view
-		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateNotificationIcons", new XC_MethodHook(){
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) {
-				updateFillView(0, param);
-			}
-		});
-		findAndHookMethod("com.android.systemui.statusbar.HtcGenericSignalClusterView", lpparam.classLoader, "apply", new XC_MethodHook(){
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) {
-				updateFillView(1, param);
-			}
-		});
-		
-		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateResources", new XC_MethodHook(){
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) {
-				updateFillView(0, param);
-			}
-		});
-		
 		try {
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateNotificationIcons", new XC_MethodHook(){
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) {
+					updateFillView(param);
+				}
+			});
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook(){
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) {
+					updateFillView(param);
+				}
+			});
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateResources", new XC_MethodHook(){
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) {
+					updateFillView(param);
+				}
+			});
 			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "refreshAllIconsForLayout", LinearLayout.class, new XC_MethodHook(){
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) {
-					updateFillView(0, param);
+					updateFillView(param);
 				}
 			});
 		} catch (Throwable t) {
+			XposedBridge.log(t);
 		}
 		
 		//Helper class to hold needed variables for later methods (because nested methods and final and blah blah... Couldn't think of a better solution)
@@ -492,20 +495,34 @@ public class SysUIMods {
 			}
 		});
 		
-		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateClockTime", new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) {
-				ArrayList<?> mClockSet = (ArrayList<?>)XposedHelpers.getObjectField(param.thisObject, "mClockSet");
-				if (mClockSet != null && mClockSet.size() > 0) ((TextView)mClockSet.get(0)).setVisibility(8);
-			}
-		});
+		if (Helpers.isLP()) {
+			findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) {
+					TextView clock = (TextView)param.thisObject;
+					if (clock.getId() != clock.getResources().getIdentifier("header_clock", "id", "com.android.systemui")) clock.setVisibility(View.GONE);
+				}
+			});
+		} else {
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateClockTime", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) {
+					ArrayList<?> mClockSet = (ArrayList<?>)XposedHelpers.getObjectField(param.thisObject, "mClockSet");
+					if (mClockSet != null && mClockSet.size() > 0) ((TextView)mClockSet.get(0)).setVisibility(View.GONE);
+				}
+			});
+		}
 	}
 	
 	private static SettingsObserver so = null;
-	private static void addBrightnessSlider(FrameLayout mStatusBarWindow) {
+	private static void addBrightnessSlider(ViewGroup mStatusBarWindow, ViewGroup mHeader) {
 		try {
 			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-			LinearLayout panel = (LinearLayout) mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("panel", "id", "com.android.systemui"));
+			ViewGroup panel;
+			if (mHeader != null)
+				panel = mHeader;
+			else
+				panel = (LinearLayout) mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("panel", "id", "com.android.systemui"));
 			LinearLayout header = (LinearLayout) mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("header", "id", "com.android.systemui"));
 			
 			// Get rid of old slider
@@ -523,9 +540,14 @@ public class SysUIMods {
 			
 			LayoutInflater inflater = LayoutInflater.from(ctw);
 			LinearLayout sliderConatiner = new LinearLayout(ctw);
-			sliderConatiner = (LinearLayout) inflater.inflate(modRes.getLayout(R.layout.brightness_slider), panel, false);
-			sliderConatiner.setBackground(panel.getResources().getDrawable(panel.getResources().getIdentifier("common_app_bkg_top_src", "drawable", "com.htc")));
-			if (header != null && header.getBackground() != null) sliderConatiner.setBackground(header.getBackground().mutate().getConstantState().newDrawable());
+			sliderConatiner = (LinearLayout)inflater.inflate(modRes.getLayout(R.layout.brightness_slider), panel, false);
+			if (Helpers.isLP()) {
+				sliderConatiner.setBackground(new ColorDrawable(Color.TRANSPARENT));
+				//panel.getResources().getColor(panel.getResources().getIdentifier("notification_header_color", "color", "com.android.systemui")
+			} else {
+				sliderConatiner.setBackground(panel.getResources().getDrawable(panel.getResources().getIdentifier("common_app_bkg_top_src", "drawable", "com.htc")));
+				if (header != null && header.getBackground() != null) sliderConatiner.setBackground(header.getBackground().mutate().getConstantState().newDrawable());
+			}
 			sliderConatiner.setTag("sliderConatiner");
 			sliderConatiner.setOnTouchListener(new OnTouchListener() {
 				@Override
@@ -535,8 +557,8 @@ public class SysUIMods {
 				}
 			});
 			
-			TextView autoText = (TextView) sliderConatiner.findViewById(R.id.autoText);
-			final HtcCheckBox cb = (HtcCheckBox) sliderConatiner.findViewById(R.id.autoCheckBox);
+			TextView autoText = (TextView)sliderConatiner.findViewById(R.id.autoText);
+			final HtcCheckBox cb = (HtcCheckBox)sliderConatiner.findViewById(R.id.autoCheckBox);
 			autoText.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -545,7 +567,10 @@ public class SysUIMods {
 			});
 			autoText.setText(Helpers.xl10n(modRes, R.string.systemui_brightslide_auto));
 			
-			panel.addView(sliderConatiner, 1);
+			if (Helpers.isLP())
+				panel.addView(sliderConatiner);
+			else
+				panel.addView(sliderConatiner, 1);
 			
 			final HtcSeekBar seekBar = (HtcSeekBar) mStatusBarWindow.findViewWithTag("sliderSeekBar");
 			final HtcCheckBox checkBox = (HtcCheckBox) mStatusBarWindow.findViewById(R.id.autoCheckBox);
@@ -610,18 +635,40 @@ public class SysUIMods {
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook(){
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) {
-				FrameLayout mStatusBarWindow = (FrameLayout)getObjectField(param.thisObject, "mStatusBarWindow");
-				addBrightnessSlider(mStatusBarWindow);
+				ViewGroup mStatusBarWindow = (ViewGroup)getObjectField(param.thisObject, "mStatusBarWindow");
+				ViewGroup mHeader = null;
+				if (Helpers.isLP()) mHeader = (ViewGroup)getObjectField(param.thisObject, "mHeader");
+				addBrightnessSlider(mStatusBarWindow, mHeader);
 			}
 		});
 		
-		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "onOverlayColorChanged", new XC_MethodHook(){
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) {
-				FrameLayout mStatusBarWindow = (FrameLayout)getObjectField(param.thisObject, "mStatusBarWindow");
-				addBrightnessSlider(mStatusBarWindow);
-			}
-		});
+		if (Helpers.isLP()) {
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "onThemeChanged", int.class, new XC_MethodHook(){
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) {
+					ViewGroup mStatusBarWindow = (ViewGroup)getObjectField(param.thisObject, "mStatusBarWindow");
+					ViewGroup mHeader = (ViewGroup)getObjectField(param.thisObject, "mHeader");
+					addBrightnessSlider(mStatusBarWindow, mHeader);
+				}
+			});
+			
+			findAndHookMethod("com.android.systemui.statusbar.phone.StatusBarHeaderView", lpparam.classLoader, "setupContainerParams", new XC_MethodHook(){
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) {
+					LinearLayout sbheader = (LinearLayout)param.thisObject;
+					float density = sbheader.getResources().getDisplayMetrics().density;
+					if (sbheader.getLayoutParams() != null) sbheader.getLayoutParams().height += density * 28;
+				}
+			});
+		} else {
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "onOverlayColorChanged", new XC_MethodHook(){
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) {
+					FrameLayout mStatusBarWindow = (FrameLayout)getObjectField(param.thisObject, "mStatusBarWindow");
+					addBrightnessSlider(mStatusBarWindow, null);
+				}
+			});
+		}
 	}
 	
 	private static ConnectivityManager connectivityManager = null;
@@ -678,13 +725,10 @@ public class SysUIMods {
 					connectivityManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 					
 					FrameLayout mStatusBarView = (FrameLayout)getObjectField(param.thisObject, "mStatusBarView");
-					//mStatusBarView.setBackgroundColor(Color.BLUE);
 					LinearLayout systemIconArea = (LinearLayout)mStatusBarView.findViewById(mStatusBarView.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
-					//systemIconArea.setBackgroundColor(Color.CYAN);
 					
 					RelativeLayout alignFrame = new RelativeLayout(mContext);
 					alignFrame.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
-					//alignFrame.setBackgroundColor(Color.RED);
 					
 					LinearLayout textFrame = new LinearLayout(mContext);
 					textFrame.setOrientation(LinearLayout.VERTICAL);
@@ -692,7 +736,6 @@ public class SysUIMods {
 					RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 					//rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
 					textFrame.setLayoutParams(rlp);
-					//textFrame.setBackgroundColor(Color.GREEN);
 					
 					dataRateVal = new TextView(mContext);
 					dataRateVal.setVisibility(8);
@@ -706,7 +749,6 @@ public class SysUIMods {
 					dataRateVal.setPadding(0, 2, 5, 0);
 					dataRateVal.setLineSpacing(0, 0.9f);
 					//dataRateVal.setTypeface(null, Typeface.BOLD);
-					//dataRateVal.setBackgroundColor(Color.MAGENTA);
 					
 					dataRateUnits = new TextView(mContext);
 					dataRateUnits.setVisibility(8);
@@ -719,7 +761,6 @@ public class SysUIMods {
 					dataRateUnits.setIncludeFontPadding(false);
 					dataRateUnits.setPadding(0, 0, 5, 0);
 					dataRateUnits.setScaleY(0.9f);
-					//dataRateUnits.setBackgroundColor(Color.YELLOW);
 					
 					textFrame.addView(dataRateVal, 0);
 					textFrame.addView(dataRateUnits, 1);
@@ -896,32 +937,131 @@ public class SysUIMods {
 	
 	// Pinch to clear all recent apps
 	public static void execHook_RecentAppsInit(final LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "onCreate", "android.os.Bundle", new XC_MethodHook(){
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				final GridView recentGridView = (GridView)XposedHelpers.findField(param.thisObject.getClass(), "mRecentGridView").get(param.thisObject);
+		try {
+			if (Helpers.isLP())
+			findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook(){
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					final ViewGroup mPager = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "mPager").get(param.thisObject);
+			
+					killedEmAll = false;
+			
+					actObject = param.thisObject;
+					actContext = mPager.getContext();
+					pagerSelf = mPager;
+				}
+			});
+			else
+			findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook(){
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					final GridView recentGridView = (GridView)XposedHelpers.findField(param.thisObject.getClass(), "mRecentGridView").get(param.thisObject);
 				
-				killedEmAll = false;
+					killedEmAll = false;
 				
-				gridViewObject = param.thisObject;
-				gridViewContext = recentGridView.getContext();
-				gridViewSelf = recentGridView;
-			}
-		});
+					actObject = param.thisObject;
+					actContext = recentGridView.getContext();
+					gridViewSelf = recentGridView;
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 	
 	public static void execHook_RecentAppsClearTouch(final LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.systemui.recent.RecentsGridView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new TouchListenerOnTouch());
-		findAndHookMethod("com.android.systemui.recent.RecentsGridView", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouchIntercept());
+		if (Helpers.isLP()) {
+			findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook(){
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					try {
+						initDetectors(((Activity)param.thisObject));
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+					ViewGroup mPager = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "mPager").get(param.thisObject);
+					mPager.setOnTouchListener(new OnTouchListener() {
+						@Override
+						@SuppressLint("ClickableViewAccessibility")
+						public boolean onTouch(View v, MotionEvent ev) {
+							if (killedEmAll) return false;
+							if (ev == null) return false;
+							mScaleDetector.onTouchEvent(ev);
+							mDetector.onTouchEvent(ev);
+							
+							return false;
+						}
+					});
+				}
+			});
+			
+			findAndHookMethod("com.android.systemui.recent.htc.RecentAppSwipeHelper", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new TouchListenerOnTouch());
+			findAndHookMethod("com.android.systemui.recent.htc.RecentAppSwipeHelper", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouchIntercept());
+		} else {
+			findAndHookMethod("com.android.systemui.recent.RecentsGridView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new TouchListenerOnTouch());
+			findAndHookMethod("com.android.systemui.recent.RecentsGridView", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouchIntercept());
+		}
 	}
 	
+	private static Object actObject;
+	private static Context actContext;
+	private static ViewGroup pagerSelf;
 	private static GridView gridViewSelf;
-	private static Object gridViewObject;
-	private static Context gridViewContext;
 	private static ActivityManager am;
 	
 	private static ScaleGestureDetector mScaleDetector;
 	private static GestureDetector mDetector;
 	static boolean killedEmAll = false;
+	
+	private static void animateViewAtPos(Context ctx, View theItem, final ViewGroup currApp, int animType, int cnt, final int i) {
+		if (ctx != null) {
+			AnimationSet localAnimationSet = new AnimationSet(true);
+			Animation fadeOut = AnimationUtils.loadAnimation(ctx, android.R.anim.fade_out);
+			if (animType == 0) {
+				fadeOut.setDuration(220L);
+				fadeOut.setStartOffset(cnt * 30);
+				fadeOut.setInterpolator(AnimationUtils.loadInterpolator(ctx, android.R.anim.linear_interpolator));
+				
+				TranslateAnimation drop = new TranslateAnimation(0.0F, 0.0F, 0.0F, 100.0f);
+				drop.setDuration(220L);
+				drop.setStartOffset(cnt * 30);
+				drop.setInterpolator(AnimationUtils.loadInterpolator(ctx, android.R.anim.linear_interpolator));
+				localAnimationSet.addAnimation(drop);
+				localAnimationSet.addAnimation(fadeOut);
+			} else {
+				fadeOut.setDuration(220L);
+				fadeOut.setStartOffset(cnt * 30);
+				fadeOut.setInterpolator(AnimationUtils.loadInterpolator(ctx, android.R.anim.linear_interpolator));
+				
+				ScaleAnimation shrink = new ScaleAnimation(1.0f, 0.8f, 1.0f, 0.8f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
+				shrink.setDuration(220L);
+				shrink.setStartOffset(cnt * 30);
+				shrink.setInterpolator(AnimationUtils.loadInterpolator(ctx, android.R.anim.linear_interpolator));
+				localAnimationSet.addAnimation(shrink);
+				localAnimationSet.addAnimation(fadeOut);
+			}
+			
+			localAnimationSet.setFillAfter(true);
+			if (cnt == 0)
+			localAnimationSet.setAnimationListener(new Animation.AnimationListener() {
+				public void onAnimationEnd(Animation paramAnonymousAnimation) {
+					new Thread(new Runnable() {
+						@Override
+						public void run() {
+							if (Helpers.isLP()) {
+								XposedHelpers.setBooleanField(actObject, "mIsClicked", true);
+								Object mTaskLoader = XposedHelpers.getObjectField(actObject, "mTaskLoader");
+								XposedHelpers.callMethod(mTaskLoader, "clearAllTasks");
+							} else {
+								try { if (i > 3) Thread.sleep((i + 1) * 15); } catch (Exception e) {}
+								if (currApp == null) closeRecents();
+							}
+						}
+					}).start();
+				}
+				public void onAnimationRepeat(Animation paramAnonymousAnimation) {}
+				public void onAnimationStart(Animation paramAnonymousAnimation) {}
+			});
+			theItem.startAnimation(localAnimationSet);
+		}
+	}
 	
 	// Exterminate! - Daleks
 	private static void terminateAll(int animType) throws InvocationTargetException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
@@ -929,92 +1069,74 @@ public class SysUIMods {
 	}
 	
 	private static void terminateAll(int animType, final ViewGroup currApp) throws InvocationTargetException, IllegalAccessException, NoSuchFieldException, NoSuchMethodException {
-		ArrayList<?> taskDescriptionsArray = (ArrayList<?>)XposedHelpers.getObjectField(gridViewObject, "mRecentTaskDescriptions");
-		if ((taskDescriptionsArray == null) || (taskDescriptionsArray.size() == 0))	{
-			// Recent array is empty, resuming last activity
-			closeRecents();
-			return;
-		}
-		final int i = gridViewSelf.getChildCount();
-		int j = taskDescriptionsArray.size();
-		int cnt = i - 1;
-		
-		// Go through all GridView items and get taskIds
-		while (cnt >= 0) {
-			View gridViewItem;
-			gridViewItem = gridViewSelf.getChildAt(cnt);
-			if (gridViewItem != null && !gridViewItem.equals(currApp)) {
-				Object gridViewItemTag = XposedHelpers.getObjectField(gridViewItem.getTag(), "td");
-				if (gridViewItemTag != null) {
-					// Recreate RecentAppFxActivity.handleSwipe() using hooked methods
-					int m = j - taskDescriptionsArray.indexOf(gridViewItemTag) - 1;
-					taskDescriptionsArray.remove(gridViewItemTag);
-					if (m != 0) try {
-						XposedHelpers.callMethod(gridViewSelf, "setDelPositionsList", Integer.valueOf(m));
-					} catch (Exception e) {}
+		if (Helpers.isLP()) {
+			int pageNum = 0;
+			try {
+				pageNum = (Integer)XposedHelpers.getIntField(actObject, "mCurrentPage");
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
 					
-					if (am == null)
-					am = ((ActivityManager)gridViewContext.getSystemService("activity"));
-					if (am != null)
-					XposedHelpers.callMethod(am, "removeTask", XposedHelpers.getIntField(gridViewItemTag, "persistentTaskId"), Integer.valueOf(1));
-					
-					if (gridViewContext != null) {
-						AnimationSet localAnimationSet = new AnimationSet(true);
-						Animation fadeOut = AnimationUtils.loadAnimation(gridViewContext, android.R.anim.fade_out);
-						if (animType == 0) {
-							fadeOut.setDuration(220L);
-							fadeOut.setStartOffset(cnt * 30);
-							fadeOut.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
-							
-							TranslateAnimation drop = new TranslateAnimation(0.0F, 0.0F, 0.0F, 100.0f);
-							drop.setDuration(220L);
-							drop.setStartOffset(cnt * 30);
-							drop.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
-							localAnimationSet.addAnimation(drop);
-							localAnimationSet.addAnimation(fadeOut);
-						} else {
-							fadeOut.setDuration(220L);
-							fadeOut.setStartOffset(cnt * 30);
-							fadeOut.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
-							
-							ScaleAnimation shrink = new ScaleAnimation(1.0f, 0.8f, 1.0f, 0.8f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f);
-							shrink.setDuration(220L);
-							shrink.setStartOffset(cnt * 30);
-							shrink.setInterpolator(AnimationUtils.loadInterpolator(gridViewContext, android.R.anim.linear_interpolator));
-							localAnimationSet.addAnimation(shrink);
-							localAnimationSet.addAnimation(fadeOut);
-						}
+			ViewGroup page = (ViewGroup)pagerSelf.getChildAt(pageNum);
+			if (page == null) return;
+			int i = page.getChildCount();
+			int cnt = i - 1;
+			if (cnt < 0) {
+				closeRecents();
+				return;
+			}
+			
+			// Go through all GridView items and get taskIds
+			while (cnt >= 0) {
+				View pageItem = page.getChildAt(cnt);
+				if (pageItem != null) animateViewAtPos(actContext, pageItem, currApp, animType, cnt, i);
+				cnt--;
+			}
+		} else {
+			ArrayList<?> taskDescriptionsArray = (ArrayList<?>)XposedHelpers.getObjectField(actObject, "mRecentTaskDescriptions");
+			if ((taskDescriptionsArray == null) || (taskDescriptionsArray.size() == 0))	{
+				// Recent array is empty, resuming last activity
+				closeRecents();
+				return;
+			}
+			final int i = gridViewSelf.getChildCount();
+			int j = taskDescriptionsArray.size();
+			int cnt = i - 1;
+			
+			// Go through all GridView items and get taskIds
+			while (cnt >= 0) {
+				View gridViewItem = gridViewSelf.getChildAt(cnt);
+				if (gridViewItem != null && !gridViewItem.equals(currApp)) {
+					Object gridViewItemTag = XposedHelpers.getObjectField(gridViewItem.getTag(), "td");
+					if (gridViewItemTag != null) {
+						// Recreate RecentAppFxActivity.handleSwipe() using hooked methods
+						int m = j - taskDescriptionsArray.indexOf(gridViewItemTag) - 1;
+						taskDescriptionsArray.remove(gridViewItemTag);
+						if (m != 0) try {
+							XposedHelpers.callMethod(gridViewSelf, "setDelPositionsList", Integer.valueOf(m));
+						} catch (Exception e) {}
 						
-						localAnimationSet.setFillAfter(true);
-						if (cnt == 0)
-						localAnimationSet.setAnimationListener(new Animation.AnimationListener() {
-							public void onAnimationEnd(Animation paramAnonymousAnimation) {
-								new Thread(new Runnable() {
-									@Override
-									public void run() {
-										try { if (i > 3) Thread.sleep((i + 1) * 15); } catch (Exception e) {}
-										if (currApp == null) closeRecents();
-									}
-								}).start();
-							}
-							public void onAnimationRepeat(Animation paramAnonymousAnimation) {}
-							public void onAnimationStart(Animation paramAnonymousAnimation) {}
-						});
-						gridViewItem.startAnimation(localAnimationSet);
+						if (am == null)
+						am = ((ActivityManager)actContext.getSystemService("activity"));
+						if (am != null)
+						XposedHelpers.callMethod(am, "removeTask", XposedHelpers.getIntField(gridViewItemTag, "persistentTaskId"), Integer.valueOf(1));
+						
+						animateViewAtPos(actContext, gridViewItem, currApp, animType, cnt, i);
 					}
 				}
+				cnt--;
 			}
-			cnt--;
+			if (currApp != null) {
+				Handler handler = (Handler)XposedHelpers.getObjectField(actObject, "handler");
+				Runnable runnable = new Runnable() {
+					public void run() {
+						XposedHelpers.callMethod(actObject, "handleOnClick", currApp);
+					}
+				};
+				handler.postDelayed(runnable, 300L + (i - 1) * 30L);
+			}
 		}
-		if (currApp != null) {
-			Handler handler = (Handler)XposedHelpers.getObjectField(gridViewObject, "handler");
-			Runnable runnable = new Runnable() {
-				public void run() {
-					XposedHelpers.callMethod(gridViewObject, "handleOnClick", currApp);
-				}
-			};
-			handler.postDelayed(runnable, 300L + (i - 1) * 30L);
-		}
+
 	}
 	
 	// Listener for scale gestures
@@ -1051,6 +1173,7 @@ public class SysUIMods {
 		@Override
 		public boolean onFling(MotionEvent e1, MotionEvent e2, float velocityX, float velocityY) {
 			try {
+				if (e1 == null || e2 == null) return false;
 				if (Math.abs(e1.getX() - e2.getX()) > SWIPE_MAX_OFF_PATH) return false;
 				if (e2.getY() - e1.getY() > SWIPE_MIN_DISTANCE && Math.abs(velocityY) > SWIPE_THRESHOLD_VELOCITY) {
 					killedEmAll = true;
@@ -1063,10 +1186,9 @@ public class SysUIMods {
 		}
 	}
 	
-	private static void initDetectors(MethodHookParam param) throws Throwable {
-		final GridView recentGridView = (GridView)param.thisObject;
-		if (mScaleDetector == null) mScaleDetector = new ScaleGestureDetector(recentGridView.getContext(), new ScaleListener());
-		if (mDetector == null) mDetector = new GestureDetector(recentGridView.getContext(), new SwipeListener((recentGridView.getContext())));
+	private static void initDetectors(Context ctx) throws Throwable {
+		if (mScaleDetector == null) mScaleDetector = new ScaleGestureDetector(ctx, new ScaleListener());
+		if (mDetector == null) mDetector = new GestureDetector(ctx, new SwipeListener(ctx));
 	}
 	
 	// Detect second finger and cancel action if some app thumbnail was pressed
@@ -1075,7 +1197,10 @@ public class SysUIMods {
 		
 		@Override
 		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-			initDetectors(param);
+			if (!Helpers.isLP()) {
+				ViewGroup recentsContainer = (ViewGroup)param.thisObject;
+				initDetectors(recentsContainer.getContext());
+			}
 			ev = (MotionEvent)param.args[0];
 			if (ev == null) return;
 			mScaleDetector.onTouchEvent(ev);
@@ -1100,14 +1225,13 @@ public class SysUIMods {
 		MotionEvent ev = null;
 		
 		@Override
-		protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-		}
-		
-		@Override
 		protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 			if (killedEmAll) return;
 
-			initDetectors(param);
+			if (!Helpers.isLP()) {
+				ViewGroup recentsContainer = (ViewGroup)param.thisObject;
+				initDetectors(recentsContainer.getContext());
+			}
 			ev = (MotionEvent)param.args[0];
 			if (ev == null) return;
 			mScaleDetector.onTouchEvent(ev);
@@ -1118,7 +1242,7 @@ public class SysUIMods {
 	// Close activity
 	private static void closeRecents() {
 		try {
-			if (gridViewObject != null) ((Activity)gridViewObject).finish();
+			if (actObject != null) ((Activity)actObject).finish();
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -1138,31 +1262,41 @@ public class SysUIMods {
 		ViewGroup theView = null;
 		TextView ramView = null;
 		String ramText = null;
+		MethodHookParam param;
 		
 		@Override
 		protected Void doInBackground(final MethodHookParam... params) {
 			try {
-				final MethodHookParam param = params[0];
+				param = params[0];
 				theView = (ViewGroup)param.getResult();
 				if (theView != null) {
-					int pos = (Integer)param.args[0];
+					final ActivityManager amgr = (ActivityManager)theView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+					final List<Integer> pids_mem = new ArrayList<Integer>();
 					Object viewholder = theView.getTag();
 					
-					ArrayList<?> mRecentTaskDescriptions = (ArrayList<?>)XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mRecentTaskDescriptions");
-					if (mRecentTaskDescriptions == null) return null;
-					int taskPos = mRecentTaskDescriptions.size() - pos - 1;
-					if (taskPos < 0) return null;
-					Object taskdescription = mRecentTaskDescriptions.get(taskPos);
-					if (taskdescription == null) return null;
-					ResolveInfo resolveInfo = (ResolveInfo)XposedHelpers.getObjectField(taskdescription, "resolveInfo");
-					
-					final ActivityManager amgr = (ActivityManager)theView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
-					if (pos == 0 || procs == null) procs = amgr.getRunningAppProcesses();
-					
-					final List<Integer> pids_mem = new ArrayList<Integer>();
-					for (ActivityManager.RunningAppProcessInfo process: procs)
-					if (process.processName.equals(resolveInfo.activityInfo.processName))
-					if (!pids_mem.contains(process.pid)) pids_mem.add(process.pid);
+					if (Helpers.isLP()) {
+						String packageName = (String)XposedHelpers.getObjectField(param.args[1], "packageName");
+						
+						if (procs == null) procs = amgr.getRunningAppProcesses();
+						for (ActivityManager.RunningAppProcessInfo process: procs)
+						if (Arrays.asList(process.pkgList).contains(packageName))
+						if (!pids_mem.contains(process.pid)) pids_mem.add(process.pid);
+					} else {
+						int pos = (Integer)param.args[0];
+						
+						ArrayList<?> mRecentTaskDescriptions = (ArrayList<?>)XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mRecentTaskDescriptions");
+						if (mRecentTaskDescriptions == null) return null;
+						int taskPos = mRecentTaskDescriptions.size() - pos - 1;
+						if (taskPos < 0) return null;
+						Object taskdescription = mRecentTaskDescriptions.get(taskPos);
+						if (taskdescription == null) return null;
+						ResolveInfo resolveInfo = (ResolveInfo)XposedHelpers.getObjectField(taskdescription, "resolveInfo");
+						
+						if (pos == 0 || procs == null) procs = amgr.getRunningAppProcesses();
+						for (ActivityManager.RunningAppProcessInfo process: procs)
+						if (process.processName.equals(resolveInfo.activityInfo.processName))
+						if (!pids_mem.contains(process.pid)) pids_mem.add(process.pid);
+					}
 					
 					MemoryInfo[] mi = amgr.getProcessMemoryInfo(toIntArray(pids_mem));
 					int memTotal = 0;
@@ -1174,7 +1308,12 @@ public class SysUIMods {
 						ramView = new TextView(theView.getContext());
 						ramView.setTag(ramTAG);
 						ramView.setText(ramText);
-						final TextView text1 = (TextView)XposedHelpers.getObjectField(viewholder, "text1");
+						TextView text1;
+						if (Helpers.isLP())
+							text1 = (TextView)XposedHelpers.getObjectField(viewholder, "text");
+						else
+							text1 = (TextView)XposedHelpers.getObjectField(viewholder, "text1");
+						
 						ramView.setTextSize(TypedValue.COMPLEX_UNIT_PX, text1.getTextSize());
 						ramView.setEllipsize(TruncateAt.END);
 						ramView.setSingleLine();
@@ -1183,9 +1322,7 @@ public class SysUIMods {
 						FrameLayout.LayoutParams p0 = (FrameLayout.LayoutParams)text1.getLayoutParams();
 						ramView.setLayoutParams(p0);
 						ramView.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-						Drawable bkg = text1.getBackground().mutate().getConstantState().newDrawable();
-						bkg.setAlpha(160);
-						ramView.setBackground(bkg);
+						ramView.setBackground(new ColorDrawable(0xa0252525));
 						ramView.setPadding(text1.getPaddingLeft(), text1.getPaddingTop() + 5, text1.getPaddingRight(), text1.getPaddingBottom());
 					}
 				}
@@ -1197,119 +1334,177 @@ public class SysUIMods {
 		
 		@Override
 		protected void onPostExecute(Void result) {
-			if (theView != null)
-			if (theView.findViewWithTag(ramTAG) == null) {
-				if (ramView != null) {
-					theView.addView(ramView, 1);
-					ObjectAnimator translationY = ObjectAnimator.ofFloat(ramView, "translationY", 0.0f, -29.7f * theView.getContext().getResources().getDisplayMetrics().density);
-					ObjectAnimator alpha = ObjectAnimator.ofFloat(ramView, "alpha", 0.0f, 1.0f);
-					translationY.setInterpolator(AnimationUtils.loadInterpolator(theView.getContext(), android.R.anim.decelerate_interpolator));
-					translationY.setDuration(220L);
-					alpha.setInterpolator(AnimationUtils.loadInterpolator(theView.getContext(), android.R.anim.linear_interpolator));
-					alpha.setDuration(220L);
-					
-					translationY.start();
-					alpha.start();
+			Handler hndl = null;
+			if (Helpers.isLP())
+				hndl = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+			else
+				hndl = (Handler)XposedHelpers.getObjectField(param.thisObject, "handler");
+			
+			if (hndl != null)
+			hndl.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					if (theView != null)
+					if (theView.findViewWithTag(ramTAG) == null) {
+						if (ramView != null) {
+							theView.addView(ramView, 1);
+							ObjectAnimator translationY = ObjectAnimator.ofFloat(ramView, "translationY", 0.0f, -29.7f * theView.getContext().getResources().getDisplayMetrics().density);
+							ObjectAnimator alpha = ObjectAnimator.ofFloat(ramView, "alpha", 0.0f, 1.0f);
+							translationY.setInterpolator(AnimationUtils.loadInterpolator(theView.getContext(), android.R.anim.decelerate_interpolator));
+							translationY.setDuration(220L);
+							alpha.setInterpolator(AnimationUtils.loadInterpolator(theView.getContext(), android.R.anim.linear_interpolator));
+							alpha.setDuration(220L);
+							
+							translationY.start();
+							alpha.start();
+						}
+					} else {
+						if (ramText != null) ((TextView)theView.findViewWithTag(ramTAG)).setText(ramText);
+					}
 				}
-			} else {
-				if (ramText != null) ((TextView)theView.findViewWithTag(ramTAG)).setText(ramText);
-			}
+			}, 300L);
 		}
 	}
 	
+	private static void execRAMView(MethodHookParam param) {
+		ViewGroup theView = (ViewGroup)param.getResult();
+		if (theView != null && theView.findViewWithTag(ramTAG) != null)
+		((TextView)theView.findViewWithTag(ramTAG)).setText("...");
+		new getRAMView().execute(param);
+	}
+	
 	public static void execHook_RAMInRecents(final LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity.RecentGridViewAdapter", lpparam.classLoader, "getView", int.class, View.class, ViewGroup.class, new XC_MethodHook() {
+		if (Helpers.isLP()) {
+			findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "inflateItemView", ViewGroup.class, "com.android.systemui.recent.htc.RecentAppTask", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					execRAMView(param);
+				}
+			});
+		} else {
+			findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity.RecentGridViewAdapter", lpparam.classLoader, "getView", int.class, View.class, ViewGroup.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					execRAMView(param);
+				}
+			});
+		}
+		
+		findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "onResume", new XC_MethodHook() {
 			@Override
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				// Text before actual data is available
-				ViewGroup theView = (ViewGroup)param.getResult();
-				if (theView != null && theView.findViewWithTag(ramTAG) != null)
-				((TextView)theView.findViewWithTag(ramTAG)).setText("...");
-				// Get RAM usage for the task of this view
-				new getRAMView().execute(param);
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				procs = null;
 			}
 		});
 	}
 	
 	static HtcPopupWindow popup = null;
 	
-	public static void execHook_RecentsLongTap(final LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity.RecentGridViewAdapter", lpparam.classLoader, "getView", int.class, View.class, ViewGroup.class, new XC_MethodHook() {
+	private static void bindPopup(final Activity act, final ViewGroup theView) {
+		theView.setOnLongClickListener(new OnLongClickListener() {
 			@Override
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				final ViewGroup theView = (ViewGroup)param.getResult();
-				if (theView != null) {
-					theView.setOnLongClickListener(new OnLongClickListener() {
+			public boolean onLongClick(View v) {
+				try {
+					popup = new HtcPopupWindow(act);
+					float density = theView.getContext().getResources().getDisplayMetrics().density;
+					int theWidth = Math.round(theView.getContext().getResources().getDisplayMetrics().widthPixels / 3 + 30 * density);
+					popup.setWidth(theWidth);
+					popup.setHeight(-2);
+					popup.setTouchable(true);
+					popup.setFocusable(true);
+					popup.setOutsideTouchable(true);
+					
+					ListView options = new ListView(act);
+					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+					String[] recents_menu = Helpers.xl10n_array(modRes, R.array.recents_menu);
+					if (Helpers.isLP()) recents_menu = Arrays.copyOfRange(recents_menu, 0, recents_menu.length - 1);
+					ListAdapter listAdapter = new PopupAdapter(options.getContext(), recents_menu, true);
+					options.setAdapter(listAdapter);
+					options.setFocusableInTouchMode(true);
+					options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 						@Override
-						public boolean onLongClick(View v) {
-							try {
-								Activity FxRecent = (Activity)XposedHelpers.getSurroundingThis(param.thisObject);
-								
-								popup = new HtcPopupWindow(FxRecent);
-								float density = theView.getContext().getResources().getDisplayMetrics().density;
-								int theWidth = Math.round(theView.getContext().getResources().getDisplayMetrics().widthPixels / 3 + 30 * density);
-								popup.setWidth(theWidth);
-								popup.setHeight(-2);
-								popup.setTouchable(true);
-								popup.setFocusable(true);
-								popup.setOutsideTouchable(true);
-								
-								ListView options = new ListView(FxRecent);
-								XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-								ListAdapter listAdapter = new PopupAdapter(options.getContext(), Helpers.xl10n_array(modRes, R.array.recents_menu), true);
-								options.setAdapter(listAdapter);
-								options.setFocusableInTouchMode(true);
-								options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-									@Override
-									public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-										popup.dismiss();
-										Object viewholder = theView.getTag();
-										Object taskdescription = XposedHelpers.getObjectField(viewholder, "td");
-										String packageName = (String)XposedHelpers.getObjectField(taskdescription, "packageName");
-										if (position == 0) {
-											Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null));
-											intent.setComponent(intent.resolveActivity(view.getContext().getPackageManager()));
-											intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
-											view.getContext().startActivity(intent);
-										} else if (position == 1) {
-											try {
-												theView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
-											} catch (android.content.ActivityNotFoundException anfe) {
-												theView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)));
-											}
-										} else if (position == 2) {
-											XposedHelpers.callMethod(XposedHelpers.getSurroundingThis(param.thisObject), "handleSwipe", theView);
-										} else {
-											try {
-												terminateAll(1, theView);
-											} catch (Throwable t) {
-												XposedBridge.log(t);
-											}
-										}
-									}
-								});
-								popup.setContentView(options);
-								
-								Object mRecentGridView = XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mRecentGridView");
-								XposedHelpers.setBooleanField(mRecentGridView, "isDragging", true);
-								popup.showAtLocation(theView, Gravity.TOP|Gravity.START, Math.round(theView.getX() - theWidth/4), Math.round(theView.getY() - 20 * density));
-								return true;
-							} catch (Exception e) {
-								return false;
+						public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+							popup.dismiss();
+							Object viewholder = theView.getTag();
+							Object taskdescription = null;
+							if (Helpers.isLP())
+								taskdescription = XposedHelpers.getObjectField(viewholder, "task");
+							else
+								taskdescription = XposedHelpers.getObjectField(viewholder, "td");
+							
+							if (taskdescription == null) return;
+							String packageName = (String)XposedHelpers.getObjectField(taskdescription, "packageName");
+							if (position == 0) {
+								Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.fromParts("package", packageName, null));
+								intent.setComponent(intent.resolveActivity(view.getContext().getPackageManager()));
+								intent.setFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS);
+								view.getContext().startActivity(intent);
+							} else if (position == 1) {
+								try {
+									theView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + packageName)));
+								} catch (android.content.ActivityNotFoundException anfe) {
+									theView.getContext().startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("http://play.google.com/store/apps/details?id=" + packageName)));
+								}
+							} else if (position == 2) {
+								XposedHelpers.callMethod(act, "handleSwipe", theView);
+							} else {
+								try {
+									terminateAll(1, theView);
+								} catch (Throwable t) {
+									XposedBridge.log(t);
+								}
 							}
 						}
 					});
+					popup.setContentView(options);
+					
+					if (!Helpers.isLP()) {
+						Object mRecentGridView = XposedHelpers.getObjectField(act, "mRecentGridView");
+						XposedHelpers.setBooleanField(mRecentGridView, "isDragging", true);
+					}
+					popup.showAtLocation(theView, Gravity.TOP|Gravity.START, Math.round(theView.getX() - theWidth/4), Math.round(theView.getY() - 20 * density));
+					return true;
+				} catch (Exception e) {
+					return false;
 				}
 			}
 		});
+	}
+	
+	public static void execHook_RecentsLongTap(final LoadPackageParam lpparam) {
+		if (Helpers.isLP()) {
+			findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "inflateItemView", ViewGroup.class, "com.android.systemui.recent.htc.RecentAppTask", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					final FrameLayout theView = (FrameLayout)param.getResult();
+					if (theView != null) bindPopup((Activity)param.thisObject, theView);
+				}
+			});
+			
+			findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "handleSwipe", View.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					Activity FxRecent = (Activity)param.thisObject;
+					if (FxRecent != null && !FxRecent.isFinishing() && popup != null && popup.isShowing()) try { popup.dismiss(); } catch (Throwable t) {}
+				}
+			});
+		} else {
+			findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity.RecentGridViewAdapter", lpparam.classLoader, "getView", int.class, View.class, ViewGroup.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					final ViewGroup theView = (ViewGroup)param.getResult();
+					if (theView != null) bindPopup((Activity)XposedHelpers.getSurroundingThis(param.thisObject), theView);
+				}
+			});
 		
-		findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "handleSwipe", View.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				Activity FxRecent = (Activity)param.thisObject;
-				if (FxRecent != null && !FxRecent.isFinishing() && popup != null && popup.isShowing()) try { popup.dismiss(); } catch (Throwable t) {}
-			}
-		});
+			findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "handleSwipe", View.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					Activity FxRecent = (Activity)param.thisObject;
+					if (FxRecent != null && !FxRecent.isFinishing() && popup != null && popup.isShowing()) try { popup.dismiss(); } catch (Throwable t) {}
+				}
+			});
+		}
 	}
 	
 	private static Thread cpuThread = null;
@@ -1356,8 +1551,6 @@ public class SysUIMods {
 			t.printStackTrace();
 		}
 	}
-	
-	private static TextView dateView;
 	/*
 	private static BroadcastReceiver mBRUSSD = new BroadcastReceiver() {
 		public void onReceive(final Context context, Intent intent) {
@@ -1375,8 +1568,12 @@ public class SysUIMods {
 		}
 	};
 	*/
+	private static TextView dateView;
+	
 	public static void execHook_NotifDrawerHeaderSysInfo(final LoadPackageParam lpparam) {
-		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.policy.DateView", lpparam.classLoader), new XC_MethodHook() {
+		String className = "com.android.systemui.statusbar.policy.DateView";
+		if (Helpers.isLP()) className += "2";
+		XposedBridge.hookAllConstructors(findClass(className, lpparam.classLoader), new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				dateView = (TextView)param.thisObject;
@@ -1451,7 +1648,7 @@ public class SysUIMods {
 			}
 		});
 		
-		findAndHookMethod("com.android.systemui.statusbar.policy.DateView", lpparam.classLoader, "updateClock", new XC_MethodHook() {
+		findAndHookMethod(className, lpparam.classLoader, "updateClock", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				if (isThreadActive/* || USSDState > 0*/) param.setResult(null);
@@ -1511,8 +1708,17 @@ public class SysUIMods {
 		resparam.res.hookLayout("com.android.systemui", "layout", "status_bar_expanded_header", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-				View clock = liparam.view.findViewById(resparam.res.getIdentifier("clock", "id", "com.android.systemui"));
-				View date = liparam.view.findViewById(resparam.res.getIdentifier("date", "id", "com.android.systemui"));
+				View clock;
+				View date;
+				if (Helpers.isLP()) {
+					clock = liparam.view.findViewById(resparam.res.getIdentifier("header_clock", "id", "com.android.systemui"));
+					date = liparam.view.findViewById(resparam.res.getIdentifier("header_date", "id", "com.android.systemui"));
+					clock.setBackgroundResource(clock.getResources().getIdentifier("ripple_drawable", "drawable", "com.android.systemui"));
+				} else {
+					clock = liparam.view.findViewById(resparam.res.getIdentifier("clock", "id", "com.android.systemui"));
+					date = liparam.view.findViewById(resparam.res.getIdentifier("date", "id", "com.android.systemui"));
+				}
+				
 				final Intent clockIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
 				OnClickListener ocl = new OnClickListener() {
 					@Override
@@ -1558,12 +1764,17 @@ public class SysUIMods {
 		}
 		
 		@Override
+		@SuppressWarnings("deprecation")
 		public void onChange(boolean selfChange, Uri uri) {
 			super.onChange(selfChange);
 			try {
 				String uriPart = uri.getLastPathSegment();
 				if (uriPart != null && uriPart.equals(Settings.System.NEXT_ALARM_FORMATTED))
-				if (thisObj != null) XposedHelpers.callMethod(thisObj, "triggerUpdate");
+				if (thisObj != null)
+				if (Helpers.isLP())
+					XposedHelpers.callMethod(thisObj, "update");
+				else
+					XposedHelpers.callMethod(thisObj, "triggerUpdate");
 			} catch (Throwable t) {
 				XposedBridge.log(t);
 			}
@@ -1580,40 +1791,47 @@ public class SysUIMods {
 	
 	private static void updateLabel(Object paramThisObject) {
 		try {
-			TextView mPlmnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mPlmnLabel");
-			TextView mSpnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mSpnLabel");
-			TextView mNetworkTextView = (TextView)XposedHelpers.getObjectField(paramThisObject, "mNetworkTextView");
-
-			if (mSpnLabel != null && !mSpnLabel.getText().equals("") && !mPlmnLabel.equals("")) {
-				if (mPlmnLabel != null) mPlmnLabel.setText("");
+			TextView mPlmnLabel;
+			TextView mSpnLabel;
+			
+			if (Helpers.isLP()) {
+				mPlmnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mPlmnView");
+				mSpnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mSpnView");
+				
+				Context mContext = (Context)XposedHelpers.getObjectField(paramThisObject, "mContext");
+				if (getCurrentSignalLevel(mContext).equals("")) mSpnLabel.setText("");
+			} else {
+				mPlmnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mPlmnLabel");
+				mSpnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mSpnLabel");
+			}
+			
+			if (mSpnLabel != null && mPlmnLabel != null && !mSpnLabel.getText().equals("") && !mPlmnLabel.getText().equals("")) {
+				mPlmnLabel.setText("");
 				setLabel(mSpnLabel);
 			}
 			else if (mSpnLabel != null && !mSpnLabel.getText().equals("")) setLabel(mSpnLabel);
 			else if (mPlmnLabel != null && !mPlmnLabel.getText().equals("")) setLabel(mPlmnLabel);
 			
-			if (mNetworkTextView != null) setLabel(mNetworkTextView);
-			
-			View vp = (View)((View)paramThisObject).getParent();
-			if (vp != null) vp.invalidate();
+			if (!Helpers.isLP()) {
+				TextView mNetworkTextView = (TextView)XposedHelpers.getObjectField(paramThisObject, "mNetworkTextView");
+				if (mNetworkTextView != null) setLabel(mNetworkTextView);
+				
+				View vp = (View)((View)paramThisObject).getParent();
+				if (vp != null) vp.invalidate();
+			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
 	}
 	
 	public static void execHook_LabelsUpdate(LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.systemui.statusbar.phone.CarrierLabel", lpparam.classLoader, "updateAirplaneMode", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				updateLabel(param.thisObject);
-			}
-		});
-		
 		findAndHookMethod("com.android.systemui.statusbar.phone.CarrierLabel", lpparam.classLoader, "updateNetworkName", boolean.class, String.class, boolean.class, String.class, new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				updateLabel(param.thisObject);
 			}
 		});
+
 		
 		findAndHookMethod("com.android.systemui.statusbar.phone.CarrierLabel", lpparam.classLoader, "updateNetworkNameExt", new XC_MethodHook() {
 			@Override
@@ -1621,6 +1839,15 @@ public class SysUIMods {
 				updateLabel(param.thisObject);
 			}
 		});
+		
+		if (!Helpers.isLP()) {
+			findAndHookMethod("com.android.systemui.statusbar.phone.CarrierLabel", lpparam.classLoader, "updateAirplaneMode", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					updateLabel(param.thisObject);
+				}
+			});
+		}
 	}
 	
 	public static void execHook_AlarmNotification(LoadPackageParam lpparam) {
@@ -1648,7 +1875,10 @@ public class SysUIMods {
 		public void onSignalStrengthsChanged(SignalStrength signalStrength) {
 			if (thisObj != null) {
 				lastSignalStrength = signalStrength;
-				XposedHelpers.callMethod(thisObj, "triggerUpdate");
+				if (Helpers.isLP())
+					XposedHelpers.callMethod(thisObj, "update");
+				else
+					XposedHelpers.callMethod(thisObj, "triggerUpdate");
 			}
 		}
 	}
@@ -1809,6 +2039,7 @@ public class SysUIMods {
 			Context ctx = (Context)param.args[0];
 			if (ctx == null) return;
 			final ActivityManager amgr = (ActivityManager)ctx.getSystemService(Context.ACTIVITY_SERVICE);
+			@SuppressWarnings("deprecation")
 			final List<ActivityManager.RunningTaskInfo> taskInfo = amgr.getRunningTasks(1);
 			if (taskInfo.size() == 0 || taskInfo.get(0).topActivity == null) return;
 			String appPkgName = taskInfo.get(0).topActivity.getPackageName();
@@ -1869,7 +2100,14 @@ public class SysUIMods {
 						}
 					});
 				} catch (Throwable t2) {
-					XposedBridge.log("Both getHtcThemeId hooks failed");
+					try {
+						findAndHookMethod("com.htc.lib1.cc.d.c", lpparam.classLoader, "a", Context.class, int.class, new XC_MethodHook() {
+							@Override
+							protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+								replaceCustom(param, pkgName);
+							}
+						});
+					} catch (Throwable t3) {}
 				}
 			}
 		}
@@ -1877,7 +2115,9 @@ public class SysUIMods {
 	
 	public static void execHook_ChangeBrightnessQSTile(LoadPackageParam lpparam) {
 		try {
-			final Class<?> QSB = findClass("com.android.systemui.statusbar.quicksetting.QuickSettingBrightness", lpparam.classLoader);
+			String className = "com.android.systemui.statusbar.quicksetting.QuickSettingBrightness";
+			if (Helpers.isLP()) className = "com.android.systemui.qs.tiles.QuickSettingBrightness";
+			final Class<?> QSB = findClass(className, lpparam.classLoader);
 			XposedBridge.hookAllConstructors(QSB, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -1911,7 +2151,9 @@ public class SysUIMods {
 	
 	public static void execHook_ChangeTimeoutQSTile(LoadPackageParam lpparam) {
 		try {
-			final Class<?> QST = findClass("com.android.systemui.statusbar.quicksetting.QuickSettingTimeout", lpparam.classLoader);
+			String className = "com.android.systemui.statusbar.quicksetting.QuickSettingTimeout";
+			if (Helpers.isLP()) className = "com.android.systemui.qs.tiles.QuickSettingTimeout";
+			final Class<?> QST = findClass(className, lpparam.classLoader);
 			XposedBridge.hookAllConstructors(QST, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -1980,7 +2222,7 @@ public class SysUIMods {
 					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 					Class<?> TargetDrawable = findClass("com.android.internal.widget.multiwaveview.TargetDrawable", null);
 					
-					Object stock_assist = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(Resources.getSystem(), Resources.getSystem().getIdentifier("ic_action_assist_generic", "drawable", "android"));
+					Object stock_assist = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, R.drawable.ic_action_assist_generic);
 					Object dummy = TargetDrawable.getConstructor(Resources.class, int.class).newInstance(modRes, 0);
 					
 					XMain.pref.reload();
@@ -2044,7 +2286,7 @@ public class SysUIMods {
 		}
 	}
 	
-	public static void execHook_SearchGlowPadLaunch(LoadPackageParam lpparam) {
+	public static void execHook_SearchGlowPadLaunch(final LoadPackageParam lpparam) {
 		try {
 			findAndHookMethod("com.android.systemui.SearchPanelView.GlowPadTriggerListener", lpparam.classLoader, "onTrigger", View.class, int.class, new XC_MethodHook() {
 				@Override
@@ -2093,9 +2335,9 @@ public class SysUIMods {
 		}
 	}
 	
-	public static void execHook_HDThumbnails() {
+	public static void execHook_HDThumbnails(LoadPackageParam lpparam) {
 		try {
-			findAndHookMethod("com.android.server.wm.WindowManagerService", null, "screenshotApplications", IBinder.class, int.class, int.class, int.class, boolean.class, new XC_MethodHook() {
+			findAndHookMethod("com.android.server.wm.WindowManagerService", lpparam.classLoader, "screenshotApplications", IBinder.class, int.class, int.class, int.class, boolean.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					param.args[4] = false;
@@ -2108,19 +2350,13 @@ public class SysUIMods {
 	
 	public static void execHook_NoLowBatteryWarning(LoadPackageParam lpparam) {
 		try {
-			findAndHookMethod("com.android.systemui.power.PowerUI", lpparam.classLoader, "showLowBatteryWarningWithLevel", int.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					param.setResult(null);
-				}
-			});
-			
-			findAndHookMethod("com.android.systemui.power.PowerUI", lpparam.classLoader, "startLowBatteryTone", new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					param.setResult(null);
-				}
-			});
+			if (Helpers.isLP()) {
+				findAndHookMethod("com.android.systemui.power.PowerNotificationWarnings", lpparam.classLoader, "showWarningNotification", XC_MethodReplacement.DO_NOTHING);
+				findAndHookMethod("com.android.systemui.power.PowerNotificationWarnings", lpparam.classLoader, "startLowBatteryTone", XC_MethodReplacement.DO_NOTHING);
+			} else {
+				findAndHookMethod("com.android.systemui.power.PowerUI", lpparam.classLoader, "showLowBatteryWarningWithLevel", int.class, XC_MethodReplacement.DO_NOTHING);
+				findAndHookMethod("com.android.systemui.power.PowerUI", lpparam.classLoader, "startLowBatteryTone", XC_MethodReplacement.DO_NOTHING);
+			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -2133,7 +2369,7 @@ public class SysUIMods {
 				Object entry = param.getResult();
 				StatusBarNotification sbn = (StatusBarNotification)param.args[1];
 				if (entry == null) return;
-
+				
 				View content = (View)XposedHelpers.getObjectField(entry, "content");
 				if (content != null) {
 					content.setBackgroundColor(Color.TRANSPARENT);
@@ -2159,7 +2395,7 @@ public class SysUIMods {
 							adaptiveFL.invalidate();
 						}
 					}
-					
+						
 					ArrayList<View> nViews = Helpers.getChildViewsRecursive(row);
 					for (View nView: nViews)
 					if (nView != null && nView.getResources() != null && nView.getId() > 0 && nView.getId() != 0xffffffff) try {
@@ -2220,7 +2456,11 @@ public class SysUIMods {
 	
 	public static void execHook_TranslucentEQS(InitPackageResourcesParam resparam) {
 		try {
-			resparam.res.setReplacement("com.android.systemui", "drawable", "quick_settings_tile_background", Color.TRANSPARENT);
+			if (Helpers.isLP()) {
+				resparam.res.setReplacement("com.android.systemui", "color", "notification_panel_color", Color.TRANSPARENT);
+			} else {
+				resparam.res.setReplacement("com.android.systemui", "drawable", "quick_settings_tile_background", Color.TRANSPARENT);
+			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -2384,7 +2624,7 @@ public class SysUIMods {
 						XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 						Intent intent = new Intent("com.sensetoolbox.six.DELETE_SCREENSHOT");
 						intent.putExtra("screenshot_file", uri);
-						mNotificationBuilder.addAction(android.R.drawable.ic_menu_delete, Helpers.xl10n(modRes, R.string.delete), PendingIntent.getBroadcast(ctx, 0, intent, 0x10000000));
+						mNotificationBuilder.addAction(ctx.getResources().getIdentifier("icon_btn_delete_light", "drawable", "com.htc"), Helpers.xl10n(modRes, R.string.delete), PendingIntent.getBroadcast(ctx, 0, intent, 0x10000000));
 					}
 				} catch (Throwable t) {
 					XposedBridge.log(t);

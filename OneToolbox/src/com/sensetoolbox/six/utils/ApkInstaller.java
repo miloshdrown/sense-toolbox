@@ -42,11 +42,19 @@ public class ApkInstaller {
 			out.close();
 			out = null;
 
+			String mkdirCmd = "echo";
+			String apkPath = "/system/app/SunBeam.apk";
+			if (Helpers.isLP()) {
+				mkdirCmd = "mkdir -p /system/app/SunBeam; chmod 755 /system/app/SunBeam";
+				apkPath = "/system/app/SunBeam/SunBeam.apk";
+			}
+			
 			CommandCapture command = new CommandCapture(0,
 					"mount -o rw,remount /system",
-					"cp -f " + cache.getAbsolutePath() + "/SunBeam.apk /system/app/SunBeam.apk",
+					mkdirCmd,
+					"cp -f " + cache.getAbsolutePath() + "/SunBeam.apk " + apkPath,
 					"rm -f " + cache.getAbsolutePath() + "/SunBeam.apk",
-					"chmod 644 /system/app/SunBeam.apk",
+					"chmod 644 " + apkPath,
 					"mount -o ro,remount /system") {
 				@Override
 				public void commandCompleted(int id, int exitcode) {

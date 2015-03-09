@@ -4,20 +4,18 @@ import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
-
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
-
 import com.htc.fragment.widget.CarouselFragment;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.Helpers;
-
 import android.animation.ObjectAnimator;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
@@ -65,7 +63,6 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -74,7 +71,6 @@ import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
-import android.widget.AutoCompleteTextView;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -83,7 +79,6 @@ import android.widget.RelativeLayout;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
-import de.robv.android.xposed.IXposedHookZygoteInit.StartupParam;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodReplacement;
@@ -95,9 +90,11 @@ import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class OtherMods {
 	
-	public static void execHook_APM(LoadPackageParam lpparam) {
+	public static void execHook_APM() {
 		try {
-			findAndHookMethod("com.htc.app.HtcShutdownThread", lpparam.classLoader, "reboot", Context.class, String.class, boolean.class, new XC_MethodReplacement() {
+			String className = "com.htc.app.HtcShutdownThread";
+			if (Helpers.isLP()) className = "com.android.internal.policy.impl.HtcShutdown.HtcShutdownThread";
+			findAndHookMethod(className, null, "reboot", Context.class, String.class, boolean.class, new XC_MethodReplacement() {
 				@Override
 				protected Object replaceHookedMethod(MethodHookParam param) throws Throwable {
 					startAPM((Context)param.args[0]);
@@ -120,8 +117,17 @@ public class OtherMods {
 		}
 	}
 	
+	public static void execHook_VolSound() {
+		findAndHookMethod("com.htc.view.VolumePanel", null, "onPlaySound", int.class, int.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				param.setResult(null);
+			}
+		});
+	}
+	
 	public static void execHook_VolSound(LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.view.VolumePanel", lpparam.classLoader, "onPlaySound", int.class, int.class, new XC_MethodHook() {
+		findAndHookMethod("com.android.systemui.volume.VolumePanel", lpparam.classLoader, "onPlaySound", int.class, int.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				param.setResult(null);
@@ -163,9 +169,9 @@ public class OtherMods {
 		}
 	}
 	
-	public static void execHook_InputMethodNotif() {
+	public static void execHook_InputMethodNotif(LoadPackageParam lpparam) {
 		try {
-			XposedHelpers.findAndHookMethod("com.android.server.InputMethodManagerService", null, "setImeWindowStatus", IBinder.class, int.class, int.class, XC_MethodReplacement.DO_NOTHING);
+			XposedHelpers.findAndHookMethod("com.android.server.InputMethodManagerService", lpparam.classLoader, "setImeWindowStatus", IBinder.class, int.class, int.class, XC_MethodReplacement.DO_NOTHING);
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -178,31 +184,47 @@ public class OtherMods {
 			XposedBridge.log(t);
 		}
 	}
+	
+	private static void hookVolumePlanel(MethodHookParam param) {
+		Dialog dlg = (Dialog)XposedHelpers.getObjectField(param.thisObject, "mDialog");
+		Dialog dlgEx = (Dialog)XposedHelpers.getObjectField(param.thisObject, "mDialogEx");
+			
+		float density = dlg.getContext().getResources().getDisplayMetrics().density;
+		int orientation = dlg.getContext().getResources().getConfiguration().orientation;
+		int bottomMargin = 75;
+		if (orientation == 2) bottomMargin = 40;
+			
+		Window dlgWin = dlg.getWindow();
+		Window dlgExWin = dlgEx.getWindow();
+		WindowManager.LayoutParams dlgWinAttrs = dlgWin.getAttributes();
+		WindowManager.LayoutParams dlgExWinAttrs = dlgExWin.getAttributes();
+		dlgWinAttrs.gravity = Gravity.BOTTOM;
+		dlgExWinAttrs.gravity = Gravity.BOTTOM;
+		dlgWinAttrs.y = Math.round(bottomMargin * density);
+		dlgExWinAttrs.y = Math.round(bottomMargin * density);
+		dlgWin.setAttributes(dlgWinAttrs);
+		dlgExWin.setAttributes(dlgExWinAttrs);
+	}
 		
-	public static void execHook_MoveVolume(StartupParam startparam) {
+	public static void execHook_MoveVolume() {
 		try {
-			final Class<?> clsVP = XposedHelpers.findClass("com.htc.view.VolumePanel", null);
-			XposedHelpers.findAndHookMethod(clsVP, "updatePanelRotationPosition", new XC_MethodHook() {
+			XposedHelpers.findAndHookMethod("com.htc.view.VolumePanel", null, "updatePanelRotationPosition", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					Dialog dlg = (Dialog)XposedHelpers.getObjectField(param.thisObject, "mDialog");
-					Dialog dlgEx = (Dialog)XposedHelpers.getObjectField(param.thisObject, "mDialogEx");
-						
-					float density = dlg.getContext().getResources().getDisplayMetrics().density;
-					int orientation = dlg.getContext().getResources().getConfiguration().orientation;
-					int bottomMargin = 75;
-					if (orientation == 2) bottomMargin = 40;
-						
-					Window dlgWin = dlg.getWindow();
-					Window dlgExWin = dlgEx.getWindow();
-					WindowManager.LayoutParams dlgWinAttrs = dlgWin.getAttributes();
-					WindowManager.LayoutParams dlgExWinAttrs = dlgExWin.getAttributes();
-					dlgWinAttrs.gravity = Gravity.BOTTOM;
-					dlgExWinAttrs.gravity = Gravity.BOTTOM;
-					dlgWinAttrs.y = Math.round(bottomMargin * density);
-					dlgExWinAttrs.y = Math.round(bottomMargin * density);
-					dlgWin.setAttributes(dlgWinAttrs);
-					dlgExWin.setAttributes(dlgExWinAttrs);
+					hookVolumePlanel(param);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_MoveVolume(LoadPackageParam lpparam) {
+		try {
+			XposedHelpers.findAndHookMethod("com.android.systemui.volume.VolumePanel", lpparam.classLoader, "updatePanelRotationPosition", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					hookVolumePlanel(param);
 				}
 			});
 		} catch (Throwable t) {
@@ -212,9 +234,128 @@ public class OtherMods {
 	
 	private static boolean updateScreenOn = false;
 	private static boolean updateScreenOff = false;
+	private static Object dpc = null;
 	
-	public static void ScreenAnim() {
+	private static void updateAnimDurations() {
+		if (dpc == null) {
+			XposedBridge.log("problem!");
+			return;
+		}
+		XMain.pref.reload();
+		long length = 250L;
+		if (XMain.pref.getBoolean("pref_key_other_screenanim_duration_enable", false))
+		length = (long)XMain.pref.getInt("pref_key_other_screenanim_duration", 250);
+		
+		if (XMain.pref_screenoff != 0) {
+			ObjectAnimator mColorFadeOffAnimator = (ObjectAnimator)XposedHelpers.getObjectField(dpc, "mColorFadeOffAnimator");
+			mColorFadeOffAnimator.setDuration(length);
+		}
+		
+		if (XMain.pref_screenon != 0) {
+			ObjectAnimator mColorFadeOnAnimator = (ObjectAnimator)XposedHelpers.getObjectField(dpc, "mColorFadeOnAnimator");
+			mColorFadeOnAnimator.setDuration(length);
+		}
+	}
+	
+	private static BroadcastReceiver mBRAnimDuration = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			try {
+				updateAnimDurations();
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	};
+	
+	public static void execHook_ScreenColorFade(LoadPackageParam lpparam) {
+		XposedHelpers.findAndHookMethod("com.android.server.display.DisplayPowerController", lpparam.classLoader, "initialize", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				dpc = param.thisObject;
+				updateAnimDurations();
+				
+				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				IntentFilter intentfilter = new IntentFilter();
+				intentfilter.addAction("com.sensetoolbox.six.mods.action.UpdateAnimDuration");
+				mContext.registerReceiver(mBRAnimDuration, intentfilter);
+			}
+		});
+		
+		XposedHelpers.findAndHookMethod("com.android.server.display.DisplayPowerState", lpparam.classLoader, "prepareColorFade", Context.class, int.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				int mMode = (Integer)param.args[1];
+				if (mMode >= 100)
+					param.args[1] = mMode - 100;
+				else if (XMain.pref_screenoff != 0)
+					param.args[1] = XMain.pref_screenoff;
+			}
+		});
+		
+		if (XMain.pref_screenon != 0)
+		XposedHelpers.findAndHookMethod("com.android.server.display.DisplayPowerController", lpparam.classLoader, "animateScreenStateChange", int.class, boolean.class, new XC_MethodHook() {
+			@Override
+			@SuppressLint("InlinedApi")
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				int state = (Integer)param.args[0];
+				Object mPowerState = XposedHelpers.getObjectField(param.thisObject, "mPowerState");
+				ObjectAnimator mColorFadeOffAnimator = (ObjectAnimator)XposedHelpers.getObjectField(param.thisObject, "mColorFadeOffAnimator");
+				ObjectAnimator mColorFadeOnAnimator = (ObjectAnimator)XposedHelpers.getObjectField(param.thisObject, "mColorFadeOnAnimator");
+				
+				if (state == Display.STATE_ON && !(Boolean)param.args[1]) try {
+					param.setResult(null);
+					
+					if (mColorFadeOnAnimator.isStarted() || mColorFadeOffAnimator.isStarted()) return;
+					
+					boolean mPendingScreenOff = (Boolean)XposedHelpers.getObjectField(param.thisObject, "mPendingScreenOff");
+					if (mPendingScreenOff) {
+						XposedHelpers.callMethod(param.thisObject, "setScreenState", Display.STATE_OFF);
+						XposedHelpers.setObjectField(param.thisObject, "mPendingScreenOff", false);
+					}
+					
+					if (!(Boolean)XposedHelpers.callMethod(param.thisObject, "setScreenState", Display.STATE_ON)) return;
+					
+					Object mPowerRequest = XposedHelpers.getObjectField(param.thisObject, "mPowerRequest");
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					if ((Boolean)XposedHelpers.callMethod(mPowerRequest, "isBrightOrDim")) {
+						if ((Float)XposedHelpers.callMethod(mPowerState, "getColorFadeLevel") == 1.0F)
+							XposedHelpers.callMethod(mPowerState, "dismissColorFade");
+						else if ((Boolean)XposedHelpers.callMethod(mPowerState, "prepareColorFade", mContext, XMain.pref_screenon + 100))
+							mColorFadeOnAnimator.start();
+						else
+							mColorFadeOnAnimator.end();
+					} else {
+						XposedHelpers.callMethod(mPowerState, "setColorFadeLevel", 1.0F);
+						XposedHelpers.callMethod(mPowerState, "dismissColorFade");
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+	}
+	
+	public static void execHook_ScreenColorFadeFix() {
+		XposedHelpers.findAndHookMethod("android.view.SurfaceControl", null, "setPosition", float.class, float.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				long mNativeObject = (Long)XposedHelpers.getLongField(param.thisObject, "mNativeObject");
+				if (mNativeObject == 0L) param.setResult(null);
+			}
+		});
+		
+		XposedHelpers.findAndHookMethod("android.view.SurfaceControl", null, "setMatrix", float.class, float.class, float.class, float.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				long mNativeObject = (Long)XposedHelpers.getLongField(param.thisObject, "mNativeObject");
+				if (mNativeObject == 0L) param.setResult(null);
+			}
+		});
+	}
+	
+	public static void execHook_ScreenAnim() {
 		try {
+			XResources.setSystemWideReplacement("android", "bool", "config_animateScreenLights", false);
 			XposedHelpers.findAndHookMethod("com.android.server.power.DisplayPowerController", null, "setScreenOn", boolean.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
@@ -230,8 +371,7 @@ public class OtherMods {
 							if (beamLvl == 0.0F) {
 								XposedHelpers.callMethod(param.thisObject, "setScreenOn", false);
 							} else {
-								Object displaypowerstate = mPowerState;
-								if ((Boolean)XposedHelpers.callMethod(displaypowerstate, "prepareElectronBeam", XMain.pref_screenoff) && (Boolean)XposedHelpers.callMethod(mPowerState, "isScreenOn"))
+								if ((Boolean)XposedHelpers.callMethod(mPowerState, "prepareElectronBeam", XMain.pref_screenoff) && (Boolean)XposedHelpers.callMethod(mPowerState, "isScreenOn"))
 									mElectronBeamOffAnimator.start();
 								else
 									mElectronBeamOffAnimator.end();
@@ -253,8 +393,7 @@ public class OtherMods {
 							if (beamLvl == 1.0F) {
 								XposedHelpers.callMethod(mPowerState, "dismissElectronBeam");
 							} else {
-								Object displaypowerstate = mPowerState;
-								if ((Boolean)XposedHelpers.callMethod(displaypowerstate, "prepareElectronBeam", XMain.pref_screenon) && (Boolean)XposedHelpers.callMethod(mPowerState, "isScreenOn"))
+								if ((Boolean)XposedHelpers.callMethod(mPowerState, "prepareElectronBeam", XMain.pref_screenon) && (Boolean)XposedHelpers.callMethod(mPowerState, "isScreenOn"))
 									mElectronBeamOnAnimator.start();
 								else
 									mElectronBeamOnAnimator.end();
@@ -303,36 +442,39 @@ public class OtherMods {
 	}
 	
 	public static void execHook_fastUnlock(final LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.lockscreen.unlockscreen.HtcKeyInputUnlockView", lpparam.classLoader, "initView", new XC_MethodHook() {
+		XC_MethodHook hook = new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				final Object mLockPatternUtils = getObjectField(param.thisObject, "mLockPatternUtils");
-				final AutoCompleteTextView mPasswordEntry = (AutoCompleteTextView)getObjectField(param.thisObject, "mPasswordEntry");
-				if (mLockPatternUtils != null && mPasswordEntry != null) {
-					mPasswordEntry.addTextChangedListener(new TextWatcher() {
-						@Override
-						public void onTextChanged(CharSequence s, int start, int before, int count) {}
-						@Override
-						public void beforeTextChanged(CharSequence s, int start, int count,	int after) {}
-						
-						@Override
-						public void afterTextChanged(Editable s) {
-							if (mPasswordEntry != null) try {
-								if (mPasswordEntry.getText().length() > 3) {
-									Boolean isPinCorrect = (Boolean)callMethod(mLockPatternUtils, "checkPassword", mPasswordEntry.getText().toString());
-									if (isPinCorrect) {
-										Method onEditorAction = XposedHelpers.findMethodExact("com.htc.lockscreen.unlockscreen.HtcKeyInputUnlockView", lpparam.classLoader, "onEditorAction", TextView.class, int.class, KeyEvent.class);
-										onEditorAction.invoke(param.thisObject, null, 0, null);
-									}
-								}
-							} catch (Throwable t) {
-								XposedBridge.log(t);
+				final TextView mPasswordEntry = (TextView)getObjectField(param.thisObject, "mPasswordEntry");
+				if (mLockPatternUtils != null && mPasswordEntry != null)
+				mPasswordEntry.addTextChangedListener(new TextWatcher() {
+					@Override
+					public void onTextChanged(CharSequence s, int start, int before, int count) {}
+					@Override
+					public void beforeTextChanged(CharSequence s, int start, int count,	int after) {}
+					
+					@Override
+					public void afterTextChanged(Editable s) {
+						if (mPasswordEntry != null) try {
+							if (mPasswordEntry.getText().length() > 3) {
+								Boolean isPinCorrect = (Boolean)callMethod(mLockPatternUtils, "checkPassword", mPasswordEntry.getText().toString());
+								if (isPinCorrect) XposedHelpers.callMethod(param.thisObject, "verifyPasswordAndUnlock");
 							}
+						} catch (Throwable t) {
+							XposedBridge.log(t);
 						}
-					});
-				}
+					}
+				});
 			}
-		});
+		};
+		
+		if (Helpers.isLP()) {
+			findAndHookMethod("com.htc.lockscreen.keyguard.KeyguardPINView", lpparam.classLoader, "onFinishInflate", hook);
+			findAndHookMethod("com.htc.lockscreen.keyguard.KeyguardPasswordView", lpparam.classLoader, "onFinishInflate", hook);
+		} else {
+			findAndHookMethod("com.htc.lockscreen.unlockscreen.HtcKeyInputUnlockView", lpparam.classLoader, "initView", hook);
+		}
 	}
 	
 	public static void execHook_EnhancedInstaller(final LoadPackageParam lpparam) {
@@ -428,14 +570,21 @@ public class OtherMods {
 		resparam.res.hookLayout("com.google.android.youtube", "layout", "annotation_overlay", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
-				ImageView watermark = (ImageView)liparam.view.findViewById(resparam.res.getIdentifier("featured_channel_watermark", "id", "com.google.android.youtube"));
-				if (watermark != null) watermark.setAlpha(0f);
+				try {
+					ImageView watermark = (ImageView)liparam.view.findViewById(resparam.res.getIdentifier("branding_watermark", "id", "com.google.android.youtube"));
+					if (watermark != null) watermark.setAlpha(0f);
+					
+					ImageView watermark2 = (ImageView)liparam.view.findViewById(resparam.res.getIdentifier("featured_channel_watermark", "id", "com.google.android.youtube"));
+					if (watermark2 != null) watermark2.setAlpha(0f);
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
 			}
 		});
 	}
 	
-	public static void execHook_SafeVolume(final LoadPackageParam lpparam) {
-		findAndHookMethod("android.media.AudioService", lpparam.classLoader, "checkSafeMediaVolume", int.class, int.class, int.class, new XC_MethodHook() {
+	public static void execHook_SafeVolume() {
+		findAndHookMethod("android.media.AudioService", null, "checkSafeMediaVolume", int.class, int.class, int.class, new XC_MethodHook() {
 			@Override
 			public void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				param.setResult(true);
@@ -508,10 +657,10 @@ public class OtherMods {
 			if (photoSize == 2) photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_rect); else
 			if (km.inKeyguardRestrictedInputMode()) {
 				photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_ls);
-				if ((Helpers.isM8() || Helpers.isE8() || Helpers.isDesire816()) && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false)) photoHeight += 54;
+				if ((Helpers.isEight() || Helpers.isDesire816()) && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false)) photoHeight += 54;
 			} else {
 				photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height);
-				if (Helpers.isM8() || Helpers.isE8() || Helpers.isDesire816())
+				if (Helpers.isEight() || Helpers.isDesire816())
 				if (XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false))
 					photoHeight -= 58;
 				else
@@ -695,18 +844,27 @@ public class OtherMods {
 	}
 	
 	public static void execHook_RejectCallSilently(LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.phone.CallNotifier", lpparam.classLoader, "addCallLog", "com.android.internal.telephony.Connection", "com.android.internal.telephony.Connection.DisconnectCause", new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				try {
-					Enum<?> disconnectcause = (Enum<?>)param.args[1];
-					if (disconnectcause.ordinal() == 16)
-					param.args[1] = XposedHelpers.getStaticObjectField(findClass("com.android.internal.telephony.Connection.DisconnectCause", null), "NORMAL");
-				} catch (Throwable t) {
-					XposedBridge.log(t);
+		if (Helpers.isLP()) {
+			findAndHookMethod("com.android.phone.CallNotifier", lpparam.classLoader, "addCallLog", "com.android.internal.telephony.Connection", int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					if ((Integer)param.args[1] == 16) param.args[1] = 2;
 				}
-			}
-		});
+			});
+		} else {
+			findAndHookMethod("com.android.phone.CallNotifier", lpparam.classLoader, "addCallLog", "com.android.internal.telephony.Connection", "com.android.internal.telephony.Connection.DisconnectCause", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					try {
+						Enum<?> disconnectcause = (Enum<?>)param.args[1];
+						if (disconnectcause.ordinal() == 16)
+						param.args[1] = XposedHelpers.getStaticObjectField(findClass("com.android.internal.telephony.Connection.DisconnectCause", null), "NORMAL");
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+				}
+			});
+		}
 	}
 	
 	public static void execHook_EnhancedSecurity() {
@@ -836,6 +994,7 @@ public class OtherMods {
 		return sbns;
 	}
 	
+	@SuppressWarnings("deprecation")
 	private static void sendSbnsArray(ArrayList<StatusBarNotification> sbns, final Context mContext, boolean asBroadcast) {
 		if (asBroadcast) {
 			final Intent intent = new Intent("com.sensetoolbox.six.UPDATENOTIFICATIONS");
@@ -872,8 +1031,8 @@ public class OtherMods {
 			
 			if (pm.isScreenOn() && sleepMode && !isFromPhone) return;
 			if (lightUpScreen) {
-				pm.wakeUp(SystemClock.uptimeMillis());
-				pm.userActivity(SystemClock.uptimeMillis(), false);
+				XposedHelpers.callMethod(pm, "wakeUp", SystemClock.uptimeMillis());
+				XposedHelpers.callMethod(pm, "userActivity", SystemClock.uptimeMillis(), false);
 			}
 			
 			KeyguardManager kgMgr = (KeyguardManager)mContext.getSystemService(Context.KEYGUARD_SERVICE);
@@ -1094,8 +1253,8 @@ public class OtherMods {
 		}
 	}
 	
-	public static void execHook_LEDNotifyTimeout() {
-		XposedBridge.hookAllConstructors(findClass("com.android.server.NotificationManagerService", null), new XC_MethodHook() {
+	public static void execHook_LEDNotifyTimeout(LoadPackageParam lpparam) {
+		XposedBridge.hookAllConstructors(findClass("com.android.server.NotificationManagerService", lpparam.classLoader), new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				XposedHelpers.setIntField(param.thisObject, "mFlashTimeout", XMain.pref.getInt("pref_key_other_ledtimeout_value", 5));
@@ -1103,13 +1262,22 @@ public class OtherMods {
 		});
 	}
 	
-	public static void execHook_LEDOnCharge() {
-		XposedBridge.hookAllConstructors(findClass("com.android.server.NotificationManagerService", null), new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				XposedHelpers.setBooleanField(param.thisObject, "mFlashDuringPlugged", true);
-			}
-		});
+	public static void execHook_LEDOnCharge(LoadPackageParam lpparam) {
+		if (Helpers.isLP()) {
+			findAndHookMethod("com.android.server.notification.NotificationManagerService", lpparam.classLoader, "onStart", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					XposedHelpers.setBooleanField(param.thisObject, "mFlashNotifLightDuringCharging", true);
+				}
+			});
+		} else {
+			XposedBridge.hookAllConstructors(findClass("com.android.server.NotificationManagerService", lpparam.classLoader), new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					XposedHelpers.setBooleanField(param.thisObject, "mFlashDuringPlugged", true);
+				}
+			});
+		}
 	}
 	
 	public static void execHook_ContactsNoCornerSystem() {
@@ -1309,7 +1477,19 @@ public class OtherMods {
 	}
 	
 	public static void execHook_MusicChannelEQSTile(LoadPackageParam lpparam) {
-		try {
+		if (Helpers.isLP()) {
+			findAndHookMethod("com.android.systemui.statusbar.phone.QSTileHost", lpparam.classLoader, "getQSAvailableList", Context.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					int[] ai = (int[])param.getResult();
+					if (ai != null && ai.length > 0 && !Arrays.asList(ai).contains(17)) {
+						ai = Arrays.copyOf(ai, ai.length + 1);
+						ai[ai.length - 1] = 17;
+						param.setResult(ai);
+					}
+				}
+			});
+		} else try {
 			findAndHookMethod("com.android.systemui.statusbar.phone.QuickSettings", lpparam.classLoader, "getQSAvailableList", Context.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -1335,7 +1515,9 @@ public class OtherMods {
 			});
 		}
 		
-		findAndHookMethod("com.android.systemui.statusbar.quicksetting.QuickSettingMusicChannel", lpparam.classLoader, "onAttachedToWindow", new XC_MethodHook() {
+		String className = "com.android.systemui.statusbar.quicksetting.QuickSettingMusicChannel";
+		if (Helpers.isLP()) className = "com.android.systemui.qs.tiles.QuickSettingMusicChannel";
+		findAndHookMethod(className, lpparam.classLoader, "onAttachedToWindow", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
@@ -1399,6 +1581,7 @@ public class OtherMods {
 				quick_setting_image.setImageDrawable(modRes.getDrawable(R.drawable.icon_btn_music_channel_dark_xl));
 			}
 		});
+		if (!Helpers.isLP())
 		resparam.res.hookLayout("com.android.systemui", "layout", "quick_settings_tile_music_channel_minor", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {

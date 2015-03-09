@@ -37,10 +37,12 @@ import com.htc.preference.HtcPreferenceGroup;
 import com.htc.preference.HtcPreferenceScreen;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.MainActivity;
-import com.sensetoolbox.six.PrefsFragment;
+import com.sensetoolbox.six.MainFragment;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.SenseThemes.PackageTheme;
 import com.sensetoolbox.six.mods.XMain;
+import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.execution.CommandCapture;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -67,9 +69,9 @@ import android.graphics.Bitmap.Config;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Environment;
+import android.os.Process;
 import android.os.PowerManager.WakeLock;
 import android.provider.Settings;
 import android.util.LruCache;
@@ -84,6 +86,8 @@ import android.widget.TextView;
 
 public class Helpers {
 	
+	public static boolean hasRoot = false;
+	public static boolean hasBusyBox = false;
 	static List<PackageTheme> cached_pkgthm = new ArrayList<PackageTheme>();
 	static String cached_str;
 	public static ArrayList<AppData> installedAppsList = null;
@@ -103,15 +107,16 @@ public class Helpers {
 				return 130 * 130 * 4 / 1024;
 		}
 	};
-	public static List<Integer> allStyles;
+	public static ArrayList<Integer> allStyles;
 	public static SparseArray<Object[]> colors = new SparseArray<Object[]>();
 	public static int mFlashlightLevel = 0;
 	public static WakeLock mWakeLock;
+	public static AppShortcutAddDialog shortcutDlg = null;
 
 	private static synchronized boolean preloadLang(String lang) {
 		try {
 			if (l10n == null) {
-				FileInputStream in_s = new FileInputStream(Helpers.dataPath + "values-" + lang.replace("_", "-r") + "/strings.xml");
+				FileInputStream in_s = new FileInputStream(dataPath + "values-" + lang.replace("_", "-r") + "/strings.xml");
 				XmlPullParser parser = XmlPullParserFactory.newInstance().newPullParser();
 				l10n = new HashMap<String, String>();
 				parser.setInput(in_s, null);
@@ -181,6 +186,20 @@ public class Helpers {
 			return modRes.getString(resId);
 		else
 			return "???";
+	}
+	
+	public static String[] l10n_array(Context ctx, int resId) {
+		TypedArray ids = ctx.getResources().obtainTypedArray(resId);
+		List<String> array = new ArrayList<String>();
+		for (int i = 0; i < ids.length(); i++) {
+			int id = ids.getResourceId(i, 0);
+			if (id != 0)
+				array.add(l10n(ctx, id));
+			else
+				array.add("???");
+		}
+		ids.recycle();
+		return array.toArray(new String[array.size()]);
 	}
 	
 	public static String[] xl10n_array(XModuleResources modRes, int resId) {
@@ -389,7 +408,10 @@ public class Helpers {
 		
 		Window actWnd = act.getWindow();
 		actWnd.addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+		actWnd.setBackgroundDrawable(new ColorDrawable(color));
 		
+		act.findViewById(android.R.id.content).setFitsSystemWindows(true);
+		/*
 		Drawable bkg = actWnd.getDecorView().getBackground();
 		if (bkg instanceof ColorDrawable)
 			((ColorDrawable)bkg).setColor(color);
@@ -398,6 +420,7 @@ public class Helpers {
 			bkgState.addState(new int[] { android.R.attr.state_enabled }, new ColorDrawable(color));
 			actWnd.getDecorView().setBackground(bkgState);
 		}
+		*/
 	}
 	
 	public static synchronized int getCurrentTheme(Context context) {
@@ -504,7 +527,7 @@ public class Helpers {
 	
 	public static Drawable dropIconShadow(Context mContext, Drawable icon, Boolean force) {
 		if (!force)
-		if (PrefsFragment.prefs.getInt("pref_key_colorfilter_brightValue", 100) != 200 || PrefsFragment.prefs.getInt("pref_key_colorfilter_satValue", 100) != 0) return icon;
+		if (MainFragment.prefs.getInt("pref_key_colorfilter_brightValue", 100) != 200 || MainFragment.prefs.getInt("pref_key_colorfilter_satValue", 100) != 0) return icon;
 		
 		Bitmap bitmap = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
@@ -597,6 +620,10 @@ public class Helpers {
 		return Build.DEVICE.contains("htc_mec");
 	}
 	
+	public static boolean isEight() {
+		return isM8() || isE8();
+	}
+	
 	public static boolean isButterflyS() {
 		return Build.DEVICE.contains("dlxpul");
 	}
@@ -613,20 +640,43 @@ public class Helpers {
 		return (new Version(Build.VERSION.RELEASE).compareTo(new Version("4.4.3")) >= 0 ? true : false);
 	}
 	
+	public static boolean isLP() {
+		return Build.VERSION.SDK_INT >= 21;
+	}
+	
 	public static boolean isDualSIM() {
 		String dev_name = Build.DEVICE.toLowerCase(Locale.getDefault());
 		return dev_name.contains("dug") || dev_name.contains("dwg") || dev_name.contains("dtu");
 	}
 	
-	public static boolean isWakeGestures() {
-		String wake_gestures = "0";
+	public static String getWakeGestures() {
+		String wake_gestures = null;
 		try (BufferedReader br = new BufferedReader(new FileReader(new File("/sys/android_touch/wake_gestures")))) {
 			String line = br.readLine();
 			if (line != null) wake_gestures = line.trim();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		return (wake_gestures != null && wake_gestures.equals("1"));
+		return wake_gestures;
+	}
+	
+	public static void setWakeGestures(boolean state) {
+		int stateInt = 0;
+		if (state) stateInt = 1;
+		CommandCapture command = new CommandCapture(0, "echo " + stateInt + " > /sys/android_touch/wake_gestures");
+		try {
+			RootTools.getShell(true).add(command);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public static boolean isWakeGestures() {
+		String wake_gestures = getWakeGestures();
+		if (isLP())
+			return (wake_gestures != null);
+		else
+			return (wake_gestures != null && wake_gestures.equals("1"));
 	}
 	
 	public static void processResult(Activity act, int requestCode, int resultCode, Intent data) {
@@ -642,49 +692,49 @@ public class Helpers {
 			}
 			if (icon == null) icon = (Bitmap)data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
 
-			if (icon != null && PrefsFragment.lastShortcutKey != null) try {
+			if (icon != null && MainFragment.lastShortcutKey != null) try {
 				String dir = act.getFilesDir() + "/shortcuts";
-				String fileName = dir + "/" + PrefsFragment.lastShortcutKey + ".png";
+				String fileName = dir + "/" + MainFragment.lastShortcutKey + ".png";
 				File shortcutsDir = new File(dir);
 				shortcutsDir.mkdirs();
 				File shortcutFileName = new File(fileName);
 				try (FileOutputStream shortcutOutStream = new FileOutputStream(shortcutFileName)) {
 					if (icon.compress(CompressFormat.PNG, 100, shortcutOutStream))
-					PrefsFragment.prefs.edit().putString(PrefsFragment.lastShortcutKey + "_icon", shortcutFileName.getAbsolutePath()).commit();
+					MainFragment.prefs.edit().putString(MainFragment.lastShortcutKey + "_icon", shortcutFileName.getAbsolutePath()).commit();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
-			if (PrefsFragment.lastShortcutKey != null) {
-				if (PrefsFragment.lastShortcutKeyContents != null) PrefsFragment.prefs.edit().putString(PrefsFragment.lastShortcutKey, PrefsFragment.lastShortcutKeyContents).commit();
+			if (MainFragment.lastShortcutKey != null) {
+				if (MainFragment.lastShortcutKeyContents != null) MainFragment.prefs.edit().putString(MainFragment.lastShortcutKey, MainFragment.lastShortcutKeyContents).commit();
 				
 				String shortcutName = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
-				if (shortcutName != null) PrefsFragment.prefs.edit().putString(PrefsFragment.lastShortcutKey + "_name", shortcutName).commit();
+				if (shortcutName != null) MainFragment.prefs.edit().putString(MainFragment.lastShortcutKey + "_name", shortcutName).commit();
 				
 				Intent shortcutIntent = (Intent)data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
-				if (shortcutIntent != null) PrefsFragment.prefs.edit().putString(PrefsFragment.lastShortcutKey + "_intent", shortcutIntent.toUri(0)).commit();
+				if (shortcutIntent != null) MainFragment.prefs.edit().putString(MainFragment.lastShortcutKey + "_intent", shortcutIntent.toUri(0)).commit();
 			}
 			
-			if (PrefsFragment.shortcutDlg != null) PrefsFragment.shortcutDlg.dismiss();
+			if (shortcutDlg != null) shortcutDlg.dismiss();
 		}
 	}
 	
 	public static void getInstalledApps(Context ctx) {
 		final PackageManager pm = ctx.getPackageManager();
 		List<ApplicationInfo> packs = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-		Helpers.installedAppsList = new ArrayList<AppData>();
+		installedAppsList = new ArrayList<AppData>();
 		AppData app;
 		for (Iterator<ApplicationInfo> iterator = packs.iterator(); iterator.hasNext();) try {
 			ApplicationInfo applicationinfo = (ApplicationInfo)iterator.next();
 			app = new AppData();
 			app.label = applicationinfo.loadLabel(pm).toString();
 			app.pkgName = applicationinfo.packageName;
-			Helpers.installedAppsList.add(app);
+			installedAppsList.add(app);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Collections.sort(Helpers.installedAppsList, new Comparator<AppData>() {
+		Collections.sort(installedAppsList, new Comparator<AppData>() {
 			public int compare(AppData app1, AppData app2) {
 				return app1.label.compareToIgnoreCase(app2.label);
 			}
@@ -696,7 +746,7 @@ public class Helpers {
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		List<ResolveInfo> packs = pm.queryIntentActivities(mainIntent, 0);
-		Helpers.launchableAppsList = new ArrayList<AppData>();
+		launchableAppsList = new ArrayList<AppData>();
 		AppData app;
 		for (Iterator<ResolveInfo> iterator = packs.iterator(); iterator.hasNext();) try {
 			ResolveInfo resolveinfo = (ResolveInfo)iterator.next();
@@ -707,11 +757,11 @@ public class Helpers {
 				app.label = (String)resolveinfo.activityInfo.loadLabel(pm);
 			else
 				app.label = resolveinfo.loadLabel(pm).toString();
-			Helpers.launchableAppsList.add(app);
+			launchableAppsList.add(app);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		Collections.sort(Helpers.launchableAppsList, new Comparator<AppData>() {
+		Collections.sort(launchableAppsList, new Comparator<AppData>() {
 			public int compare(AppData app1, AppData app2) {
 				return app1.label.compareToIgnoreCase(app2.label);
 			}
@@ -720,7 +770,7 @@ public class Helpers {
 	
 	public static CharSequence getAppName(Context ctx, String pkgActName) {
 		PackageManager pm = ctx.getPackageManager();
-		String not_selected = Helpers.l10n(ctx, R.string.notselected);
+		String not_selected = l10n(ctx, R.string.notselected);
 		String[] pkgActArray = pkgActName.split("\\|");
 		ApplicationInfo ai = null;
 
@@ -743,60 +793,147 @@ public class Helpers {
 	}
 	
 	static {
-		allStyles = Arrays.asList(new Integer[] {
-			// Theme 1
+		allStyles = new ArrayList<Integer>(Arrays.asList(new Integer[] {
+			// Theme 0
 			getStyleId("HtcDeviceDefault"),
 			getStyleId("HtcDeviceDefault.CategoryOne"),
 			getStyleId("HtcDeviceDefault.CategoryTwo"),
 			getStyleId("HtcDeviceDefault.CategoryThree"),
 			getStyleId("HtcDeviceDefault.CategoryFour"),
-			// Theme 2
+			// Theme 1
 			getStyleId("ThemeOne"),
 			getStyleId("ThemeOne.CategoryOne"),
 			getStyleId("ThemeOne.CategoryTwo"),
 			getStyleId("ThemeOne.CategoryThree"),
 			getStyleId("ThemeOne.CategoryFour"),
-			// Theme 3
+			// Theme 2
 			getStyleId("ThemeTwo"),
 			getStyleId("ThemeTwo.CategoryOne"),
 			getStyleId("ThemeTwo.CategoryTwo"),
 			getStyleId("ThemeTwo.CategoryThree"),
 			getStyleId("ThemeTwo.CategoryFour"),
-			// Theme 4
+			// Theme 3
 			getStyleId("ThemeThree"),
 			getStyleId("ThemeThree.CategoryOne"),
 			getStyleId("ThemeThree.CategoryTwo"),
 			getStyleId("ThemeThree.CategoryThree"),
 			getStyleId("ThemeThree.CategoryFour"),
-		});
+		}));
 		
-		// Theme 1
-		//colors.put(allStyles.get(0), new Object[]{ "HtcDeviceDefault", 0xff252525, 0xff4ea770, 0xff141414 });
+		if (isLP()) {
+			ArrayList<Integer> allLollipopStyles = new ArrayList<Integer>(Arrays.asList(new Integer[] {
+				// Theme 4
+				getStyleId("ThemeFour"),
+				getStyleId("ThemeFour.CategoryOne"),
+				getStyleId("ThemeFour.CategoryTwo"),
+				getStyleId("ThemeFour.CategoryThree"),
+				getStyleId("ThemeFour.CategoryFour"),
+				// Theme 5
+				getStyleId("ThemeFive"),
+				getStyleId("ThemeFive.CategoryOne"),
+				getStyleId("ThemeFive.CategoryTwo"),
+				getStyleId("ThemeFive.CategoryThree"),
+				getStyleId("ThemeFive.CategoryFour"),
+				// Theme 6
+				getStyleId("ThemeSix"),
+				getStyleId("ThemeSix.CategoryOne"),
+				getStyleId("ThemeSix.CategoryTwo"),
+				getStyleId("ThemeSix.CategoryThree"),
+				getStyleId("ThemeSix.CategoryFour"),
+				// Theme 7
+				getStyleId("ThemeSeven"),
+				getStyleId("ThemeSeven.CategoryOne"),
+				getStyleId("ThemeSeven.CategoryTwo"),
+				getStyleId("ThemeSeven.CategoryThree"),
+				getStyleId("ThemeSeven.CategoryFour"),
+				// Theme 8
+				getStyleId("ThemeEight"),
+				getStyleId("ThemeEight.CategoryOne"),
+				getStyleId("ThemeEight.CategoryTwo"),
+				getStyleId("ThemeEight.CategoryThree"),
+				getStyleId("ThemeEight.CategoryFour"),
+				// Theme 9
+				getStyleId("ThemeNine"),
+				getStyleId("ThemeNine.CategoryOne"),
+				getStyleId("ThemeNine.CategoryTwo"),
+				getStyleId("ThemeNine.CategoryThree"),
+				getStyleId("ThemeNine.CategoryFour"),
+			}));
+			
+			allStyles.addAll(allLollipopStyles);
+		}
+		
+		// Theme 0
+		colors.put(allStyles.get(0), new Object[]{ "HtcDeviceDefault", 0xff252525, 0xff4ea770, 0xff141414 });
 		colors.put(allStyles.get(1), new Object[]{ "HtcDeviceDefault.CategoryOne", 0xff0086cb, 0xff0086cb, 0xff4b4b4b });
 		colors.put(allStyles.get(2), new Object[]{ "HtcDeviceDefault.CategoryTwo", 0xff4ea770, 0xff4ea770, 0xff4b4b4b });
 		colors.put(allStyles.get(3), new Object[]{ "HtcDeviceDefault.CategoryThree", 0xffff5d3d, 0xffff5d3d, 0xff787878 });
 		colors.put(allStyles.get(4), new Object[]{ "HtcDeviceDefault.CategoryFour", 0xff252525, 0xff4ea770, 0xff4ea770 });
 
-		// Theme 2
-		//colors.put(allStyles.get(5), new Object[]{ "ThemeOne", 0xff252525, 0xffff813d, 0xff141414 });
+		// Theme 1
+		colors.put(allStyles.get(5), new Object[]{ "ThemeOne", 0xff252525, 0xffff813d, 0xff141414 });
 		colors.put(allStyles.get(6), new Object[]{ "ThemeOne.CategoryOne", 0xffffa63d, 0xffffa63d, 0xff4b4b4b });
 		colors.put(allStyles.get(7), new Object[]{ "ThemeOne.CategoryTwo", 0xffe74457, 0xffe74457, 0xff4b4b4b });
 		colors.put(allStyles.get(8), new Object[]{ "ThemeOne.CategoryThree", 0xfff64541, 0xfff64541, 0xff787878 });
 		colors.put(allStyles.get(9), new Object[]{ "ThemeOne.CategoryFour", 0xff252525, 0xffff813d, 0xffff813d });
 		
-		// Theme 3
-		//colors.put(allStyles.get(10), new Object[]{ "ThemeTwo", 0xff252525, 0xff6658cf, 0xff141414 });
+		// Theme 2
+		colors.put(allStyles.get(10), new Object[]{ "ThemeTwo", 0xff252525, 0xff6658cf, 0xff141414 });
 		colors.put(allStyles.get(11), new Object[]{ "ThemeTwo.CategoryOne", 0xff0761B9, 0xff0761b9, 0xff4b4b4b });
 		colors.put(allStyles.get(12), new Object[]{ "ThemeTwo.CategoryTwo", 0xff07B7B9, 0xff07b7b9, 0xff4b4b4b });
 		colors.put(allStyles.get(13), new Object[]{ "ThemeTwo.CategoryThree", 0xffA325A3, 0xffa325a3, 0xff787878 });
 		colors.put(allStyles.get(14), new Object[]{ "ThemeTwo.CategoryFour", 0xff252525, 0xff6658cf, 0xff6658cf });
-
-		// Theme 4
+		
+		// Theme 3
 		//colors.put(allStyles.get(15), new Object[]{ "ThemeThree", 0xff252525, 0xff4ea770, 0xff141414 });
-		//colors.put(allStyles.get(16), new Object[]{ "ThemeThree.CategoryOne", 0xff252525, 0xff4ea770, 0xff4b4b4b });
+		colors.put(allStyles.get(16), new Object[]{ "ThemeThree.CategoryOne", 0xff252525, 0xff4ea770, 0xff4b4b4b });
 		//colors.put(allStyles.get(17), new Object[]{ "ThemeThree.CategoryTwo", 0xff252525, 0xff4ea770, 0xff4b4b4b });
-		//colors.put(allStyles.get(18), new Object[]{ "ThemeThree.CategoryThree", 0xff252525, 0xff4ea770, 0xff787878 });
-		//colors.put(allStyles.get(19), new Object[]{ "ThemeThree.CategoryFour", 0xff252525, 0xff4ea770, 0xff252525 });
+		colors.put(allStyles.get(18), new Object[]{ "ThemeThree.CategoryThree", 0xff252525, 0xff4ea770, 0xff787878 });
+		colors.put(allStyles.get(19), new Object[]{ "ThemeThree.CategoryFour", 0xff252525, 0xff4ea770, 0xff252525 });
+		
+		if (isLP()) {
+			// Theme 4
+			colors.put(allStyles.get(20), new Object[]{ "ThemeFour", 0xff252525, 0xff255999, 0xff141414 });
+			colors.put(allStyles.get(21), new Object[]{ "ThemeFour.CategoryOne", 0xff00afab, 0xff00afab, 0xff4b4b4b });
+			colors.put(allStyles.get(22), new Object[]{ "ThemeFour.CategoryTwo", 0xff0091b3, 0xff0091b3, 0xff4b4b4b });
+			colors.put(allStyles.get(23), new Object[]{ "ThemeFour.CategoryThree", 0xff062a30, 0xff062a30, 0xff787878 });
+			colors.put(allStyles.get(24), new Object[]{ "ThemeFour.CategoryFour", 0xff252525, 0xff255999, 0xff255999 });
+		
+			// Theme 5
+			colors.put(allStyles.get(25), new Object[]{ "ThemeFive", 0xff252525, 0xff3786e6, 0xff141414 });
+			colors.put(allStyles.get(26), new Object[]{ "ThemeFive.CategoryOne", 0xff252525, 0xff3786e6, 0xff4b4b4b });
+			//colors.put(allStyles.get(27), new Object[]{ "ThemeFive.CategoryTwo", 0xff252525, 0xff3786e6, 0xff4b4b4b });
+			colors.put(allStyles.get(28), new Object[]{ "ThemeFive.CategoryThree", 0xff252525, 0xff3786e6, 0xff787878 });
+			colors.put(allStyles.get(29), new Object[]{ "ThemeFive.CategoryFour", 0xff252525, 0xff3786e6, 0xff252525 });
+		
+			// Theme 6
+			colors.put(allStyles.get(30), new Object[]{ "ThemeSix", 0xff252525, 0xffff647e, 0xff141414 });
+			//colors.put(allStyles.get(31), new Object[]{ "ThemeSix.CategoryOne", 0xff00afab, 0xff00afab, 0xff4b4b4b });
+			colors.put(allStyles.get(32), new Object[]{ "ThemeSix.CategoryTwo", 0xffff7376, 0xffff7376, 0xff4b4b4b });
+			colors.put(allStyles.get(33), new Object[]{ "ThemeSix.CategoryThree", 0xff62b1bd, 0xff62b1bd, 0xff787878 });
+			colors.put(allStyles.get(34), new Object[]{ "ThemeSix.CategoryFour", 0xff252525, 0xffff647e, 0xffff647e });
+		
+			// Theme 7
+			colors.put(allStyles.get(35), new Object[]{ "ThemeSeven", 0xff252525, 0xff62b1bd, 0xff141414 });
+			//colors.put(allStyles.get(36), new Object[]{ "ThemeSeven.CategoryOne", 0xffff7376, 0xffff7376, 0xff4b4b4b });
+			//colors.put(allStyles.get(37), new Object[]{ "ThemeSeven.CategoryTwo", 0xff00afab, 0xff00afab, 0xff4b4b4b });
+			colors.put(allStyles.get(38), new Object[]{ "ThemeSeven.CategoryThree", 0xffff647e, 0xffff647e, 0xff787878 });
+			colors.put(allStyles.get(39), new Object[]{ "ThemeSeven.CategoryFour", 0xff252525, 0xff62b1bd, 0xff62b1bd });
+		
+			// Theme 8
+			colors.put(allStyles.get(40), new Object[]{ "ThemeEight", 0xff252525, 0xffd0343a, 0xff141414 });
+			colors.put(allStyles.get(41), new Object[]{ "ThemeEight.CategoryOne", 0xffff647e, 0xffff647e, 0xff4b4b4b });
+			//colors.put(allStyles.get(42), new Object[]{ "ThemeEight.CategoryTwo", 0xffff7376, 0xffff7376, 0xff4b4b4b });
+			colors.put(allStyles.get(43), new Object[]{ "ThemeEight.CategoryThree", 0xfffe4a5d, 0xfffe4a5d, 0xff787878 });
+			colors.put(allStyles.get(44), new Object[]{ "ThemeEight.CategoryFour", 0xff252525, 0xffd0343a, 0xffd0343a });
+			
+			// Theme 9
+			colors.put(allStyles.get(45), new Object[]{ "ThemeNine", 0xff252525, 0xffc9a892, 0xfff3cbb1 });
+			colors.put(allStyles.get(46), new Object[]{ "ThemeNine.CategoryOne", 0xffa57f74, 0xffa57f74, 0xffd1a194 });
+			colors.put(allStyles.get(47), new Object[]{ "ThemeNine.CategoryTwo", 0xffce9374, 0xffce9374, 0xfff1b08e });
+			colors.put(allStyles.get(48), new Object[]{ "ThemeNine.CategoryThree", 0xff118b9c, 0xff118b9c, 0xff17b7cd });
+			//colors.put(allStyles.get(49), new Object[]{ "ThemeNine.CategoryFour", 0xff252525, 0xffc9a892, 0xfff3cbb1 });
+		}
 	}
 	
 	public static ArrayList<View> getChildViewsRecursive(View view) {
@@ -840,6 +977,7 @@ public class Helpers {
 		return isHapticAllowed;
 	}
 	
+	@SuppressWarnings("deprecation")
 	public static String getNextAlarm(Context ctx) {
 		if (ctx != null)
 			return Settings.System.getString(ctx.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
@@ -852,5 +990,123 @@ public class Helpers {
 			return Settings.System.getLong(ctx.getContentResolver(), "next_alarm_time", -1);
 		else
 			return -1;
+	}
+	
+	static boolean isWaitingForCmd = false;
+	public static boolean setButtonBacklightTo(final int pref_keyslight, final boolean applyNoMatterWhat) {
+		if (applyNoMatterWhat) isWaitingForCmd = false;
+		if (isWaitingForCmd) return false; else try {
+			isWaitingForCmd = true;
+			final String currents = "/sys/class/leds/button-backlight/currents";
+			CommandCapture command = new CommandCapture(0, "cat " + currents) {
+				int lineCnt = 0;
+				
+				@Override
+				public void commandOutput(int id, String line) {
+					if (lineCnt > 0) return;
+					
+					String level = "20";
+					if (pref_keyslight == 2) level = "7";
+					else if (pref_keyslight == 3) level = "3";
+					else if (pref_keyslight == 4) level = "1";
+					else if (pref_keyslight == 5) level = "0";
+					
+					if (!line.trim().equals(level) || applyNoMatterWhat) {
+						/*
+						final String[] cmdsDefault = {
+							"chown 1000 " + currents,
+							"chmod 644 " + currents,
+							"echo 20 > " + currents
+						};
+						*/
+						final String[] cmdsPerm = {
+							"chown " + String.valueOf(Process.myUid()) + " " + currents,
+							"chmod 644 " + currents,
+							"echo " + level + " > " + currents,
+							"chmod 444 " + currents
+						};
+						final String[] cmds = {
+							"chmod 644 " + currents,
+							"echo " + level + " > " + currents,
+							"chmod 444 " + currents
+						};
+						
+						try {
+							CommandCapture commandOwner = new CommandCapture(0, "stat -c '%u' " + currents) {
+								int lineCnt2 = 0;
+								
+								@Override
+								public void commandOutput(int id, String line) {
+									if (lineCnt2 == 0) try {
+										if (!line.trim().equals(String.valueOf(Process.myUid()))) {
+											RootTools.getShell(true).add(new CommandCapture(0, 3000, cmdsPerm));
+										} else {
+											RootTools.getShell(false).add(new CommandCapture(0, 3000, cmds));
+										}
+
+										// 500ms interval between backlight updates
+										new Thread() {
+											@Override
+											public void run() {
+												try {
+													sleep(500);
+													isWaitingForCmd = false;
+												} catch (Exception e) {
+													e.printStackTrace();
+												}
+											}
+										}.start();
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+									lineCnt2++;
+								}
+							};
+							RootTools.getShell(false).add(commandOwner);
+						} catch (Exception e) {
+							e.printStackTrace();
+						}
+					} else isWaitingForCmd = false;
+					lineCnt++;
+				}
+			};
+			RootTools.getShell(false).add(command);
+			return true;
+		} catch (Exception e) {
+			e.printStackTrace();
+			isWaitingForCmd = false;
+			return false;
+		}
+	}
+	
+	/**
+	 * Enables or diables the init script for vol2wake
+	 * @param newState true to enable, false to disable
+	 */
+	public static void initScriptHandler(Boolean newState) {
+		if (newState) {
+			CommandCapture command = new CommandCapture(0,
+					"mount -o rw,remount /system",
+					"echo \"#!/system/bin/sh\n\necho 1 > /sys/keyboard/vol_wakeup\nchmod 444 /sys/keyboard/vol_wakeup\" > /etc/init.d/89s5tvol2wake",
+					"chmod 755 /system/etc/init.d/89s5tvol2wake",
+					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)$\\)/\\1   WAKE_DROPPED/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",
+					"mount -o ro,remount /system");
+			try {
+				RootTools.getShell(true).add(command);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		} else {
+			CommandCapture command = new CommandCapture(0,
+					"mount -o rw,remount /system",
+					"rm -f /etc/init.d/89s5tvol2wake",
+					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)\\)\\s\\+WAKE_DROPPED/\\1/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",
+					"mount -o ro,remount /system");
+			try {
+				RootTools.getShell(true).add(command);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 }

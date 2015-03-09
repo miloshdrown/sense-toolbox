@@ -18,7 +18,9 @@ import android.media.AudioManager;
 import android.os.Build;
 import android.os.Handler;
 import android.os.PowerManager;
+import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
+import android.telecom.TelecomManager;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -54,7 +56,7 @@ public class ControlsMods {
 		try {
 			final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
 
-			findAndHookMethod(clsPWM, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
+			XC_MethodHook hook = new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					KeyEvent keyEvent = (KeyEvent)param.args[0];
@@ -73,7 +75,10 @@ public class ControlsMods {
 						}
 					}
 				}
-			});
+			};
+			Object[] argsAndHook = { KeyEvent.class, int.class, boolean.class, hook };
+			if (Helpers.isLP()) argsAndHook = new Object[] { KeyEvent.class, int.class, hook };
+			findAndHookMethod(clsPWM, "interceptKeyBeforeQueueing", argsAndHook);
 			
 			findAndHookMethod(clsPWM, "interceptKeyBeforeDispatching", "android.view.WindowManagerPolicy$WindowState", KeyEvent.class, int.class, new XC_MethodHook() {
 				@Override
@@ -124,12 +129,16 @@ public class ControlsMods {
 				}
 			});
 			
-			findAndHookMethod(clsPWM, "launchAssistAction", new XC_MethodHook() {
+			XC_MethodHook assistHook = new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 					assistAndSearchPanelOverride(param);
 				}
-			});
+			};
+			
+			Object[] assistArgsAndHook = { assistHook };
+			if (Helpers.isLP()) assistArgsAndHook = new Object[] { String.class, assistHook };
+			findAndHookMethod(clsPWM, "launchAssistAction", assistArgsAndHook);
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -148,14 +157,20 @@ public class ControlsMods {
 				case 5: GlobalActions.goToSleep(mContext); break;
 				case 6: GlobalActions.takeScreenshot(mContext); break;
 				case 7: Object amn = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
-						XposedHelpers.callMethod(amn, "dismissKeyguardOnNextActivity");
+						if (Helpers.isLP())
+							XposedHelpers.callMethod(amn, "keyguardWaitingForActivityDrawn");
+						else
+							XposedHelpers.callMethod(amn, "dismissKeyguardOnNextActivity");
 						GlobalActions.launchApp(mContext, 4); break;
 				case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassist_toggle", "0"))); break;
 				case 9: GlobalActions.killForegroundApp(mContext); break;
 				case 10: GlobalActions.simulateMenu(mContext); break;
 				case 11: GlobalActions.openRecents(mContext); break;
 				case 12: Object amn2 = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
-						XposedHelpers.callMethod(amn2, "dismissKeyguardOnNextActivity");
+						if (Helpers.isLP())
+							XposedHelpers.callMethod(amn2, "keyguardWaitingForActivityDrawn");
+						else
+							XposedHelpers.callMethod(amn2, "dismissKeyguardOnNextActivity");
 						GlobalActions.launchShortcut(mContext, 4); break;
 				case 13: GlobalActions.switchToPrevApp(mContext); break;
 			}
@@ -171,12 +186,11 @@ public class ControlsMods {
 		});
 	}
 
-	public static void execHook_Vol2Wake(final LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", lpparam.classLoader, "isWakeKeyWhenScreenOff", int.class, new XC_MethodHook() {
+	public static void execHook_Vol2Wake() {
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "isWakeKeyWhenScreenOff", int.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				int keyCode = (Integer) param.args[0];
-				//XposedBridge.log("Pressed button! Keycode = " + String.valueOf(keyCode));
+				int keyCode = (Integer)param.args[0];
 				if (keyCode == KeyEvent.KEYCODE_VOLUME_UP || keyCode == KeyEvent.KEYCODE_VOLUME_DOWN)
 					param.setResult(true);
 			}
@@ -196,7 +210,7 @@ public class ControlsMods {
 		}
 	};
 	
-	public static void execHook_PowerFlash(LoadPackageParam lpparam) {
+	public static void execHook_PowerFlash() {
 		final Class<?> clsPWM = findClass("com.android.internal.policy.impl.PhoneWindowManager", null);
 		findAndHookMethod(clsPWM, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
 			@Override
@@ -206,8 +220,9 @@ public class ControlsMods {
 			}
 		});
 		
-		findAndHookMethod(clsPWM, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
+		XC_MethodHook hook = new XC_MethodHook() {
 			@Override
+			@SuppressWarnings("deprecation")
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				// Power and volkeys are pressed at the same time
 				if (isVolumePressed) return;
@@ -234,8 +249,8 @@ public class ControlsMods {
 							// Post only one delayed runnable that waits for long press timeout
 							if (!isWaitingForPowerLongPressed)
 							mHandler.postDelayed(new Runnable(){
-								@SuppressLint("Wakelock")
 								@Override
+								@SuppressLint("Wakelock")
 								public void run() {
 									if (isPowerPressed) {
 										isPowerLongPressed = true;
@@ -265,9 +280,7 @@ public class ControlsMods {
 								Helpers.mFlashlightLevel = 0;
 								GlobalActions.setFlashlight(0);
 								if (Helpers.mWakeLock != null && Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
-								//XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
-								//XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
-								mPowerManager.wakeUp(SystemClock.uptimeMillis());
+								XposedHelpers.callMethod(mPowerManager, "wakeUp", SystemClock.uptimeMillis());
 								param.setResult(0);
 							} catch (Throwable t) {
 								XposedBridge.log(t);
@@ -278,12 +291,18 @@ public class ControlsMods {
 					}
 				}
 			}
-		});
+		};
+		
+		Object[] argsAndHook = { KeyEvent.class, int.class, boolean.class, hook };
+		if (Helpers.isLP()) argsAndHook = new Object[] { KeyEvent.class, int.class, hook };
+		findAndHookMethod(clsPWM, "interceptKeyBeforeQueueing", argsAndHook);
 	}
 	
-	public static void execHook_VolumeMediaButtons(LoadPackageParam lpparam, final boolean vol2wakeEnabled) {
-		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {
+	public static void execHook_VolumeMediaButtons(final boolean vol2wakeEnabled) {
+		XC_MethodHook hook = new XC_MethodHook() {
 			@Override
+			@SuppressLint("NewApi")
+			@SuppressWarnings("deprecation")
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				// Power and volkeys are pressed at the same time
 				if (isPowerPressed) return;
@@ -299,6 +318,7 @@ public class ControlsMods {
 				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
 					// Volume long press
 					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+					final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 					if ((keycode == KeyEvent.KEYCODE_VOLUME_UP || keycode == KeyEvent.KEYCODE_VOLUME_DOWN) && !mPowerManager.isScreenOn()) {
 						//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
 						if (action == KeyEvent.ACTION_DOWN) {
@@ -316,15 +336,15 @@ public class ControlsMods {
 													XMain.pref.reload();
 													int pref_mediaUp = Integer.parseInt(XMain.pref.getString("pref_key_controls_mediaupaction", "0"));
 													if (pref_mediaUp == 0) break;
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, pref_mediaUp));
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, pref_mediaUp));
+													GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_DOWN, pref_mediaUp));
+													GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_UP, pref_mediaUp));
 													break;
 												case KeyEvent.KEYCODE_VOLUME_DOWN:
 													XMain.pref.reload();
 													int pref_mediaDown = Integer.parseInt(XMain.pref.getString("pref_key_controls_mediadownaction", "0"));
 													if (pref_mediaDown == 0) break;
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_DOWN, pref_mediaDown));
-													GlobalActions.sendMediaButton(new KeyEvent(KeyEvent.ACTION_UP, pref_mediaDown));
+													GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_DOWN, pref_mediaDown));
+													GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_UP, pref_mediaDown));
 													break;
 												default:
 													break;
@@ -343,17 +363,37 @@ public class ControlsMods {
 							// Kill all callbacks (removing only posted Runnable is not working... no idea)
 							if (mHandler != null) mHandler.removeCallbacksAndMessages(null);
 							if (!isVolumeLongPressed) {
-								boolean isMusicActive = (Boolean)XposedHelpers.callMethod(param.thisObject, "isMusicActive");
-								boolean isInCall = (Boolean)XposedHelpers.callMethod(param.thisObject, "isInCall");
-								// If music stream is playing, adjust its volume
-								if (isMusicActive) XposedHelpers.callMethod(param.thisObject, "handleVolumeKey", AudioManager.STREAM_MUSIC, keycode);
-								// If voice call is active while screen off by proximity sensor, adjust its volume
-								else if (isInCall) XposedHelpers.callMethod(param.thisObject, "handleVolumeKey", AudioManager.STREAM_VOICE_CALL, keycode);
-								// Use vol2wake in other cases
-								else if (vol2wakeEnabled) {
-									mPowerManager.wakeUp(SystemClock.uptimeMillis());
-									//XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 0, 0);
-									//XposedHelpers.callMethod(param.thisObject, "sendEvent", KeyEvent.KEYCODE_POWER, 1, 0);
+								if (Helpers.isLP()) {
+									AudioManager am = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+									TelecomManager tm = (TelecomManager)mContext.getSystemService(Context.TELECOM_SERVICE);
+									WakeLock mBroadcastWakeLock = (WakeLock)XposedHelpers.getObjectField(param.thisObject, "mBroadcastWakeLock");
+									int k = AudioManager.ADJUST_RAISE;
+									if (keycode != KeyEvent.KEYCODE_VOLUME_UP) k = AudioManager.ADJUST_LOWER;
+									// If music stream is playing, adjust its volume
+									if (am.isMusicActive()) {
+										mBroadcastWakeLock.acquire();
+										am.adjustStreamVolume(AudioManager.STREAM_MUSIC, k, 0);
+										if (mBroadcastWakeLock.isHeld()) mBroadcastWakeLock.release();
+									}
+									// If voice call is active while screen off by proximity sensor, adjust its volume
+									else if (tm.isInCall()) {
+										mBroadcastWakeLock.acquire();
+										am.adjustStreamVolume(AudioManager.STREAM_VOICE_CALL, k, 0);
+										if (mBroadcastWakeLock.isHeld()) mBroadcastWakeLock.release();
+									}
+									// Use vol2wake in other cases
+									else if (vol2wakeEnabled)
+										XposedHelpers.callMethod(mPowerManager, "wakeUp", SystemClock.uptimeMillis());
+								} else {
+									boolean isMusicActive = (Boolean)XposedHelpers.callMethod(param.thisObject, "isMusicActive");
+									boolean isInCall = (Boolean)XposedHelpers.callMethod(param.thisObject, "isInCall");
+									// If music stream is playing, adjust its volume
+									if (isMusicActive) XposedHelpers.callMethod(param.thisObject, "handleVolumeKey", AudioManager.STREAM_MUSIC, keycode);
+									// If voice call is active while screen off by proximity sensor, adjust its volume
+									else if (isInCall) XposedHelpers.callMethod(param.thisObject, "handleVolumeKey", AudioManager.STREAM_VOICE_CALL, keycode);
+									// Use vol2wake in other cases
+									else if (vol2wakeEnabled)
+										XposedHelpers.callMethod(mPowerManager, "wakeUp", SystemClock.uptimeMillis());
 								}
 								param.setResult(0);
 							}
@@ -362,19 +402,26 @@ public class ControlsMods {
 					}
 				}
 			}
-		});
+		};
+				
+		Object[] argsAndHook = { KeyEvent.class, int.class, boolean.class, hook };
+		if (Helpers.isLP()) argsAndHook = new Object[] { KeyEvent.class, int.class, hook };
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", argsAndHook);
 	}
 	
-	public static void exec_SwapVolumeCCWLand(LoadPackageParam lpparam) {
+	public static void exec_SwapVolumeCCWLand() {
 		try {
-			if (Build.VERSION.SDK_INT >= 19) {
-				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustMasterVolume", int.class, int.class, String.class, hook_adjustVolumeParam0);
-				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustSuggestedStreamVolume", int.class, int.class, int.class, String.class, hook_adjustVolumeParam0);
-				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustLocalOrRemoteStreamVolume", int.class, int.class, String.class, hook_adjustVolumeParam1);
+			if (Helpers.isLP()) {
+				findAndHookMethod("android.media.AudioService", null, "adjustMasterVolume", int.class, int.class, String.class, hook_adjustVolumeParam0);
+				findAndHookMethod("android.media.AudioService", null, "adjustSuggestedStreamVolume", int.class, int.class, int.class, String.class, int.class, hook_adjustVolumeParam0);
+			} else if (Build.VERSION.SDK_INT >= 19) {
+				findAndHookMethod("android.media.AudioService", null, "adjustMasterVolume", int.class, int.class, String.class, hook_adjustVolumeParam0);
+				findAndHookMethod("android.media.AudioService", null, "adjustSuggestedStreamVolume", int.class, int.class, int.class, String.class, hook_adjustVolumeParam0);
+				findAndHookMethod("android.media.AudioService", null, "adjustLocalOrRemoteStreamVolume", int.class, int.class, String.class, hook_adjustVolumeParam1);
 			} else {
-				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustMasterVolume", int.class, int.class, hook_adjustVolumeParam0);
-				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustSuggestedStreamVolume", int.class, int.class, int.class, hook_adjustVolumeParam0);
-				findAndHookMethod("android.media.AudioService", lpparam.classLoader, "adjustLocalOrRemoteStreamVolume", int.class, int.class, hook_adjustVolumeParam1);
+				findAndHookMethod("android.media.AudioService", null, "adjustMasterVolume", int.class, int.class, hook_adjustVolumeParam0);
+				findAndHookMethod("android.media.AudioService", null, "adjustSuggestedStreamVolume", int.class, int.class, int.class, hook_adjustVolumeParam0);
+				findAndHookMethod("android.media.AudioService", null, "adjustLocalOrRemoteStreamVolume", int.class, int.class, hook_adjustVolumeParam1);
 			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
@@ -441,7 +488,7 @@ public class ControlsMods {
 			});
 		}
 	}
-	public static void execHook_M8BackLongpress(LoadPackageParam lpparam) {
+	public static void execHook_BackLongpressEight(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -489,7 +536,7 @@ public class ControlsMods {
 			}
 		});
 	}
-	public static void execHook_M8HomeLongpress(LoadPackageParam lpparam) {
+	public static void execHook_HomeLongpressEight(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
@@ -557,7 +604,7 @@ public class ControlsMods {
 			}
 		});
 	}
-	public static void execHook_M8RecentsLongpress(LoadPackageParam lpparam) {
+	public static void execHook_RecentsLongpressEight(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.NavigationBarView", lpparam.classLoader, "onFinishInflate", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
@@ -619,15 +666,21 @@ public class ControlsMods {
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				try {
 					if (XMain.pref.getBoolean("pref_key_controls_keyshaptic_enable", false)) {
-						int duration_keys = XMain.pref.getInt("pref_key_controls_keyshaptic", 15);
-						XposedHelpers.setObjectField(param.thisObject, "mVirtualKeyVibePattern", new long[] { 0, duration_keys, 0, 0 });
+						int duration_keys = XMain.pref.getInt("pref_key_controls_keyshaptic", 20);
+						if (Helpers.isLP())
+							XposedHelpers.setObjectField(param.thisObject, "mVirtualKeyVibePattern", new long[] { duration_keys });
+						else
+							XposedHelpers.setObjectField(param.thisObject, "mVirtualKeyVibePattern", new long[] { 0, duration_keys, 0, 0 });
 					}
 					if (XMain.pref.getBoolean("pref_key_controls_longpresshaptic_enable", false)) {
 						int duration_long = XMain.pref.getInt("pref_key_controls_longpresshaptic", 21);
-						XposedHelpers.setObjectField(param.thisObject, "mLongPressVibePattern", new long[] { 0, 1, 20, duration_long });
+						if (Helpers.isLP())
+							XposedHelpers.setObjectField(param.thisObject, "mLongPressVibePattern", new long[] { duration_long });
+						else
+							XposedHelpers.setObjectField(param.thisObject, "mLongPressVibePattern", new long[] { 0, 1, 20, duration_long });
 					}
 					if (XMain.pref.getBoolean("pref_key_controls_keyboardhaptic_enable", false)) {
-						int duration_keyb = XMain.pref.getInt("pref_key_controls_keyboardhaptic", 15);
+						int duration_keyb = XMain.pref.getInt("pref_key_controls_keyboardhaptic", 20);
 						XposedHelpers.setObjectField(param.thisObject, "mKeyboardTapVibePattern", new long[] { duration_keyb });
 					}
 				} catch (Throwable t) {
@@ -642,7 +695,7 @@ public class ControlsMods {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				try {
-					int duration_keyb = XMain.pref.getInt("pref_key_controls_keyboardhaptic", 15);
+					int duration_keyb = XMain.pref.getInt("pref_key_controls_keyboardhaptic", 20);
 					XposedHelpers.setStaticIntField(findClass("com.htc.sense.ime.HTCIMMData", lpparam.classLoader), "sVibrationDuration", duration_keyb);
 				} catch (Throwable t) {
 					XposedBridge.log(t);

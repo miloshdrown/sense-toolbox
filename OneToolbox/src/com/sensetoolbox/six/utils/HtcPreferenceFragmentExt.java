@@ -4,33 +4,56 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.Map.Entry;
 
+import com.htc.app.HtcProgressDialog;
+import com.htc.preference.HtcPreference;
 import com.htc.preference.HtcPreferenceFragment;
 import com.htc.preference.HtcPreferenceManager;
+import com.htc.preference.HtcPreferenceScreen;
+import com.htc.preference.HtcPreference.OnPreferenceChangeListener;
 import com.htc.widget.HtcAlertDialog;
+import com.htc.widget.HtcListView;
+import com.htc.widget.HtcToggleButtonLight;
+import com.htc.widget.HtcToggleButtonLight.OnCheckedChangeListener;
 import com.sensetoolbox.six.AboutScreen;
 import com.sensetoolbox.six.R;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.content.pm.PackageManager;
+import android.content.res.Configuration;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Environment;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
-	private SharedPreferences prefs = null;
+	public static SharedPreferences prefs = null;
+	public HtcToggleButtonLight OnOffSwitch;
+	public HtcListView prefListView;
+	public LinearLayout contentsView;
+	public TextView themeHint;
 	public int rebootType = 0;
+	public int menuType = 0;
 	
 	private boolean handleOptionsItemSelected(final Activity act, MenuItem item) {
 		if (item.getItemId() == R.id.softreboot) {
@@ -186,15 +209,242 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 	@Override
 	public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
 		menu.clear();
-		inflater.inflate(R.menu.menu_mods, menu);
-		menu.getItem(2).setIcon(Helpers.applySenseTheme(getActivity(), menu.getItem(2).getIcon()));
-		if (rebootType == 1) {
-			menu.getItem(0).setIcon(R.drawable.ic_menu_restart_prism);
-			menu.getItem(0).setTitle(Helpers.l10n(getActivity(), R.string.restart_prism));
-		} else if (rebootType == 2) {
-			menu.getItem(0).setIcon(R.drawable.ic_menu_restart_message);
-			menu.getItem(0).setTitle(Helpers.l10n(getActivity(), R.string.restart_messages));
+		
+		if (menuType == 0) {
+			inflater.inflate(R.menu.menu_mods, menu);
+			
+			menu.getItem(2).setIcon(Helpers.applySenseTheme(getActivity(), menu.getItem(2).getIcon()));
+			if (rebootType == 1) {
+				menu.getItem(0).setIcon(R.drawable.ic_menu_restart_prism);
+				menu.getItem(0).setTitle(Helpers.l10n(getActivity(), R.string.restart_prism));
+			} else if (rebootType == 2) {
+				menu.getItem(0).setIcon(R.drawable.ic_menu_restart_message);
+				menu.getItem(0).setTitle(Helpers.l10n(getActivity(), R.string.restart_messages));
+			}
+		} else if (menuType == 1) {
+			inflater.inflate(R.menu.menu_sub, menu);
+			
+			OnOffSwitch = (HtcToggleButtonLight)menu.getItem(1).getActionView().findViewById(R.id.onoffSwitch);
+			OnOffSwitch.setEnabled(true);
+			OnOffSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+				@Override
+				public void onCheckedChanged(HtcToggleButtonLight toggle, boolean state) {
+					prefs.edit().putBoolean("wake_gestures_active", state).commit();
+					Helpers.setWakeGestures(state);
+					applyThemeState(state);
+				}
+			});
+			
+			if (Helpers.isLP())
+				applyThemeState(Helpers.getWakeGestures().equals("1"));
+			else
+				applyThemeState(prefs.getBoolean("wake_gestures_active", false));
+		} else if (menuType == 2) {
+			inflater.inflate(R.menu.menu_sub, menu);
+			
+			OnOffSwitch = (HtcToggleButtonLight)menu.getItem(1).getActionView().findViewById(R.id.onoffSwitch);
+			OnOffSwitch.setEnabled(true);
+			OnOffSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+				@Override
+				public void onCheckedChanged(HtcToggleButtonLight toggle, boolean state) {
+					prefs.edit().putBoolean("eps_remap_active", state).commit();
+					applyState(state);
+				}
+			});
+			
+			applyState(prefs.getBoolean("eps_remap_active", false));
+			for (int i = 1; i <= 6; i++) initCell(i);
 		}
+	}
+	
+	// Wake gestures
+	public void applyThemeState(Boolean state) {
+		OnOffSwitch.setChecked(state);
+		if (state) {
+			prefListView.setVisibility(View.VISIBLE);
+			themeHint.setVisibility(View.GONE);
+		} else {
+			prefListView.setVisibility(View.GONE);
+			themeHint.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	// EPS Remap
+	public void applyState(boolean state) {
+		OnOffSwitch.setChecked(state);
+		if (state) {
+			contentsView.setVisibility(View.VISIBLE);
+			themeHint.setVisibility(View.GONE);
+		} else {
+			contentsView.setVisibility(View.GONE);
+			themeHint.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	int[][] cellArray = {
+		{ 0, 0, 0 },
+		{ R.id.cell1, R.id.cell1img, R.id.cell1txt },
+		{ R.id.cell2, R.id.cell2img, R.id.cell2txt },
+		{ R.id.cell3, R.id.cell3img, R.id.cell3txt },
+		{ R.id.cell4, R.id.cell4img, R.id.cell4txt },
+		{ R.id.cell5, R.id.cell5img, R.id.cell5txt },
+		{ R.id.cell6, R.id.cell6img, R.id.cell6txt }
+	};
+		
+	View.OnTouchListener otl = new View.OnTouchListener() {
+		@Override
+		public boolean onTouch(View v, MotionEvent event) {
+			if (OnOffSwitch.isChecked())
+			switch (event.getAction()) {
+				case 0:
+					v.setBackgroundColor(0xff888888);
+					break;
+				case 1:
+					v.setBackgroundColor(0xff666666);
+					editApp(v, (int)v.getTag());
+					break;
+			}
+			v.performClick();
+			return true;
+		}
+	};
+		
+	public void initCell(int cellnum) {
+		String pkgActName = prefs.getString("eps_remap_cell" + String.valueOf(cellnum), null);
+		updateCell(cellnum, pkgActName);
+		
+		int cellid = cellArray[cellnum][0];
+		LinearLayout cell = (LinearLayout)getActivity().findViewById(cellid);
+		cell.setTag(cellnum);
+		cell.setOnTouchListener(otl);
+		alignCell(cellnum);
+	}
+		
+	public void updateCell(int cellnum, String pkgActName) {
+		alignCell(cellnum);
+		int cellimgid = cellArray[cellnum][1];
+		int celltxtid = cellArray[cellnum][2];
+		try {
+			ImageView cellimg = (ImageView)getActivity().findViewById(cellimgid);
+			TextView celltxt = (TextView)getActivity().findViewById(celltxtid);
+			if (pkgActName != null) {
+				final PackageManager pm = getActivity().getApplicationContext().getPackageManager();
+				String[] pkgActArray = pkgActName.split("\\|");
+				cellimg.setImageDrawable(pm.getActivityIcon(new ComponentName(pkgActArray[0], pkgActArray[1])));
+				celltxt.setText(Helpers.getAppName(getActivity(), pkgActName));
+			} else {
+				cellimg.setImageResource(R.drawable.question_icon);
+				celltxt.setText(Helpers.l10n(getActivity(), R.string.array_default));
+			}
+		} catch (Exception e) {}
+	}
+		
+	public void alignCell(int cellnum) {
+		LinearLayout cell = (LinearLayout)getActivity().findViewById(cellArray[cellnum][0]);
+		ImageView cellimg = (ImageView)getActivity().findViewById(cellArray[cellnum][1]);
+		float density = getResources().getDisplayMetrics().density;
+		LinearLayout.LayoutParams lp = (LinearLayout.LayoutParams)cellimg.getLayoutParams();
+		
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) {
+			cell.setOrientation(LinearLayout.HORIZONTAL);
+			lp.setMargins(0, 0, Math.round(20 * density), 0);
+		} else {
+			cell.setOrientation(LinearLayout.VERTICAL);
+			lp.setMargins(0, 0, 0, Math.round(10 * density));
+		}
+		
+		cellimg.setLayoutParams(lp);
+	}
+	
+	private void editApp(View cell, final int id) {
+		HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
+		final String title = Helpers.l10n(getActivity(), R.string.various_extremepower_cell) + " " + String.valueOf(id);
+		builder.setTitle(title);
+		
+		TypedArray ids = getResources().obtainTypedArray(R.array.EPSRemaps);
+		List<String> newEntries = new ArrayList<String>();
+		for (int i = 0; i < ids.length(); i++) {
+			int itemid = ids.getResourceId(i, 0);
+			if (itemid != 0)
+				newEntries.add(Helpers.l10n(getActivity(), itemid));
+			else
+				newEntries.add("???");
+		}
+		ids.recycle();
+		
+		builder.setItems(newEntries.toArray(new CharSequence[newEntries.size()]), new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				switch (which) {
+					case 0:
+						prefs.edit().putString("eps_remap_cell" + String.valueOf(id), null).commit();
+						prefs.edit().putString("eps_remap_cell" + String.valueOf(id) + "_intent", null).commit();
+						initCell(id);
+						break;
+					case 1:
+						final DynamicPreference dp = new DynamicPreference(getActivity());
+						dp.setTitle(title);
+						dp.setDialogTitle(title);
+						dp.setKey("eps_remap_cell" + String.valueOf(id));
+						dp.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+							@Override
+							public boolean onPreferenceChange(HtcPreference pref, Object newValue) {
+								updateCell(id, (String)newValue);
+								return true;
+							}
+						});
+						HtcPreferenceScreen cat = (HtcPreferenceScreen)findPreference("dummy");
+						cat.removeAll();
+						cat.addPreference(dp);
+						
+						if (Helpers.launchableAppsList == null) {
+							final HtcProgressDialog dialogLoad = new HtcProgressDialog(getActivity());
+							dialogLoad.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
+							dialogLoad.setCancelable(false);
+							dialogLoad.show();
+							
+							new Thread() {
+								@Override
+								public void run() {
+									try {
+										Helpers.getLaunchableApps(getActivity());
+										getActivity().runOnUiThread(new Runnable(){
+											@Override
+											public void run(){
+												dp.show();
+											}
+										});
+										// Nasty hack! Wait for icons to load.
+										Thread.sleep(1000);
+										getActivity().runOnUiThread(new Runnable(){
+											@Override
+											public void run() {
+												dialogLoad.dismiss();
+											}
+										});
+									} catch (Exception e) {
+										e.printStackTrace();
+									}
+								}
+							}.start();
+						} else dp.show();
+						break;
+				}
+			}
+		});
+		builder.setNeutralButton(R.string.sense_themes_cancel, new DialogInterface.OnClickListener() {
+			@Override
+			public void onClick(DialogInterface dialog, int which) {
+				dialog.dismiss();
+			}
+		});
+		builder.show();
+	}
+
+	@Override
+	public void onConfigurationChanged(Configuration newConfig) {
+		super.onConfigurationChanged(newConfig);
+		if (menuType == 2) for (int i = 1; i <= 6; i++) alignCell(i);
 	}
 	
 	@Override

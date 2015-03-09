@@ -47,18 +47,34 @@ public class SettingsMods {
 	}
 	
 	public static void execHook_UnhidePrefs(final LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportROMVersion", new XC_MethodHook(){
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				param.setResult(true);
+		try {
+			findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportROMVersion", new XC_MethodHook(){
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(true);
+				}
+			});
+		} catch (Throwable t1) {
+			try {
+				findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportRomVersion", new XC_MethodHook(){
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+						param.setResult(true);
+					}
+				});
+			} catch (Throwable t2) {
+				XposedBridge.log(t2);
 			}
-		});
-		findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportDistributionTime", new XC_MethodHook(){
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				param.setResult(true);
-			}
-		});
+		}
+		
+		try {
+			findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportDistributionTime", new XC_MethodHook(){
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(true);
+				}
+			});
+		} catch (Throwable t) {}
 		
 		try {
 			findAndHookMethod("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader, "supportHardwareInformation", new XC_MethodHook(){
@@ -67,7 +83,7 @@ public class SettingsMods {
 					param.setResult(true);
 				}
 			});
-		} catch (Throwable t0) {
+		} catch (Throwable t1) {
 			try {
 				findAndHookMethod("com.android.settings.framework.activity.aboutphone.HtcAboutPhoneSettings", lpparam.classLoader, "doPlugin", Context.class, new XC_MethodHook(){
 					@Override
@@ -84,9 +100,8 @@ public class SettingsMods {
 						XposedHelpers.callMethod(param.thisObject, "addCallback", hwPref);
 					}
 				});
-			} catch (Throwable t) {
-				XposedBridge.log(t0);
-				XposedBridge.log(t);
+			} catch (Throwable t2) {
+				XposedBridge.log(t2);
 			}
 		}
 	}
