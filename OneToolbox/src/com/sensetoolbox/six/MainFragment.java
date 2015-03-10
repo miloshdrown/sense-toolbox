@@ -207,7 +207,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		}
 		
 		if (step == 0) {
-			if (!getQuickTipFlag("soft_reboot0")) showQuickTip(1); else {
+			if (!getQuickTipFlag("soft_reboot")) showQuickTip(1); else {
 				qtp.setExpandDirection(QuickTipPopup.EXPAND_DOWN);
 				qtp.setText(Helpers.l10n(getActivity(), R.string.soft_reboot_tip));
 				qtp.setOnUserDismissListener(new OnUserDismissListener() {
@@ -222,7 +222,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				qtp.showAsDropDown(getActivity().findViewById(R.id.softreboot));
 			}
 		} else if (step == 1) {
-			if (!getQuickTipFlag("backup_restore0")) showQuickTip(2); else {
+			if (!getQuickTipFlag("backup_restore")) showQuickTip(2); else {
 				qtp.setExpandDirection(QuickTipPopup.EXPAND_DOWN);
 				qtp.setText(Helpers.l10n(getActivity(), R.string.backup_restore_tip));
 				qtp.setOnUserDismissListener(new OnUserDismissListener() {
@@ -236,7 +236,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				disableTouch();
 				qtp.showAsDropDown(getActivity().findViewById(R.id.backuprestore));
 			}
-		} else if (step == 2 && getQuickTipFlag("toolbox_acramail0")) {
+		} else if (step == 2 && getQuickTipFlag("toolbox_acramail")) {
 			this.getHtcListView().setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 			this.getHtcListView().smoothScrollToPosition(17);
 			this.getHtcListView().postDelayed(new Runnable() {
