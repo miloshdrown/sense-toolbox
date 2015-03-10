@@ -230,15 +230,12 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 				@Override
 				public void onCheckedChanged(HtcToggleButtonLight toggle, boolean state) {
 					prefs.edit().putBoolean("wake_gestures_active", state).commit();
-					Helpers.setWakeGestures(state);
+					if (!Helpers.isEight()) Helpers.setWakeGestures(state);
 					applyThemeState(state);
 				}
 			});
 			
-			if (Helpers.isLP())
-				applyThemeState(Helpers.getWakeGestures().equals("1"));
-			else
-				applyThemeState(prefs.getBoolean("wake_gestures_active", false));
+			applyThemeState(prefs.getBoolean("wake_gestures_active", false));
 		} else if (menuType == 2) {
 			inflater.inflate(R.menu.menu_sub, menu);
 			
@@ -452,8 +449,8 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 		return handleOptionsItemSelected(getActivity(), item);
 	}
 	
-	public void onCreate(Bundle savedInstanceState, int pref_defaults) {
-		super.onCreate(savedInstanceState);
+	public void onActivityCreated(Bundle savedInstanceState, int pref_defaults) {
+		super.onActivityCreated(savedInstanceState);
 		setHasOptionsMenu(true);
 		getPreferenceManager().setSharedPreferencesName("one_toolbox_prefs");
 		getPreferenceManager().setSharedPreferencesMode(1);

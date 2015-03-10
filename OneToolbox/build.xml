@@ -5,14 +5,14 @@
 	<property name="lib.dir" location="/home/git/android/libs-external-sense6/" />
     <property name="sdk.dir" location="/home/git/android/android-sdk-linux/" />
     <property environment="env" />
-	<condition property="sdk.dir" value="${env.ANDROID_HOME}">
+    <condition property="sdk.dir" value="${env.ANDROID_HOME}">
         <isset property="env.ANDROID_HOME" />
     </condition>
     <loadproperties srcFile="project.properties" />
     <fail message="sdk.dir path is not defined!" unless="sdk.dir" />
     <fail message="lib.dir path is not defined!" unless="lib.dir" />
 
-	<target name="-pre-compile">
+    <target name="-pre-compile">
         <path id="project.all.jars.path.tmp">
             <pathelement path="${toString:project.all.jars.path}" />
         </path>
@@ -23,7 +23,7 @@
             </fileset>
         </path>
     </target>
-	<target name="-post-compile">
+    <target name="-post-compile">
         <path id="project.all.jars.path">
             <path refid="project.all.jars.path.tmp" />
         </path>

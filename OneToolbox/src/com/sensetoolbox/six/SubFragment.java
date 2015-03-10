@@ -69,10 +69,11 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 	}
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
+	public void onActivityCreated(Bundle savedInstanceState) {
 		if (xmlResId == 0) return;
-		super.onCreate(savedInstanceState, xmlResId);
+		super.onActivityCreated(savedInstanceState, xmlResId);
 		addPreferencesFromResource(xmlResId);
+		int backResId = getResources().getIdentifier("common_app_bkg", "drawable", "com.htc");
 		
 		if (xmlResId == R.xml.prefs_systemui) {
 			HtcPreference senseThemesPreference = (HtcPreference) findPreference("pref_key_sense_themes");
@@ -723,12 +724,32 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			launchAppsLogoPress.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_wakegest_logo2wake_app", not_selected)));
 			launchAppsLogoPress.setOnPreferenceClickListener(clickPref);
 			
+			prefListView = (HtcListView)getActivity().findViewById(android.R.id.list);
+			prefListView.setBackgroundResource(backResId);
+			prefListView.setDivider(getResources().getDrawable(getResources().getIdentifier("inset_list_divider", "drawable", "com.htc")));
+			prefListView.setDividerHeight(1);
+			prefListView.setFooterDividersEnabled(false);
+			
+			themeHint = (TextView)getActivity().findViewById(R.id.themehint);
+			themeHint.setBackgroundResource(backResId);
+			themeHint.setText(Helpers.l10n(getActivity(), R.string.wakegestures_hint));
+			
 			if (Helpers.isButterflyS()) {
 				if (logoPressActionPreference != null) ((HtcPreferenceScreen)findPreference("pref_key_wakegest")).removePreference(logoPressActionPreference);
 				if (launchAppsLogoPress != null) ((HtcPreferenceScreen)findPreference("pref_key_wakegest")).removePreference(launchAppsLogoPress);
 			}
 		} else if (xmlResId == R.xml.dummy) {
 			this.menuType = 2;
+			
+			TextView hint = (TextView)getActivity().findViewById(R.id.hint);
+			hint.setText(Helpers.l10n(getActivity(), R.string.various_extremepower_hint));
+			getActivity().findViewById(R.id.backLayer).setBackgroundResource(backResId);
+			
+			contentsView = (LinearLayout)getActivity().findViewById(R.id.contents);
+			
+			themeHint = (TextView)getActivity().findViewById(R.id.themehint);
+			themeHint.setBackgroundResource(backResId);
+			themeHint.setText(Helpers.l10n(getActivity(), R.string.various_eps_hint));
 		}
 	}
 	
@@ -740,33 +761,5 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			return inflater.inflate(R.layout.fragment_eps_remap, container, false);
 		} else
 			return super.onCreateView(inflater, container, savedInstanceState);
-	}
-	
-	@Override
-	public void onActivityCreated(Bundle savedInstanceState) {
-		super.onActivityCreated(savedInstanceState);
-		
-		int backResId = getResources().getIdentifier("common_app_bkg", "drawable", "com.htc");
-		if (xmlResId == R.xml.prefs_wakegest) {
-			prefListView = (HtcListView)getActivity().findViewById(android.R.id.list);
-			prefListView.setBackgroundResource(backResId);
-			prefListView.setDivider(getResources().getDrawable(getResources().getIdentifier("inset_list_divider", "drawable", "com.htc")));
-			prefListView.setDividerHeight(1);
-			prefListView.setFooterDividersEnabled(false);
-			
-			themeHint = (TextView)getActivity().findViewById(R.id.themehint);
-			themeHint.setBackgroundResource(backResId);
-			themeHint.setText(Helpers.l10n(getActivity(), R.string.wakegestures_hint));
-		} else if (xmlResId == R.xml.dummy) {
-			TextView hint = (TextView)getActivity().findViewById(R.id.hint);
-			hint.setText(Helpers.l10n(getActivity(), R.string.various_extremepower_hint));
-			getActivity().findViewById(R.id.backLayer).setBackgroundResource(backResId);
-			
-			contentsView = (LinearLayout)getActivity().findViewById(R.id.contents);
-			
-			themeHint = (TextView)getActivity().findViewById(R.id.themehint);
-			themeHint.setBackgroundResource(backResId);
-			themeHint.setText(Helpers.l10n(getActivity(), R.string.various_eps_hint));
-		}
 	}
 }

@@ -45,8 +45,8 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	QuickTipPopup qtp = null;
 	
 	@Override
-	public void onCreate(Bundle savedInstanceState) {
-		super.onCreate(savedInstanceState, R.xml.preferences);
+	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState, R.xml.preferences);
 		final Activity act = getActivity();
 		
 		// Preventing launch delay
@@ -207,9 +207,9 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		}
 		
 		if (step == 0) {
-			if (!getQuickTipFlag("soft_reboot")) showQuickTip(1); else {
+			if (!getQuickTipFlag("soft_reboot0")) showQuickTip(1); else {
 				qtp.setExpandDirection(QuickTipPopup.EXPAND_DOWN);
-				qtp.setText(getActivity().getString(R.string.soft_reboot_tip));
+				qtp.setText(Helpers.l10n(getActivity(), R.string.soft_reboot_tip));
 				qtp.setOnUserDismissListener(new OnUserDismissListener() {
 					@Override
 					public void onDismiss() {
@@ -222,9 +222,9 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				qtp.showAsDropDown(getActivity().findViewById(R.id.softreboot));
 			}
 		} else if (step == 1) {
-			if (!getQuickTipFlag("backup_restore")) showQuickTip(2); else {
+			if (!getQuickTipFlag("backup_restore0")) showQuickTip(2); else {
 				qtp.setExpandDirection(QuickTipPopup.EXPAND_DOWN);
-				qtp.setText(getActivity().getString(R.string.backup_restore_tip));
+				qtp.setText(Helpers.l10n(getActivity(), R.string.backup_restore_tip));
 				qtp.setOnUserDismissListener(new OnUserDismissListener() {
 					@Override
 					public void onDismiss() {
@@ -236,7 +236,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				disableTouch();
 				qtp.showAsDropDown(getActivity().findViewById(R.id.backuprestore));
 			}
-		} else if (step == 2 && getQuickTipFlag("toolbox_acramail")) {
+		} else if (step == 2 && getQuickTipFlag("toolbox_acramail0")) {
 			this.getHtcListView().setTranscriptMode(ListView.TRANSCRIPT_MODE_ALWAYS_SCROLL);
 			this.getHtcListView().smoothScrollToPosition(17);
 			this.getHtcListView().postDelayed(new Runnable() {
@@ -251,7 +251,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 						MainFragment.this.getHtcListView().smoothScrollToPosition(0);
 					} else {
 						qtp.setExpandDirection(QuickTipPopup.EXPAND_UP);
-						qtp.setText(getActivity().getString(R.string.toolbox_acramail_tip));
+						qtp.setText(Helpers.l10n(getActivity(), R.string.toolbox_acramail_tip));
 						qtp.setOnUserDismissListener(new OnUserDismissListener() {
 							@Override
 							public void onDismiss() {
@@ -304,16 +304,16 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	
 	public static class SysUIFragment extends HtcPreferenceFragmentExt {
 		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState, R.xml.prefs_systemui);
+		public void onActivityCreated(Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState, R.xml.prefs_systemui);
 			addPreferencesFromResource(R.xml.prefs_systemui);
 		}
 	}
 	
 	public static class StatusBarFragment extends HtcPreferenceFragmentExt {
 		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState, R.xml.prefs_statusbar);
+		public void onActivityCreated(Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState, R.xml.prefs_statusbar);
 			addPreferencesFromResource(R.xml.prefs_statusbar);
 			
 			
@@ -322,8 +322,8 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	
 	public static class PrismFragment extends HtcPreferenceFragmentExt {
 		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState, R.xml.prefs_prism);
+		public void onActivityCreated(Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState, R.xml.prefs_prism);
 			addPreferencesFromResource(R.xml.prefs_prism);
 			
 		}
@@ -331,17 +331,16 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	
 	public static class MessageFragment extends HtcPreferenceFragmentExt {
 		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState, R.xml.prefs_message);
-			addPreferencesFromResource(R.xml.prefs_message);
+		public void onActivityCreated(Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState, R.xml.prefs_message);
 
 		}
 	}
 	
 	public static class ControlsFragment extends HtcPreferenceFragmentExt {
 		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState, R.xml.prefs_controls);
+		public void onActivityCreated(Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState, R.xml.prefs_controls);
 			addPreferencesFromResource(R.xml.prefs_controls);
 			
 		}
@@ -349,8 +348,8 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	
 	public static class WakeGesturesFragment extends HtcPreferenceFragmentExt {
 		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState, R.xml.prefs_wakegest);
+		public void onActivityCreated(Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState, R.xml.prefs_wakegest);
 			addPreferencesFromResource(R.xml.prefs_wakegest);
 			
 		}
@@ -358,8 +357,8 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	
 	public static class OtherFragment extends HtcPreferenceFragmentExt {
 		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState, R.xml.prefs_other);
+		public void onActivityCreated(Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState, R.xml.prefs_other);
 			addPreferencesFromResource(R.xml.prefs_other);
 			
 			
@@ -368,8 +367,8 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	
 	public static class PersistFragment extends HtcPreferenceFragmentExt {
 		@Override
-		public void onCreate(Bundle savedInstanceState) {
-			super.onCreate(savedInstanceState, R.xml.prefs_persist);
+		public void onActivityCreated(Bundle savedInstanceState) {
+			super.onActivityCreated(savedInstanceState, R.xml.prefs_persist);
 			addPreferencesFromResource(R.xml.prefs_persist);
 			
 		}
@@ -405,10 +404,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		}
 	}
 	
-	
-	
-	boolean firstView = true;
-		
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
@@ -417,11 +412,9 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		view.post(new Runnable() {
 			@Override
 			public void run() {
-				showQuickTip(0);
+				if (MainFragment.this.isAdded()) showQuickTip(0);
 			}
 		});
-		
-		firstView = false;
 	}
 	
 	// HtcPreferenceScreens management

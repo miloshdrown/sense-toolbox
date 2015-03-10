@@ -449,7 +449,7 @@ public class GlobalActions {
 	
 	public static void toolboxInit(LoadPackageParam lpparam) {
 		try {
-			XposedHelpers.findAndHookMethod("com.sensetoolbox.six.MainFragment", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+			XposedHelpers.findAndHookMethod("com.sensetoolbox.six.MainFragment", lpparam.classLoader, "onActivityCreated", Bundle.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					XposedHelpers.setBooleanField(param.thisObject, "toolboxModuleActive", true);
