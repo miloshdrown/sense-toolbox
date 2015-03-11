@@ -38,6 +38,7 @@ Current changelog
 [Fixed] Wake gestures actions that dismiss lockscreen or go to BF/main launcher page
 [Fixed] Recents apps RAM usage mod errors
 [Fixed] Sense 6 themes override for several apps
+[Fixed] Hide battery icon on lockscreen too
 
 
 ===========

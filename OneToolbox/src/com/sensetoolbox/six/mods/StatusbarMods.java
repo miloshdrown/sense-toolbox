@@ -135,6 +135,15 @@ public class StatusbarMods {
 					batt1.setVisibility(View.GONE);
 				}
 			});
+			
+			if (Helpers.isLP())
+			resparam.res.hookLayout("com.android.systemui", "layout", "keyguard_status_bar", new XC_LayoutInflated() {
+				@Override
+				public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+					ImageView batt1 = (ImageView)liparam.view.findViewById(liparam.res.getIdentifier("battery", "id", "com.android.systemui"));
+					batt1.setVisibility(View.GONE);
+				}
+			});
 		}
 	}
 
