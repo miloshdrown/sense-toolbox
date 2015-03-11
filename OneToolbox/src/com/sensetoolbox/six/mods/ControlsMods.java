@@ -638,7 +638,9 @@ public class ControlsMods {
 		XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
 		XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_height_landscape", modRes.fwd(R.dimen.navigation_bar_height_landscape));
 		XResources.setSystemWideReplacement("android", "dimen", "navigation_bar_width", modRes.fwd(R.dimen.navigation_bar_width));
-		XResources.setSystemWideReplacement("android", "dimen", "system_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
+		if (!Helpers.isLP()) try {
+			XResources.setSystemWideReplacement("android", "dimen", "system_bar_height", modRes.fwd(R.dimen.navigation_bar_height));
+		} catch (Throwable t) {}
 	}
 	
 	public static void execHook_FixDialer(LoadPackageParam lpparam) {

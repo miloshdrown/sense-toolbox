@@ -60,17 +60,19 @@ public class WakeGesturesMods {
 				String action = intent.getAction();
 				if (action.equals("com.sensetoolbox.six.MotionGesture")) {
 					int gesture = intent.getIntExtra("motion_gesture", 0);
+					String sdClass = "com.htc.lockscreen.keyguard.SlidingChallengeLayout.ScrollDirection";
+					if (Helpers.isLP()) sdClass = "com.htc.lockscreen.ctrl.EasyAccessCtrl.ScrollDirection";
 					if (mEasyAccessCtrl != null && mLSClassLoader != null)
 					switch (gesture) {
 						case 1:
-							XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass("com.htc.lockscreen.keyguard.SlidingChallengeLayout.ScrollDirection", mLSClassLoader), "ScrollToUp"));
+							XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass(sdClass, mLSClassLoader), "ScrollToUp"));
 							break;
 						case 2:
 							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
-							XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass("com.htc.lockscreen.keyguard.SlidingChallengeLayout.ScrollDirection", mLSClassLoader), "ScrollToRight"));
+							XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass(sdClass, mLSClassLoader), "ScrollToRight"));
 							break;
 						case 3:
-							//XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass("com.htc.lockscreen.keyguard.SlidingChallengeLayout.ScrollDirection", mLSClassLoader), "ScrollToLeft"));
+							//XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass(sdClass, mLSClassLoader), "ScrollToLeft"));
 							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
 							Intent i = new Intent("android.intent.action.MAIN").addCategory("android.intent.category.HOME").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("action", -1);
 							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i, true);
@@ -82,7 +84,7 @@ public class WakeGesturesMods {
 							if (!isCT && !isCU && !isCHS)
 								XposedHelpers.callMethod(mEasyAccessCtrl, "startHtcSpeakerLaucher");
 							else
-								XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass("com.htc.lockscreen.keyguard.SlidingChallengeLayout.ScrollDirection", mLSClassLoader), "ScrollToBottom"));
+								XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass(sdClass, mLSClassLoader), "ScrollToBottom"));
 							break;
 						case 5:
 							launchApp(context, intent.getIntExtra("launch_app", 0));

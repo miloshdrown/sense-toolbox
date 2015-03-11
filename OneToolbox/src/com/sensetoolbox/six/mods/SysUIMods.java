@@ -1338,7 +1338,7 @@ public class SysUIMods {
 			if (Helpers.isLP())
 				hndl = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 			else
-				hndl = (Handler)XposedHelpers.getObjectField(param.thisObject, "handler");
+				hndl = (Handler)XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "handler");
 			
 			if (hndl != null)
 			hndl.postDelayed(new Runnable() {
@@ -1381,6 +1381,13 @@ public class SysUIMods {
 					execRAMView(param);
 				}
 			});
+			
+			findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "onResume", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					procs = null;
+				}
+			});
 		} else {
 			findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity.RecentGridViewAdapter", lpparam.classLoader, "getView", int.class, View.class, ViewGroup.class, new XC_MethodHook() {
 				@Override
@@ -1388,14 +1395,14 @@ public class SysUIMods {
 					execRAMView(param);
 				}
 			});
+			
+			findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "onResume", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					procs = null;
+				}
+			});
 		}
-		
-		findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "onResume", new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				procs = null;
-			}
-		});
 	}
 	
 	static HtcPopupWindow popup = null;
@@ -2107,7 +2114,16 @@ public class SysUIMods {
 								replaceCustom(param, pkgName);
 							}
 						});
-					} catch (Throwable t3) {}
+					} catch (Throwable t3) {
+						try {
+							findAndHookMethod("com.htc.lib1.cc.c.b", lpparam.classLoader, "a", Context.class, int.class, new XC_MethodHook() {
+								@Override
+								protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+									replaceCustom(param, pkgName);
+								}
+							});
+						} catch (Throwable t4) {}
+					}
 				}
 			}
 		}

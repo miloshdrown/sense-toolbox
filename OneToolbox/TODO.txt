@@ -31,8 +31,13 @@ Ideas
 Current changelog
 =================
 
-1.5.0 beta
-
+1.5.0 beta 3
+[Fixed] Crash at launch on some 4.4 ROMs
+[Fixed] Crash on Sense theme change for Settings (and Toolbox itself)
+[Fixed] Small navbar mod causing major problems
+[Fixed] Wake gestures actions that dismiss lockscreen or go to BF/main launcher page
+[Fixed] Recents apps RAM usage mod errors
+[Fixed] Sense 6 themes override for several apps
 
 
 ===========

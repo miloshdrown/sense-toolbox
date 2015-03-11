@@ -39,7 +39,13 @@ import android.widget.Toast;
 public class SubFragment extends HtcPreferenceFragmentExt {
 	private int xmlResId = 0;
 	
+	SubFragment() {
+		this.setRetainInstance(true);
+		xmlResId = 0;
+	}
+	
 	SubFragment(int resId) {
+		this.setRetainInstance(true);
 		xmlResId = resId;
 	}
 	
@@ -70,7 +76,10 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
-		if (xmlResId == 0) return;
+		if (xmlResId == 0) {
+			getActivity().finish();
+			return;
+		}
 		super.onActivityCreated(savedInstanceState, xmlResId);
 		addPreferencesFromResource(xmlResId);
 		int backResId = getResources().getIdentifier("common_app_bkg", "drawable", "com.htc");
