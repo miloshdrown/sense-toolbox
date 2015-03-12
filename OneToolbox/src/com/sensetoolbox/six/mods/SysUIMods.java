@@ -125,6 +125,8 @@ public class SysUIMods {
 		try {
 			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 			resparam.res.setReplacement("com.android.systemui", "drawable", "status_bar_background_transparent", modRes.fwd(R.drawable.status_bar_background_transparent));
+			if (Helpers.isLP())
+			resparam.res.setReplacement("com.android.systemui", "color", "system_bar_background_semi_transparent", Color.TRANSPARENT);
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -418,6 +420,28 @@ public class SysUIMods {
 					updateFillView(param);
 				}
 			});
+			
+			//Hide keyguard clocks on LP
+			if (Helpers.isLP()) {
+				findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "showClock", boolean.class, new XC_MethodHook() {
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) {
+						ViewGroup mKeyguardStatusBar = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "mKeyguardStatusBar");
+						if (mKeyguardStatusBar != null) {
+							View keyguard_clock = mKeyguardStatusBar.findViewById(mKeyguardStatusBar.getResources().getIdentifier("keyguard_clock", "id", "com.android.systemui"));
+							if (keyguard_clock != null) keyguard_clock.setVisibility(View.GONE);
+						}
+					}
+				});
+			
+				findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook() {
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) {
+						TextView clock = (TextView)param.thisObject;
+						if (clock.getId() == clock.getResources().getIdentifier("keyguard_clock", "id", "com.android.systemui")) clock.setVisibility(View.GONE);
+					}
+				});
+			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -2655,5 +2679,43 @@ public class SysUIMods {
 				mContext.registerReceiver(mBRScrDelete, new IntentFilter("com.sensetoolbox.six.DELETE_SCREENSHOT"));
 			}
 		});
+	}
+	
+	public static void execHook_EQSTiles(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.qs.QSTileView", lpparam.classLoader, "onLayout", boolean.class, int.class, int.class, int.class, int.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				LinearLayout qstileview = (LinearLayout)param.thisObject;
+				float density = qstileview.getResources().getDisplayMetrics().density;
+				
+				qstileview.setPadding(qstileview.getPaddingLeft(), qstileview.getPaddingTop(), qstileview.getPaddingRight(), Math.round(10 * density));
+				
+				View quick_setting_footer = qstileview.findViewById(qstileview.getResources().getIdentifier("quick_setting_footer", "id", "com.android.systemui"));
+				if (quick_setting_footer != null) quick_setting_footer.setVisibility(View.GONE);
+				View quick_setting_text = qstileview.findViewById(qstileview.getResources().getIdentifier("quick_setting_text", "id", "com.android.systemui"));
+				if (quick_setting_text != null) quick_setting_text.setVisibility(View.GONE);
+				
+				View quick_setting_image = qstileview.findViewById(qstileview.getResources().getIdentifier("quick_setting_image", "id", "com.android.systemui"));
+				if (quick_setting_image != null) quick_setting_image.setPadding(quick_setting_image.getPaddingLeft(), Math.round(7 * density), quick_setting_image.getPaddingRight(), Math.round(10 * density));
+				
+				View quick_setting_indicator = qstileview.findViewById(qstileview.getResources().getIdentifier("quick_setting_indicator", "id", "com.android.systemui"));
+				if (quick_setting_indicator != null) quick_setting_indicator.setPadding(0, 0, 0, 0);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.NotificationPanelView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				XposedHelpers.setBooleanField(param.thisObject, "mTwoFingerQsExpand", true);
+			}
+		});
+	}
+	
+	public static void execHook_EQSGrid(InitPackageResourcesParam resparam) {
+		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.android.systemui", "integer", "quick_settings_num_columns", modRes.fwd(R.integer.quick_settings_num_columns));
+		resparam.res.setReplacement("com.android.systemui", "integer", "quick_settings_max_rows", modRes.fwd(R.integer.quick_settings_max_rows));
+		resparam.res.setReplacement("com.android.systemui", "integer", "quick_settings_max_rows_keyguard", modRes.fwd(R.integer.quick_settings_max_rows_keyguard));
+		resparam.res.setReplacement("com.android.systemui", "dimen", "quick_settings_cell_height", modRes.fwd(R.dimen.quick_settings_cell_height));
 	}
 }

@@ -114,7 +114,8 @@ public class SettingsMods {
 	
 	public static void execHook_AppFilter(LoadPackageParam lpparam) {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-		
+		try {
+			
 		XposedBridge.hookAllConstructors(findClass("com.android.settings.applications.ManageApplications", lpparam.classLoader), new XC_MethodHook(){
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
@@ -191,6 +192,8 @@ public class SettingsMods {
 				param.setResult(arraylist2);
 			}
 		});
+		
+		} catch (Throwable t) {}
 	}
 	
 	public static void execHook_Apps(LoadPackageParam lpparam) {

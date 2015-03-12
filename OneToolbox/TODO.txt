@@ -31,6 +31,11 @@ Ideas
 Current changelog
 =================
 
+1.5.0 beta 4
+[Fixed] Transparent statusbar mod
+[Fixed] Hide statusbar icons on lockscreen too
+[Fixed] Center/hide clock on lockscreen
+
 1.5.0 beta 3
 [Fixed] Crash at launch on some 4.4 ROMs
 [Fixed] Crash on Sense theme change for Settings (and Toolbox itself)
@@ -39,6 +44,10 @@ Current changelog
 [Fixed] Recents apps RAM usage mod errors
 [Fixed] Sense 6 themes override for several apps
 [Fixed] Hide battery icon on lockscreen too
+
+1.5.0 beta 2
+[Fixed] Wake gestures crash on M8
+[Fixed] Crash after localization update
 
 
 ===========

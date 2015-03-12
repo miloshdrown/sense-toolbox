@@ -36,4 +36,6 @@
 	<dimen name="showcase_y2_inner">75dp</dimen>
 	<dimen name="showcase_y2_outer">95dp</dimen>
 	
+	<dimen name="quick_settings_cell_height">63.66dip</dimen>
+	
 </resources>

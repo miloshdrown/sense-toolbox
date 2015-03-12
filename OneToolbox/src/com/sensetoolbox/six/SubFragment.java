@@ -39,12 +39,14 @@ import android.widget.Toast;
 public class SubFragment extends HtcPreferenceFragmentExt {
 	private int xmlResId = 0;
 	
-	SubFragment() {
+	public SubFragment() {
+		super();
 		this.setRetainInstance(true);
 		xmlResId = 0;
 	}
 	
-	SubFragment(int resId) {
+	public SubFragment(int resId) {
+		super();
 		this.setRetainInstance(true);
 		xmlResId = resId;
 	}
@@ -747,6 +749,9 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				if (logoPressActionPreference != null) ((HtcPreferenceScreen)findPreference("pref_key_wakegest")).removePreference(logoPressActionPreference);
 				if (launchAppsLogoPress != null) ((HtcPreferenceScreen)findPreference("pref_key_wakegest")).removePreference(launchAppsLogoPress);
 			}
+		} else if (xmlResId == R.xml.prefs_persist) {
+			if (Helpers.isLP())
+			removePref(this, "pref_key_persist_appfilter", "pref_key_persist");
 		} else if (xmlResId == R.xml.dummy) {
 			this.menuType = 2;
 			

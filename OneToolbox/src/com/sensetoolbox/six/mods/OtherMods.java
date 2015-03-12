@@ -1534,8 +1534,11 @@ public class OtherMods {
 								int newState = Settings.System.getInt(mContext.getContentResolver(), "htc_universal_music_channel", 1) == 1 ? 0 : 1;
 								Settings.System.putInt(mContext.getContentResolver(), "htc_universal_music_channel", newState);
 								
-								if (newState == 1)
-								mContext.startService(new Intent("com.htc.musicenhancer.action.UNIVERSAL_MUSIC_CHANNEL"));
+								if (newState == 1) {
+									Intent musChannel = new Intent("com.htc.musicenhancer.action.UNIVERSAL_MUSIC_CHANNEL");
+									musChannel.setPackage("com.htc.musicenhancer");
+									mContext.startService(musChannel);
+								}
 								
 								return null;
 							}

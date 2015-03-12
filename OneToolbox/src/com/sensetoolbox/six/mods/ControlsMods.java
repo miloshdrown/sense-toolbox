@@ -370,20 +370,16 @@ public class ControlsMods {
 									int k = AudioManager.ADJUST_RAISE;
 									if (keycode != KeyEvent.KEYCODE_VOLUME_UP) k = AudioManager.ADJUST_LOWER;
 									// If music stream is playing, adjust its volume
-									if (am.isMusicActive()) {
-										mBroadcastWakeLock.acquire();
+									mBroadcastWakeLock.acquire();
+									if (am.isMusicActive())
 										am.adjustStreamVolume(AudioManager.STREAM_MUSIC, k, 0);
-										if (mBroadcastWakeLock.isHeld()) mBroadcastWakeLock.release();
-									}
 									// If voice call is active while screen off by proximity sensor, adjust its volume
-									else if (tm.isInCall()) {
-										mBroadcastWakeLock.acquire();
+									else if (tm.isInCall())
 										am.adjustStreamVolume(AudioManager.STREAM_VOICE_CALL, k, 0);
-										if (mBroadcastWakeLock.isHeld()) mBroadcastWakeLock.release();
-									}
 									// Use vol2wake in other cases
 									else if (vol2wakeEnabled)
-										XposedHelpers.callMethod(mPowerManager, "wakeUp", SystemClock.uptimeMillis());
+										XposedHelpers.callMethod(mPowerManager, "wakeUpFromPowerKey", SystemClock.uptimeMillis());
+									if (mBroadcastWakeLock.isHeld()) mBroadcastWakeLock.release();
 								} else {
 									boolean isMusicActive = (Boolean)XposedHelpers.callMethod(param.thisObject, "isMusicActive");
 									boolean isInCall = (Boolean)XposedHelpers.callMethod(param.thisObject, "isInCall");

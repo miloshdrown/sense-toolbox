@@ -508,23 +508,32 @@ public class StatusbarMods {
 		});
 	}
 	
+	private static void hideIconAtSlot(View statusIcon, Set<String> iconsToHide) {
+		String mSlot = (String)XposedHelpers.getObjectField(statusIcon, "mSlot");
+		if (mSlot != null)
+		if (iconsToHide.contains("1") && mSlot.equals("headset_plug") ||
+			iconsToHide.contains("2") && (mSlot.equals("beats_effect") || mSlot.equals("signal_doctor")) ||
+			iconsToHide.contains("3") && mSlot.equals("alarm_clock") ||
+			iconsToHide.contains("4") && mSlot.equals("sync_active") ||
+			iconsToHide.contains("5") && mSlot.equals("gps") ||
+			iconsToHide.contains("6") && mSlot.equals("bluetooth") ||
+			iconsToHide.contains("10") && mSlot.equals("nfc")) statusIcon.setVisibility(View.GONE);
+	}
+	
 	private static void hideSystemIcons(MethodHookParam param, Set<String> iconsToHide) {
 		LinearLayout mStatusIcons = (LinearLayout)XposedHelpers.getObjectField(param.thisObject, "mStatusIcons");
-		if (mStatusIcons == null) return;
-		
+		if (mStatusIcons != null)
 		for (int i = 0; i < mStatusIcons.getChildCount(); i++) {
 			View statusIcon = mStatusIcons.getChildAt(i);
-			if (statusIcon != null) {
-				String mSlot = (String)XposedHelpers.getObjectField(statusIcon, "mSlot");
-				if (mSlot != null) {
-					if (iconsToHide.contains("1") && mSlot.equals("headset_plug") ||
-						iconsToHide.contains("2") && (mSlot.equals("beats_effect") || mSlot.equals("signal_doctor")) ||
-						iconsToHide.contains("3") && mSlot.equals("alarm_clock") ||
-						iconsToHide.contains("4") && mSlot.equals("sync_active") ||
-						iconsToHide.contains("5") && mSlot.equals("gps") ||
-						iconsToHide.contains("6") && mSlot.equals("bluetooth") ||
-						iconsToHide.contains("10") && mSlot.equals("nfc")) statusIcon.setVisibility(View.GONE);
-				}
+			if (statusIcon != null) hideIconAtSlot(statusIcon, iconsToHide);
+		}
+		
+		if (Helpers.isLP()) {
+			LinearLayout mStatusIconsKeyguard = (LinearLayout)XposedHelpers.getObjectField(param.thisObject, "mStatusIconsKeyguard");
+			if (mStatusIconsKeyguard != null)
+			for (int i = 0; i < mStatusIconsKeyguard.getChildCount(); i++) {
+				View statusIcon = mStatusIconsKeyguard.getChildAt(i);
+				if (statusIcon != null) hideIconAtSlot(statusIcon, iconsToHide);
 			}
 		}
 	}

@@ -509,7 +509,7 @@ public class WakeGesturesMods {
 								}
 								if (input_event_touch.type == 0x00 && input_event_touch.code == 0x00) {
 									isTapped = false;
-									//XposedBridge.log(String.valueOf(tapX) + ":" + String.valueOf(tapY) + " max " + String.valueOf(touchScreenWidth) + ":" + String.valueOf(touchScreenHeight));
+									XposedBridge.log(String.valueOf(tapX) + ":" + String.valueOf(tapY) + " max " + String.valueOf(touchScreenWidth) + ":" + String.valueOf(touchScreenHeight));
 									if (tapX < touchScreenWidth/2 && tapY < touchScreenHeight/2) sequence.add(1);
 									else if (tapX > touchScreenWidth/2 && tapY < touchScreenHeight/2) sequence.add(2);
 									else if (tapX < touchScreenWidth/2 && tapY > touchScreenHeight/2) sequence.add(3);
@@ -528,7 +528,7 @@ public class WakeGesturesMods {
 									
 									String prefSeq = TextUtils.join(" ", prefSequence).trim();
 									String prefSeqPart = TextUtils.join(" ", prefSequence.subList(0, prefSequence.size() - 1)).trim();
-									//XposedBridge.log(seq + "   !   " + prefSeq);
+									XposedBridge.log(seq + "   !   " + prefSeq);
 									if (seqPart.equals(prefSeqPart)) {
 										WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T TouchLockAttempt");
 										wl.acquire(2000);

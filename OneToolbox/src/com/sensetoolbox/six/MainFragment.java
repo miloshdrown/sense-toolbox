@@ -44,6 +44,11 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	private boolean toolboxModuleActive = false;
 	QuickTipPopup qtp = null;
 	
+	public MainFragment() {
+		super();
+		this.setRetainInstance(true);
+	}
+	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState, R.xml.preferences);
@@ -373,7 +378,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState, R.xml.prefs_persist);
 			addPreferencesFromResource(R.xml.prefs_persist);
-			
 		}
 	}
 	
