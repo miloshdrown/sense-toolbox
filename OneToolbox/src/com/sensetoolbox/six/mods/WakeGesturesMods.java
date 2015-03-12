@@ -373,8 +373,8 @@ public class WakeGesturesMods {
 	public static boolean isOnLockdown = false;
 	public static boolean lockOnNextScrOff = false;
 	public static List<Integer> sequence = new ArrayList<Integer>();
-	public static int touchScreenWidth = 0;
-	public static int touchScreenHeight = 0;
+	public static int touchScreenWidth = 1620;
+	public static int touchScreenHeight = 2880;
 	private static BroadcastReceiver mBRLD = new BroadcastReceiver() {
 		public void onReceive(final Context context, Intent intent) {
 			goToSleep(context);

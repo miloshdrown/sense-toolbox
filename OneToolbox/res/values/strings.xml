@@ -46,6 +46,7 @@
 
 	<string name="warning">Warning!</string>
 	<string name="wrong_sense_version">Your ROM is not Sense 6 based and therefore is not compatible with\nSense 6 Toolbox module</string>
+	<string name="wrong_sense_version7">This is Sense 6 Toolbox. SENSE 6. 6. SIX! Capiche?</string>
 	<string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 6 Toolbox module there and reboot.</string>
 	<string name="module_not_active">Sense 6 Toolbox module is not active! Open Xposed Installer, activate module and reboot.</string>
 	<string name="no_currents">Buttons backlight control not found. Your device may be uncompatible with this mod.</string>

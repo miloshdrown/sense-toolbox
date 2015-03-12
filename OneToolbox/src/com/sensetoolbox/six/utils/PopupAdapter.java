@@ -3,11 +3,16 @@ package com.sensetoolbox.six.utils;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.mods.XMain;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.XModuleResources;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -28,22 +33,23 @@ public class PopupAdapter extends BaseAdapter {
 	public int getCount() {
 		return items.length;
 	}
-	 
+	
 	public String getItem(int position) {
 		return items[position];
 	}
-	 
+	
 	public long getItemId(int position) {
 		return position;
 	}
 
+	@SuppressLint("NewApi")
 	public View getView(int position, View convertView, ViewGroup parent) {
 		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 		TextView itemTitle;
 		if (convertView != null)
 			itemTitle = (TextView)convertView;
 		else
-			itemTitle = (TextView)mInflater.inflate(modRes.getLayout(R.layout.simple_list_item), parent, false);			
+			itemTitle = (TextView)mInflater.inflate(modRes.getLayout(R.layout.simple_list_item), parent, false);
 
 		itemTitle.setText(getItem(position));
 		
@@ -54,7 +60,7 @@ public class PopupAdapter extends BaseAdapter {
 			itemTitle.setWidth(theWidth);
 			itemTitle.setTextSize(17.0f);
 			itemTitle.setPadding(Math.round(5 * density), Math.round(5 * density), Math.round(5 * density), Math.round(5 * density));
-			itemTitle.setGravity(Gravity.LEFT);
+			itemTitle.setGravity(Gravity.START);
 		} else {
 			itemTitle.setPadding(Math.round(10 * density), Math.round(8 * density), Math.round(5 * density), Math.round(8 * density));
 			itemTitle.setWidth(parent.getWidth());
@@ -64,6 +70,40 @@ public class PopupAdapter extends BaseAdapter {
 				else
 					itemTitle.setText(Helpers.xl10n(modRes, R.string.array_home_menu_draglock));
 		}
+		
+		if (Helpers.isLP()) {
+			itemTitle.setPadding(Math.round(20 * density), Math.round(12 * density), Math.round(20 * density), Math.round(12 * density));
+			itemTitle.setBackgroundColor(0xff252525);
+			itemTitle.setTextColor(0xffeeeeee);
+			itemTitle.setIncludeFontPadding(false);
+			
+			int pressedColor = 0xff525252;
+			itemTitle.setBackground(new RippleDrawable(
+				new ColorStateList(new int[][] {
+					new int[]{ android.R.attr.state_pressed },
+					new int[]{ android.R.attr.state_focused },
+					new int[]{ android.R.attr.state_activated },
+					new int[]{}
+				},
+				new int[] {
+					pressedColor,
+					pressedColor,
+					pressedColor,
+					0xff252525
+				}),
+				new ColorDrawable(0xff252525),
+				null)
+			);
+			itemTitle.setOnTouchListener(new View.OnTouchListener() {
+				@Override
+				@SuppressLint("ClickableViewAccessibility")
+				public boolean onTouch(View v, MotionEvent event) {
+					((RippleDrawable)v.getBackground()).setHotspot(event.getX(),event.getY());
+					return false;
+				}
+			});
+		}
+		
 		return itemTitle;
 	}
 }

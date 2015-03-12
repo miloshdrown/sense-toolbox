@@ -9,6 +9,7 @@ public class MainActivity extends ActivityEx {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (!launch) return;
 		actionBarTextMain.setPrimaryText(Helpers.l10n(this, R.string.app_name));
 		getFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
 	}

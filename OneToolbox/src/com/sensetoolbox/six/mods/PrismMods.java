@@ -26,6 +26,7 @@ import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
@@ -789,7 +790,14 @@ public class PrismMods {
 		options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				popup.dismiss();
+				if (Helpers.isLP() && position < 4)
+				view.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						popup.dismiss();
+					}
+				}, 500); else popup.dismiss();
+				
 				if (position == 0) {
 					launcherAct.startActivity(new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
 				} else if (position == 1) {
@@ -810,7 +818,7 @@ public class PrismMods {
 		options.setOnKeyListener(new View.OnKeyListener() {
 			@Override
 			public boolean onKey(View v, int keyCode, KeyEvent event) {
-				if (keyCode ==  KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0 && event.getAction() == KeyEvent.ACTION_DOWN) {
+				if (keyCode == KeyEvent.KEYCODE_MENU && event.getRepeatCount() == 0 && event.getAction() == KeyEvent.ACTION_DOWN) {
 					popup.dismiss();
 					return true;
 				}
@@ -818,6 +826,15 @@ public class PrismMods {
 			}
 		});
 		popup.setContentView(options);
+		if (Helpers.isLP()) {
+			options.setPadding(0, 0, 0, 0);
+			options.setDivider(null);
+			options.setDividerHeight(0);
+			popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+			popup.setWidth(m_workspace_local.getResources().getDisplayMetrics().widthPixels);
+			popup.setAnimationStyle(m_workspace_local.getResources().getIdentifier("DropDownUpBottomCenter", "style", "com.htc.launcher"));
+			popup.setFocusable(true);
+		}
 		popup.showAtLocation(m_workspace_local, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
 	}
 	

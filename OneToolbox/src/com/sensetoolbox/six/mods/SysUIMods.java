@@ -2702,13 +2702,6 @@ public class SysUIMods {
 				if (quick_setting_indicator != null) quick_setting_indicator.setPadding(0, 0, 0, 0);
 			}
 		});
-		
-		findAndHookMethod("com.android.systemui.statusbar.phone.NotificationPanelView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				XposedHelpers.setBooleanField(param.thisObject, "mTwoFingerQsExpand", true);
-			}
-		});
 	}
 	
 	public static void execHook_EQSGrid(InitPackageResourcesParam resparam) {

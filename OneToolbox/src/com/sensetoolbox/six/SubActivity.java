@@ -11,6 +11,7 @@ public class SubActivity extends ActivityEx {
 
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		if (!launch) return;
 		String pref_section_name = this.getIntent().getStringExtra("pref_section_name");
 		if (pref_section_name == null) pref_section_name = Helpers.l10n(this, R.string.app_name);
 		actionBarTextMain.setPrimaryText(pref_section_name);
