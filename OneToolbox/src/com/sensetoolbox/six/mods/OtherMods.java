@@ -4,16 +4,19 @@ import static de.robv.android.xposed.XposedHelpers.callMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
+
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+
 import com.htc.fragment.widget.CarouselFragment;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.Helpers;
+
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -868,7 +871,7 @@ public class OtherMods {
 	}
 	
 	public static void execHook_EnhancedSecurity() {
-		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptPowerKeyDown", boolean.class, new XC_MethodHook() {
+		XC_MethodHook hook = new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
@@ -891,7 +894,11 @@ public class OtherMods {
 					XposedBridge.log(t);
 				}
 			}
-		});
+		};
+		
+		Object[] argsAndHook = { boolean.class, hook };
+		if (Helpers.isLP()) argsAndHook = new Object[] { boolean.class, boolean.class, hook };
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptPowerKeyDown", argsAndHook);
 	}
 	
 	public static void execHook_AllRotations() {

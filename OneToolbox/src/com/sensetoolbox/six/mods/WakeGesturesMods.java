@@ -666,6 +666,7 @@ public class WakeGesturesMods {
 					th_touch = null;
 				}
 				sequence.clear();
+				lockOnNextScrOff = false;
 				
 				if (mPowerManager.isScreenOn()) {
 					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
@@ -763,7 +764,7 @@ public class WakeGesturesMods {
 							public void run() {
 								Helpers.setWakeGestures(true);
 							}
-						}, 1000);
+						}, 2000);
 					}
 				}
 			});
@@ -823,7 +824,7 @@ public class WakeGesturesMods {
 								public void run() {
 									goToSleep(mContext);
 								}
-							}, 1000);
+							}, 2000);
 						}
 					}
 				}

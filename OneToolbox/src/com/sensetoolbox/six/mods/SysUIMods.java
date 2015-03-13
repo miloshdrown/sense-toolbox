@@ -105,6 +105,8 @@ import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.SenseThemes.PackageTheme;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.PopupAdapter;
+import com.stericson.RootTools.RootTools;
+import com.stericson.RootTools.execution.CommandCapture;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
@@ -1543,7 +1545,7 @@ public class SysUIMods {
 	//private static int USSDState = 0;
 	private static long workLast, totalLast, workC, totalC = 0;
 	private static int curFreq;
-	private static String curTemp;
+	private static String curTemp = "?";
 	private static void readCPU() {
 		BufferedReader readStream;
 		String[] a;
@@ -1570,14 +1572,21 @@ public class SysUIMods {
 			curFreq = Math.round((Integer.valueOf(readStream.readLine()) / 1000));
 			readStream.close();
 			
-			readStream = new BufferedReader(new FileReader("/sys/class/thermal/thermal_zone0/temp"));
-			String line2 = readStream.readLine();
-			if (line2 != null) {
-				curTemp = line2.trim();
-				int curTempInt = Integer.parseInt(curTemp);
-				if (curTempInt >= 1000) curTemp = String.valueOf(Math.round(curTempInt / 1000));
-			}
-			readStream.close();
+			CommandCapture command = new CommandCapture(0, "cat /sys/class/thermal/thermal_zone0/temp") {
+				int lineCount = 0;
+				
+				@Override
+				public void commandOutput(int id, String line) {
+					if (lineCount > 0) return;
+					if (line != null) {
+						curTemp = line.trim();
+						int curTempInt = Integer.parseInt(curTemp);
+						if (curTempInt >= 1000) curTemp = String.valueOf(Math.round(curTempInt / 1000));
+					}
+					lineCount++;
+				}
+			};
+			RootTools.getShell(true).add(command);
 		} catch (Throwable t) {
 			t.printStackTrace();
 		}
@@ -1647,6 +1656,7 @@ public class SysUIMods {
 									} catch (Throwable t) {}
 								}
 							});
+							cpuThread.setName("s6t_thermal_cputemp");
 							cpuThread.start();
 							isThreadActive = true;
 						}
@@ -1812,40 +1822,55 @@ public class SysUIMods {
 		}
 	}
 	
-	private static void setLabel(TextView targetView) {
-		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-		String txt = Helpers.getNextAlarm(targetView.getContext());
-		if (XMain.pref_alarmnotify && txt != null && !txt.equals("")) targetView.setText(Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt);
-		else if (XMain.pref_signalnotify && !targetView.getText().toString().contains("dBm"))
-		targetView.setText(targetView.getText() + getCurrentSignalLevel(targetView.getContext()));
+	private static void setLabel(TextView targetView, String text, int mod) {
+		if (mod == 1) {
+			targetView.setText(text);
+		} else if (mod == 2 && !targetView.getText().toString().contains("dBm")) {
+			targetView.setText(targetView.getText() + text);
+		}
 	}
 	
 	private static void updateLabel(Object paramThisObject) {
 		try {
-			TextView mPlmnLabel;
-			TextView mSpnLabel;
+			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+			Context mContext = (Context)XposedHelpers.getObjectField(paramThisObject, "mContext");
+			if (mContext == null) return;
+			String text = null;
+			int mod = 0;
 			
+			String txt = Helpers.getNextAlarm(mContext);
+			if (XMain.pref_alarmnotify && txt != null && !txt.equals("")) {
+				text = Helpers.xl10n(modRes, R.string.next_alarm) + ": " + txt;
+				mod = 1;
+			} else if (XMain.pref_signalnotify) {
+				text = getCurrentSignalLevel(mContext);
+				mod = 2;
+			}
+			if (mod == 0) return;
+			
+			TextView mPlmn;
+			TextView mSpn;
 			if (Helpers.isLP()) {
-				mPlmnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mPlmnView");
-				mSpnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mSpnView");
+				mPlmn = (TextView)XposedHelpers.getObjectField(paramThisObject, "mPlmnView");
+				mSpn = (TextView)XposedHelpers.getObjectField(paramThisObject, "mSpnView");
 				
-				Context mContext = (Context)XposedHelpers.getObjectField(paramThisObject, "mContext");
-				if (getCurrentSignalLevel(mContext).equals("")) mSpnLabel.setText("");
+				if (Settings.Global.getInt(mContext.getContentResolver(), Settings.Global.AIRPLANE_MODE_ON, 0) != 0 ||
+				((TelephonyManager)mContext.getSystemService(Context.TELEPHONY_SERVICE)).getSimState() != TelephonyManager.SIM_STATE_READY) mSpn.setText("");
 			} else {
-				mPlmnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mPlmnLabel");
-				mSpnLabel = (TextView)XposedHelpers.getObjectField(paramThisObject, "mSpnLabel");
+				mPlmn = (TextView)XposedHelpers.getObjectField(paramThisObject, "mPlmnLabel");
+				mSpn = (TextView)XposedHelpers.getObjectField(paramThisObject, "mSpnLabel");
 			}
 			
-			if (mSpnLabel != null && mPlmnLabel != null && !mSpnLabel.getText().equals("") && !mPlmnLabel.getText().equals("")) {
-				mPlmnLabel.setText("");
-				setLabel(mSpnLabel);
+			if (mSpn != null && mPlmn != null && !mSpn.getText().equals("") && !mPlmn.getText().equals("")) {
+				mPlmn.setText("");
+				setLabel(mSpn, text, mod);
 			}
-			else if (mSpnLabel != null && !mSpnLabel.getText().equals("")) setLabel(mSpnLabel);
-			else if (mPlmnLabel != null && !mPlmnLabel.getText().equals("")) setLabel(mPlmnLabel);
+			else if (mSpn != null && !mSpn.getText().equals("")) setLabel(mSpn, text, mod);
+			else if (mPlmn != null && !mPlmn.getText().equals("")) setLabel(mPlmn, text, mod);
 			
 			if (!Helpers.isLP()) {
 				TextView mNetworkTextView = (TextView)XposedHelpers.getObjectField(paramThisObject, "mNetworkTextView");
-				if (mNetworkTextView != null) setLabel(mNetworkTextView);
+				if (mNetworkTextView != null) setLabel(mNetworkTextView, text, mod);
 				
 				View vp = (View)((View)paramThisObject).getParent();
 				if (vp != null) vp.invalidate();

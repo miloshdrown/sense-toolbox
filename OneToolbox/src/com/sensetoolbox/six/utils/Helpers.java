@@ -46,6 +46,7 @@ import com.stericson.RootTools.execution.CommandCapture;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlarmManager;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -74,6 +75,7 @@ import android.os.Environment;
 import android.os.Process;
 import android.os.PowerManager.WakeLock;
 import android.provider.Settings;
+import android.text.format.DateFormat;
 import android.util.LruCache;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -977,12 +979,20 @@ public class Helpers {
 		return isHapticAllowed;
 	}
 	
+	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
 	public static String getNextAlarm(Context ctx) {
-		if (ctx != null)
-			return Settings.System.getString(ctx.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
-		else
-			return null;
+		if (ctx != null) {
+			if (Helpers.isLP()) {
+				AlarmManager am = (AlarmManager)ctx.getSystemService(Context.ALARM_SERVICE);
+				if (am.getNextAlarmClock() == null) return null;
+				String systemFormat = "E " + ((SimpleDateFormat)DateFormat.getTimeFormat(ctx)).toLocalizedPattern();
+				SimpleDateFormat format = new SimpleDateFormat(systemFormat, Locale.getDefault());
+				return format.format(new Date(am.getNextAlarmClock().getTriggerTime()));
+			} else {
+				return Settings.System.getString(ctx.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
+			}
+		} else return null;
 	}
 	
 	public static long getNextAlarmTime(Context ctx) {

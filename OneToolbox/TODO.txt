@@ -35,6 +35,9 @@ Current changelog
 [Fixed] Transparent statusbar mod
 [Fixed] Hide statusbar icons on lockscreen too
 [Fixed] Center/hide clock on lockscreen
+[Fixed] Enhanced screen lock
+[Fixed] CPU temperature in notification drawer header with enforcing SELinux
+[Fixed] Next alarm time in notification drawer
 [New] Home popup menu style and animations
 
 1.5.0 beta 3
