@@ -254,7 +254,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_musicchannel", false))
 				OtherMods.execHook_MusicChannelEQSTileIcon(resparam);
 			
-			SysUIMods.execHook_EQSGrid(resparam);
+			//SysUIMods.execHook_EQSGrid(resparam);
 		}
 		
 		if (pkg.equals("com.android.settings")) {
@@ -609,7 +609,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (Helpers.isLP() && pref.getBoolean("pref_key_other_volsound", false))
 				OtherMods.execHook_VolSound(lpparam);
 			
-			SysUIMods.execHook_EQSTiles(lpparam);
+			//SysUIMods.execHook_EQSTiles(lpparam);
 			
 			StatusbarMods.execHook_HideIcons(lpparam);
 		}
