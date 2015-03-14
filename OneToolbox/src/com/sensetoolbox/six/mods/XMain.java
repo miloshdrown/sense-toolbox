@@ -99,7 +99,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures() && !Helpers.isEight())
 			WakeGesturesMods.execHook_InitListener();
 		
-		if (pref.getBoolean("wake_gestures_active", false) && pref.getBoolean("touch_lock_active", false) && Helpers.isWakeGestures())
+		if (pref.getBoolean("touch_lock_active", false) && Helpers.isWakeGestures())
 			WakeGesturesMods.execHook_InitTouchLockListener();
 		
 		if (pref.getBoolean("pref_key_controls_extendedpanel", false))
@@ -343,7 +343,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures() && Helpers.isLP())
 				WakeGesturesMods.execHook_InitBootListener(lpparam);
 			
-			if (pref.getBoolean("wake_gestures_active", false) && pref.getBoolean("touch_lock_active", false) && Helpers.isWakeGestures() && Helpers.isLP())
+			if (pref.getBoolean("touch_lock_active", false) && Helpers.isWakeGestures() && Helpers.isLP())
 				WakeGesturesMods.execHook_InitTouchServerListener(lpparam);
 		}
 		

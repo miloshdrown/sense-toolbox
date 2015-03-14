@@ -648,7 +648,7 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			
 			if (swipeRightActionPreference.getValue().equals("10"))	launchAppsSwipeRight.setEnabled(true);	else launchAppsSwipeRight.setEnabled(false);
 			if (swipeleftActionPreference.getValue().equals("10"))	launchAppsSwipeLeft.setEnabled(true);	else launchAppsSwipeLeft.setEnabled(false);
-			if (swipeUpActionPreference.getValue().equals("10"))		launchAppsSwipeUp.setEnabled(true);		else launchAppsSwipeUp.setEnabled(false);
+			if (swipeUpActionPreference.getValue().equals("10"))	launchAppsSwipeUp.setEnabled(true);		else launchAppsSwipeUp.setEnabled(false);
 			if (swipeDownActionPreference.getValue().equals("10"))	launchAppsSwipeDown.setEnabled(true);	else launchAppsSwipeDown.setEnabled(false);
 			if (doubleTapActionPreference.getValue().equals("10"))	launchAppsDoubleTap.setEnabled(true);	else launchAppsDoubleTap.setEnabled(false);
 			if (logoPressActionPreference.getValue().equals("10"))	launchAppsLogoPress.setEnabled(true);	else launchAppsLogoPress.setEnabled(false);

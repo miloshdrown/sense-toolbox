@@ -766,7 +766,7 @@ public class WakeGesturesMods {
 								XposedBridge.log("[S6T] Wake gestures activated!");
 								Helpers.setWakeGestures(true);
 							}
-						}, 2000);
+						}, 5000);
 					}
 				}
 			});
@@ -828,7 +828,7 @@ public class WakeGesturesMods {
 									XposedBridge.log("[S6T] Touch lock activated!");
 									goToSleep(mContext);
 								}
-							}, 2000);
+							}, 5000);
 						}
 					}
 				}
