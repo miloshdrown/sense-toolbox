@@ -896,9 +896,15 @@ public class OtherMods {
 			}
 		};
 		
-		Object[] argsAndHook = { boolean.class, hook };
-		if (Helpers.isLP()) argsAndHook = new Object[] { boolean.class, boolean.class, hook };
-		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptPowerKeyDown", argsAndHook);
+		try {
+			findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptPowerKeyDown", boolean.class, boolean.class, hook);
+		} catch (Throwable t) {
+			try {
+				findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptPowerKeyDown", boolean.class, hook);
+			} catch (Throwable t2) {
+				XposedBridge.log(t2);
+			}
+		}
 	}
 	
 	public static void execHook_AllRotations() {

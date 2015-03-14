@@ -756,12 +756,14 @@ public class WakeGesturesMods {
 				@Override
 				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 					XMain.pref.reload();
+					XposedBridge.log("[S6T] Wake gestures activate on boot...");
 					if (XMain.pref.getBoolean("wake_gestures_active", false)) {
 						Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 						if (mHandler != null)
 						mHandler.postDelayed(new Runnable() {
 							@Override
 							public void run() {
+								XposedBridge.log("[S6T] Wake gestures activated!");
 								Helpers.setWakeGestures(true);
 							}
 						}, 2000);
@@ -808,6 +810,7 @@ public class WakeGesturesMods {
 			findAndHookMethod("com.android.server.am.ActivityManagerService", lpparam.classLoader, "enableScreenAfterBoot", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					XposedBridge.log("[S6T] Touch lock activate on boot!");
 					final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 					if (mContext != null) {
 						long ident = Binder.clearCallingIdentity();
@@ -822,6 +825,7 @@ public class WakeGesturesMods {
 							if (mHandler != null) mHandler.postDelayed(new Runnable() {
 								@Override
 								public void run() {
+									XposedBridge.log("[S6T] Touch lock activated!");
 									goToSleep(mContext);
 								}
 							}, 2000);

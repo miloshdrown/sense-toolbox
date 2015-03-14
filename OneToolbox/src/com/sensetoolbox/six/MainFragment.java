@@ -323,8 +323,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState, R.xml.prefs_statusbar);
 			addPreferencesFromResource(R.xml.prefs_statusbar);
-			
-			
 		}
 	}
 	
@@ -333,7 +331,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState, R.xml.prefs_prism);
 			addPreferencesFromResource(R.xml.prefs_prism);
-			
 		}
 	}
 	
@@ -350,7 +347,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState, R.xml.prefs_controls);
 			addPreferencesFromResource(R.xml.prefs_controls);
-			
 		}
 	}
 	
@@ -359,7 +355,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState, R.xml.prefs_wakegest);
 			addPreferencesFromResource(R.xml.prefs_wakegest);
-			
 		}
 	}
 	
@@ -368,8 +363,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		public void onActivityCreated(Bundle savedInstanceState) {
 			super.onActivityCreated(savedInstanceState, R.xml.prefs_other);
 			addPreferencesFromResource(R.xml.prefs_other);
-			
-			
 		}
 	}
 	
