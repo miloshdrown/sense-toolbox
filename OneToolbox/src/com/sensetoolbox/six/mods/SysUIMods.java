@@ -2784,6 +2784,7 @@ public class SysUIMods {
 			return Math.round(density * f);
 		}
 
+		@SuppressLint("RtlHardcoded")
 		public FloatingAlertDialog(Context context, String msg, final StatusBarNotification sbn) {
 			super(context);
 			mContext = context;
@@ -2894,7 +2895,7 @@ public class SysUIMods {
 		float density = 3f;
 		boolean sleepOnDismissLast = false;
 		
-		Typeface face—ondensed = Typeface.create("sans-serif-condensed", Typeface.NORMAL);
+		Typeface faceCondensed = Typeface.create("sans-serif-condensed", Typeface.NORMAL);
 		Typeface faceLight = Typeface.create("sans-serif-light", Typeface.NORMAL);
 		
 		private int densify(int f) {
@@ -3164,7 +3165,7 @@ public class SysUIMods {
 			TextView title = (TextView)notifyRemote.findViewById(android.R.id.title);
 			if (title != null) {
 				title.setTextColor(Color.WHITE);
-				title.setTypeface(face—ondensed);
+				title.setTypeface(faceCondensed);
 			}
 			
 			View actions = notifyRemote.findViewById(mResources.getIdentifier("actions", "id", "android"));
@@ -3185,7 +3186,7 @@ public class SysUIMods {
 		public void addNotification(final StatusBarNotification sbn) {
 			mHandler.post(new Runnable() {
 				@Override
-				@SuppressLint({ "ClickableViewAccessibility", "NewApi" })
+				@SuppressLint({ "ClickableViewAccessibility", "NewApi", "RtlHardcoded" })
 				public void run() {
 					final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 					LinearLayout notification = (LinearLayout)hPager.findViewWithTag(sbn.getKey());
@@ -3213,7 +3214,7 @@ public class SysUIMods {
 						header.setAllCaps(true);
 						header.setTextColor(Color.WHITE);
 						header.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14.0f);
-						header.setTypeface(face—ondensed);
+						header.setTypeface(faceCondensed);
 						header.setPadding(densify(6), densify(6), densify(6), densify(6));
 						header.setId(R.id.headsup_page_header);
 						LinearLayout.LayoutParams hdrlp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
@@ -3237,12 +3238,12 @@ public class SysUIMods {
 									if (contentView != null) {
 										localContent = contentView.apply(mContext, notifyRemote);
 										isExpanded = false;
-									} else Toast.makeText(mContext, Helpers.xl10n(modRes, R.string.popupnotify_noview), Toast.LENGTH_SHORT);
+									} else Toast.makeText(mContext, Helpers.xl10n(modRes, R.string.popupnotify_noview), Toast.LENGTH_SHORT).show();
 								} else {
 									if (bigContentView != null) {
 										localContent = bigContentView.apply(mContext, notifyRemote);
 										isExpanded = true;
-									} else Toast.makeText(mContext, Helpers.xl10n(modRes, R.string.popupnotify_nobigview), Toast.LENGTH_SHORT);
+									} else Toast.makeText(mContext, Helpers.xl10n(modRes, R.string.popupnotify_nobigview), Toast.LENGTH_SHORT).show();
 								}
 								
 								final View localContentRun = localContent;
@@ -3336,7 +3337,7 @@ public class SysUIMods {
 						rimBtn.setBackgroundColor(0xff404040);
 						rimBtn.setTextColor(0xb3ffffff);
 						rimBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.0f);
-						rimBtn.setTypeface(face—ondensed);
+						rimBtn.setTypeface(faceCondensed);
 						rimBtn.setText(Helpers.xl10n(modRes, R.string.popupnotify_dismiss));
 						rimBtn.setPadding(densify(5), densify(5), densify(5), densify(7));
 						
@@ -3350,7 +3351,7 @@ public class SysUIMods {
 						rimBtnSleep.setBackgroundColor(0xff404040);
 						rimBtnSleep.setTextColor(0xb3ffffff);
 						rimBtnSleep.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.0f);
-						rimBtnSleep.setTypeface(face—ondensed);
+						rimBtnSleep.setTypeface(faceCondensed);
 						rimBtnSleep.setText(Helpers.xl10n(modRes, R.string.popupnotify_dismisssleep));
 						rimBtnSleep.setPadding(densify(5), densify(5), densify(5), densify(7));
 					}
