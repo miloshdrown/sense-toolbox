@@ -22,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Handler;
@@ -79,8 +80,13 @@ public class StatusbarMods {
 					if (Helpers.isLP()) varName = "mLabelViewList";
 					ArrayList<?> mLabelViews = (ArrayList<?>)XposedHelpers.getObjectField(param.thisObject, varName);
 					if (mLabelViews != null && mLabelViews.size() > 0) {
-						TextView label = (TextView)mLabelViews.get(0);
-						if (label != null) label.setTextColor(getThemeColor());
+						TextView label0 = (TextView)mLabelViews.get(0);
+						if (label0 != null) label0.setTextColor(getThemeColor());
+						
+						if (mLabelViews.size() > 1) {
+							TextView label1 = (TextView)mLabelViews.get(1);
+							if (label1 != null) label1.setTextColor(getThemeColor());
+						}
 					}
 				} catch (Throwable t) {
 					XposedBridge.log(t);
@@ -357,6 +363,16 @@ public class StatusbarMods {
 
 	public static void execHook_GpsIcon(InitPackageResourcesParam resparam) {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_gps_acquiring_anim", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				AnimationDrawable gps_anim = new AnimationDrawable();
+				gps_anim.setOneShot(false);
+				gps_anim.addFrame(applyTheme(modRes.getDrawable(R.drawable.stat_sys_gps_on)), 500);
+				gps_anim.addFrame(applyTheme(modRes.getDrawable(R.drawable.stat_sys_gps_acquiring)), 500);
+				return gps_anim;
+			}
+		});
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_gps_acquiring", new XResources.DrawableLoader(){
 			@Override
 			public Drawable newDrawable(XResources res, int id)	throws Throwable {

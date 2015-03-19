@@ -30,8 +30,7 @@ public class ColorFrameLayout extends FrameLayout {
 	@Override
 	protected void onDraw(Canvas canvas) {
 		float density = getResources().getDisplayMetrics().density;
-		if (this.getTag() != null && (boolean)this.getTag()) {
-			canvas.drawBitmap(sel_bf, Math.round(canvas.getWidth() - sel_bf.getWidth() - 6 * density), Math.round(canvas.getHeight() - sel_bf.getHeight() - 12 * density), pnt);
-		}
+		if (this.getTag() != null && (boolean)this.getTag())
+		canvas.drawBitmap(sel_bf, Math.round(canvas.getWidth() - sel_bf.getWidth() - 6 * density), Math.round(canvas.getHeight() - sel_bf.getHeight() - 10 * density), pnt);
 	}
 }

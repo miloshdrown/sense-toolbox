@@ -1,0 +1,39 @@
+<com.htc.preference.HtcPreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+	<com.htc.preference.HtcCheckBoxPreference
+		android:key="pref_key_betterheadsup_priority"
+		android:summary="@string/various_betterheadsup_priority_summ"
+		android:title="@string/various_betterheadsup_priority_title"
+		android:defaultValue="false" />
+	<com.htc.preference.HtcCheckBoxPreference
+		android:key="pref_key_betterheadsup_expand"
+		android:summary="@string/various_betterheadsup_expand_summ"
+		android:title="@string/various_betterheadsup_expand_title"
+		android:defaultValue="true" />
+	<com.htc.preference.HtcCheckBoxPreference
+		android:key="pref_key_betterheadsup_fullscreen"
+		android:summary="@string/various_betterheadsup_fullscreen_summ"
+		android:title="@string/various_betterheadsup_fullscreen_title"
+		android:defaultValue="false" />
+	<com.htc.preference.HtcCheckBoxPreference
+		android:key="pref_key_betterheadsup_lightup"
+		android:summary="@string/various_betterheadsup_lightup_summ"
+		android:title="@string/various_betterheadsup_lightup_title"
+		android:defaultValue="false" />
+	<com.htc.preference.HtcCheckBoxPreference
+		android:key="pref_key_betterheadsup_sleepmode"
+		android:summary="@string/various_betterheadsup_sleepmode_summ"
+		android:title="@string/various_betterheadsup_sleepmode_title"
+		android:defaultValue="false" />
+	<com.htc.preference.HtcSwitchPreference
+		android:key="pref_key_betterheadsup_bwlist"
+		android:summary="@string/various_popupnotify_bwlist_summ"
+		android:title="@string/various_popupnotify_bwlist_title" />
+	<com.sensetoolbox.six.utils.HtcMultiSelectListPreferenceEx
+		android:dialogTitle="@string/various_betterheadsup_bwlist_black_title"
+		android:key="pref_key_betterheadsup_bwlist_apps"
+		android:summary="@string/various_betterheadsup_bwlist_black_summ"
+		android:title="@string/various_betterheadsup_bwlist_black_title"
+		android:entries="@array/empty_array"
+		android:entryValues="@array/empty_array"
+		android:defaultValue="@array/empty_array" />
+</com.htc.preference.HtcPreferenceScreen>

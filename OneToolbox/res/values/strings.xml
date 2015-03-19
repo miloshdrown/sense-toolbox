@@ -45,8 +45,7 @@
 	<string name="crash_error">Failed to send report</string>
 
 	<string name="warning">Warning!</string>
-	<string name="wrong_sense_version">Your ROM is not Sense 6 based and therefore is not compatible with\nSense 6 Toolbox module</string>
-	<string name="wrong_sense_version7">This is Sense 6 Toolbox. SENSE 6. 6. SIX! Capiche?</string>
+	<string name="wrong_sense_version">Your ROM is not Sense 6 based and therefore is not compatible with Sense 6 Toolbox module</string>
 	<string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 6 Toolbox module there and reboot.</string>
 	<string name="module_not_active">Sense 6 Toolbox module is not active! Open Xposed Installer, activate module and reboot.</string>
 	<string name="no_currents">Buttons backlight control not found. Your device may be uncompatible with this mod.</string>
@@ -82,6 +81,13 @@
 	<string name="popupnotify_hint">Enable popup notifications from the action bar above.\n\nSoft reboot will be required only once after that.</string>
 	<string name="popupnotify_blconfirm">Confirmation</string>
 	<string name="popupnotify_blacklist">%1$s will be added to blacklist. Proceed?</string>
+	<string name="popupnotify_test">Test popup notifications</string>
+	
+	<string name="betterheadsup_title">Better heads-up</string>
+	<string name="betterheadsup_summ">Display any cancelable notification in a horizontally scrollable heads-up</string>
+	<string name="betterheadsup_hint">Enable better heads-up notifications from the action bar above.\n\nSoft reboot will be required only once after that.</string>
+	<string name="betterheadsup_tip">Information\n\nHeads-up notifications are not displayed on lockscreen, because an expanded notification drawer is already there.</string>
+	<string name="betterheadsup_test">Test heads-up notifications</string>
 
 	<string name="mods">Mods</string>
 
@@ -123,6 +129,7 @@
 	<string name="sense_theme_hint">Enable theme colors override from the action bar above.\n\nSoft reboot will be required only once after that.</string>
 	<string name="sense_theme_infoIME">HTC keyboard inherits theme from its parent app, if that app is in the list (you can even add non-HTC apps). Theme above is used otherwise.</string>
 	<string name="sense_theme_replace_all">Change theme for all apps in the list</string>
+	<string name="sense_theme_replace_all_title">Change all themes</string>
 	<string name="systemui_statusbar">Status Bar and Notification Drawer</string>
 	<string name="systemui_tsb_title">Transparent status bar</string>
 	<string name="systemui_tsb_summ">Make status bar fully transparent in launcher, in apps with translucent statusbar and on lockscreen.</string>
@@ -147,6 +154,8 @@
 	<string name="systemui_heqs_notext_summ">Removes the text from horizontal EQS.</string>
 	<string name="systemui_noeqs_title">Disable EQS panel</string>
 	<string name="systemui_noeqs_summ">Remove EQS panel and restore settings button.</string>
+	<string name="systemui_compacteqs_title">Compact EQS</string>
+	<string name="systemui_compacteqs_summ">Remove EQS labels and position 6 tiles in a row in portrait orientation and 12 in landscape.</string>
 	<string name="systemui_recent">Recent Apps</string>
 	<string name="systemui_aosp_title">AOSP recent apps</string>
 	<string name="systemui_aosp_summ">Enable AOSP style recent apps screen.</string>
@@ -354,14 +363,24 @@
 	<string name="various_popupnotify_summ">Display cancelable notifications in a horizontally scrollable popup</string>
 	<string name="various_popupnotify_priority_title">Low priority</string>
 	<string name="various_popupnotify_priority_summ">Display popups for low priority notifications.</string>
+	<string name="various_betterheadsup_priority_title">Low and minimum priority</string>
+	<string name="various_betterheadsup_priority_summ">Display heads-ups for notifications with priority lower than default.</string>
 	<string name="various_popupnotify_expand_title">Expand</string>
 	<string name="various_popupnotify_expand_summ">Always show expanded notification view.</string>
+	<string name="various_betterheadsup_expand_title">Expand</string>
+	<string name="various_betterheadsup_expand_summ">Always show expanded notification view in portrait mode. Landscape orientation will still force compact view.</string>
 	<string name="various_popupnotify_fullscreen_title">Respect fullscreen</string>
-	<string name="various_popupnotify_fullscreen_summ">Do not show popups when fullscreen app is currently active (does not apply to immersive apps with hidden status and navigation bars).</string>
+	<string name="various_popupnotify_fullscreen_summ">Do not show popups when fullscreen app is active (does not apply to immersive apps with hidden status and navigation bars).</string>
+	<string name="various_betterheadsup_fullscreen_title">Respect fullscreen</string>
+	<string name="various_betterheadsup_fullscreen_summ">Do not show heads-ups when fullscreen app is active (does not apply to immersive apps with hidden status and navigation bars).</string>
 	<string name="various_popupnotify_lightup_title">Wake screen</string>
 	<string name="various_popupnotify_lightup_summ">Force screen light up on every popup.</string>
+	<string name="various_betterheadsup_lightup_title">Wake screen</string>
+	<string name="various_betterheadsup_lightup_summ">Force screen light up on every heads-up.</string>
 	<string name="various_popupnotify_sleepmode_title">Unobtrusive mode</string>
 	<string name="various_popupnotify_sleepmode_summ">Display new popups only if screen is off.</string>
+	<string name="various_betterheadsup_sleepmode_title">Unobtrusive mode</string>
+	<string name="various_betterheadsup_sleepmode_summ">Display new heads-ups only if screen is off.</string>
 	<string name="various_popupnotify_backclick_title">Close all popups</string>
 	<string name="various_popupnotify_backclick_summ">Tap anywhere outside notification to close all popups at once.</string>
 	<string name="various_popupnotify_clock_title">Header content</string>
@@ -371,9 +390,13 @@
 	<string name="various_popupnotify_bwlist_title">Inverse filter</string>
 	<string name="various_popupnotify_bwlist_summ">Apps are blacklisted by default, turn this option on to whitelist them instead.</string>
 	<string name="various_popupnotify_bwlist_black_title">Blacklist</string>
-	<string name="various_popupnotify_bwlist_white_title">Whitelist</string>
 	<string name="various_popupnotify_bwlist_black_summ">All cancelable notifications will be shown in popups except those from selected apps. You can quickly blacklist app by long pressing Dismiss button in popup window.</string>
+	<string name="various_betterheadsup_bwlist_black_title">Blacklist</string>
+	<string name="various_betterheadsup_bwlist_black_summ">All cancelable notifications will be shown in heads-ups except those from selected apps. You can quickly blacklist app by long pressing Dismiss button in heads-up window.</string>
+	<string name="various_popupnotify_bwlist_white_title">Whitelist</string>
 	<string name="various_popupnotify_bwlist_white_summ">Popups will be shown only for notifications from selected apps.</string>
+	<string name="various_betterheadsup_bwlist_white_title">Whitelist</string>
+	<string name="various_betterheadsup_bwlist_white_summ">Heads-ups will be shown only for notifications from selected apps.</string>
 	<string name="various_extremepower_title">EPS apps remap</string>
 	<string name="various_extremepower_summ">Choose 6 custom apps for extreme power saving mode</string>
 	<string name="various_extremepower_cell">Cell</string>

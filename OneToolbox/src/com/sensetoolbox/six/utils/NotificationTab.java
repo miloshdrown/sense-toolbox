@@ -83,8 +83,8 @@ public class NotificationTab extends Fragment {
 					isInBigView = false;
 				}
 				if (content != null) {
-					View localContent = content.apply(act, tab);
 					final RelativeLayout notifyRemote = (RelativeLayout)tab.findViewById(R.id.notifyRemote);
+					View localContent = content.apply(act, notifyRemote);
 					notifyRemote.addView(localContent);
 					notifyRemote.setOnClickListener(new OnClickListener() {
 						@Override
@@ -134,7 +134,7 @@ public class NotificationTab extends Fragment {
 										if (diff > getResources().getDisplayMetrics().density * 30f && !isInBigView) {
 											RemoteViews contentNew = sbn.getNotification().bigContentView;
 											if (contentNew != null) {
-												View localContent = contentNew.apply(act, tab);
+												View localContent = contentNew.apply(act, notifyRemote);
 												notifyRemote.removeAllViews();
 												notifyRemote.addView(localContent);
 												isInBigView = true;
@@ -148,7 +148,7 @@ public class NotificationTab extends Fragment {
 										} else if (diff < getResources().getDisplayMetrics().density * -30f && isInBigView) {
 											RemoteViews contentNew = sbn.getNotification().contentView;
 											if (contentNew != null) {
-												View localContent = contentNew.apply(act, tab);
+												View localContent = contentNew.apply(act, notifyRemote);
 												notifyRemote.removeAllViews();
 												notifyRemote.addView(localContent);
 												isInBigView = false;

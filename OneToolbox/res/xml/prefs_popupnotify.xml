@@ -1,5 +1,4 @@
-<com.htc.preference.HtcPreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
-	key="test">
+<com.htc.preference.HtcPreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 	<com.htc.preference.HtcCheckBoxPreference
 		android:key="pref_key_other_popupnotify_priority"
 		android:summary="@string/various_popupnotify_priority_summ"

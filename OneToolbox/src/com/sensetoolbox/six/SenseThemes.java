@@ -140,7 +140,8 @@ public class SenseThemes extends Activity {
 		menuAll = new ActionBarItemView(this);
 		menuAll.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 		menuAll.setIcon(getResources().getIdentifier("icon_btn_edit_dark", "drawable", "com.htc"));
-		menuAll.setLongClickable(false);
+		menuAll.setTitle(Helpers.l10n(this, R.string.sense_theme_replace_all_title));
+		menuAll.setLongClickable(true);
 		menuAll.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {
@@ -154,7 +155,8 @@ public class SenseThemes extends Activity {
 		menuAdd = new ActionBarItemView(this);
 		menuAdd.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 		menuAdd.setIcon(getResources().getIdentifier("icon_btn_add_dark", "drawable", "com.htc"));
-		menuAdd.setLongClickable(false);
+		menuAdd.setTitle(Helpers.l10n(this, R.string.select_app));
+		menuAdd.setLongClickable(true);
 		menuAdd.setOnClickListener(new View.OnClickListener() {
 			@Override
 			public void onClick(View v) {

@@ -16,16 +16,24 @@ import com.htc.preference.HtcPreferenceFragment;
 import com.htc.preference.HtcPreferenceManager;
 import com.htc.preference.HtcPreferenceScreen;
 import com.htc.preference.HtcPreference.OnPreferenceChangeListener;
+import com.htc.widget.ActionBarItemView;
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcListView;
 import com.htc.widget.HtcToggleButtonLight;
 import com.htc.widget.HtcToggleButtonLight.OnCheckedChangeListener;
+import com.htc.widget.quicktips.QuickTipPopup;
+import com.htc.wrap.android.provider.HtcWrapSettings;
 import com.sensetoolbox.six.AboutScreen;
+import com.sensetoolbox.six.ActivityEx;
+import com.sensetoolbox.six.MainActivity;
 import com.sensetoolbox.six.R;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.ComponentName;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -34,13 +42,17 @@ import android.content.SharedPreferences.Editor;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.content.res.TypedArray;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.WindowManager;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -49,11 +61,35 @@ import android.widget.Toast;
 public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 	public static SharedPreferences prefs = null;
 	public HtcToggleButtonLight OnOffSwitch;
+	public ActionBarItemView menuTest;
 	public HtcListView prefListView;
 	public LinearLayout contentsView;
 	public TextView themeHint;
 	public int rebootType = 0;
 	public int menuType = 0;
+	public QuickTipPopup qtp = null;
+	
+	protected int getWidthWithPadding() {
+		float padding = 0.9f;
+		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) padding = 0.8f;
+		return Math.round(getResources().getDisplayMetrics().widthPixels * padding);
+	}
+	
+	protected boolean getQuickTipFlag(String tipName) {
+		return HtcWrapSettings.System.getQuickTipFlag(getActivity().getContentResolver(), "com.sensetoolbox.six.tip." + tipName);
+	}
+	
+	protected void disableQuickTipFlag(String tipName) {
+		HtcWrapSettings.System.disableQuickTipFlag(getActivity().getContentResolver(), "com.sensetoolbox.six.tip." + tipName);
+	}
+	
+	protected void disableTouch() {
+		getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+	}
+	
+	protected void enableTouch() {
+		getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+	}
 	
 	private boolean handleOptionsItemSelected(final Activity act, MenuItem item) {
 		if (item.getItemId() == R.id.softreboot) {
@@ -231,11 +267,11 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 				public void onCheckedChanged(HtcToggleButtonLight toggle, boolean state) {
 					prefs.edit().putBoolean("wake_gestures_active", state).commit();
 					if (!Helpers.isEight()) Helpers.setWakeGestures(state);
-					applyThemeState(state);
+					applyWGState(state);
 				}
 			});
 			
-			applyThemeState(prefs.getBoolean("wake_gestures_active", false));
+			applyWGState(prefs.getBoolean("wake_gestures_active", false));
 		} else if (menuType == 2) {
 			inflater.inflate(R.menu.menu_sub, menu);
 			
@@ -245,17 +281,184 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 				@Override
 				public void onCheckedChanged(HtcToggleButtonLight toggle, boolean state) {
 					prefs.edit().putBoolean("eps_remap_active", state).commit();
-					applyState(state);
+					applyEPSState(state);
 				}
 			});
 			
-			applyState(prefs.getBoolean("eps_remap_active", false));
+			applyEPSState(prefs.getBoolean("eps_remap_active", false));
 			for (int i = 1; i <= 6; i++) initCell(i);
+		} else if (menuType == 3) {
+			OnOffSwitch = new HtcToggleButtonLight(getActivity());
+			OnOffSwitch.setLayoutParams(new android.widget.LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			OnOffSwitch.setEnabled(true);
+			OnOffSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+				@Override
+				public void onCheckedChanged(HtcToggleButtonLight toggle, boolean state) {
+					prefs.edit().putBoolean("popup_notify_active", state).commit();
+					applyPopupState(state);
+				}
+			});
+			((ActivityEx)getActivity()).actionBarContainer.addRightView(OnOffSwitch);
+			
+			menuTest = new ActionBarItemView(getActivity());
+			menuTest.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+			menuTest.setIcon(getResources().getIdentifier("icon_btn_view_dark", "drawable", "com.htc"));
+			menuTest.setLongClickable(true);
+			menuTest.setTitle(Helpers.l10n(getActivity(), R.string.popupnotify_test));
+			menuTest.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					final Activity act = getActivity();
+					PendingIntent pendingintent = PendingIntent.getActivity(act, 0, new Intent(act, MainActivity.class), 0x10000000);
+					PendingIntent pendingintent1 = PendingIntent.getActivity(act, 0, new Intent(), 0x10000000);
+					Notification notification1 = (new Notification.Builder(act))
+							.setContentTitle("Inbox Style notification")
+							.setContentText("This is a test notification")
+							.setAutoCancel(true)
+							.setContentIntent(pendingintent)
+							.setSmallIcon(R.drawable.apm_bootloader)
+							.setLargeIcon(BitmapFactory.decodeResource(act.getResources(), R.drawable.apm_bootloader))
+							.addAction(android.R.drawable.ic_menu_call, "Do nothing", pendingintent1)
+							.addAction(android.R.drawable.ic_menu_delete, "...do it again", pendingintent1)
+							.setStyle(new Notification.InboxStyle()
+								.addLine("This is a test!")
+								.addLine("Multiple lines")
+								.setSummaryText("Summary example"))
+							.build();
+					
+					final Notification notification2 = (new Notification.Builder(act))
+							.setContentTitle("Big Picture Style")
+							.setContentText("This is a test!")
+							.setAutoCancel(true)
+							.setContentIntent(pendingintent)
+							.setSmallIcon(R.drawable.apm_hotreboot)
+							.setLargeIcon(BitmapFactory.decodeResource(act.getResources(), R.drawable.apm_hotreboot))
+							.addAction(android.R.drawable.ic_menu_call, "Do nothing", pendingintent1)
+							.addAction(android.R.drawable.ic_menu_delete, "...do it again", pendingintent1)
+							.setStyle(new Notification.BigPictureStyle()
+								.bigPicture(BitmapFactory.decodeResource(act.getResources(), getResources().getIdentifier("htc_logo", "drawable", "com.htc")))
+								.bigLargeIcon(BitmapFactory.decodeResource(act.getResources(), R.drawable.apm_hotreboot))
+								.setSummaryText("Summary example"))
+							.build();
+					
+					final Notification notification3 = (new Notification.Builder(act))
+							.setContentTitle("Big Text Style notification")
+							.setContentText("This is a test notification")
+							.setAutoCancel(true)
+							.setContentIntent(pendingintent)
+							.setSmallIcon(R.drawable.apm_recovery)
+							.setLargeIcon(BitmapFactory.decodeResource(act.getResources(), R.drawable.apm_recovery))
+							.addAction(android.R.drawable.ic_menu_call, "Do nothing", pendingintent1)
+							.addAction(android.R.drawable.ic_menu_delete, "...do it again", pendingintent1)
+							.setStyle(new Notification.BigTextStyle().setSummaryText("Summary example").bigText("This is a test!"))
+							.build();
+					final NotificationManager nm = (NotificationManager)act.getSystemService("notification");
+					nm.notify(6661, notification1);
+					
+					(new Handler()).postDelayed(new Runnable() {
+						public void run() {
+							nm.notify(6662, notification2);
+						}
+					}, 2000L);
+					
+					(new Handler()).postDelayed(new Runnable() {
+						public void run() {
+							nm.notify(6663, notification3);
+						}
+					}, 3000L);
+				}
+			});
+			((ActivityEx)getActivity()).actionBarContainer.addRightView(menuTest);
+			
+			applyPopupState(prefs.getBoolean("popup_notify_active", false));
+		} else if (menuType == 4) {
+			OnOffSwitch = new HtcToggleButtonLight(getActivity());
+			OnOffSwitch.setLayoutParams(new android.widget.LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+			OnOffSwitch.setEnabled(true);
+			OnOffSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+				@Override
+				public void onCheckedChanged(HtcToggleButtonLight toggle, boolean state) {
+					prefs.edit().putBoolean("better_headsup_active", state).commit();
+					applyPopupState(state);
+				}
+			});
+			((ActivityEx)getActivity()).actionBarContainer.addRightView(OnOffSwitch);
+			
+			menuTest = new ActionBarItemView(getActivity());
+			menuTest.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+			menuTest.setIcon(getResources().getIdentifier("icon_btn_view_dark", "drawable", "com.htc"));
+			menuTest.setLongClickable(true);
+			menuTest.setTitle(Helpers.l10n(getActivity(), R.string.betterheadsup_test));
+			menuTest.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					final Activity act = getActivity();
+					final PendingIntent pendingintent = PendingIntent.getActivity(act, 0, new Intent(act, MainActivity.class), 0x10000000);
+					final PendingIntent pendingintent1 = PendingIntent.getActivity(act, 0, new Intent(), 0x10000000);
+					Notification notification1 = (new Notification.Builder(act))
+							.setContentTitle("Inbox Style notification")
+							.setContentText("This is a test notification")
+							.setAutoCancel(true)
+							.setContentIntent(pendingintent)
+							.setSmallIcon(R.drawable.ic_for_settings)
+							.setLargeIcon(BitmapFactory.decodeResource(act.getResources(), android.R.drawable.ic_menu_call))
+							.addAction(android.R.drawable.ic_menu_save, "SMS", pendingintent1)
+							.addAction(android.R.drawable.ic_menu_delete, "Call back", pendingintent1)
+							.setStyle(new Notification.InboxStyle()
+								.addLine("This is a test!")
+								.addLine("Multiple lines")
+								.setSummaryText("Summary example"))
+							.build();
+					final Notification notification2 = (new Notification.Builder(act))
+							.setContentTitle("Photo")
+							.setContentText("This is a test")
+							.setAutoCancel(true)
+							.setContentIntent(pendingintent)
+							.setSmallIcon(R.drawable.ic_for_settings)
+							.setLargeIcon(BitmapFactory.decodeResource(act.getResources(), android.R.drawable.ic_menu_camera))
+							.addAction(android.R.drawable.ic_menu_view, "Agree!", pendingintent1)
+							.addAction(android.R.drawable.ic_menu_report_image, "Totally!", pendingintent1)
+							.setStyle(new Notification.BigPictureStyle()
+								.bigPicture(BitmapFactory.decodeResource(act.getResources(), R.drawable.willa))
+								.bigLargeIcon(BitmapFactory.decodeResource(act.getResources(), R.drawable.apm_hotreboot))
+								.setSummaryText("of gorgeous Willa Holland :)"))
+							.build();
+					
+					final Notification notification3 = (new Notification.Builder(act))
+							.setContentTitle("Big Text Style notification")
+							.setContentText("This is a test notification")
+							.setAutoCancel(true)
+							.setContentIntent(pendingintent)
+							.setSmallIcon(R.drawable.ic_for_settings)
+							.setLargeIcon(BitmapFactory.decodeResource(act.getResources(), android.R.drawable.ic_menu_help))
+							.addAction(android.R.drawable.ic_menu_save, "OK", pendingintent1)
+							.addAction(android.R.drawable.ic_menu_delete, "Not OK", pendingintent1)
+							.setStyle(new Notification.BigTextStyle().setSummaryText("Summary example").bigText("This is a test!"))
+							.build();
+					final NotificationManager nm = (NotificationManager)act.getSystemService("notification");
+					nm.notify(6661, notification1);
+					
+					(new Handler()).postDelayed(new Runnable() {
+						public void run() {
+							nm.notify(6662, notification2);
+						}
+					}, 2000L);
+					
+					(new Handler()).postDelayed(new Runnable() {
+						public void run() {
+							nm.notify(6663, notification3);
+						}
+					}, 3000L);
+				}
+			});
+			((ActivityEx)getActivity()).actionBarContainer.addRightView(menuTest);
+			
+			applyPopupState(prefs.getBoolean("better_headsup_active", false));
 		}
 	}
 	
 	// Wake gestures
-	public void applyThemeState(Boolean state) {
+	public void applyWGState(Boolean state) {
 		OnOffSwitch.setChecked(state);
 		if (state) {
 			prefListView.setVisibility(View.VISIBLE);
@@ -267,13 +470,25 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 	}
 	
 	// EPS Remap
-	public void applyState(boolean state) {
+	public void applyEPSState(boolean state) {
 		OnOffSwitch.setChecked(state);
 		if (state) {
 			contentsView.setVisibility(View.VISIBLE);
 			themeHint.setVisibility(View.GONE);
 		} else {
 			contentsView.setVisibility(View.GONE);
+			themeHint.setVisibility(View.VISIBLE);
+		}
+	}
+	
+	public void applyPopupState(Boolean state) {
+		OnOffSwitch.setChecked(state);
+		menuTest.setEnabled(state);
+		if (state) {
+			prefListView.setVisibility(View.VISIBLE);
+			themeHint.setVisibility(View.GONE);
+		} else {
+			prefListView.setVisibility(View.GONE);
 			themeHint.setVisibility(View.VISIBLE);
 		}
 	}

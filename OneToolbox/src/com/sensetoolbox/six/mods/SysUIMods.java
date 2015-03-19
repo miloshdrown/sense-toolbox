@@ -15,9 +15,13 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
 
+import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
+import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
@@ -31,6 +35,8 @@ import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Resources;
 import android.content.res.XResources;
@@ -40,8 +46,16 @@ import android.database.ContentObserver;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Outline;
+import android.graphics.PixelFormat;
 import android.graphics.Point;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.OvalShape;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.TrafficStats;
@@ -49,12 +63,15 @@ import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PowerManager;
+import android.os.SystemClock;
 import android.os.Debug.MemoryInfo;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
+import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
@@ -75,6 +92,7 @@ import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
 import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
+import android.view.ViewOutlineProvider;
 import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
@@ -82,10 +100,12 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.GridView;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
+import android.widget.RemoteViews;
 import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -94,16 +114,21 @@ import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.htc.configuration.HtcWrapConfiguration;
 import com.htc.widget.HtcCheckBox;
 import com.htc.widget.HtcCompoundButton;
 import com.htc.widget.HtcPopupWindow;
 import com.htc.widget.HtcCompoundButton.OnCheckedChangeListener;
+import com.htc.widget.HtcRimButton;
 import com.htc.widget.HtcSeekBar;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.SenseThemes.PackageTheme;
+import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
+import com.sensetoolbox.six.utils.HorizontalPager;
+import com.sensetoolbox.six.utils.HorizontalPager.OnScreenSwitchListener;
 import com.sensetoolbox.six.utils.PopupAdapter;
 import com.stericson.RootTools.RootTools;
 import com.stericson.RootTools.execution.CommandCapture;
@@ -751,6 +776,7 @@ public class SysUIMods {
 					connectivityManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
 					
 					FrameLayout mStatusBarView = (FrameLayout)getObjectField(param.thisObject, "mStatusBarView");
+					if (mStatusBarView == null) return;
 					LinearLayout systemIconArea = (LinearLayout)mStatusBarView.findViewById(mStatusBarView.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
 					
 					RelativeLayout alignFrame = new RelativeLayout(mContext);
@@ -2735,5 +2761,877 @@ public class SysUIMods {
 		resparam.res.setReplacement("com.android.systemui", "integer", "quick_settings_max_rows", modRes.fwd(R.integer.quick_settings_max_rows));
 		resparam.res.setReplacement("com.android.systemui", "integer", "quick_settings_max_rows_keyguard", modRes.fwd(R.integer.quick_settings_max_rows_keyguard));
 		resparam.res.setReplacement("com.android.systemui", "dimen", "quick_settings_cell_height", modRes.fwd(R.dimen.quick_settings_cell_height));
+	}
+	
+	private static void resizeWindow(Context mContext, int newHeight) {
+		WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+		winParams.height = newHeight;
+		if (huView.isAttachedToWindow()) try {
+			wm.updateViewLayout(huView, winParams);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	@SuppressLint("NewApi")
+	private static class FloatingAlertDialog extends FrameLayout {
+		Context mContext;
+		Resources mResources;
+		float density;
+		
+		private int densify(int f) {
+			return Math.round(density * f);
+		}
+
+		public FloatingAlertDialog(Context context, String msg, final StatusBarNotification sbn) {
+			super(context);
+			mContext = context;
+			mResources = mContext.getResources();
+			density = mResources.getDisplayMetrics().density;
+			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+			int materialTextColor = mResources.getColor((mResources.getIdentifier("primary_text_default_material_dark", "color", "android")));
+			int btn_borderless_material = mResources.getIdentifier("btn_borderless_material", "drawable", "android");
+			
+			TypedValue typedValue = new TypedValue();
+			mContext.getTheme().resolveAttribute(mResources.getIdentifier("colorAccent", "attr", "android"), typedValue, true);
+			int accentColor = typedValue.data;
+			
+			setBackgroundResource(mResources.getIdentifier("background_floating_material_dark", "color", "android"));
+			setElevation(densify(14));
+			
+			LinearLayout top = new LinearLayout(mContext);
+			top.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			top.setOrientation(LinearLayout.VERTICAL);
+			
+			TextView message = new TextView(mContext);
+			message.setText(msg);
+			message.setTextColor(materialTextColor);
+			LinearLayout.LayoutParams msglp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+			msglp.gravity = Gravity.FILL_HORIZONTAL | Gravity.TOP;
+			message.setLayoutParams(msglp);
+			message.setPadding(densify(30), densify(25), densify(25), densify(15));
+			
+			LinearLayout actions = new LinearLayout(mContext);
+			LinearLayout.LayoutParams actlp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			actlp.gravity = Gravity.RIGHT;
+			actions.setLayoutParams(actlp);
+			actions.setOrientation(LinearLayout.HORIZONTAL);
+			actions.setPadding(0, 0, densify(10), densify(10));
+			
+			Button yesBtn = new Button(mContext);
+			yesBtn.setFocusable(true);
+			yesBtn.setClickable(true);
+			yesBtn.setText(Helpers.xl10n(modRes, R.string.yes));
+			yesBtn.setTextColor(accentColor);
+			yesBtn.setBackgroundResource(btn_borderless_material);
+			yesBtn.setStateListAnimator(null);
+			yesBtn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					Intent blockIntent = new Intent("com.sensetoolbox.six.BLOCKHEADSUP");
+					blockIntent.putExtra("pkgName", sbn.getPackageName());
+					mContext.sendBroadcast(blockIntent);
+					huView.cancelNotification(sbn);
+					hide();
+				}
+			});
+			
+			Button noBtn = new Button(mContext);
+			noBtn.setFocusable(true);
+			noBtn.setClickable(true);
+			noBtn.setText(Helpers.xl10n(modRes, R.string.no));
+			noBtn.setTextColor(accentColor);
+			noBtn.setBackgroundResource(btn_borderless_material);
+			noBtn.setStateListAnimator(null);
+			noBtn.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					hide();
+				}
+			});
+			
+			actions.addView(noBtn);
+			actions.addView(yesBtn);
+			top.addView(message);
+			top.addView(actions);
+			addView(top);
+		}
+		
+		public void show() {
+			WindowManager.LayoutParams alertParams = new WindowManager.LayoutParams(
+					Math.round(mResources.getDisplayMetrics().widthPixels * 4/5),
+					WindowManager.LayoutParams.WRAP_CONTENT,
+					WindowManager.LayoutParams.TYPE_STATUS_BAR_PANEL,
+					WindowManager.LayoutParams.FLAG_SPLIT_TOUCH |
+					WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM |
+					WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS |
+					WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
+					WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+					WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+					PixelFormat.TRANSLUCENT);
+			alertParams.gravity = Gravity.CENTER;
+			alertParams.setTitle("Blacklist confirmation");
+			alertParams.packageName = mContext.getPackageName();
+			alertParams.windowAnimations = mResources.getIdentifier("VolumePanelAnimation", "style", "com.android.systemui");
+			
+			WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+			wm.addView(this, alertParams);
+			huView.invalidate();
+		}
+		
+		public void hide() {
+			WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+			wm.removeView(FloatingAlertDialog.this);
+		}
+	}
+	
+	private static class HeadsUpView extends FrameLayout {
+		HorizontalPager hPager = null;
+		Context mContext = null;
+		Resources mResources = null;
+		Handler mHandler = null;
+		float density = 3f;
+		boolean sleepOnDismissLast = false;
+		
+		Typeface face—ondensed = Typeface.create("sans-serif-condensed", Typeface.NORMAL);
+		Typeface faceLight = Typeface.create("sans-serif-light", Typeface.NORMAL);
+		
+		private int densify(int f) {
+			return Math.round(density * f);
+		}
+		
+		public void updateHeight(boolean isSmooth) {
+			if (hPager.getChildCount() == 0) return;
+			View page = hPager.getChildAt(hPager.getCurrentScreen());
+			if (page == null) return;
+			page.measure(
+				MeasureSpec.makeMeasureSpec(page.getResources().getDisplayMetrics().widthPixels, MeasureSpec.AT_MOST),
+				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
+			);
+			
+			final int newHeight = page.getMeasuredHeight();
+			final int newWindowHeight = newHeight + densify(50);
+			final int oldHeight = hPager.getMeasuredHeight();
+			
+			if (isSmooth) try {
+				ValueAnimator anim = ValueAnimator.ofInt(oldHeight, newHeight);
+				anim.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+					@Override
+					public void onAnimationUpdate(ValueAnimator valueAnimator) {
+						int val = (Integer)valueAnimator.getAnimatedValue();
+						ViewGroup.LayoutParams layoutParams = hPager.getLayoutParams();
+						layoutParams.height = val;
+						hPager.setLayoutParams(layoutParams);
+					}
+				});
+				anim.addListener(new AnimatorListener() {
+					@Override
+					public void onAnimationStart(Animator animation) {
+						if (newHeight > oldHeight) resizeWindow(mContext, newWindowHeight);
+					}
+
+					@Override
+					public void onAnimationEnd(Animator animation) {
+						if (newHeight < oldHeight) resizeWindow(mContext, newWindowHeight);
+					}
+
+					@Override
+					public void onAnimationCancel(Animator animation) {}
+
+					@Override
+					public void onAnimationRepeat(Animator animation) {}
+					
+				});
+				anim.setDuration(150);
+				anim.start();
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			} else try {
+				ViewGroup.LayoutParams layoutParams = hPager.getLayoutParams();
+				layoutParams.height = newHeight;
+				hPager.setLayoutParams(layoutParams);
+				resizeWindow(mContext, newWindowHeight);
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+
+		@SuppressLint({ "NewApi", "RtlHardcoded" })
+		public HeadsUpView(Context context, Handler handler) {
+			super(context);
+			mContext = context;
+			mHandler = handler;
+			mResources = mContext.getResources();
+			density = mResources.getDisplayMetrics().density;
+			
+			setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			int notification_side_padding = mResources.getDimensionPixelOffset(mResources.getIdentifier("notification_side_padding", "dimen", "com.android.systemui"));
+			setClipToPadding(false);
+			
+			FrameLayout bkgLayer = new FrameLayout(mContext);
+			bkgLayer.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			bkgLayer.setPadding(notification_side_padding, 0, notification_side_padding, densify(50));
+			bkgLayer.setBackground(mResources.getDrawable(mResources.getIdentifier("heads_up_scrim", "drawable", "com.android.systemui")));
+			bkgLayer.setClipToPadding(false);
+			
+			hPager = new HorizontalPager(mContext, null);
+			hPager.setElevation(densify(16));
+			//hPager.setClipToOutline(true);
+			hPager.setOutlineProvider(new ViewOutlineProvider() {
+				@Override
+				public void getOutline(View view, Outline outline) {
+					int i = view.getPaddingLeft();
+					int j = view.getPaddingTop();
+					outline.setRect(i, j, view.getWidth() - i - view.getPaddingRight(), view.getHeight());
+				}
+			});
+			
+			hPager.setOnScreenSwitchListener(new OnScreenSwitchListener() {
+				@Override
+				public void onScreenSwitched(int screen) {
+					updateHeight(true);
+				}
+			});
+			hPager.setBackgroundColor(0xff4b4b4b);
+			hPager.setLayoutParams(new FrameLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			hPager.setPadding(0, 0, 0, 0);
+			hPager.setOnHierarchyChangeListener(new OnHierarchyChangeListener() {
+				@Override
+				public void onChildViewAdded(View parent, View child) {
+					updateHeaders((HorizontalPager)parent, child);
+				}
+
+				@Override
+				public void onChildViewRemoved(View parent, View child) {
+					updateHeaders((HorizontalPager)parent, child);
+				}
+			});
+			
+			bkgLayer.addView(hPager);
+			addView(bkgLayer);
+		}
+		
+		@SuppressWarnings("deprecation")
+		public void cancelNotification(StatusBarNotification sbn) {
+			Intent cancelIntent = new Intent("com.sensetoolbox.six.CLEARNOTIFICATION");
+			cancelIntent.putExtra("pkgName", sbn.getPackageName());
+			cancelIntent.putExtra("tag", sbn.getTag());
+			cancelIntent.putExtra("id", sbn.getId());
+			cancelIntent.putExtra("userId", sbn.getUserId());
+			mContext.sendBroadcast(cancelIntent);
+		}
+		
+		@SuppressLint("NewApi")
+		public void removeNotification(final StatusBarNotification sbn) {
+			XposedBridge.log("removing notification! " + sbn.toString());
+			mHandler.post(new Runnable() {
+				@Override
+				public void run() {
+					final View notification = hPager.findViewWithTag(sbn.getKey());
+					if (notification != null)
+					if (hPager.getChildCount() == 1) {
+						mHandler.post(new Runnable() {
+							@Override
+							public void run() {
+								hideHUV();
+							}
+						});
+					} else if (hPager.getChildCount() > 1) {
+						final int scr = hPager.getCurrentScreen();
+						mHandler.post(new Runnable() {
+							@Override
+							public void run() {
+								View item = hPager.getChildAt(hPager.getCurrentScreen());
+								item.animate().setDuration(500).alpha(0);
+							}
+						});
+						
+						mHandler.postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								if (scr > 0)
+									hPager.setCurrentScreen(scr - 1, true);
+								else
+									hPager.setCurrentScreen(1, true);
+							}
+						}, 400);
+						
+						mHandler.postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								hPager.removeView(notification);
+								if (scr == 0) hPager.setCurrentScreen(0, false);
+								updateHeight(true);
+							}
+						}, 1000);
+					}
+				}
+			});
+		}
+		
+		void applyColorRecursively(ViewGroup parent, int color) {
+			for (int i = 0; i < parent.getChildCount(); i++) {
+				View child = parent.getChildAt(i);
+				if (child instanceof ViewGroup)
+					applyColorRecursively((ViewGroup)child, color);
+				else if (child != null)
+					if (Button.class.isAssignableFrom(child.getClass())) {
+						((Button)child).setTextColor(color);
+						((Button)child).setTypeface(Typeface.SANS_SERIF);
+						Drawable[] actionIcons = ((Button)child).getCompoundDrawablesRelative();
+						for (int j = 0; j < actionIcons.length; j++) if (actionIcons[j] != null)
+						actionIcons[j].setColorFilter(0xffE1E1E1, Mode.SRC_ATOP);
+						((Button)child).setCompoundDrawablesRelative(actionIcons[0], actionIcons[1], actionIcons[2], actionIcons[3]);
+					} else if (TextView.class.isAssignableFrom(child.getClass())) {
+						((TextView)child).setTextColor(color);
+						((TextView)child).setTypeface(faceLight);
+					}
+			}
+		}
+		
+		void updateHeaders(HorizontalPager pager, View child) {
+			if (pager == null) return;
+			int cnt = pager.getChildCount();
+			for (int i = 0; i < cnt; i++) {
+				LinearLayout item = (LinearLayout)pager.getChildAt(i);
+				if (item == null) continue;
+				TextView header = (TextView)item.findViewById(R.id.headsup_page_header);
+				if (header == null) continue;
+				header.setCompoundDrawablePadding(0);
+				
+				Rect leftRect = new Rect(densify(10), densify(2), densify(18), densify(10));
+				Rect rightRect = new Rect(-densify(10), densify(2), -densify(2), densify(10));
+				
+				ShapeDrawable circle_left = new ShapeDrawable();
+				OvalShape oval = new OvalShape();
+				oval.resize(densify(8), densify(8));
+				circle_left.setShape(oval);
+				circle_left.getPaint().setColor(0xff606060);
+				Drawable circle_right = circle_left.getConstantState().newDrawable().mutate();
+				circle_left.setBounds(leftRect);
+				circle_right.setBounds(rightRect);
+								
+				ColorDrawable dummy_left = new ColorDrawable(Color.TRANSPARENT);
+				Drawable dummy_right = dummy_left.getConstantState().newDrawable().mutate();
+				dummy_left.setBounds(leftRect);
+				dummy_right.setBounds(rightRect);
+				
+				if (cnt == 1)
+					header.setCompoundDrawables(null, null, null, null);
+				else if (cnt > 0 && i == 0)
+					header.setCompoundDrawables(dummy_left, null, circle_right, null);
+				else if (cnt > 0 && i == cnt - 1)
+					header.setCompoundDrawables(circle_left, null, dummy_right, null);
+				else
+					header.setCompoundDrawables(circle_left, null, circle_right, null);
+			}
+			
+			if (cnt > 0) {
+				XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+				HtcRimButton rimBtn = (HtcRimButton)pager.getChildAt(0).findViewById(R.id.headsup_page_dismissbtn);
+				HtcRimButton rimBtnSleep = (HtcRimButton)pager.getChildAt(0).findViewById(R.id.headsup_page_dismissbtn_sleep);
+				
+				if (cnt == 1 && sleepOnDismissLast) {
+					if (rimBtn != null) rimBtn.setText(Helpers.xl10n(modRes, R.string.popupnotify_dismissonly));
+					if (rimBtnSleep != null) rimBtnSleep.setVisibility(View.VISIBLE);
+				} else {
+					if (rimBtn != null) rimBtn.setText(Helpers.xl10n(modRes, R.string.popupnotify_dismiss));
+					if (rimBtnSleep != null) rimBtnSleep.setVisibility(View.GONE);
+				}
+			}
+		}
+		
+		void processRemoteViews(RelativeLayout notifyRemote, View localContent, final StatusBarNotification sbn) {
+			localContent.setBackgroundColor(Color.TRANSPARENT);
+			notifyRemote.removeAllViews();
+			notifyRemote.addView(localContent);
+			notifyRemote.setOnClickListener(new OnClickListener() {
+				@Override
+				@SuppressLint("NewApi")
+				public void onClick(View v) {
+					if (sbn.getNotification().contentIntent != null) try {
+						hideHUV();
+						Object clicker = XposedHelpers.callMethod(bsbObject, "makeClicker", sbn.getNotification().contentIntent, sbn.getKey(), false);
+						XposedHelpers.callMethod(clicker, "onClick", v);
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+				}
+			});
+			applyColorRecursively(notifyRemote, 0xb3ffffff);
+			
+			TextView title = (TextView)notifyRemote.findViewById(android.R.id.title);
+			if (title != null) {
+				title.setTextColor(Color.WHITE);
+				title.setTypeface(face—ondensed);
+			}
+			
+			View actions = notifyRemote.findViewById(mResources.getIdentifier("actions", "id", "android"));
+			if (actions != null) {
+				ViewGroup actionsFrame = (ViewGroup)actions.getParent();
+				if (actionsFrame != null) actionsFrame.setBackgroundColor(Color.TRANSPARENT);
+			}
+			
+			ImageView action_divider = (ImageView)notifyRemote.findViewById(mResources.getIdentifier("action_divider", "id", "android"));
+			if (action_divider != null) action_divider.setBackground(new ColorDrawable(0xff525252));
+			ImageView overflow_divider = (ImageView)notifyRemote.findViewById(mResources.getIdentifier("overflow_divider", "id", "android"));
+			if (overflow_divider != null) overflow_divider.setBackground(new ColorDrawable(0xff525252));
+			
+			LinearLayout line1 = (LinearLayout)notifyRemote.findViewById(mResources.getIdentifier("line1", "id", "android"));
+			if (line1 != null) ((ViewGroup)line1.getParent()).setBackgroundColor(Color.TRANSPARENT);
+		}
+		
+		public void addNotification(final StatusBarNotification sbn) {
+			mHandler.post(new Runnable() {
+				@Override
+				@SuppressLint({ "ClickableViewAccessibility", "NewApi" })
+				public void run() {
+					final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+					LinearLayout notification = (LinearLayout)hPager.findViewWithTag(sbn.getKey());
+					boolean isUpdate = false;
+					if (notification != null) isUpdate = true;
+					
+					final LinearLayout item;
+					if (isUpdate) {
+						item = notification;
+					} else {
+						item = new LinearLayout(mContext);
+						item.setOrientation(LinearLayout.VERTICAL);
+						item.setPadding(0, 0, 0, 0);
+						item.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+						item.setTag(sbn.getKey());
+						item.setBaselineAligned(false);
+					}
+					
+					TextView header;
+					if (isUpdate) {
+						header = (TextView)notification.findViewById(R.id.headsup_page_header);
+					} else {
+						header = new TextView(mContext);
+						header.setGravity(Gravity.CENTER);
+						header.setAllCaps(true);
+						header.setTextColor(Color.WHITE);
+						header.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14.0f);
+						header.setTypeface(face—ondensed);
+						header.setPadding(densify(6), densify(6), densify(6), densify(6));
+						header.setId(R.id.headsup_page_header);
+						LinearLayout.LayoutParams hdrlp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+						hdrlp.gravity = Gravity.FILL_HORIZONTAL | Gravity.TOP;
+						header.setLayoutParams(hdrlp);
+						item.setFocusable(true);
+						item.setLongClickable(true);
+						item.setClickable(true);
+						item.setBackgroundResource(mResources.getIdentifier("btn_borderless_rect", "drawable", "com.android.systemui"));
+						item.setOnClickListener(new OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								final RelativeLayout notifyRemote = (RelativeLayout)item.findViewById(R.id.headsup_page_remoteviews);
+								if (notifyRemote == null) return;
+								boolean isExpanded = (Boolean)notifyRemote.getTag();
+								View localContent = null;
+								RemoteViews contentView = sbn.getNotification().headsUpContentView;
+								if (contentView == null) contentView = sbn.getNotification().contentView;
+								RemoteViews bigContentView = sbn.getNotification().bigContentView;
+								if (isExpanded) {
+									if (contentView != null) {
+										localContent = contentView.apply(mContext, notifyRemote);
+										isExpanded = false;
+									} else Toast.makeText(mContext, Helpers.xl10n(modRes, R.string.popupnotify_noview), Toast.LENGTH_SHORT);
+								} else {
+									if (bigContentView != null) {
+										localContent = bigContentView.apply(mContext, notifyRemote);
+										isExpanded = true;
+									} else Toast.makeText(mContext, Helpers.xl10n(modRes, R.string.popupnotify_nobigview), Toast.LENGTH_SHORT);
+								}
+								
+								final View localContentRun = localContent;
+								final boolean isExpandedRun = isExpanded;
+								if (localContentRun != null)
+								mHandler.postDelayed(new Runnable() {
+									@Override
+									public void run() {
+										processRemoteViews(notifyRemote, localContentRun, sbn);
+										notifyRemote.setTag(isExpandedRun);
+										updateHeight(true);
+									}
+								}, 300);
+							}
+						});
+					}
+					PackageManager pm = mContext.getPackageManager();
+					ApplicationInfo ai;
+					try {
+						ai = pm.getApplicationInfo(sbn.getPackageName(), 0);
+					} catch (Exception e) {
+						ai = null;
+					}
+					final String appName = (String)(ai != null ? pm.getApplicationLabel(ai) : sbn.getPackageName());
+					header.setText(appName);
+
+					if (!isUpdate) {
+						item.addView(header);
+						
+						ImageView divider = new ImageView(mContext);
+						divider.setBackgroundResource(mResources.getIdentifier("common_b_div", "drawable", "com.android.systemui"));
+						LinearLayout.LayoutParams dlp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+						int margin_l = mResources.getDimensionPixelSize(mResources.getIdentifier("margin_l", "dimen", "com.android.systemui"));
+						dlp.gravity = Gravity.TOP;
+						dlp.height = 2;
+						dlp.leftMargin = margin_l;
+						dlp.rightMargin = margin_l;
+						divider.setLayoutParams(dlp);
+						divider.setPadding(0, 0, 0, 0);
+						item.addView(divider);
+					}
+					
+					// Remote notification view
+					RemoteViews content = null;
+					boolean isExpanded = XMain.pref.getBoolean("pref_key_betterheadsup_expand", true);
+					if (isExpanded) content = sbn.getNotification().bigContentView;
+					if (content == null) {
+						content = sbn.getNotification().headsUpContentView;
+						if (content == null) content = sbn.getNotification().contentView;
+						isExpanded = false;
+					}
+					if (content != null) {
+						final RelativeLayout notifyRemote;
+						if (isUpdate) {
+							notifyRemote = (RelativeLayout)notification.findViewById(R.id.headsup_page_remoteviews);
+						} else {
+							notifyRemote = new RelativeLayout(mContext);
+							notifyRemote.setId(R.id.headsup_page_remoteviews);
+							LinearLayout.LayoutParams nlp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+							nlp.weight = 1.0f;
+							notifyRemote.setLayoutParams(nlp);
+							notifyRemote.setPadding(0, 0, 0, 0);
+							notifyRemote.setBackgroundColor(Color.TRANSPARENT);
+							notifyRemote.setTag(isExpanded);
+						}
+						
+						View localContent = content.apply(mContext, notifyRemote);
+						processRemoteViews(notifyRemote, localContent, sbn);
+						
+						if (!isUpdate) item.addView(notifyRemote);
+					}
+
+					LinearLayout actions = new LinearLayout(mContext);
+					actions.setOrientation(LinearLayout.HORIZONTAL);
+					actions.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+					actions.setPadding(0, 0, 0, 0);
+					
+					HtcRimButton rimBtn;
+					HtcRimButton rimBtnSleep;
+					if (isUpdate) {
+						rimBtn = (HtcRimButton)notification.findViewById(R.id.headsup_page_dismissbtn);
+						rimBtnSleep = (HtcRimButton)notification.findViewById(R.id.headsup_page_dismissbtn_sleep);
+					} else {
+						rimBtn = new HtcRimButton(mContext);
+						rimBtn.setId(R.id.headsup_page_dismissbtn);
+						LinearLayout.LayoutParams lpbtn = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+						lpbtn.weight = 1;
+						lpbtn.gravity = Gravity.LEFT | Gravity.BOTTOM;
+						rimBtn.setLayoutParams(lpbtn);
+						rimBtn.setBackgroundColor(0xff404040);
+						rimBtn.setTextColor(0xb3ffffff);
+						rimBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.0f);
+						rimBtn.setTypeface(face—ondensed);
+						rimBtn.setText(Helpers.xl10n(modRes, R.string.popupnotify_dismiss));
+						rimBtn.setPadding(densify(5), densify(5), densify(5), densify(7));
+						
+						rimBtnSleep = new HtcRimButton(mContext);
+						rimBtnSleep.setVisibility(View.GONE);
+						rimBtnSleep.setId(R.id.headsup_page_dismissbtn_sleep);
+						LinearLayout.LayoutParams lpbtnsleep = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+						lpbtnsleep.weight = 1;
+						lpbtnsleep.gravity = Gravity.RIGHT | Gravity.BOTTOM;
+						rimBtnSleep.setLayoutParams(lpbtnsleep);
+						rimBtnSleep.setBackgroundColor(0xff404040);
+						rimBtnSleep.setTextColor(0xb3ffffff);
+						rimBtnSleep.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.0f);
+						rimBtnSleep.setTypeface(face—ondensed);
+						rimBtnSleep.setText(Helpers.xl10n(modRes, R.string.popupnotify_dismisssleep));
+						rimBtnSleep.setPadding(densify(5), densify(5), densify(5), densify(7));
+					}
+					
+					rimBtn.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							cancelNotification(sbn);
+						}
+					});
+					rimBtnSleep.setOnClickListener(new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							cancelNotification(sbn);
+							(new Thread(new Runnable() {
+								@Override
+								public void run() {
+									try {
+										Thread.sleep(500);
+										GlobalActions.goToSleep(mContext);
+									} catch (Throwable t) {}
+								}
+							})).start();
+						}
+					});
+					
+					OnLongClickListener olcl = new OnLongClickListener() {
+						@Override
+						public boolean onLongClick(final View v) {
+							if (XMain.pref.getBoolean("pref_key_betterheadsup_bwlist", false)) return true;
+							FloatingAlertDialog blDialog = new FloatingAlertDialog(mContext, String.format(Helpers.xl10n(modRes, R.string.popupnotify_blacklist), appName), sbn);
+							blDialog.show();
+							return true;
+						}
+					};
+					rimBtn.setOnLongClickListener(olcl);
+					rimBtnSleep.setOnLongClickListener(olcl);
+					
+					if (!isUpdate) {
+						actions.addView(rimBtn);
+						actions.addView(rimBtnSleep);
+						item.addView(actions);
+						hPager.addView(item);
+					}
+					updateHeight(huView.isAttachedToWindow());
+					
+					PowerManager pwm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+					if (XMain.pref.getBoolean("pref_key_betterheadsup_lightup", false)) {
+						XposedHelpers.callMethod(pwm, "wakeUp", SystemClock.uptimeMillis());
+						XposedHelpers.callMethod(pwm, "userActivity", SystemClock.uptimeMillis(), false);
+					}
+				}
+			});
+		}
+		
+		public void clear() {
+			hPager.removeAllViews();
+		}
+		
+		public void setScreen(int screen) {
+			hPager.setCurrentScreen(screen, false);
+		}
+	}
+	
+	private static WindowManager.LayoutParams winParams = new WindowManager.LayoutParams(
+		WindowManager.LayoutParams.MATCH_PARENT,
+		WindowManager.LayoutParams.WRAP_CONTENT,
+		WindowManager.LayoutParams.TYPE_STATUS_BAR_PANEL,
+		WindowManager.LayoutParams.FLAG_SPLIT_TOUCH |
+		WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM |
+		WindowManager.LayoutParams.FLAG_LAYOUT_NO_LIMITS |
+		WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN |
+		WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+		WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE,
+		PixelFormat.TRANSLUCENT);
+	private static boolean isHUVShown = false;
+	
+	@SuppressWarnings("deprecation")
+	private static void showHUV() {
+		final Context mContext = (Context)XposedHelpers.getObjectField(psbObject, "mContext");
+		final Handler mHandlerPSB = (Handler)XposedHelpers.getObjectField(psbObject, "mHandler");
+		if (mContext == null || mHandlerPSB == null) return;
+		isHUVShown = true;
+		PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+		if (pm.isScreenOn())
+			huView.sleepOnDismissLast = false;
+		else
+			huView.sleepOnDismissLast = true;
+			
+		mHandlerPSB.post(new Runnable() {
+			@Override
+			public void run() {
+				//winParams.height = Math.round(200 * mResources.getDisplayMetrics().density);
+				winParams.gravity = Gravity.TOP;
+				winParams.setTitle("Better Heads Up");
+				winParams.packageName = mContext.getPackageName();
+				winParams.windowAnimations = mContext.getResources().getIdentifier("Animation.StatusBar.HeadsUp", "style", "com.android.systemui");
+				
+				WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+				wm.addView(huView, winParams);
+				huView.invalidate();
+			}
+		});
+	}
+	
+	private static void hideHUV() {
+		if (isHUVShown && huView != null) {
+			final Context mContext = (Context)XposedHelpers.getObjectField(psbObject, "mContext");
+			final Handler mHandlerPSB = (Handler)XposedHelpers.getObjectField(psbObject, "mHandler");
+			if (mContext == null || mHandlerPSB == null) return;
+			isHUVShown = false;
+			
+			mHandlerPSB.post(new Runnable() {
+				@Override
+				public void run() {
+					WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+					wm.removeView(huView);
+				}
+			});
+			
+			mHandlerPSB.postDelayed(new Runnable() {
+				@Override
+				public void run() {
+					if (huView != null) huView.clear();
+				}
+			}, 600);
+		}
+	}
+	
+	private static Object psbObject = null;
+	private static Object bsbObject = null;
+	private static HeadsUpView huView = null;
+	private static boolean isInFullscreen = false;
+	private static BroadcastReceiver mBRBetterHeadsUp = new BroadcastReceiver() {
+		public void onReceive(Context context, Intent intent) {
+			try {
+				String action = intent.getAction();
+				if (action != null)
+				if (action.equals("com.sensetoolbox.six.BHU_SHOW"))
+					showHUV();
+				else if (action.equals("com.sensetoolbox.six.BHU_HIDE"))
+					hideHUV();
+				else if (action.equals("com.sensetoolbox.six.CHANGEFULLSCREEN"))
+					isInFullscreen = intent.getBooleanExtra("isInFullscreen", false);
+			} catch(Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	};
+	
+	private static boolean isAllowed(String pkgName) {
+		HashSet<String> appsList = (HashSet<String>)XMain.pref.getStringSet("pref_key_betterheadsup_bwlist_apps", new HashSet<String>());
+		boolean isInList = appsList.contains(pkgName);
+		boolean isWhitelist = XMain.pref.getBoolean("pref_key_betterheadsup_bwlist", false);
+		return ((isWhitelist && isInList) || (!isWhitelist && !isInList));
+	}
+	
+	public static NotificationListenerService mNotificationListener = new NotificationListenerService() {
+		@Override
+		@SuppressWarnings("deprecation")
+		public void onNotificationPosted(final StatusBarNotification sbn) {
+			XMain.pref.reload();
+			if (!XMain.pref.getBoolean("better_headsup_active", false)) return;
+
+			boolean lowPriority = XMain.pref.getBoolean("pref_key_betterheadsup_priority", false);
+			if (sbn != null && sbn.isClearable() && !sbn.isOngoing())
+			if (sbn.getNotification().priority >= 0 || (sbn.getNotification().priority < 0 && lowPriority))
+			if (huView != null && isAllowed(sbn.getPackageName())) {
+				KeyguardManager km = (KeyguardManager)huView.getContext().getSystemService(Context.KEYGUARD_SERVICE);
+				if (!km.isKeyguardLocked())
+				if (!isHUVShown) {
+					PowerManager pwm = (PowerManager)huView.getContext().getSystemService(Context.POWER_SERVICE);
+					if (pwm.isScreenOn() && XMain.pref.getBoolean("pref_key_betterheadsup_sleepmode", false)) return;
+					if (isInFullscreen && XMain.pref.getBoolean("pref_key_betterheadsup_fullscreen", false)) return;
+					XposedBridge.log("adding notification and showing huv");
+					huView.clear();
+					huView.addNotification(sbn);
+					huView.setScreen(0);
+					showHUV();
+				} else {
+					XposedBridge.log("adding notification");
+					huView.addNotification(sbn);
+				}
+			}
+		}
+		
+		@Override
+		public void onNotificationRemoved(final StatusBarNotification sbn) {
+			XMain.pref.reload();
+			if (!XMain.pref.getBoolean("better_headsup_active", false)) return;
+			if (huView != null && isHUVShown) huView.removeNotification(sbn);
+		}
+	};
+	
+	@SuppressLint("NewApi")
+	public static void execHook_BetterHeadsUpSysUI(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				psbObject = param.thisObject;
+				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				huView = new HeadsUpView(mContext, (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler"));
+				IntentFilter intentfilter = new IntentFilter();
+				intentfilter.addAction("com.sensetoolbox.six.BHU_SHOW");
+				intentfilter.addAction("com.sensetoolbox.six.BHU_HIDE");
+				intentfilter.addAction("com.sensetoolbox.six.CHANGEFULLSCREEN");
+				mContext.registerReceiver(mBRBetterHeadsUp, intentfilter);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "addNotification", StatusBarNotification.class, NotificationListenerService.RankingMap.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				XposedHelpers.setBooleanField(param.thisObject, "mUseHeadsUp", false);
+			}
+		});
+		
+		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.BaseStatusBar", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				bsbObject = param.thisObject;
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.BaseStatusBar", lpparam.classLoader, "start", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				XposedHelpers.callMethod(mNotificationListener, "registerAsSystemService", mContext, new ComponentName(mContext.getPackageName(), param.thisObject.getClass().getCanonicalName()), -1);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.BaseStatusBar", lpparam.classLoader, "destroy", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				XposedHelpers.callMethod(mNotificationListener, "unregisterAsSystemService");
+			}
+		});
+	}
+	
+	public static MethodHookParam mNMSParam = null;
+	private static BroadcastReceiver mBR = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			try {
+				String action = intent.getAction();
+				if (action != null)
+				if (mNMSParam != null && action.equals("com.sensetoolbox.six.CLEARNOTIFICATION")) {
+					Object mService = XposedHelpers.getObjectField(mNMSParam.thisObject, "mService");
+					XposedHelpers.callMethod(mService, "cancelNotificationWithTag", intent.getStringExtra("pkgName"), intent.getStringExtra("tag"), intent.getIntExtra("id", 0), intent.getIntExtra("userId", 0));
+				}
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+		}
+	};
+	
+	public static void execHook_BetterHeadsUpNotifications(LoadPackageParam lpparam) {
+		XposedBridge.hookAllConstructors(findClass("com.android.server.notification.NotificationManagerService", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Context ctx = (Context)param.args[0];
+				IntentFilter intentfilter = new IntentFilter();
+				intentfilter.addAction("com.sensetoolbox.six.CLEARNOTIFICATION");
+				ctx.registerReceiver(mBR, intentfilter);
+				mNMSParam = param;
+			}
+		});
+	}
+	
+	public static void execHook_BetterHeadsUpSystem() {
+		findAndHookMethod(Activity.class, "onResume", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Activity act = (Activity)param.thisObject;
+				if (act == null) return;
+				int flags = act.getWindow().getAttributes().flags;
+				Intent fullscreenIntent = new Intent("com.sensetoolbox.six.CHANGEFULLSCREEN");
+				if (flags != 0 && (flags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN && !act.getPackageName().equals("com.android.systemui"))
+					fullscreenIntent.putExtra("isInFullscreen", true);
+				else
+					fullscreenIntent.putExtra("isInFullscreen", false);
+				act.sendBroadcast(fullscreenIntent);
+			}
+		});
 	}
 }

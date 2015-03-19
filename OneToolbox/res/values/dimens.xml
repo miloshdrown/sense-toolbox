@@ -28,13 +28,6 @@
 
 	<dimen name="button_margin">24dp</dimen>
 	<dimen name="text_padding">24dp</dimen>
-	<dimen name="showcase_x_inner">60dp</dimen>
-	<dimen name="showcase_x_outer">90dp</dimen>
-	<dimen name="showcase_y_inner">60dp</dimen>
-	<dimen name="showcase_y_outer">90dp</dimen>
-	
-	<dimen name="showcase_y2_inner">75dp</dimen>
-	<dimen name="showcase_y2_outer">95dp</dimen>
 	
 	<dimen name="quick_settings_cell_height">63.66dip</dimen>
 	

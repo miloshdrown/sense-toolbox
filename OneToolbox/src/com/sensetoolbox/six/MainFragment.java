@@ -1,5 +1,6 @@
 package com.sensetoolbox.six;
 
+import java.util.HashSet;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -18,7 +19,6 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow.OnDismissListener;
@@ -31,7 +31,6 @@ import com.htc.preference.HtcPreferenceScreen;
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.quicktips.PopupBubbleWindow.OnUserDismissListener;
 import com.htc.widget.quicktips.QuickTipPopup;
-import com.htc.wrap.android.provider.HtcWrapSettings;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.HtcPreferenceFragmentExt;
 import com.stericson.RootTools.RootTools;
@@ -42,7 +41,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	public static String lastShortcutKey = null;
 	public static String lastShortcutKeyContents = null;
 	private boolean toolboxModuleActive = false;
-	QuickTipPopup qtp = null;
 	
 	public MainFragment() {
 		super();
@@ -87,15 +85,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 			showRestoreInfoDialog();
 		}
 
-		HtcPreference popupNotifyPreference = (HtcPreference) findPreference("pref_key_other_popupnotify");
-		popupNotifyPreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
-			@Override
-			public boolean onPreferenceClick(HtcPreference arg0) {
-				act.startActivity(new Intent(act, PopupNotify.class));
-				return true;
-			}
-		});
-		
 		//Add version name to support title
 		try {
 			HtcPreferenceCategory supportCat = (HtcPreferenceCategory) findPreference("pref_key_support");
@@ -176,29 +165,10 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 			}
 		});
 		
-		if (Helpers.isLP()) (findPreference("pref_key_other_popupnotify")).setEnabled(false);
-	}
-	
-	private boolean getQuickTipFlag(String tipName) {
-		return HtcWrapSettings.System.getQuickTipFlag(getActivity().getContentResolver(), "com.sensetoolbox.six.tip." + tipName);
-	}
-	
-	private void disableQuickTipFlag(String tipName) {
-		HtcWrapSettings.System.disableQuickTipFlag(getActivity().getContentResolver(), "com.sensetoolbox.six.tip." + tipName);
-	}
-	
-	private int getWidthWithPadding() {
-		float padding = 0.9f;
-		if (getResources().getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) padding = 0.8f;
-		return Math.round(getResources().getDisplayMetrics().widthPixels * padding);
-	}
-	
-	private void disableTouch() {
-		getActivity().getWindow().setFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE, WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
-	}
-	
-	private void enableTouch() {
-		getActivity().getWindow().clearFlags(WindowManager.LayoutParams.FLAG_NOT_TOUCHABLE);
+		if (Helpers.isLP())
+			Helpers.removePref(this, "pref_key_popupnotify", "prefs_cat");
+		else
+			Helpers.removePref(this, "pref_key_betterheadsup", "prefs_cat");
 	}
 	
 	private void showQuickTip(int step) {
@@ -308,8 +278,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		}
 	}
 	
-	
-	
 	public static class SysUIFragment extends HtcPreferenceFragmentExt {
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
@@ -379,7 +347,13 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		@Override
 		public void onReceive(Context context, Intent intent) {
 			if (intent.getAction() != null)
-			if (intent.getAction().equals("android.intent.action.LOCALE_CHANGED")) {
+			if (intent.getAction().equals("com.sensetoolbox.six.BLOCKHEADSUP")) {
+				String pkgName = intent.getStringExtra("pkgName");
+				if (pkgName == null) return;
+				HashSet<String> appsList = new HashSet<String>(prefs.getStringSet("pref_key_betterheadsup_bwlist_apps", new HashSet<String>()));
+				appsList.add(pkgName);
+				prefs.edit().putStringSet("pref_key_betterheadsup_bwlist_apps", new HashSet<String>(appsList)).commit();
+			} else if (intent.getAction().equals("android.intent.action.LOCALE_CHANGED")) {
 				Helpers.l10n = null;
 				Helpers.cLang = "";
 			} else {
@@ -447,11 +421,15 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				case "pref_key_persist":
 					xmlResId = R.xml.prefs_persist;
 					break;
+				case "pref_key_popupnotify":
+					xmlResId = R.xml.prefs_popupnotify;
+					break;
+				case "pref_key_betterheadsup":
+					xmlResId = R.xml.prefs_betterheadsup;
+					break;
 				case "pref_key_wakegest":
 					if (Helpers.isWakeGestures() || Helpers.isEight()) {
 						xmlResId = R.xml.prefs_wakegest;
-						//getActivity().startActivity(new Intent(getActivity(), WakeGestures.class));
-						//return true;
 					} else {
 						HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
 						builder.setTitle(Helpers.l10n(getActivity(), R.string.warning));

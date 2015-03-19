@@ -78,7 +78,7 @@ public class ColorSelect extends HtcListView {
 		public View getView(int position, View convertView, ViewGroup parent) {
 			View row;
 			if (convertView == null)
-				row = mInflater.inflate(R.layout.htc_list_item_colors_with_bf, parent, false);
+				row = mInflater.inflate(R.layout.htc_list_item_colors, parent, false);
 			else
 				row = convertView;
 

@@ -6,7 +6,8 @@
 	android:key="prefs" >
 	
 	<com.htc.preference.HtcPreferenceCategory
-		android:title="@string/mods" >
+		android:title="@string/mods"
+		android:key="prefs_cat" >
 	<!--
 	<com.htc.preference.HtcPreferenceScreen
 		android:title="@string/camera_mods"
@@ -49,10 +50,15 @@
 		android:summary="@string/various_touchlock_summ"
 		android:key="pref_key_touchlock" />
 		
-	<com.htc.preference.HtcPreference
-		android:key="pref_key_other_popupnotify"
+	<com.htc.preference.HtcPreferenceScreen
+		android:key="pref_key_popupnotify"
 		android:title="@string/various_popupnotify_title"
 		android:summary="@string/various_popupnotify_summ" />
+
+	<com.htc.preference.HtcPreferenceScreen
+		android:key="pref_key_betterheadsup"
+		android:title="@string/betterheadsup_title"
+		android:summary="@string/betterheadsup_summ" />
 	</com.htc.preference.HtcPreferenceCategory>
 	
 	<com.htc.preference.HtcPreferenceCategory

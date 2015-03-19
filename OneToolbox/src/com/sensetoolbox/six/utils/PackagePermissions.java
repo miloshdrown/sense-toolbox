@@ -73,6 +73,19 @@ public class PackagePermissions {
 					if (pkgName.equalsIgnoreCase("com.sensetoolbox.six")) param.setResult(true);
 				}
 			});
+			
+			findAndHookMethod("com.android.server.pm.PackageManagerService", lpparam.classLoader,
+								"verifySignaturesLP",
+								"com.android.server.pm.PackageSetting",
+								"android.content.pm.PackageParser.Package",
+			new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Object pkg = param.args[1];
+					String pkgName = (String)XposedHelpers.getObjectField(pkg, "packageName");
+					if (pkgName.equalsIgnoreCase("com.sensetoolbox.six")) param.setResult(true);
+				}
+			});
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

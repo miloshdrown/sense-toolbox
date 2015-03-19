@@ -17,4 +17,9 @@ public class MainActivity extends ActivityEx {
 	public void onActivityResult(int requestCode, int resultCode, Intent data) {
 		Helpers.processResult(this, requestCode, resultCode, data);
 	}
+	
+	@Override
+	protected void onSaveInstanceState(Bundle outState) {
+		// No call for super()
+	}
 }

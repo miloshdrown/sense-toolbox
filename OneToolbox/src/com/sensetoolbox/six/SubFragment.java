@@ -3,23 +3,32 @@ package com.sensetoolbox.six;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashSet;
 import java.util.List;
 
 import com.htc.app.HtcProgressDialog;
 import com.htc.preference.HtcCheckBoxPreference;
 import com.htc.preference.HtcListPreference;
+import com.htc.preference.HtcMultiSelectListPreference;
 import com.htc.preference.HtcPreference;
 import com.htc.preference.HtcPreferenceCategory;
 import com.htc.preference.HtcPreferenceScreen;
+import com.htc.preference.HtcSwitchPreference;
 import com.htc.preference.HtcPreference.OnPreferenceChangeListener;
 import com.htc.preference.HtcPreference.OnPreferenceClickListener;
 import com.htc.widget.HtcListView;
+import com.htc.widget.quicktips.QuickTipPopup;
+import com.htc.widget.quicktips.PopupBubbleWindow.OnUserDismissListener;
 import com.sensetoolbox.six.utils.ApkInstaller;
+import com.sensetoolbox.six.utils.AppData;
 import com.sensetoolbox.six.utils.AppShortcutAddDialog;
 import com.sensetoolbox.six.utils.ColorPreference;
 import com.sensetoolbox.six.utils.DynamicPreference;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.HtcListPreferencePlus;
+import com.sensetoolbox.six.utils.HtcMultiSelectListPreferenceEx;
 import com.sensetoolbox.six.utils.HtcPreferenceFragmentExt;
 
 import android.app.Activity;
@@ -29,9 +38,11 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -60,29 +71,13 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 		}
 	};
 	
-	private static void removePref(HtcPreferenceFragmentExt frag, String prefName, String catName) {
-		if (frag.findPreference(prefName) != null) {
-			HtcPreference cat = frag.findPreference(catName);
-			if (cat instanceof HtcPreferenceScreen) ((HtcPreferenceScreen)cat).removePreference(frag.findPreference(prefName));
-			else if (cat instanceof HtcPreferenceCategory) ((HtcPreferenceCategory)cat).removePreference(frag.findPreference(prefName));
-		}
-	}
-	
-	private static void disablePref(HtcPreferenceFragmentExt frag, String prefName, String reasonText) {
-		HtcPreference pref = frag.findPreference(prefName);
-		if (pref != null) {
-			pref.setEnabled(false);
-			pref.setSummary(reasonText);
-		}
-	}
-	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
+		super.onActivityCreated(savedInstanceState, xmlResId);
 		if (xmlResId == 0) {
 			getActivity().finish();
 			return;
 		}
-		super.onActivityCreated(savedInstanceState, xmlResId);
 		addPreferencesFromResource(xmlResId);
 		int backResId = getResources().getIdentifier("common_app_bkg", "drawable", "com.htc");
 		
@@ -100,13 +95,15 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				findPreference("pref_key_sysui_recentram").setDependency(null);
 				findPreference("pref_key_sysui_hqthumbs").setDependency(null);
 				findPreference("pref_key_sysui_recentslongtap").setDependency(null);
-				removePref(this, "pref_key_sysui_aosprecent", "pref_systemui_recent");
-				removePref(this, "pref_key_sysui_footeralpha", "pref_systemui_statusbar");
-				removePref(this, "pref_key_sysui_tnsb", "pref_systemui_statusbar");
-				removePref(this, "pref_key_sysui_theqs", "pref_systemui_eqs");
-				removePref(this, "pref_key_sysui_minorqs_notext", "pref_systemui_eqs");
-				removePref(this, "pref_key_sysui_minorqs", "pref_systemui_eqs");
-				removePref(this, "pref_key_sysui_noeqs", "pref_systemui_eqs");
+				Helpers.removePref(this, "pref_key_sysui_aosprecent", "pref_systemui_recent");
+				Helpers.removePref(this, "pref_key_sysui_footeralpha", "pref_systemui_statusbar");
+				Helpers.removePref(this, "pref_key_sysui_tnsb", "pref_systemui_statusbar");
+				Helpers.removePref(this, "pref_key_sysui_theqs", "pref_systemui_eqs");
+				Helpers.removePref(this, "pref_key_sysui_minorqs_notext", "pref_systemui_eqs");
+				Helpers.removePref(this, "pref_key_sysui_minorqs", "pref_systemui_eqs");
+				Helpers.removePref(this, "pref_key_sysui_noeqs", "pref_systemui_eqs");
+			} else {
+				Helpers.removePref(this, "pref_key_sysui_compacteqs", "pref_systemui_eqs");
 			}
 		} else if (xmlResId == R.xml.prefs_statusbar) {
 			HtcPreference sunbeamInstallPref = findPreference("pref_key_cb_sunbeam");
@@ -502,9 +499,9 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			});
 			
 			if (!Helpers.hasRoot)
-				disablePref(this, "pref_key_controls_vol2wake", Helpers.l10n(getActivity(), R.string.no_root_summ));
+				Helpers.disablePref(this, "pref_key_controls_vol2wake", Helpers.l10n(getActivity(), R.string.no_root_summ));
 			else if (!Helpers.hasBusyBox)
-				disablePref(this, "pref_key_controls_vol2wake", Helpers.l10n(getActivity(), R.string.no_busybox_summ));
+				Helpers.disablePref(this, "pref_key_controls_vol2wake", Helpers.l10n(getActivity(), R.string.no_busybox_summ));
 			
 			if (Helpers.isEight()) {
 				HtcPreferenceCategory assist_cat = (HtcPreferenceCategory) findPreference("pref_key_controls_home");
@@ -512,32 +509,32 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				HtcListPreference assist = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
 				assist.setSummary(Helpers.l10n(getActivity(), R.string.controls_recentslongpressaction_summ));
 			} else if (!Helpers.isDesire816())
-				removePref(this, "pref_key_controls_smallsoftkeys", "pref_key_controls");
+				Helpers.removePref(this, "pref_key_controls_smallsoftkeys", "pref_key_controls");
 			
 			if (Helpers.isLP()) {
-				removePref(this, "pref_key_controls_extendedpanel_left", "pref_key_controls");
-				removePref(this, "pref_key_controls_extendedpanel_right", "pref_key_controls");
-				removePref(this, "pref_key_controls_extendedpanel", "pref_key_controls");
+				Helpers.removePref(this, "pref_key_controls_extendedpanel_left", "pref_key_controls");
+				Helpers.removePref(this, "pref_key_controls_extendedpanel_right", "pref_key_controls");
+				Helpers.removePref(this, "pref_key_controls_extendedpanel", "pref_key_controls");
 			}
 		} else if (xmlResId == R.xml.prefs_other) {
 			if (Helpers.isNotM7()) {
-				removePref(this, "pref_key_other_keyslight", "pref_key_other");
-				removePref(this, "pref_key_other_keyslight_auto", "pref_key_other");
+				Helpers.removePref(this, "pref_key_other_keyslight", "pref_key_other");
+				Helpers.removePref(this, "pref_key_other_keyslight_auto", "pref_key_other");
 			} else if (!Helpers.hasRoot){
-				disablePref(this, "pref_key_other_keyslight", Helpers.l10n(getActivity(), R.string.no_root_summ));
-				disablePref(this, "pref_key_other_keyslight_auto", Helpers.l10n(getActivity(), R.string.no_root_summ));
+				Helpers.disablePref(this, "pref_key_other_keyslight", Helpers.l10n(getActivity(), R.string.no_root_summ));
+				Helpers.disablePref(this, "pref_key_other_keyslight_auto", Helpers.l10n(getActivity(), R.string.no_root_summ));
 			} else if (!Helpers.hasBusyBox){
-				disablePref(this, "pref_key_other_keyslight", Helpers.l10n(getActivity(), R.string.no_busybox_summ));
-				disablePref(this, "pref_key_other_keyslight_auto", Helpers.l10n(getActivity(), R.string.no_busybox_summ));
+				Helpers.disablePref(this, "pref_key_other_keyslight", Helpers.l10n(getActivity(), R.string.no_busybox_summ));
+				Helpers.disablePref(this, "pref_key_other_keyslight_auto", Helpers.l10n(getActivity(), R.string.no_busybox_summ));
 			}
 			
 			if (Helpers.isLP()) {
 				HtcListPreference scrOffPref = (HtcListPreference)findPreference("pref_key_other_screenoff");
 				scrOffPref.setEntries(Helpers.l10n_array(getActivity(), R.array.various_screenoff_lp));
 				
-				removePref(this, "pref_key_other_psscrolltotop", "pref_key_other");
-				removePref(this, "pref_key_other_vzwnotif", "pref_various_mods_notifications");
-				removePref(this, "pref_key_other_ledtimeout", "pref_various_mods_notifications");
+				Helpers.removePref(this, "pref_key_other_psscrolltotop", "pref_key_other");
+				Helpers.removePref(this, "pref_key_other_vzwnotif", "pref_various_mods_notifications");
+				Helpers.removePref(this, "pref_key_other_ledtimeout", "pref_various_mods_notifications");
 			}
 			
 			HtcListPreference.OnPreferenceChangeListener applyButtonsLight = new HtcListPreference.OnPreferenceChangeListener() {
@@ -660,9 +657,7 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			doubleTapActionPreference.setOnPreferenceChangeListener(chooseAction);
 			logoPressActionPreference.setOnPreferenceChangeListener(chooseAction);
 			
-			final Activity act = getActivity();
-			
-			String not_selected = Helpers.l10n(act, R.string.notselected);
+			String not_selected = Helpers.l10n(getActivity(), R.string.notselected);
 			HtcPreference.OnPreferenceClickListener clickPref = new HtcPreference.OnPreferenceClickListener() {
 				@Override
 				public boolean onPreferenceClick(HtcPreference preference) {
@@ -678,7 +673,7 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 					dp.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
 						@Override
 						public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-							preference.setSummary(Helpers.getAppName(act, (String)newValue));
+							preference.setSummary(Helpers.getAppName(getActivity(), (String)newValue));
 							return true;
 						}
 					});
@@ -687,8 +682,8 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 					gesturesCat.addPreference(dp);
 					
 					if (Helpers.launchableAppsList == null) {
-						final HtcProgressDialog dialog = new HtcProgressDialog(act);
-						dialog.setMessage(Helpers.l10n(act, R.string.loading_app_data));
+						final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
+						dialog.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
 						dialog.setCancelable(false);
 						dialog.show();
 						
@@ -696,8 +691,8 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 							@Override
 							public void run() {
 								try {
-									Helpers.getLaunchableApps(act);
-									act.runOnUiThread(new Runnable(){
+									Helpers.getLaunchableApps(getActivity());
+									getActivity().runOnUiThread(new Runnable(){
 										@Override
 										public void run() {
 											dp.show();
@@ -705,7 +700,7 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 									});
 									// Nasty hack! Wait for icons to load.
 									Thread.sleep(1000);
-									act.runOnUiThread(new Runnable(){
+									getActivity().runOnUiThread(new Runnable(){
 										@Override
 										public void run() {
 											dialog.dismiss();
@@ -751,7 +746,197 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			}
 		} else if (xmlResId == R.xml.prefs_persist) {
 			if (Helpers.isLP())
-			removePref(this, "pref_key_persist_appfilter", "pref_key_persist");
+			Helpers.removePref(this, "pref_key_persist_appfilter", "pref_key_persist");
+		} else if (xmlResId == R.xml.prefs_popupnotify) {
+			this.menuType = 3;
+			
+			TextView experimental = (TextView)getActivity().findViewById(R.id.experimental);
+			experimental.setText(Helpers.l10n(getActivity(), R.string.popupnotify_experimental));
+			experimental.setTextColor(getResources().getColor(android.R.color.background_light));
+			
+			prefListView = (HtcListView)getActivity().findViewById(android.R.id.list);
+			prefListView.setBackgroundResource(backResId);
+			prefListView.setDivider(getResources().getDrawable(getResources().getIdentifier("inset_list_divider", "drawable", "com.htc")));
+			prefListView.setDividerHeight(1);
+			prefListView.setFooterDividersEnabled(false);
+			
+			themeHint = (TextView)getActivity().findViewById(R.id.themehint);
+			themeHint.setBackgroundResource(backResId);
+			themeHint.setText(Helpers.l10n(getActivity(), R.string.popupnotify_hint));
+			
+			final HtcSwitchPreference bwlist = (HtcSwitchPreference)findPreference("pref_key_other_popupnotify_bwlist");
+			bwlist.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(HtcPreference preference, Object state) {
+					updateListTypePopup((boolean)state);
+					return true;
+				}
+			});
+			updateListTypePopup(bwlist.isChecked());
+			
+			final HtcMultiSelectListPreferenceEx bwlistApps = (HtcMultiSelectListPreferenceEx)findPreference("pref_key_other_popupnotify_bwlist_apps");
+			bwlistApps.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				@Override
+				public boolean onPreferenceClick(HtcPreference paramHtcPreference) {
+					if (bwlistApps.getEntries().length == 0 || bwlistApps.getEntryValues().length == 0) {
+						if (bwlistApps.getDialog() != null) bwlistApps.getDialog().dismiss();
+						final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
+						if (Helpers.installedAppsList == null) {
+							dialog.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
+							dialog.setCancelable(false);
+							dialog.show();
+						}
+						
+						new Thread() {
+							@Override
+							public void run() {
+								try {
+									if (Helpers.installedAppsList == null) Helpers.getInstalledApps(getActivity());
+									getActivity().runOnUiThread(new Runnable() {
+										@Override
+										public void run() {
+											HashSet<String> appsList = (HashSet<String>)prefs.getStringSet("pref_key_other_popupnotify_bwlist_apps", new HashSet<String>());
+											ArrayList<ArrayList<CharSequence>> entries = new ArrayList<ArrayList<CharSequence>>();
+											for (AppData ad: Helpers.installedAppsList) {
+												ArrayList<CharSequence> entry = new ArrayList<CharSequence>();
+												entry.add(ad.label);
+												entry.add(ad.pkgName);
+												if (appsList.contains(ad.pkgName))
+													entry.add("1");
+												else
+													entry.add("0");
+												entries.add(entry);
+											}
+											
+											Collections.sort(entries, new Comparator<ArrayList<CharSequence>>() {
+												@Override
+												public int compare(ArrayList<CharSequence> entry1, ArrayList<CharSequence> entry2) {
+													return ((String)entry2.get(2)).compareTo((String)entry1.get(2));
+												}
+											});
+											
+											ArrayList<CharSequence> entryLabels = new ArrayList<CharSequence>();
+											ArrayList<CharSequence> entryVals = new ArrayList<CharSequence>();
+											for (ArrayList<CharSequence> entry: entries) {
+												entryLabels.add(entry.get(0));
+												entryVals.add(entry.get(1));
+											}
+											
+											bwlistApps.setEntries(entryLabels.toArray(new CharSequence[entries.size()]));
+											bwlistApps.setEntryValues(entryVals.toArray(new CharSequence[entryVals.size()]));
+											
+											if (getActivity() != null && !getActivity().isFinishing()) {
+												if (dialog != null && dialog.isShowing()) dialog.dismiss();
+												if (bwlistApps.getDialog() != null && bwlistApps.getDialog().isShowing()) bwlistApps.getDialog().dismiss();
+											}
+											bwlistApps.show();
+										}
+									});
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						}.start();
+					}
+					return false;
+				}
+			});
+		} else if (xmlResId == R.xml.prefs_betterheadsup) {
+			this.menuType = 4;
+			
+			TextView experimental = (TextView)getActivity().findViewById(R.id.experimental);
+			experimental.setText(Helpers.l10n(getActivity(), R.string.popupnotify_experimental));
+			experimental.setTextColor(getResources().getColor(android.R.color.background_light));
+			FrameLayout experimentalFrame = (FrameLayout)getActivity().findViewById(R.id.experimentalFrame);
+			experimentalFrame.setVisibility(View.VISIBLE);
+			
+			prefListView = (HtcListView)getActivity().findViewById(android.R.id.list);
+			prefListView.setBackgroundResource(backResId);
+			prefListView.setDivider(getResources().getDrawable(getResources().getIdentifier("inset_list_divider", "drawable", "com.htc")));
+			prefListView.setDividerHeight(1);
+			prefListView.setFooterDividersEnabled(false);
+			
+			themeHint = (TextView)getActivity().findViewById(R.id.themehint);
+			themeHint.setBackgroundResource(backResId);
+			themeHint.setText(Helpers.l10n(getActivity(), R.string.betterheadsup_hint));
+			
+			final HtcSwitchPreference bwlist = (HtcSwitchPreference)findPreference("pref_key_betterheadsup_bwlist");
+			bwlist.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(HtcPreference preference, Object state) {
+					updateListTypeHeadsUp((boolean)state);
+					return true;
+				}
+			});
+			updateListTypeHeadsUp(bwlist.isChecked());
+			
+			final HtcMultiSelectListPreferenceEx bwlistApps = (HtcMultiSelectListPreferenceEx)findPreference("pref_key_betterheadsup_bwlist_apps");
+			bwlistApps.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				@Override
+				public boolean onPreferenceClick(HtcPreference paramHtcPreference) {
+					if (bwlistApps.getEntries().length == 0 || bwlistApps.getEntryValues().length == 0) {
+						if (bwlistApps.getDialog() != null) bwlistApps.getDialog().dismiss();
+						final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
+						if (Helpers.installedAppsList == null) {
+							dialog.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
+							dialog.setCancelable(false);
+							dialog.show();
+						}
+						
+						new Thread() {
+							@Override
+							public void run() {
+								try {
+									if (Helpers.installedAppsList == null) Helpers.getInstalledApps(getActivity());
+									getActivity().runOnUiThread(new Runnable() {
+										@Override
+										public void run() {
+											HashSet<String> appsList = (HashSet<String>)prefs.getStringSet("pref_key_betterheadsup_bwlist_apps", new HashSet<String>());
+											ArrayList<ArrayList<CharSequence>> entries = new ArrayList<ArrayList<CharSequence>>();
+											for (AppData ad: Helpers.installedAppsList) {
+												ArrayList<CharSequence> entry = new ArrayList<CharSequence>();
+												entry.add(ad.label);
+												entry.add(ad.pkgName);
+												if (appsList.contains(ad.pkgName))
+													entry.add("1");
+												else
+													entry.add("0");
+												entries.add(entry);
+											}
+											
+											Collections.sort(entries, new Comparator<ArrayList<CharSequence>>() {
+												@Override
+												public int compare(ArrayList<CharSequence> entry1, ArrayList<CharSequence> entry2) {
+													return ((String)entry2.get(2)).compareTo((String)entry1.get(2));
+												}
+											});
+											
+											ArrayList<CharSequence> entryLabels = new ArrayList<CharSequence>();
+											ArrayList<CharSequence> entryVals = new ArrayList<CharSequence>();
+											for (ArrayList<CharSequence> entry: entries) {
+												entryLabels.add(entry.get(0));
+												entryVals.add(entry.get(1));
+											}
+											
+											bwlistApps.setEntries(entryLabels.toArray(new CharSequence[entries.size()]));
+											bwlistApps.setEntryValues(entryVals.toArray(new CharSequence[entryVals.size()]));
+											
+											if (getActivity() != null && !getActivity().isFinishing()) {
+												if (dialog != null && dialog.isShowing()) dialog.dismiss();
+												if (bwlistApps.getDialog() != null && bwlistApps.getDialog().isShowing()) bwlistApps.getDialog().dismiss();
+											}
+											bwlistApps.show();
+										}
+									});
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						}.start();
+					}
+					return false;
+				}
+			});
 		} else if (xmlResId == R.xml.dummy) {
 			this.menuType = 2;
 			
@@ -771,9 +956,71 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if (xmlResId == R.xml.prefs_wakegest)
 			return inflater.inflate(R.layout.fragment_wake_gestures, container, false);
-		else if (xmlResId == R.xml.dummy) {
+		else if (xmlResId == R.xml.prefs_popupnotify || xmlResId == R.xml.prefs_betterheadsup)
+			return inflater.inflate(R.layout.fragment_popup_notify, container, false);
+		else if (xmlResId == R.xml.dummy)
 			return inflater.inflate(R.layout.fragment_eps_remap, container, false);
-		} else
+		else
 			return super.onCreateView(inflater, container, savedInstanceState);
+	}
+	
+	private void updateListTypePopup(boolean state) {
+		HtcMultiSelectListPreference bwlistApps = (HtcMultiSelectListPreference)findPreference("pref_key_other_popupnotify_bwlist_apps");
+		Activity act = getActivity();
+		if (state) {
+			bwlistApps.setTitle(Helpers.l10n(act, R.string.various_popupnotify_bwlist_white_title));
+			bwlistApps.setDialogTitle(Helpers.l10n(act, R.string.various_popupnotify_bwlist_white_title));
+			bwlistApps.setSummary(Helpers.l10n(act, R.string.various_popupnotify_bwlist_white_summ));
+		} else {
+			bwlistApps.setTitle(Helpers.l10n(act, R.string.various_popupnotify_bwlist_black_title));
+			bwlistApps.setDialogTitle(Helpers.l10n(act, R.string.various_popupnotify_bwlist_black_title));
+			bwlistApps.setSummary(Helpers.l10n(act, R.string.various_popupnotify_bwlist_black_summ));
+		}
+	}
+	
+	private void updateListTypeHeadsUp(boolean state) {
+		HtcMultiSelectListPreference bwlistApps = (HtcMultiSelectListPreference)findPreference("pref_key_betterheadsup_bwlist_apps");
+		Activity act = getActivity();
+		if (state) {
+			bwlistApps.setTitle(Helpers.l10n(act, R.string.various_betterheadsup_bwlist_white_title));
+			bwlistApps.setDialogTitle(Helpers.l10n(act, R.string.various_betterheadsup_bwlist_white_title));
+			bwlistApps.setSummary(Helpers.l10n(act, R.string.various_betterheadsup_bwlist_white_summ));
+		} else {
+			bwlistApps.setTitle(Helpers.l10n(act, R.string.various_betterheadsup_bwlist_black_title));
+			bwlistApps.setDialogTitle(Helpers.l10n(act, R.string.various_betterheadsup_bwlist_black_title));
+			bwlistApps.setSummary(Helpers.l10n(act, R.string.various_betterheadsup_bwlist_black_summ));
+		}
+	}
+	
+	@Override
+	public void onViewCreated(View view, Bundle savedInstanceState) {
+		super.onViewCreated(view, savedInstanceState);
+		if (menuType == 4)
+		view.post(new Runnable() {
+			@Override
+			public void run() {
+				int width = getWidthWithPadding();
+				qtp = new QuickTipPopup(getActivity());
+				qtp.setCloseVisibility(true);
+				qtp.setClipToScreenEnabled(true);
+				qtp.setMaxWidth(width);
+				qtp.setWidth(width);
+							
+				if (getQuickTipFlag("heads_up")) {
+					View target = getActivity().findViewById(android.R.id.list);
+					qtp.setExpandDirection(QuickTipPopup.EXPAND_DEFAULT);
+					qtp.setText(Helpers.l10n(getActivity(), R.string.betterheadsup_tip));
+					qtp.setOnUserDismissListener(new OnUserDismissListener() {
+						@Override
+						public void onDismiss() {
+							disableQuickTipFlag("heads_up");
+							enableTouch();
+						}
+					});
+					disableTouch();
+					qtp.showAtLocation(target, Gravity.TOP | Gravity.CENTER_HORIZONTAL, 0, -200);
+				}
+			}
+		});
 	}
 }

@@ -57,7 +57,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		pref_shake = Integer.parseInt(pref.getString("pref_key_prism_shakeaction", "1"));
 		pref_screenon = Integer.parseInt(pref.getString("pref_key_other_screenon", "0"));
 		pref_screenoff = Integer.parseInt(pref.getString("pref_key_other_screenoff", "0"));
-		prefs_pwm = pref.getBoolean("pref_key_controls_extendedpanel", false) || pref.getBoolean("popup_notify_active", false) || pref.getBoolean("pref_key_other_apm", false) || pref.getBoolean("pref_key_prism_homemenu", false) || pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 || pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1;
+		prefs_pwm = pref.getBoolean("pref_key_controls_extendedpanel", false) ||
+					pref.getBoolean("popup_notify_active", false) ||
+					pref.getBoolean("better_headsup_active", false) ||
+					pref.getBoolean("pref_key_other_apm", false) ||
+					pref.getBoolean("pref_key_prism_homemenu", false) ||
+					pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 ||
+					pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1;
 		
 		if (prefs_pwm)
 			GlobalActions.setupPWM();
@@ -110,6 +116,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pref.getBoolean("popup_notify_active", false))
 			OtherMods.execHook_PopupNotify();
+		
+		if (pref.getBoolean("better_headsup_active", false))
+			SysUIMods.execHook_BetterHeadsUpSystem();
 		
 		if (pref.getBoolean("pref_key_sysui_tnsb", false))
 			SysUIMods.execHook_TranslucentNotificationsDividers();
@@ -254,7 +263,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_musicchannel", false))
 				OtherMods.execHook_MusicChannelEQSTileIcon(resparam);
 			
-			//SysUIMods.execHook_EQSGrid(resparam);
+			if (pref.getBoolean("pref_key_sysui_compacteqs", false))
+				SysUIMods.execHook_EQSGrid(resparam);
 		}
 		
 		if (pkg.equals("com.android.settings")) {
@@ -345,6 +355,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("touch_lock_active", false) && Helpers.isWakeGestures() && Helpers.isLP())
 				WakeGesturesMods.execHook_InitTouchServerListener(lpparam);
+			
+			if (pref.getBoolean("better_headsup_active", false))
+				SysUIMods.execHook_BetterHeadsUpNotifications(lpparam);
 		}
 		
 		if (pkg.equals("com.android.providers.media")) {
@@ -609,7 +622,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (Helpers.isLP() && pref.getBoolean("pref_key_other_volsound", false))
 				OtherMods.execHook_VolSound(lpparam);
 			
-			//SysUIMods.execHook_EQSTiles(lpparam);
+			if (pref.getBoolean("better_headsup_active", false))
+				SysUIMods.execHook_BetterHeadsUpSysUI(lpparam);
+			
+			if (pref.getBoolean("pref_key_sysui_compacteqs", false))
+				SysUIMods.execHook_EQSTiles(lpparam);
 			
 			StatusbarMods.execHook_HideIcons(lpparam);
 		}

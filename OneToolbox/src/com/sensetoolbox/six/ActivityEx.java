@@ -26,34 +26,14 @@ public class ActivityEx extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (new Version(Helpers.getSenseVersion()).compareTo(new Version("6.0")) < 0) {
+		if (new Version(Helpers.getSenseVersion()).compareTo(new Version("6.0")) < 0 ||
+			new Version(Helpers.getSenseVersion()).compareTo(new Version("7.0")) >= 0) {
 			launch = false;
 			getActionBar().hide();
 			
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(this);
 			alert.setTitle(Helpers.l10n(this, R.string.warning));
 			alert.setView(Helpers.createCenteredText(this, R.string.wrong_sense_version));
-			alert.setCancelable(false);
-			alert.setOnDismissListener(new OnDismissListener() {
-				@Override
-				public void onDismiss(DialogInterface dialog) {
-					finish();
-				}
-			});
-			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {
-					finish();
-				}
-			});
-			alert.show();
-			return;
-		} else if (new Version(Helpers.getSenseVersion()).compareTo(new Version("7.0")) >= 0) {
-			launch = false;
-			getActionBar().hide();
-			
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(this);
-			alert.setTitle(Helpers.l10n(this, R.string.warning));
-			alert.setView(Helpers.createCenteredText(this, R.string.wrong_sense_version7));
 			alert.setCancelable(false);
 			alert.setOnDismissListener(new OnDismissListener() {
 				@Override

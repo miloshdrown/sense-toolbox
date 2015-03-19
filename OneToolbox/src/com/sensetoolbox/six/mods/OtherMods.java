@@ -1444,6 +1444,27 @@ public class OtherMods {
 		String className = "com.android.settings.framework.core.umc.HtcUmcWidgetEnabler";
 		if (isEnhancer) className = "com.htc.musicenhancer.cronus.CronusUtils";
 		findAndHookMethod(className, lpparam.classLoader, "isSupportMusicChannel", XC_MethodReplacement.returnConstant(Boolean.TRUE));
+		
+		if (!isEnhancer && Helpers.isLP())
+		findAndHookMethod("com.android.settings.framework.core.umc.HtcUmcWidgetEnabler", lpparam.classLoader, "onToggleChangeInBackground", boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				if ((Boolean)param.args[0]) {
+					param.setResult(null);
+					XposedHelpers.setBooleanField(param.thisObject, "mUmcState", true);
+					XposedHelpers.setBooleanField(param.thisObject, "mUmcStateUpdated", true);
+					XposedHelpers.callMethod(param.thisObject, "updateUI");
+					XposedHelpers.callMethod(param.thisObject, "setUmcStateInDb", true);
+					
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					if (mContext != null) {
+						Intent musChannel = new Intent("com.htc.musicenhancer.action.UNIVERSAL_MUSIC_CHANNEL");
+						musChannel.setPackage("com.htc.musicenhancer");
+						mContext.startService(musChannel);
+					}
+				}
+			}
+		});
 	}
 	
 	private static void refreshQSMCView(Object thisObject) {

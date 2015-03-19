@@ -2,6 +2,7 @@
 <lint>
     <issue id="AlwaysShowAction">
         <ignore path="res/menu/menu_mods.xml" />
+        <ignore path="res/menu/menu_sub.xml" />
     </issue>
     <issue id="ExportedReceiver">
         <ignore path="AndroidManifest.xml" />

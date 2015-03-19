@@ -10,10 +10,9 @@ import static de.robv.android.xposed.XposedHelpers.setBooleanField;
 import static de.robv.android.xposed.XposedHelpers.setIntField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
 import static de.robv.android.xposed.XposedHelpers.setStaticIntField;
-
 import java.util.Arrays;
 import java.util.EnumSet;
-
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
@@ -34,6 +33,7 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.text.TextUtils.TruncateAt;
 import android.util.TypedValue;
+import android.view.ContextThemeWrapper;
 import android.view.Display;
 import android.view.GestureDetector;
 import android.view.Gravity;
@@ -54,7 +54,6 @@ import android.widget.ListAdapter;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-
 import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcPopupWindow;
 import com.sensetoolbox.six.R;
@@ -62,7 +61,6 @@ import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.PopupAdapter;
 import com.sensetoolbox.six.utils.ShakeManager;
-
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodHook.Unhook;
@@ -760,37 +758,41 @@ public class PrismMods {
 			}
 		});
 	}
-	
-	public static synchronized void createPopup(ViewGroup m_workspace) {
+
+	@SuppressLint("InlinedApi")
+	public static void createAndShowPopup(ViewGroup m_workspace, final Activity launcherAct) {
+		ViewGroup m_workspace_local = m_workspace;
+		if (m_workspace_local == null) if (launcherAct != null) m_workspace_local = (ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace");
+		if (m_workspace_local == null) return;
+		
+		Context ctx;
+		if (Helpers.isLP())
+			ctx = new ContextThemeWrapper(m_workspace_local.getContext(), android.R.style.Theme_Material_Dialog);
+		else
+			ctx = m_workspace_local.getContext();
+		
 		if (popup == null) {
-			popup = new HtcPopupWindow(m_workspace.getContext());
+			popup = new HtcPopupWindow(ctx);
 			popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
 			popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
 			popup.setTouchable(true);
 			popup.setFocusable(true);
 			popup.setOutsideTouchable(true);
 		}
-	}
-	
-	public static void createAndShowPopup(ViewGroup m_workspace, final Activity launcherAct) {
-		ViewGroup m_workspace_local = m_workspace;
-		if (m_workspace_local == null) if (launcherAct != null) m_workspace_local = (ViewGroup)XposedHelpers.getObjectField(launcher, "m_workspace");
-		if (m_workspace_local == null) return;
-		createPopup(m_workspace_local);
 		
-		ListView options = new ListView(m_workspace_local.getContext());
+		ListView options = new ListView(ctx);
 		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 		String[] menu_items = Helpers.xl10n_array(modRes, R.array.home_menu);
 		XMain.pref.reload();
 		if (!Helpers.isWakeGestures() || !XMain.pref.getBoolean("touch_lock_active", false))
 		menu_items = Arrays.copyOf(menu_items, menu_items.length - 1);
-		ListAdapter listAdapter = new PopupAdapter(options.getContext(), menu_items, false);
-		options.setFocusableInTouchMode(true);
+		ListAdapter listAdapter = new PopupAdapter(ctx, menu_items, false);
 		options.setAdapter(listAdapter);
+		options.setFocusableInTouchMode(true);
 		options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if (Helpers.isLP() && position < 4)
+				if (Helpers.isLP())
 				view.postDelayed(new Runnable() {
 					@Override
 					public void run() {
@@ -830,10 +832,10 @@ public class PrismMods {
 			options.setPadding(0, 0, 0, 0);
 			options.setDivider(null);
 			options.setDividerHeight(0);
-			popup.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-			popup.setWidth(m_workspace_local.getResources().getDisplayMetrics().widthPixels);
+			popup.setBackgroundDrawable(new ColorDrawable(0xff404040));
+			popup.setWidth(m_workspace_local.getResources().getDisplayMetrics().widthPixels - Math.round(m_workspace_local.getResources().getDisplayMetrics().density * 16));
 			popup.setAnimationStyle(m_workspace_local.getResources().getIdentifier("DropDownUpBottomCenter", "style", "com.htc.launcher"));
-			popup.setFocusable(true);
+			options.setDrawSelectorOnTop(true);
 		}
 		popup.showAtLocation(m_workspace_local, Gravity.BOTTOM|Gravity.CENTER_HORIZONTAL, 0, 0);
 	}

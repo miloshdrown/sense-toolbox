@@ -96,8 +96,8 @@ public class Helpers {
 	public static ArrayList<AppData> launchableAppsList = null;
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
-	public static float strings_total = 621.0f;
-	public static String buildVersion = "232";
+	public static float strings_total = 644.0f;
+	public static String buildVersion = "233";
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -165,29 +165,37 @@ public class Helpers {
 	}
 	
 	public static String xl10n(XModuleResources modRes, int resId) {
-		if (resId != 0)
-			return xl10n(modRes, modRes.getResourceEntryName(resId));
-		else
+		try {
+			if (resId != 0)
+				return xl10n(modRes, modRes.getResourceEntryName(resId));
+			else
+				return "???";
+		} catch (Throwable t) {
 			return "???";
+		}
 	}
 	public static String xl10n(XModuleResources modRes, String resName) {
-		String lang_full = Locale.getDefault().toString();
-		String lang = Locale.getDefault().getLanguage();
-		boolean allowFallback = true;
-		if (lang_full.equals("zh_HK")) allowFallback = false;
-		String newStr = null;
-		if (!lang.equals("") && !lang.equals("en") && !lang_full.contains("en_") && !cLang.equals("not_found"))
-		if (preloadLang(lang_full))
-			newStr = l10n.get(resName);
-		else if (allowFallback && preloadLang(lang))
-			newStr = l10n.get(resName);
-		if (newStr != null) return newStr;
-		
-		int resId = modRes.getIdentifier(resName, "string", "com.sensetoolbox.six");
-		if (resId != 0)
-			return modRes.getString(resId);
-		else
+		try {
+			String lang_full = Locale.getDefault().toString();
+			String lang = Locale.getDefault().getLanguage();
+			boolean allowFallback = true;
+			if (lang_full.equals("zh_HK")) allowFallback = false;
+			String newStr = null;
+			if (!lang.equals("") && !lang.equals("en") && !lang_full.contains("en_") && !cLang.equals("not_found"))
+			if (preloadLang(lang_full))
+				newStr = l10n.get(resName);
+			else if (allowFallback && preloadLang(lang))
+				newStr = l10n.get(resName);
+			if (newStr != null) return newStr;
+			
+			int resId = modRes.getIdentifier(resName, "string", "com.sensetoolbox.six");
+			if (resId != 0)
+				return modRes.getString(resId);
+			else
+				return "???";
+		} catch (Throwable t) {
 			return "???";
+		}
 	}
 	
 	public static String[] l10n_array(Context ctx, int resId) {
@@ -205,17 +213,21 @@ public class Helpers {
 	}
 	
 	public static String[] xl10n_array(XModuleResources modRes, int resId) {
-		TypedArray ids = modRes.obtainTypedArray(resId);
-		List<String> array = new ArrayList<String>();
-		for (int i = 0; i < ids.length(); i++) {
-			int id = ids.getResourceId(i, 0);
-			if (id != 0)
-				array.add(xl10n(modRes, id));
-			else
-				array.add("???");
+		try {
+			TypedArray ids = modRes.obtainTypedArray(resId);
+			List<String> array = new ArrayList<String>();
+			for (int i = 0; i < ids.length(); i++) {
+				int id = ids.getResourceId(i, 0);
+				if (id != 0)
+					array.add(xl10n(modRes, id));
+				else
+					array.add("???");
+			}
+			ids.recycle();
+			return array.toArray(new String[array.size()]);
+		} catch (Throwable t) {
+			return new String[0];
 		}
-		ids.recycle();
-		return array.toArray(new String[array.size()]);
 	}
 	
 	private static ArrayList<HtcPreference> getPreferenceList(HtcPreference p, ArrayList<HtcPreference> list) {
@@ -1117,6 +1129,22 @@ public class Helpers {
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
+		}
+	}
+	
+	public static void removePref(HtcPreferenceFragmentExt frag, String prefName, String catName) {
+		if (frag.findPreference(prefName) != null) {
+			HtcPreference cat = frag.findPreference(catName);
+			if (cat instanceof HtcPreferenceScreen) ((HtcPreferenceScreen)cat).removePreference(frag.findPreference(prefName));
+			else if (cat instanceof HtcPreferenceCategory) ((HtcPreferenceCategory)cat).removePreference(frag.findPreference(prefName));
+		}
+	}
+	
+	public static void disablePref(HtcPreferenceFragmentExt frag, String prefName, String reasonText) {
+		HtcPreference pref = frag.findPreference(prefName);
+		if (pref != null) {
+			pref.setEnabled(false);
+			pref.setSummary(reasonText);
 		}
 	}
 }

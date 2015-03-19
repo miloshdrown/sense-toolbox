@@ -758,15 +758,16 @@ public class WakeGesturesMods {
 					XMain.pref.reload();
 					XposedBridge.log("[S6T] Wake gestures activate on boot...");
 					if (XMain.pref.getBoolean("wake_gestures_active", false)) {
-						Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+						final Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 						if (mHandler != null)
-						mHandler.postDelayed(new Runnable() {
+						mHandler.post(new Runnable() {
 							@Override
 							public void run() {
 								XposedBridge.log("[S6T] Wake gestures activated!");
 								Helpers.setWakeGestures(true);
+								if (!Helpers.getWakeGestures().equals("1")) mHandler.postDelayed(this, 1000);
 							}
-						}, 5000);
+						});
 					}
 				}
 			});
@@ -821,14 +822,19 @@ public class WakeGesturesMods {
 							Binder.restoreCallingIdentity(ident);
 						}
 						if (shouldBeLocked) {
-							Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
-							if (mHandler != null) mHandler.postDelayed(new Runnable() {
+							final Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+							if (mHandler != null) mHandler.post(new Runnable() {
 								@Override
+								@SuppressWarnings("deprecation")
 								public void run() {
 									XposedBridge.log("[S6T] Touch lock activated!");
-									goToSleep(mContext);
+									PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+									if (pm.isScreenOn()) {
+										goToSleep(mContext);
+										mHandler.postDelayed(this, 1000);
+									}
 								}
-							}, 5000);
+							});
 						}
 					}
 				}

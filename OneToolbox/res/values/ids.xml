@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+	<item type="id" name="headsup_page_header"/>
+	<item type="id" name="headsup_page_remoteviews"/>
+	<item type="id" name="headsup_page_dismissbtn"/>
+	<item type="id" name="headsup_page_dismissbtn_sleep"/>
+</resources>

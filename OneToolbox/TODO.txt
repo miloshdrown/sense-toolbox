@@ -31,6 +31,17 @@ Ideas
 Current changelog
 =================
 
+1.5.0 beta 5
+[New][5.0] Better heads-up notifications
+[New][5.0] Compact EQS mod
+[Fixed][5.0] Proper home popup menu width, color and ripple effect
+[Fixed][5.0] Music Channel crash in Settings
+[Fixed][5.0] GPS icon replacement
+[Fixed][5.0] Enhanced screen lock
+[Fixed][5.0] Battery percentage color on lockscreen
+[Fixed] Wake gestures and Touch lock activation after reboot
+[Fixed] Toolbox UI
+
 1.5.0 beta 4
 [Fixed] Transparent statusbar mod
 [Fixed] Hide statusbar icons on lockscreen too

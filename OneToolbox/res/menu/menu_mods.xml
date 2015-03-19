@@ -1,5 +1,5 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/softreboot" android:icon="@drawable/ic_menu_reboot" android:title="@string/soft_reboot" android:showAsAction="always|withText"></item>
-    <item android:id="@+id/backuprestore" android:icon="@drawable/ic_menu_backup" android:title="@string/backup_restore" android:showAsAction="always|withText"></item>
-	<item android:id="@+id/about" android:icon="@drawable/ic_menu_about" android:title="@string/app_about" android:showAsAction="always|withText"></item>
+	<item android:id="@+id/softreboot" android:icon="@drawable/ic_menu_reboot" android:title="@string/soft_reboot" android:showAsAction="always"></item>
+	<item android:id="@+id/backuprestore" android:icon="@drawable/ic_menu_backup" android:title="@string/backup_restore" android:showAsAction="always"></item>
+	<item android:id="@+id/about" android:icon="@drawable/ic_menu_about" android:title="@string/app_about" android:showAsAction="always"></item>
 </menu>

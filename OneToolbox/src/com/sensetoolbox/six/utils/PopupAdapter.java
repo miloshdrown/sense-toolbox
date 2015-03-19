@@ -5,14 +5,10 @@ import com.sensetoolbox.six.mods.XMain;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.XModuleResources;
-import android.graphics.drawable.ColorDrawable;
-import android.graphics.drawable.RippleDrawable;
 import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -73,35 +69,9 @@ public class PopupAdapter extends BaseAdapter {
 		
 		if (Helpers.isLP()) {
 			itemTitle.setPadding(Math.round(20 * density), Math.round(12 * density), Math.round(20 * density), Math.round(12 * density));
-			itemTitle.setBackgroundColor(0xff252525);
+			itemTitle.setBackgroundColor(0xff404040);
 			itemTitle.setTextColor(0xffeeeeee);
 			itemTitle.setIncludeFontPadding(false);
-			
-			int pressedColor = 0xff525252;
-			itemTitle.setBackground(new RippleDrawable(
-				new ColorStateList(new int[][] {
-					new int[]{ android.R.attr.state_pressed },
-					new int[]{ android.R.attr.state_focused },
-					new int[]{ android.R.attr.state_activated },
-					new int[]{}
-				},
-				new int[] {
-					pressedColor,
-					pressedColor,
-					pressedColor,
-					0xff252525
-				}),
-				new ColorDrawable(0xff252525),
-				null)
-			);
-			itemTitle.setOnTouchListener(new View.OnTouchListener() {
-				@Override
-				@SuppressLint("ClickableViewAccessibility")
-				public boolean onTouch(View v, MotionEvent event) {
-					((RippleDrawable)v.getBackground()).setHotspot(event.getX(),event.getY());
-					return false;
-				}
-			});
 		}
 		
 		return itemTitle;
