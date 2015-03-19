@@ -38,6 +38,7 @@ import android.content.IntentFilter;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.XResources;
 import android.content.res.Resources.Theme;
@@ -3287,6 +3288,7 @@ public class SysUIMods {
 					// Remote notification view
 					RemoteViews content = null;
 					boolean isExpanded = XMain.pref.getBoolean("pref_key_betterheadsup_expand", true);
+					if (mResources.getConfiguration().orientation == Configuration.ORIENTATION_LANDSCAPE) isExpanded = false;
 					if (isExpanded) content = sbn.getNotification().bigContentView;
 					if (content == null) {
 						content = sbn.getNotification().headsUpContentView;
