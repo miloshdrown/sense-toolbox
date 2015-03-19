@@ -619,6 +619,27 @@ public class WakeGesturesMods {
 				createThread(param);
 			}
 		});
+		
+		if (Helpers.isLP())
+		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "systemBooted", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				XMain.pref.reload();
+				XposedBridge.log("[S6T] Wake gestures activate on boot...");
+				if (XMain.pref.getBoolean("wake_gestures_active", false)) {
+					final Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+					if (mHandler != null)
+					mHandler.post(new Runnable() {
+						@Override
+						public void run() {
+							XposedBridge.log("[S6T] Wake gestures activated!");
+							Helpers.setWakeGestures(true);
+							if (!Helpers.getWakeGestures().equals("1")) mHandler.postDelayed(this, 1000);
+						}
+					});
+				}
+			}
+		});
 	}
 	
 	public static void execHook_InitTouchLockListener() {
@@ -729,6 +750,38 @@ public class WakeGesturesMods {
 				mDialog.getListView().addFooterView(listitem);
 			}
 		});
+		
+		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "systemBooted", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				XposedBridge.log("[S6T] Touch lock activate on boot!");
+				final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				if (mContext != null) {
+					long ident = Binder.clearCallingIdentity();
+					boolean shouldBeLocked = false;
+					try {
+						shouldBeLocked = Boolean.parseBoolean(Settings.System.getString(mContext.getContentResolver(), "device_locked_state"));
+					} finally {
+						Binder.restoreCallingIdentity(ident);
+					}
+					if (shouldBeLocked) {
+						final Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+						if (mHandler != null) mHandler.post(new Runnable() {
+							@Override
+							@SuppressWarnings("deprecation")
+							public void run() {
+								XposedBridge.log("[S6T] Touch lock activated!");
+								PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+								if (pm.isScreenOn()) {
+									goToSleep(mContext);
+									mHandler.postDelayed(this, 1000);
+								}
+							}
+						});
+					}
+				}
+			}
+		});
 	}
 	
 	public static void initGestures(LoadPackageParam lpparam, MethodHookParam param) {
@@ -745,32 +798,6 @@ public class WakeGesturesMods {
 					XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableQuickCall", true);
 				}
 			} else XposedBridge.log("[S6T] mSysContext == null");
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-	}
-	
-	public static void execHook_InitBootListener(LoadPackageParam lpparam) {
-		try {
-			findAndHookMethod("com.android.server.am.ActivityManagerService", lpparam.classLoader, "enableScreenAfterBoot", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-					XMain.pref.reload();
-					XposedBridge.log("[S6T] Wake gestures activate on boot...");
-					if (XMain.pref.getBoolean("wake_gestures_active", false)) {
-						final Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
-						if (mHandler != null)
-						mHandler.post(new Runnable() {
-							@Override
-							public void run() {
-								XposedBridge.log("[S6T] Wake gestures activated!");
-								Helpers.setWakeGestures(true);
-								if (!Helpers.getWakeGestures().equals("1")) mHandler.postDelayed(this, 1000);
-							}
-						});
-					}
-				}
-			});
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -807,38 +834,6 @@ public class WakeGesturesMods {
 			Object[] argsAndHook2 = { long.class, hook2 };
 			if (Helpers.isLP()) argsAndHook2 = new Object[] { long.class, int.class, hook2 };
 			findAndHookMethod("com.android.server.power.PowerManagerService", lpparam.classLoader, "wakeUpNoUpdateLocked", argsAndHook2);
-			
-			findAndHookMethod("com.android.server.am.ActivityManagerService", lpparam.classLoader, "enableScreenAfterBoot", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-					XposedBridge.log("[S6T] Touch lock activate on boot!");
-					final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-					if (mContext != null) {
-						long ident = Binder.clearCallingIdentity();
-						boolean shouldBeLocked = false;
-						try {
-							shouldBeLocked = Boolean.parseBoolean(Settings.System.getString(mContext.getContentResolver(), "device_locked_state"));
-						} finally {
-							Binder.restoreCallingIdentity(ident);
-						}
-						if (shouldBeLocked) {
-							final Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
-							if (mHandler != null) mHandler.post(new Runnable() {
-								@Override
-								@SuppressWarnings("deprecation")
-								public void run() {
-									XposedBridge.log("[S6T] Touch lock activated!");
-									PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
-									if (pm.isScreenOn()) {
-										goToSleep(mContext);
-										mHandler.postDelayed(this, 1000);
-									}
-								}
-							});
-						}
-					}
-				}
-			});
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

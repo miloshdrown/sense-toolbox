@@ -544,7 +544,7 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 						Toast.makeText(getActivity(), Helpers.l10n(getActivity(), R.string.no_currents), Toast.LENGTH_LONG).show();
 						return false;
 					} else
-						return Helpers.setButtonBacklightTo(Integer.parseInt((String)newValue), true);
+						return Helpers.setButtonBacklightTo(getActivity(), Integer.parseInt((String)newValue), true);
 				}
 			};
 			

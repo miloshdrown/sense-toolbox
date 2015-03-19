@@ -1015,7 +1015,7 @@ public class Helpers {
 	}
 	
 	static boolean isWaitingForCmd = false;
-	public static boolean setButtonBacklightTo(final int pref_keyslight, final boolean applyNoMatterWhat) {
+	public static boolean setButtonBacklightTo(final Context ctx, final int pref_keyslight, final boolean applyNoMatterWhat) {
 		if (applyNoMatterWhat) isWaitingForCmd = false;
 		if (isWaitingForCmd) return false; else try {
 			isWaitingForCmd = true;
@@ -1034,13 +1034,6 @@ public class Helpers {
 					else if (pref_keyslight == 5) level = "0";
 					
 					if (!line.trim().equals(level) || applyNoMatterWhat) {
-						/*
-						final String[] cmdsDefault = {
-							"chown 1000 " + currents,
-							"chmod 644 " + currents,
-							"echo 20 > " + currents
-						};
-						*/
 						final String[] cmdsPerm = {
 							"chown " + String.valueOf(Process.myUid()) + " " + currents,
 							"chmod 644 " + currents,
@@ -1060,7 +1053,8 @@ public class Helpers {
 								@Override
 								public void commandOutput(int id, String line) {
 									if (lineCnt2 == 0) try {
-										if (!line.trim().equals(String.valueOf(Process.myUid()))) {
+										boolean isSELinuxEnforcing = Boolean.parseBoolean(Settings.System.getString(ctx.getContentResolver(), "isSELinuxEnforcing"));
+										if (isSELinuxEnforcing || !line.trim().equals(String.valueOf(Process.myUid()))) {
 											RootTools.getShell(true).add(new CommandCapture(0, 3000, cmdsPerm));
 										} else {
 											RootTools.getShell(false).add(new CommandCapture(0, 3000, cmds));

@@ -350,9 +350,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_ledoncharge", false))
 				OtherMods.execHook_LEDOnCharge(lpparam);
 			
-			if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures() && Helpers.isLP())
-				WakeGesturesMods.execHook_InitBootListener(lpparam);
-			
 			if (pref.getBoolean("touch_lock_active", false) && Helpers.isWakeGestures() && Helpers.isLP())
 				WakeGesturesMods.execHook_InitTouchServerListener(lpparam);
 			

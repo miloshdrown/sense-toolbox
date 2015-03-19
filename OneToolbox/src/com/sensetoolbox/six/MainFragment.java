@@ -18,6 +18,7 @@ import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.provider.Settings;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ListView;
@@ -345,7 +346,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	@SuppressWarnings("deprecation")
 	public static class HelperReceiver extends BroadcastReceiver {
 		@Override
-		public void onReceive(Context context, Intent intent) {
+		public void onReceive(final Context context, Intent intent) {
 			if (intent.getAction() != null)
 			if (intent.getAction().equals("com.sensetoolbox.six.BLOCKHEADSUP")) {
 				String pkgName = intent.getStringExtra("pkgName");
@@ -358,9 +359,26 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				Helpers.cLang = "";
 			} else {
 				if (Helpers.isNotM7()) return;
-				int thepref = Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
+				final int thepref = Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
 				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-					if (thepref > 1) Helpers.setButtonBacklightTo(thepref, false);
+					if (thepref > 1) Helpers.setButtonBacklightTo(context, thepref, false);
+					CommandCapture command = new CommandCapture(0, "getenforce 2>/dev/null") {
+						int lineCnt = 0;
+						
+						@Override
+						public void commandOutput(int id, String line) {
+							if (lineCnt > 0) return;
+							boolean isSELinuxEnforcing = line.trim().equalsIgnoreCase("enforcing");
+							Settings.System.putString(context.getContentResolver(), "isSELinuxEnforcing", String.valueOf(isSELinuxEnforcing));
+							if (isSELinuxEnforcing && thepref > 1) Helpers.setButtonBacklightTo(context, thepref, false);
+							lineCnt++;
+						}
+					};
+					try {
+						RootTools.getShell(false).add(command);
+					} catch (Exception e) {
+						// handle exception
+					}
 				} else if (intent.getAction().equals("com.sensetoolbox.six.UPDATEBACKLIGHT")) {
 					boolean forceDisableBacklight = false;
 					PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
@@ -370,9 +388,9 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 						forceDisableBacklight = intent.getBooleanExtra("forceDisableBacklight", false);
 					
 					if (forceDisableBacklight)
-						Helpers.setButtonBacklightTo(5, false);
+						Helpers.setButtonBacklightTo(context, 5, false);
 					else
-						Helpers.setButtonBacklightTo(thepref, false);
+						Helpers.setButtonBacklightTo(context, thepref, false);
 				}
 			}
 		}
