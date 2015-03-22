@@ -12,7 +12,7 @@ import android.widget.FrameLayout;
 
 public class ColorFrameLayout extends FrameLayout {
 	Bitmap sel = BitmapFactory.decodeResource(getResources(), R.drawable.theme_selected);
-	Bitmap sel_bf = Bitmap.createScaledBitmap(sel, Math.round(sel.getWidth() / 1.8f), Math.round(sel.getHeight() / 1.8f), false);
+	Bitmap sel_bf = Bitmap.createScaledBitmap(sel, Math.round(sel.getWidth() / 1.3f), Math.round(sel.getHeight() / 1.3f), false);
 	Paint pnt = new Paint();
 	
 	public ColorFrameLayout(Context context) {
@@ -31,6 +31,6 @@ public class ColorFrameLayout extends FrameLayout {
 	protected void onDraw(Canvas canvas) {
 		float density = getResources().getDisplayMetrics().density;
 		if (this.getTag() != null && (boolean)this.getTag())
-		canvas.drawBitmap(sel_bf, Math.round(canvas.getWidth() - sel_bf.getWidth() - 6 * density), Math.round(canvas.getHeight() - sel_bf.getHeight() - 10 * density), pnt);
+		canvas.drawBitmap(sel_bf, Math.round(canvas.getWidth() - sel_bf.getWidth() - density), Math.round(canvas.getHeight() - sel_bf.getHeight() - 5 * density), pnt);
 	}
 }

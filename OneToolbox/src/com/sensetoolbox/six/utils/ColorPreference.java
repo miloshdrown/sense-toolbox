@@ -359,10 +359,16 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		applyTheme(nfc_icon);
 		nfc.setIcon(Helpers.dropIconShadow(mContext, nfc_icon));
 		
-		HtcPreference mtp = pm.findPreference("pref_key_cb_mtp");
-		Drawable mtp_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_running_services);
-		applyTheme(mtp_icon);
-		mtp.setIcon(mtp_icon);
+		if (!Helpers.isLP()) {
+			HtcPreference mtp = pm.findPreference("pref_key_cb_mtp");
+			Drawable mtp_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_running_services);
+			applyTheme(mtp_icon);
+			mtp.setIcon(mtp_icon);
+		} else {
+			HtcPreference beats = pm.findPreference("pref_key_cb_beats");
+			Drawable beats_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_beats);
+			beats.setIcon(Helpers.dropIconShadow(mContext, beats_icon));
+		}
 		
 		HtcPreference dnd = pm.findPreference("pref_key_cb_dnd");
 		Drawable dnd_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_dnd);

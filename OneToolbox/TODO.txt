@@ -32,7 +32,14 @@ Current changelog
 =================
 
 1.5.0 RC 1
-[Fixed] Hardware buttons backlight (including dynamic) with enforcing SELinux
+[New][5.0] Option to delay wake gestures activation for 10 seconds on boot
+[New] Better heads-up: fully customizable color themes, swipe up to hide
+[New] Free internal memory instead of total RAM in notification header
+[Removed][5.0] Status bar color themes, all icons are white now
+[Fixed] Hardware buttons backlight with enforcing SELinux. Dynamic backlight mod will have to execute more root commands to change backlight brightness.
+[Fixed] Signal and battery with percentage status bar icons
+[Fixed] Compact EQS animations (when in 1 row without notifications)
+[Fixed] Better heads-up mod bugs
 
 1.5.0 beta 5
 [New][5.0] Better heads-up notifications

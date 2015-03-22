@@ -65,11 +65,13 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
+import android.os.StatFs;
 import android.os.SystemClock;
 import android.os.Debug.MemoryInfo;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
+import android.os.Vibrator;
 import android.provider.Settings;
 import android.provider.Settings.SettingNotFoundException;
 import android.service.notification.NotificationListenerService;
@@ -78,6 +80,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils.TruncateAt;
+import android.text.format.Formatter;
 import android.text.method.SingleLineTransformationMethod;
 import android.util.TypedValue;
 import android.view.ContextThemeWrapper;
@@ -1661,21 +1664,26 @@ public class SysUIMods {
 							cpuThread = new Thread(new Runnable() {
 								public void run() {
 									try {
+										final File path = Environment.getDataDirectory();
+										final ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
+										final ActivityManager activityManager = (ActivityManager)dateView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
 										while (Thread.currentThread() == cpuThread) {
 											readCPU();
 											dateView.getHandler().post(new Runnable() {
 												@Override
 												public void run() {
-													ActivityManager.MemoryInfo mi = new ActivityManager.MemoryInfo();
-													ActivityManager activityManager = (ActivityManager)dateView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
 													activityManager.getMemoryInfo(mi);
 													long availableMegs = mi.availMem / 1048576L;
-													long totalMegs = mi.totalMem / 1048576L;
+													//long totalMegs = mi.totalMem / 1048576L;
+													
+													StatFs stat = new StatFs(path.getPath());
+													String totalInternalMem = Formatter.formatShortFileSize(dateView.getContext(), stat.getAvailableBlocksLong() *  stat.getBlockSizeLong());
+													totalInternalMem = totalInternalMem.replace(",", ".");
 													
 													XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 													String MB = Helpers.xl10n(modRes, R.string.ram_mb);
 													String MHz = Helpers.xl10n(modRes, R.string.cpu_mhz);
-													dateView.setText("CPU " + String.valueOf(Math.round(workC * 100 / (float)totalC)) + "% " + String.valueOf(curFreq) + MHz + " " + curTemp + "\u00B0C" + "\n" + "RAM " + String.valueOf(availableMegs) + MB + " / " + String.valueOf(totalMegs) + MB);
+													dateView.setText("CPU " + String.valueOf(Math.round(workC * 100 / (float)totalC)) + "% " + String.valueOf(curFreq) + MHz + " " + curTemp + "\u00B0C" + "\n" + "RAM " + String.valueOf(availableMegs) + MB + " INT " + totalInternalMem);
 												}
 											});
 											Thread.sleep(1000);
@@ -1999,30 +2007,6 @@ public class SysUIMods {
 				}
 			}
 		});
-	}
-	
-	public static void execHookTSB442Fix(LoadPackageParam lpparam) {
-		try {
-			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBarTransitions", lpparam.classLoader, "transitionTo", int.class, boolean.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					param.args[0] = 2;
-				}
-			});
-		} catch (Throwable ignore) {}
-	}
-	
-	public static void execHook_anotherTSB44Fix(LoadPackageParam lpparam) {
-		try {
-			findAndHookMethod("com.android.internal.policy.impl.BarController", lpparam.classLoader, "applyTranslucentFlagLw", "android.view.WindowManagerPolicy.WindowState", int.class, int.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-					Object win = param.args[0];
-					if (win != null && win.toString().contains("Keyguard"))
-						param.setResult(param.args[2]);
-				}
-			});
-		} catch (Throwable ignore) {}
 	}
 	
 	public static void execHook_OverrideAssist(LoadPackageParam lpparam) {
@@ -2762,6 +2746,7 @@ public class SysUIMods {
 		resparam.res.setReplacement("com.android.systemui", "integer", "quick_settings_max_rows", modRes.fwd(R.integer.quick_settings_max_rows));
 		resparam.res.setReplacement("com.android.systemui", "integer", "quick_settings_max_rows_keyguard", modRes.fwd(R.integer.quick_settings_max_rows_keyguard));
 		resparam.res.setReplacement("com.android.systemui", "dimen", "quick_settings_cell_height", modRes.fwd(R.dimen.quick_settings_cell_height));
+		resparam.res.setReplacement("com.android.systemui", "dimen", "qs_peek_height", modRes.fwd(R.dimen.qs_peek_height));
 	}
 	
 	private static void resizeWindow(Context mContext, int newHeight) {
@@ -2894,6 +2879,8 @@ public class SysUIMods {
 		Handler mHandler = null;
 		float density = 3f;
 		boolean sleepOnDismissLast = false;
+		int touchPositionY, touchCurrentPositionY;
+		boolean isVerticalDragging;
 		
 		Typeface faceCondensed = Typeface.create("sans-serif-condensed", Typeface.NORMAL);
 		Typeface faceLight = Typeface.create("sans-serif-light", Typeface.NORMAL);
@@ -2903,7 +2890,10 @@ public class SysUIMods {
 		}
 		
 		public void updateHeight(boolean isSmooth) {
-			if (hPager.getChildCount() == 0) return;
+			if (hPager.getChildCount() == 0) {
+				hideHUV();
+				return;
+			}
 			View page = hPager.getChildAt(hPager.getCurrentScreen());
 			if (page == null) return;
 			page.measure(
@@ -3043,7 +3033,7 @@ public class SysUIMods {
 						mHandler.post(new Runnable() {
 							@Override
 							public void run() {
-								View item = hPager.getChildAt(hPager.getCurrentScreen());
+								View item = hPager.getChildAt(scr);
 								item.animate().setDuration(500).alpha(0);
 							}
 						});
@@ -3071,21 +3061,21 @@ public class SysUIMods {
 			});
 		}
 		
-		void applyColorRecursively(ViewGroup parent, int color) {
+		void applyColorRecursively(ViewGroup parent, int secondaryColor) {
 			for (int i = 0; i < parent.getChildCount(); i++) {
 				View child = parent.getChildAt(i);
 				if (child instanceof ViewGroup)
-					applyColorRecursively((ViewGroup)child, color);
+					applyColorRecursively((ViewGroup)child, secondaryColor);
 				else if (child != null)
 					if (Button.class.isAssignableFrom(child.getClass())) {
-						((Button)child).setTextColor(color);
+						((Button)child).setTextColor(secondaryColor);
 						((Button)child).setTypeface(Typeface.SANS_SERIF);
 						Drawable[] actionIcons = ((Button)child).getCompoundDrawablesRelative();
 						for (int j = 0; j < actionIcons.length; j++) if (actionIcons[j] != null)
-						actionIcons[j].setColorFilter(0xffE1E1E1, Mode.SRC_ATOP);
+						actionIcons[j].setColorFilter(secondaryColor, Mode.SRC_IN);
 						((Button)child).setCompoundDrawablesRelative(actionIcons[0], actionIcons[1], actionIcons[2], actionIcons[3]);
 					} else if (TextView.class.isAssignableFrom(child.getClass())) {
-						((TextView)child).setTextColor(color);
+						((TextView)child).setTextColor(secondaryColor);
 						((TextView)child).setTypeface(faceLight);
 					}
 			}
@@ -3108,7 +3098,7 @@ public class SysUIMods {
 				OvalShape oval = new OvalShape();
 				oval.resize(densify(8), densify(8));
 				circle_left.setShape(oval);
-				circle_left.getPaint().setColor(0xff606060);
+				circle_left.getPaint().setColor(getThemeColor("pref_key_betterheadsup_theme_dividers"));
 				Drawable circle_right = circle_left.getConstantState().newDrawable().mutate();
 				circle_left.setBounds(leftRect);
 				circle_right.setBounds(rightRect);
@@ -3144,6 +3134,10 @@ public class SysUIMods {
 		}
 		
 		void processRemoteViews(RelativeLayout notifyRemote, View localContent, final StatusBarNotification sbn) {
+			int bkgColor = getThemeColor("pref_key_betterheadsup_theme_background");
+			int primaryColor = getThemeColor("pref_key_betterheadsup_theme_primary");
+			int secondaryColor = getThemeColor("pref_key_betterheadsup_theme_secondary");
+			
 			localContent.setBackgroundColor(Color.TRANSPARENT);
 			notifyRemote.removeAllViews();
 			notifyRemote.addView(localContent);
@@ -3152,32 +3146,32 @@ public class SysUIMods {
 				@SuppressLint("NewApi")
 				public void onClick(View v) {
 					if (sbn.getNotification().contentIntent != null) try {
-						hideHUV();
 						Object clicker = XposedHelpers.callMethod(bsbObject, "makeClicker", sbn.getNotification().contentIntent, sbn.getKey(), false);
 						XposedHelpers.callMethod(clicker, "onClick", v);
+						hideHUV();
 					} catch (Throwable t) {
 						XposedBridge.log(t);
 					}
 				}
 			});
-			applyColorRecursively(notifyRemote, 0xb3ffffff);
+			applyColorRecursively(notifyRemote, secondaryColor);
 			
 			TextView title = (TextView)notifyRemote.findViewById(android.R.id.title);
 			if (title != null) {
-				title.setTextColor(Color.WHITE);
+				title.setTextColor(primaryColor);
 				title.setTypeface(faceCondensed);
 			}
 			
 			View actions = notifyRemote.findViewById(mResources.getIdentifier("actions", "id", "android"));
 			if (actions != null) {
 				ViewGroup actionsFrame = (ViewGroup)actions.getParent();
-				if (actionsFrame != null) actionsFrame.setBackgroundColor(Color.TRANSPARENT);
+				if (actionsFrame != null) actionsFrame.setBackgroundColor(Color.argb(Math.round(Color.alpha(bkgColor) * 0.7f), Color.red(bkgColor), Color.green(bkgColor), Color.blue(bkgColor)));
 			}
 			
 			ImageView action_divider = (ImageView)notifyRemote.findViewById(mResources.getIdentifier("action_divider", "id", "android"));
-			if (action_divider != null) action_divider.setBackground(new ColorDrawable(0xff525252));
+			if (action_divider != null) action_divider.setBackgroundColor(0x15888888);
 			ImageView overflow_divider = (ImageView)notifyRemote.findViewById(mResources.getIdentifier("overflow_divider", "id", "android"));
-			if (overflow_divider != null) overflow_divider.setBackground(new ColorDrawable(0xff525252));
+			if (overflow_divider != null) overflow_divider.setBackgroundColor(0x15888888);
 			
 			LinearLayout line1 = (LinearLayout)notifyRemote.findViewById(mResources.getIdentifier("line1", "id", "android"));
 			if (line1 != null) ((ViewGroup)line1.getParent()).setBackgroundColor(Color.TRANSPARENT);
@@ -3212,7 +3206,7 @@ public class SysUIMods {
 						header = new TextView(mContext);
 						header.setGravity(Gravity.CENTER);
 						header.setAllCaps(true);
-						header.setTextColor(Color.WHITE);
+						header.setTextColor(getThemeColor("pref_key_betterheadsup_theme_primary"));
 						header.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14.0f);
 						header.setTypeface(faceCondensed);
 						header.setPadding(densify(6), densify(6), densify(6), densify(6));
@@ -3274,7 +3268,7 @@ public class SysUIMods {
 						item.addView(header);
 						
 						ImageView divider = new ImageView(mContext);
-						divider.setBackgroundResource(mResources.getIdentifier("common_b_div", "drawable", "com.android.systemui"));
+						divider.setBackgroundColor(getThemeColor("pref_key_betterheadsup_theme_dividers"));
 						LinearLayout.LayoutParams dlp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 						int margin_l = mResources.getDimensionPixelSize(mResources.getIdentifier("margin_l", "dimen", "com.android.systemui"));
 						dlp.gravity = Gravity.TOP;
@@ -3334,8 +3328,8 @@ public class SysUIMods {
 						lpbtn.weight = 1;
 						lpbtn.gravity = Gravity.LEFT | Gravity.BOTTOM;
 						rimBtn.setLayoutParams(lpbtn);
-						rimBtn.setBackgroundColor(0xff404040);
-						rimBtn.setTextColor(0xb3ffffff);
+						rimBtn.setBackgroundColor(getThemeColor("pref_key_betterheadsup_theme_dismiss"));
+						rimBtn.setTextColor(getThemeColor("pref_key_betterheadsup_theme_secondary"));
 						rimBtn.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.0f);
 						rimBtn.setTypeface(faceCondensed);
 						rimBtn.setText(Helpers.xl10n(modRes, R.string.popupnotify_dismiss));
@@ -3348,8 +3342,8 @@ public class SysUIMods {
 						lpbtnsleep.weight = 1;
 						lpbtnsleep.gravity = Gravity.RIGHT | Gravity.BOTTOM;
 						rimBtnSleep.setLayoutParams(lpbtnsleep);
-						rimBtnSleep.setBackgroundColor(0xff404040);
-						rimBtnSleep.setTextColor(0xb3ffffff);
+						rimBtnSleep.setBackgroundColor(getThemeColor("pref_key_betterheadsup_theme_dismiss"));
+						rimBtnSleep.setTextColor(getThemeColor("pref_key_betterheadsup_theme_secondary"));
 						rimBtnSleep.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15.0f);
 						rimBtnSleep.setTypeface(faceCondensed);
 						rimBtnSleep.setText(Helpers.xl10n(modRes, R.string.popupnotify_dismisssleep));
@@ -3381,14 +3375,18 @@ public class SysUIMods {
 					OnLongClickListener olcl = new OnLongClickListener() {
 						@Override
 						public boolean onLongClick(final View v) {
-							if (XMain.pref.getBoolean("pref_key_betterheadsup_bwlist", false)) return true;
+							if (XMain.pref.getBoolean("pref_key_betterheadsup_bwlist", false) || isVerticalDragging) return true;
 							FloatingAlertDialog blDialog = new FloatingAlertDialog(mContext, String.format(Helpers.xl10n(modRes, R.string.popupnotify_blacklist), appName), sbn);
 							blDialog.show();
+							Vibrator vibe = (Vibrator)v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
+							vibe.vibrate(20);
 							return true;
 						}
 					};
 					rimBtn.setOnLongClickListener(olcl);
+					rimBtn.setHapticFeedbackEnabled(false);
 					rimBtnSleep.setOnLongClickListener(olcl);
+					rimBtnSleep.setHapticFeedbackEnabled(false);
 					
 					if (!isUpdate) {
 						actions.addView(rimBtn);
@@ -3407,6 +3405,58 @@ public class SysUIMods {
 			});
 		}
 		
+		@Override
+		public boolean dispatchTouchEvent(MotionEvent event) {
+			int action = event.getActionMasked();
+			switch (action) {
+				case MotionEvent.ACTION_DOWN:
+					touchPositionY = (int)event.getY();
+					touchCurrentPositionY = 0;
+					isVerticalDragging = false;
+					break;
+				case MotionEvent.ACTION_MOVE:
+					if (!isHUVShown) return false;
+					touchCurrentPositionY = (int)event.getY();
+					if (touchPositionY - touchCurrentPositionY > densify(15)) isVerticalDragging = true;
+					if (isVerticalDragging) {
+						if (touchCurrentPositionY < touchPositionY) {
+							float swipePercent = ((float)touchPositionY - (float)touchCurrentPositionY) / (float)touchPositionY;
+							if (swipePercent > 1.0f) swipePercent = 1.0f;
+							huView.setAlpha(1.0f - swipePercent);
+							huView.setTranslationY((float)touchCurrentPositionY - (float)touchPositionY);
+						} else {
+							huView.setAlpha(1);
+							huView.setTranslationY(0);
+						}
+						return true;
+					}
+					break;
+				case MotionEvent.ACTION_UP:
+					if (isVerticalDragging) {
+						if (touchPositionY - touchCurrentPositionY > touchPositionY / 2) {
+							huView.animate().setStartDelay(0).setDuration(100).alpha(0);
+							huView.animate().setStartDelay(0).setDuration(100).translationY(-huView.getMeasuredHeight());
+							(new Thread(new Runnable() {
+								@Override
+								public void run() {
+									try {
+										Thread.sleep(100);
+										hideHUV();
+									} catch (Throwable t) {}
+								}
+							})).start();
+						} else {
+							huView.animate().setStartDelay(0).setDuration(150).alpha(1);
+							huView.animate().setStartDelay(0).setDuration(150).translationY(0);
+						}
+						isVerticalDragging = false;
+						return true;
+					}
+					break;
+			}
+			return super.dispatchTouchEvent(event);
+		}
+		
 		public void clear() {
 			hPager.removeAllViews();
 		}
@@ -3414,6 +3464,16 @@ public class SysUIMods {
 		public void setScreen(int screen) {
 			hPager.setCurrentScreen(screen, false);
 		}
+	}
+	
+	private static int getThemeColor(String mKey) {
+		int[] defaults = Helpers.getDefColors(mKey);
+		return Color.argb(
+			XMain.pref.getInt(mKey + "_A", defaults[0]),
+			XMain.pref.getInt(mKey + "_R", defaults[1]),
+			XMain.pref.getInt(mKey + "_G", defaults[2]),
+			XMain.pref.getInt(mKey + "_B", defaults[3])
+		);
 	}
 	
 	private static WindowManager.LayoutParams winParams = new WindowManager.LayoutParams(
@@ -3441,6 +3501,7 @@ public class SysUIMods {
 		else
 			huView.sleepOnDismissLast = true;
 			
+		mHandlerPSB.removeCallbacks(clearRunnable);
 		mHandlerPSB.post(new Runnable() {
 			@Override
 			public void run() {
@@ -3450,12 +3511,23 @@ public class SysUIMods {
 				winParams.packageName = mContext.getPackageName();
 				winParams.windowAnimations = mContext.getResources().getIdentifier("Animation.StatusBar.HeadsUp", "style", "com.android.systemui");
 				
+				huView.setAlpha(1);
+				huView.setTranslationY(0);
+				huView.hPager.setBackgroundColor(getThemeColor("pref_key_betterheadsup_theme_background"));
+				
 				WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
 				wm.addView(huView, winParams);
 				huView.invalidate();
 			}
 		});
 	}
+	
+	private static Runnable clearRunnable = new Runnable() {
+		@Override
+		public void run() {
+			if (huView != null) huView.clear();
+		}
+	};
 	
 	private static void hideHUV() {
 		if (isHUVShown && huView != null) {
@@ -3472,12 +3544,7 @@ public class SysUIMods {
 				}
 			});
 			
-			mHandlerPSB.postDelayed(new Runnable() {
-				@Override
-				public void run() {
-					if (huView != null) huView.clear();
-				}
-			}, 600);
+			mHandlerPSB.postDelayed(clearRunnable, 600);
 		}
 	}
 	
@@ -3550,10 +3617,12 @@ public class SysUIMods {
 	public static void execHook_BetterHeadsUpSysUI(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook() {
 			@Override
+			@SuppressLint("ClickableViewAccessibility")
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				psbObject = param.thisObject;
 				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 				huView = new HeadsUpView(mContext, (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler"));
+				
 				IntentFilter intentfilter = new IntentFilter();
 				intentfilter.addAction("com.sensetoolbox.six.BHU_SHOW");
 				intentfilter.addAction("com.sensetoolbox.six.BHU_HIDE");
@@ -3590,6 +3659,9 @@ public class SysUIMods {
 				XposedHelpers.callMethod(mNotificationListener, "unregisterAsSystemService");
 			}
 		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "addHeadsUpView", XC_MethodReplacement.DO_NOTHING);
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "removeHeadsUpView", XC_MethodReplacement.DO_NOTHING);
 	}
 	
 	public static MethodHookParam mNMSParam = null;

@@ -162,8 +162,14 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_controls_swapvolume", false))
 			ControlsMods.exec_SwapVolumeCCWLand();
 		
-//	    if (pref.getBoolean("pref_key_sysui_invisibar_enable", false) && Build.VERSION.SDK_INT >= 19)
-//	    	SysUIMods.execHook_anotherTSB44Fix(lpparam);
+		// Xposed broken resource hooks workaround
+		if (Helpers.isLP()) {
+			if (Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")) == 2)
+				StatusbarMods.execHook_BatteryIconLP();
+			
+			if (pref.getBoolean("pref_key_cb_signal", false))
+				StatusbarMods.execHook_SignalIconLP();
+		}
 		
 		//OtherMods.execHook_HapticNotify();
 	}
@@ -204,12 +210,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				transparency = (int) Math.floor(transparency*2.55f);
 				SysUIMods.execHook_InvisiNotify(resparam, transparency);
 			}
-			
-//			if (pref.getBoolean("pref_key_sysui_invisibar_enable", false)) {
-//				int transparency = pref.getInt("pref_key_sysui_invisibar_new", 100);
-//				transparency = (int) Math.floor(transparency*2.55f);
-//				SysUIMods.execHook_InvisiBar(resparam, transparency);
-//			}
 			
 			if (Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")) != 1)
 				StatusbarMods.execHook_BatteryIcon(resparam, Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")));
@@ -401,9 +401,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_prism_folder20", false))
 				PrismMods.execHook_20Folder_code(lpparam);
 			
-//			if (pref.getBoolean("pref_key_sysui_invisibar_enable", false))
-//				PrismMods.execHookTSBFix(lpparam);
-			
 			if (pref.getBoolean("pref_key_prism_invisidrawer_enable", false)) {
 				int transparency = pref.getInt("pref_key_prism_invisidrawer", 100);
 				transparency = (int) Math.floor(transparency*2.55f);
@@ -440,9 +437,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_prism_blinkfeedimmersive", false))
 				PrismMods.execHook_BlinkFeedImmersive(lpparam);
-			
-//			if (Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false)) //Le KitKat
-//				PrismMods.fixInvisibarKitKat(lpparam);
 			
 			if (pref_shake != 1)
 				PrismMods.execHook_ShakeAction(lpparam);
@@ -548,9 +542,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref_alarmnotify || pref_signalnotify)
 				SysUIMods.execHook_LabelsUpdate(lpparam);
 			
-//			if (Build.VERSION.SDK_INT >= 19 && pref.getBoolean("pref_key_sysui_invisibar_enable", false))
-//				SysUIMods.execHookTSB442Fix(lpparam);
-			
 			if (Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1")) == 3)
 				SysUIMods.execHook_NotifDrawerHeaderSysInfo(lpparam);
 			
@@ -573,7 +564,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_prism_homemenu", false) && Helpers.isEight())
 				ControlsMods.execHook_HomeLongpressEight(lpparam);
 			
-			if (pref.getBoolean("pref_key_cb_texts", false))
+			if (!Helpers.isLP() && pref.getBoolean("pref_key_cb_texts", false))
 				StatusbarMods.execHook_StatusBarTexts(lpparam);
 			
 			if (pref.getBoolean("pref_key_controls_extendedpanel", false))

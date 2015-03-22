@@ -9,15 +9,6 @@
 		<com.htc.preference.HtcPreferenceCategory
 			android:title="@string/systemui_statusbar"
 			android:key="pref_systemui_statusbar">
-<!--    <com.sensetoolbox.six.utils.SeekBarPreference
-			android:key="pref_key_sysui_invisibar_new"
-			android:title="@string/systemui_tsb_title"
-			android:summary="@string/systemui_tsb_summ"
-			android:dialogMessage="@string/transparency_msg"
-			android:defaultValue="100"
-			android:text=" %"
-			android:max="100"
-			toolbox:enableKey="pref_key_sysui_invisibar_enable"/> -->
 		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_sysui_tsb"
 			android:summary="@string/systemui_tsb_summ"

@@ -14,6 +14,7 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.database.ContentObserver;
@@ -22,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Paint;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.Drawable;
 import android.net.Uri;
@@ -49,9 +51,14 @@ public class StatusbarMods {
 	private static String wifiBase = "";
 	
 	private static Drawable applyTheme(Drawable icon, boolean useOriginal) {
-		ColorFilter cf = GlobalActions.createColorFilter(true);
 		icon.clearColorFilter();
-		if (!useOriginal && cf != null) icon.setColorFilter(cf);
+		if (!useOriginal)
+		if (Helpers.isLP()) {
+			icon.setColorFilter(Color.WHITE, Mode.SRC_ATOP);
+		} else {
+			ColorFilter cf = GlobalActions.createColorFilter(true);
+			if (cf != null) icon.setColorFilter(cf);
+		}
 		return icon;
 	}
 	
@@ -152,6 +159,28 @@ public class StatusbarMods {
 			});
 		}
 	}
+	
+	public static void execHook_BatteryIconLP() {
+		XposedHelpers.findAndHookMethod(ImageView.class, "setImageResource", int.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) {
+				try {
+					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+					ImageView iv = (ImageView)param.thisObject;
+					int resId = (Integer)param.args[0];
+					if (iv != null)
+					if (iv.getContext().getPackageName().equals("com.android.systemui")) {
+						if (resId == iv.getContext().getResources().getIdentifier("stat_sys_battery", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(modRes.getDrawable(R.drawable.stat_sys_battery));
+						else if (resId == iv.getContext().getResources().getIdentifier("stat_sys_battery_anim", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(modRes.getDrawable(R.drawable.stat_sys_battery_charging));
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+	}
 
 	public static void execHook_SignalIcon(InitPackageResourcesParam resparam) {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
@@ -237,6 +266,51 @@ public class StatusbarMods {
 			}
 		});
 	}
+	
+	public static void execHook_SignalIconLP() {
+		XposedHelpers.findAndHookMethod(ImageView.class, "setImageResource", int.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) {
+				try {
+					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+					ImageView iv = (ImageView)param.thisObject;
+					int resId = (Integer)param.args[0];
+					if (iv != null)
+					if (iv.getContext().getPackageName().equals("com.android.systemui")) {
+						Resources mResources = iv.getContext().getResources();
+						if (resId == mResources.getIdentifier("stat_sys_5signal_null", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_null)));
+						else if (resId == mResources.getIdentifier("stat_sys_5signal_0", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_0)));
+						else if (resId == mResources.getIdentifier("stat_sys_5signal_1", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_1)));
+						else if (resId == mResources.getIdentifier("stat_sys_5signal_2", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_2)));
+						else if (resId == mResources.getIdentifier("stat_sys_5signal_3", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_3)));
+						else if (resId == mResources.getIdentifier("stat_sys_5signal_4", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_4)));
+						else if (resId == mResources.getIdentifier("stat_sys_5signal_5", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_5signal_5)));
+						else if (resId == mResources.getIdentifier("stat_sys_r_5signal_0", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_r_5signal_0)));
+						else if (resId == mResources.getIdentifier("stat_sys_r_5signal_1", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_r_5signal_1)));
+						else if (resId == mResources.getIdentifier("stat_sys_r_5signal_2", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_r_5signal_2)));
+						else if (resId == mResources.getIdentifier("stat_sys_r_5signal_3", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_r_5signal_3)));
+						else if (resId == mResources.getIdentifier("stat_sys_r_5signal_4", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_r_5signal_4)));
+						else if (resId == mResources.getIdentifier("stat_sys_r_5signal_5", "drawable", "com.android.systemui"))
+							iv.setImageDrawable(applyTheme(modRes.getDrawable(R.drawable.stat_sys_r_5signal_5)));
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+	}
 
 	public static void execHook_HeadphoneIcon(InitPackageResourcesParam resparam) {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
@@ -292,16 +366,15 @@ public class StatusbarMods {
 
 	public static void execHook_WiFiIcon(InitPackageResourcesParam resparam, final int i) {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
-		if (i == 2) {
+		if (i == 2)
 			wifiBase = "stat_sys_wifi_signal_";
-		} else if (i == 3) {
+		else if (i == 3)
 			wifiBase = "b_stat_sys_wifi_signal_";
-		}
 		
 		String[] glowIcons = {"stat_sys_wifi_signal_in_0", "stat_sys_wifi_signal_in_1", "stat_sys_wifi_signal_in_2", "stat_sys_wifi_signal_in_3", "stat_sys_wifi_signal_in_4",
-				"stat_sys_wifi_signal_inandout_0", "stat_sys_wifi_signal_inandout_1", "stat_sys_wifi_signal_inandout_2", "stat_sys_wifi_signal_inandout_3", "stat_sys_wifi_signal_inandout_4",
-				"stat_sys_wifi_signal_out_0", "stat_sys_wifi_signal_out_1", "stat_sys_wifi_signal_out_2", "stat_sys_wifi_signal_out_3", "stat_sys_wifi_signal_out_4"};
-		for(final String s : glowIcons) {
+			"stat_sys_wifi_signal_inandout_0", "stat_sys_wifi_signal_inandout_1", "stat_sys_wifi_signal_inandout_2", "stat_sys_wifi_signal_inandout_3", "stat_sys_wifi_signal_inandout_4",
+			"stat_sys_wifi_signal_out_0", "stat_sys_wifi_signal_out_1", "stat_sys_wifi_signal_out_2", "stat_sys_wifi_signal_out_3", "stat_sys_wifi_signal_out_4"};
+		for (final String s: glowIcons) {
 			resparam.res.setReplacement("com.android.systemui", "drawable", s, new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {
@@ -312,7 +385,7 @@ public class StatusbarMods {
 		}
 		
 		String[] nonGlowIcons = {"stat_sys_wifi_signal_connected_0", "stat_sys_wifi_signal_connected_1", "stat_sys_wifi_signal_connected_2", "stat_sys_wifi_signal_connected_3", "stat_sys_wifi_signal_connected_4"};
-		for(final String s : nonGlowIcons) {
+		for (final String s: nonGlowIcons) {
 			resparam.res.setReplacement("com.android.systemui", "drawable", s, new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {

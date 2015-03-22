@@ -198,15 +198,6 @@ public class PrismMods {
 		});
 	}
 	
-	public static void execHookTSBFix(LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.launcher.bar.BarController", lpparam.classLoader, "setStatusBarTransparent", Context.class, boolean.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				param.setResult(null);
-			}
-		});
-	}
-	
 	public static void execHook_InvisiFolder(final InitPackageResourcesParam resparam, final int transparency) {
 		try {
 			resparam.res.hookLayout("com.htc.launcher", "layout", "specific_user_folder", new XC_LayoutInflated() {
@@ -911,10 +902,6 @@ public class PrismMods {
 				});
 			}
 		});
-	}
-	
-	public static void fixInvisibarKitKat(LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "transparentStatusBarForKK", XC_MethodReplacement.DO_NOTHING);
 	}
 	
 	private static boolean isLauncherLocked(Context context) {

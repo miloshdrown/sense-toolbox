@@ -363,6 +363,17 @@
 		<item >4</item>
 		<item >5</item>
 	</string-array>
-
+	
+	<string-array name="headsup_theme_presets">
+		<item >@string/array_color_dark_lollipop</item>
+		<item >@string/array_color_dark_sense</item>
+		<item >@string/array_color_light</item>
+	</string-array>
+	<string-array name="headsup_theme_presets_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+	</string-array>
+		
 	<string-array name="empty_array"/>
 </resources>

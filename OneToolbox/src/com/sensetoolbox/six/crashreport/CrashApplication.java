@@ -15,7 +15,7 @@ import android.app.Application;
 	reportType = HttpSender.Type.JSON,
 	mode = ReportingInteractionMode.DIALOG,
 	resDialogText = R.string.dummy,
-	logcatArguments = { "-t", "200", "-v", "time" },
+	logcatArguments = { "-t", "500", "-v", "time" },
 	sharedPreferencesName = "one_toolbox_prefs",
 	sharedPreferencesMode = 1
 )

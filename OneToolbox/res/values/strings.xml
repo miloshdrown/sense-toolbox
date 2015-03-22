@@ -88,11 +88,15 @@
 	<string name="betterheadsup_hint">Enable better heads-up notifications from the action bar above.\n\nSoft reboot will be required only once after that.</string>
 	<string name="betterheadsup_tip">Information\n\nHeads-up notifications are not displayed on lockscreen, because an expanded notification drawer is already there.</string>
 	<string name="betterheadsup_test">Test heads-up notifications</string>
+	<string name="array_color_dark_lollipop">Grey</string>
+	<string name="array_color_dark_sense">Dark</string>
+	<string name="array_color_light">Light</string>
 
 	<string name="mods">Mods</string>
 
 	<string name="not_compatible">Incompatible Android version</string>
 	<string name="not_compatible_desc">Current Sense 6 Toolbox version is not working on Android 5.0</string>
+	<string name="not_yet_working">Not yet working on Android 5.0</string>
 	<string name="xposed_not_found">Xposed Installer not found</string>
 	<string name="xposed_not_found_explain">It looks like you don\'t have Xposed Installed.\n\nPlease note that the mods on this page will only work with Xposed!\n\nXposed is available in the ARHD installer.</string>
 	<string name="okay">Okay</string>
@@ -397,6 +401,19 @@
 	<string name="various_popupnotify_bwlist_white_summ">Popups will be shown only for notifications from selected apps.</string>
 	<string name="various_betterheadsup_bwlist_white_title">Whitelist</string>
 	<string name="various_betterheadsup_bwlist_white_summ">Heads-ups will be shown only for notifications from selected apps.</string>
+	<string name="various_betterheadsup_themes">Notification themes</string>
+	<string name="various_betterheadsup_theme_preset_title">Complete presets</string>
+	<string name="various_betterheadsup_theme_preset_summ">Predefined sets of colors</string>
+	<string name="various_betterheadsup_theme_background_title">Background</string>
+	<string name="various_betterheadsup_theme_background_summ">Notification background color</string>
+	<string name="various_betterheadsup_theme_primary_title">Primary text</string>
+	<string name="various_betterheadsup_theme_primary_summ">Notification and tab titles color</string>
+	<string name="various_betterheadsup_theme_secondary_title">Secondary text</string>
+	<string name="various_betterheadsup_theme_secondary_summ">Notifiction text color</string>
+	<string name="various_betterheadsup_theme_dismiss_title">Dismiss button</string>
+	<string name="various_betterheadsup_theme_dismiss_summ">Color for dismiss button background</string>
+	<string name="various_betterheadsup_theme_dividers_title">Other</string>
+	<string name="various_betterheadsup_theme_dividers_summ">Page indicators and tab dividers</string>
 	<string name="various_extremepower_title">EPS apps remap</string>
 	<string name="various_extremepower_summ">Choose 6 custom apps for extreme power saving mode</string>
 	<string name="various_extremepower_cell">Cell</string>
@@ -481,6 +498,8 @@
 	<string name="wakegestures_mod">Wake gestures</string>
 	<string name="wakegestures_haptic_title">Haptic feedback</string>
 	<string name="wakegestures_haptic_summ">Short vibration after successful gesture</string>
+	<string name="wakegestures_delay_title">Delay activtion (10 sec)</string>
+	<string name="wakegestures_delay_summ">Enable this option if you are having problems with wake gestures activation after reboot.</string>
 	<string name="wakegestures_dt2w_title">Double tap</string>
 	<string name="wakegestures_dt2w_summ">Action for double tap</string>
 	<string name="wakegestures_swipedown_title">Swipe down</string>
@@ -651,7 +670,7 @@
 	<string name="array_large_photo_rectangular">Rectangular</string>
 	<string name="array_large_photo_max">Maximum</string>
 	<string name="array_header_click_clock">Open Clock app</string>
-	<string name="array_header_click_sysinfo">Time: Open Clock app\nDate: Show/hide CPU and RAM info</string>
+	<string name="array_header_click_sysinfo">Time: Open Clock app\nDate: Toggle system monitoring</string>
 	<string name="array_keyslight_dim">Dim</string>
 	<string name="array_keyslight_extradim">Extra dim</string>
 	<string name="array_keyslight_maxdim">Barely visible</string>

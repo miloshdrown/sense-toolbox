@@ -30,8 +30,8 @@ import com.htc.widget.HtcSeekBar;
 import com.sensetoolbox.six.R;
 
 public class SeekBarPreference extends HtcDialogPreference implements SeekBar.OnSeekBarChangeListener {
-	private static final String androidns="http://schemas.android.com/apk/res/android";
-	private static final String toolboxns="http://schemas.android.com/apk/res/com.sensetoolbox.six";
+	private static final String androidns = "http://schemas.android.com/apk/res/android";
+	private static final String toolboxns = "http://schemas.android.com/apk/res/com.sensetoolbox.six";
 
 	private SeekBar mSeekBar;
 	private HtcRimButton testBtn;

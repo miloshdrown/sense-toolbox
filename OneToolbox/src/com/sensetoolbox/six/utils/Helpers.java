@@ -51,6 +51,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -67,6 +68,7 @@ import android.graphics.LightingColorFilter;
 import android.graphics.Paint;
 import android.graphics.Bitmap.CompressFormat;
 import android.graphics.Bitmap.Config;
+import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -96,8 +98,8 @@ public class Helpers {
 	public static ArrayList<AppData> launchableAppsList = null;
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
-	public static float strings_total = 644.0f;
-	public static String buildVersion = "233";
+	public static float strings_total = 663.0f;
+	public static String buildVersion = "234";
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -540,7 +542,7 @@ public class Helpers {
 	}
 	
 	public static Drawable dropIconShadow(Context mContext, Drawable icon, Boolean force) {
-		if (!force)
+		if (!force && !Helpers.isLP())
 		if (MainFragment.prefs.getInt("pref_key_colorfilter_brightValue", 100) != 200 || MainFragment.prefs.getInt("pref_key_colorfilter_satValue", 100) != 0) return icon;
 		
 		Bitmap bitmap = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Config.ARGB_8888);
@@ -548,27 +550,40 @@ public class Helpers {
 		icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
 		icon.draw(canvas);
 		
-		float density = mContext.getResources().getDisplayMetrics().density;
-		
-		BlurMaskFilter blurFilter = new BlurMaskFilter(Math.round(density * 3), BlurMaskFilter.Blur.OUTER);
-		Paint shadowPaint = new Paint();
-		shadowPaint.setMaskFilter(blurFilter);
-		
-		int[] offsetXY = new int[2];
-		Bitmap shadowImage = bitmap.extractAlpha(shadowPaint, offsetXY);
-		
 		int category_color_id = mContext.getResources().getIdentifier("category_color", "attr", "com.htc");
 		TypedValue typedValue = new TypedValue();
 		mContext.getTheme().resolveAttribute(category_color_id, typedValue, true);
 		int category_theme = typedValue.data;
 		
-		Paint p = new Paint();
-		ColorFilter filter = new LightingColorFilter(Color.BLACK, category_theme);
-		p.setColorFilter(filter);
-		
+		float density = mContext.getResources().getDisplayMetrics().density;
 		Bitmap imageWithShadow = Bitmap.createBitmap(icon.getIntrinsicWidth() + Math.round(density * 6), icon.getIntrinsicHeight() + Math.round(density * 6), Config.ARGB_8888);
 		Canvas c = new Canvas(imageWithShadow);
-		c.drawBitmap(shadowImage, 0, 0, p);
+		
+		int[] offsetXY = new int[2];
+		Bitmap shadowImage;
+		if (Helpers.isLP()) {
+			shadowImage = Bitmap.createBitmap(imageWithShadow.getWidth(), imageWithShadow.getHeight(), Config.ARGB_8888);
+			Canvas cnv = new Canvas(shadowImage);
+			Paint paint = new Paint();
+			paint.setAntiAlias(true);
+			paint.setColor(category_theme);
+
+			cnv.drawRoundRect(new RectF(0, 0, shadowImage.getWidth(), shadowImage.getHeight()), Math.round(density * 2), Math.round(density * 2), paint);
+			offsetXY[0] = -Math.round(density * 3);
+			offsetXY[1] = offsetXY[0];
+			
+			c.drawBitmap(shadowImage, 0, 0, paint);
+		} else {
+			BlurMaskFilter blurFilter = new BlurMaskFilter(Math.round(density * 3), BlurMaskFilter.Blur.OUTER);
+			Paint shadowPaint = new Paint();
+			shadowPaint.setMaskFilter(blurFilter);
+			shadowImage = bitmap.extractAlpha(shadowPaint, offsetXY);
+			
+			Paint paint = new Paint();
+			ColorFilter filter = new LightingColorFilter(Color.BLACK, category_theme);
+			paint.setColorFilter(filter);
+			c.drawBitmap(shadowImage, 0, 0, paint);
+		}
 		c.drawBitmap(bitmap, -offsetXY[0], -offsetXY[1], null);
 		
 		return new BitmapDrawable(mContext.getResources(), imageWithShadow);
@@ -1140,5 +1155,71 @@ public class Helpers {
 			pref.setEnabled(false);
 			pref.setSummary(reasonText);
 		}
+	}
+	
+	public static int[] getDefColors(String mKey) {
+		int defR = 0;
+		int defG = 0;
+		int defB = 0;
+		int defA = 0;
+		
+		switch (mKey) {
+			case "pref_key_betterheadsup_theme_background":
+				defR = 75; defG = 75; defB = 75; defA = 255;
+				break;
+			case "pref_key_betterheadsup_theme_primary":
+				defR = 255; defG = 255; defB = 255; defA = 255;
+				break;
+			case "pref_key_betterheadsup_theme_secondary":
+				defR = 255; defG = 255; defB = 255; defA = 179;
+				break;
+			case "pref_key_betterheadsup_theme_dismiss":
+				defR = 64; defG = 64; defB = 64; defA = 255;
+				break;
+			case "pref_key_betterheadsup_theme_dividers":
+				defR = 255; defG = 255; defB = 255; defA = 51;
+				break;
+		}
+		
+		return new int[] {defA, defR, defG, defB};
+	}
+	
+	public static int[] getThemeColors(String mKey, int theme) {
+		switch (mKey) {
+			case "pref_key_betterheadsup_theme_background":
+				if (theme == 1) return new int[] { 75, 75, 75, 255 };
+				else if (theme == 2) return new int[] { 37, 37, 37, 255 };
+				else if (theme == 3) return new int[] { 250, 250, 250, 255 };
+				break;
+			case "pref_key_betterheadsup_theme_primary":
+				if (theme == 1) return new int[] { 255, 255, 255, 255 };
+				else if (theme == 2) return new int[] { 255, 255, 255, 208 };
+				else if (theme == 3) return new int[] { 0, 0, 0, 222 };
+				break;
+			case "pref_key_betterheadsup_theme_secondary":
+				if (theme == 1) return new int[] { 255, 255, 255, 179 };
+				else if (theme == 2) return new int[] { 255, 255, 255, 184 };
+				else if (theme == 3) return new int[] { 0, 0, 0, 138 };
+				break;
+			case "pref_key_betterheadsup_theme_dismiss":
+				if (theme == 1) return new int[] { 64, 64, 64, 255 };
+				else if (theme == 2) return new int[] { 64, 64, 64, 80 };
+				else if (theme == 3) return new int[] { 233, 233, 233, 255 };
+				break;
+			case "pref_key_betterheadsup_theme_dividers":
+				if (theme == 1) return new int[] { 255, 255, 255, 51 };
+				else if (theme == 2) return new int[] { 255, 255, 255, 19 };
+				else if (theme == 3) return new int[] { 0, 0, 0, 51 };
+				break;
+		}
+		return new int[] {0, 0, 0, 255};
+	}
+	
+	public static void setThemeForElement(SharedPreferences prefs, String mKey, int theme) {
+		int[] themeColors = Helpers.getThemeColors(mKey, theme);
+		prefs.edit().putInt(mKey + "_R", themeColors[0]).commit();
+		prefs.edit().putInt(mKey + "_G", themeColors[1]).commit();
+		prefs.edit().putInt(mKey + "_B", themeColors[2]).commit();
+		prefs.edit().putInt(mKey + "_A", themeColors[3]).commit();
 	}
 }

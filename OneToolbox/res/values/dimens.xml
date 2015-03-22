@@ -30,5 +30,6 @@
 	<dimen name="text_padding">24dp</dimen>
 	
 	<dimen name="quick_settings_cell_height">63.66dip</dimen>
+	<dimen name="qs_peek_height">4.0dip</dimen>
 	
 </resources>

@@ -752,7 +752,11 @@ public class GlobalActions {
 		int saturation = 0;
 		int hue = 0;
 		
-		if (fromModule) {
+		if (Helpers.isLP()) {
+			brightness = 100;
+			saturation = -100;
+			hue = 0;
+		} else if (fromModule) {
 			if (XMain.pref != null) {
 				brightness = XMain.pref.getInt("pref_key_colorfilter_brightValue", 100) - 100;
 				saturation = XMain.pref.getInt("pref_key_colorfilter_satValue", 100) - 100;
