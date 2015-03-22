@@ -409,7 +409,7 @@
 	<string name="various_betterheadsup_theme_primary_title">Primary text</string>
 	<string name="various_betterheadsup_theme_primary_summ">Notification and tab titles color</string>
 	<string name="various_betterheadsup_theme_secondary_title">Secondary text</string>
-	<string name="various_betterheadsup_theme_secondary_summ">Notifiction text color</string>
+	<string name="various_betterheadsup_theme_secondary_summ">Notification text color</string>
 	<string name="various_betterheadsup_theme_dismiss_title">Dismiss button</string>
 	<string name="various_betterheadsup_theme_dismiss_summ">Color for dismiss button background</string>
 	<string name="various_betterheadsup_theme_dividers_title">Other</string>
@@ -498,7 +498,7 @@
 	<string name="wakegestures_mod">Wake gestures</string>
 	<string name="wakegestures_haptic_title">Haptic feedback</string>
 	<string name="wakegestures_haptic_summ">Short vibration after successful gesture</string>
-	<string name="wakegestures_delay_title">Delay activtion (10 sec)</string>
+	<string name="wakegestures_delay_title">Delay activation (10 sec)</string>
 	<string name="wakegestures_delay_summ">Enable this option if you are having problems with wake gestures activation after reboot.</string>
 	<string name="wakegestures_dt2w_title">Double tap</string>
 	<string name="wakegestures_dt2w_summ">Action for double tap</string>
