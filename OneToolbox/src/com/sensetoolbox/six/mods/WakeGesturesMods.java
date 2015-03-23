@@ -628,17 +628,17 @@ public class WakeGesturesMods {
 				XposedBridge.log("[S6T] Wake gestures activate on boot...");
 				if (XMain.pref.getBoolean("wake_gestures_active", false)) {
 					final Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
+					int delay = 0;
+					if (XMain.pref.getBoolean("pref_key_wakegest_delay", false)) delay = 10000;
 					if (mHandler != null)
-					mHandler.post(new Runnable() {
+					mHandler.postDelayed(new Runnable() {
 						@Override
 						public void run() {
 							XposedBridge.log("[S6T] Wake gestures activated!");
 							Helpers.setWakeGestures(true);
-							int delay = 2000;
-							if (XMain.pref.getBoolean("pref_key_wakegest_delay", false)) delay = 10000;
-							if (!Helpers.getWakeGestures().equals("1")) mHandler.postDelayed(this, delay);
+							if (!Helpers.getWakeGestures().equals("1")) mHandler.postDelayed(this, 2000);
 						}
-					});
+					}, delay);
 				}
 			}
 		});
