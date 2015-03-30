@@ -35,6 +35,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	public static boolean pref_alarmnotify = false;
 	public static boolean pref_signalnotify = false;
 	public static boolean prefs_pwm = false;
+	public static boolean prefs_icons_lp = false;
 	public static Version senseVersion;
 	public static ObjectMapper mapper = new ObjectMapper();
 	public static List<PackageTheme> xcached_pkgthm = new ArrayList<PackageTheme>();
@@ -64,6 +65,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 					pref.getBoolean("pref_key_prism_homemenu", false) ||
 					pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 ||
 					pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1;
+		prefs_icons_lp = pref.getBoolean("pref_key_cb_signal", false) ||
+					pref.getBoolean("pref_key_cb_data", false) ||
+					pref.getBoolean("pref_key_cb_wifi", false) ||
+					Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")) == 2;
 		
 		if (prefs_pwm)
 			GlobalActions.setupPWM();
@@ -163,13 +168,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			ControlsMods.exec_SwapVolumeCCWLand();
 		
 		// Xposed broken resource hooks workaround
-		if (Helpers.isLP()) {
-			if (Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")) == 2)
-				StatusbarMods.execHook_BatteryIconLP();
-			
-			if (pref.getBoolean("pref_key_cb_signal", false))
-				StatusbarMods.execHook_SignalIconLP();
-		}
+		if (prefs_icons_lp && Helpers.isLP())
+			StatusbarMods.execHook_ReplaceIconsLP();
 		
 		//OtherMods.execHook_HapticNotify();
 	}
@@ -223,7 +223,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_cb_alarm", false))
 				StatusbarMods.execHook_AlarmIcon(resparam);
 			
-			if (Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")) != 1)
+			if (!Helpers.isLP() && Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")) != 1)
 				StatusbarMods.execHook_WiFiIcon(resparam, Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")));
 			
 			if (pref.getBoolean("pref_key_cb_profile", false))
@@ -238,7 +238,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_cb_bt", false))
 				StatusbarMods.execHook_BtIcon(resparam);
 			
-			if (pref.getBoolean("pref_key_cb_data", false))
+			if (!Helpers.isLP() && pref.getBoolean("pref_key_cb_data", false))
 				StatusbarMods.execHook_DataIcon(resparam);
 			
 			if (pref.getBoolean("pref_key_cb_screenshot", false))
@@ -615,6 +615,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_sysui_compacteqs", false))
 				SysUIMods.execHook_EQSTiles(lpparam);
+			
+			if (prefs_icons_lp && Helpers.isLP())
+				StatusbarMods.execHook_InitIconsLP(lpparam);
 			
 			StatusbarMods.execHook_HideIcons(lpparam);
 		}

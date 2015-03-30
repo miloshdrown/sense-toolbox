@@ -26,6 +26,11 @@
 		android:summary="@string/various_betterheadsup_sleepmode_summ"
 		android:title="@string/various_betterheadsup_sleepmode_title"
 		android:defaultValue="false" />
+	<com.htc.preference.HtcCheckBoxPreference
+		android:key="pref_key_betterheadsup_nodismiss"
+		android:summary="@string/various_betterheadsup_nodismiss_summ"
+		android:title="@string/various_betterheadsup_nodismiss_title"
+		android:defaultValue="false" />
 	<com.htc.preference.HtcSwitchPreference
 		android:key="pref_key_betterheadsup_bwlist"
 		android:summary="@string/various_popupnotify_bwlist_summ"

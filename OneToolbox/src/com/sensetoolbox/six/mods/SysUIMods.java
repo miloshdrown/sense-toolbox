@@ -91,6 +91,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.ScaleGestureDetector;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.View.OnClickListener;
 import android.view.View.OnLongClickListener;
 import android.view.View.OnTouchListener;
@@ -2881,6 +2882,7 @@ public class SysUIMods {
 		boolean sleepOnDismissLast = false;
 		int touchPositionY, touchCurrentPositionY;
 		boolean isVerticalDragging;
+		int mTouchSlop = 8 * 3;
 		
 		Typeface faceCondensed = Typeface.create("sans-serif-condensed", Typeface.NORMAL);
 		Typeface faceLight = Typeface.create("sans-serif-light", Typeface.NORMAL);
@@ -2955,6 +2957,8 @@ public class SysUIMods {
 			mHandler = handler;
 			mResources = mContext.getResources();
 			density = mResources.getDisplayMetrics().density;
+			ViewConfiguration configuration = ViewConfiguration.get(mContext);
+			mTouchSlop = configuration.getScaledTouchSlop();
 			
 			setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 			int notification_side_padding = mResources.getDimensionPixelOffset(mResources.getIdentifier("notification_side_padding", "dimen", "com.android.systemui"));
@@ -3303,6 +3307,17 @@ public class SysUIMods {
 							notifyRemote.setPadding(0, 0, 0, 0);
 							notifyRemote.setBackgroundColor(Color.TRANSPARENT);
 							notifyRemote.setTag(isExpanded);
+							notifyRemote.setOnLongClickListener(new OnLongClickListener() {
+								@Override
+								public boolean onLongClick(View v) {
+									if (isVerticalDragging || hPager.getTouchState() != 0) {
+										return false;
+									} else {
+										cancelNotification(sbn);
+										return true;
+									}
+								}
+							});
 						}
 						
 						View localContent = content.apply(mContext, notifyRemote);
@@ -3391,7 +3406,7 @@ public class SysUIMods {
 					if (!isUpdate) {
 						actions.addView(rimBtn);
 						actions.addView(rimBtnSleep);
-						item.addView(actions);
+						if (!XMain.pref.getBoolean("pref_key_betterheadsup_nodismiss", false)) item.addView(actions);
 						hPager.addView(item);
 					}
 					updateHeight(huView.isAttachedToWindow());
@@ -3417,7 +3432,7 @@ public class SysUIMods {
 				case MotionEvent.ACTION_MOVE:
 					if (!isHUVShown) return false;
 					touchCurrentPositionY = (int)event.getY();
-					if (touchPositionY - touchCurrentPositionY > densify(15)) isVerticalDragging = true;
+					if (touchPositionY - touchCurrentPositionY > mTouchSlop && hPager.getTouchState() == 0) isVerticalDragging = true;
 					if (isVerticalDragging) {
 						if (touchCurrentPositionY < touchPositionY) {
 							float swipePercent = ((float)touchPositionY - (float)touchCurrentPositionY) / (float)touchPositionY;
@@ -3580,27 +3595,28 @@ public class SysUIMods {
 		@Override
 		@SuppressWarnings("deprecation")
 		public void onNotificationPosted(final StatusBarNotification sbn) {
-			XMain.pref.reload();
-			if (!XMain.pref.getBoolean("better_headsup_active", false)) return;
+			if (sbn != null && sbn.isClearable() && !sbn.isOngoing()) {
+				XMain.pref.reload();
+				if (!XMain.pref.getBoolean("better_headsup_active", false)) return;
 
-			boolean lowPriority = XMain.pref.getBoolean("pref_key_betterheadsup_priority", false);
-			if (sbn != null && sbn.isClearable() && !sbn.isOngoing())
-			if (sbn.getNotification().priority >= 0 || (sbn.getNotification().priority < 0 && lowPriority))
-			if (huView != null && isAllowed(sbn.getPackageName())) {
-				KeyguardManager km = (KeyguardManager)huView.getContext().getSystemService(Context.KEYGUARD_SERVICE);
-				if (!km.isKeyguardLocked())
-				if (!isHUVShown) {
-					PowerManager pwm = (PowerManager)huView.getContext().getSystemService(Context.POWER_SERVICE);
-					if (pwm.isScreenOn() && XMain.pref.getBoolean("pref_key_betterheadsup_sleepmode", false)) return;
-					if (isInFullscreen && XMain.pref.getBoolean("pref_key_betterheadsup_fullscreen", false)) return;
-					XposedBridge.log("adding notification and showing huv");
-					huView.clear();
-					huView.addNotification(sbn);
-					huView.setScreen(0);
-					showHUV();
-				} else {
-					XposedBridge.log("adding notification");
-					huView.addNotification(sbn);
+				boolean lowPriority = XMain.pref.getBoolean("pref_key_betterheadsup_priority", false);
+				if (sbn.getNotification().priority >= 0 || (sbn.getNotification().priority < 0 && lowPriority))
+				if (huView != null && isAllowed(sbn.getPackageName())) {
+					KeyguardManager km = (KeyguardManager)huView.getContext().getSystemService(Context.KEYGUARD_SERVICE);
+					if (!km.isKeyguardLocked())
+					if (!isHUVShown) {
+						PowerManager pwm = (PowerManager)huView.getContext().getSystemService(Context.POWER_SERVICE);
+						if (pwm.isScreenOn() && XMain.pref.getBoolean("pref_key_betterheadsup_sleepmode", false)) return;
+						if (isInFullscreen && XMain.pref.getBoolean("pref_key_betterheadsup_fullscreen", false)) return;
+						XposedBridge.log("adding notification and showing huv");
+						huView.clear();
+						huView.addNotification(sbn);
+						huView.setScreen(0);
+						showHUV();
+					} else {
+						XposedBridge.log("adding notification");
+						huView.addNotification(sbn);
+					}
 				}
 			}
 		}

@@ -78,6 +78,10 @@ public final class HorizontalPager extends ViewGroup {
 		super(context);
 		init();
 	}
+	
+	public int getTouchState() {
+		return mTouchState;
+	}
 
 	/**
 	 * Constructor that is called when inflating a view from XML. This is called

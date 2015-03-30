@@ -66,10 +66,10 @@ public class ControlsMods {
 					int flags = keyEvent.getFlags();
 					
 					//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
-					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
+					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM && keycode == KeyEvent.KEYCODE_BACK) {
 						// Back long press
 						XMain.pref.reload();
-						if (Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1")) != 1 && keycode == KeyEvent.KEYCODE_BACK) {
+						if (Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1")) != 1) {
 							if (action == KeyEvent.ACTION_DOWN) isBackLongPressed = false;
 							if (action == KeyEvent.ACTION_UP && isBackLongPressed) param.setResult(0);
 						}
@@ -91,11 +91,11 @@ public class ControlsMods {
 					int flags = keyEvent.getFlags();
 
 					//XposedBridge.log("interceptKeyBeforeDispatching: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
-					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
+					if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM && keycode == KeyEvent.KEYCODE_BACK) {
 						// Back long press
 						XMain.pref.reload();
 						int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
-						if (pref_backlongpress != 1 && keycode == KeyEvent.KEYCODE_BACK) {
+						if (pref_backlongpress != 1) {
 							if (action == KeyEvent.ACTION_DOWN && repeats >= 5) {
 								if (!isBackLongPressed) {
 									Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
@@ -235,10 +235,10 @@ public class ControlsMods {
 				
 				// Ignore repeated KeyEvents simulated on Power Key Up
 				if ((flags & KeyEvent.FLAG_VIRTUAL_HARD_KEY) == KeyEvent.FLAG_VIRTUAL_HARD_KEY) return;
-				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
+				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM && keycode == KeyEvent.KEYCODE_POWER) {
 					// Power long press
 					final PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
-					if (keycode == KeyEvent.KEYCODE_POWER && !mPowerManager.isScreenOn()) {
+					if (!mPowerManager.isScreenOn()) {
 						//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
 						if (action == KeyEvent.ACTION_DOWN) {
 							isPowerPressed = true;
@@ -315,11 +315,11 @@ public class ControlsMods {
 				
 				// Ignore repeated KeyEvents simulated on volume Key Up
 				if ((flags & KeyEvent.FLAG_VIRTUAL_HARD_KEY) == KeyEvent.FLAG_VIRTUAL_HARD_KEY) return;
-				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM) {
+				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM && (keycode == KeyEvent.KEYCODE_VOLUME_UP || keycode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
 					// Volume long press
 					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 					final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-					if ((keycode == KeyEvent.KEYCODE_VOLUME_UP || keycode == KeyEvent.KEYCODE_VOLUME_DOWN) && !mPowerManager.isScreenOn()) {
+					if (!mPowerManager.isScreenOn()) {
 						//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
 						if (action == KeyEvent.ACTION_DOWN) {
 							isVolumePressed = true;

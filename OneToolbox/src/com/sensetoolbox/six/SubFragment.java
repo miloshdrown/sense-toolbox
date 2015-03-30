@@ -95,6 +95,7 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 					return true;
 				}
 			});
+			
 			if (Helpers.isLP()) {
 				findPreference("pref_key_sysui_recentappsclear").setDependency(null);
 				findPreference("pref_key_sysui_recentram").setDependency(null);
@@ -134,8 +135,9 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				Helpers.removePref(this, "pref_key_colorfilter", "pref_key_cb");
 				Helpers.removePref(this, "pref_key_cb_texts", "pref_key_cb");
 				Helpers.removePref(this, "pref_key_cb_mtp", "pref_key_cb");
-				Helpers.disablePref(this, "pref_key_cb_wifi_multi", Helpers.l10n(getActivity(), R.string.not_yet_working));
-				Helpers.disablePref(this, "pref_key_cb_data", Helpers.l10n(getActivity(), R.string.not_yet_working));
+				Helpers.removePref(this, "pref_key_cb_wifi_multi", "pref_key_cb");
+			} else {
+				Helpers.removePref(this, "pref_key_cb_wifi", "pref_key_cb");
 			}
 		} else if (xmlResId == R.xml.prefs_prism) {
 			this.rebootType = 1;

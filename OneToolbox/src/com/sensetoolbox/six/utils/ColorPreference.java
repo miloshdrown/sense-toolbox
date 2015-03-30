@@ -299,6 +299,11 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 	public void applyThemes() {
 		HtcPreferenceManager pm = getPreferenceManager();
 		
+		HtcPreference wifi = pm.findPreference("pref_key_cb_wifi");
+		Drawable wifi_icon = mContext.getResources().getDrawable(R.drawable.b_stat_sys_wifi_signal_4);
+		applyTheme(wifi_icon);
+		wifi.setIcon(Helpers.dropIconShadow(mContext, wifi_icon));
+		
 		HtcPreference signal = pm.findPreference("pref_key_cb_signal");
 		Drawable signal_icon = mContext.getResources().getDrawable(R.drawable.cb_signal_preview);
 		applyTheme(signal_icon);

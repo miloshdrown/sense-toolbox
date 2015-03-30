@@ -385,6 +385,8 @@
 	<string name="various_popupnotify_sleepmode_summ">Display new popups only if screen is off.</string>
 	<string name="various_betterheadsup_sleepmode_title">Unobtrusive mode</string>
 	<string name="various_betterheadsup_sleepmode_summ">Display new heads-ups only if screen is off.</string>
+	<string name="various_betterheadsup_nodismiss_title">Hide Dismiss button</string>
+	<string name="various_betterheadsup_nodismiss_summ">Do not display Dismiss button in heads-up window. You can still remove notifications by long pressing them.</string>
 	<string name="various_popupnotify_backclick_title">Close all popups</string>
 	<string name="various_popupnotify_backclick_summ">Tap anywhere outside notification to close all popups at once.</string>
 	<string name="various_popupnotify_clock_title">Header content</string>

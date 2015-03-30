@@ -625,7 +625,6 @@ public class WakeGesturesMods {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				XMain.pref.reload();
-				XposedBridge.log("[S6T] Wake gestures activate on boot...");
 				if (XMain.pref.getBoolean("wake_gestures_active", false)) {
 					final Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 					int delay = 0;
@@ -756,7 +755,6 @@ public class WakeGesturesMods {
 		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "systemBooted", new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				XposedBridge.log("[S6T] Touch lock activate on boot!");
 				final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 				if (mContext != null) {
 					long ident = Binder.clearCallingIdentity();
@@ -772,9 +770,9 @@ public class WakeGesturesMods {
 							@Override
 							@SuppressWarnings("deprecation")
 							public void run() {
-								XposedBridge.log("[S6T] Touch lock activated!");
 								PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 								if (pm.isScreenOn()) {
+									XposedBridge.log("[S6T] Touch lock activated!");
 									goToSleep(mContext);
 									mHandler.postDelayed(this, 1000);
 								}

@@ -31,6 +31,11 @@ Ideas
 Current changelog
 =================
 
+1.5.0 RC 2
+[Fixed][5.0] Wi-Fi and Mobile data status bar icons
+[Fixed][Better heads-up] Crash when trying to blacklist an app, other bugfixes and improvements
+[New][Better heads-up] Long press notification to dismiss it, option to hide Dismiss button
+
 1.5.0 RC 1
 [New][5.0] Option to delay wake gestures activation for 10 seconds on boot
 [New] Better heads-up: fully customizable color themes, swipe up to hide

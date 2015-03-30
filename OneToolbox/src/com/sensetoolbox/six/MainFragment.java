@@ -351,6 +351,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 			if (intent.getAction().equals("com.sensetoolbox.six.BLOCKHEADSUP")) {
 				String pkgName = intent.getStringExtra("pkgName");
 				if (pkgName == null) return;
+				if (prefs == null) prefs = context.getSharedPreferences("one_toolbox_prefs", 1);
 				HashSet<String> appsList = new HashSet<String>(prefs.getStringSet("pref_key_betterheadsup_bwlist_apps", new HashSet<String>()));
 				appsList.add(pkgName);
 				prefs.edit().putStringSet("pref_key_betterheadsup_bwlist_apps", new HashSet<String>(appsList)).commit();
