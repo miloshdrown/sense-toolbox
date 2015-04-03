@@ -132,6 +132,7 @@
 	<string name="sense_theme_package_has_profile">This app already has a profile</string>
 	<string name="sense_theme_hint">Enable theme colors override from the action bar above.\n\nSoft reboot will be required only once after that.</string>
 	<string name="sense_theme_infoIME">HTC keyboard inherits theme from its parent app, if that app is in the list (you can even add non-HTC apps). Theme above is used otherwise.</string>
+	<string name="sense_theme_infoSENSE">Selected theme will have no effect if you are using Sense Home 7 launcher. Use its Themes app instead.</string>
 	<string name="sense_theme_replace_all">Change theme for all apps in the list</string>
 	<string name="sense_theme_replace_all_title">Change all themes</string>
 	<string name="systemui_statusbar">Status Bar and Notification Drawer</string>
@@ -480,6 +481,8 @@
 	<string name="various_keyslight_auto_summ">Turn off buttons backlight in fullscreen apps.</string>
 	<string name="various_musicchannel_title">HTC Music Channel</string>
 	<string name="various_musicchannel_summ">Enable HTC music visualizations to be available for any audio player. Launch it from notification while music is playing. Notification visibility can be quickly toggled from Settings.</string>
+	<string name="various_noautocorrect_title">No HTC Sense Input autocorrect</string>
+	<string name="various_noautocorrect_summ">Disable autocorrect while keeping word prediction enabled.</string>
 	<string name="various_allrotations_title">All rotations</string>
 	<string name="various_allrotations_summ">Allow 180 degree orientation additionally to stock 90 and 270.</string>
 	<string name="various_nolowbattwarn_title">Disable low battery warning</string>

@@ -299,10 +299,21 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 	public void applyThemes() {
 		HtcPreferenceManager pm = getPreferenceManager();
 		
-		HtcPreference wifi = pm.findPreference("pref_key_cb_wifi");
-		Drawable wifi_icon = mContext.getResources().getDrawable(R.drawable.b_stat_sys_wifi_signal_4);
-		applyTheme(wifi_icon);
-		wifi.setIcon(Helpers.dropIconShadow(mContext, wifi_icon));
+		if (Helpers.isLP()) {
+			HtcPreference beats = pm.findPreference("pref_key_cb_beats");
+			Drawable beats_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_beats);
+			beats.setIcon(Helpers.dropIconShadow(mContext, beats_icon));
+			
+			HtcPreference wifi = pm.findPreference("pref_key_cb_wifi");
+			Drawable wifi_icon = mContext.getResources().getDrawable(R.drawable.b_stat_sys_wifi_signal_4);
+			applyTheme(wifi_icon);
+			wifi.setIcon(Helpers.dropIconShadow(mContext, wifi_icon));
+		} else {
+			HtcPreference mtp = pm.findPreference("pref_key_cb_mtp");
+			Drawable mtp_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_running_services);
+			applyTheme(mtp_icon);
+			mtp.setIcon(mtp_icon);
+		}
 		
 		HtcPreference signal = pm.findPreference("pref_key_cb_signal");
 		Drawable signal_icon = mContext.getResources().getDrawable(R.drawable.cb_signal_preview);
@@ -363,17 +374,6 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		Drawable nfc_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_nfc_vzw);
 		applyTheme(nfc_icon);
 		nfc.setIcon(Helpers.dropIconShadow(mContext, nfc_icon));
-		
-		if (!Helpers.isLP()) {
-			HtcPreference mtp = pm.findPreference("pref_key_cb_mtp");
-			Drawable mtp_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_running_services);
-			applyTheme(mtp_icon);
-			mtp.setIcon(mtp_icon);
-		} else {
-			HtcPreference beats = pm.findPreference("pref_key_cb_beats");
-			Drawable beats_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_beats);
-			beats.setIcon(Helpers.dropIconShadow(mContext, beats_icon));
-		}
 		
 		HtcPreference dnd = pm.findPreference("pref_key_cb_dnd");
 		Drawable dnd_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_dnd);

@@ -1771,4 +1771,12 @@ public class OtherMods {
 			}
 		});
 	}
+	
+	public static void execHook_KeyboardNoAutocorrect(LoadPackageParam lpparam) {
+		try {
+			XposedHelpers.findAndHookMethod("com.htc.sense.ime.XT9IME.XT9Engine", lpparam.classLoader, "getActiveWordIndex", XC_MethodReplacement.returnConstant(Integer.valueOf(0)));
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
 }

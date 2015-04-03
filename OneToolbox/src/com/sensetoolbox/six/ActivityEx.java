@@ -22,7 +22,9 @@ public class ActivityEx extends Activity {
 	ActionBarText actionBarTextMain;
 	ActionBarText actionBarTextSub;
 	ActionBarItemView actionBarBackBtn;
+	public boolean isActive = false;
 	
+	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
@@ -68,8 +70,20 @@ public class ActivityEx extends Activity {
 		setContentView(R.layout.activity_template);
 	}
 	
+	@Override
 	protected void onResume() {
 		super.onResume();
+		isActive = true;
+		if (launch) {
+			int newThemeId = Helpers.getCurrentTheme(this);
+			if (newThemeId != mThemeId) recreate();
+		}
+	}
+	
+	@Override
+	protected void onPause() {
+		super.onResume();
+		isActive = false;
 		if (launch) {
 			int newThemeId = Helpers.getCurrentTheme(this);
 			if (newThemeId != mThemeId) recreate();

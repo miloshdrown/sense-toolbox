@@ -660,6 +660,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pkg.equals("com.htc.sense.ime")) {
 			if (pref.getBoolean("pref_key_controls_keyboardhaptic_enable", false))
 				ControlsMods.execHook_KeyboardHapticFeedback(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_noautocorrect", false))
+				OtherMods.execHook_KeyboardNoAutocorrect(lpparam);
 		}
 		
 		if (pkg.equals("com.htc.sense.easyaccessservice")) {

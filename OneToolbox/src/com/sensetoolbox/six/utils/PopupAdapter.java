@@ -3,7 +3,6 @@ package com.sensetoolbox.six.utils;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.mods.XMain;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.XModuleResources;
 import android.provider.Settings;
@@ -38,7 +37,6 @@ public class PopupAdapter extends BaseAdapter {
 		return position;
 	}
 
-	@SuppressLint("NewApi")
 	public View getView(int position, View convertView, ViewGroup parent) {
 		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 		TextView itemTitle;

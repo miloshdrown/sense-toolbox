@@ -25,6 +25,7 @@ import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
@@ -250,6 +251,24 @@ public class PrismMods {
 				((FrameLayout)param.thisObject).getBackground().setAlpha(transparency);
 			}
 		});
+		
+		try {
+			findAndHookMethod("com.htc.launcher.pageview.AllAppsPagedViewHost", lpparam.classLoader, "init", Context.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					((FrameLayout)param.thisObject).getBackground().setAlpha(transparency);
+				}
+			});
+			
+			findAndHookMethod("com.htc.launcher.util.Utilities", lpparam.classLoader, "overlayAllAppsImageBackground", Context.class, Drawable.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					BitmapDrawable wall = (BitmapDrawable)param.getResult();
+					wall.setAlpha(transparency);
+					param.setResult(wall);
+				}
+			});
+		} catch (Throwable t) {}
 		/*
 		findAndHookMethod("com.htc.launcher.DragLayer", lpparam.classLoader, "setBackgroundAlpha", float.class, new XC_MethodHook() {
 			@Override
@@ -512,12 +531,21 @@ public class PrismMods {
 			}
 		});
 		
-		XposedBridge.hookAllConstructors(findClass("com.htc.launcher.AppWidgetResizeFrame", lpparam.classLoader), new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				XposedHelpers.setIntField(param.thisObject, "mResizeMode", 3);
-			}
-		});
+		try {
+			XposedBridge.hookAllConstructors(findClass("com.htc.launcher.WidgetResizeFrame", lpparam.classLoader), new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					XposedHelpers.setIntField(param.thisObject, "mResizeMode", 3);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.hookAllConstructors(findClass("com.htc.launcher.AppWidgetResizeFrame", lpparam.classLoader), new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					XposedHelpers.setIntField(param.thisObject, "mResizeMode", 3);
+				}
+			});
+		}
 		
 		XposedHelpers.findAndHookMethod("com.htc.launcher.LauncherAppWidgetInfo", lpparam.classLoader, "getSupportsSizes", new XC_MethodHook() {
 			@Override
@@ -1154,5 +1182,25 @@ public class PrismMods {
 				XposedHelpers.callMethod(param.thisObject, "setBackgroundVisible", false);
 			}
 		});
+		
+		try {
+			findAndHookMethod("com.htc.launcher.util.Utilities", lpparam.classLoader, "getActionBarTexture", Context.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Drawable ab = (Drawable)param.getResult();
+					if (ab != null) ab.setAlpha(0);
+					param.setResult(ab);
+				}
+			});
+			
+			findAndHookMethod("com.htc.launcher.util.Utilities", lpparam.classLoader, "getStatusBarTexture", Context.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Drawable sb = (Drawable)param.getResult();
+					if (sb != null) sb.setAlpha(0);
+					param.setResult(sb);
+				}
+			});
+		} catch (Throwable t) {}
 	}
 }

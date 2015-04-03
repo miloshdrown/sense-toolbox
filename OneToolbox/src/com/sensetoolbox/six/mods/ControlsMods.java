@@ -331,6 +331,12 @@ public class ControlsMods {
 									public void run() {
 										if (isVolumePressed) {
 											isVolumeLongPressed = true;
+											//AudioManager am = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+											//boolean isMusicActive = am.isMusicActive();
+											//boolean isMusicActiveRemotely  = (Boolean)XposedHelpers.callMethod(am, "isMusicActiveRemotely");
+											//long mLastPauseTime = Settings.System.getLong(mContext.getContentResolver(), "last_music_paused_time", System.currentTimeMillis());
+											//XposedBridge.log("since last pause: " + String.valueOf(System.currentTimeMillis() - mLastPauseTime));
+											//if (isMusicActive || isMusicActiveRemotely || (System.currentTimeMillis() - mLastPauseTime < 3 * 60 * 1000))
 											switch (keyEvent.getKeyCode()) {
 												case KeyEvent.KEYCODE_VOLUME_UP:
 													XMain.pref.reload();
@@ -403,8 +409,20 @@ public class ControlsMods {
 		Object[] argsAndHook = { KeyEvent.class, int.class, boolean.class, hook };
 		if (Helpers.isLP()) argsAndHook = new Object[] { KeyEvent.class, int.class, hook };
 		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", argsAndHook);
+		/*
+		findAndHookMethod("android.media.MediaPlayer", null, "pause", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				XposedBridge.log("MP paused!");
+				Context mContext = (Context)XposedHelpers.callMethod(param.thisObject, "getContext");
+				int mStreamType = (Integer)XposedHelpers.callMethod(param.thisObject, "getAudioStreamType");
+				if (mContext != null && (mStreamType == 3 || mStreamType == 0x80000000))
+				Settings.System.putLong(mContext.getContentResolver(), "last_music_paused_time", System.currentTimeMillis());
+			}
+		});
+		*/
 	}
-	
+
 	public static void exec_SwapVolumeCCWLand() {
 		try {
 			if (Helpers.isLP()) {

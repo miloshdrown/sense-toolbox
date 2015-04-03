@@ -78,6 +78,18 @@ public class AppDetailDialog extends HtcAlertDialog {
 			
 			globalLayout.addView(separator2);
 			globalLayout.addView(infoIME);
+		} else if (pkgName.equals("com.htc.launcher")) {
+			HtcListItemSeparator separator2 = new HtcListItemSeparator(globalLayout.getContext());
+			separator2.setLayoutParams(lllp1);
+			separator2.setText(0, Helpers.l10n(this.getContext(), R.string.sense_theme_sep2));
+			
+			TextView infoSENSE = new TextView(globalLayout.getContext());
+			infoSENSE.setLayoutParams(lllp1);
+			infoSENSE.setText(Helpers.l10n(this.getContext(), R.string.sense_theme_infoSENSE));
+			infoSENSE.setPadding(pad10dp + pad5dp, pad10dp, pad10dp + pad5dp, pad10dp);
+			
+			globalLayout.addView(separator2);
+			globalLayout.addView(infoSENSE);
 		}
 		
 		this.setButton(DialogInterface.BUTTON_POSITIVE, Helpers.l10n(this.getContext(), R.string.sense_themes_apply), new DialogInterface.OnClickListener() {

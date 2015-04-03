@@ -31,6 +31,38 @@ Ideas
 Current changelog
 =================
 
+1.5.0
+[New][5.0] Better heads-up notifications
+[New][5.0] Compact EQS mod
+[New][5.0] Material styled home and recents popup menus
+[New] Disable HTC Sense Input autocorrect while keeping word prediction enabled
+[New] Free internal memory instead of total RAM in notification header
+[Fixed] All Toolbox mods to be compatible with Android 5.0 and Sense Home 7.0 (some mods were removed or modified to match new environment)
+
+
+===========
+Translators
+===========
+
+Spanish: Seyaru
+http://forum.xda-developers.com/member.php?u=1917665
+Dutch: tomasz
+http://forum.xda-developers.com/member.php?u=273596
+Dutch: racka
+http://forum.xda-developers.com/member.php?u=293402
+Turkish: omercance
+http://forum.xda-developers.com/member.php?u=5390625
+Italian: teorouge
+http://forum.xda-developers.com/member.php?u=1113480
+Croatian: ico86
+http://forum.xda-developers.com/member.php?u=2027432
+French: Hsuan24
+http://forum.xda-developers.com/member.php?u=5379502
+
+==============
+Old Changelogs
+==============
+
 1.5.0 RC 2
 [Fixed][5.0] Wi-Fi and Mobile data status bar icons
 [Fixed][Better heads-up] Crash when trying to blacklist an app, other bugfixes and improvements
@@ -78,30 +110,6 @@ Current changelog
 1.5.0 beta 2
 [Fixed] Wake gestures crash on M8
 [Fixed] Crash after localization update
-
-
-===========
-Translators
-===========
-
-Spanish: Seyaru
-http://forum.xda-developers.com/member.php?u=1917665
-Dutch: tomasz
-http://forum.xda-developers.com/member.php?u=273596
-Dutch: racka
-http://forum.xda-developers.com/member.php?u=293402
-Turkish: omercance
-http://forum.xda-developers.com/member.php?u=5390625
-Italian: teorouge
-http://forum.xda-developers.com/member.php?u=1113480
-Croatian: ico86
-http://forum.xda-developers.com/member.php?u=2027432
-French: Hsuan24
-http://forum.xda-developers.com/member.php?u=5379502
-
-==============
-Old Changelogs
-==============
 
 1.4.7.1
 [Fixed] Next alarm and signal level labels in notification drawer's footer

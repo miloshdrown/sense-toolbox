@@ -1467,22 +1467,29 @@ public class SysUIMods {
 	private static void bindPopup(final Activity act, final ViewGroup theView) {
 		theView.setOnLongClickListener(new OnLongClickListener() {
 			@Override
+			@SuppressLint("InlinedApi")
 			public boolean onLongClick(View v) {
 				try {
-					popup = new HtcPopupWindow(act);
-					float density = theView.getContext().getResources().getDisplayMetrics().density;
-					int theWidth = Math.round(theView.getContext().getResources().getDisplayMetrics().widthPixels / 3 + 30 * density);
+					Context ctx;
+					if (Helpers.isLP())
+						ctx = new ContextThemeWrapper(act, android.R.style.Theme_Material_Dialog);
+					else
+						ctx = act;
+					
+					popup = new HtcPopupWindow(ctx);
+					float density = ctx.getResources().getDisplayMetrics().density;
+					int theWidth = Math.round(ctx.getResources().getDisplayMetrics().widthPixels / 3 + 30 * density);
 					popup.setWidth(theWidth);
-					popup.setHeight(-2);
+					popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
 					popup.setTouchable(true);
 					popup.setFocusable(true);
 					popup.setOutsideTouchable(true);
 					
-					ListView options = new ListView(act);
+					ListView options = new ListView(ctx);
 					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 					String[] recents_menu = Helpers.xl10n_array(modRes, R.array.recents_menu);
 					if (Helpers.isLP()) recents_menu = Arrays.copyOfRange(recents_menu, 0, recents_menu.length - 1);
-					ListAdapter listAdapter = new PopupAdapter(options.getContext(), recents_menu, true);
+					ListAdapter listAdapter = new PopupAdapter(ctx, recents_menu, true);
 					options.setAdapter(listAdapter);
 					options.setFocusableInTouchMode(true);
 					options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -1521,8 +1528,13 @@ public class SysUIMods {
 						}
 					});
 					popup.setContentView(options);
-					
-					if (!Helpers.isLP()) {
+					if (Helpers.isLP()) {
+						options.setPadding(0, 0, 0, 0);
+						options.setDivider(null);
+						options.setDividerHeight(0);
+						popup.setBackgroundDrawable(new ColorDrawable(0xff404040));
+						options.setDrawSelectorOnTop(true);
+					} else {
 						Object mRecentGridView = XposedHelpers.getObjectField(act, "mRecentGridView");
 						XposedHelpers.setBooleanField(mRecentGridView, "isDragging", true);
 					}
@@ -3019,7 +3031,7 @@ public class SysUIMods {
 		
 		@SuppressLint("NewApi")
 		public void removeNotification(final StatusBarNotification sbn) {
-			XposedBridge.log("removing notification! " + sbn.toString());
+			//XposedBridge.log("removing notification! " + sbn.toString());
 			mHandler.post(new Runnable() {
 				@Override
 				public void run() {
@@ -3608,13 +3620,13 @@ public class SysUIMods {
 						PowerManager pwm = (PowerManager)huView.getContext().getSystemService(Context.POWER_SERVICE);
 						if (pwm.isScreenOn() && XMain.pref.getBoolean("pref_key_betterheadsup_sleepmode", false)) return;
 						if (isInFullscreen && XMain.pref.getBoolean("pref_key_betterheadsup_fullscreen", false)) return;
-						XposedBridge.log("adding notification and showing huv");
+						//XposedBridge.log("adding notification and showing huv");
 						huView.clear();
 						huView.addNotification(sbn);
 						huView.setScreen(0);
 						showHUV();
 					} else {
-						XposedBridge.log("adding notification");
+						//XposedBridge.log("adding notification");
 						huView.addNotification(sbn);
 					}
 				}

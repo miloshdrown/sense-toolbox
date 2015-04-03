@@ -69,7 +69,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 						builder.setIcon(android.R.drawable.ic_dialog_alert);
 						builder.setNeutralButton(Helpers.l10n(act, R.string.okay), null);
 						HtcAlertDialog dlg = builder.create();
-						dlg.show();
+						if (!act.isFinishing() && ((ActivityEx)act).isActive) dlg.show();
 					}
 				}); else checkForXposed();
 			}
@@ -504,7 +504,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 					}
 				}
 				final Activity act = getActivity();
-				if (act != null)
+				if (act != null && !act.isFinishing() && ((ActivityEx)act).isActive)
 				if (!isXposedInstalled) {
 					act.runOnUiThread(new Runnable() {
 						public void run() {
