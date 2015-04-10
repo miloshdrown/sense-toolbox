@@ -2,43 +2,26 @@
 Ideas
 =====
 
-- beats toggle
-- "is it possible to get Always extended lockscreen widget like there is in Orio Rom?"
-- Other apps in HTC lock screen notifications
-- HDMI output with screen off (Don't have such an adapter...)
-- Exchange security mod
-- More options for brightnes slider
-- That mod: http://forum.xda-developers.com/showpost.php?p=45931184&postcount=46834
+- http://forum.xda-developers.com/showpost.php?p=45931184&postcount=46834
 - Only one toast for group notifications
 - Small font also on home screens
 - 2 finger swipes
 - switch to zoe on camera volume buttons
-- Camera: Press both buttons for an action
-- Remove Sense lockscreen weather widget.
 - Pageless BF scrolling, remove snap to block scrolling
 - https://www.youtube.com/watch?v=HfCa3JtGpxc
-- Change carrier label on lockscreen and notification drawer
-- Auto close EQS after setting changed
-- Owner/carrier info on Lockscreen
-
-- Button in notification drawer header
 - Mount ISO image
-- Hidden HTC diagnostics
-- More options for Sense themes override
-
 
 =================
 Current changelog
 =================
 
-1.5.0
-[New][5.0] Better heads-up notifications
-[New][5.0] Compact EQS mod
-[New][5.0] Material styled home and recents popup menus
-[New] Disable HTC Sense Input autocorrect while keeping word prediction enabled
-[New] Free internal memory instead of total RAM in notification header
-[Fixed] All Toolbox mods to be compatible with Android 5.0 and Sense Home 7.0 (some mods were removed or modified to match new environment)
-
+1.5.1
+[New] Open app drawer action for Sense gestures and navigation keys
+[New] Volume keys media actions will work only if music is currently active or was active in the last 10 minutes
+[New][5.0] Disable EQS on secure lock screen
+[Fixed][5.0] Transparent app drawer action bar
+[Fixed] Sent and delivered toasts can now be disabled using Messages settings
+[Changed] Fade in app icons in lists
 
 ===========
 Translators
@@ -62,6 +45,14 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.5.0
+[New][5.0] Better heads-up notifications
+[New][5.0] Compact EQS mod
+[New][5.0] Material styled home and recents popup menus
+[New] Disable HTC Sense Input autocorrect while keeping word prediction enabled
+[New] Free internal memory instead of total RAM in notification header
+[Fixed] All Toolbox mods to be compatible with Android 5.0 and Sense Home 7.0 (some mods were removed or modified to match new environment)
 
 1.5.0 RC 2
 [Fixed][5.0] Wi-Fi and Mobile data status bar icons

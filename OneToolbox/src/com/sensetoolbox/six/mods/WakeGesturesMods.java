@@ -21,8 +21,8 @@ import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.StructInputEvent;
+import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.execution.CommandCapture;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
@@ -396,7 +396,7 @@ public class WakeGesturesMods {
 		
 		String val;
 		if (isOn) val = "1"; else val = "0";
-		CommandCapture command = new CommandCapture(0, "echo " + val + " > /sys/android_touch/knockcode");
+		Command command = new Command(0, false, "echo " + val + " > /sys/android_touch/knockcode");
 		try {
 			RootTools.getShell(true).add(command);
 		} catch (Throwable t) {
@@ -414,11 +414,12 @@ public class WakeGesturesMods {
 	}
 	
 	public static void fillTouchscreenDimen(String device, final String event) {
-		CommandCapture command = new CommandCapture(0, "getevent -p /dev/input/event" + device + " 2>/dev/null | grep " + event + " | cut -d ',' -f 3 | cut -d ' ' -f 3") {
+		Command command = new Command(0, false, "getevent -p /dev/input/event" + device + " 2>/dev/null | grep " + event + " | cut -d ',' -f 3 | cut -d ' ' -f 3") {
 			int lineCount = 0;
 			
 			@Override
 			public void commandOutput(int id, String line) {
+				super.commandOutput(id, line);
 				if (lineCount > 0) return;
 				try {
 					if (event.equals("0035")) touchScreenWidth = Integer.parseInt(line.trim());

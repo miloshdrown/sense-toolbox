@@ -109,10 +109,12 @@ public class DynamicPreference extends HtcListPreference {
 			String cacheKey = ad.pkgName;
 			if (ad.actName != null) cacheKey += "|" + ad.actName;
 			Bitmap icon = Helpers.memoryCache.get(cacheKey);
-			if (icon == null)
+			if (icon == null) {
+				itemIcon.setAlpha(0);
 				(new BitmapCachedLoader(itemIcon, ad, mContext)).execute();
-			else
+			} else {
 				itemIcon.setTileImageBitmap(icon);
+			}
 			
 			itemIcon.setScaleX(0.68f);
 			itemIcon.setScaleY(0.68f);

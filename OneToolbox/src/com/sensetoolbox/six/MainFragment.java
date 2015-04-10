@@ -17,6 +17,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Configuration;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Handler;
 import android.os.PowerManager;
 import android.provider.Settings;
 import android.view.View;
@@ -24,6 +25,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow.OnDismissListener;
 
+import com.htc.app.HtcProgressDialog;
 import com.htc.preference.HtcCheckBoxPreference;
 import com.htc.preference.HtcPreference;
 import com.htc.preference.HtcPreference.OnPreferenceClickListener;
@@ -34,8 +36,8 @@ import com.htc.widget.quicktips.PopupBubbleWindow.OnUserDismissListener;
 import com.htc.widget.quicktips.QuickTipPopup;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.HtcPreferenceFragmentExt;
+import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.execution.CommandCapture;
 
 public class MainFragment extends HtcPreferenceFragmentExt {
 	
@@ -52,10 +54,24 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState, R.xml.preferences);
 		final Activity act = getActivity();
+		final HtcProgressDialog checkingDlg = new HtcProgressDialog(act);
+		final Handler handler = new Handler();
+		
+		addPreferencesFromResource(R.xml.preferences);
 		
 		// Preventing launch delay
 		new Thread(new Runnable() {
 			public void run() {
+				Runnable showCheck = new Runnable() {
+					@Override
+					public void run() {
+						checkingDlg.setMessage(Helpers.l10n(getActivity(), R.string.checking_root));
+						checkingDlg.setCancelable(false);
+						checkingDlg.show();
+					}
+				};
+				handler.postDelayed(showCheck, 1000);
+				
 				Helpers.hasRoot = RootTools.isRootAvailable();
 				Helpers.hasBusyBox = RootTools.isBusyboxAvailable();
 				
@@ -72,11 +88,18 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 						if (!act.isFinishing() && ((ActivityEx)act).isActive) dlg.show();
 					}
 				}); else checkForXposed();
+				
+				Runnable hideCheck = new Runnable() {
+					@Override
+					public void run() {
+						if (checkingDlg != null && checkingDlg.isShowing()) checkingDlg.dismiss();
+					}
+				};
+				handler.removeCallbacks(showCheck);
+				handler.post(hideCheck);
 			}
 		}).start();
-				
-		addPreferencesFromResource(R.xml.preferences);
-		
+
 		//Save current Sense version into the sharedprefs
 		String senseVer = Helpers.getSenseVersion();
 		prefs.edit().putString("pref_sense_version", senseVer).commit();
@@ -346,12 +369,12 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	@SuppressWarnings("deprecation")
 	public static class HelperReceiver extends BroadcastReceiver {
 		@Override
-		public void onReceive(final Context context, Intent intent) {
+		public void onReceive(final Context ctx, Intent intent) {
 			if (intent.getAction() != null)
 			if (intent.getAction().equals("com.sensetoolbox.six.BLOCKHEADSUP")) {
 				String pkgName = intent.getStringExtra("pkgName");
 				if (pkgName == null) return;
-				if (prefs == null) prefs = context.getSharedPreferences("one_toolbox_prefs", 1);
+				if (prefs == null) prefs = ctx.getSharedPreferences("one_toolbox_prefs", 1);
 				HashSet<String> appsList = new HashSet<String>(prefs.getStringSet("pref_key_betterheadsup_bwlist_apps", new HashSet<String>()));
 				appsList.add(pkgName);
 				prefs.edit().putStringSet("pref_key_betterheadsup_bwlist_apps", new HashSet<String>(appsList)).commit();
@@ -360,18 +383,19 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				Helpers.cLang = "";
 			} else {
 				if (Helpers.isNotM7()) return;
-				final int thepref = Integer.parseInt(context.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
+				final int thepref = Integer.parseInt(ctx.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
 				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-					if (thepref > 1) Helpers.setButtonBacklightTo(context, thepref, false);
-					CommandCapture command = new CommandCapture(0, "getenforce 2>/dev/null") {
+					if (thepref > 1) Helpers.setButtonBacklightTo(ctx, thepref, false);
+					Command command = new Command(0, false, "getenforce 2>/dev/null") {
 						int lineCnt = 0;
 						
 						@Override
 						public void commandOutput(int id, String line) {
+							super.commandOutput(id, line);
 							if (lineCnt > 0) return;
 							boolean isSELinuxEnforcing = line.trim().equalsIgnoreCase("enforcing");
-							Settings.System.putString(context.getContentResolver(), "isSELinuxEnforcing", String.valueOf(isSELinuxEnforcing));
-							if (isSELinuxEnforcing && thepref > 1) Helpers.setButtonBacklightTo(context, thepref, false);
+							Settings.System.putString(ctx.getContentResolver(), "isSELinuxEnforcing", String.valueOf(isSELinuxEnforcing));
+							if (isSELinuxEnforcing && thepref > 1) Helpers.setButtonBacklightTo(ctx, thepref, false);
 							lineCnt++;
 						}
 					};
@@ -382,16 +406,16 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 					}
 				} else if (intent.getAction().equals("com.sensetoolbox.six.UPDATEBACKLIGHT")) {
 					boolean forceDisableBacklight = false;
-					PowerManager pm = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+					PowerManager pm = (PowerManager)ctx.getSystemService(Context.POWER_SERVICE);
 					if (!pm.isScreenOn())
 						forceDisableBacklight = true;
 					else
 						forceDisableBacklight = intent.getBooleanExtra("forceDisableBacklight", false);
 					
 					if (forceDisableBacklight)
-						Helpers.setButtonBacklightTo(context, 5, false);
+						Helpers.setButtonBacklightTo(ctx, 5, false);
 					else
-						Helpers.setButtonBacklightTo(context, thepref, false);
+						Helpers.setButtonBacklightTo(ctx, thepref, false);
 				}
 			}
 		}
@@ -488,9 +512,10 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	private int lineCount = 0;
 	
 	public void checkForXposed() {
-		CommandCapture command = new CommandCapture(0, "/system/bin/app_process --xposedversion 2>/dev/null") {
+		Command command = new Command(0, false, "/system/bin/app_process --xposedversion 2>/dev/null") {
 			@Override
 			public void commandOutput(int id, String line) {
+				super.commandOutput(id, line);
 				if (lineCount > 0) return;
 				Pattern pattern = Pattern.compile("Xposed version: (\\d+)");
 				Matcher matcher = pattern.matcher(line);

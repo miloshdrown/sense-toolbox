@@ -66,6 +66,7 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.View.OnLongClickListener;
@@ -1775,6 +1776,96 @@ public class OtherMods {
 	public static void execHook_KeyboardNoAutocorrect(LoadPackageParam lpparam) {
 		try {
 			XposedHelpers.findAndHookMethod("com.htc.sense.ime.XT9IME.XT9Engine", lpparam.classLoader, "getActiveWordIndex", XC_MethodReplacement.returnConstant(Integer.valueOf(0)));
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_SecureEQS(final LoadPackageParam lpparam) {
+		XposedHelpers.findAndHookMethod("com.android.systemui.statusbar.policy.KeyguardMonitor", lpparam.classLoader, "notifyKeyguardState", boolean.class, boolean.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				boolean isShowing = (Boolean)param.args[0];
+				boolean isSecure = (Boolean)param.args[1];
+				XposedHelpers.setAdditionalStaticField(findClass("com.android.systemui.statusbar.policy.KeyguardMonitor", lpparam.classLoader), "isOnSecureLockscreen", isShowing && isSecure);
+			}
+		});
+		
+		XposedHelpers.findAndHookMethod("com.android.systemui.statusbar.phone.NotificationPanelView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				MotionEvent ev = (MotionEvent)param.args[0];
+				if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
+					Boolean isOnSecureLockscreen = (Boolean)XposedHelpers.getAdditionalStaticField(findClass("com.android.systemui.statusbar.policy.KeyguardMonitor", lpparam.classLoader), "isOnSecureLockscreen");
+					if (isOnSecureLockscreen != null && isOnSecureLockscreen.booleanValue()) param.setResult(true);
+				}
+			}
+		});
+	}
+	
+	public static void buttonBacklightService(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.server.wm.WindowManagerService", lpparam.classLoader, "statusBarVisibilityChanged", int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					Intent intent = new Intent("com.sensetoolbox.six.UPDATEBACKLIGHT");
+					
+					int sysUiVis = (Integer)param.args[0];
+					if (sysUiVis == 67108864 || sysUiVis == 0) return;
+					//XposedBridge.log("statusBarVisibilityChanged: " + String.valueOf(sysUiVis));
+					if (sysUiVis != 0 && ((sysUiVis & View.SYSTEM_UI_FLAG_FULLSCREEN) == View.SYSTEM_UI_FLAG_FULLSCREEN
+						|| (sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
+						|| (sysUiVis & View.SYSTEM_UI_FLAG_LOW_PROFILE) == View.SYSTEM_UI_FLAG_LOW_PROFILE)
+						|| ((sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE) == View.SYSTEM_UI_FLAG_IMMERSIVE && (sysUiVis & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == View.SYSTEM_UI_FLAG_HIDE_NAVIGATION))
+						intent.putExtra("forceDisableBacklight", true);
+					
+					mContext.sendBroadcast(intent);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void buttonBacklightSystem(){
+		try {
+			findAndHookMethod(Window.class, "setFlags", int.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Window wnd = (Window)param.thisObject;
+					if (wnd != null && wnd.getContext().getPackageName().equals("com.google.android.youtube")) {
+						WindowManager.LayoutParams mWindowAttributes = (WindowManager.LayoutParams)XposedHelpers.getObjectField(param.thisObject, "mWindowAttributes");
+						if (mWindowAttributes == null) return;
+						int i = (Integer)param.args[0];
+						int j = (Integer)param.args[1];
+						int newFlags = mWindowAttributes.flags & ~j | i & j;
+						
+						if (newFlags != 0 &&
+						(newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != WindowManager.LayoutParams.FLAG_FULLSCREEN &&
+						(newFlags & WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN) == WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN &&
+						(newFlags & WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR) == WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR) {
+								//XposedBridge.log("setFlags FLAG_LAYOUT_*: " + String.valueOf(newFlags));
+								Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+								mContext.sendBroadcast(new Intent("com.sensetoolbox.six.UPDATEBACKLIGHT"));
+						}
+					}
+				}
+			});
+			
+			findAndHookMethod(Activity.class, "onResume", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Activity act = (Activity)param.thisObject;
+					if (act == null) return;
+					int newFlags = act.getWindow().getAttributes().flags;
+					//XposedBridge.log("onResume flags: " + String.valueOf(newFlags));
+					Intent intent = new Intent("com.sensetoolbox.six.UPDATEBACKLIGHT");
+					if (newFlags != 0 && (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN && !act.getPackageName().equals("com.android.systemui"))
+					intent.putExtra("forceDisableBacklight", true);
+					act.sendBroadcast(intent);
+				}
+			});
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

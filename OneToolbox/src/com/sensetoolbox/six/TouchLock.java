@@ -13,8 +13,8 @@ import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcToggleButtonLight;
 import com.htc.widget.HtcToggleButtonLight.OnCheckedChangeListener;
 import com.sensetoolbox.six.utils.Helpers;
+import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.execution.CommandCapture;
 
 import android.app.Activity;
 import android.content.DialogInterface;
@@ -108,7 +108,7 @@ public class TouchLock extends Activity {
 				alert.setPositiveButton(Helpers.l10n(TouchLock.this, R.string.yes) + "!", new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						try {
-							CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
+							Command command = new Command(0, false, "setprop ctl.restart zygote");
 							RootTools.getShell(true).add(command);
 						} catch (Exception e) {
 							e.printStackTrace();

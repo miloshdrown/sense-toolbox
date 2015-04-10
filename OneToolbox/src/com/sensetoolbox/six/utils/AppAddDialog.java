@@ -121,10 +121,12 @@ public class AppAddDialog extends HtcAlertDialog {
 			itemTitle.setPrimaryText(getItem(position));
 			AppData ad = installedAppsListThemable.get(position);
 			Bitmap icon = Helpers.memoryCache.get(ad.pkgName);
-			if (icon == null)
+			if (icon == null) {
+				itemIcon.setAlpha(0);
 				(new BitmapCachedLoader(itemIcon, ad, stContext)).execute();
-			else
+			} else {
 				itemIcon.setColorIconImageBitmap(icon);
+			}
 			
 			if (SenseThemes.arrayHasPkg(ad.pkgName) == null)
 				row.setEnabled(true);

@@ -135,8 +135,8 @@ import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.HorizontalPager;
 import com.sensetoolbox.six.utils.HorizontalPager.OnScreenSwitchListener;
 import com.sensetoolbox.six.utils.PopupAdapter;
+import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.execution.CommandCapture;
 
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
@@ -1615,11 +1615,12 @@ public class SysUIMods {
 			curFreq = Math.round((Integer.valueOf(readStream.readLine()) / 1000));
 			readStream.close();
 			
-			CommandCapture command = new CommandCapture(0, "cat /sys/class/thermal/thermal_zone0/temp") {
+			Command command = new Command(0, false, "cat /sys/class/thermal/thermal_zone0/temp") {
 				int lineCount = 0;
 				
 				@Override
 				public void commandOutput(int id, String line) {
+					super.commandOutput(id, line);
 					if (lineCount > 0) return;
 					if (line != null) {
 						curTemp = line.trim();

@@ -9,10 +9,10 @@ import static de.robv.android.xposed.XposedHelpers.setStaticObjectField;
 import java.lang.reflect.Method;
 import java.util.List;
 
-import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
 import android.app.Instrumentation;
+import android.app.KeyguardManager;
 import android.bluetooth.BluetoothAdapter;
 import android.content.BroadcastReceiver;
 import android.content.ComponentName;
@@ -37,9 +37,6 @@ import android.os.Vibrator;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 import com.sensetoolbox.six.MainFragment;
@@ -73,14 +70,20 @@ public class GlobalActions {
 		public void onReceive(final Context context, Intent intent) {
 			try {
 				String action = intent.getAction();
-				if (mPSB != null)
-				if (action.equals("com.sensetoolbox.six.mods.action.ExpandNotifications"))
-					XposedHelpers.callMethod(mPSB, "animateExpandNotificationsPanel");
-				else if (action.equals("com.sensetoolbox.six.mods.action.ExpandSettings")) {
-					if (Helpers.isLP())
-						XposedHelpers.callMethod(mPSB, "animateExpandSettingsPanelInternal");
-					else
-						XposedHelpers.callMethod(mPSB, "animateExpandSettingsPanel");
+				if (mPSB != null) {
+					if (action.equals("com.sensetoolbox.six.mods.action.ExpandNotifications"))
+						XposedHelpers.callMethod(mPSB, "animateExpandNotificationsPanel");
+					else if (action.equals("com.sensetoolbox.six.mods.action.ExpandSettings")) {
+						if (Helpers.isLP()) {
+							if (XMain.pref.getBoolean("pref_key_other_secureeqs", false)) {
+								KeyguardManager kgMgr = (KeyguardManager)context.getSystemService(Context.KEYGUARD_SERVICE);
+								if (kgMgr.isKeyguardLocked() && kgMgr.isKeyguardSecure()) return;
+							}
+							XposedHelpers.callMethod(mPSB, "animateExpandSettingsPanelInternal");
+						} else {
+							XposedHelpers.callMethod(mPSB, "animateExpandSettingsPanel");
+						}
+					}
 				}
 			} catch (Throwable t) {
 				XposedBridge.log(t);
@@ -724,6 +727,16 @@ public class GlobalActions {
 		}
 	}
 	
+	public static boolean openAppDrawer(Context context) {
+		try {
+			context.startActivity(new Intent("com.htc.intent.action.HTC_Prism_AllApps").addCategory("android.intent.category.DEFAULT").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+			return true;
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+			return false;
+		}
+	}
+	
 	public static boolean toggleThis(Context context, int what) {
 		try {
 			String whatStr = "WiFi";
@@ -796,71 +809,5 @@ public class GlobalActions {
 		}
 	}
 	
-	public static void buttonBacklightService(LoadPackageParam lpparam) {
-		try {
-			findAndHookMethod("com.android.server.wm.WindowManagerService", lpparam.classLoader, "statusBarVisibilityChanged", int.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-					Intent intent = new Intent("com.sensetoolbox.six.UPDATEBACKLIGHT");
-					
-					int sysUiVis = (Integer)param.args[0];
-					if (sysUiVis == 67108864 || sysUiVis == 0) return;
-					//XposedBridge.log("statusBarVisibilityChanged: " + String.valueOf(sysUiVis));
-					if (sysUiVis != 0 && ((sysUiVis & View.SYSTEM_UI_FLAG_FULLSCREEN) == View.SYSTEM_UI_FLAG_FULLSCREEN
-						|| (sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY) == View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY
-						|| (sysUiVis & View.SYSTEM_UI_FLAG_LOW_PROFILE) == View.SYSTEM_UI_FLAG_LOW_PROFILE)
-						|| ((sysUiVis & View.SYSTEM_UI_FLAG_IMMERSIVE) == View.SYSTEM_UI_FLAG_IMMERSIVE && (sysUiVis & View.SYSTEM_UI_FLAG_HIDE_NAVIGATION) == View.SYSTEM_UI_FLAG_HIDE_NAVIGATION))
-						intent.putExtra("forceDisableBacklight", true);
-					
-					mContext.sendBroadcast(intent);
-				}
-			});
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-	}
 	
-	public static void buttonBacklightSystem(){
-		try {
-			findAndHookMethod(Window.class, "setFlags", int.class, int.class, new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					Window wnd = (Window)param.thisObject;
-					if (wnd != null && wnd.getContext().getPackageName().equals("com.google.android.youtube")) {
-						WindowManager.LayoutParams mWindowAttributes = (WindowManager.LayoutParams)XposedHelpers.getObjectField(param.thisObject, "mWindowAttributes");
-						if (mWindowAttributes == null) return;
-						int i = (Integer)param.args[0];
-						int j = (Integer)param.args[1];
-						int newFlags = mWindowAttributes.flags & ~j | i & j;
-						
-						if (newFlags != 0 &&
-						(newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) != WindowManager.LayoutParams.FLAG_FULLSCREEN &&
-						(newFlags & WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN) == WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN &&
-						(newFlags & WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR) == WindowManager.LayoutParams.FLAG_LAYOUT_INSET_DECOR) {
-								//XposedBridge.log("setFlags FLAG_LAYOUT_*: " + String.valueOf(newFlags));
-								Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-								mContext.sendBroadcast(new Intent("com.sensetoolbox.six.UPDATEBACKLIGHT"));
-						}
-					}
-				}
-			});
-			
-			findAndHookMethod(Activity.class, "onResume", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					Activity act = (Activity)param.thisObject;
-					if (act == null) return;
-					int newFlags = act.getWindow().getAttributes().flags;
-					//XposedBridge.log("onResume flags: " + String.valueOf(newFlags));
-					Intent intent = new Intent("com.sensetoolbox.six.UPDATEBACKLIGHT");
-					if (newFlags != 0 && (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN && !act.getPackageName().equals("com.android.systemui"))
-					intent.putExtra("forceDisableBacklight", true);
-					act.sendBroadcast(intent);
-				}
-			});
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-	}
 }

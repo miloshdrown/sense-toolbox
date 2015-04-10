@@ -67,6 +67,7 @@
 		<item >@string/array_global_actions_eqs</item>
 		<item >@string/array_global_actions_lock</item>
 		<item >@string/array_global_actions_sleep</item>
+		<item >@string/array_wakegestures_appdrawer</item>
 		<item >@string/array_global_actions_screenshot</item>
 		<item >@string/array_global_actions_launch</item>
 		<item >@string/array_global_actions_shortcut</item>
@@ -78,6 +79,7 @@
 		<item >3</item>
 		<item >4</item>
 		<item >5</item>
+		<item >14</item>
 		<item >6</item>
 		<item >7</item>
 		<item >12</item>

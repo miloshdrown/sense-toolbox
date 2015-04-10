@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.os.PowerManager;
 import android.os.PowerManager.WakeLock;
 import android.os.SystemClock;
+import android.provider.Settings;
 import android.telecom.TelecomManager;
 import android.view.HapticFeedbackConstants;
 import android.view.KeyEvent;
@@ -112,6 +113,7 @@ public class ControlsMods {
 										case 11: GlobalActions.openRecents(mContext); break;
 										case 12: XposedHelpers.callMethod(param.thisObject, "dismissKeyguardLw"); GlobalActions.launchShortcut(mContext, 3); break;
 										case 13: GlobalActions.switchToPrevApp(mContext); break;
+										case 14: GlobalActions.openAppDrawer(mContext); break;
 									}
 								}
 								isBackLongPressed = true;
@@ -173,6 +175,7 @@ public class ControlsMods {
 							XposedHelpers.callMethod(amn2, "dismissKeyguardOnNextActivity");
 						GlobalActions.launchShortcut(mContext, 4); break;
 				case 13: GlobalActions.switchToPrevApp(mContext); break;
+				case 14: GlobalActions.openAppDrawer(mContext); break;
 			}
 		}
 	}
@@ -331,12 +334,16 @@ public class ControlsMods {
 									public void run() {
 										if (isVolumePressed) {
 											isVolumeLongPressed = true;
-											//AudioManager am = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
-											//boolean isMusicActive = am.isMusicActive();
-											//boolean isMusicActiveRemotely  = (Boolean)XposedHelpers.callMethod(am, "isMusicActiveRemotely");
-											//long mLastPauseTime = Settings.System.getLong(mContext.getContentResolver(), "last_music_paused_time", System.currentTimeMillis());
-											//XposedBridge.log("since last pause: " + String.valueOf(System.currentTimeMillis() - mLastPauseTime));
-											//if (isMusicActive || isMusicActiveRemotely || (System.currentTimeMillis() - mLastPauseTime < 3 * 60 * 1000))
+											AudioManager am = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+											boolean isMusicActive = am.isMusicActive();
+											boolean isMusicActiveRemotely  = (Boolean)XposedHelpers.callMethod(am, "isMusicActiveRemotely");
+											boolean isAllowed = isMusicActive || isMusicActiveRemotely;
+											if (!isAllowed) {
+												long mCurrentTime = System.currentTimeMillis();
+												long mLastPauseTime = Settings.System.getLong(mContext.getContentResolver(), "last_music_paused_time", mCurrentTime);
+												if (mCurrentTime - mLastPauseTime < 10 * 60 * 1000) isAllowed = true;
+											}
+											if (isAllowed)
 											switch (keyEvent.getKeyCode()) {
 												case KeyEvent.KEYCODE_VOLUME_UP:
 													XMain.pref.reload();
@@ -409,18 +416,34 @@ public class ControlsMods {
 		Object[] argsAndHook = { KeyEvent.class, int.class, boolean.class, hook };
 		if (Helpers.isLP()) argsAndHook = new Object[] { KeyEvent.class, int.class, hook };
 		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", argsAndHook);
-		/*
+		
 		findAndHookMethod("android.media.MediaPlayer", null, "pause", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				XposedBridge.log("MP paused!");
-				Context mContext = (Context)XposedHelpers.callMethod(param.thisObject, "getContext");
-				int mStreamType = (Integer)XposedHelpers.callMethod(param.thisObject, "getAudioStreamType");
-				if (mContext != null && (mStreamType == 3 || mStreamType == 0x80000000))
-				Settings.System.putLong(mContext.getContentResolver(), "last_music_paused_time", System.currentTimeMillis());
+				Context mContext = (Context)XposedHelpers.findMethodExact(findClass("android.media.MediaPlayer", null), "getContext").invoke(param.thisObject);
+				int mStreamType = (Integer)XposedHelpers.findMethodExact(findClass("android.media.MediaPlayer", null), "getAudioStreamType").invoke(param.thisObject);
+				if (mContext != null && (mStreamType == AudioManager.STREAM_MUSIC || mStreamType == 0x80000000))
+				mContext.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.SaveLastMusicPausedTime"));
 			}
 		});
-		*/
+		
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				IntentFilter intentfilter = new IntentFilter();
+				intentfilter.addAction("com.sensetoolbox.six.mods.action.SaveLastMusicPausedTime");
+				mContext.registerReceiver(new BroadcastReceiver() {
+					public void onReceive(final Context context, Intent intent) {
+						try {
+							Settings.System.putLong(context.getContentResolver(), "last_music_paused_time", System.currentTimeMillis());
+						} catch (Throwable t) {
+							XposedBridge.log(t);
+						}
+					}
+				}, intentfilter);
+			}
+		});
 	}
 
 	public static void exec_SwapVolumeCCWLand() {
@@ -496,6 +519,7 @@ public class ControlsMods {
 							case 11: GlobalActions.openRecents(mContext); break;
 							case 12: GlobalActions.launchShortcut(mContext, 3); break; // No back key on lock screen
 							case 13: GlobalActions.switchToPrevApp(mContext); break;
+							case 14: GlobalActions.openAppDrawer(mContext); break;
 						}
 					}
 				}

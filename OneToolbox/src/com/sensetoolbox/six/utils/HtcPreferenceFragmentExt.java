@@ -27,8 +27,8 @@ import com.sensetoolbox.six.AboutScreen;
 import com.sensetoolbox.six.ActivityEx;
 import com.sensetoolbox.six.MainActivity;
 import com.sensetoolbox.six.R;
+import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.execution.CommandCapture;
 
 import android.app.Activity;
 import android.app.Notification;
@@ -114,7 +114,7 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 							getActivity().sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.RestartMessages"));
 							Toast.makeText(getActivity(), Helpers.l10n(act, R.string.restarted_messages), Toast.LENGTH_SHORT).show();
 						} else {
-							CommandCapture command = new CommandCapture(0, "setprop ctl.restart zygote");
+							Command command = new Command(0, false, "setprop ctl.restart zygote");
 							RootTools.getShell(true).add(command);
 						}
 					} catch (Exception e) {

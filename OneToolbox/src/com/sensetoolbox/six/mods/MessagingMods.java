@@ -13,6 +13,7 @@ import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodReplacement;
 import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
 public class MessagingMods{
@@ -36,14 +37,18 @@ public class MessagingMods{
 	}
 
 	private static void changeToastReport(LoadPackageParam lpparam, MethodHookParam param) {
-		String toast1 = ((Context) param.args[0]).getString((Integer) param.args[1]) + "\n";
-		String toast2 = ((Context) param.args[0]).getString((Integer) param.args[2]);
-		String uri;
-		if ((Boolean) param.args[5])
-			uri = "content://mms/" + Long.toString((Long) param.args[4]);
-		else
-			uri = "content://sms/" + Long.toString((Long) param.args[4]);
-		callStaticMethod(findClass("com.htc.sense.mms.transaction.MessagingNotification", lpparam.classLoader), "showToast", Uri.parse(uri), toast1 + toast2);
+		Object sm = XposedHelpers.callStaticMethod(findClass("com.htc.sense.mms.util.SettingsManager", lpparam.classLoader), "getInstance");
+		boolean isEnabled = (Boolean)XposedHelpers.callMethod(sm, "getBoolean", "pref_key_enable_received_notifications", true);
+		if (isEnabled) {
+			String toast1 = ((Context) param.args[0]).getString((Integer) param.args[1]) + "\n";
+			String toast2 = ((Context) param.args[0]).getString((Integer) param.args[2]);
+			String uri;
+			if ((Boolean) param.args[5])
+				uri = "content://mms/" + Long.toString((Long) param.args[4]);
+			else
+				uri = "content://sms/" + Long.toString((Long) param.args[4]);
+			callStaticMethod(findClass("com.htc.sense.mms.transaction.MessagingNotification", lpparam.classLoader), "showToast", Uri.parse(uri), toast1 + toast2);
+		}
 	}
 	
 	public static void execHook_ToastNotification(final LoadPackageParam lpparam) {
@@ -51,8 +56,12 @@ public class MessagingMods{
 		findAndHookMethod("com.htc.sense.mms.transaction.MessagingNotification", lpparam.classLoader, "showSendNotification", Context.class, Uri.class, long.class, new XC_MethodReplacement() {
 			@Override
 			protected Object replaceHookedMethod(MethodHookParam param)	throws Throwable {
-				String toastMsg = ((Context) param.args[0]).getString(((Context) param.args[0]).getResources().getIdentifier("message_sent_notification", "string", "com.htc.sense.mms"));
-				callStaticMethod(findClass("com.htc.sense.mms.transaction.MessagingNotification", lpparam.classLoader), "showToast", param.args[1], toastMsg);
+				Object sm = XposedHelpers.callStaticMethod(findClass("com.htc.sense.mms.util.SettingsManager", lpparam.classLoader), "getInstance");
+				boolean isEnabled = (Boolean)XposedHelpers.callMethod(sm, "getBoolean", "pref_key_enable_sent_notifications", false);
+				if (isEnabled) {
+					String toastMsg = ((Context) param.args[0]).getString(((Context) param.args[0]).getResources().getIdentifier("message_sent_notification", "string", "com.htc.sense.mms"));
+					callStaticMethod(findClass("com.htc.sense.mms.transaction.MessagingNotification", lpparam.classLoader), "showToast", param.args[1], toastMsg);
+				}
 				return null;
 			}
 		});

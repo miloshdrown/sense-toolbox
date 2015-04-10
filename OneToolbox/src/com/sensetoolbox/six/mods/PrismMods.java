@@ -610,6 +610,7 @@ public class PrismMods {
 					case 7: return GlobalActions.launchApp(helperContext, 1);
 					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swipedown_toggle", "0")));
 					case 12: return GlobalActions.launchShortcut(helperContext, 1);
+					case 14: return GlobalActions.openAppDrawer(helperContext);
 					default: return false;
 				}
 			}
@@ -625,6 +626,7 @@ public class PrismMods {
 					case 7: return GlobalActions.launchApp(helperContext, 2);
 					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swipeup_toggle", "0")));
 					case 12: return GlobalActions.launchShortcut(helperContext, 2);
+					case 14: return GlobalActions.openAppDrawer(helperContext);
 					default: return false;
 				}
 			}
@@ -699,6 +701,7 @@ public class PrismMods {
 					case 7: return GlobalActions.launchApp(helperContext, 5);
 					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swiperight_toggle", "0")));
 					case 12: return GlobalActions.launchShortcut(helperContext, 5);
+					case 14: return GlobalActions.openAppDrawer(helperContext);
 					default: return false;
 				}
 			}
@@ -713,6 +716,7 @@ public class PrismMods {
 					case 7: return GlobalActions.launchApp(helperContext, 6);
 					case 8: return GlobalActions.toggleThis(helperContext, Integer.parseInt(XMain.pref.getString("pref_key_prism_swipeleft_toggle", "0")));
 					case 12: return GlobalActions.launchShortcut(helperContext, 6);
+					case 14: return GlobalActions.openAppDrawer(helperContext);
 					default: return false;
 				}
 			}
@@ -1184,23 +1188,21 @@ public class PrismMods {
 		});
 		
 		try {
-			findAndHookMethod("com.htc.launcher.util.Utilities", lpparam.classLoader, "getActionBarTexture", Context.class, new XC_MethodHook() {
+			findAndHookMethod("com.htc.launcher.masthead.AllAppsActionBar", lpparam.classLoader, "dispatchConfigurationChanged", Configuration.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					Drawable ab = (Drawable)param.getResult();
-					if (ab != null) ab.setAlpha(0);
-					param.setResult(ab);
+					XposedHelpers.callMethod(param.thisObject, "setBackgroundVisible", false);
 				}
 			});
 			
-			findAndHookMethod("com.htc.launcher.util.Utilities", lpparam.classLoader, "getStatusBarTexture", Context.class, new XC_MethodHook() {
+			findAndHookMethod("com.htc.launcher.masthead.AllAppsActionBar", lpparam.classLoader, "initial", Context.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					Drawable sb = (Drawable)param.getResult();
-					if (sb != null) sb.setAlpha(0);
-					param.setResult(sb);
+					XposedHelpers.callMethod(param.thisObject, "setBackgroundVisible", false);
 				}
 			});
-		} catch (Throwable t) {}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 }

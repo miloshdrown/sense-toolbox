@@ -5,27 +5,28 @@ import java.io.FileOutputStream;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-import android.content.Context;
+import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.res.AssetManager;
 import android.util.Log;
 
 import com.htc.widget.HtcAlertDialog;
+import com.sensetoolbox.six.ActivityEx;
 import com.sensetoolbox.six.R;
+import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.execution.CommandCapture;
 
 public class ApkInstaller {
 	
-	public static void installSunbeam(final Context ctx) {
-		AssetManager assetManager = ctx.getAssets();
+	public static void installSunbeam(final Activity act) {
+		AssetManager assetManager = act.getAssets();
 
 		InputStream in = null;
 		OutputStream out = null;
 
 		try {
 			in = assetManager.open("SunBeam.apk");
-			File cache = ctx.getCacheDir();
+			File cache = act.getCacheDir();
 			out = new FileOutputStream(cache.getAbsolutePath() + "/SunBeam.apk");
 
 			byte[] buffer = new byte[1024];
@@ -49,7 +50,7 @@ public class ApkInstaller {
 				apkPath = "/system/app/SunBeam/SunBeam.apk";
 			}
 			
-			CommandCapture command = new CommandCapture(0,
+			Command command = new Command(0, false,
 					"mount -o rw,remount /system",
 					mkdirCmd,
 					"cp -f " + cache.getAbsolutePath() + "/SunBeam.apk " + apkPath,
@@ -58,10 +59,15 @@ public class ApkInstaller {
 					"mount -o ro,remount /system") {
 				@Override
 				public void commandCompleted(int id, int exitcode) {
-					if (exitcode == 0) new HtcAlertDialog.Builder(ctx).setMessage(Helpers.l10n(ctx, R.string.sunbeam_installed)).setTitle(Helpers.l10n(ctx, R.string.success)).setCancelable(true)
-					.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-						public void onClick(DialogInterface dialog, int whichButton) { }
-					}).show();
+					if (exitcode == 0 && act != null && !act.isFinishing() && ((ActivityEx)act).isActive)
+					act.runOnUiThread(new Runnable() {
+						public void run() {
+							new HtcAlertDialog.Builder(act).setMessage(Helpers.l10n(act, R.string.sunbeam_installed)).setTitle(Helpers.l10n(act, R.string.success)).setCancelable(true)
+							.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+								public void onClick(DialogInterface dialog, int whichButton) { }
+							}).show();
+						}
+					});
 				}
 			};
 			RootTools.getShell(true).add(command);

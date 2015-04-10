@@ -41,8 +41,8 @@ import com.sensetoolbox.six.MainFragment;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.SenseThemes.PackageTheme;
 import com.sensetoolbox.six.mods.XMain;
+import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.execution.CommandCapture;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
@@ -692,7 +692,7 @@ public class Helpers {
 	public static void setWakeGestures(boolean state) {
 		int stateInt = 0;
 		if (state) stateInt = 1;
-		CommandCapture command = new CommandCapture(0, "echo " + stateInt + " > /sys/android_touch/wake_gestures");
+		Command command = new Command(0, false,  "echo " + stateInt + " > /sys/android_touch/wake_gestures");
 		try {
 			RootTools.getShell(true).add(command);
 		} catch (Exception e) {
@@ -1035,11 +1035,12 @@ public class Helpers {
 		if (isWaitingForCmd) return false; else try {
 			isWaitingForCmd = true;
 			final String currents = "/sys/class/leds/button-backlight/currents";
-			CommandCapture command = new CommandCapture(0, "cat " + currents) {
+			Command command = new Command(0, false, "cat " + currents) {
 				int lineCnt = 0;
 				
 				@Override
 				public void commandOutput(int id, String line) {
+					super.commandOutput(id, line);
 					if (lineCnt > 0) return;
 					
 					String level = "20";
@@ -1062,17 +1063,18 @@ public class Helpers {
 						};
 						
 						try {
-							CommandCapture commandOwner = new CommandCapture(0, "stat -c '%u' " + currents) {
+							Command commandOwner = new Command(0, false, "stat -c '%u' " + currents) {
 								int lineCnt2 = 0;
 								
 								@Override
 								public void commandOutput(int id, String line) {
+									super.commandOutput(id, line);
 									if (lineCnt2 == 0) try {
 										boolean isSELinuxEnforcing = Boolean.parseBoolean(Settings.System.getString(ctx.getContentResolver(), "isSELinuxEnforcing"));
 										if (isSELinuxEnforcing || !line.trim().equals(String.valueOf(Process.myUid()))) {
-											RootTools.getShell(true).add(new CommandCapture(0, 3000, cmdsPerm));
+											RootTools.getShell(true).add(new Command(0, false, cmdsPerm));
 										} else {
-											RootTools.getShell(false).add(new CommandCapture(0, 3000, cmds));
+											RootTools.getShell(false).add(new Command(0, false, cmds));
 										}
 
 										// 500ms interval between backlight updates
@@ -1116,7 +1118,7 @@ public class Helpers {
 	 */
 	public static void initScriptHandler(Boolean newState) {
 		if (newState) {
-			CommandCapture command = new CommandCapture(0,
+			Command command = new Command(0, false,
 					"mount -o rw,remount /system",
 					"echo \"#!/system/bin/sh\n\necho 1 > /sys/keyboard/vol_wakeup\nchmod 444 /sys/keyboard/vol_wakeup\" > /etc/init.d/89s5tvol2wake",
 					"chmod 755 /system/etc/init.d/89s5tvol2wake",
@@ -1128,7 +1130,7 @@ public class Helpers {
 				e.printStackTrace();
 			}
 		} else {
-			CommandCapture command = new CommandCapture(0,
+			Command command = new Command(0, false,
 					"mount -o rw,remount /system",
 					"rm -f /etc/init.d/89s5tvol2wake",
 					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)\\)\\s\\+WAKE_DROPPED/\\1/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",

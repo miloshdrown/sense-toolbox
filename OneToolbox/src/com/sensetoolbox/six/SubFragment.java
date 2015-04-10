@@ -550,6 +550,8 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				Helpers.removePref(this, "pref_key_other_psscrolltotop", "pref_key_other");
 				Helpers.removePref(this, "pref_key_other_vzwnotif", "pref_various_mods_notifications");
 				Helpers.removePref(this, "pref_key_other_ledtimeout", "pref_various_mods_notifications");
+			} else {
+				Helpers.removePref(this, "pref_key_other_secureeqs", "pref_various_mods_lockscreen");
 			}
 			
 			HtcListPreference.OnPreferenceChangeListener applyButtonsLight = new HtcListPreference.OnPreferenceChangeListener() {

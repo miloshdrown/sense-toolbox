@@ -99,7 +99,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			OtherMods.execHook_EnhancedSecurity();
 		
 		if (pref.getBoolean("pref_key_other_keyslight_auto", false))
-			GlobalActions.buttonBacklightSystem();
+			OtherMods.buttonBacklightSystem();
 		
 		if (pref.getBoolean("themes_active", false))
 			SysUIMods.execHook_Sense6ColorControl();
@@ -336,7 +336,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				OtherMods.execHook_ScreenColorFade(lpparam);
 			
 			if (pref.getBoolean("pref_key_other_keyslight_auto", false))
-				GlobalActions.buttonBacklightService(lpparam);
+				OtherMods.buttonBacklightService(lpparam);
 			
 			if (pref.getBoolean("pref_key_other_imenotif", false))
 				OtherMods.execHook_InputMethodNotif(lpparam);
@@ -618,6 +618,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (prefs_icons_lp && Helpers.isLP())
 				StatusbarMods.execHook_InitIconsLP(lpparam);
+			
+			if (Helpers.isLP() && pref.getBoolean("pref_key_other_secureeqs", false))
+				OtherMods.execHook_SecureEQS(lpparam);
 			
 			StatusbarMods.execHook_HideIcons(lpparam);
 		}

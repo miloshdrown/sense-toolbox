@@ -18,8 +18,8 @@ import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListItemTileImage;
 import com.sensetoolbox.six.utils.Helpers;
+import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
-import com.stericson.RootTools.execution.CommandCapture;
 
 public class APMDialog extends HtcAlertDialog.Builder {
 	
@@ -117,7 +117,7 @@ public class APMDialog extends HtcAlertDialog.Builder {
 					break;
 				case 1:
 					try {
-						RootTools.getShell(true).add(new CommandCapture(0, "setprop ctl.restart zygote"));
+						RootTools.getShell(true).add(new Command(0, false, "setprop ctl.restart zygote"));
 					} catch (Exception e) {
 						e.printStackTrace();
 					}

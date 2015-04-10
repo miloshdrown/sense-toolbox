@@ -48,6 +48,7 @@
 	<string name="wrong_sense_version">Your ROM is not Sense 6 based and therefore is not compatible with Sense 6 Toolbox module</string>
 	<string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 6 Toolbox module there and reboot.</string>
 	<string name="module_not_active">Sense 6 Toolbox module is not active! Open Xposed Installer, activate module and reboot.</string>
+	<string name="checking_root">Checking device capabilities...</string>
 	<string name="no_currents">Buttons backlight control not found. Your device may be uncompatible with this mod.</string>
 	<string name="backup_restore_info">Your settings have been restored via Google Cloud Backup. If you had Vol2wake enabled, please re-enable it manually. Please do a full reboot after enabling the Toolbox Xposed module.</string>
 	<string name="download_current_ver">Installed update:</string>
@@ -437,6 +438,7 @@
 	<string name="various_scron_summ">Show the \'Keep screen on\' option in development settings.</string>
 	<string name="various_apps_title">Show additional app details</string>
 	<string name="various_apps_summ">Add new fields to Settings > Apps:\n- button to launch an app\n- apk filename and path\n- data path\n- process name\n- user id\n- target SDK version</string>
+	<string name="various_mods_lockscreen">HTC Lock Screen</string>
 	<string name="various_mods_toasts">Toasts</string>
 	<string name="various_mods_notifications">Notifications</string>
 	<string name="various_mods_calls">Calls</string>
@@ -462,7 +464,7 @@
 	<string name="various_vzwnotif_title">Hide Wi-Fi notifications</string>
 	<string name="various_vzwnotif_summ">Disable Wi-Fi notifications on Verizon devices.</string>
 	<string name="various_fastunlock_title">Fast unlock</string>
-	<string name="various_fastunlock_summ">Unlock device as soon as correct PIN or password are entered. HTC lockscreen only.</string>
+	<string name="various_fastunlock_summ">Unlock device as soon as correct PIN or password are entered.</string>
 	<string name="various_ytwatermark_title">YouTube channel watermark</string>
 	<string name="various_ytwatermark_summ">Hide channel logo overlay on videos in YouTube app.</string>
 	<string name="various_psscrolltotop_title">Play Store fast scroll to top</string>
@@ -475,6 +477,8 @@
 	<string name="various_iconlabletoasts_summ">Add application\'s icon and label to its toasts.</string>
 	<string name="various_securelock_title">Enhanced screen lock</string>
 	<string name="various_securelock_summ">Disable power menu and hardware reset notification while screen lock is active.</string>
+	<string name="various_secureeqs_title">Restrict EQS</string>
+	<string name="various_secureeqs_summ">Disable quick settings drawer on secure lock screen.</string>
 	<string name="various_keyslight_title">Hardware buttons backlight</string>
 	<string name="various_keyslight_summ">Change backlight brightness for buttons.</string>
 	<string name="various_keyslight_auto_title">Dynamic backlight</string>

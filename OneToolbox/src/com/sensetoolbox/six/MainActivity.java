@@ -10,6 +10,8 @@ public class MainActivity extends ActivityEx {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		if (!launch) return;
+		//RootTools.debugMode = true;
+		//RootShell.debugMode = true;
 		actionBarTextMain.setPrimaryText(Helpers.l10n(this, R.string.app_name));
 		getFragmentManager().beginTransaction().replace(R.id.fragment_container, new MainFragment()).commit();
 	}

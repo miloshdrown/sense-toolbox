@@ -69,10 +69,16 @@ public class BitmapCachedLoader extends AsyncTask<Void, Void, Bitmap> {
 			if (tag != null && theTag == (Integer)tag)
 			if (targetRef.get() instanceof HtcListItemColorIcon) {
 				HtcListItemColorIcon itemIcon = ((HtcListItemColorIcon)targetRef.get());
-				if (itemIcon != null) itemIcon.setColorIconImageBitmap(bmp);
+				if (itemIcon != null) {
+					itemIcon.setColorIconImageBitmap(bmp);
+					itemIcon.animate().alpha(1.0f).setDuration(200).start();
+				}
 			} else if (targetRef.get() instanceof HtcListItemTileImage) {
 				HtcListItemTileImage itemIcon = ((HtcListItemTileImage)targetRef.get());
-				if (itemIcon != null) itemIcon.setTileImageBitmap(bmp);
+				if (itemIcon != null) {
+					itemIcon.setTileImageBitmap(bmp);
+					itemIcon.animate().alpha(1.0f).setDuration(200).start();
+				}
 			}
 		}
 //		Log.e(null, String.valueOf(Helpers.memoryCache.size()) + " KB / " + String.valueOf(Runtime.getRuntime().totalMemory() / 1024) + " KB");
