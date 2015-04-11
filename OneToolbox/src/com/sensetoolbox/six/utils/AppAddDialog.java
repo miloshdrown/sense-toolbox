@@ -125,6 +125,7 @@ public class AppAddDialog extends HtcAlertDialog {
 				itemIcon.setAlpha(0);
 				(new BitmapCachedLoader(itemIcon, ad, stContext)).execute();
 			} else {
+				itemIcon.setAlpha(1);
 				itemIcon.setColorIconImageBitmap(icon);
 			}
 			

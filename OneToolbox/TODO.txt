@@ -21,7 +21,7 @@ Current changelog
 [New][5.0] Disable EQS on secure lock screen
 [Fixed][5.0] Transparent app drawer action bar
 [Fixed] Sent and delivered toasts can now be disabled using Messages settings
-[Changed] Fade in app icons in lists
+[Changed] Fade in animation for app icons in lists
 
 ===========
 Translators

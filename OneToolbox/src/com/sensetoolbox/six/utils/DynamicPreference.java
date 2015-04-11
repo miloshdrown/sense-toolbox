@@ -113,6 +113,7 @@ public class DynamicPreference extends HtcListPreference {
 				itemIcon.setAlpha(0);
 				(new BitmapCachedLoader(itemIcon, ad, mContext)).execute();
 			} else {
+				itemIcon.setAlpha(1);
 				itemIcon.setTileImageBitmap(icon);
 			}
 			
