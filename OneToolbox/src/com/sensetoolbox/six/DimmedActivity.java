@@ -53,6 +53,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextClock;
 import android.widget.TextView;
+import de.robv.android.xposed.XposedBridge;
 
 public class DimmedActivity extends Activity {
 	float density;
@@ -233,7 +234,13 @@ public class DimmedActivity extends Activity {
 	
 	String curTabTag = null;
 	void initNotifications(final Intent intent, final boolean selectLast) {
-		ArrayList<StatusBarNotification> sbnsNew = intent.getParcelableArrayListExtra("sbns");
+		ArrayList<StatusBarNotification> sbnsNew = null;
+		try {
+			sbnsNew = intent.getParcelableArrayListExtra("sbns");
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+		
 		if (sbnsNew != null)
 		if (sbnsNew.equals(sbns) && !intent.getBooleanExtra("doRotate", false))
 			return;

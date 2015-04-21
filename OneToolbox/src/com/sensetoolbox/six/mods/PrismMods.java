@@ -138,6 +138,7 @@ public class PrismMods {
 			}
 		});
 		
+		if (!Helpers.isSense7())
 		findAndHookMethod(WeatherClock4x1ViewClass, lpparam.classLoader, getGraphicTypeMethod, boolean.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {

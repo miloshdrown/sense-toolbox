@@ -58,6 +58,7 @@ import android.os.Message;
 import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
+import android.os.PowerManager.WakeLock;
 import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
 import android.telephony.TelephonyManager;
@@ -198,16 +199,25 @@ public class OtherMods {
 		int bottomMargin = 75;
 		if (orientation == 2) bottomMargin = 40;
 			
-		Window dlgWin = dlg.getWindow();
-		Window dlgExWin = dlgEx.getWindow();
-		WindowManager.LayoutParams dlgWinAttrs = dlgWin.getAttributes();
-		WindowManager.LayoutParams dlgExWinAttrs = dlgExWin.getAttributes();
-		dlgWinAttrs.gravity = Gravity.BOTTOM;
-		dlgExWinAttrs.gravity = Gravity.BOTTOM;
-		dlgWinAttrs.y = Math.round(bottomMargin * density);
-		dlgExWinAttrs.y = Math.round(bottomMargin * density);
-		dlgWin.setAttributes(dlgWinAttrs);
-		dlgExWin.setAttributes(dlgExWinAttrs);
+		if (dlg != null) {
+			Window dlgWin = dlg.getWindow();
+			if (dlgWin != null) {
+				WindowManager.LayoutParams dlgWinAttrs = dlgWin.getAttributes();
+				dlgWinAttrs.gravity = Gravity.BOTTOM;
+				dlgWinAttrs.y = Math.round(bottomMargin * density);
+				dlgWin.setAttributes(dlgWinAttrs);
+			}
+		}
+		
+		if (dlgEx != null) {
+			Window dlgExWin = dlgEx.getWindow();
+			if (dlgExWin != null) {
+				WindowManager.LayoutParams dlgExWinAttrs = dlgExWin.getAttributes();
+				dlgExWinAttrs.gravity = Gravity.BOTTOM;
+				dlgExWinAttrs.y = Math.round(bottomMargin * density);
+				dlgExWin.setAttributes(dlgExWinAttrs);
+			}
+		}
 	}
 		
 	public static void execHook_MoveVolume() {
@@ -225,7 +235,10 @@ public class OtherMods {
 	
 	public static void execHook_MoveVolume(LoadPackageParam lpparam) {
 		try {
-			XposedHelpers.findAndHookMethod("com.android.systemui.volume.VolumePanel", lpparam.classLoader, "updatePanelRotationPosition", new XC_MethodHook() {
+			String methodName = "updatePanelRotationPosition";
+			if (Helpers.isSense7()) methodName = "createVolumePanel";
+			//createVolumePanel
+			XposedHelpers.findAndHookMethod("com.android.systemui.volume.VolumePanel", lpparam.classLoader, methodName, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					hookVolumePlanel(param);
@@ -1045,8 +1058,9 @@ public class OtherMods {
 			
 			if (pm.isScreenOn() && sleepMode && !isFromPhone) return;
 			if (lightUpScreen) {
+				WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "S6T PN Light up");
+				wl.acquire(1000);
 				XposedHelpers.callMethod(pm, "wakeUp", SystemClock.uptimeMillis());
-				XposedHelpers.callMethod(pm, "userActivity", SystemClock.uptimeMillis(), false);
 			}
 			
 			KeyguardManager kgMgr = (KeyguardManager)mContext.getSystemService(Context.KEYGUARD_SERVICE);

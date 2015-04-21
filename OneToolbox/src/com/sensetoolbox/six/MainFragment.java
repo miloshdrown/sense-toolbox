@@ -23,6 +23,7 @@ import android.provider.Settings;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.PopupWindow.OnDismissListener;
 
 import com.htc.app.HtcProgressDialog;
@@ -59,15 +60,25 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		
 		addPreferencesFromResource(R.xml.preferences);
 		
+		if (Helpers.isSense7()) {
+			TextView experimental = (TextView)getActivity().findViewById(R.id.experimental);
+			experimental.setText(Helpers.l10n(getActivity(), R.string.preview_release));
+			experimental.setTextColor(getResources().getColor(android.R.color.background_light));
+			FrameLayout experimentalFrame = (FrameLayout)getActivity().findViewById(R.id.experimentalFrame);
+			experimentalFrame.setVisibility(View.VISIBLE);
+		}
+		
 		// Preventing launch delay
 		new Thread(new Runnable() {
 			public void run() {
 				Runnable showCheck = new Runnable() {
 					@Override
 					public void run() {
-						checkingDlg.setMessage(Helpers.l10n(getActivity(), R.string.checking_root));
-						checkingDlg.setCancelable(false);
-						checkingDlg.show();
+						if (act != null) {
+							checkingDlg.setMessage(Helpers.l10n(act, R.string.checking_root));
+							checkingDlg.setCancelable(false);
+							checkingDlg.show();
+						}
 					}
 				};
 				handler.postDelayed(showCheck, 1000);
@@ -100,10 +111,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 			}
 		}).start();
 
-		//Save current Sense version into the sharedprefs
-		String senseVer = Helpers.getSenseVersion();
-		prefs.edit().putString("pref_sense_version", senseVer).commit();
-		
 		if (prefs.getBoolean("pref_key_was_restore", false)) {
 			prefs.edit().putBoolean("pref_key_was_restore", false).commit();
 			showRestoreInfoDialog();
@@ -193,6 +200,13 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 			Helpers.removePref(this, "pref_key_popupnotify", "prefs_cat");
 		else
 			Helpers.removePref(this, "pref_key_betterheadsup", "prefs_cat");
+		
+		if (Helpers.isSense7()) {
+			Helpers.disablePref(this, "pref_key_sms", "* Sense 7");
+			prefs.edit().putBoolean("pref_key_other_nochargerwarn", false).commit();
+			prefs.edit().putBoolean("pref_key_other_noautocorrect", false).commit();
+			prefs.edit().putBoolean("pref_key_other_appdetails", false).commit();
+		}
 	}
 	
 	private void showQuickTip(int step) {
@@ -429,7 +443,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		view.post(new Runnable() {
 			@Override
 			public void run() {
-				if (MainFragment.this.isAdded()) showQuickTip(0);
+				if (MainFragment.this.isAdded() && !Helpers.isSense7()) showQuickTip(0);
 			}
 		});
 	}

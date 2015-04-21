@@ -45,7 +45,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	public void initZygote(StartupParam startupParam) throws Throwable {
 		MODULE_PATH = startupParam.modulePath;
 		pref = new XSharedPreferences("com.sensetoolbox.six", "one_toolbox_prefs");
-		senseVersion = new Version(pref.getString("pref_sense_version", "6.0"));
 		
 		GlobalActions.toolboxStuff();
 		
@@ -372,7 +371,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				OtherMods.execHook_ExtremePowerSaverRemap(lpparam);
 		}
 		
-		if (pkg.equals("com.htc.sense.mms")) {
+		if (pkg.equals("com.htc.sense.mms") && !Helpers.isSense7()) {
 			pref.reload();
 			if (pref.getBoolean("pref_key_other_smscreenon", false))
 				MessagingMods.execHook_smsscreenon(lpparam);
@@ -462,7 +461,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_keepscreenon", false))
 				SettingsMods.execHook_ScreenOn(lpparam);
 			
-			if (pref.getBoolean("pref_key_other_appdetails", false))
+			if (pref.getBoolean("pref_key_other_appdetails", false) && !Helpers.isSense7())
 				SettingsMods.execHook_Apps(lpparam);
 			
 			if (pref.getBoolean("pref_key_other_nochargerwarn", false))

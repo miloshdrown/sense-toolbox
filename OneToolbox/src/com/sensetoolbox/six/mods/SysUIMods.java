@@ -68,6 +68,7 @@ import android.os.PowerManager;
 import android.os.StatFs;
 import android.os.SystemClock;
 import android.os.Debug.MemoryInfo;
+import android.os.PowerManager.WakeLock;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.IBinder;
@@ -699,14 +700,18 @@ public class SysUIMods {
 		});
 		
 		if (Helpers.isLP()) {
-			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "onThemeChanged", int.class, new XC_MethodHook(){
+			XC_MethodHook hook = new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) {
 					ViewGroup mStatusBarWindow = (ViewGroup)getObjectField(param.thisObject, "mStatusBarWindow");
 					ViewGroup mHeader = (ViewGroup)getObjectField(param.thisObject, "mHeader");
 					addBrightnessSlider(mStatusBarWindow, mHeader);
 				}
-			});
+			};
+			
+			Object[] argsAndHook = { int.class, hook };
+			if (Helpers.isSense7()) argsAndHook = new Object[] { int.class, int.class, hook };
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "onThemeChanged", argsAndHook);
 			
 			findAndHookMethod("com.android.systemui.statusbar.phone.StatusBarHeaderView", lpparam.classLoader, "setupContainerParams", new XC_MethodHook(){
 				@Override
@@ -1335,6 +1340,7 @@ public class SysUIMods {
 						String packageName = (String)XposedHelpers.getObjectField(param.args[1], "packageName");
 						
 						if (procs == null) procs = amgr.getRunningAppProcesses();
+						if (procs != null)
 						for (ActivityManager.RunningAppProcessInfo process: procs)
 						if (Arrays.asList(process.pkgList).contains(packageName))
 						if (!pids_mem.contains(process.pid)) pids_mem.add(process.pid);
@@ -1350,6 +1356,7 @@ public class SysUIMods {
 						ResolveInfo resolveInfo = (ResolveInfo)XposedHelpers.getObjectField(taskdescription, "resolveInfo");
 						
 						if (pos == 0 || procs == null) procs = amgr.getRunningAppProcesses();
+						if (procs != null)
 						for (ActivityManager.RunningAppProcessInfo process: procs)
 						if (process.processName.equals(resolveInfo.activityInfo.processName))
 						if (!pids_mem.contains(process.pid)) pids_mem.add(process.pid);
@@ -1427,7 +1434,7 @@ public class SysUIMods {
 		ViewGroup theView = (ViewGroup)param.getResult();
 		if (theView != null && theView.findViewWithTag(ramTAG) != null)
 		((TextView)theView.findViewWithTag(ramTAG)).setText("...");
-		new getRAMView().execute(param);
+		new getRAMView().executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR, param);
 	}
 	
 	public static void execHook_RAMInRecents(final LoadPackageParam lpparam) {
@@ -2151,12 +2158,21 @@ public class SysUIMods {
 				}
 			});
 			// Proguarded piece of shit!
-			findAndHookMethod("com.htc.lib1.cc.c.b", lpparam.classLoader, "a", Context.class, int.class, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					replaceCustomIME(param, pkgName);
-				}
-			});
+			try {
+				findAndHookMethod("com.htc.lib1.cc.c.b", lpparam.classLoader, "a", Context.class, int.class, new XC_MethodHook() {
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+						replaceCustomIME(param, pkgName);
+					}
+				});
+			} catch (Throwable t) {
+				findAndHookMethod("com.htc.lib1.cc.c.c", lpparam.classLoader, "a", Context.class, int.class, new XC_MethodHook() {
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+						replaceCustomIME(param, pkgName);
+					}
+				});
+			}
 			
 			findAndHookMethod("com.htc.sense.ime.HTCIMEService", lpparam.classLoader, "onShowInputRequested", int.class, boolean.class, new XC_MethodHook() {
 				@Override
@@ -2388,6 +2404,12 @@ public class SysUIMods {
 					int resId = (Integer)XposedHelpers.callMethod(mGlowPadView, "getResourceIdForTarget", item);
 					
 					switch (resId) {
+						case R.drawable.ic_action_assist_generic:
+							XposedHelpers.setBooleanField(param.thisObject, "mWaitingForLaunch", true);
+							Object spv = XposedHelpers.getSurroundingThis(param.thisObject);
+							XposedHelpers.callMethod(spv, "startAssistActivity");
+							XposedHelpers.callMethod(spv, "vibrate");
+							break;
 						case R.drawable.ic_action_apm:
 							Class<?> ActivityManagerNative = Class.forName("android.app.ActivityManagerNative");
 							Object activityManagerNative = XposedHelpers.callStaticMethod(ActivityManagerNative, "getDefault");
@@ -2442,6 +2464,7 @@ public class SysUIMods {
 		try {
 			if (Helpers.isLP()) {
 				findAndHookMethod("com.android.systemui.power.PowerNotificationWarnings", lpparam.classLoader, "showWarningNotification", XC_MethodReplacement.DO_NOTHING);
+				if (!Helpers.isSense7())
 				findAndHookMethod("com.android.systemui.power.PowerNotificationWarnings", lpparam.classLoader, "startLowBatteryTone", XC_MethodReplacement.DO_NOTHING);
 			} else {
 				findAndHookMethod("com.android.systemui.power.PowerUI", lpparam.classLoader, "showLowBatteryWarningWithLevel", int.class, XC_MethodReplacement.DO_NOTHING);
@@ -3426,8 +3449,9 @@ public class SysUIMods {
 					
 					PowerManager pwm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 					if (XMain.pref.getBoolean("pref_key_betterheadsup_lightup", false)) {
+						WakeLock wl = pwm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "S6T BHU Light up");
+						wl.acquire(1000);
 						XposedHelpers.callMethod(pwm, "wakeUp", SystemClock.uptimeMillis());
-						XposedHelpers.callMethod(pwm, "userActivity", SystemClock.uptimeMillis(), false);
 					}
 				}
 			});

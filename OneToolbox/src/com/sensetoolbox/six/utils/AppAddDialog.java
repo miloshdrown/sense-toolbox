@@ -7,6 +7,7 @@ import java.util.List;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -123,7 +124,7 @@ public class AppAddDialog extends HtcAlertDialog {
 			Bitmap icon = Helpers.memoryCache.get(ad.pkgName);
 			if (icon == null) {
 				itemIcon.setAlpha(0);
-				(new BitmapCachedLoader(itemIcon, ad, stContext)).execute();
+				(new BitmapCachedLoader(itemIcon, ad, stContext)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			} else {
 				itemIcon.setAlpha(1);
 				itemIcon.setColorIconImageBitmap(icon);

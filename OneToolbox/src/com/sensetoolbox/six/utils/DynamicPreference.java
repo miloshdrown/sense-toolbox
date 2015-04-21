@@ -13,6 +13,7 @@ import com.htc.widget.HtcRadioButton;
 
 import android.content.Context;
 import android.graphics.Bitmap;
+import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -111,7 +112,7 @@ public class DynamicPreference extends HtcListPreference {
 			Bitmap icon = Helpers.memoryCache.get(cacheKey);
 			if (icon == null) {
 				itemIcon.setAlpha(0);
-				(new BitmapCachedLoader(itemIcon, ad, mContext)).execute();
+				(new BitmapCachedLoader(itemIcon, ad, mContext)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
 			} else {
 				itemIcon.setAlpha(1);
 				itemIcon.setTileImageBitmap(icon);

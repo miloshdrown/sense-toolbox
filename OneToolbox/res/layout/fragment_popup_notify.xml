@@ -9,19 +9,21 @@
 	<FrameLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:paddingTop="5dp"
+		android:paddingTop="2dp"
 		android:paddingBottom="5dp"
+		android:paddingLeft="10dp"
+		android:paddingRight="10dp"
 		android:layout_gravity="top"
 		android:id="@+id/experimentalFrame"
 		android:background="@color/warning_background"
 		android:visibility="gone" >
 		<TextView
-			android:layout_width="wrap_content"
-			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
 			android:id="@+id/experimental"
 			android:textSize="16sp"
 			android:fontFamily="sans-serif-condensed"
-			android:layout_gravity="center" />
+			android:gravity="center" />
 	</FrameLayout>
 	
 	<com.htc.widget.HtcListView

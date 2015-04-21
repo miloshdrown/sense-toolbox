@@ -46,9 +46,10 @@
 
 	<string name="warning">Warning!</string>
 	<string name="wrong_sense_version">Your ROM is not Sense 6 based and therefore is not compatible with Sense 6 Toolbox module</string>
+	<string name="preview_release">Sense 7 is not supported, expect bugs and broken mods. Feedback is not required.</string>
 	<string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 6 Toolbox module there and reboot.</string>
 	<string name="module_not_active">Sense 6 Toolbox module is not active! Open Xposed Installer, activate module and reboot.</string>
-	<string name="checking_root">Checking device capabilities...</string>
+	<string name="checking_root">Checking device capabilities…</string>
 	<string name="no_currents">Buttons backlight control not found. Your device may be uncompatible with this mod.</string>
 	<string name="backup_restore_info">Your settings have been restored via Google Cloud Backup. If you had Vol2wake enabled, please re-enable it manually. Please do a full reboot after enabling the Toolbox Xposed module.</string>
 	<string name="download_current_ver">Installed update:</string>
@@ -324,7 +325,7 @@
 	<string name="controls_homeassistaction_summ">Overrides assist action (which is Google Now by default).</string>
 	<string name="controls_recentslongpressaction_summ">Assigns action to recents button long press.</string>
 	<string name="controls_vol2wake_title">Volume2Wake</string>
-	<string name="controls_vol2wake_summ">Wake your phone with the volume keys. Needs Root! Make a FULL reboot to apply!</string>
+	<string name="controls_vol2wake_summ">Wake your phone with the volume keys. Requires rooted device with init.d support! Make a FULL reboot to apply!</string>
 	<string name="controls_powerflash_title">Quick flashlight</string>
 	<string name="controls_powerflash_summ">Long press power button while screen is off to turn flashlight on and off.</string>
 	<string name="controls_powerflash_delay_title">Longer quick flashlight delay</string>
@@ -613,8 +614,26 @@
 	<string name="about_thanks">Thanks</string>
 	<string name="about_thanks_data">mike1986 - for ARHD and platform to release this app\n\nAcogu - for Sense 6 Toolbox logo and main app icon\n\ndescenpet - for the initial idea of reorder edits\n\nvomer - for CleanBeam mods\n\nDunc001 and LeSScro - for their APM icons\n\nRU and AU teams (and some other early beta testers) - for testing and giving valuable feedback\n\nARHD users - for their patience</string>
 	<string name="about_l10n">Translation</string>
-	<string name="about_l10n_data_left">Croatian\nDutch\nItalian\nPolish\nSpanish\nFrench\nTurkish\nChinese\nTraditional Chinese\n\nRomanian\nPortuguese (Brazil)</string>
-	<string name="about_l10n_data_right">ico86\ntomasz, racka\nteorouge\ncvxcvx\nSeyaru\nHsuan24\ninci55\nSteve-luo\nshanlan2012\nishow0806\nTeHashX\nckleuser</string>
+	<string name="about_l10n_notfound">Language pack is not downloaded yet</string>
+	<string name="about_l10n_de">German</string>
+	<string name="about_l10n_es">Spanish</string>
+	<string name="about_l10n_fr">French</string>
+	<string name="about_l10n_hr">Croatian</string>
+	<string name="about_l10n_it">Italian</string>
+	<string name="about_l10n_nl">Dutch</string>
+	<string name="about_l10n_pl">Polish</string>
+	<string name="about_l10n_ro">Romanian</string>
+	<string name="about_l10n_ru">Russian</string>
+	<string name="about_l10n_tr">Turkish</string>
+	<string name="about_l10n_vi">Vietnamese</string>
+	<string name="about_l10n_zh">Chinese</string>
+	<string name="about_l10n_zh_TW">Traditional Chinese</string>
+	<string name="about_l10n_cs">Czech</string>
+	<string name="about_l10n_pt_BR">Portuguese (Brazil)</string>
+	<string name="about_l10n_hi">Hindi</string>
+	<string name="about_l10n_ja">Japanese</string>
+	<string name="about_l10n_bg">Bulgarian</string>
+
 
 	<string name="array_default">Default</string>
 	<string name="array_cam_actions_shutter">Shutter</string>

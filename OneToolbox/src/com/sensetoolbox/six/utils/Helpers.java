@@ -406,6 +406,10 @@ public class Helpers {
 		return String.valueOf(com.htc.util.phone.ProjectUtils.getSenseVersion());
 	}
 	
+	public static boolean isSense7() {
+		return new Version(getSenseVersion()).compareTo(new Version("7.0")) >= 0;
+	}
+	
 	public static TextView createCenteredText(Context ctx, int resId) {
 		TextView centerMsg = new TextView(ctx);
 		centerMsg.setText(l10n(ctx, resId));
@@ -1120,7 +1124,7 @@ public class Helpers {
 		if (newState) {
 			Command command = new Command(0, false,
 					"mount -o rw,remount /system",
-					"echo \"#!/system/bin/sh\n\necho 1 > /sys/keyboard/vol_wakeup\nchmod 444 /sys/keyboard/vol_wakeup\" > /etc/init.d/89s5tvol2wake",
+					"echo \"#!/system/bin/sh\n\necho 1 > /sys/keyboard/vol_wakeup\nchmod 444 /sys/keyboard/vol_wakeup\" > /system/etc/init.d/89s5tvol2wake",
 					"chmod 755 /system/etc/init.d/89s5tvol2wake",
 					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)$\\)/\\1   WAKE_DROPPED/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",
 					"mount -o ro,remount /system");
@@ -1132,7 +1136,7 @@ public class Helpers {
 		} else {
 			Command command = new Command(0, false,
 					"mount -o rw,remount /system",
-					"rm -f /etc/init.d/89s5tvol2wake",
+					"rm -f /system/etc/init.d/89s5tvol2wake",
 					"sed -i 's/\\(key [0-9]\\+\\s\\+VOLUME_\\(DOWN\\|UP\\)\\)\\s\\+WAKE_DROPPED/\\1/gw /system/usr/keylayout/Generic.kl' /system/usr/keylayout/Generic.kl",
 					"mount -o ro,remount /system");
 			try {

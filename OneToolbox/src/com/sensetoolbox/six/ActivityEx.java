@@ -28,8 +28,7 @@ public class ActivityEx extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		if (new Version(Helpers.getSenseVersion()).compareTo(new Version("6.0")) < 0 ||
-			new Version(Helpers.getSenseVersion()).compareTo(new Version("7.0")) >= 0) {
+		if (new Version(Helpers.getSenseVersion()).compareTo(new Version("6.0")) < 0) {
 			launch = false;
 			getActionBar().hide();
 			

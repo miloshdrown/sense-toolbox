@@ -108,9 +108,9 @@ public class WakeGesturesMods {
 	private static void doWakeUp(Object thisObject, long atTime) {
 		PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(thisObject, "mPowerManager");
 		if (mPowerManager != null) {
-			XposedHelpers.callMethod(mPowerManager, "wakeUp", atTime);
 			WakeLock wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "S6T WakeUpSleepy");
 			wl.acquire(1000);
+			XposedHelpers.callMethod(mPowerManager, "wakeUp", atTime);
 		}
 	}
 	

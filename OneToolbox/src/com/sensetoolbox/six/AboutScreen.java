@@ -6,10 +6,16 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.text.Html;
 import android.view.View;
 import android.view.View.OnLongClickListener;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.InputStreamReader;
 
 import com.htc.widget.ActionBarContainer;
 import com.htc.widget.ActionBarExt;
@@ -56,12 +62,25 @@ public class AboutScreen extends Activity {
 		iv04.setPaintFlags(iv02.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);
 		iv04.setTypeface(face);
 		iv04.setText(Helpers.l10n(this, R.string.about_l10n));
+		
 		TextView iv4 = (TextView)findViewById(R.id.TextView4);
 		iv4.setTypeface(face);
-		iv4.setText(Helpers.l10n(this, R.string.about_l10n_data_left));
-		TextView iv5 = (TextView)findViewById(R.id.TextView5);
-		iv5.setTypeface(face);
-		iv5.setText(Helpers.l10n(this, R.string.about_l10n_data_right));
+		
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(Helpers.dataPath + "translators")))) {
+			StringBuilder builder = new StringBuilder();
+			String tmp = "";
+
+			while ((tmp = br.readLine()) != null) builder.append(tmp);
+			String htmlTrans = builder.toString();
+			String[] langs = { "de", "es", "fr", "hr", "it", "nl", "pl", "ro", "ru", "tr", "vi", "zh", "zh_TW", "cs", "pt_BR", "hi", "ja", "bg" };
+			for (String lang: langs)
+			htmlTrans = htmlTrans.replace("[" + lang + "]", Helpers.l10n(this, getResources().getIdentifier("about_l10n_" + lang, "string", this.getPackageName())));
+			
+			iv4.setText(Html.fromHtml(htmlTrans));
+		} catch (Exception e) {
+			iv4.setText(Helpers.l10n(this, R.string.about_l10n_notfound) + "\n");
+			if (!(e instanceof FileNotFoundException)) e.printStackTrace();
+		}
 		
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
 		ActionBarContainer actionBarContainer = actionBarExt.getCustomContainer();

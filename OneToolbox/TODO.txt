@@ -15,13 +15,12 @@ Ideas
 Current changelog
 =================
 
-1.5.1
-[New] Open app drawer action for Sense gestures and navigation keys
-[New] Volume keys media actions will work only if music is currently active or was active in the last 10 minutes
-[New][5.0] Disable EQS on secure lock screen
-[Fixed][5.0] Transparent app drawer action bar
-[Fixed] Sent and delivered toasts can now be disabled using Messages settings
-[Changed] Fade in animation for app icons in lists
+1.5.2
+[Changed] Translators list in About screen is now generated automatically on every l10n update, those with more than 100 translations and suggestions will be mentioned there
+[Fixed] Wake up action for different mods (short wakelock added)
+[Fixed] Long animation start delay for RAM in recents
+[Fixed][4.4] Center shortcut (assist action) in Extended assist panel
+
 
 ===========
 Translators
@@ -45,6 +44,14 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.5.1
+[New] Open app drawer action for Sense gestures and navigation keys
+[New] Volume keys media actions will work only if music is currently active or was active in the last 10 minutes
+[New][5.0] Disable EQS on secure lock screen
+[Fixed][5.0] Transparent app drawer action bar
+[Fixed] Sent and delivered toasts can now be disabled using Messages settings
+[Changed] Fade in animation for app icons in lists
 
 1.5.0
 [New][5.0] Better heads-up notifications
