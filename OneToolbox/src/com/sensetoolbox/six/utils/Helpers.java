@@ -99,7 +99,7 @@ public class Helpers {
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
 	public static float strings_total = 693.0f;
-	public static String buildVersion = "245";
+	public static String buildVersion = "246";
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -405,7 +405,11 @@ public class Helpers {
 	}
 	
 	public static String getSenseVersion() {
-		return String.valueOf(com.htc.util.phone.ProjectUtils.getSenseVersion());
+		try {
+			return String.valueOf(com.htc.util.phone.ProjectUtils.getSenseVersion());
+		} catch (Throwable t) {
+			return "7.0";
+		}
 	}
 	
 	public static boolean isSense7() {

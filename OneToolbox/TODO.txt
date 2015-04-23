@@ -16,6 +16,7 @@ Current changelog
 =================
 
 1.5.2
+[New] Partial support for Sense 7 ROMs
 [New] Transparent Google Search widget with and without border
 [Changed] Translators list in About screen is now generated automatically on every l10n update, those with more than 100 translations and suggestions will be mentioned there
 [Fixed] Wake up action for different mods (short wakelock added)
