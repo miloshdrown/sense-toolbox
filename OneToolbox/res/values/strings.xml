@@ -260,7 +260,9 @@
 	<string name="sense_appdrawer">App drawer</string>
 	<string name="sense_gestures">Gestures</string>
 	<string name="sense_twidget_title">Clock and weather widget</string>
-	<string name="sense_twidget_summ">Makes the background panels of the 4x1 and 4x2 clock/weather widgets transparent.</string>
+	<string name="sense_twidget_summ">Make the background panels of 4x1 and 4x2 clock/weather widgets transparent.</string>
+	<string name="sense_gappwidget_title">Google App widget</string>
+	<string name="sense_gappwidget_summ">Select Google Search widget\'s background style.</string>
 	<string name="sense_tappdrawer_title">App drawer</string>
 	<string name="sense_tappdrawer_summ">Make the Sense launcher app drawer transparent.</string>
 	<string name="sense_tfolders_title">Folders</string>
@@ -720,5 +722,6 @@
 	<string name="array_popuphdr_empty">Empty</string>
 	<string name="array_popuphdr_datetime">Time and date</string>
 	<string name="array_popuphdr_dashclock">DashClock widget</string>
+	<string name="array_googleapp_withborder">Fully transparent with border</string>
 
 </resources>

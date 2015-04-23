@@ -1,211 +1,218 @@
 <com.htc.preference.HtcPreferenceScreen
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
-    android:key="pref_key_prism">
-        <com.htc.preference.HtcPreferenceCategory
-        	android:title="@string/sense_transparency"
-        	android:key="pref_key_sense_transparency">
-        <com.sensetoolbox.six.utils.SeekBarPreference 
-            android:key="pref_key_prism_invisiwidget"
-    		android:title="@string/sense_twidget_title"
-    		android:summary="@string/sense_twidget_summ"
-    		android:dialogMessage="@string/transparency_msg"
-    		android:defaultValue="100"
-    		android:text=" %"
-    		android:max="100"
-    		toolbox:enableKey="pref_key_prism_invisiwidget_enable"/>
-        <com.sensetoolbox.six.utils.SeekBarPreference 
-            android:key="pref_key_prism_invisidrawer"
-    		android:title="@string/sense_tappdrawer_title"
-    		android:summary="@string/sense_tappdrawer_summ"
-    		android:dialogMessage="@string/transparency_msg"
-    		android:defaultValue="100"
-    		android:text=" %"
-    		android:max="100"
-    		toolbox:enableKey="pref_key_prism_invisidrawer_enable"/>
-        <com.sensetoolbox.six.utils.SeekBarPreference 
-            android:key="pref_key_prism_invisifolders"
-    		android:title="@string/sense_tfolders_title"
-    		android:summary="@string/sense_tfolders_summ"
-    		android:dialogMessage="@string/transparency_msg"
-    		android:defaultValue="100"
-    		android:text=" %"
-    		android:max="100"
-    		toolbox:enableKey="pref_key_prism_invisifolders_enable"/>
-        <com.sensetoolbox.six.utils.SeekBarPreference 
-            android:key="pref_key_prism_invisifoldersbkg"
-    		android:title="@string/sense_tfoldersbkg_title"
-    		android:summary="@string/sense_tfoldersbkg_summ"
-    		android:dialogMessage="@string/transparency_msg"
-    		android:defaultValue="100"
-    		android:text=" %"
-    		android:max="100"
-    		toolbox:enableKey="pref_key_prism_invisifoldersbkg_enable"/>
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_invisiactionbar"
-            android:summary="@string/sense_abtransp_summ"
-            android:title="@string/sense_abtransp_title"
-            android:defaultValue="false" />
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
+	android:key="pref_key_prism">
+		<com.htc.preference.HtcPreferenceCategory
+			android:title="@string/sense_transparency"
+			android:key="pref_key_sense_transparency">
+		<com.sensetoolbox.six.utils.SeekBarPreference
+			android:key="pref_key_prism_invisiwidget"
+			android:title="@string/sense_twidget_title"
+			android:summary="@string/sense_twidget_summ"
+			android:dialogMessage="@string/transparency_msg"
+			android:defaultValue="100"
+			android:text=" %"
+			android:max="100"
+			toolbox:enableKey="pref_key_prism_invisiwidget_enable"/>
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_prism_gappwidget"
+			android:title="@string/sense_gappwidget_title"
+			android:summary="@string/sense_gappwidget_summ"
+			android:entries="@array/googleapp_widget"
+			android:entryValues="@array/googleapp_widget_val"
+			android:defaultValue="1"/>
+		<com.sensetoolbox.six.utils.SeekBarPreference
+			android:key="pref_key_prism_invisidrawer"
+			android:title="@string/sense_tappdrawer_title"
+			android:summary="@string/sense_tappdrawer_summ"
+			android:dialogMessage="@string/transparency_msg"
+			android:defaultValue="100"
+			android:text=" %"
+			android:max="100"
+			toolbox:enableKey="pref_key_prism_invisidrawer_enable"/>
+		<com.sensetoolbox.six.utils.SeekBarPreference
+			android:key="pref_key_prism_invisifolders"
+			android:title="@string/sense_tfolders_title"
+			android:summary="@string/sense_tfolders_summ"
+			android:dialogMessage="@string/transparency_msg"
+			android:defaultValue="100"
+			android:text=" %"
+			android:max="100"
+			toolbox:enableKey="pref_key_prism_invisifolders_enable"/>
+		<com.sensetoolbox.six.utils.SeekBarPreference
+			android:key="pref_key_prism_invisifoldersbkg"
+			android:title="@string/sense_tfoldersbkg_title"
+			android:summary="@string/sense_tfoldersbkg_summ"
+			android:dialogMessage="@string/transparency_msg"
+			android:defaultValue="100"
+			android:text=" %"
+			android:max="100"
+			toolbox:enableKey="pref_key_prism_invisifoldersbkg_enable"/>
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_prism_invisiactionbar"
+			android:summary="@string/sense_abtransp_summ"
+			android:title="@string/sense_abtransp_title"
+			android:defaultValue="false" />
 		</com.htc.preference.HtcPreferenceCategory>
 		
-        <com.htc.preference.HtcPreferenceCategory
-        	android:title="@string/sense_homescreen"
-        	android:key="pref_key_sense_homescreen">
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_folder20"
-            android:summary="@string/sense_infini_summ"
-            android:title="@string/sense_infini_title"
-            android:defaultValue="false" />
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_homemenu"
-            android:summary="@string/sense_homemenu_summ"
-            android:title="@string/sense_homemenu_title"
-            android:defaultValue="false" />
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_sevenscreens"
-            android:summary="@string/sense_sevenscreens_summ"
-            android:title="@string/sense_sevenscreens_title"
-            android:defaultValue="false" />
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_4x5homescreen"
-            android:summary="@string/sense_4x5homescreen_summ"
-            android:title="@string/sense_4x5homescreen_title"
-            android:defaultValue="false"
-            android:disableDependentsState="true" />
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_gapfix"
-            android:summary="@string/sense_gapfix_summ"
-            android:title="@string/sense_gapfix_title"
-            android:defaultValue="false"
-            android:dependency="pref_key_prism_4x5homescreen" />
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_invisilabels"
-            android:summary="@string/sense_invisilabels_summ"
-            android:title="@string/sense_invisilabels_title"
-            android:defaultValue="false" />
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_blinkfeednodock"
-            android:summary="@string/sense_blinkfeednodock_summ"
-            android:title="@string/sense_blinkfeednodock_title"
-            android:defaultValue="false" />
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_blinkfeedimmersive"
-            android:summary="@string/sense_blinkfeedimmersive_summ"
-            android:title="@string/sense_blinkfeedimmersive_title"
-            android:defaultValue="false" />
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_blinkfeedicon"
-            android:summary="@string/sense_blinkfeedicon_summ"
-            android:title="@string/sense_blinkfeedicon_title"
-            android:defaultValue="false" />
-        </com.htc.preference.HtcPreferenceCategory>
-        
-        <com.htc.preference.HtcPreferenceCategory
-        	android:title="@string/sense_appdrawer">        
-        <com.htc.preference.HtcCheckBoxPreference
-            android:key="pref_key_prism_gridtinyfont"
-            android:summary="@string/sense_gridtinyfont_summ"
-            android:title="@string/sense_gridtinyfont_title"
-            android:defaultValue="true" />
-        </com.htc.preference.HtcPreferenceCategory>
+		<com.htc.preference.HtcPreferenceCategory
+			android:title="@string/sense_homescreen"
+			android:key="pref_key_sense_homescreen">
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_prism_folder20"
+			android:summary="@string/sense_infini_summ"
+			android:title="@string/sense_infini_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_prism_homemenu"
+			android:summary="@string/sense_homemenu_summ"
+			android:title="@string/sense_homemenu_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_prism_sevenscreens"
+			android:summary="@string/sense_sevenscreens_summ"
+			android:title="@string/sense_sevenscreens_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_prism_4x5homescreen"
+			android:summary="@string/sense_4x5homescreen_summ"
+			android:title="@string/sense_4x5homescreen_title"
+			android:defaultValue="false"
+			android:disableDependentsState="true" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_prism_gapfix"
+			android:summary="@string/sense_gapfix_summ"
+			android:title="@string/sense_gapfix_title"
+			android:defaultValue="false"
+			android:dependency="pref_key_prism_4x5homescreen" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_prism_invisilabels"
+			android:summary="@string/sense_invisilabels_summ"
+			android:title="@string/sense_invisilabels_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_prism_blinkfeednodock"
+			android:summary="@string/sense_blinkfeednodock_summ"
+			android:title="@string/sense_blinkfeednodock_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_prism_blinkfeedimmersive"
+			android:summary="@string/sense_blinkfeedimmersive_summ"
+			android:title="@string/sense_blinkfeedimmersive_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_prism_blinkfeedicon"
+			android:summary="@string/sense_blinkfeedicon_summ"
+			android:title="@string/sense_blinkfeedicon_title"
+			android:defaultValue="false" />
+		</com.htc.preference.HtcPreferenceCategory>
+		
+		<com.htc.preference.HtcPreferenceCategory
+			android:title="@string/sense_appdrawer">
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_prism_gridtinyfont"
+			android:summary="@string/sense_gridtinyfont_summ"
+			android:title="@string/sense_gridtinyfont_title"
+			android:defaultValue="true" />
+		</com.htc.preference.HtcPreferenceCategory>
 
-        <com.htc.preference.HtcPreferenceCategory
-        	android:title="@string/sense_gestures"
-        	android:key="pref_key_sense_gestures">
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_prism_swipedownaction"
-            android:summary="@string/sense_swipedownaction_summ"
-            android:title="@string/sense_swipedownaction_title"
-            android:entries="@array/global_actions"
-            android:entryValues="@array/global_actions_val"
-            android:defaultValue="1" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_prism_swipedown_app"
-			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_launch"
-            android:icon="@drawable/right_arrow" />
-        <com.sensetoolbox.six.utils.HtcListPreferencePlus
-            android:key="pref_key_prism_swipedown_toggle"
-			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_toggle"
-            android:entries="@array/global_toggles"
-            android:entryValues="@array/global_toggles_val"
-            android:icon="@drawable/right_arrow" />
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_prism_swipeupaction"
-            android:summary="@string/sense_swipeupaction_summ"
-            android:title="@string/sense_swipeupaction_title"
-            android:entries="@array/global_actions"
-            android:entryValues="@array/global_actions_val"
-            android:defaultValue="1" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_prism_swipeup_app"
-			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_launch"
-            android:icon="@drawable/right_arrow" />
-        <com.sensetoolbox.six.utils.HtcListPreferencePlus
-            android:key="pref_key_prism_swipeup_toggle"
-			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_toggle"
-            android:entries="@array/global_toggles"
-            android:entryValues="@array/global_toggles_val"
-            android:icon="@drawable/right_arrow" />
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_prism_swiperightaction"
-            android:summary="@string/sense_swiperightaction_summ"
-            android:title="@string/sense_swiperightaction_title"
-            android:entries="@array/global_actions"
-            android:entryValues="@array/global_actions_val"
-            android:defaultValue="1" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_prism_swiperight_app"
-			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_launch"
-            android:icon="@drawable/right_arrow" />
-        <com.sensetoolbox.six.utils.HtcListPreferencePlus
-            android:key="pref_key_prism_swiperight_toggle"
-			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_toggle"
-            android:entries="@array/global_toggles"
-            android:entryValues="@array/global_toggles_val"
-            android:icon="@drawable/right_arrow" />
-        <com.htc.preference.HtcListPreference
-            android:key="pref_key_prism_swipeleftaction"
-            android:summary="@string/sense_swipeleftaction_summ"
-            android:title="@string/sense_swipeleftaction_title"
-            android:entries="@array/global_actions"
-            android:entryValues="@array/global_actions_val"
-            android:defaultValue="1" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_prism_swipeleft_app"
-			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_launch"
-            android:icon="@drawable/right_arrow" />
-        <com.sensetoolbox.six.utils.HtcListPreferencePlus
-            android:key="pref_key_prism_swipeleft_toggle"
-			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_toggle"
-            android:entries="@array/global_toggles"
-            android:entryValues="@array/global_toggles_val"
-            android:icon="@drawable/right_arrow" />
+		<com.htc.preference.HtcPreferenceCategory
+			android:title="@string/sense_gestures"
+			android:key="pref_key_sense_gestures">
 		<com.htc.preference.HtcListPreference
-            android:key="pref_key_prism_shakeaction"
-            android:summary="@string/sense_shakeaction_summ"
-            android:title="@string/sense_shakeaction_title"
-            android:entries="@array/global_actions"
-            android:entryValues="@array/global_actions_val"
-            android:defaultValue="1" />
-        <com.htc.preference.HtcPreference
-            android:key="pref_key_prism_shake_app"
+			android:key="pref_key_prism_swipedownaction"
+			android:summary="@string/sense_swipedownaction_summ"
+			android:title="@string/sense_swipedownaction_title"
+			android:entries="@array/global_actions"
+			android:entryValues="@array/global_actions_val"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_prism_swipedown_app"
 			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_launch"
-            android:icon="@drawable/right_arrow" />
-        <com.sensetoolbox.six.utils.HtcListPreferencePlus
-            android:key="pref_key_prism_shake_toggle"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
+		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+			android:key="pref_key_prism_swipedown_toggle"
 			android:summary="@string/notselected"
-            android:title="@string/array_global_actions_toggle"
-            android:entries="@array/global_toggles"
-            android:entryValues="@array/global_toggles_val"
-            android:icon="@drawable/right_arrow" />
+			android:title="@string/array_global_actions_toggle"
+			android:entries="@array/global_toggles"
+			android:entryValues="@array/global_toggles_val"
+			android:icon="@drawable/right_arrow" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_prism_swipeupaction"
+			android:summary="@string/sense_swipeupaction_summ"
+			android:title="@string/sense_swipeupaction_title"
+			android:entries="@array/global_actions"
+			android:entryValues="@array/global_actions_val"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_prism_swipeup_app"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
+		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+			android:key="pref_key_prism_swipeup_toggle"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_toggle"
+			android:entries="@array/global_toggles"
+			android:entryValues="@array/global_toggles_val"
+			android:icon="@drawable/right_arrow" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_prism_swiperightaction"
+			android:summary="@string/sense_swiperightaction_summ"
+			android:title="@string/sense_swiperightaction_title"
+			android:entries="@array/global_actions"
+			android:entryValues="@array/global_actions_val"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_prism_swiperight_app"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
+		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+			android:key="pref_key_prism_swiperight_toggle"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_toggle"
+			android:entries="@array/global_toggles"
+			android:entryValues="@array/global_toggles_val"
+			android:icon="@drawable/right_arrow" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_prism_swipeleftaction"
+			android:summary="@string/sense_swipeleftaction_summ"
+			android:title="@string/sense_swipeleftaction_title"
+			android:entries="@array/global_actions"
+			android:entryValues="@array/global_actions_val"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_prism_swipeleft_app"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
+		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+			android:key="pref_key_prism_swipeleft_toggle"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_toggle"
+			android:entries="@array/global_toggles"
+			android:entryValues="@array/global_toggles_val"
+			android:icon="@drawable/right_arrow" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_prism_shakeaction"
+			android:summary="@string/sense_shakeaction_summ"
+			android:title="@string/sense_shakeaction_title"
+			android:entries="@array/global_actions"
+			android:entryValues="@array/global_actions_val"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_prism_shake_app"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
+		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+			android:key="pref_key_prism_shake_toggle"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_toggle"
+			android:entries="@array/global_toggles"
+			android:entryValues="@array/global_toggles_val"
+			android:icon="@drawable/right_arrow" />
 		</com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>

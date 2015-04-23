@@ -49,6 +49,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
@@ -156,6 +157,35 @@ public class PrismMods {
 			}
 		});
 		*/
+	}
+	
+	public static void execHook_googleSearchWidget(final InitPackageResourcesParam resparam, final int option) {
+		resparam.res.hookLayout("com.google.android.googlequicksearchbox", "layout", "search_widget", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				ViewGroup searchView = (ViewGroup)liparam.view;
+				if (searchView != null) {
+					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
+					Resources res = searchView.getResources();
+					
+					if (option == 2) {
+						Drawable bkg = searchView.getBackground();
+						if (bkg != null) bkg.setAlpha(0);
+					} else if (option == 3) {
+						searchView.setBackground(modRes.getDrawable(R.drawable.searchbox_bg));
+					}
+					
+					ImageView logo = (ImageView)searchView.findViewById(res.getIdentifier("search_widget_logo_image", "id", "com.google.android.googlequicksearchbox"));
+					if (logo != null) {
+						logo.setImageDrawable(modRes.getDrawable(R.drawable.searchbox_google));
+						logo.setId(View.NO_ID);
+					}
+					
+					ImageButton imgbtn = (ImageButton)searchView.findViewById(res.getIdentifier("search_widget_voice_btn", "id", "com.google.android.googlequicksearchbox"));
+					if (imgbtn != null) imgbtn.setColorFilter(Color.argb(255, 230, 230, 230));
+				}
+			}
+		});
 	}
 	
 	public static void execHook_PreserveWallpaper(LoadPackageParam lpparam) {

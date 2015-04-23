@@ -315,6 +315,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_contactsnocorner", false))
 				OtherMods.execHook_ContactsNoCorner(resparam);
 		}
+		
+		if (pkg.equals("com.google.android.googlequicksearchbox")) {
+			pref.reload();
+			int option = Integer.parseInt(pref.getString("pref_key_prism_gappwidget", "1"));
+			if (option > 1)
+				PrismMods.execHook_googleSearchWidget(resparam, option);
+		}
 	}
 	
 	@Override

@@ -98,8 +98,8 @@ public class Helpers {
 	public static ArrayList<AppData> launchableAppsList = null;
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
-	public static float strings_total = 672.0f;
-	public static String buildVersion = "242";
+	public static float strings_total = 693.0f;
+	public static String buildVersion = "245";
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -279,6 +279,8 @@ public class Helpers {
 					entriesResName = "various_background_style";
 				else if (titleResName.equals("controls_extendedpanel_left_title") || titleResName.equals("controls_extendedpanel_right_title"))
 					entriesResName = "extendedpanel_actions";
+				else if (titleResName.equals("sense_gappwidget_title"))
+					entriesResName = "googleapp_widget";
 				else if (titleResName.contains("sense_") || titleResName.contains("controls_"))
 					entriesResName = "global_actions";
 				else if (titleResName.contains("wakegestures_"))
