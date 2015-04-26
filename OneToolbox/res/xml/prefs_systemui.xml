@@ -119,6 +119,13 @@
 			android:summary="@string/systemui_compacteqs_summ"
 			android:title="@string/systemui_compacteqs_title"
 			android:defaultValue="false" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_sysui_autoeqs"
+			android:summary="@string/systemui_autoeqs_summ"
+			android:title="@string/systemui_autoeqs_title"
+			android:entries="@array/systemui_autoeqs"
+			android:entryValues="@array/systemui_autoeqs_val"
+			android:defaultValue="1"/>
 		</com.htc.preference.HtcPreferenceCategory>
 		
 		<com.htc.preference.HtcPreferenceCategory

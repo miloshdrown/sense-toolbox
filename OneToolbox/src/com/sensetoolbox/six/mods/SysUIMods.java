@@ -3762,4 +3762,29 @@ public class SysUIMods {
 			}
 		});
 	}
+	
+	public static void execHook_AutoEQS(LoadPackageParam lpparam, final boolean isExcludeClearable) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.NotificationPanelView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				if (isExcludeClearable) {
+					Object mStatusBar = XposedHelpers.getObjectField(param.thisObject, "mStatusBar");
+					Object mNotificationData = XposedHelpers.getObjectField(mStatusBar, "mNotificationData");
+					boolean hasClearable = (Boolean)XposedHelpers.callMethod(mNotificationData, "hasActiveClearableNotifications");
+					if (hasClearable) return;
+				}
+				
+				MotionEvent ev = (MotionEvent)param.args[0];
+				float mExpandedHeight = XposedHelpers.getFloatField(param.thisObject, "mExpandedHeight");
+				int mStatusBarMinHeight = XposedHelpers.getIntField(param.thisObject, "mStatusBarMinHeight");
+				boolean mQsExpansionEnabled = XposedHelpers.getBooleanField(param.thisObject, "mQsExpansionEnabled");
+				
+				if (ev.getActionMasked() == 0 && mExpandedHeight == 0.0F && mQsExpansionEnabled && ev.getY(ev.getActionIndex()) < (float)mStatusBarMinHeight) {
+					XposedHelpers.setBooleanField(param.thisObject, "mTwoFingerQsExpand", true);
+					XposedHelpers.callMethod(param.thisObject, "requestPanelHeightUpdate");
+					XposedHelpers.callMethod(param.thisObject, "setListening", true);
+				}
+			}
+		});
+	}
 }

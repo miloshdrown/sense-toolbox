@@ -388,5 +388,16 @@
 		<item >3</item>
 	</string-array>
 	
+	<string-array name="systemui_autoeqs">
+		<item >@string/array_cam_actions_nothing</item>
+		<item >@string/array_autoeqs_always</item>
+		<item >@string/array_autoeqs_clearable</item>
+	</string-array>
+	<string-array name="systemui_autoeqs_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+	</string-array>
+	
 	<string-array name="empty_array"/>
 </resources>

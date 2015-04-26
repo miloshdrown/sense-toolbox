@@ -14,7 +14,6 @@ import java.util.Set;
 
 import android.content.Context;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.database.ContentObserver;
@@ -171,113 +170,6 @@ public class StatusbarMods {
 		"stat_sys_wifi_signal_connected_0", "stat_sys_wifi_signal_connected_1", "stat_sys_wifi_signal_connected_2", "stat_sys_wifi_signal_connected_3", "stat_sys_wifi_signal_connected_4"
 	};
 	
-	private static void addIcon(SparseIntArray sysUiIcons, Resources mResources, String name, Integer newResId) {
-		if (sysUiIcons != null)
-		sysUiIcons.put(mResources.getIdentifier(name, "drawable", "com.android.systemui"), newResId);
-	}
-	
-	private static int getIcon(SparseIntArray sysUiIcons, int resId) {
-		if (sysUiIcons == null) return 0;
-		Integer newResId = sysUiIcons.get(resId);
-		if (newResId == null) return 0; else return newResId;
-	}
-	
-	public static void execHook_InitIconsLP(final LoadPackageParam lpparam) {
-		XposedHelpers.findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "start", new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) {
-				SparseIntArray sysUiIcons = new SparseIntArray();
-				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-				Resources mResources = mContext.getResources();
-				
-				if (Integer.parseInt(XMain.pref.getString("pref_key_sysui_battery", "1")) == 2) {
-					addIcon(sysUiIcons, mResources, "stat_sys_battery", R.drawable.stat_sys_battery);
-					addIcon(sysUiIcons, mResources, "stat_sys_battery_anim", R.drawable.stat_sys_battery_charging);
-				}
-				
-				if (XMain.pref.getBoolean("pref_key_cb_signal", false)) {
-					addIcon(sysUiIcons, mResources, "stat_sys_5signal_null", R.drawable.stat_sys_5signal_null);
-					addIcon(sysUiIcons, mResources, "stat_sys_5signal_0", R.drawable.stat_sys_5signal_0);
-					addIcon(sysUiIcons, mResources, "stat_sys_5signal_1", R.drawable.stat_sys_5signal_1);
-					addIcon(sysUiIcons, mResources, "stat_sys_5signal_2", R.drawable.stat_sys_5signal_2);
-					addIcon(sysUiIcons, mResources, "stat_sys_5signal_3", R.drawable.stat_sys_5signal_3);
-					addIcon(sysUiIcons, mResources, "stat_sys_5signal_4", R.drawable.stat_sys_5signal_4);
-					addIcon(sysUiIcons, mResources, "stat_sys_5signal_5", R.drawable.stat_sys_5signal_5);
-					addIcon(sysUiIcons, mResources, "stat_sys_r_5signal_0", R.drawable.stat_sys_r_5signal_0);
-					addIcon(sysUiIcons, mResources, "stat_sys_r_5signal_1", R.drawable.stat_sys_r_5signal_1);
-					addIcon(sysUiIcons, mResources, "stat_sys_r_5signal_2", R.drawable.stat_sys_r_5signal_2);
-					addIcon(sysUiIcons, mResources, "stat_sys_r_5signal_3", R.drawable.stat_sys_r_5signal_3);
-					addIcon(sysUiIcons, mResources, "stat_sys_r_5signal_4", R.drawable.stat_sys_r_5signal_4);
-					addIcon(sysUiIcons, mResources, "stat_sys_r_5signal_5", R.drawable.stat_sys_r_5signal_5);
-				}
-				
-				if (XMain.pref.getBoolean("pref_key_cb_data", false)) {
-					addIcon(sysUiIcons, mResources, "stat_sys_data_connected_3g", R.drawable.stat_sys_data_connected_3g);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_connected_4g", R.drawable.stat_sys_data_connected_4g);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_connected_e", R.drawable.stat_sys_data_connected_e);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_connected_g", R.drawable.stat_sys_data_connected_g);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_connected_h", R.drawable.stat_sys_data_connected_h);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_connected_hplus", R.drawable.stat_sys_data_connected_hplus);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_connected_lte", R.drawable.stat_sys_data_connected_lte);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_in_3g", R.drawable.stat_sys_data_in_3g);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_in_4g", R.drawable.stat_sys_data_in_4g);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_in_e", R.drawable.stat_sys_data_in_e);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_in_g", R.drawable.stat_sys_data_in_g);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_in_h", R.drawable.stat_sys_data_in_h);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_in_hplus", R.drawable.stat_sys_data_in_hplus);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_in_lte", R.drawable.stat_sys_data_in_lte);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_inandout_3g", R.drawable.stat_sys_data_inandout_3g);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_inandout_4g", R.drawable.stat_sys_data_inandout_4g);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_inandout_e", R.drawable.stat_sys_data_inandout_e);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_inandout_g", R.drawable.stat_sys_data_inandout_g);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_inandout_h", R.drawable.stat_sys_data_inandout_h);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_inandout_hplus", R.drawable.stat_sys_data_inandout_hplus);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_inandout_lte", R.drawable.stat_sys_data_inandout_lte);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_out_3g", R.drawable.stat_sys_data_out_3g);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_out_4g", R.drawable.stat_sys_data_out_4g);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_out_e", R.drawable.stat_sys_data_out_e);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_out_g", R.drawable.stat_sys_data_out_g);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_out_h", R.drawable.stat_sys_data_out_h);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_out_hplus", R.drawable.stat_sys_data_out_hplus);
-					addIcon(sysUiIcons, mResources, "stat_sys_data_out_lte", R.drawable.stat_sys_data_out_lte);
-					addIcon(sysUiIcons, mResources, "stat_sys_signal_flightmode", R.drawable.stat_sys_signal_flightmode);
-				}
-				
-				if (XMain.pref.getBoolean("pref_key_cb_wifi", false)) {
-					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-					for (String s: glowIcons) addIcon(sysUiIcons, mResources, s, modRes.getIdentifier("b_stat_sys_wifi_signal_glow_" + s.substring(s.length() - 1), "drawable", "com.sensetoolbox.six"));
-					for (String s: nonGlowIcons) addIcon(sysUiIcons, mResources, s, modRes.getIdentifier("b_stat_sys_wifi_signal_" + s.substring(s.length() - 1), "drawable", "com.sensetoolbox.six"));
-				}
-				
-				XposedHelpers.setAdditionalStaticField(ImageView.class, "sysUiIcons", sysUiIcons);
-			}
-		});
-	}
-	
-	public static void execHook_ReplaceIconsLP() {
-		XposedHelpers.findAndHookMethod(ImageView.class, "setImageResource", int.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) {
-				try {
-					ImageView iv = (ImageView)param.thisObject;
-					if (iv != null && iv.getContext().getPackageName().equals("com.android.systemui")) {
-						if (sysUiIconsLocal == null) sysUiIconsLocal = (SparseIntArray)XposedHelpers.getAdditionalStaticField(ImageView.class, "sysUiIcons");
-						if (sysUiIconsLocal != null) {
-							int newResId = getIcon(sysUiIconsLocal, (Integer)param.args[0]);
-							if (newResId != 0) {
-								XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-								if (newResId == R.drawable.stat_sys_battery || newResId == R.drawable.stat_sys_battery_charging)
-									iv.setImageDrawable(modRes.getDrawable(newResId));
-								else
-									iv.setImageDrawable(applyTheme(modRes.getDrawable(newResId)));
-							}
-						}
-					}
-				} catch (Throwable t) {}
-			}
-		});
-	}
-
 	public static void execHook_SignalIcon(InitPackageResourcesParam resparam) {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_5signal_null", new XResources.DrawableLoader(){

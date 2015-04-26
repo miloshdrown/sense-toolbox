@@ -214,5 +214,24 @@
 			android:entries="@array/global_toggles"
 			android:entryValues="@array/global_toggles_val"
 			android:icon="@drawable/right_arrow" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_prism_appslongpressaction"
+			android:summary="@string/sense_appslongpressaction_summ"
+			android:title="@string/sense_appslongpressaction_title"
+			android:entries="@array/global_actions"
+			android:entryValues="@array/global_actions_val"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_prism_appslongpress_app"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
+		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+			android:key="pref_key_prism_appslongpress_toggle"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_toggle"
+			android:entries="@array/global_toggles"
+			android:entryValues="@array/global_toggles_val"
+			android:icon="@drawable/right_arrow" />
 		</com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>

@@ -30,6 +30,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	private static int pref_backlongpress = 1;
 	private static int pref_homeassist = 1;
 	private static int pref_shake = 1;
+	private static int pref_appslongpress = 1;
 	public static int pref_screenon = 0;
 	public static int pref_screenoff = 0;
 	public static boolean pref_alarmnotify = false;
@@ -55,6 +56,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		pref_backlongpress = Integer.parseInt(pref.getString("pref_key_controls_backlongpressaction", "1"));
 		pref_homeassist = Integer.parseInt(pref.getString("pref_key_controls_homeassistaction", "1"));
 		pref_shake = Integer.parseInt(pref.getString("pref_key_prism_shakeaction", "1"));
+		pref_appslongpress = Integer.parseInt(pref.getString("pref_key_prism_appslongpressaction", "1"));
 		pref_screenon = Integer.parseInt(pref.getString("pref_key_other_screenon", "0"));
 		pref_screenoff = Integer.parseInt(pref.getString("pref_key_other_screenoff", "0"));
 		prefs_pwm = pref.getBoolean("pref_key_controls_extendedpanel", false) ||
@@ -63,11 +65,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 					pref.getBoolean("pref_key_other_apm", false) ||
 					pref.getBoolean("pref_key_prism_homemenu", false) ||
 					pref_swipedown != 1 || pref_swipeup != 1 || pref_swiperight != 1 || pref_swipeleft != 1 ||
-					pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1;
-		prefs_icons_lp = pref.getBoolean("pref_key_cb_signal", false) ||
-					pref.getBoolean("pref_key_cb_data", false) ||
-					pref.getBoolean("pref_key_cb_wifi", false) ||
-					Integer.parseInt(pref.getString("pref_key_sysui_battery", "1")) == 2;
+					pref_backlongpress != 1 || pref_homeassist != 1 || pref_shake != 1 || pref_appslongpress != 1;
 		
 		if (prefs_pwm)
 			GlobalActions.setupPWM();
@@ -166,10 +164,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_controls_swapvolume", false))
 			ControlsMods.exec_SwapVolumeCCWLand();
 		
-		// Xposed broken resource hooks workaround
-		if (prefs_icons_lp && Helpers.isLP())
-			StatusbarMods.execHook_ReplaceIconsLP();
-		
 		//OtherMods.execHook_HapticNotify();
 	}
 	
@@ -222,7 +216,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_cb_alarm", false))
 				StatusbarMods.execHook_AlarmIcon(resparam);
 			
-			if (!Helpers.isLP() && Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")) != 1)
+			if (Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")) != 1)
 				StatusbarMods.execHook_WiFiIcon(resparam, Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")));
 			
 			if (pref.getBoolean("pref_key_cb_profile", false))
@@ -237,7 +231,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_cb_bt", false))
 				StatusbarMods.execHook_BtIcon(resparam);
 			
-			if (!Helpers.isLP() && pref.getBoolean("pref_key_cb_data", false))
+			if (pref.getBoolean("pref_key_cb_data", false))
 				StatusbarMods.execHook_DataIcon(resparam);
 			
 			if (pref.getBoolean("pref_key_cb_screenshot", false))
@@ -450,7 +444,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_prism_invisiactionbar", false))
 				PrismMods.execHook_ActionBarNoBkg(lpparam);
 			
-			//PrismMods.execHook_hotseatToggleBtn(lpparam);
+			if (pref_appslongpress != 1)
+				PrismMods.execHook_hotseatToggleBtn(lpparam);
 		}
 		
 		if (pkg.equals("com.htc.lockscreen")) {
@@ -622,11 +617,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_sysui_compacteqs", false))
 				SysUIMods.execHook_EQSTiles(lpparam);
 			
-			if (prefs_icons_lp && Helpers.isLP())
-				StatusbarMods.execHook_InitIconsLP(lpparam);
-			
 			if (Helpers.isLP() && pref.getBoolean("pref_key_other_secureeqs", false))
 				OtherMods.execHook_SecureEQS(lpparam);
+			
+			int pref_autoeqs = Integer.parseInt(pref.getString("pref_key_sysui_autoeqs", "1"));
+			if (pref_autoeqs > 1)
+				SysUIMods.execHook_AutoEQS(lpparam, pref_autoeqs == 3);
 			
 			StatusbarMods.execHook_HideIcons(lpparam);
 		}

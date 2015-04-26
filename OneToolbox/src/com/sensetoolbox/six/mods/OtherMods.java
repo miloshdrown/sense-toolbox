@@ -650,7 +650,6 @@ public class OtherMods {
 			if (photoSize == 2) resId = R.dimen.people_info_top_margin_rect;
 			resparam.res.setReplacement("com.android.phone", "dimen", "photo_frame_height", modRes.fwd(resId));
 			resparam.res.setReplacement("com.android.phone", "dimen", "lockscreen_10", modRes.fwd(R.dimen.lockscreen_10));
-			resparam.res.setReplacement("com.android.phone", "dimen", "dualsim_incoming_call_slot_name_height", modRes.fwd(R.dimen.dualsim_incoming_call_slot_name_height));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

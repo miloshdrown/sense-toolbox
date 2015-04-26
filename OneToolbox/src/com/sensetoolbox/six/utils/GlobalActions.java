@@ -632,6 +632,7 @@ public class GlobalActions {
 				case 5: pkgAppName = XMain.pref.getString("pref_key_prism_swiperight_app", null); break;
 				case 6: pkgAppName = XMain.pref.getString("pref_key_prism_swipeleft_app", null); break;
 				case 7: pkgAppName = XMain.pref.getString("pref_key_prism_shake_app", null); break;
+				case 8: pkgAppName = XMain.pref.getString("pref_key_prism_appslongpress_app", null); break;
 			}
 			
 			if (pkgAppName != null) {
@@ -663,6 +664,7 @@ public class GlobalActions {
 				case 5: intentString = XMain.pref.getString("pref_key_prism_swiperightaction_shortcut_intent", null); break;
 				case 6: intentString = XMain.pref.getString("pref_key_prism_swipeleftaction_shortcut_intent", null); break;
 				case 7: intentString = XMain.pref.getString("pref_key_prism_shakeaction_shortcut_intent", null); break;
+				case 8: intentString = XMain.pref.getString("pref_key_prism_appslongpressaction_shortcut_intent", null); break;
 			}
 			
 			if (intentString != null) {

@@ -110,6 +110,7 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				Helpers.removePref(this, "pref_key_sysui_noeqs", "pref_systemui_eqs");
 			} else {
 				Helpers.removePref(this, "pref_key_sysui_compacteqs", "pref_systemui_eqs");
+				Helpers.removePref(this, "pref_key_sysui_autoeqs", "pref_systemui_eqs");
 			}
 		} else if (xmlResId == R.xml.prefs_statusbar) {
 			HtcPreference sunbeamInstallPref = findPreference("pref_key_cb_sunbeam");
@@ -147,6 +148,11 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
 					HtcPreference launchApps = null;
 					HtcPreference toggleSettings = null;
+					
+					if (preference.equals(findPreference("pref_key_prism_appslongpressaction"))) {
+						launchApps = findPreference("pref_key_prism_appslongpress_app");
+						toggleSettings = findPreference("pref_key_prism_appslongpress_toggle");
+					}
 					
 					if (preference.equals(findPreference("pref_key_prism_swipedownaction"))) {
 						launchApps = findPreference("pref_key_prism_swipedown_app");
@@ -271,6 +277,7 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				}
 			};
 			
+			HtcListPreference appsLongPressActionPreference = (HtcListPreference) findPreference("pref_key_prism_appslongpressaction");
 			HtcListPreference swipeDownActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipedownaction");
 			HtcListPreference swipeUpActionPreference = (HtcListPreference) findPreference("pref_key_prism_swipeupaction");
 			HtcListPreference swipeRightActionPreference = (HtcListPreference) findPreference("pref_key_prism_swiperightaction");
@@ -278,12 +285,14 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			HtcListPreference shakeActionPreference = (HtcListPreference) findPreference("pref_key_prism_shakeaction");
 			HtcCheckBoxPreference blinkFeedIconPreference = (HtcCheckBoxPreference) findPreference("pref_key_prism_blinkfeedicon");
 			
+			HtcPreference launchAppsLongPress = findPreference("pref_key_prism_appslongpress_app");
 			HtcPreference launchAppsSwipeDown = findPreference("pref_key_prism_swipedown_app");
 			HtcPreference launchAppsSwipeUp = findPreference("pref_key_prism_swipeup_app");
 			HtcPreference launchAppsSwipeRight = findPreference("pref_key_prism_swiperight_app");
 			HtcPreference launchAppsSwipeLeft = findPreference("pref_key_prism_swipeleft_app");
 			HtcPreference launchAppsShake = findPreference("pref_key_prism_shake_app");
 			
+			HtcListPreferencePlus toggleAppsLongPress = (HtcListPreferencePlus) findPreference("pref_key_prism_appslongpress_toggle");
 			HtcListPreferencePlus toggleSwipeDown = (HtcListPreferencePlus) findPreference("pref_key_prism_swipedown_toggle");
 			HtcListPreferencePlus toggleSwipeUp = (HtcListPreferencePlus) findPreference("pref_key_prism_swipeup_toggle");
 			HtcListPreferencePlus toggleSwipeRight = (HtcListPreferencePlus) findPreference("pref_key_prism_swiperight_toggle");
@@ -291,6 +300,11 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			HtcListPreferencePlus toggleShake = (HtcListPreferencePlus) findPreference("pref_key_prism_shake_toggle");
 			
 			String not_selected = Helpers.l10n(getActivity(), R.string.notselected);
+			
+			launchAppsLongPress.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_prism_appslongpress_app", not_selected)));
+			launchAppsLongPress.setOnPreferenceClickListener(clickPref);
+			toggleAppsLongPress.setSummary(toggleAppsLongPress.getEntry() == null ? not_selected: toggleAppsLongPress.getEntry());
+			toggleAppsLongPress.setOnPreferenceChangeListener(setEntryAsSummary);
 			
 			launchAppsSwipeDown.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_prism_swipedown_app", not_selected)));
 			launchAppsSwipeDown.setOnPreferenceClickListener(clickPref);
@@ -317,6 +331,8 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			toggleShake.setSummary(toggleShake.getEntry() == null ? not_selected: toggleShake.getEntry());
 			toggleShake.setOnPreferenceChangeListener(setEntryAsSummary);
 			
+			if (appsLongPressActionPreference.getValue().equals("7"))	launchAppsLongPress.setEnabled(true);		else launchAppsLongPress.setEnabled(false);
+			if (appsLongPressActionPreference.getValue().equals("8"))	toggleAppsLongPress.setEnabled(true);		else toggleAppsLongPress.setEnabled(false);
 			if (swipeDownActionPreference.getValue().equals("7"))		launchAppsSwipeDown.setEnabled(true);		else launchAppsSwipeDown.setEnabled(false);
 			if (swipeDownActionPreference.getValue().equals("8"))		toggleSwipeDown.setEnabled(true);			else toggleSwipeDown.setEnabled(false);
 			if (swipeUpActionPreference.getValue().equals("7"))			launchAppsSwipeUp.setEnabled(true);			else launchAppsSwipeUp.setEnabled(false);
@@ -327,6 +343,19 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			if (swipeLeftActionPreference.getValue().equals("8"))		toggleSwipeLeft.setEnabled(true);			else toggleSwipeLeft.setEnabled(false);
 			if (shakeActionPreference.getValue().equals("7"))			launchAppsShake.setEnabled(true);			else launchAppsShake.setEnabled(false);
 			if (shakeActionPreference.getValue().equals("8"))			toggleShake.setEnabled(true);				else toggleShake.setEnabled(false);
+			
+			appsLongPressActionPreference.setOnPreferenceChangeListener(chooseAction);
+			
+			List<CharSequence> entriesCS = new ArrayList<CharSequence>(Arrays.asList(appsLongPressActionPreference.getEntries()));
+			entriesCS.remove(5);
+			CharSequence[] entries = entriesCS.toArray(new CharSequence[entriesCS.size()]);
+
+			List<CharSequence> entryValsCS = new ArrayList<CharSequence>(Arrays.asList(appsLongPressActionPreference.getEntryValues()));
+			entryValsCS.remove(5);
+			CharSequence[] entryVals = entryValsCS.toArray(new CharSequence[entryValsCS.size()]);
+			
+			appsLongPressActionPreference.setEntries(entries);
+			appsLongPressActionPreference.setEntryValues(entryVals);
 			
 			swipeDownActionPreference.setOnPreferenceChangeListener(chooseAction);
 			swipeUpActionPreference.setOnPreferenceChangeListener(chooseAction);

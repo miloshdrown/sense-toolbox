@@ -163,6 +163,8 @@
 	<string name="systemui_noeqs_summ">Remove EQS panel and restore settings button.</string>
 	<string name="systemui_compacteqs_title">Compact EQS</string>
 	<string name="systemui_compacteqs_summ">Remove EQS labels and position 6 tiles in a row in portrait orientation and 12 in landscape.</string>
+	<string name="systemui_autoeqs_title">Auto EQS</string>
+	<string name="systemui_autoeqs_summ">Pull down EQS using single finger swipe.</string>
 	<string name="systemui_recent">Recent Apps</string>
 	<string name="systemui_aosp_title">AOSP recent apps</string>
 	<string name="systemui_aosp_summ">Enable AOSP style recent apps screen.</string>
@@ -277,6 +279,8 @@
 	<string name="sense_homemenu_summ">Show popup menu with useful commands on Menu press or Home longpress in launcher.</string>
 	<string name="sense_gridtinyfont_title">Small app drawer grid font</string>
 	<string name="sense_gridtinyfont_summ">Reduce titles font size for 6-row app drawer grids</string>
+	<string name="sense_appslongpressaction_title">App drawer icon action</string>
+	<string name="sense_appslongpressaction_summ">Action for app drawer icon long press.</string>
 	<string name="sense_swipedownaction_title">Swipe down action</string>
 	<string name="sense_swipedownaction_summ">Action for swipe down gesture on any home screen.</string>
 	<string name="sense_swipeupaction_title">Swipe up action</string>
@@ -723,5 +727,7 @@
 	<string name="array_popuphdr_datetime">Time and date</string>
 	<string name="array_popuphdr_dashclock">DashClock widget</string>
 	<string name="array_googleapp_withborder">Fully transparent with border</string>
+	<string name="array_autoeqs_always">Always</string>
+	<string name="array_autoeqs_clearable">If no clearable notifications are active</string>
 
 </resources>

@@ -15,13 +15,12 @@ Ideas
 Current changelog
 =================
 
-1.5.2
-[New] Partial support for Sense 7 ROMs
-[New] Transparent Google Search widget with and without border
-[Changed] Translators list in About screen is now generated automatically on every l10n update, those with more than 100 translations and suggestions will be mentioned there
-[Fixed] Wake up action for different mods (short wakelock added)
-[Fixed] Long animation start delay for RAM in recents
-[Fixed][4.4] Center shortcut (assist action) in Extended assist panel
+1.5.3
+[New] App drawer icon long press actions
+[New][5.0] Auto EQS mod (pull down settings panel with one finger, always or if there are no clearable notifications)
+[Changed][5.0] Statusbar icons replacement, requires Xposed Framework 3.0 alpha 3 (XposedBridge.jar version 64)
+[Fixed] App drawer size during rearrange mode
+[Fixed][Sense Home 7] Folder items dragging when launcher lock is active
 
 
 ===========
@@ -46,6 +45,14 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.5.2
+[New] Partial support for Sense 7 ROMs
+[New] Transparent Google Search widget with and without border
+[Changed] Translators list in About screen is now generated automatically on every l10n update, those with more than 100 translations and suggestions will be mentioned there
+[Fixed] Wake up action for different mods (short wakelock added)
+[Fixed] Long animation start delay for RAM in recents
+[Fixed][4.4] Center shortcut (assist action) in Extended assist panel
 
 1.5.1
 [New] Open app drawer action for Sense gestures and navigation keys

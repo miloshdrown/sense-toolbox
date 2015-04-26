@@ -103,7 +103,9 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				Runnable hideCheck = new Runnable() {
 					@Override
 					public void run() {
-						if (checkingDlg != null && checkingDlg.isShowing()) checkingDlg.dismiss();
+						try {
+							if (checkingDlg != null && checkingDlg.isShowing()) checkingDlg.dismiss();
+						} catch (Exception e) {}
 					}
 				};
 				handler.removeCallbacks(showCheck);

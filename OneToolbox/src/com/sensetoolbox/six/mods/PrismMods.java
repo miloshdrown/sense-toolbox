@@ -453,7 +453,7 @@ public class PrismMods {
 			XposedBridge.hookAllConstructors(EditLayoutHelper, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					param.args[2] = 0.95f;
+					param.args[2] = 0.85f;
 					param.args[3] = true;
 					// param.args[1] = Color.argb(153, 0, 0, 0);
 					// m_nEditLayoutPageSpacing
@@ -945,22 +945,33 @@ public class PrismMods {
 		});
 	}
 	
-	// Long press on hotseat toggle button, no idea how to use it for now :D
 	public static void execHook_hotseatToggleBtn(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.htc.launcher.hotseat.Hotseat", lpparam.classLoader, "resetLayout", new XC_MethodHook() {
 			@Override
 			public void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				TextView m_toggleButton = (TextView)XposedHelpers.getObjectField(param.thisObject, "m_toggleButton");
-				final Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
+				//final Object m_launcher = XposedHelpers.getObjectField(param.thisObject, "m_launcher");
 				m_toggleButton.setOnLongClickListener(new OnLongClickListener() {
 					@Override
 					public boolean onLongClick(View v) {
-						if ((Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown"))
-							XposedHelpers.callMethod(m_launcher, "showWorkspace", false);
-						else
-							XposedHelpers.callMethod(m_launcher, "showAllApps", false);
-						
-						return true;
+						XMain.pref.reload();
+						Context ctx = v.getContext();
+						switch (Integer.parseInt(XMain.pref.getString("pref_key_prism_appslongpressaction", "1"))) {
+							case 2: return GlobalActions.expandNotifications(ctx);
+							case 3: return GlobalActions.expandEQS(ctx);
+							case 4: return GlobalActions.lockDevice(ctx);
+							case 5: return GlobalActions.goToSleep(ctx);
+							case 6: return GlobalActions.takeScreenshot(ctx);
+							case 7: return GlobalActions.launchApp(ctx, 8);
+							case 8: return GlobalActions.toggleThis(ctx, Integer.parseInt(XMain.pref.getString("pref_key_prism_appslongpress_toggle", "0")));
+							case 12: return GlobalActions.launchShortcut(ctx, 8);
+							case 14: return GlobalActions.openAppDrawer(ctx);
+							default: return false;
+						}
+						//if ((Boolean)XposedHelpers.callMethod(m_launcher, "isAllAppsShown"))
+						//	XposedHelpers.callMethod(m_launcher, "showWorkspace", false);
+						//else
+						//	XposedHelpers.callMethod(m_launcher, "showAllApps", false);
 					}
 				});
 			}
@@ -989,11 +1000,24 @@ public class PrismMods {
 	
 	public static void execHook_LauncherLock(final LoadPackageParam lpparam) {
 		// Disable dragging inside folders
+		XposedBridge.hookAllConstructors(findClass("com.htc.launcher.folder.Folder.FolderDataManager", lpparam.classLoader), new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				XposedHelpers.setAdditionalInstanceField(param.thisObject, "mContext", param.args[0]);
+			}
+		});
+		
 		XposedHelpers.findAndHookMethod("com.htc.launcher.folder.Folder.FolderDataManager", lpparam.classLoader, "allowedDrag", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				RelativeLayout folder = (RelativeLayout)XposedHelpers.getSurroundingThis(param.thisObject);
-				if (folder != null && isLauncherLocked(folder.getContext())) param.setResult(false);
+				Context ctx = null;
+				try {
+					ctx = (Context)XposedHelpers.getAdditionalInstanceField(param.thisObject, "mContext");
+				} catch (Throwable t) {
+					RelativeLayout folder = (RelativeLayout)XposedHelpers.getSurroundingThis(param.thisObject);
+					ctx = folder.getContext();
+				}
+				if (ctx != null && isLauncherLocked(ctx)) param.setResult(false);
 			}
 		});
 		
