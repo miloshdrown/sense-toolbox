@@ -21,6 +21,7 @@ Current changelog
 [Changed][5.0] Statusbar icons replacement, requires Xposed Framework 3.0 alpha 3 (XposedBridge.jar version 64)
 [Fixed] App drawer size during rearrange mode
 [Fixed][Sense Home 7] Folder items dragging when launcher lock is active
+[Fixed] Root access request on Toolbox launch to prevent looped requests in some mods
 
 
 ===========

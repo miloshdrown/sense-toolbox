@@ -91,6 +91,7 @@ import android.widget.TextView;
 public class Helpers {
 	
 	public static boolean hasRoot = false;
+	public static boolean hasRootAccess = false;
 	public static boolean hasBusyBox = false;
 	static List<PackageTheme> cached_pkgthm = new ArrayList<PackageTheme>();
 	static String cached_str;
@@ -99,7 +100,7 @@ public class Helpers {
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
 	public static float strings_total = 699.0f;
-	public static String buildVersion = "247";
+	public static String buildVersion = "248";
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {

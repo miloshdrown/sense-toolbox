@@ -121,6 +121,8 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 					return true;
 				}
 			});
+			if (!Helpers.hasRoot || !Helpers.hasRootAccess)
+			Helpers.disablePref(this, "pref_key_cb_sunbeam", Helpers.l10n(getActivity(), R.string.no_root_summ));
 			
 			ColorPreference colorChanger = (ColorPreference) findPreference("pref_key_colorfilter");
 			colorChanger.applyThemes();
@@ -542,7 +544,7 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				}
 			});
 			
-			if (!Helpers.hasRoot)
+			if (!Helpers.hasRoot || !Helpers.hasRootAccess)
 				Helpers.disablePref(this, "pref_key_controls_vol2wake", Helpers.l10n(getActivity(), R.string.no_root_summ));
 			else if (!Helpers.hasBusyBox)
 				Helpers.disablePref(this, "pref_key_controls_vol2wake", Helpers.l10n(getActivity(), R.string.no_busybox_summ));
@@ -564,10 +566,11 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			if (Helpers.isNotM7()) {
 				Helpers.removePref(this, "pref_key_other_keyslight", "pref_key_other");
 				Helpers.removePref(this, "pref_key_other_keyslight_auto", "pref_key_other");
-			} else if (!Helpers.hasRoot){
+			} else if (!Helpers.hasRoot || !Helpers.hasRootAccess) {
+				Helpers.disablePref(this, "pref_key_other_apm", Helpers.l10n(getActivity(), R.string.no_root_summ));
 				Helpers.disablePref(this, "pref_key_other_keyslight", Helpers.l10n(getActivity(), R.string.no_root_summ));
 				Helpers.disablePref(this, "pref_key_other_keyslight_auto", Helpers.l10n(getActivity(), R.string.no_root_summ));
-			} else if (!Helpers.hasBusyBox){
+			} else if (!Helpers.hasBusyBox) {
 				Helpers.disablePref(this, "pref_key_other_keyslight", Helpers.l10n(getActivity(), R.string.no_busybox_summ));
 				Helpers.disablePref(this, "pref_key_other_keyslight_auto", Helpers.l10n(getActivity(), R.string.no_busybox_summ));
 			}

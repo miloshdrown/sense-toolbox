@@ -6,6 +6,8 @@ import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Map;
+import java.util.TreeMap;
 
 import org.acra.collector.CrashReportData;
 
@@ -20,9 +22,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnCancelListener;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.util.Base64;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -102,9 +106,17 @@ public class CrashReportDialog extends Activity {
 			String kernel = System.getProperty("os.version");
 			if (kernel == null) kernel = "";
 			
+			SharedPreferences prefs = getSharedPreferences("one_toolbox_prefs", 1);
+			TreeMap<String, Object> keys = new TreeMap<String, Object>();
+			keys.putAll(prefs.getAll());
+			String keysAsString = "";
+			for (Map.Entry<String, Object> entry: keys.entrySet())
+			keysAsString += entry.getKey() + "=" + entry.getValue().toString() + "\n";
+			
 			String buildData = crashData.get(ReportField.BUILD);
 			buildData += "ROM.VERSION=" + ROM + "\n";
 			buildData += "KERNEL.VERSION=" + kernel + "\n";
+			buildData += "SHARED.PREFS=" + Base64.encodeToString(keysAsString.getBytes(), Base64.NO_WRAP) + "\n";
 			
 			crashData.put(ReportField.BUILD, buildData);
 			crashData.put(ReportField.USER_COMMENT, desc.getText().toString());

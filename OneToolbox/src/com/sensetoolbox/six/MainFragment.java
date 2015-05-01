@@ -83,8 +83,24 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				};
 				handler.postDelayed(showCheck, 1000);
 				
+				if (!RootTools.isAccessGiven()) try {
+					Command command = new Command(0, false, "whoami");
+					RootTools.getShell(true).add(command);
+				} catch (Exception e) {}
+				
 				Helpers.hasRoot = RootTools.isRootAvailable();
+				Helpers.hasRootAccess = RootTools.isAccessGiven();
 				Helpers.hasBusyBox = RootTools.isBusyboxAvailable();
+				
+				if (!Helpers.hasRoot || !Helpers.hasRootAccess) {
+					act.runOnUiThread(new Runnable() {
+						@Override
+						public void run() {
+							Helpers.disablePref(MainFragment.this, "pref_key_wakegest", Helpers.l10n(getActivity(), R.string.no_root_summ));
+							Helpers.disablePref(MainFragment.this, "pref_key_touchlock", Helpers.l10n(getActivity(), R.string.no_root_summ));
+						}
+					});
+				}
 				
 				if (!Helpers.isXposedInstalled(act))
 				act.runOnUiThread(new Runnable() {
@@ -394,13 +410,13 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				HashSet<String> appsList = new HashSet<String>(prefs.getStringSet("pref_key_betterheadsup_bwlist_apps", new HashSet<String>()));
 				appsList.add(pkgName);
 				prefs.edit().putStringSet("pref_key_betterheadsup_bwlist_apps", new HashSet<String>(appsList)).commit();
-			} else if (intent.getAction().equals("android.intent.action.LOCALE_CHANGED")) {
+			} else if (intent.getAction().equals(Intent.ACTION_LOCALE_CHANGED)) {
 				Helpers.l10n = null;
 				Helpers.cLang = "";
 			} else {
 				if (Helpers.isNotM7()) return;
 				final int thepref = Integer.parseInt(ctx.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
-				if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+				if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
 					if (thepref > 1) Helpers.setButtonBacklightTo(ctx, thepref, false);
 					Command command = new Command(0, false, "getenforce 2>/dev/null") {
 						int lineCnt = 0;

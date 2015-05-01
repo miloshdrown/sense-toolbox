@@ -74,7 +74,7 @@ public class WakeGesturesMods {
 						case 3:
 							//XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass(sdClass, mLSClassLoader), "ScrollToLeft"));
 							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
-							Intent i = new Intent("android.intent.action.MAIN").addCategory("android.intent.category.HOME").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("action", -1);
+							Intent i = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("action", -1);
 							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i, true);
 							break;
 						case 4:
@@ -91,7 +91,7 @@ public class WakeGesturesMods {
 							break;
 						case 6:
 							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
-							Intent i2 = new Intent("com.htc.intent.action.HTC_Prism_AllApps").addCategory("android.intent.category.DEFAULT").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+							Intent i2 = new Intent("com.htc.intent.action.HTC_Prism_AllApps").addCategory(Intent.CATEGORY_DEFAULT).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i2, true);
 							break;
 						case 7:
@@ -398,7 +398,7 @@ public class WakeGesturesMods {
 		if (isOn) val = "1"; else val = "0";
 		Command command = new Command(0, false, "echo " + val + " > /sys/android_touch/knockcode");
 		try {
-			RootTools.getShell(true).add(command);
+			if (RootTools.isAccessGiven()) RootTools.getShell(true).add(command);
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -634,9 +634,11 @@ public class WakeGesturesMods {
 					mHandler.postDelayed(new Runnable() {
 						@Override
 						public void run() {
-							XposedBridge.log("[S6T] Wake gestures activated!");
-							Helpers.setWakeGestures(true);
-							if (!Helpers.getWakeGestures().equals("1")) mHandler.postDelayed(this, 2000);
+							if (RootTools.isAccessGiven()) {
+								XposedBridge.log("[S6T] Wake gestures activated!");
+								Helpers.setWakeGestures(true);
+								if (!Helpers.getWakeGestures().equals("1")) mHandler.postDelayed(this, 2000);
+							} else XposedBridge.log("[S6T] No root access");
 						}
 					}, delay);
 				}

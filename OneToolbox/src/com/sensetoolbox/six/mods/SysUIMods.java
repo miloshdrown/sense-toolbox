@@ -2430,7 +2430,7 @@ public class SysUIMods {
 							Class<?> ActivityManagerNative2 = Class.forName("android.app.ActivityManagerNative");
 							Object activityManagerNative2 = XposedHelpers.callStaticMethod(ActivityManagerNative2, "getDefault");
 							XposedHelpers.callMethod(activityManagerNative2, "dismissKeyguardOnNextActivity");
-							Intent i = new Intent("android.intent.action.MAIN").addCategory("android.intent.category.HOME").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("action", 0);
+							Intent i = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("action", 0);
 							ctx.startActivity(i);
 							break;
 						case R.drawable.ic_action_lock:

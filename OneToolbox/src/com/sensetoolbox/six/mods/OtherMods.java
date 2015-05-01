@@ -670,17 +670,18 @@ public class OtherMods {
 			int photoHeight;
 			
 			KeyguardManager km = (KeyguardManager)mPhoto.getContext().getSystemService(Context.KEYGUARD_SERVICE);
+			float density = mPhoto.getContext().getResources().getDisplayMetrics().density;
 			if (photoSize == 2) photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_rect); else
 			if (km.inKeyguardRestrictedInputMode()) {
 				photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_ls);
-				if ((Helpers.isEight() || Helpers.isDesire816()) && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false)) photoHeight += 54;
+				if ((Helpers.isEight() || Helpers.isDesire816()) && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false)) photoHeight += Math.round(density * 18);
 			} else {
 				photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height);
 				if (Helpers.isEight() || Helpers.isDesire816())
 				if (XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false))
-					photoHeight -= 58;
+					photoHeight -= Math.round(density * 19.333);
 				else
-					photoHeight -= 112;
+					photoHeight -= Math.round(density * 37.333);
 			}
 		
 			if (mPhotoParent != null)
@@ -1599,7 +1600,7 @@ public class OtherMods {
 					@Override
 					public boolean onLongClick(View v) {
 						Intent umc = new Intent("com.htc.music.intent.action.UMC_SETTINGS");
-						umc.addCategory("android.intent.category.DEFAULT");
+						umc.addCategory(Intent.CATEGORY_DEFAULT);
 						umc.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						mContext.startActivity(umc);
 						

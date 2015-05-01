@@ -857,7 +857,7 @@ public class PrismMods {
 				if (position == 0) {
 					launcherAct.startActivity(new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
 				} else if (position == 1) {
-					launcherAct.startActivity((new Intent("android.intent.action.MAIN")).setAction("com.htc.personalize.ACTION_HOMEPERSONALIZE"));
+					launcherAct.startActivity((new Intent("com.htc.personalize.ACTION_HOMEPERSONALIZE")).addCategory(Intent.CATEGORY_DEFAULT));
 				} else if (position == 2) {
 					launcherAct.startActivity(new Intent(Settings.ACTION_SETTINGS));
 				} else if (position == 3) {
@@ -1057,7 +1057,7 @@ public class PrismMods {
 				try {
 					Intent intent = (Intent)param.args[0];
 					String s = intent.getAction();
-					if (s.equals("android.intent.action.MAIN")) {
+					if (s.equals(Intent.ACTION_MAIN)) {
 						boolean isAddToHome = intent.getBooleanExtra("personalize_add_to_home", false);
 						if (isAddToHome) {
 							Activity launcherAct = (Activity)param.thisObject;

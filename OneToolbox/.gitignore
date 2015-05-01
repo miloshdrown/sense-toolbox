@@ -11,7 +11,7 @@ gen/
 # ignore all files ending with ~
 *~
 /.settings
-
+/proguard
 
 # libs with abs paths, ignore
 .classpath

@@ -731,7 +731,7 @@ public class GlobalActions {
 	
 	public static boolean openAppDrawer(Context context) {
 		try {
-			context.startActivity(new Intent("com.htc.intent.action.HTC_Prism_AllApps").addCategory("android.intent.category.DEFAULT").addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+			context.startActivity(new Intent("com.htc.intent.action.HTC_Prism_AllApps").addCategory(Intent.CATEGORY_DEFAULT).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
 			return true;
 		} catch (Throwable t) {
 			XposedBridge.log(t);

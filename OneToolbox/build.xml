@@ -28,6 +28,10 @@
             <path refid="project.all.jars.path.tmp" />
         </path>
     </target>
+	<target name="-debug-obfuscation-check">
+	    <property name="proguard.enabled" value="true"/>
+	    <path id="out.dex.jar.input.ref" />
+	</target>
 
     <import file="${sdk.dir}/tools/ant/build.xml" />
 </project>
