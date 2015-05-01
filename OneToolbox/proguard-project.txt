@@ -64,3 +64,4 @@
 -keep class com.sensetoolbox.** { *; }
 
 -dontwarn **
+-dontnote **

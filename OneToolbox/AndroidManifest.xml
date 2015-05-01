@@ -86,7 +86,6 @@
 			android:excludeFromRecents="true" />
 		<activity android:name="com.sensetoolbox.six.AboutScreen" android:screenOrientation="portrait" />
 		<activity android:name="com.sensetoolbox.six.SenseThemes" android:configChanges="keyboardHidden|orientation|screenSize" />
-		<activity android:name="com.sensetoolbox.six.PopupNotify" android:configChanges="keyboardHidden|orientation|screenSize" />
 		<activity android:name="com.sensetoolbox.six.TouchLock" android:configChanges="keyboardHidden|orientation|screenSize" />
 		<activity
 			android:name="com.sensetoolbox.six.BlinkFeed"
