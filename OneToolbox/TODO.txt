@@ -22,6 +22,7 @@ Current changelog
 [Fixed] App drawer size during rearrange mode
 [Fixed][Sense Home 7] Folder items dragging when launcher lock is active
 [Fixed] Root access request on Toolbox launch to prevent looped requests in some mods
+[Fixed] Toolbox UI working on real Sense 7 ports and HTC One M9; Sense 7 is still not supported, many mods are broken
 
 
 ===========

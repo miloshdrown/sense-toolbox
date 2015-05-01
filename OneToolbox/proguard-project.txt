@@ -62,3 +62,5 @@
 }
 
 -keep class com.sensetoolbox.** { *; }
+
+-dontwarn **
