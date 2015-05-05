@@ -803,7 +803,9 @@ public class OtherMods {
 						
 						TextView slot_name = (TextView)mReminder.findViewById(mReminder.getResources().getIdentifier("slot_name", "id", "com.android.phone"));
 						if (slot_name != null) {
-							slot_name.setPadding(slot_name.getPaddingLeft(), 0, slot_name.getPaddingRight(), 0);
+							int paddingTop = 0;
+							if (Helpers.isLP()) paddingTop = Math.round(slot_name.getResources().getDisplayMetrics().density * 25);
+							slot_name.setPadding(slot_name.getPaddingLeft(), paddingTop, slot_name.getPaddingRight(), 0);
 							slot_name.setIncludeFontPadding(false);
 						}
 					}

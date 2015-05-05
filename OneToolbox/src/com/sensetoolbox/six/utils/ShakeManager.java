@@ -95,6 +95,7 @@ public class ShakeManager implements SensorEventListener {
 	}
 	
 	private void executeShakeAction() {
+		XMain.pref.reload();
 		switch (Integer.parseInt(XMain.pref.getString("pref_key_prism_shakeaction", "1"))) {
 			case 2: GlobalActions.expandNotifications(helperContext); return;
 			case 3: GlobalActions.expandEQS(helperContext); return;

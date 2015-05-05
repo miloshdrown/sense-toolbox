@@ -15,14 +15,9 @@ Ideas
 Current changelog
 =================
 
-1.5.3
-[New] App drawer icon long press actions
-[New][5.0] Auto EQS mod (pull down settings panel with one finger, always or if there are no clearable notifications)
-[Changed][5.0] Statusbar icons replacement, requires Xposed Framework 3.0 alpha 3 (XposedBridge.jar version 64)
-[Fixed] App drawer size during rearrange mode
-[Fixed][Sense Home 7] Folder items dragging when launcher lock is active
-[Fixed] Root access request on Toolbox launch to prevent looped requests in some mods
-[Fixed] Toolbox UI working on real Sense 7 ports and HTC One M9; Sense 7 is still not supported, many mods are broken
+1.5.4
+[Fixed] Some mods on HTC One M9
+[Fixed] Large photo mod on HTC One M8 Dual SIM
 
 
 ===========
@@ -47,6 +42,15 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.5.3
+[New] App drawer icon long press actions
+[New][5.0] Auto EQS mod (pull down settings panel with one finger, always or if there are no clearable notifications)
+[Changed][5.0] Statusbar icons replacement, requires Xposed Framework 3.0 alpha 3 (XposedBridge.jar version 64)
+[Fixed] App drawer size during rearrange mode
+[Fixed][Sense Home 7] Folder items dragging when launcher lock is active
+[Fixed] Root access request on Toolbox launch to prevent looped requests in some mods
+[Fixed] Toolbox UI working on real Sense 7 ports and HTC One M9; Sense 7 is still not supported, many mods are broken
 
 1.5.2
 [New] Partial support for Sense 7 ROMs
