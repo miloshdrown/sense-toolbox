@@ -657,7 +657,7 @@ public class OtherMods {
 		if (Helpers.isDualSIM()) try {
 			resparam.res.setReplacement("com.android.phone", "dimen", "text_size_incoming_call_slot_name", modRes.fwd(R.dimen.text_size_incoming_call_slot_name));
 			if (Helpers.isLP()) {
-				resparam.res.setReplacement("com.android.phone", "dimen", "dualsim_incoming_call_slot_name_height", modRes.fwd(R.dimen.dualsim_incoming_call_slot_name_height2));
+				resparam.res.setReplacement("com.android.phone", "dimen", "dualsim_incoming_call_slot_name_height", modRes.fwd(R.dimen.dualsim_incoming_call_slot_name_height));
 				resparam.res.setReplacement("com.android.phone", "dimen", "incoming_call_slot_name_title_layout_height", modRes.fwd(R.dimen.incoming_call_slot_name_title_layout_height2));
 			} else {
 				resparam.res.setReplacement("com.android.phone", "dimen", "dualsim_incoming_call_slot_name_height", modRes.fwd(R.dimen.dualsim_incoming_call_slot_name_height));
