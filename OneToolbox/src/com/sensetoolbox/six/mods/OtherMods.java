@@ -798,13 +798,16 @@ public class OtherMods {
 					RelativeLayout mReminder = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mReminder");
 					if (mReminder != null) {
 						View photo_view_root = (View)mReminder.findViewById(mReminder.getResources().getIdentifier("photo_view_root", "id", "com.android.phone"));
-						if (photo_view_root != null)
-						photo_view_root.setPadding(
-							photo_view_root.getPaddingLeft(),
-							Math.round(photo_view_root.getResources().getDisplayMetrics().density * 25),
-							photo_view_root.getPaddingRight(),
-							photo_view_root.getPaddingBottom()
-						);
+						if (photo_view_root != null) {
+							int paddingTopRoot = Math.round(photo_view_root.getResources().getDisplayMetrics().density * 25);
+							if (Helpers.isLP()) paddingTopRoot = 0;
+							photo_view_root.setPadding(
+								photo_view_root.getPaddingLeft(),
+								paddingTopRoot,
+								photo_view_root.getPaddingRight(),
+								photo_view_root.getPaddingBottom()
+							);
+						}
 						
 						TextView slot_name = (TextView)mReminder.findViewById(mReminder.getResources().getIdentifier("slot_name", "id", "com.android.phone"));
 						if (slot_name != null) {
