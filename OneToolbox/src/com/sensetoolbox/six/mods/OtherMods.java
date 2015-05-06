@@ -790,7 +790,7 @@ public class OtherMods {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
-					RelativeLayout mReminder = (RelativeLayout)XposedHelpers.getObjectField(param.thisObject, "mReminder");
+					ViewGroup mReminder = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "mReminder");
 					if (mReminder != null) {
 						ViewGroup photo_view_root = (ViewGroup)mReminder.findViewById(mReminder.getResources().getIdentifier("photo_view_root", "id", "com.android.phone"));
 						if (photo_view_root != null) {
@@ -802,20 +802,24 @@ public class OtherMods {
 								photo_view_root.getPaddingRight(),
 								photo_view_root.getPaddingBottom()
 							);
+							XposedBridge.log("check 1");
 						}
 						
 						TextView slot_name = (TextView)mReminder.findViewById(mReminder.getResources().getIdentifier("slot_name", "id", "com.android.phone"));
 						if (slot_name != null) {
 							slot_name.setPadding(slot_name.getPaddingLeft(), 0, slot_name.getPaddingRight(), 0);
 							slot_name.setIncludeFontPadding(false);
+							XposedBridge.log("check 2");
 						}
 						
 						if (Helpers.isLP() && photo_view_root != null && slot_name != null) {
-							mReminder.removeView(slot_name);
+							XposedBridge.log("check 3");
+							((ViewGroup)slot_name.getParent()).removeView(slot_name);
 							photo_view_root.addView(slot_name, 0);
 							RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)slot_name.getLayoutParams();
 							lp.topMargin = Math.round(slot_name.getResources().getDisplayMetrics().density * 25);
 							slot_name.requestLayout();
+							XposedBridge.log("check end");
 						}
 					}
 				} catch (Throwable t) {
