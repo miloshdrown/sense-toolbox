@@ -790,10 +790,13 @@ public class OtherMods {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
+					XposedBridge.log("createReminderView");
 					ViewGroup mReminder = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "mReminder");
 					if (mReminder != null) {
+						XposedBridge.log("check 0");
 						ViewGroup photo_view_root = (ViewGroup)mReminder.findViewById(mReminder.getResources().getIdentifier("photo_view_root", "id", "com.android.phone"));
 						if (photo_view_root != null) {
+							XposedBridge.log("check 1");
 							int paddingTopRoot = Math.round(photo_view_root.getResources().getDisplayMetrics().density * 25);
 							if (Helpers.isLP()) paddingTopRoot = 0;
 							photo_view_root.setPadding(
@@ -802,15 +805,14 @@ public class OtherMods {
 								photo_view_root.getPaddingRight(),
 								photo_view_root.getPaddingBottom()
 							);
-							XposedBridge.log("check 1");
-						}
+						} else XposedBridge.log("photo_view_root == null");
 						
 						TextView slot_name = (TextView)mReminder.findViewById(mReminder.getResources().getIdentifier("slot_name", "id", "com.android.phone"));
 						if (slot_name != null) {
+							XposedBridge.log("check 2");
 							slot_name.setPadding(slot_name.getPaddingLeft(), 0, slot_name.getPaddingRight(), 0);
 							slot_name.setIncludeFontPadding(false);
-							XposedBridge.log("check 2");
-						}
+						} else XposedBridge.log("slot_name == null");
 						
 						if (Helpers.isLP() && photo_view_root != null && slot_name != null) {
 							XposedBridge.log("check 3");
@@ -819,9 +821,8 @@ public class OtherMods {
 							RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)slot_name.getLayoutParams();
 							lp.topMargin = Math.round(slot_name.getResources().getDisplayMetrics().density * 25);
 							slot_name.requestLayout();
-							XposedBridge.log("check end");
-						}
-					}
+						} else XposedBridge.log("something == null");
+					} else XposedBridge.log("mReminder == null");
 				} catch (Throwable t) {
 					XposedBridge.log(t);
 				}
