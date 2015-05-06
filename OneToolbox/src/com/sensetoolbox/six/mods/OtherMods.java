@@ -656,13 +656,8 @@ public class OtherMods {
 		
 		if (Helpers.isDualSIM()) try {
 			resparam.res.setReplacement("com.android.phone", "dimen", "text_size_incoming_call_slot_name", modRes.fwd(R.dimen.text_size_incoming_call_slot_name));
-			//if (Helpers.isLP()) {
-			//	resparam.res.setReplacement("com.android.phone", "dimen", "dualsim_incoming_call_slot_name_height", modRes.fwd(R.dimen.dualsim_incoming_call_slot_name_height2));
-			//	resparam.res.setReplacement("com.android.phone", "dimen", "incoming_call_slot_name_title_layout_height", modRes.fwd(R.dimen.incoming_call_slot_name_title_layout_height2));
-			//} else {
-				resparam.res.setReplacement("com.android.phone", "dimen", "dualsim_incoming_call_slot_name_height", modRes.fwd(R.dimen.dualsim_incoming_call_slot_name_height));
-				resparam.res.setReplacement("com.android.phone", "dimen", "incoming_call_slot_name_title_layout_height", modRes.fwd(R.dimen.incoming_call_slot_name_title_layout_height));
-			//}
+			resparam.res.setReplacement("com.android.phone", "dimen", "dualsim_incoming_call_slot_name_height", modRes.fwd(R.dimen.dualsim_incoming_call_slot_name_height));
+			resparam.res.setReplacement("com.android.phone", "dimen", "incoming_call_slot_name_title_layout_height", modRes.fwd(R.dimen.incoming_call_slot_name_title_layout_height));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -800,7 +795,7 @@ public class OtherMods {
 						ViewGroup photo_view_root = (ViewGroup)mReminder.findViewById(mReminder.getResources().getIdentifier("photo_view_root", "id", "com.android.phone"));
 						if (photo_view_root != null) {
 							int paddingTopRoot = Math.round(photo_view_root.getResources().getDisplayMetrics().density * 25);
-							//if (Helpers.isLP()) paddingTopRoot = 0;
+							if (Helpers.isLP()) paddingTopRoot = 0;
 							photo_view_root.setPadding(
 								photo_view_root.getPaddingLeft(),
 								paddingTopRoot,
@@ -811,15 +806,16 @@ public class OtherMods {
 						
 						TextView slot_name = (TextView)mReminder.findViewById(mReminder.getResources().getIdentifier("slot_name", "id", "com.android.phone"));
 						if (slot_name != null) {
-							int paddingTop = 0;
-							//if (Helpers.isLP()) paddingTop = Math.round(slot_name.getResources().getDisplayMetrics().density * 25);
-							slot_name.setPadding(slot_name.getPaddingLeft(), paddingTop, slot_name.getPaddingRight(), 0);
+							slot_name.setPadding(slot_name.getPaddingLeft(), 0, slot_name.getPaddingRight(), 0);
 							slot_name.setIncludeFontPadding(false);
 						}
 						
 						if (Helpers.isLP() && photo_view_root != null && slot_name != null) {
 							mReminder.removeView(slot_name);
 							photo_view_root.addView(slot_name, 0);
+							RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+							lp.topMargin = Math.round(photo_view_root.getResources().getDisplayMetrics().density * 25);
+							slot_name.setLayoutParams(lp);
 						}
 					}
 				} catch (Throwable t) {

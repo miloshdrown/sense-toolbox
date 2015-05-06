@@ -21,8 +21,6 @@
 	<dimen name="text_size_incoming_call_slot_name">13sp</dimen>
 	<dimen name="incoming_call_slot_name_title_layout_height">24.0dip</dimen>
 	<dimen name="dualsim_incoming_call_slot_name_height">24.0dip</dimen>
-	<dimen name="incoming_call_slot_name_title_layout_height2">49.0dip</dimen>
-	<dimen name="dualsim_incoming_call_slot_name_height2">49.0dip</dimen>
 
 	<dimen name="navigation_bar_height">30dp</dimen>
 	<dimen name="navigation_bar_height_landscape">30dp</dimen>
