@@ -813,9 +813,9 @@ public class OtherMods {
 						if (Helpers.isLP() && photo_view_root != null && slot_name != null) {
 							mReminder.removeView(slot_name);
 							photo_view_root.addView(slot_name, 0);
-							RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-							lp.topMargin = Math.round(photo_view_root.getResources().getDisplayMetrics().density * 25);
-							slot_name.setLayoutParams(lp);
+							RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)slot_name.getLayoutParams();
+							lp.topMargin = Math.round(slot_name.getResources().getDisplayMetrics().density * 25);
+							slot_name.requestLayout();
 						}
 					}
 				} catch (Throwable t) {
