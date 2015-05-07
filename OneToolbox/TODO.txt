@@ -19,6 +19,7 @@ Current changelog
 [New] Remove launcher dock gradient background
 [New] Remove people widget background and footer
 [New] Remove music widget background
+[Fixed] Infinifolders on Sense Home 7.12.541048
 [Fixed] Some mods on HTC One M9
 [Fixed] Large photo mod on HTC One M8 Dual SIM
 

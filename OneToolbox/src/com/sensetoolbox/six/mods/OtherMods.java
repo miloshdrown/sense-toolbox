@@ -816,6 +816,7 @@ public class OtherMods {
 							photo_view_root.addView(slot_name, 0);
 							RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)slot_name.getLayoutParams();
 							lp.topMargin = Math.round(slot_name.getResources().getDisplayMetrics().density * 25);
+							slot_name.setShadowLayer(4.0f, 0, 3.0f, Color.argb(153, 0, 0, 0));
 							slot_name.setVisibility(vis);
 							slot_name.bringToFront();
 							slot_name.requestLayout();
