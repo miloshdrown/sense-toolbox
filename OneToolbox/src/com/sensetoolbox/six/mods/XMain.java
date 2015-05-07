@@ -188,6 +188,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				PrismMods.execHook_InvisiFolderBkg(resparam, transparency);
 			}
 			
+			if (pref.getBoolean("pref_key_prism_invisihotseat", false))
+				PrismMods.execHook_HotSeatNoBkg(resparam);
+			
 			if (pref.getBoolean("pref_key_prism_4x5homescreen", false))
 				PrismMods.execHook_HomeScreenGridSize(resparam);
 			
@@ -315,6 +318,16 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			int option = Integer.parseInt(pref.getString("pref_key_prism_gappwidget", "1"));
 			if (option > 1)
 				PrismMods.execHook_googleSearchWidget(resparam, option);
+		}
+		
+		if (pkg.equals("com.htc.MusicWidget")) {
+			if (pref.getBoolean("pref_key_prism_invisimusicwidget", false))
+				PrismMods.execHook_InvisiMusicWidget(resparam);
+		}
+		
+		if (pkg.equals("com.htc.htccontactwidgets")) {
+			if (pref.getBoolean("pref_key_prism_invisipeoplewidget", false))
+				PrismMods.execHook_InvisiPeopleWidget(resparam);
 		}
 	}
 	

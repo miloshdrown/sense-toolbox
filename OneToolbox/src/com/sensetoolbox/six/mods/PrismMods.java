@@ -200,27 +200,40 @@ public class PrismMods {
 			}
 		});
 		
-		findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "isFull", findClass("com.htc.launcher.folder.FolderInfo", lpparam.classLoader), new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				param.setResult(false);
-			}
-		});
+		try {
+			findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "isFull", findClass("com.htc.launcher.folder.FolderInfo", lpparam.classLoader), Context.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(false);
+				}
+			});
+		} catch (Throwable t) {
+			findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "isFull", findClass("com.htc.launcher.folder.FolderInfo", lpparam.classLoader), new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(false);
+				}
+			});
+		}
 		
 		XposedBridge.hookAllConstructors(findClass("com.htc.launcher.folder.Folder", lpparam.classLoader), new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				setBooleanField(param.thisObject, "m_bMultiplePage", true);
-				setStaticIntField(param.thisObject.getClass(), "FOLDER_MAX_COUNT", 9999);
+				try {
+					setBooleanField(param.thisObject, "m_bMultiplePage", true);
+					setStaticIntField(param.thisObject.getClass(), "FOLDER_MAX_COUNT", 9999);
+				} catch (Throwable t) {}
 			}
 		});
 		
-		findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "setMultiplePage", boolean.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				param.setResult(null);
-			}
-		});
+		try {
+			findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "setMultiplePage", boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(null);
+				}
+			});
+		} catch (Throwable t) {}
 		
 		findAndHookMethod("com.htc.launcher.pageview.CheckedAppsDataManager", lpparam.classLoader, "setMaxCheckedAmount", int.class, new XC_MethodHook() {
 			@Override
@@ -228,6 +241,17 @@ public class PrismMods {
 				setIntField(param.thisObject, "m_MaxCheckedAmount", 9999);
 			}
 		});
+		
+		try {
+			findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "getFolderMaxPages", findClass("com.htc.launcher.folder.FolderInfo", lpparam.classLoader), Context.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(-1);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
 	}
 	
 	public static void execHook_InvisiFolder(final InitPackageResourcesParam resparam, final int transparency) {
@@ -1259,5 +1283,43 @@ public class PrismMods {
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
+	}
+	
+	public static void execHook_HotSeatNoBkg(InitPackageResourcesParam resparam) {
+		resparam.res.setReplacement("com.htc.launcher", "drawable", "home_launcher_bg", new XResources.DrawableLoader() {
+			@Override
+			public Drawable newDrawable(XResources res, int id) throws Throwable {
+				return new ColorDrawable(Color.TRANSPARENT);
+			}
+		});
+	}
+	
+	public static void execHook_InvisiMusicWidget(InitPackageResourcesParam resparam) {
+		resparam.res.setReplacement("com.htc.MusicWidget", "drawable", "common_panel_light", new XResources.DrawableLoader() {
+			@Override
+			public Drawable newDrawable(XResources res, int id) throws Throwable {
+				return new ColorDrawable(Color.TRANSPARENT);
+			}
+		});
+	}
+	
+	public static void execHook_InvisiPeopleWidget(InitPackageResourcesParam resparam) {
+		resparam.res.setReplacement("com.htc.htccontactwidgets", "drawable", "common_panel_light", new XResources.DrawableLoader() {
+			@Override
+			public Drawable newDrawable(XResources res, int id) throws Throwable {
+				return new ColorDrawable(Color.TRANSPARENT);
+			}
+		});
+		
+		resparam.res.hookLayout("com.htc.htccontactwidgets", "layout", "specific_contact_widget_grid", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				ViewGroup widget = (ViewGroup)liparam.view;
+				if (widget != null) {
+					ImageView arrow_down = (ImageView)widget.findViewById(widget.getResources().getIdentifier("arrow_down", "id", "com.htc.htccontactwidgets"));
+					if (arrow_down != null) arrow_down.setAlpha(0f);
+				}
+			}
+		});
 	}
 }

@@ -790,13 +790,10 @@ public class OtherMods {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
-					XposedBridge.log("createReminderView");
 					ViewGroup mReminder = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "mReminder");
 					if (mReminder != null) {
-						XposedBridge.log("check 0");
 						ViewGroup photo_view_root = (ViewGroup)mReminder.findViewById(mReminder.getResources().getIdentifier("photo_view_root", "id", "com.android.phone"));
 						if (photo_view_root != null) {
-							XposedBridge.log("check 1");
 							int paddingTopRoot = Math.round(photo_view_root.getResources().getDisplayMetrics().density * 25);
 							if (Helpers.isLP()) paddingTopRoot = 0;
 							photo_view_root.setPadding(
@@ -805,24 +802,26 @@ public class OtherMods {
 								photo_view_root.getPaddingRight(),
 								photo_view_root.getPaddingBottom()
 							);
-						} else XposedBridge.log("photo_view_root == null");
+						}
 						
 						TextView slot_name = (TextView)mReminder.findViewById(mReminder.getResources().getIdentifier("slot_name", "id", "com.android.phone"));
 						if (slot_name != null) {
-							XposedBridge.log("check 2");
 							slot_name.setPadding(slot_name.getPaddingLeft(), 0, slot_name.getPaddingRight(), 0);
 							slot_name.setIncludeFontPadding(false);
-						} else XposedBridge.log("slot_name == null");
+						}
 						
 						if (Helpers.isLP() && photo_view_root != null && slot_name != null) {
-							XposedBridge.log("check 3");
+							int vis = slot_name.getVisibility();
 							((ViewGroup)slot_name.getParent()).removeView(slot_name);
 							photo_view_root.addView(slot_name, 0);
 							RelativeLayout.LayoutParams lp = (RelativeLayout.LayoutParams)slot_name.getLayoutParams();
 							lp.topMargin = Math.round(slot_name.getResources().getDisplayMetrics().density * 25);
+							slot_name.setVisibility(vis);
+							slot_name.bringToFront();
 							slot_name.requestLayout();
-						} else XposedBridge.log("something == null");
-					} else XposedBridge.log("mReminder == null");
+							slot_name.invalidate();
+						}
+					}
 				} catch (Throwable t) {
 					XposedBridge.log(t);
 				}

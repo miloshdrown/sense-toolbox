@@ -16,6 +16,9 @@ Current changelog
 =================
 
 1.5.4
+[New] Remove launcher dock gradient background
+[New] Remove people widget background and footer
+[New] Remove music widget background
 [Fixed] Some mods on HTC One M9
 [Fixed] Large photo mod on HTC One M8 Dual SIM
 
