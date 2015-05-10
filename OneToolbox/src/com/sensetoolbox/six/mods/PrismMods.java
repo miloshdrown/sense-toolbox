@@ -223,6 +223,10 @@ public class PrismMods {
 					setBooleanField(param.thisObject, "m_bMultiplePage", true);
 					setStaticIntField(param.thisObject.getClass(), "FOLDER_MAX_COUNT", 9999);
 				} catch (Throwable t) {}
+				
+				try {
+					setBooleanField(param.thisObject, "SUPPORT_MULTIPLE_PAGE", true);
+				} catch (Throwable t) {}
 			}
 		});
 		
@@ -249,9 +253,16 @@ public class PrismMods {
 					param.setResult(-1);
 				}
 			});
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
+			
+			findAndHookMethod("com.htc.launcher.folder.Folder", lpparam.classLoader, "onDragStart", "com.htc.launcher.DragSource", Object.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Object m_FolderDataManager = XposedHelpers.getObjectField(param.thisObject, "m_FolderDataManager");
+					Object overrideDragSoruce = XposedHelpers.callMethod(m_FolderDataManager, "overrideDragSoruce");
+					if (overrideDragSoruce == param.args[0]) XposedHelpers.callMethod(param.thisObject, "enterEditMode");
+				}
+			});
+		} catch (Throwable t) {}
 	}
 	
 	public static void execHook_InvisiFolder(final InitPackageResourcesParam resparam, final int transparency) {
@@ -1287,6 +1298,13 @@ public class PrismMods {
 	
 	public static void execHook_HotSeatNoBkg(InitPackageResourcesParam resparam) {
 		resparam.res.setReplacement("com.htc.launcher", "drawable", "home_launcher_bg", new XResources.DrawableLoader() {
+			@Override
+			public Drawable newDrawable(XResources res, int id) throws Throwable {
+				return new ColorDrawable(Color.TRANSPARENT);
+			}
+		});
+		
+		resparam.res.setReplacement("com.htc.launcher", "drawable", "prism_feed_gradient", new XResources.DrawableLoader() {
 			@Override
 			public Drawable newDrawable(XResources res, int id) throws Throwable {
 				return new ColorDrawable(Color.TRANSPARENT);

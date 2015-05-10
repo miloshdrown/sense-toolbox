@@ -26,6 +26,7 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.Bundle;
+import android.os.Environment;
 import android.util.Base64;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -89,6 +90,7 @@ public class CrashReportDialog extends Activity {
 	
 	@SuppressLint("SdCardPath")
 	private void sendCrash(final String xposedLogStr) {
+		String exceptionsPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SenseToolbox/";
 		try {
 			CrashReportPersister persister = new CrashReportPersister(getApplicationContext());
 			CrashReportData crashData = persister.load(mReportFileName);
@@ -113,10 +115,20 @@ public class CrashReportDialog extends Activity {
 			for (Map.Entry<String, Object> entry: keys.entrySet())
 			keysAsString += entry.getKey() + "=" + entry.getValue().toString() + "\n";
 			
+			StringBuilder sb = new StringBuilder();
+			try (FileInputStream in = new FileInputStream(new File(exceptionsPath + "uncaught_exceptions"))) {
+				try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(in))) {
+					String line;
+					while ((line = bufferedReader.readLine()) != null) sb.append(line).append("\n");
+				} catch (Exception e) {}
+			} catch (Exception e) {}
+			
 			String buildData = crashData.get(ReportField.BUILD);
 			buildData += "ROM.VERSION=" + ROM + "\n";
 			buildData += "KERNEL.VERSION=" + kernel + "\n";
 			buildData += "SHARED.PREFS=" + Base64.encodeToString(keysAsString.getBytes(), Base64.NO_WRAP) + "\n";
+			if (!sb.toString().isEmpty())
+			buildData += "UNCAUGHT.EXCEPTIONS=" + Base64.encodeToString(sb.toString().getBytes(), Base64.NO_WRAP) + "\n";
 			
 			crashData.put(ReportField.BUILD, buildData);
 			crashData.put(ReportField.USER_COMMENT, desc.getText().toString());
@@ -135,7 +147,9 @@ public class CrashReportDialog extends Activity {
 			worker.join(60000);
 		} catch (InterruptedException e) {
 			showFinishDialog(false, "server timeout");
+			return;
 		}
+		Helpers.emptyFile(exceptionsPath + "uncaught_exceptions", true);
 		showFinishDialog(true, null);
 	}
 	

@@ -2,6 +2,7 @@
 <resources>
 	<color name="theme_hint">#ff939393</color>
 	<color name="warning_background">#ffe74457</color>
+	<color name="update_background">#FF252525</color>
 	<color name="popup_top_bottom_color">#ff1A1A1A</color>
 	<color name="popup_center_color">#ff161616</color>
 </resources>

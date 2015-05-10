@@ -47,6 +47,7 @@
 	<string name="warning">Warning!</string>
 	<string name="wrong_sense_version">Your ROM is not Sense 6 based and therefore is not compatible with Sense 6 Toolbox module</string>
 	<string name="preview_release">Sense 7 is not supported, expect bugs and broken mods. Feedback is not required.</string>
+	<string name="update_available">Update is available! Tap here to download</string>
 	<string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 6 Toolbox module there and reboot.</string>
 	<string name="module_not_active">Sense 6 Toolbox module is not active! Open Xposed Installer, activate module and reboot.</string>
 	<string name="checking_root">Checking device capabilities…</string>

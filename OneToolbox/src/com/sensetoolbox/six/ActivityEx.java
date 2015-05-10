@@ -11,6 +11,9 @@ import com.sensetoolbox.six.utils.Version;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
+import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.RelativeLayout;
@@ -49,6 +52,15 @@ public class ActivityEx extends Activity {
 			});
 			alert.show();
 			return;
+		} else if (isMalwareInstalled()) {
+			Uri uri = Uri.fromParts("package", "richmondouk.xtended.settings", null);
+			Intent del = new Intent(Intent.ACTION_DELETE, uri);
+			startActivity(del);
+			
+			launch = false;
+			getActionBar().hide();
+			finish();
+			return;
 		}
 		
 		// Apply Settings theme
@@ -67,6 +79,16 @@ public class ActivityEx extends Activity {
 		actionBarContainer.setBackUpEnabled(false);
 		
 		setContentView(R.layout.activity_template);
+	}
+	
+	private boolean isMalwareInstalled() {
+		PackageManager pm = getPackageManager();
+		try {
+			pm.getPackageInfo("richmondouk.xtended.settings", PackageManager.GET_ACTIVITIES);
+			return true;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 	
 	@Override

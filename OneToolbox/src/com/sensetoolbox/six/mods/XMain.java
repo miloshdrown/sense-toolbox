@@ -219,8 +219,13 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_cb_alarm", false))
 				StatusbarMods.execHook_AlarmIcon(resparam);
 			
-			if (Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")) != 1)
-				StatusbarMods.execHook_WiFiIcon(resparam, Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")));
+			if (Helpers.isLP()) {
+				if (pref.getBoolean("pref_key_cb_wifi", false))
+					StatusbarMods.execHook_WiFiIcon(resparam, 3);
+			} else {
+				if (Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")) != 1)
+					StatusbarMods.execHook_WiFiIcon(resparam, Integer.parseInt(pref.getString("pref_key_cb_wifi_multi", "1")));
+			}
 			
 			if (pref.getBoolean("pref_key_cb_profile", false))
 				StatusbarMods.execHook_ProfileIcon(resparam);

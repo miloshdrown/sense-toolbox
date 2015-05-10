@@ -47,7 +47,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -905,8 +904,6 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			TextView experimental = (TextView)getActivity().findViewById(R.id.experimental);
 			experimental.setText(Helpers.l10n(getActivity(), R.string.popupnotify_experimental));
 			experimental.setTextColor(getResources().getColor(android.R.color.background_light));
-			FrameLayout experimentalFrame = (FrameLayout)getActivity().findViewById(R.id.experimentalFrame);
-			experimentalFrame.setVisibility(View.VISIBLE);
 			
 			prefListView = (HtcListView)getActivity().findViewById(android.R.id.list);
 			prefListView.setBackgroundResource(backResId);

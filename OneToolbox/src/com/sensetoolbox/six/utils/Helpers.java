@@ -7,6 +7,7 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
@@ -40,6 +41,7 @@ import com.sensetoolbox.six.MainActivity;
 import com.sensetoolbox.six.MainFragment;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.SenseThemes.PackageTheme;
+import com.sensetoolbox.six.SubActivity;
 import com.sensetoolbox.six.mods.XMain;
 import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
@@ -78,6 +80,7 @@ import android.os.Process;
 import android.os.PowerManager.WakeLock;
 import android.provider.Settings;
 import android.text.format.DateFormat;
+import android.util.Log;
 import android.util.LruCache;
 import android.util.SparseArray;
 import android.util.TypedValue;
@@ -99,8 +102,8 @@ public class Helpers {
 	public static ArrayList<AppData> launchableAppsList = null;
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
-	public static float strings_total = 705.0f;
-	public static String buildVersion = "250";
+	public static float strings_total = 706.0f;
+	public static String buildVersion = "251";
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -503,7 +506,7 @@ public class Helpers {
 		context.getTheme().resolveAttribute(multiply_color_id, typedValue, true);
 		int multiply_theme = typedValue.data;
 		
-		if (context.getClass() == MainActivity.class && category_theme == multiply_theme) category_theme = 0xffdadada;
+		if ((context.getClass() == MainActivity.class || context.getClass() == SubActivity.class) && category_theme == multiply_theme) category_theme = 0xffdadada;
 		
 		Bitmap src = ((BitmapDrawable)img).getBitmap();
 		Bitmap bitmap = src.copy(Bitmap.Config.ARGB_8888, true);
@@ -649,6 +652,28 @@ public class Helpers {
 			});
 			alert.show();
 			return false;
+		}
+	}
+	
+	public static boolean preparePathSilently(String path) {
+		String state = Environment.getExternalStorageState();
+		if (state.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) return false; else
+		if (state.equals(Environment.MEDIA_MOUNTED)) {
+			File file = new File(path);
+			if (!file.exists() && !file.mkdirs()) return false;
+			return true;
+		} else return false;
+	}
+	
+	public static void emptyFile(String pathToFile, boolean forceClear) {
+		File f = new File(pathToFile);
+		if (f.exists() && (f.length() > 150 * 1024 || forceClear)) {
+			Log.i("S6T", "Clearing uncaught exceptions log...");
+			try (FileOutputStream fOut = new FileOutputStream(f, false)) {
+				try (OutputStreamWriter output = new OutputStreamWriter(fOut)) {
+					output.write("");
+				} catch (Exception e) {}
+			} catch (Exception e) {}
 		}
 	}
 	

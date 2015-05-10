@@ -62,7 +62,7 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 
 			input = connection.getInputStream();
 			File tmp = new File(Helpers.dataPath);
-			tmp.mkdirs();
+			if (!tmp.exists()) tmp.mkdirs();
 			tmp.setReadable(true, false);
 			tmp.setWritable(true, false);
 			tmp.setExecutable(true, false);
@@ -101,10 +101,11 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 		try {
 			if (output != null) output.close();
 			if (input != null) input.close();
+			if (connection != null) connection.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if (connection != null) connection.disconnect();
+		
 		return "OK";
 	}
 	

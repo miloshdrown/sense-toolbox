@@ -11,6 +11,7 @@ import java.util.List;
 
 import android.app.ActivityManager;
 import android.app.ActivityManager.RecentTaskInfo;
+import android.app.Application;
 import android.app.Instrumentation;
 import android.app.KeyguardManager;
 import android.bluetooth.BluetoothAdapter;
@@ -30,6 +31,7 @@ import android.net.wifi.WifiManager;
 import android.nfc.NfcAdapter;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.PowerManager;
 import android.os.SystemClock;
@@ -458,6 +460,7 @@ public class GlobalActions {
 					XposedHelpers.setBooleanField(param.thisObject, "toolboxModuleActive", true);
 				}
 			});
+			Helpers.emptyFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/SenseToolbox/uncaught_exceptions", false);
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -500,6 +503,31 @@ public class GlobalActions {
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.RestartMessages");
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.RestartPrism");
 					mPWMContext.registerReceiver(mBRTools, intentfilter);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+		
+		try {
+			findAndHookMethod(Application.class, "onCreate", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					try {
+						final Context ctx = (Application)param.thisObject;
+						if (ctx == null || ctx.getPackageName().equals("com.sensetoolbox.six")) return;
+						Class<?> clsUEH = Thread.getDefaultUncaughtExceptionHandler().getClass();
+						XposedHelpers.findAndHookMethod(clsUEH, "uncaughtException", Thread.class, Throwable.class, new XC_MethodHook() {
+							@Override
+							protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+								if (param.args[1] != null) {
+									Intent intent = new Intent("com.sensetoolbox.six.SAVEEXCEPTION");
+									intent.putExtra("throwable", (Throwable)param.args[1]);
+									ctx.sendBroadcast(intent);
+								}
+							}
+						});
+					} catch (Throwable t) {}
 				}
 			});
 		} catch (Throwable t) {
