@@ -11,9 +11,7 @@ import com.sensetoolbox.six.utils.Version;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
-import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.RelativeLayout;
@@ -53,9 +51,7 @@ public class ActivityEx extends Activity {
 			alert.show();
 			return;
 		} else if (isMalwareInstalled()) {
-			Uri uri = Uri.fromParts("package", "richmondouk.xtended.settings", null);
-			Intent del = new Intent(Intent.ACTION_DELETE, uri);
-			startActivity(del);
+			Helpers.openURL(this, "http://sensetoolbox.com/copyright");
 			
 			launch = false;
 			getActionBar().hide();

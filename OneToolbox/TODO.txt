@@ -17,8 +17,8 @@ Current changelog
 
 1.5.4.1
 [New] Toolbox will now notify if new build or version is available
-[New] All uncaught exceptions (force close) in the system will be logged by Toolbox and send with bug reports
-[Fixed] Wi-fi icon replacement
+[New] All uncaught exceptions (force close) in the system will be logged by Toolbox and send with bug reports (log is cleared after evey successful report or when its size exceeds 150KB)
+[Fixed] Wi-Fi icon replacement
 [Fixed] Dragging app icons between pages in Infinifolders
 [Fixed] Remove launcher dock gradient background on Blinkfeed page too
 [Fixed] Some Toolbox UI bugs

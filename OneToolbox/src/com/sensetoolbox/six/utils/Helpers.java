@@ -74,6 +74,7 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Process;
@@ -674,6 +675,23 @@ public class Helpers {
 					output.write("");
 				} catch (Exception e) {}
 			} catch (Exception e) {}
+		}
+	}
+	
+	public static void openURL(Context ctx, String url) {
+		if (ctx == null) return;
+		Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
+		if (uriIntent.resolveActivity(ctx.getPackageManager()) != null) {
+			ctx.startActivity(uriIntent);
+		} else {
+			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
+			alert.setTitle(Helpers.l10n(ctx, R.string.warning));
+			alert.setView(Helpers.createCenteredText(ctx, R.string.no_browser));
+			alert.setCancelable(true);
+			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {}
+			});
+			alert.show();
 		}
 	}
 	

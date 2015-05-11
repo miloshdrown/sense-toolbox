@@ -62,7 +62,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	private Runnable showUpdateNotification = new Runnable() {
 		@Override
 		public void run() {
-			if (MainFragment.this.isAdded()) try {
+			if (isFragmentReady(getActivity())) try {
 				TypedValue typedValue = new TypedValue();
 				getActivity().getTheme().resolveAttribute(getResources().getIdentifier("multiply_color", "attr", "com.htc"), typedValue, true);
 				int multiply_color = typedValue.data;
@@ -85,7 +85,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 							detailsIntent.setData(Uri.fromParts("package", "com.sensetoolbox.six", null));
 							startActivity(detailsIntent);
 						} catch (Exception e) {
-							openURL("http://sensetoolbox.com/6/download");
+							Helpers.openURL(getActivity(), "http://sensetoolbox.com/6/download");
 						}
 					}
 				});
@@ -96,12 +96,16 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 	private Runnable hideUpdateNotification = new Runnable() {
 		@Override
 		public void run() {
-			if (MainFragment.this.isAdded()) try {
+			if (isFragmentReady(getActivity())) try {
 				FrameLayout updateFrame = (FrameLayout)getActivity().findViewById(R.id.updateFrame);
 				updateFrame.setVisibility(View.GONE);
 			} catch (Exception e) {}
 		}
 	};
+	
+	private boolean isFragmentReady(Activity act) {
+		return act != null && !act.isFinishing() && ((ActivityEx)act).isActive && MainFragment.this.isAdded();
+	}
 	
 	@Override
 	public void onActivityCreated(Bundle savedInstanceState) {
@@ -126,11 +130,11 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				Runnable showCheck = new Runnable() {
 					@Override
 					public void run() {
-						if (act != null) {
+						if (isFragmentReady(act)) try {
 							checkingDlg.setMessage(Helpers.l10n(act, R.string.checking_root));
 							checkingDlg.setCancelable(false);
 							checkingDlg.show();
-						}
+						} catch (Exception e) {}
 					}
 				};
 				handler.postDelayed(showCheck, 1000);
@@ -164,20 +168,9 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 						builder.setIcon(android.R.drawable.ic_dialog_alert);
 						builder.setNeutralButton(Helpers.l10n(act, R.string.okay), null);
 						HtcAlertDialog dlg = builder.create();
-						if (!act.isFinishing() && ((ActivityEx)act).isActive) dlg.show();
+						if (isFragmentReady(act)) dlg.show();
 					}
 				}); else checkForXposed();
-				
-				Runnable hideCheck = new Runnable() {
-					@Override
-					public void run() {
-						try {
-							if (checkingDlg != null && checkingDlg.isShowing()) checkingDlg.dismiss();
-						} catch (Exception e) {}
-					}
-				};
-				handler.removeCallbacks(showCheck);
-				handler.post(hideCheck);
 				
 				String toolboxPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SenseToolbox/";
 				try (InputStream inputFile = new FileInputStream(toolboxPath + "last_build")) {
@@ -224,6 +217,17 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				try {
 					if (connection != null) connection.disconnect();
 				} catch (Exception e) {}
+				
+				Runnable hideCheck = new Runnable() {
+					@Override
+					public void run() {
+						try {
+							if (checkingDlg != null && checkingDlg.isShowing()) checkingDlg.dismiss();
+						} catch (Exception e) {}
+					}
+				};
+				handler.removeCallbacks(showCheck);
+				handler.post(hideCheck);
 			}
 		}).start();
 
@@ -283,7 +287,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		issueTrackerPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(HtcPreference pref) {
-				openURL("https://bitbucket.org/langerhans/sense-toolbox/issues/");
+				Helpers.openURL(act, "https://bitbucket.org/langerhans/sense-toolbox/issues/");
 				return true;
 			}
 		});
@@ -291,7 +295,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		toolboxSitePreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(HtcPreference pref) {
-				openURL("http://sensetoolbox.com/");
+				Helpers.openURL(act, "http://sensetoolbox.com/");
 				return true;
 			}
 		});
@@ -299,7 +303,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		donatePagePreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(HtcPreference pref) {
-				openURL("http://sensetoolbox.com/donate");
+				Helpers.openURL(act, "http://sensetoolbox.com/donate");
 				return true;
 			}
 		});
@@ -307,7 +311,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		ARHDPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
 			@Override
 			public boolean onPreferenceClick(HtcPreference pref) {
-				openURL("http://android-revolution-hd.blogspot.de");
+				Helpers.openURL(act, "http://android-revolution-hd.blogspot.de");
 				return true;
 			}
 		});
@@ -416,22 +420,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		}
 	}
 	
-	private void openURL(String url) {
-		Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		if (uriIntent.resolveActivity(getActivity().getPackageManager()) != null) {
-			startActivity(uriIntent);
-		} else {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(getActivity());
-			alert.setTitle(Helpers.l10n(getActivity(), R.string.warning));
-			alert.setView(Helpers.createCenteredText(getActivity(), R.string.no_browser));
-			alert.setCancelable(true);
-			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {}
-			});
-			alert.show();
-		}
-	}
-	
 	public static class SysUIFragment extends HtcPreferenceFragmentExt {
 		@Override
 		public void onActivityCreated(Bundle savedInstanceState) {
@@ -504,7 +492,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		view.post(new Runnable() {
 			@Override
 			public void run() {
-				if (MainFragment.this.isAdded() && !Helpers.isSense7()) showQuickTip(0);
+				if (isFragmentReady(getActivity()) && !Helpers.isSense7()) showQuickTip(0);
 			}
 		});
 	}
@@ -604,7 +592,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 					}
 				}
 				final Activity act = getActivity();
-				if (act != null && !act.isFinishing() && ((ActivityEx)act).isActive)
+				if (isFragmentReady(act))
 				if (!isXposedInstalled) {
 					act.runOnUiThread(new Runnable() {
 						public void run() {
