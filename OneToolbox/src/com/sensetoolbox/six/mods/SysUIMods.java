@@ -3442,7 +3442,11 @@ public class SysUIMods {
 					if (!isUpdate) {
 						actions.addView(rimBtn);
 						actions.addView(rimBtnSleep);
-						if (!XMain.pref.getBoolean("pref_key_betterheadsup_nodismiss", false)) item.addView(actions);
+						item.addView(actions);
+						if (XMain.pref.getBoolean("pref_key_betterheadsup_nodismiss", false))
+							actions.setVisibility(View.GONE);
+						else
+							actions.setVisibility(View.VISIBLE);
 						hPager.addView(item);
 					}
 					updateHeight(huView.isAttachedToWindow());

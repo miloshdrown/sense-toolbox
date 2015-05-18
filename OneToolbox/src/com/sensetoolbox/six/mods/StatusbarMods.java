@@ -419,17 +419,16 @@ public class StatusbarMods {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		Field[] fields = R.drawable.class.getFields();
 		HashMap<String, Integer> dataIcons = new HashMap<String, Integer>();
-		for (Field field : fields) {
-			if (field.getName().startsWith("stat_sys_data_") && !field.getName().contains("bluetooth") && !field.getName().contains("usb")) { //Because bluetooth is seperate but also stat_sys_data_*. Meh!
-				try {
-					dataIcons.put(field.getName(), field.getInt(null));
-				} catch (Throwable t) {
-					XposedBridge.log(t);
-				}
+		for (Field field: fields)
+		if (field.getName().startsWith("stat_sys_data_") && !field.getName().contains("bluetooth") && !field.getName().contains("usb")) { //Because bluetooth is seperate but also stat_sys_data_*. Meh!
+			try {
+				dataIcons.put(field.getName(), field.getInt(null));
+			} catch (Throwable t) {
+				XposedBridge.log(t);
 			}
 		}
 		
-		for(final Entry<String, Integer> icon : dataIcons.entrySet()) {
+		for (final Entry<String, Integer> icon: dataIcons.entrySet()) {
 			resparam.res.setReplacement("com.android.systemui", "drawable", icon.getKey(), new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id)	throws Throwable {

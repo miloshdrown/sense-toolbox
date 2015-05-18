@@ -15,21 +15,10 @@ Ideas
 Current changelog
 =================
 
-1.5.4.1
-[New] Toolbox will now notify if new build or version is available
-[New] All uncaught exceptions (force close) in the system will be logged by Toolbox and send with bug reports (log is cleared after evey successful report or when its size exceeds 150KB)
-[Fixed] Wi-Fi icon replacement
-[Fixed] Dragging app icons between pages in Infinifolders
-[Fixed] Remove launcher dock gradient background on Blinkfeed page too
-[Fixed] Some Toolbox UI bugs
-
-1.5.4
-[New] Remove launcher dock gradient background
-[New] Remove people widget background and footer
-[New] Remove music widget background
-[Fixed] Infinifolders on Sense Home 7.12.541048
-[Fixed] Some mods on HTC One M9
-[Fixed][5.0] Large photo mod on HTC One M8 Dual SIM
+1.5.5
+[Fixed] FC with enabled "Hide dismiss button" option in Better heads-up
+[Fixed] Delay lockscreen appearance until the end of screen off fade animation
+[Fixed] Hide useless reminder on lockscreen when "Disable rejected call reminder" mod is active
 
 
 ===========
@@ -54,6 +43,22 @@ http://forum.xda-developers.com/member.php?u=5379502
 ==============
 Old Changelogs
 ==============
+
+1.5.4.1
+[New] Toolbox will now notify if new build or version is available
+[New] All uncaught exceptions (force close) in the system will be logged by Toolbox and send with bug reports (log is cleared after evey successful report or when its size exceeds 150KB)
+[Fixed] Wi-Fi icon replacement
+[Fixed] Dragging app icons between pages in Infinifolders
+[Fixed] Remove launcher dock gradient background on Blinkfeed page too
+[Fixed] Some Toolbox UI bugs
+
+1.5.4
+[New] Remove launcher dock gradient background
+[New] Remove people widget background and footer
+[New] Remove music widget background
+[Fixed] Infinifolders on Sense Home 7.12.541048
+[Fixed] Some mods on HTC One M9
+[Fixed][5.0] Large photo mod on HTC One M8 Dual SIM
 
 1.5.3
 [New] App drawer icon long press actions

@@ -252,14 +252,11 @@ public class OtherMods {
 	private static boolean updateScreenOn = false;
 	private static boolean updateScreenOff = false;
 	private static Object dpc = null;
+	private static long length = 250L;
 	
 	private static void updateAnimDurations() {
-		if (dpc == null) {
-			XposedBridge.log("problem!");
-			return;
-		}
+		if (dpc == null) return;
 		XMain.pref.reload();
-		long length = 250L;
 		if (XMain.pref.getBoolean("pref_key_other_screenanim_duration_enable", false))
 		length = (long)XMain.pref.getInt("pref_key_other_screenanim_duration", 250);
 		
@@ -348,6 +345,14 @@ public class OtherMods {
 				} catch (Throwable t) {
 					XposedBridge.log(t);
 				}
+			}
+		});
+		
+		if (XMain.pref_screenoff == 2)
+		findAndHookMethod("com.android.server.am.ActivityManagerService", lpparam.classLoader, "setLockScreenShown", boolean.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				if ((Boolean)param.args[0]) Thread.sleep(length + 100);
 			}
 		});
 	}
@@ -876,7 +881,7 @@ public class OtherMods {
 		});
 	}
 	
-	public static void execHook_RejectCallSilently(LoadPackageParam lpparam) {
+	public static void execHook_RejectCallSilently(final LoadPackageParam lpparam) {
 		if (Helpers.isLP()) {
 			findAndHookMethod("com.android.phone.CallNotifier", lpparam.classLoader, "addCallLog", "com.android.internal.telephony.Connection", int.class, new XC_MethodHook() {
 				@Override
@@ -898,6 +903,15 @@ public class OtherMods {
 				}
 			});
 		}
+		
+		findAndHookMethod("com.android.phone.InCallScreen", lpparam.classLoader, "startDeclineCallReminder", new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				Object nMgr = XposedHelpers.callStaticMethod(findClass("com.android.phone.NotificationMgr", lpparam.classLoader), "getDefault");
+				int missedNum = (Integer)XposedHelpers.callMethod(nMgr, "getNumberMissedCalls");
+				if (missedNum == 0) param.setResult(null);
+			}
+		});
 	}
 	
 	public static void execHook_EnhancedSecurity() {

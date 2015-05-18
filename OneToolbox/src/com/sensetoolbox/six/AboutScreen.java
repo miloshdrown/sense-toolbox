@@ -72,7 +72,7 @@ public class AboutScreen extends Activity {
 
 			while ((tmp = br.readLine()) != null) builder.append(tmp);
 			String htmlTrans = builder.toString();
-			String[] langs = { "de", "es", "fr", "hr", "it", "nl", "pl", "ro", "ru", "tr", "vi", "zh", "zh_TW", "cs", "pt_BR", "hi", "ja", "bg" };
+			String[] langs = { "de", "es", "fr", "hr", "it", "nl", "pl", "ro", "ru", "tr", "vi", "zh", "zh_TW", "cs", "pt_BR", "hi", "ja", "bg", "sv" };
 			for (String lang: langs)
 			htmlTrans = htmlTrans.replace("[" + lang + "]", Helpers.l10n(this, getResources().getIdentifier("about_l10n_" + lang, "string", this.getPackageName())));
 			

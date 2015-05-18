@@ -646,7 +646,7 @@
 	<string name="about_l10n_hi">Hindi</string>
 	<string name="about_l10n_ja">Japanese</string>
 	<string name="about_l10n_bg">Bulgarian</string>
-
+	<string name="about_l10n_sv">Swedish</string>
 
 	<string name="array_default">Default</string>
 	<string name="array_cam_actions_shutter">Shutter</string>
