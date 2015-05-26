@@ -28,9 +28,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	private static int pref_swiperight = 1;
 	private static int pref_swipeleft = 1;
 	private static int pref_backlongpress = 1;
-	private static int pref_homeassist = 1;
 	private static int pref_shake = 1;
 	private static int pref_appslongpress = 1;
+	public static int pref_homeassist = 1;
 	public static int pref_screenon = 0;
 	public static int pref_screenoff = 0;
 	public static boolean pref_alarmnotify = false;

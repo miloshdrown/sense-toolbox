@@ -511,8 +511,13 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			
 			backLongPressActionPreference.setEntries(entries);
 			backLongPressActionPreference.setEntryValues(entryVals);
-			homeAssistActionPreference.setEntries(entries);
-			homeAssistActionPreference.setEntryValues(entryVals);
+			
+			if (Helpers.isLP()) {
+				entriesCS.add(entriesCS.size(), Helpers.l10n(getActivity(), R.string.quick_recents));
+				entryValsCS.add(entryValsCS.size(), "15");
+				homeAssistActionPreference.setEntries(entriesCS.toArray(new CharSequence[entriesCS.size()]));
+				homeAssistActionPreference.setEntryValues(entryValsCS.toArray(new CharSequence[entryValsCS.size()]));
+			}
 
 			String not_selected = Helpers.l10n(getActivity(), R.string.notselected);
 			

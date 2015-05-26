@@ -16,9 +16,11 @@ Current changelog
 =================
 
 1.5.5
+[New][5.0][Experimental] Quick recent apps switch action on swipe up from home or recents key long press
 [Fixed] FC with enabled "Hide dismiss button" option in Better heads-up
 [Fixed] Delay lockscreen appearance until the end of screen off fade animation
 [Fixed] Hide useless reminder on lockscreen when "Disable rejected call reminder" mod is active
+[Fixed][4.4] Timeout for media actions on volume up/down keys
 
 
 ===========

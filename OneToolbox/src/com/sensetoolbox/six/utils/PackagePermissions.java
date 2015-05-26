@@ -7,6 +7,8 @@ import static de.robv.android.xposed.XposedHelpers.setObjectField;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import com.sensetoolbox.six.mods.XMain;
+
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedBridge;
@@ -127,6 +129,18 @@ public class PackagePermissions {
 			} catch (Throwable t2) {
 				XposedBridge.log(t2);
 			}
+		}
+		
+		if (XMain.pref_homeassist == 15) try {
+			findAndHookMethod("com.android.server.usage.UsageStatsService.BinderService", lpparam.classLoader, "hasPermission", String.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					String pkgName = (String)param.args[0];
+					if (pkgName != null && pkgName.equals("com.android.systemui")) param.setResult(true);
+				}
+			});
+		} catch (Throwable t2) {
+			XposedBridge.log(t2);
 		}
 	}
 }

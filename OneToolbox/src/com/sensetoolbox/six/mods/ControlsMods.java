@@ -176,6 +176,7 @@ public class ControlsMods {
 						GlobalActions.launchShortcut(mContext, 4); break;
 				case 13: GlobalActions.switchToPrevApp(mContext); break;
 				case 14: GlobalActions.openAppDrawer(mContext); break;
+				case 15: GlobalActions.showQuickRecents(mContext); break;
 			}
 		}
 	}
@@ -420,10 +421,18 @@ public class ControlsMods {
 		findAndHookMethod("android.media.MediaPlayer", null, "pause", new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				Context mContext = (Context)XposedHelpers.findMethodExact(findClass("android.media.MediaPlayer", null), "getContext").invoke(param.thisObject);
-				int mStreamType = (Integer)XposedHelpers.findMethodExact(findClass("android.media.MediaPlayer", null), "getAudioStreamType").invoke(param.thisObject);
-				if (mContext != null && (mStreamType == AudioManager.STREAM_MUSIC || mStreamType == 0x80000000))
-				mContext.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.SaveLastMusicPausedTime"));
+				try {
+					Context mContext = (Context)XposedHelpers.findMethodExact(findClass("android.media.MediaPlayer", null), "getContext").invoke(param.thisObject);
+					int mStreamType = 0;
+					if (Helpers.isLP())
+						mStreamType = (Integer)XposedHelpers.findMethodExact(findClass("android.media.MediaPlayer", null), "getAudioStreamType").invoke(param.thisObject);
+					else
+						mStreamType = (Integer)XposedHelpers.getObjectField(param.thisObject, "mStreamType");
+					if (mContext != null && (mStreamType == AudioManager.STREAM_MUSIC || mStreamType == 0x80000000))
+					mContext.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.SaveLastMusicPausedTime"));
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
 			}
 		});
 		

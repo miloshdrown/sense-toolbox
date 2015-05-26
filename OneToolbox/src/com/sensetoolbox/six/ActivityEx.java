@@ -7,7 +7,6 @@ import com.htc.widget.ActionBarText;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.Version;
-
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
@@ -21,7 +20,6 @@ public class ActivityEx extends Activity {
 	public boolean launch = true;
 	public ActionBarContainer actionBarContainer;
 	ActionBarText actionBarTextMain;
-	ActionBarText actionBarTextSub;
 	ActionBarItemView actionBarBackBtn;
 	public boolean isActive = false;
 	
@@ -68,7 +66,7 @@ public class ActivityEx extends Activity {
 		ActionBarExt actionBarExt = new ActionBarExt(this, getActionBar());
 		actionBarContainer = actionBarExt.getCustomContainer();
 		actionBarTextMain = new ActionBarText(this);
-
+		
 		RelativeLayout.LayoutParams mainlp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
 		actionBarTextMain.setLayoutParams(mainlp);
 		actionBarContainer.addCenterView(actionBarTextMain);

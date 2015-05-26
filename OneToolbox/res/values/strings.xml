@@ -333,6 +333,7 @@
 	<string name="controls_backlongpressaction_title">Action</string>
 	<string name="controls_backlongpressaction_summ">Action for back button long press.</string>
 	<string name="controls_mods_homeassist">Home assist</string>
+	<string name="controls_no_recents">No recent apps yet</string>
 	<string name="controls_mods_recentslongpress">Recents button long press</string>
 	<string name="controls_homeassistaction_title">Action</string>
 	<string name="controls_homeassistaction_summ">Overrides assist action (which is Google Now by default).</string>
@@ -376,6 +377,7 @@
 	<string name="open_menu">Open menu</string>
 	<string name="open_recents">Show recent apps</string>
 	<string name="switch_to_previous">Switch to previous app</string>
+	<string name="quick_recents">Recents quick access</string>
 
 	<string name="various_mods">Various mods</string>
 	<string name="various_mods_screenanim">Screen animations</string>

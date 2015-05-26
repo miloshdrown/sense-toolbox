@@ -55,6 +55,7 @@ public class GlobalActions {
 	public static Object mPWM = null;
 	public static Object mDMS = null;
 	public static Object mPSB = null;
+	public static FloatingSelector floatSel = null;
 	//public static Handler mHandler = null;
 	private static int mCurrentLEDLevel = 0;
 	
@@ -72,6 +73,13 @@ public class GlobalActions {
 		public void onReceive(final Context context, Intent intent) {
 			try {
 				String action = intent.getAction();
+				if (action.equals("com.sensetoolbox.six.mods.action.ShowQuickRecents")) {
+					if (floatSel == null) floatSel = new FloatingSelector(context);
+					floatSel.show();
+				} else if (action.equals("com.sensetoolbox.six.mods.action.HideQuickRecents")) {
+					if (floatSel != null) floatSel.hide();
+				}
+				
 				if (mPSB != null) {
 					if (action.equals("com.sensetoolbox.six.mods.action.ExpandNotifications"))
 						XposedHelpers.callMethod(mPSB, "animateExpandNotificationsPanel");
@@ -603,6 +611,8 @@ public class GlobalActions {
 				IntentFilter intentfilter = new IntentFilter();
 				intentfilter.addAction("com.sensetoolbox.six.mods.action.ExpandNotifications");
 				intentfilter.addAction("com.sensetoolbox.six.mods.action.ExpandSettings");
+				intentfilter.addAction("com.sensetoolbox.six.mods.action.ShowQuickRecents");
+				intentfilter.addAction("com.sensetoolbox.six.mods.action.HideQuickRecents");
 				mPSBContext.registerReceiver(mBRDrawer, intentfilter);
 			}
 		});
@@ -760,6 +770,26 @@ public class GlobalActions {
 	public static boolean openAppDrawer(Context context) {
 		try {
 			context.startActivity(new Intent("com.htc.intent.action.HTC_Prism_AllApps").addCategory(Intent.CATEGORY_DEFAULT).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+			return true;
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+			return false;
+		}
+	}
+	
+	public static boolean showQuickRecents(Context context) {
+		try {
+			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.ShowQuickRecents"));
+			return true;
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+			return false;
+		}
+	}
+	
+	public static boolean hideQuickRecents(Context context) {
+		try {
+			context.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.HideQuickRecents"));
 			return true;
 		} catch (Throwable t) {
 			XposedBridge.log(t);
