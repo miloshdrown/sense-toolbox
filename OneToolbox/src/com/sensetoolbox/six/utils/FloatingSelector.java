@@ -12,6 +12,8 @@ import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.mods.XMain;
 
 import android.annotation.SuppressLint;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RecentTaskInfo;
 import android.app.KeyguardManager;
 import android.app.usage.UsageStats;
 import android.app.usage.UsageStatsManager;
@@ -51,6 +53,7 @@ public class FloatingSelector extends FrameLayout {
 	Context mContext;
 	Resources mResources;
 	PackageManager mPackageManager;
+	ActivityManager mActivityManager;
 	float density;
 	LinearLayout items;
 	String pkgNameSel = null;
@@ -75,14 +78,28 @@ public class FloatingSelector extends FrameLayout {
 		//XposedBridge.log("onTouchEvent: " + String.valueOf(ev.getActionMasked()));
 		
 		if (ev.getActionMasked() == MotionEvent.ACTION_CANCEL) {
-			XposedBridge.log("ACTION_CANCEL!");
 			hide();
 			return true;
 		} else if (ev.getActionMasked() == MotionEvent.ACTION_UP) {
 			if (pkgNameSel != null) {
-				Intent launchIntent = mPackageManager.getLaunchIntentForPackage(pkgNameSel);
-				if (launchIntent != null) {
-					XposedBridge.log(launchIntent.toString());
+				@SuppressWarnings("deprecation")
+				List<RecentTaskInfo> tasks = mActivityManager.getRecentTasks(Integer.MAX_VALUE, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
+				boolean isInRecents = false;
+				for (RecentTaskInfo task: tasks)
+				if (task.baseIntent != null && task.baseIntent.getComponent().getPackageName().equals(pkgNameSel)) {
+					isInRecents = true;
+					if (task.id == -1) try {
+						mContext.startActivity(task.baseIntent);
+					} catch (Throwable t) {
+						isInRecents = false;
+					} else {
+						mActivityManager.moveTaskToFront(task.persistentId, 0);
+					}
+					break;
+				}
+				if (!isInRecents) {
+					Intent launchIntent = mPackageManager.getLaunchIntentForPackage(pkgNameSel);
+					launchIntent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
 					mContext.startActivity(launchIntent);
 				}
 			}
@@ -92,28 +109,26 @@ public class FloatingSelector extends FrameLayout {
 			int rPointX = Math.round(ev.getRawX());
 			int rPointY = Math.round(ev.getRawY());
 			
-			for (int i = 0; i < items.getChildCount(); i++) {
-				View appBtn = items.getChildAt(i);
-				if (appBtn.getTag() == null) continue;
+			ArrayList<View> btns = Helpers.getChildViewsRecursive(items);
+			for (View appBtn: btns) {
+				if (!Button.class.isInstance(appBtn) || appBtn.getTag() == null) continue;
 				Object[] tagObj = (Object[])appBtn.getTag();
 				int tag = (Integer)tagObj[0];
 				String pkgName = (String)tagObj[1];
 				appBtn.getGlobalVisibleRect(r1);
-				if (appBtn != null) {
-					if (r1.contains(rPointX, rPointY)) {
-						if (tag == 0) {
-							pkgNameSel = pkgName;
-							appBtn.setTag(new Object[] { 1, pkgName });
-							appBtn.animate().cancel();
-							appBtn.animate().setDuration(150).setStartDelay(0).z(densify(20)).scaleX(1.0f).scaleY(1.0f).start();
-						}
-					} else {
-						if (tag == 1) {
-							pkgNameSel = null;
-							appBtn.setTag(new Object[] { 0, pkgName });
-							appBtn.animate().cancel();
-							appBtn.animate().setDuration(150).setStartDelay(0).z(5).scaleX(0.95f).scaleY(0.95f).start();
+				if (r1.contains(rPointX, rPointY)) {
+					if (tag == 0) {
+						pkgNameSel = pkgName;
+						appBtn.setTag(new Object[] { 1, pkgName });
+						appBtn.animate().cancel();
+						appBtn.animate().setDuration(150).setStartDelay(0).z(densify(20)).scaleX(1.0f).scaleY(1.0f).start();
 					}
+				} else {
+					if (tag == 1) {
+						pkgNameSel = null;
+						appBtn.setTag(new Object[] { 0, pkgName });
+						appBtn.animate().cancel();
+						appBtn.animate().setDuration(150).setStartDelay(0).z(5).scaleX(0.95f).scaleY(0.95f).start();
 					}
 				}
 			}
@@ -145,6 +160,7 @@ public class FloatingSelector extends FrameLayout {
 		mContext = context;
 		mResources = mContext.getResources();
 		mPackageManager = mContext.getPackageManager();
+		mActivityManager = (ActivityManager)mContext.getSystemService(Context.ACTIVITY_SERVICE);
 		density = mResources.getDisplayMetrics().density;
 		//materialTextColor = mResources.getColor((mResources.getIdentifier("primary_text_default_material_dark", "color", "android")));
 		//btn_borderless_material = mResources.getIdentifier("btn_borderless_material", "drawable", "android");
@@ -154,9 +170,9 @@ public class FloatingSelector extends FrameLayout {
 		//accentColor = typedValue.data;
 		
 		items = new LinearLayout(mContext);
-		items.setOrientation(LinearLayout.VERTICAL);
 		items.setAlpha(0f);
-		items.setPadding(0, densify(20), 0, densify(20));
+		items.setClipToPadding(false);
+		items.setClipToOutline(false);
 		updateOrientation();
 		
 		addView(items);
@@ -187,8 +203,8 @@ public class FloatingSelector extends FrameLayout {
 			mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
 			
 			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-			lp.setMargins(densify(20), 0, densify(20), densify(5));
 			lp.gravity = Gravity.BOTTOM;
+			lp.setMargins(0, 0, 0, densify(5));
 			
 			GradientDrawable gbkg = new GradientDrawable();
 			gbkg.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
@@ -210,9 +226,51 @@ public class FloatingSelector extends FrameLayout {
 			ArrayList<String> launchers = new ArrayList<String>();
 			for (ResolveInfo launcher: launcherList) launchers.add(launcher.activityInfo.applicationInfo.packageName);
 
-			int cnt = 0;
 			int rot = getDeviceRotation();
-			if (rot == Surface.ROTATION_90 || rot == Surface.ROTATION_270) cnt = 3;
+			boolean isLandscape = (rot == Surface.ROTATION_90 || rot == Surface.ROTATION_270);
+			int cnt = 0;
+			int cntMax = 9;
+			LinearLayout column1 = new LinearLayout(mContext);
+			LinearLayout column2 = new LinearLayout(mContext);
+			if (isLandscape) {
+				items.setOrientation(LinearLayout.HORIZONTAL);
+				
+				LinearLayout.LayoutParams lpc = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0.47f);
+				column1.setOrientation(LinearLayout.VERTICAL);
+				column1.setLayoutParams(lpc);
+				column1.setClipToPadding(false);
+				column1.setClipToOutline(false);
+				column2.setOrientation(LinearLayout.VERTICAL);
+				column2.setLayoutParams(lpc);
+				column2.setClipToPadding(false);
+				column2.setClipToOutline(false);
+				
+				if (rot == Surface.ROTATION_90) {
+					items.setGravity(Gravity.RIGHT);
+					items.setPadding(0, 0, 0, 0);
+					column2.setPadding(densify(20), densify(20), densify(10), densify(20));
+					column1.setPadding(densify(10), densify(20), densify(20), densify(20));
+					items.addView(column2);
+					items.addView(column1);
+				} else if (rot == Surface.ROTATION_270) {
+					items.setGravity(Gravity.LEFT);
+					items.setPadding(0, 0, 0, 0);
+					column1.setPadding(densify(20), densify(20), densify(10), densify(20));
+					column2.setPadding(densify(10), densify(20), densify(20), densify(20));
+					items.addView(column1);
+					items.addView(column2);
+				}
+
+				items.setWeightSum(1.0f);
+				cntMax = 12;
+			} else {
+				items.setOrientation(LinearLayout.VERTICAL);
+				if (rot == Surface.ROTATION_0)
+					items.setPadding(densify(20), densify(20), densify(20), densify(20));
+				else if (rot == Surface.ROTATION_180)
+					items.setPadding(densify(20), densify(20), densify(20), densify(40));
+			}
+			
 			boolean skipFirst = true;
 			boolean isEmpty = true;
 			if (mySortedMap != null && !mySortedMap.isEmpty())
@@ -222,11 +280,10 @@ public class FloatingSelector extends FrameLayout {
 				
 				if (skipFirst) { skipFirst = false; continue; }
 				if (actInfo == null || launchers.contains(pkgName)) continue;
-				if (cnt == 9) break;
+				if (cnt >= cntMax) break;
 				cnt++;
 				Button appBtn = new Button(mContext);
 				appBtn.setTag(new Object[] { 0, pkgName });
-				appBtn.setLayoutParams(lp);
 				appBtn.setFocusable(true);
 				appBtn.setClickable(true);
 				appBtn.setTextColor(Color.argb(255, 245, 245, 245));
@@ -261,11 +318,19 @@ public class FloatingSelector extends FrameLayout {
 					XposedBridge.log(t);
 				}
 				
+				LinearLayout itemsHolder = items;
+				if (isLandscape)
+				if (cnt <= 6)
+					itemsHolder = column1;
+				else
+					itemsHolder = column2;
+
+				appBtn.setLayoutParams(lp);
 				switch (rot) {
-					case Surface.ROTATION_0: items.addView(appBtn, 0); break;
-					case Surface.ROTATION_180: items.addView(appBtn); break;
-					case Surface.ROTATION_90: items.addView(appBtn); break;
-					case Surface.ROTATION_270: items.addView(appBtn, 0); break;
+					case Surface.ROTATION_0: itemsHolder.addView(appBtn, 0); break;
+					case Surface.ROTATION_180: itemsHolder.addView(appBtn); break;
+					case Surface.ROTATION_90: itemsHolder.addView(appBtn); break;
+					case Surface.ROTATION_270: itemsHolder.addView(appBtn, 0); break;
 				}
 				isEmpty = false;
 			}
@@ -324,7 +389,7 @@ public class FloatingSelector extends FrameLayout {
 				bkg.setOrientation(GradientDrawable.Orientation.TOP_BOTTOM);
 				break;
 			case Surface.ROTATION_90:
-				lp = new FrameLayout.LayoutParams(Math.round(mResources.getDisplayMetrics().widthPixels / 2), LayoutParams.MATCH_PARENT);
+				lp = new FrameLayout.LayoutParams(Math.round(mResources.getDisplayMetrics().widthPixels), LayoutParams.MATCH_PARENT);
 				lp.gravity = Gravity.RIGHT | Gravity.TOP;
 				items.setLayoutParams(lp);
 				items.setTranslationX(densify(50));
@@ -332,7 +397,7 @@ public class FloatingSelector extends FrameLayout {
 				bkg.setOrientation(GradientDrawable.Orientation.RIGHT_LEFT);
 				break;
 			case Surface.ROTATION_270:
-				lp = new FrameLayout.LayoutParams(Math.round(mResources.getDisplayMetrics().widthPixels / 2), LayoutParams.MATCH_PARENT);
+				lp = new FrameLayout.LayoutParams(Math.round(mResources.getDisplayMetrics().widthPixels), LayoutParams.MATCH_PARENT);
 				lp.gravity = Gravity.LEFT | Gravity.BOTTOM;
 				items.setLayoutParams(lp);
 				items.setTranslationX(densify(-50));

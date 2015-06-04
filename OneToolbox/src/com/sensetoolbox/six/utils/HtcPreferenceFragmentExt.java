@@ -454,6 +454,20 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 			((ActivityEx)getActivity()).actionBarContainer.addRightView(menuTest);
 			
 			applyPopupState(prefs.getBoolean("better_headsup_active", false));
+		} else if (menuType == 5) {
+			inflater.inflate(R.menu.menu_sub, menu);
+			
+			OnOffSwitch = (HtcToggleButtonLight)menu.getItem(1).getActionView().findViewById(R.id.onoffSwitch);
+			OnOffSwitch.setEnabled(true);
+			OnOffSwitch.setOnCheckedChangeListener(new OnCheckedChangeListener(){
+				@Override
+				public void onCheckedChanged(HtcToggleButtonLight toggle, boolean state) {
+					prefs.edit().putBoolean("fleeting_glance_active", state).commit();
+					applyWGState(state);
+				}
+			});
+			
+			applyWGState(prefs.getBoolean("fleeting_glance_active", false));
 		}
 	}
 	
@@ -481,6 +495,7 @@ public class HtcPreferenceFragmentExt extends HtcPreferenceFragment {
 		}
 	}
 	
+	// Popup Notify
 	public void applyPopupState(Boolean state) {
 		OnOffSwitch.setChecked(state);
 		menuTest.setEnabled(state);

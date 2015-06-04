@@ -146,7 +146,7 @@ public class Helpers {
 	}
 	
 	public static String l10n(Context ctx, int resId) {
-		if (resId != 0)
+		if (ctx != null && resId != 0)
 			return l10n(ctx, ctx.getResources().getResourceEntryName(resId));
 		else
 			return "???";
@@ -286,6 +286,8 @@ public class Helpers {
 					entriesResName = "extendedpanel_actions";
 				else if (titleResName.equals("sense_gappwidget_title"))
 					entriesResName = "googleapp_widget";
+				else if (titleResName.equals("sense_transitions_title"))
+					entriesResName = "transitions";
 				else if (titleResName.contains("sense_") || titleResName.contains("controls_"))
 					entriesResName = "global_actions";
 				else if (titleResName.contains("wakegestures_"))

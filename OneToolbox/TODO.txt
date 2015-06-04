@@ -15,12 +15,16 @@ Ideas
 Current changelog
 =================
 
-1.5.5
+1.5.6
 [New][5.0][Experimental] Quick recent apps switch action on swipe up from home or recents key long press
+[New] Show soft keyboard only if you requested it
+[New] Stock Lollipop and modified HTC transition animations between Sense launcher and apps
+[Fixed] Wake gestures freeze on boot
 [Fixed] FC with enabled "Hide dismiss button" option in Better heads-up
 [Fixed] Delay lockscreen appearance until the end of screen off fade animation
 [Fixed] Hide useless reminder on lockscreen when "Disable rejected call reminder" mod is active
 [Fixed][4.4] Timeout for media actions on volume up/down keys
+[Changed][4.4] Colored Bluetooth status bar icon when disconnected
 
 
 ===========

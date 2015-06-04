@@ -1340,4 +1340,38 @@ public class PrismMods {
 			}
 		});
 	}
+	
+	public static void execHook_StockTransitionsLauncher(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Activity act = (Activity)param.thisObject;
+					if (act != null && act.getWindow() != null) act.getWindow().setWindowAnimations(android.R.style.Animation_Activity);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_StockTransitions() {
+		try {
+			findAndHookMethod(Activity.class, "overridePendingTransition", int.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Activity act = (Activity)param.thisObject;
+					if (act != null && act.getPackageName().equals("com.htc.launcher")) param.setResult(null);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_StockTransitionsAnim(final InitPackageResourcesParam resparam) {
+		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
+		resparam.res.setReplacement("com.htc.launcher", "anim", "trans_zoom_open", modRes.fwd(R.anim.activity_open_enter));
+		resparam.res.setReplacement("com.htc.launcher", "anim", "trans_zoom_close", modRes.fwd(R.anim.activity_close_exit));
+	}
 }

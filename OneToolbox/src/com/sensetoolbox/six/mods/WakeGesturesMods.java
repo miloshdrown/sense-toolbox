@@ -26,10 +26,18 @@ import com.stericson.RootTools.RootTools;
 
 import android.annotation.SuppressLint;
 import android.content.BroadcastReceiver;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.XModuleResources;
+import android.graphics.PixelFormat;
+import android.hardware.Sensor;
+import android.hardware.SensorEvent;
+import android.hardware.SensorEventListener;
+import android.hardware.SensorManager;
+import android.hardware.TriggerEvent;
+import android.hardware.TriggerEventListener;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.PowerManager;
@@ -38,11 +46,17 @@ import android.os.SystemClock;
 import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
 import android.provider.Settings;
+import android.service.notification.NotificationListenerService;
+import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
+import android.widget.FrameLayout;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedBridge;
@@ -178,7 +192,7 @@ public class WakeGesturesMods {
 			if (pkgAppName != null) {
 				String[] pkgAppArray = pkgAppName.split("\\|");
 				
-				if (mEasyAccessCtrl == null) XposedBridge.log("Failed to start app using wake gesture!"); else
+				if (mEasyAccessCtrl == null) XposedBridge.log("[S6T] Failed to start app using wake gesture!"); else
 				if (pkgAppArray[0].equals("com.htc.camera")) {
 					XposedHelpers.callMethod(mEasyAccessCtrl, "launchCamera", ctx, false);
 				} else {
@@ -220,7 +234,7 @@ public class WakeGesturesMods {
 	
 	public static void launchShortcut(Context ctx, int action) {
 		try {
-			if (mEasyAccessCtrl == null) XposedBridge.log("Failed to start app using wake gesture!"); else {
+			if (mEasyAccessCtrl == null) XposedBridge.log("[S6T] Failed to start app using wake gesture!"); else {
 				String intentString = getShortcutIntent(action);
 				if (intentString != null) {
 					Intent shortcutIntent = Intent.parseUri(intentString, 0);
@@ -398,7 +412,7 @@ public class WakeGesturesMods {
 		if (isOn) val = "1"; else val = "0";
 		Command command = new Command(0, false, "echo " + val + " > /sys/android_touch/knockcode");
 		try {
-			if (RootTools.isAccessGiven()) RootTools.getShell(true).add(command);
+			RootTools.getShell(true).add(command);
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -578,7 +592,7 @@ public class WakeGesturesMods {
 						} catch (Exception e) {
 							th.interrupt();
 							th = null;
-							XposedBridge.log("Resetting gesture listener thread...");
+							XposedBridge.log("[S6T] Resetting gesture listener thread...");
 							createThread(param).start();
 						}
 					} else if (!mPowerManager.isScreenOn()) synchronized (mPauseLock) {
@@ -618,30 +632,6 @@ public class WakeGesturesMods {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				createThread(param);
-			}
-		});
-		
-		if (Helpers.isLP())
-		XposedHelpers.findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "systemBooted", new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				XMain.pref.reload();
-				if (XMain.pref.getBoolean("wake_gestures_active", false)) {
-					final Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
-					int delay = 0;
-					if (XMain.pref.getBoolean("pref_key_wakegest_delay", false)) delay = 10000;
-					if (mHandler != null)
-					mHandler.postDelayed(new Runnable() {
-						@Override
-						public void run() {
-							if (RootTools.isAccessGiven()) {
-								XposedBridge.log("[S6T] Wake gestures activated!");
-								Helpers.setWakeGestures(true);
-								if (!Helpers.getWakeGestures().equals("1")) mHandler.postDelayed(this, 2000);
-							} else XposedBridge.log("[S6T] No root access");
-						}
-					}, delay);
-				}
 			}
 		});
 	}
@@ -800,7 +790,7 @@ public class WakeGesturesMods {
 					XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableEasyAccess", true);
 					XposedHelpers.setBooleanField(mEasyAccessCtrl, "mIsEnableQuickCall", true);
 				}
-			} else XposedBridge.log("[S6T] mSysContext == null");
+			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -859,7 +849,7 @@ public class WakeGesturesMods {
 					}
 				});
 			} catch (Throwable t2) {
-				XposedBridge.log("Both lockscreen init hooks failed");
+				XposedBridge.log("[S6T] Both lockscreen init hooks failed");
 			}
 		}
 		
@@ -898,6 +888,343 @@ public class WakeGesturesMods {
 					}
 					executeActionFor(param, prefName, SystemClock.uptimeMillis(), j);
 					param.setResult(null);
+				}
+			}
+		});
+	}
+	
+	public static TriggerSensor mSigMotionSensor;
+	public static TriggerSensor mPickUpSensor;
+	public static FrameLayout dummy;
+	public static WindowManager.LayoutParams alertParams;
+	public static boolean captureTouches = false;
+	public static String tokenSleep = "sleep";
+	public static class TriggerSensor extends TriggerEventListener {
+		Object thisObject;
+		SensorManager mSensorManager;
+		PowerManager mPowerManager;
+		Sensor mSensor;
+		Context mContext;
+		Handler mHandler;
+		WakeLock wl;
+		int sensorType;
+		public boolean isActive = false;
+		Runnable startScreenOn = new Runnable() {
+			@Override
+			public void run() {
+				mContext.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.ActivateDozeLockscreen"));
+				doWakeUp(thisObject, SystemClock.uptimeMillis());
+				captureTouches = true;
+			}
+		};
+		Runnable stopScreenOn = new Runnable() {
+			@Override
+			public void run() {
+				captureTouches = false;
+				mHandler.removeCallbacksAndMessages(tokenSleep);
+				mContext.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.DeactivateDozeLockscreen"));
+				WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+				if (dummy.isAttachedToWindow()) wm.removeView(dummy);
+			}
+		};
+		Runnable stopScreenOnAndSleep = new Runnable() {
+			@Override
+			public void run() {
+				captureTouches = false;
+				mHandler.removeCallbacksAndMessages(tokenSleep);
+				XposedHelpers.callMethod((PowerManager)mContext.getSystemService(Context.POWER_SERVICE), "goToSleep", SystemClock.uptimeMillis());
+				mHandler.postDelayed(new Runnable() {
+					@Override
+					public void run() {
+						mContext.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.DeactivateDozeLockscreen"));
+						WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+						if (dummy.isAttachedToWindow()) wm.removeView(dummy);
+					}
+				}, 1000);
+			}
+		};
+		
+		@SuppressLint({ "RtlHardcoded", "NewApi" })
+		public TriggerSensor(Object thisObj, int type) {
+			thisObject = thisObj;
+			sensorType = type;
+			mContext = (Context)XposedHelpers.getObjectField(thisObject, "mContext");
+			mHandler = (Handler)XposedHelpers.getObjectField(thisObject, "mHandler");
+			mSensorManager = (SensorManager)mContext.getSystemService(Context.SENSOR_SERVICE);
+			mPowerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+			mSensor = mSensorManager.getDefaultSensor(sensorType);
+			
+			alertParams = new WindowManager.LayoutParams(
+					0, 0, 0, 0, WindowManager.LayoutParams.TYPE_SYSTEM_OVERLAY,
+					WindowManager.LayoutParams.FLAG_NOT_FOCUSABLE |
+					WindowManager.LayoutParams.FLAG_NOT_TOUCH_MODAL |
+					WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED |
+					WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON |
+					WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON,
+					PixelFormat.TRANSLUCENT);
+			alertParams.gravity = Gravity.LEFT | Gravity.TOP;
+			alertParams.screenBrightness = -1;
+			alertParams.packageName = mContext.getPackageName();
+			alertParams.setTitle("BrightnessChanger");
+			dummy = new FrameLayout(mContext);
+		}
+		
+		@Override
+		@SuppressWarnings("deprecation")
+		public void onTrigger(TriggerEvent event) {
+			XposedBridge.log("SigMotion trigger");
+			if (isCovered) {
+				if (!mPowerManager.isScreenOn()) {
+					WakeLock wlk = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T FleetingGlanceDelay");
+					try {
+						wlk.acquire();
+						isActive = mSensorManager.requestTriggerSensor(TriggerSensor.this, mSensor);
+					} finally {
+						wlk.release();
+					}
+				}
+			} else {
+				isActive = false;
+				if (thisObject != null) {
+					WindowManager wm = (WindowManager)mContext.getSystemService(Context.WINDOW_SERVICE);
+					if (!dummy.isAttachedToWindow()) {
+						if (XMain.pref.getBoolean("pref_key_fleetingglance_screenbright_enable", false))
+							alertParams.screenBrightness = XMain.pref.getInt("pref_key_fleetingglance_screenbright", 0) / 100.0f;
+						wm.addView(dummy, alertParams);
+					}
+					mHandler.postDelayed(startScreenOn, 200);
+					int duration = 5000;
+					if (XMain.pref.getBoolean("pref_key_fleetingglance_timeout_enable", false))
+						duration = XMain.pref.getInt("pref_key_fleetingglance_timeout", 2) * 1000 + 3000;
+					mHandler.postAtTime(stopScreenOnAndSleep, tokenSleep, SystemClock.uptimeMillis() + duration);
+				}
+			}
+		}
+		
+		@SuppressLint("Wakelock")
+		@SuppressWarnings("deprecation")
+		public void startListening() {
+			if (mSensor != null && XMain.pref.getBoolean("fleeting_glance_active", false)) {
+				if (!mPowerManager.isScreenOn()) {
+					XposedBridge.log("startListening scr off");
+					mHandler.post(stopScreenOn);
+					if (wl != null && wl.isHeld()) wl.release();
+					wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T FleetingGlanceDelay");
+					if (sensorType == Sensor.TYPE_SIGNIFICANT_MOTION) {
+						wl.acquire();
+						mHandler.postDelayed(new Runnable() {
+							@Override
+							public void run() {
+								isActive = mSensorManager.requestTriggerSensor(TriggerSensor.this, mSensor);
+								wl.release();
+							}
+						}, 2000);
+					} else if (sensorType == 25) try {
+						wl.acquire();
+						isActive = mSensorManager.requestTriggerSensor(TriggerSensor.this, mSensor);
+					} finally {
+						wl.release();
+					}
+				}
+			}
+		}
+		
+		public void stopListening() {
+			if (mSensor != null) isActive = !mSensorManager.cancelTriggerSensor(this, mSensor);
+		}
+		
+		public void pokeOnNotification() {
+			onTrigger(null);
+		}
+		
+		public void dozeDismiss() {
+			mHandler.post(stopScreenOn);
+		}
+	}
+	
+	private static BroadcastReceiver mBRNotify = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			String action = intent.getAction();
+			if (action.equals("com.sensetoolbox.six.mods.action.NotificationWakeUp"))
+				mSigMotionSensor.pokeOnNotification();
+			else if (action.equals("com.sensetoolbox.six.mods.action.TouchScreenTapped"))
+				mSigMotionSensor.dozeDismiss();
+		}
+	};
+	
+	public static Sensor mProxSensor;
+	public static boolean isProxActive = false;
+	public static float mMaxRange;
+	public static boolean isCovered = false;
+	public static SensorEventListener proxListener = new SensorEventListener() {
+		@Override
+		public void onSensorChanged(SensorEvent event) {
+			if (event.values != null && event.values.length > 0 && event.values[0] != mMaxRange)
+				isCovered = true;
+			else
+				isCovered = false;
+			XposedBridge.log("isCovered = " + String.valueOf(isCovered));
+		}
+
+		@Override
+		public void onAccuracyChanged(Sensor sensor, int accuracy) {}
+	};
+	
+	public static void execHook_FleetingGlance() {
+		try {
+			findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "init", Context.class, "android.view.IWindowManager", "android.view.WindowManagerPolicy.WindowManagerFuncs", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					mSigMotionSensor = new TriggerSensor(param.thisObject, Sensor.TYPE_SIGNIFICANT_MOTION);
+					mPickUpSensor = new TriggerSensor(param.thisObject, 25);
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					SensorManager mSensorManager = (SensorManager)mContext.getSystemService(Context.SENSOR_SERVICE);
+					mProxSensor = mSensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+					mMaxRange = mProxSensor.getMaximumRange();
+					
+					IntentFilter intentfilter = new IntentFilter();
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.NotificationWakeUp");
+					intentfilter.addAction("com.sensetoolbox.six.mods.action.TouchScreenTapped");
+					mContext.registerReceiver(mBRNotify, intentfilter);
+					XposedBridge.log("PhoneWindowManager sensors");
+				}
+			});
+			
+			XC_MethodHook hook = new XC_MethodHook() {
+				@Override
+				@SuppressWarnings("deprecation")
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					XMain.pref.reload();
+					
+					if (XMain.pref.getBoolean("pref_key_fleetingglance_sigmotion", false))
+					if (mSigMotionSensor != null && !mSigMotionSensor.isActive) mSigMotionSensor.startListening();
+					
+					if (XMain.pref.getBoolean("pref_key_fleetingglance_pickup", false))
+					if (mPickUpSensor != null && !mPickUpSensor.isActive) mPickUpSensor.startListening();
+					
+					if (XMain.pref.getBoolean("pref_key_fleetingglance_proximity", true))
+					if (mProxSensor != null && !isProxActive) {
+						Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+						final PowerManager mPowerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
+						if (!mPowerManager.isScreenOn()) {
+							SensorManager mSensorManager = (SensorManager)mContext.getSystemService(Context.SENSOR_SERVICE);
+							isProxActive = mSensorManager.registerListener(proxListener, mProxSensor, SensorManager.SENSOR_DELAY_NORMAL);
+						}
+					}
+				}
+			};
+			Object[] argsAndHook = { int.class, hook };
+			if (Helpers.isLP()) argsAndHook = new Object[] { hook };
+			findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "screenTurnedOff", argsAndHook);
+			
+			XC_MethodHook hook2 = new XC_MethodHook() {
+				@Override
+				@SuppressWarnings("deprecation")
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+					if (mPowerManager.isScreenOn()) {
+						XposedBridge.log("finishScreenTurningOn: Screen is on");
+						if (mSigMotionSensor != null && mSigMotionSensor.isActive) mSigMotionSensor.stopListening();
+						if (mPickUpSensor != null && mPickUpSensor.isActive) mPickUpSensor.stopListening();
+						if (mProxSensor != null && isProxActive) {
+							Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+							SensorManager mSensorManager = (SensorManager)mContext.getSystemService(Context.SENSOR_SERVICE);
+							mSensorManager.unregisterListener(proxListener, mProxSensor);
+							isProxActive = false;
+						}
+					}
+				}
+			};
+			Object[] argsAndHook2 = { "android.view.WindowManagerPolicy.ScreenOnListener", hook2 };
+			if (Helpers.isLP()) argsAndHook2 = new Object[] { hook2 };
+			findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "finishScreenTurningOn", argsAndHook2);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static NotificationListenerService mNotificationListener = new NotificationListenerService() {
+		@Override
+		@SuppressWarnings("deprecation")
+		public void onNotificationPosted(final StatusBarNotification sbn) {
+			if (sbn != null && sbn.isClearable() && !sbn.isOngoing()) {
+				XMain.pref.reload();
+				if (mSysUIContext != null && XMain.pref.getBoolean("fleeting_glance_active", false) && XMain.pref.getBoolean("pref_key_fleetingglance_notification", true)) {
+					PowerManager mPowerManager = (PowerManager)mSysUIContext.getSystemService(Context.POWER_SERVICE);
+					if (!mPowerManager.isScreenOn())
+					mSysUIContext.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.NotificationWakeUp"));
+				}
+			}
+		}
+	};
+	
+	private static BroadcastReceiver mBRDoze = new BroadcastReceiver() {
+		public void onReceive(final Context context, Intent intent) {
+			if (mPSB != null) {
+				Object mNotificationPanel = XposedHelpers.getObjectField(mPSB, "mNotificationPanel");
+				View mKeyguardStatusBar = (View)XposedHelpers.getObjectField(mNotificationPanel, "mKeyguardStatusBar");
+				boolean mKeyguardShowing = XposedHelpers.getBooleanField(mNotificationPanel, "mKeyguardShowing");
+				Object mScrimController = XposedHelpers.getObjectField(mPSB, "mScrimController");
+				FrameLayout mKeyguardBottomArea = (FrameLayout)XposedHelpers.getObjectField(mPSB, "mKeyguardBottomArea");
+				Object mStackScroller = XposedHelpers.getObjectField(mPSB, "mStackScroller");
+				String action = intent.getAction();
+				if (action.equals("com.sensetoolbox.six.mods.action.ActivateDozeLockscreen")) {
+					XposedHelpers.callMethod(mNotificationPanel, "setBackgroundColorAlpha", mNotificationPanel, 0xff000000, 255, false);
+					mKeyguardStatusBar.setVisibility(View.INVISIBLE);
+					
+					mKeyguardBottomArea.setVisibility(View.INVISIBLE);
+					XposedHelpers.callMethod(mStackScroller, "setDark", true, false);
+					
+					XposedHelpers.setBooleanField(mScrimController, "mAnimateChange", false);
+					XposedHelpers.callMethod(mScrimController, "scheduleUpdate");
+				} else if (action.equals("com.sensetoolbox.six.mods.action.DeactivateDozeLockscreen")) {
+					XposedHelpers.callMethod(mNotificationPanel, "setBackgroundColorAlpha", mNotificationPanel, 0xff000000, 0, true);
+					if (mKeyguardShowing) mKeyguardStatusBar.setVisibility(View.VISIBLE);
+					
+					mKeyguardBottomArea.setVisibility(View.VISIBLE);
+					XposedHelpers.callMethod(mStackScroller, "setDark", false, false);
+					
+					XposedHelpers.setBooleanField(mScrimController, "mAnimateChange", true);
+					XposedHelpers.callMethod(mScrimController, "scheduleUpdate");
+				}
+			}
+		}
+	};
+	
+	public static Context mSysUIContext = null;
+	public static Object mPSB = null;
+	public static void execHook_FleetingGlanceSysUI(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "start", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				mSysUIContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				XposedHelpers.callMethod(mNotificationListener, "registerAsSystemService", mSysUIContext, new ComponentName(mSysUIContext.getPackageName(), param.thisObject.getClass().getCanonicalName()), -1);
+				
+				mPSB = param.thisObject;
+				IntentFilter intentfilter = new IntentFilter();
+				intentfilter.addAction("com.sensetoolbox.six.mods.action.ActivateDozeLockscreen");
+				intentfilter.addAction("com.sensetoolbox.six.mods.action.DeactivateDozeLockscreen");
+				mSysUIContext.registerReceiver(mBRDoze, intentfilter);
+			}
+		});
+		
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "destroy", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				XposedHelpers.callMethod(mNotificationListener, "unregisterAsSystemService");
+			}
+		});
+	}
+	
+	public static void execHook_FleetingGlanceService(LoadPackageParam lpparam) {
+		findAndHookMethod("com.android.server.wm.PointerEventDispatcher", lpparam.classLoader, "onInputEvent", InputEvent.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				if (captureTouches) try {
+					captureTouches = false;
+					if (mSigMotionSensor != null) mSigMotionSensor.dozeDismiss();
+				} catch (Throwable t) {
+					XposedBridge.log(t);
 				}
 			}
 		});

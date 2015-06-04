@@ -3,6 +3,10 @@
 	xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
 	android:key="pref_key_other">
 		<com.htc.preference.HtcPreference
+			android:key="pref_key_other_fleetingglance"
+			android:title="@string/various_fleetingglance_title"
+			android:summary="@string/various_fleetingglance_summ" />
+		<com.htc.preference.HtcPreference
 			android:key="pref_key_other_extremepower"
 			android:title="@string/various_extremepower_title"
 			android:summary="@string/various_extremepower_summ" />
@@ -62,6 +66,11 @@
 			android:key="pref_key_other_noautocorrect"
 			android:summary="@string/various_noautocorrect_summ"
 			android:title="@string/various_noautocorrect_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_noautoime"
+			android:summary="@string/various_noautoime_summ"
+			android:title="@string/various_noautoime_title"
 			android:defaultValue="false" />
 		
 		<com.htc.preference.HtcPreferenceCategory

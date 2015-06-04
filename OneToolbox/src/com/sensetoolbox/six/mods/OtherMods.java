@@ -76,6 +76,7 @@ import android.view.ViewParent;
 import android.view.Window;
 import android.view.WindowManager;
 import android.view.ViewGroup.LayoutParams;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -1872,7 +1873,7 @@ public class OtherMods {
 		}
 	}
 	
-	public static void buttonBacklightSystem(){
+	public static void buttonBacklightSystem() {
 		try {
 			findAndHookMethod(Window.class, "setFlags", int.class, int.class, new XC_MethodHook() {
 				@Override
@@ -1908,6 +1909,32 @@ public class OtherMods {
 					if (newFlags != 0 && (newFlags & WindowManager.LayoutParams.FLAG_FULLSCREEN) == WindowManager.LayoutParams.FLAG_FULLSCREEN && !act.getPackageName().equals("com.android.systemui"))
 					intent.putExtra("forceDisableBacklight", true);
 					act.sendBroadcast(intent);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_NoAutoIME() {
+		findAndHookMethod(Activity.class, "onResume", new XC_MethodHook() {
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				try {
+					Activity act = (Activity)param.thisObject;
+					if (act != null) act.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED);
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+	}
+	
+	public static void execHook_NoAutoIMEService(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.server.InputMethodManagerService", lpparam.classLoader, "showSoftInput", "com.android.internal.view.IInputMethodClient", int.class, "android.os.ResultReceiver", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					if ((Integer)param.args[1] == InputMethodManager.SHOW_IMPLICIT) param.setResult(false);
 				}
 			});
 		} catch (Throwable t) {

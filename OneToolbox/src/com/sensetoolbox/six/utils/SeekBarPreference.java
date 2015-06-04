@@ -40,7 +40,7 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 	private float density = 3;
 	
 	private String mDialogMessage, mDialogEnableMessage, mSuffix;
-	private int mDefault, mMax, mValue = 0;
+	private int mDefault, mAdd, mMax, mValue = 0;
 
 	private LinearLayout mCheckBoxContainer;
 	private TextView mEnableText;
@@ -63,6 +63,7 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 		mSuffix = attrs.getAttributeValue(androidns, "text");
 		mDefault = attrs.getAttributeIntValue(androidns, "defaultValue", 0);
 		mMax = attrs.getAttributeIntValue(androidns, "max", 100);
+		mAdd = attrs.getAttributeIntValue(toolboxns, "add", 0);
 		mKey = attrs.getAttributeValue(androidns, "key");
 		mEnableKey = attrs.getAttributeValue(toolboxns, "enableKey");
 		mHapticPref = attrs.getAttributeBooleanValue(toolboxns, "hapticPref", false);
@@ -145,7 +146,7 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 		
 		mSeekBar.setMax(mMax);
 		mSeekBar.setProgress(mValue);
-		mValueText.setText(mSuffix == null ? String.valueOf(mValue) : String.valueOf(mValue).concat(mSuffix));
+		mValueText.setText(mSuffix == null ? String.valueOf(mValue + mAdd) : String.valueOf(mValue + mAdd).concat(mSuffix));
 		
 		if (mHapticPref) {
 			FrameLayout btnFrame = new FrameLayout(mContext);
@@ -221,7 +222,7 @@ public class SeekBarPreference extends HtcDialogPreference implements SeekBar.On
 			newVal = newVal / 50;
 			newVal = newVal * 50;
 		}
-		String t = String.valueOf(newVal);
+		String t = String.valueOf(newVal + mAdd);
 		mValueText.setText(mSuffix == null ? t : t.concat(mSuffix));
 		mSeekBarValue = newVal;
 	}

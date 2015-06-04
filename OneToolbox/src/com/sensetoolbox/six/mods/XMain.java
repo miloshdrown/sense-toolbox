@@ -164,6 +164,15 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_controls_swapvolume", false))
 			ControlsMods.exec_SwapVolumeCCWLand();
 		
+		if (pref.getBoolean("fleeting_glance_active", false))
+			WakeGesturesMods.execHook_FleetingGlance();
+		
+		if (pref.getBoolean("pref_key_other_noautoime", false))
+			OtherMods.execHook_NoAutoIME();
+		
+		if (Integer.parseInt(pref.getString("pref_key_prism_transitions", "1")) == 2)
+			PrismMods.execHook_StockTransitions();
+		
 		//OtherMods.execHook_HapticNotify();
 	}
 	
@@ -196,6 +205,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_prism_gapfix", false) && !pref.getBoolean("pref_key_prism_4x5homescreen", false))
 				PrismMods.execHook_HomeScreenGapFix(resparam);
+			
+			if (Integer.parseInt(pref.getString("pref_key_prism_transitions", "1")) == 3)
+				PrismMods.execHook_StockTransitionsAnim(resparam);
 			
 			PrismMods.execHook_AppDrawerGridSizesLayout(resparam);
 		}
@@ -373,6 +385,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("better_headsup_active", false))
 				SysUIMods.execHook_BetterHeadsUpNotifications(lpparam);
+			
+			if (pref.getBoolean("fleeting_glance_active", false))
+				WakeGesturesMods.execHook_FleetingGlanceService(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_noautoime", false))
+				OtherMods.execHook_NoAutoIMEService(lpparam);
 		}
 		
 		if (pkg.equals("com.android.providers.media")) {
@@ -464,6 +482,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref_appslongpress != 1)
 				PrismMods.execHook_hotseatToggleBtn(lpparam);
+			
+			if (Integer.parseInt(pref.getString("pref_key_prism_transitions", "1")) == 2)
+				PrismMods.execHook_StockTransitionsLauncher(lpparam);
 		}
 		
 		if (pkg.equals("com.htc.lockscreen")) {
@@ -641,6 +662,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			int pref_autoeqs = Integer.parseInt(pref.getString("pref_key_sysui_autoeqs", "1"));
 			if (pref_autoeqs > 1)
 				SysUIMods.execHook_AutoEQS(lpparam, pref_autoeqs == 3);
+			
+			if (pref.getBoolean("fleeting_glance_active", false))
+				WakeGesturesMods.execHook_FleetingGlanceSysUI(lpparam);
 			
 			StatusbarMods.execHook_HideIcons(lpparam);
 		}

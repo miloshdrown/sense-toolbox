@@ -168,14 +168,13 @@ public final class HorizontalPager extends ViewGroup {
 	}
 
 	@Override
-	protected void onLayout(final boolean changed, final int l, final int t, final int r,
-			final int b) {
+	protected void onLayout(final boolean changed, final int l, final int t, final int r, final int b) {
 		int childLeft = 0;
 		final int count = getChildCount();
 
 		for (int i = 0; i < count; i++) {
 			final View child = getChildAt(i);
-			if (child.getVisibility() != View.GONE) {
+			if (child != null && child.getVisibility() != View.GONE) {
 				final int childWidth = child.getMeasuredWidth();
 				child.layout(childLeft, 0, childLeft + childWidth, child.getMeasuredHeight());
 				childLeft += childWidth;

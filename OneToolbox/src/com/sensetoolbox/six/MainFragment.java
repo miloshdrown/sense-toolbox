@@ -117,10 +117,10 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		addPreferencesFromResource(R.xml.preferences);
 		
 		if (Helpers.isSense7()) {
-			TextView experimental = (TextView)getActivity().findViewById(R.id.experimental);
-			experimental.setText(Helpers.l10n(getActivity(), R.string.preview_release));
+			TextView experimental = (TextView)act.findViewById(R.id.experimental);
+			experimental.setText(Helpers.l10n(act, R.string.preview_release));
 			experimental.setTextColor(getResources().getColor(android.R.color.background_light));
-			FrameLayout experimentalFrame = (FrameLayout)getActivity().findViewById(R.id.experimentalFrame);
+			FrameLayout experimentalFrame = (FrameLayout)act.findViewById(R.id.experimentalFrame);
 			experimentalFrame.setVisibility(View.VISIBLE);
 		}
 		
@@ -139,11 +139,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				};
 				handler.postDelayed(showCheck, 1000);
 				
-				if (!RootTools.isAccessGiven()) try {
-					Command command = new Command(0, false, "whoami");
-					RootTools.getShell(true).add(command);
-				} catch (Exception e) {}
-				
 				Helpers.hasRoot = RootTools.isRootAvailable();
 				Helpers.hasRootAccess = RootTools.isAccessGiven();
 				Helpers.hasBusyBox = RootTools.isBusyboxAvailable();
@@ -152,8 +147,10 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 					act.runOnUiThread(new Runnable() {
 						@Override
 						public void run() {
-							Helpers.disablePref(MainFragment.this, "pref_key_wakegest", Helpers.l10n(getActivity(), R.string.no_root_summ));
-							Helpers.disablePref(MainFragment.this, "pref_key_touchlock", Helpers.l10n(getActivity(), R.string.no_root_summ));
+							if (isFragmentReady(act)) try {
+								Helpers.disablePref(MainFragment.this, "pref_key_wakegest", Helpers.l10n(act, R.string.no_root_summ));
+								Helpers.disablePref(MainFragment.this, "pref_key_touchlock", Helpers.l10n(act, R.string.no_root_summ));
+							} catch (Exception e) {}
 						}
 					});
 				}
@@ -328,7 +325,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 			prefs.edit().putBoolean("pref_key_other_appdetails", false).commit();
 		}
 	}
-	
+
 	private void showQuickTip(int step) {
 		if (qtp == null) {
 			int width = getWidthWithPadding();

@@ -30,6 +30,7 @@
 	<string name="no_browser">Browser app is required to open URLs</string>
 	<string name="no_clock_apps">No clock apps found</string>
 	<string name="define_lock_seq">Define sequence</string>
+	<string name="coming_soon">Coming soon</string>
 	
 	<string name="crash_dialog">Sense Toolbox has just crashed!</string>
 	<string name="crash_dialog_manual">All necessary data was collected</string>
@@ -94,6 +95,9 @@
 	<string name="array_color_dark_lollipop">Grey</string>
 	<string name="array_color_dark_sense">Dark</string>
 	<string name="array_color_light">Light</string>
+	
+	<string name="fleetingglance_hint">Enable Fleeting Glance from the action bar above.\n\nSoft reboot will be required only once after that.</string>
+	<string name="fleetingglance_no_sensor">Your device doesn\'t have this sensor.</string>
 
 	<string name="mods">Mods</string>
 
@@ -312,6 +316,8 @@
 	<string name="sense_blinkfeedimmersive_summ">Remove action bar and make statusbar semitransparent in article view. You can access removed elements using Menu key.</string>
 	<string name="sense_blinkfeedicon_title">BlinkFeed shortcut</string>
 	<string name="sense_blinkfeedicon_summ">Add shortcut to app drawer that leads directly to BlinkFeed. Reboot is not required. Uncheck this option to remove shortcut, don\'t uninstall it!</string>
+	<string name="sense_transitions_title">Transitions</string>
+	<string name="sense_transitions_summ">Change transition animations between apps and launcher. Soft reboot is required!</string>
 	<string name="notselected">Not selected</string>
 	<string name="loading_app_data">Loading apps&#8230;</string>
 	<string name="locked_warning">Please unlock launcher first!</string>
@@ -372,6 +378,7 @@
 	<string name="controls_keyshaptic_desc">Vibration duration</string>
 	<string name="controls_keyshaptic_testbtn">Test current value</string>
 	<string name="seekbar_mod_enable">Enable mod</string>
+	<string name="seekbar_custom_enable">Enable custom value</string>
 
 	<string name="kill_foreground">Kill foreground app</string>
 	<string name="open_menu">Open menu</string>
@@ -435,7 +442,9 @@
 	<string name="various_betterheadsup_theme_dividers_title">Other</string>
 	<string name="various_betterheadsup_theme_dividers_summ">Page indicators and tab dividers</string>
 	<string name="various_extremepower_title">EPS apps remap</string>
-	<string name="various_extremepower_summ">Choose 6 custom apps for extreme power saving mode</string>
+	<string name="various_extremepower_summ">Choose 6 custom apps for extreme power saving mode.</string>
+	<string name="various_fleetingglance_title">Fleeting glance</string>
+	<string name="various_fleetingglance_summ">Check notifications without touching the screen.</string>
 	<string name="various_extremepower_cell">Cell</string>
 	<string name="various_extremepower_hint">Extreme Power Saving mode can be turned off by long pressing any tile if this mod is active</string>
 	<string name="various_eps_hint">Enable EPS remap from the action bar above.\n\nSoft reboot will be required only once after that.</string>
@@ -503,6 +512,8 @@
 	<string name="various_musicchannel_summ">Enable HTC music visualizations to be available for any audio player. Launch it from notification while music is playing. Notification visibility can be quickly toggled from Settings.</string>
 	<string name="various_noautocorrect_title">No HTC Sense Input autocorrect</string>
 	<string name="various_noautocorrect_summ">Disable autocorrect while keeping word prediction enabled.</string>
+	<string name="various_noautoime_title">No auto soft input</string>
+	<string name="various_noautoime_summ">Show keyboard only if you requested it.</string>
 	<string name="various_allrotations_title">All rotations</string>
 	<string name="various_allrotations_summ">Allow 180 degree orientation additionally to stock 90 and 270.</string>
 	<string name="various_nolowbattwarn_title">Disable low battery warning</string>
@@ -519,12 +530,23 @@
 	<string name="various_screenopen_title">Select app to view screenshots</string>
 	<string name="various_screenopen_summ">Change screenshot notification to use viewer app selection dialog.</string>
 	<string name="various_screenopen_noapps">No apps found to view this screenshot</string>
-
+	<string name="various_fleetingglance_screenbright_title">Brightness</string>
+	<string name="various_fleetingglance_screenbright_summ">Screen brightness during the glance. Minimum is the default.</string>
+	<string name="various_fleetingglance_timeout_title">Timeout</string>
+	<string name="various_fleetingglance_timeout_summ">Duration of the glance. Default is 5 seconds.</string>
+	<string name="various_fleetingglance_triggerevents">Triggering events</string>
+	<string name="various_fleetingglance_notification_title">Notifications</string>
+	<string name="various_fleetingglance_notification_summ">Glance when new notification arrives.</string>
+	<string name="various_fleetingglance_sigmotion_title">Significant motion</string>
+	<string name="various_fleetingglance_sigmotion_summ">Glance on any fast movement of the device.</string>
+	<string name="various_fleetingglance_pickup_title">Pick up</string>
+	<string name="various_fleetingglance_pickup_summ">Glance when device is picked up.</string>
+	<string name="various_fleetingglance_proximity_title">Pocket mode</string>
+	<string name="various_fleetingglance_proximity_summ">Do not wake device if it\'s in the pocket.</string>
+	
 	<string name="wakegestures_mod">Wake gestures</string>
 	<string name="wakegestures_haptic_title">Haptic feedback</string>
 	<string name="wakegestures_haptic_summ">Short vibration after successful gesture</string>
-	<string name="wakegestures_delay_title">Delay activation (10 sec)</string>
-	<string name="wakegestures_delay_summ">Enable this option if you are having problems with wake gestures activation after reboot.</string>
 	<string name="wakegestures_dt2w_title">Double tap</string>
 	<string name="wakegestures_dt2w_summ">Action for double tap</string>
 	<string name="wakegestures_swipedown_title">Swipe down</string>
@@ -548,6 +570,7 @@
 	<string name="touchlock_not_defined">not defined</string>
 	<string name="touchlock_power_summary">Complete device lockdown</string>
 	<string name="touchlock_hint_mod">Enable touch lock from the action bar above.\n\nSoft reboot will be required only once after that.</string>
+	<string name="touchlock_root_remind">You must enable \"Trust system user\" option in SuperSU or device will freeze on boot!</string>
 
 	<string name="persistent_mods">Always active mods</string>
 	<string name="persist_adgrid_title">App drawer grid size</string>
@@ -738,5 +761,7 @@
 	<string name="array_googleapp_withborder">Fully transparent with border</string>
 	<string name="array_autoeqs_always">Always</string>
 	<string name="array_autoeqs_clearable">If no clearable notifications are active</string>
+	<string name="array_stock">Stock Android\nOpen/close: slide up/slide down</string>
+	<string name="array_htc">HTC\nOpen/close: slide up with fade/none</string>
 
 </resources>

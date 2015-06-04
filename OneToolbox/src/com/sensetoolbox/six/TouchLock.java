@@ -24,6 +24,7 @@ import android.text.TextUtils;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup.LayoutParams;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -169,8 +170,11 @@ public class TouchLock extends Activity {
 		modHint.setText(Helpers.l10n(this, R.string.touchlock_hint_mod));
 		
 		TextView experimental = (TextView)findViewById(R.id.experimental);
-		experimental.setText(Helpers.l10n(this, R.string.popupnotify_experimental));
+		experimental.setText(Helpers.l10n(this, R.string.touchlock_root_remind));
 		experimental.setTextColor(getResources().getColor(android.R.color.background_light));
+		
+		FrameLayout experimentalFrame = (FrameLayout)findViewById(R.id.experimentalFrame);
+		experimentalFrame.setVisibility(View.VISIBLE);
 		
 		gridBkg = (LinearLayout)findViewById(R.id.gridBkg);
 		gridBkg.setBackgroundResource(backResId);

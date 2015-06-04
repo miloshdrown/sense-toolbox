@@ -1,6 +1,7 @@
 package com.sensetoolbox.six;
 
 import java.io.File;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -41,12 +42,15 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.TypedArray;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -76,6 +80,7 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 	};
 	
 	@Override
+	@SuppressWarnings("unchecked")
 	public void onActivityCreated(Bundle savedInstanceState) {
 		super.onActivityCreated(savedInstanceState, xmlResId);
 		if (xmlResId == 0) {
@@ -567,6 +572,8 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				Helpers.removePref(this, "pref_key_controls_extendedpanel", "pref_key_controls");
 			}
 		} else if (xmlResId == R.xml.prefs_other) {
+			Helpers.disablePref(this, "pref_key_other_fleetingglance", Helpers.l10n(getActivity(), R.string.coming_soon) + " :)");
+			
 			if (Helpers.isNotM7()) {
 				Helpers.removePref(this, "pref_key_other_keyslight", "pref_key_other");
 				Helpers.removePref(this, "pref_key_other_keyslight_auto", "pref_key_other");
@@ -616,7 +623,19 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				public boolean onPreferenceClick(HtcPreference preference) {
 					Intent subActIntent = new Intent(getActivity(), SubActivity.class);
 					subActIntent.putExtra("pref_section_name", (String)preference.getTitle());
-					subActIntent.putExtra("pref_section_xml", R.xml.dummy);
+					subActIntent.putExtra("pref_section_xml", R.xml.dummy_eps);
+					getActivity().startActivity(subActIntent);
+					return true;
+				}
+			});
+			
+			HtcPreference fleetingGlancePreference = (HtcPreference) findPreference("pref_key_other_fleetingglance");
+			fleetingGlancePreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
+				@Override
+				public boolean onPreferenceClick(HtcPreference preference) {
+					Intent subActIntent = new Intent(getActivity(), SubActivity.class);
+					subActIntent.putExtra("pref_section_name", (String)preference.getTitle());
+					subActIntent.putExtra("pref_section_xml", R.xml.prefs_fleetingglance);
 					getActivity().startActivity(subActIntent);
 					return true;
 				}
@@ -803,9 +822,6 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				if (logoPressActionPreference != null) ((HtcPreferenceScreen)findPreference("pref_key_wakegest")).removePreference(logoPressActionPreference);
 				if (launchAppsLogoPress != null) ((HtcPreferenceScreen)findPreference("pref_key_wakegest")).removePreference(launchAppsLogoPress);
 			}
-			
-			if (!Helpers.isLP())
-			Helpers.removePref(this, "pref_key_wakegest_delay", "pref_key_wakegest");
 		} else if (xmlResId == R.xml.prefs_persist) {
 			if (Helpers.isLP())
 			Helpers.removePref(this, "pref_key_persist_appfilter", "pref_key_persist");
@@ -1057,7 +1073,54 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 					return false;
 				}
 			});
-		} else if (xmlResId == R.xml.dummy) {
+		} else if (xmlResId == R.xml.prefs_fleetingglance) {
+			this.menuType = 5;
+			
+			TextView experimental = (TextView)getActivity().findViewById(R.id.experimental);
+			experimental.setText(Helpers.l10n(getActivity(), R.string.popupnotify_experimental));
+			experimental.setTextColor(getResources().getColor(android.R.color.background_light));
+			
+			FrameLayout experimentalFrame = (FrameLayout)getActivity().findViewById(R.id.experimentalFrame);
+			experimentalFrame.setVisibility(View.VISIBLE);
+			
+			prefListView = (HtcListView)getActivity().findViewById(android.R.id.list);
+			prefListView.setBackgroundResource(backResId);
+			prefListView.setDivider(getResources().getDrawable(getResources().getIdentifier("inset_list_divider", "drawable", "com.htc")));
+			prefListView.setDividerHeight(1);
+			prefListView.setFooterDividersEnabled(false);
+			
+			themeHint = (TextView)getActivity().findViewById(R.id.themehint);
+			themeHint.setBackgroundResource(backResId);
+			themeHint.setText(Helpers.l10n(getActivity(), R.string.fleetingglance_hint));
+			
+			SensorManager mSensorManager = (SensorManager)getActivity().getSystemService(Context.SENSOR_SERVICE);
+			Sensor mSensorSigMotion = mSensorManager.getDefaultSensor(Sensor.TYPE_SIGNIFICANT_MOTION);
+			if (mSensorSigMotion == null) {
+				HtcCheckBoxPreference fleetingGlanceSigMotionPreference = (HtcCheckBoxPreference) findPreference("pref_key_fleetingglance_sigmotion");
+				fleetingGlanceSigMotionPreference.setEnabled(false);
+				fleetingGlanceSigMotionPreference.setSummary(Helpers.l10n(getActivity(), R.string.fleetingglance_no_sensor));
+			}
+
+			ArrayList<Sensor> sensors = new ArrayList<Sensor>();
+			try {
+				Class<?> ssm = Class.forName("android.hardware.SystemSensorManager");
+				Method m = ssm.getDeclaredMethod("getFullSensorList");
+				m.setAccessible(true);
+				sensors = (ArrayList<Sensor>)m.invoke(mSensorManager);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			boolean hasPickUpSensor = false;
+			for (Sensor sensor: sensors) if (sensor.getType() == 25) {
+				hasPickUpSensor = true;
+				break;
+			}
+			if (!hasPickUpSensor) {
+				HtcCheckBoxPreference fleetingGlancePickUpPreference = (HtcCheckBoxPreference) findPreference("pref_key_fleetingglance_pickup");
+				fleetingGlancePickUpPreference.setEnabled(false);
+				fleetingGlancePickUpPreference.setSummary(Helpers.l10n(getActivity(), R.string.fleetingglance_no_sensor));
+			}
+		} else if (xmlResId == R.xml.dummy_eps) {
 			this.menuType = 2;
 			
 			TextView hint = (TextView)getActivity().findViewById(R.id.hint);
@@ -1076,9 +1139,9 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 	public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 		if (xmlResId == R.xml.prefs_wakegest)
 			return inflater.inflate(R.layout.fragment_wake_gestures, container, false);
-		else if (xmlResId == R.xml.prefs_popupnotify || xmlResId == R.xml.prefs_betterheadsup)
-			return inflater.inflate(R.layout.fragment_popup_notify, container, false);
-		else if (xmlResId == R.xml.dummy)
+		else if (xmlResId == R.xml.prefs_popupnotify || xmlResId == R.xml.prefs_betterheadsup || xmlResId == R.xml.prefs_fleetingglance)
+			return inflater.inflate(R.layout.fragment_with_listview, container, false);
+		else if (xmlResId == R.xml.dummy_eps)
 			return inflater.inflate(R.layout.fragment_eps_remap, container, false);
 		else
 			return super.onCreateView(inflater, container, savedInstanceState);

@@ -1,0 +1,48 @@
+<com.htc.preference.HtcPreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six">
+	<com.sensetoolbox.six.utils.SeekBarPreference
+		android:key="pref_key_fleetingglance_screenbright"
+		android:title="@string/various_fleetingglance_screenbright_title"
+		android:summary="@string/various_fleetingglance_screenbright_summ"
+		android:dialogMessage="@string/dummy"
+		android:defaultValue="0"
+		android:text=" %"
+		android:max="100"
+		toolbox:dialogEnableMessage="@string/seekbar_custom_enable"
+		toolbox:enableKey="pref_key_fleetingglance_timeout_enable"/>
+	<com.sensetoolbox.six.utils.SeekBarPreference
+		android:key="pref_key_fleetingglance_timeout"
+		android:title="@string/various_fleetingglance_timeout_title"
+		android:summary="@string/various_fleetingglance_timeout_summ"
+		android:dialogMessage="@string/dummy"
+		android:defaultValue="0"
+		android:text=" s"
+		android:max="57"
+		toolbox:add="3"
+		toolbox:dialogEnableMessage="@string/seekbar_custom_enable"
+		toolbox:enableKey="pref_key_fleetingglance_timeout_enable"/>
+	<com.htc.preference.HtcCheckBoxPreference
+		android:key="pref_key_fleetingglance_proximity"
+		android:summary="@string/various_fleetingglance_proximity_summ"
+		android:title="@string/various_fleetingglance_proximity_title"
+		android:defaultValue="true" />
+	<com.htc.preference.HtcPreferenceCategory
+		android:title="@string/various_fleetingglance_triggerevents">
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_fleetingglance_notification"
+			android:summary="@string/various_fleetingglance_notification_summ"
+			android:title="@string/various_fleetingglance_notification_title"
+			android:defaultValue="true" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_fleetingglance_sigmotion"
+			android:summary="@string/various_fleetingglance_sigmotion_summ"
+			android:title="@string/various_fleetingglance_sigmotion_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_fleetingglance_pickup"
+			android:summary="@string/various_fleetingglance_pickup_summ"
+			android:title="@string/various_fleetingglance_pickup_title"
+			android:defaultValue="false" />
+	</com.htc.preference.HtcPreferenceCategory>
+</com.htc.preference.HtcPreferenceScreen>

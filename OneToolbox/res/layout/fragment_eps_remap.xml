@@ -13,7 +13,7 @@
 		android:layout_gravity="center"
 		android:gravity="center"
 		android:padding="30dp"
-		android:text="@string/wakegestures_hint"
+		android:text="@string/various_eps_hint"
 		android:textAllCaps="true"
 		android:textSize="18sp"
 		android:textColor="@color/theme_hint"

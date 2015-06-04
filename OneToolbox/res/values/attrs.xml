@@ -10,6 +10,7 @@
 		<attr name="dialogEnableMessage" format="string" />
 		<attr name="hapticPref" format="boolean" />
 		<attr name="animPref" format="boolean" />
+		<attr name="add" format="integer" />
 	</declare-styleable>
 	
 	<declare-styleable name="ColorPickerPreference">
