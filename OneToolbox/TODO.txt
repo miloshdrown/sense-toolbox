@@ -15,8 +15,9 @@ Ideas
 Current changelog
 =================
 
-1.5.6
+1.5.5
 [New][5.0][Experimental] Quick recent apps switch action on swipe up from home or recents key long press
+[New] Random PIN buttons order on HTC lockscreen
 [New] Show soft keyboard only if you requested it
 [New] Stock Lollipop and modified HTC transition animations between Sense launcher and apps
 [Fixed] Wake gestures freeze on boot

@@ -201,7 +201,7 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		brightContainer.setPadding(0, densify(4), 0, densify(4));
 
 		TextView brightTitle = new TextView(mContext);
-		brightTitle.setText(Helpers.l10n(mContext, R.string.cleanbeam_colortheme_bright));
+		brightTitle.setText(Helpers.l10n(mContext, R.string.systemui_brightqs_title));
 		brightTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 		brightTitle.setPadding(densify(16), densify(4), densify(4), densify(4));
 		brightTitle.setLayoutParams(paramsLeft);

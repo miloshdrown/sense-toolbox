@@ -972,7 +972,6 @@ public class WakeGesturesMods {
 		@Override
 		@SuppressWarnings("deprecation")
 		public void onTrigger(TriggerEvent event) {
-			XposedBridge.log("SigMotion trigger");
 			if (isCovered) {
 				if (!mPowerManager.isScreenOn()) {
 					WakeLock wlk = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T FleetingGlanceDelay");
@@ -1006,7 +1005,6 @@ public class WakeGesturesMods {
 		public void startListening() {
 			if (mSensor != null && XMain.pref.getBoolean("fleeting_glance_active", false)) {
 				if (!mPowerManager.isScreenOn()) {
-					XposedBridge.log("startListening scr off");
 					mHandler.post(stopScreenOn);
 					if (wl != null && wl.isHeld()) wl.release();
 					wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T FleetingGlanceDelay");
@@ -1063,7 +1061,6 @@ public class WakeGesturesMods {
 				isCovered = true;
 			else
 				isCovered = false;
-			XposedBridge.log("isCovered = " + String.valueOf(isCovered));
 		}
 
 		@Override
@@ -1086,7 +1083,6 @@ public class WakeGesturesMods {
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.NotificationWakeUp");
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.TouchScreenTapped");
 					mContext.registerReceiver(mBRNotify, intentfilter);
-					XposedBridge.log("PhoneWindowManager sensors");
 				}
 			});
 			
@@ -1123,7 +1119,6 @@ public class WakeGesturesMods {
 				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 					if (mPowerManager.isScreenOn()) {
-						XposedBridge.log("finishScreenTurningOn: Screen is on");
 						if (mSigMotionSensor != null && mSigMotionSensor.isActive) mSigMotionSensor.stopListening();
 						if (mPickUpSensor != null && mPickUpSensor.isActive) mPickUpSensor.stopListening();
 						if (mProxSensor != null && isProxActive) {

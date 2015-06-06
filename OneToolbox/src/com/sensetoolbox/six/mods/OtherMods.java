@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 
@@ -1921,7 +1922,12 @@ public class OtherMods {
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
 					Activity act = (Activity)param.thisObject;
-					if (act != null) act.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED);
+					if (act != null) {
+						int softMode = act.getWindow().getAttributes().softInputMode;
+						if ((softMode & WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE) == WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_VISIBLE ||
+							(softMode & WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE) == WindowManager.LayoutParams.SOFT_INPUT_STATE_VISIBLE)
+							act.getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_UNCHANGED);
+					}
 				} catch (Throwable t) {
 					XposedBridge.log(t);
 				}
@@ -1935,6 +1941,56 @@ public class OtherMods {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					if ((Integer)param.args[1] == InputMethodManager.SHOW_IMPLICIT) param.setResult(false);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_scramblePIN(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.htc.lockscreen.unlockscreen.HtcPinKeyboard", lpparam.classLoader, "initView", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					try {
+						View mOk = (View)XposedHelpers.getObjectField(param.thisObject, "mOk");
+						View mDel = (View)XposedHelpers.getObjectField(param.thisObject, "mDel");
+						View[] mNumberButtons = (View[])XposedHelpers.getObjectField(param.thisObject, "mNumberButtons");
+						LinearLayout row1 = (LinearLayout)mNumberButtons[1].getParent();
+						LinearLayout row2 = (LinearLayout)mNumberButtons[4].getParent();
+						LinearLayout row3 = (LinearLayout)mNumberButtons[7].getParent();
+						LinearLayout row4 = (LinearLayout)mNumberButtons[0].getParent();
+						
+						ArrayList<Integer> newOrder = new ArrayList<Integer>();
+						for (int i = 0; i <= 9; i++) newOrder.add(i);
+						Collections.shuffle(newOrder);
+						
+						row1.removeAllViews();
+						row2.removeAllViews();
+						row3.removeAllViews();
+						row4.removeAllViews();
+						
+						row1.addView(mNumberButtons[newOrder.get(0)]);
+						row1.addView(mNumberButtons[newOrder.get(1)]);
+						row1.addView(mNumberButtons[newOrder.get(2)]);
+						row2.addView(mNumberButtons[newOrder.get(3)]);
+						row2.addView(mNumberButtons[newOrder.get(4)]);
+						row2.addView(mNumberButtons[newOrder.get(5)]);
+						row3.addView(mNumberButtons[newOrder.get(6)]);
+						row3.addView(mNumberButtons[newOrder.get(7)]);
+						row3.addView(mNumberButtons[newOrder.get(8)]);
+						row4.addView(mDel);
+						row4.addView(mNumberButtons[newOrder.get(9)]);
+						row4.addView(mOk);
+						
+						row1.invalidate();
+						row2.invalidate();
+						row3.invalidate();
+						row4.invalidate();
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
 				}
 			});
 		} catch (Throwable t) {

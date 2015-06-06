@@ -167,11 +167,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("fleeting_glance_active", false))
 			WakeGesturesMods.execHook_FleetingGlance();
 		
-		if (pref.getBoolean("pref_key_other_noautoime", false))
-			OtherMods.execHook_NoAutoIME();
-		
 		if (Integer.parseInt(pref.getString("pref_key_prism_transitions", "1")) == 2)
 			PrismMods.execHook_StockTransitions();
+		
+		if (pref.getBoolean("pref_key_other_noautoime", false))
+			OtherMods.execHook_NoAutoIME();
 		
 		//OtherMods.execHook_HapticNotify();
 	}
@@ -496,6 +496,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("wake_gestures_active", false))
 				WakeGesturesMods.execHook_LockScreenGestures(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_scramblepin", false))
+				OtherMods.execHook_scramblePIN(lpparam);
 		}
 		
 		if (pkg.equals("com.android.settings")) {

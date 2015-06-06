@@ -208,7 +208,6 @@
 	<string name="cleanbeam_colortheme_summ">Global theme for all icon sets excluding multicolor ones.</string>
 	<string name="cleanbeam_colortheme_hue">Hue</string>
 	<string name="cleanbeam_colortheme_sat">Saturation</string>
-	<string name="cleanbeam_colortheme_bright">Brightness</string>
 	<string name="cleanbeam_colortheme_preset">Presets</string>
 	<string name="cleanbeam_battery_title">Battery icon</string>
 	<string name="cleanbeam_battery_summ">Change battery icon design.</string>
@@ -504,6 +503,8 @@
 	<string name="various_securelock_summ">Disable power menu and hardware reset notification while screen lock is active.</string>
 	<string name="various_secureeqs_title">Restrict EQS</string>
 	<string name="various_secureeqs_summ">Disable quick settings drawer on secure lock screen.</string>
+	<string name="various_scramblepin_title">Scramble PIN</string>
+	<string name="various_scramblepin_summ">Randomly change PIN buttons order to improve security.</string>
 	<string name="various_keyslight_title">Hardware buttons backlight</string>
 	<string name="various_keyslight_summ">Change backlight brightness for buttons.</string>
 	<string name="various_keyslight_auto_title">Dynamic backlight</string>
@@ -530,9 +531,7 @@
 	<string name="various_screenopen_title">Select app to view screenshots</string>
 	<string name="various_screenopen_summ">Change screenshot notification to use viewer app selection dialog.</string>
 	<string name="various_screenopen_noapps">No apps found to view this screenshot</string>
-	<string name="various_fleetingglance_screenbright_title">Brightness</string>
 	<string name="various_fleetingglance_screenbright_summ">Screen brightness during the glance. Minimum is the default.</string>
-	<string name="various_fleetingglance_timeout_title">Timeout</string>
 	<string name="various_fleetingglance_timeout_summ">Duration of the glance. Default is 5 seconds.</string>
 	<string name="various_fleetingglance_triggerevents">Triggering events</string>
 	<string name="various_fleetingglance_notification_title">Notifications</string>
