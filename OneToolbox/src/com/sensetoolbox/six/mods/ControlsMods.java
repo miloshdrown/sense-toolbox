@@ -6,6 +6,7 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
 import android.annotation.SuppressLint;
+import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -780,6 +781,12 @@ public class ControlsMods {
 	}
 	
 	public static void handleDeviceTypeChange(MethodHookParam param) {
+		BluetoothDevice mBluetoothHeadsetDevice = (BluetoothDevice)XposedHelpers.getObjectField(param.thisObject, "mBluetoothHeadsetDevice");
+		if (mBluetoothHeadsetDevice == null)
+			XposedBridge.log("[S6T] mBluetoothHeadsetDevice == null");
+		else
+			XposedBridge.log("[S6T] BT device class: " + String.valueOf(mBluetoothHeadsetDevice.getBluetoothClass().getDeviceClass()));
+		
 		int deviceType = (Integer)param.args[0];
 		switch (deviceType) {
 			case 128:
