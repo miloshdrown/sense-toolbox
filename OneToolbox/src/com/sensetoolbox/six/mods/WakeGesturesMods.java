@@ -13,7 +13,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.htc.preference.HtcPreferenceFrameLayout.LayoutParams;
-import com.htc.widget.HtcAlertDialog;
 import com.htc.widget.HtcListItem;
 import com.htc.widget.HtcListItem2LineText;
 import com.htc.widget.HtcListItemColorIcon;
@@ -57,6 +56,7 @@ import android.view.WindowManager;
 import android.view.View.OnClickListener;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
+import android.widget.ListView;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedBridge;
@@ -683,7 +683,7 @@ public class WakeGesturesMods {
 				sequence.clear();
 				lockOnNextScrOff = false;
 				
-				if (mPowerManager.isScreenOn()) {
+				if (isOnLockdown && mPowerManager.isScreenOn()) {
 					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 					setLockdown(mContext, false);
 				}
@@ -725,6 +725,7 @@ public class WakeGesturesMods {
 						goToSleep(mContext);
 					}
 				});
+				listitem.setBackgroundResource(mContext.getResources().getIdentifier("list_selector_light", "drawable", "com.htc"));
 				
 				HtcListItemColorIcon lockImg = new HtcListItemColorIcon(mContext);
 				//AbsListView.LayoutParams lp2 = new AbsListView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
@@ -740,8 +741,9 @@ public class WakeGesturesMods {
 				
 				listitem.addView(lockImg);
 				listitem.addView(lockTitle);
-				HtcAlertDialog mDialog = (HtcAlertDialog)XposedHelpers.getObjectField(param.thisObject, "mDialog");
-				mDialog.getListView().addFooterView(listitem);
+				Object mDialog = (Object)XposedHelpers.getObjectField(param.thisObject, "mDialog");
+				ListView lv = (ListView)XposedHelpers.callMethod(mDialog, "getListView");
+				lv.addFooterView(listitem);
 			}
 		});
 		

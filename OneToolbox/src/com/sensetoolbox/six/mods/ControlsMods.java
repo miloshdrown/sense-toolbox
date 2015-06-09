@@ -752,6 +752,117 @@ public class ControlsMods {
 			}
 		});
 	}
+	
+	public static boolean isWiredHeadsetConnected = false;
+	public static boolean isBluetoothHeadsetConnected = false;
+	
+	public static void executeAction(Context mContext, int action, int app) {
+		if (action != 1) {
+			Object amn = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
+			if (Helpers.isLP())
+				XposedHelpers.callMethod(amn, "keyguardWaitingForActivityDrawn");
+			else
+				XposedHelpers.callMethod(amn, "dismissKeyguardOnNextActivity");
+			
+			switch (action) {
+				case 2: GlobalActions.launchApp(mContext, app); break;
+				case 3: GlobalActions.launchShortcut(mContext, app); break;
+			}
+		}
+	}
+	
+	public static void executeEffect(Context mContext, int effect, Object thisObject) {
+		switch (effect) {
+			case 2: XposedHelpers.callMethod(thisObject, "setGlobalEffect", 800, "Sense 6 Toolbox"); break;
+			case 3: XposedHelpers.callMethod(thisObject, "setGlobalEffect", 900, "Sense 6 Toolbox"); break;
+			case 4: XposedHelpers.callMethod(thisObject, "setGlobalEffect", 902, "Sense 6 Toolbox"); break;
+		}
+	}
+	
+	public static void handleDeviceTypeChange(MethodHookParam param) {
+		int deviceType = (Integer)param.args[0];
+		switch (deviceType) {
+			case 128:
+			case 256:
+			case 512:
+				boolean newBtState = XposedHelpers.getBooleanField(param.thisObject, "mBluetoothHeadsetConnected");
+				if (newBtState != isBluetoothHeadsetConnected) {
+					isBluetoothHeadsetConnected = newBtState;
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					XMain.pref.reload();
+					int pref_btheadsetaction = 1;
+					int pref_btheadsetapp = 0;
+					int pref_btheadseteffect = 1;
+					if (isBluetoothHeadsetConnected) {
+						XposedBridge.log("[S6T] Bluetooth headset connected");
+						pref_btheadsetaction = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetonaction", "1"));
+						pref_btheadsetapp = 11;
+						pref_btheadseteffect = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetoneffect", "1"));
+					} else {
+						XposedBridge.log("[S6T] Bluetooth headset disconnected");
+						pref_btheadsetaction = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetoffaction", "1"));
+						pref_btheadsetapp = 12;
+						pref_btheadseteffect = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetoffeffect", "1"));
+					}
+					executeAction(mContext, pref_btheadsetaction, pref_btheadsetapp);
+					executeEffect(mContext, pref_btheadseteffect, param.thisObject);
+				}
+				break;
+			case 4:
+			case 8:
+				boolean newWiredState = XposedHelpers.getIntField(param.thisObject, "mHeadsetState") > 0;
+				if (newWiredState != isWiredHeadsetConnected) {
+					isWiredHeadsetConnected = newWiredState;
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					XMain.pref.reload();
+					int pref_wiredheadsetaction = 1;
+					int pref_wiredheadsetapp = 0;
+					int pref_wiredheadseteffect = 1;
+					if (isWiredHeadsetConnected) {
+						XposedBridge.log("[S6T] Wired headset connected");
+						pref_wiredheadsetaction = Integer.parseInt(XMain.pref.getString("pref_key_controls_wiredheadsetonaction", "1"));
+						pref_wiredheadsetapp = 9;
+						pref_wiredheadseteffect = Integer.parseInt(XMain.pref.getString("pref_key_controls_wiredheadsetoneffect", "1"));
+					} else {
+						XposedBridge.log("[S6T] Wired headset disconnected");
+						pref_wiredheadsetaction = Integer.parseInt(XMain.pref.getString("pref_key_controls_wiredheadsetoffaction", "1"));
+						pref_wiredheadsetapp = 10;
+						pref_wiredheadseteffect = Integer.parseInt(XMain.pref.getString("pref_key_controls_wiredheadsetoffeffect", "1"));
+					}
+					executeAction(mContext, pref_wiredheadsetaction, pref_wiredheadsetapp);
+					executeEffect(mContext, pref_wiredheadseteffect, param.thisObject);
+				}
+				break;
+		}
+	}
+	
+	public static void execHook_AccessoriesActions() {
+		try {
+			XposedBridge.hookAllConstructors(findClass("android.media.AudioService", null), new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					isWiredHeadsetConnected = XposedHelpers.getIntField(param.thisObject, "mHeadsetState") > 0;
+					isBluetoothHeadsetConnected = XposedHelpers.getBooleanField(param.thisObject, "mBluetoothHeadsetConnected");
+				}
+			});
+			
+			findAndHookMethod("android.media.AudioService", null, "onDeviceConnected", int.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					handleDeviceTypeChange(param);
+				}
+			});
+			
+			findAndHookMethod("android.media.AudioService", null, "onDeviceDisconnected", int.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					handleDeviceTypeChange(param);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
 	/*
 	public static void execHook_VolumeCaret() {
 		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptKeyBeforeQueueing", KeyEvent.class, int.class, boolean.class, new XC_MethodHook() {

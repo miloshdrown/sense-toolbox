@@ -671,6 +671,10 @@ public class GlobalActions {
 				case 6: pkgAppName = XMain.pref.getString("pref_key_prism_swipeleft_app", null); break;
 				case 7: pkgAppName = XMain.pref.getString("pref_key_prism_shake_app", null); break;
 				case 8: pkgAppName = XMain.pref.getString("pref_key_prism_appslongpress_app", null); break;
+				case 9: pkgAppName = XMain.pref.getString("pref_key_controls_wiredheadseton_app", null); break;
+				case 10: pkgAppName = XMain.pref.getString("pref_key_controls_wiredheadsetoff_app", null); break;
+				case 11: pkgAppName = XMain.pref.getString("pref_key_controls_btheadseton_app", null); break;
+				case 12: pkgAppName = XMain.pref.getString("pref_key_controls_btheadsetoff_app", null); break;
 			}
 			
 			if (pkgAppName != null) {
@@ -703,6 +707,10 @@ public class GlobalActions {
 				case 6: intentString = XMain.pref.getString("pref_key_prism_swipeleftaction_shortcut_intent", null); break;
 				case 7: intentString = XMain.pref.getString("pref_key_prism_shakeaction_shortcut_intent", null); break;
 				case 8: intentString = XMain.pref.getString("pref_key_prism_appslongpressaction_shortcut_intent", null); break;
+				case 9: intentString = XMain.pref.getString("pref_key_controls_wiredheadsetonaction_shortcut_intent", null); break;
+				case 10: intentString = XMain.pref.getString("pref_key_controls_wiredheadsetoffaction_shortcut_intent", null); break;
+				case 11: intentString = XMain.pref.getString("pref_key_controls_btheadsetonaction_shortcut_intent", null); break;
+				case 12: intentString = XMain.pref.getString("pref_key_controls_btheadsetoffaction_shortcut_intent", null); break;
 			}
 			
 			if (intentString != null) {

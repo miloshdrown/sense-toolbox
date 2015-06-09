@@ -379,6 +379,8 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 					Context mContext = null;
 					HtcPreferenceCategory senseControlsBackCat = (HtcPreferenceCategory) findPreference("pref_key_controls_back");
 					HtcPreferenceCategory senseControlsHomeCat = (HtcPreferenceCategory) findPreference("pref_key_controls_home");
+					HtcPreferenceCategory wiredHeadsetCat = (HtcPreferenceCategory) findPreference("pref_key_controls_wiredheadset");
+					HtcPreferenceCategory btHeadsetCat = (HtcPreferenceCategory) findPreference("pref_key_controls_btheadset");
 					
 					if (senseControlsBackCat.findPreference(preference.getKey()) != null) {
 						prefCategory = 1;
@@ -386,6 +388,12 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 					} else if (senseControlsHomeCat.findPreference(preference.getKey()) != null) {
 						prefCategory = 2;
 						mContext = senseControlsHomeCat.getContext();
+					} else if (wiredHeadsetCat.findPreference(preference.getKey()) != null) {
+						prefCategory = 3;
+						mContext = wiredHeadsetCat.getContext();
+					} else if (btHeadsetCat.findPreference(preference.getKey()) != null) {
+						prefCategory = 4;
+						mContext = btHeadsetCat.getContext();
 					} else return true;
 					
 					final DynamicPreference dp = new DynamicPreference(mContext);
@@ -409,6 +417,12 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 					} else if (prefCategory == 2) {
 						senseControlsHomeCat.removePreference(preference);
 						senseControlsHomeCat.addPreference(dp);
+					} else if (prefCategory == 3) {
+						wiredHeadsetCat.removePreference(preference);
+						wiredHeadsetCat.addPreference(dp);
+					} else if (prefCategory == 4) {
+						btHeadsetCat.removePreference(preference);
+						btHeadsetCat.addPreference(dp);
 					}
 					
 					if (Helpers.launchableAppsList == null) {
@@ -494,8 +508,16 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			//HtcListPreference volupPreference = (HtcListPreference) findPreference("pref_key_controls_camupaction");
 			HtcListPreference backLongPressActionPreference = (HtcListPreference) findPreference("pref_key_controls_backlongpressaction");
 			HtcListPreference homeAssistActionPreference = (HtcListPreference) findPreference("pref_key_controls_homeassistaction");
+			final HtcListPreference wiredHeadsetConnectedActionPreference = (HtcListPreference) findPreference("pref_key_controls_wiredheadsetonaction");
+			final HtcListPreference wiredHeadsetDisconnectedActionPreference = (HtcListPreference) findPreference("pref_key_controls_wiredheadsetoffaction");
+			final HtcListPreference btHeadsetConnectedActionPreference = (HtcListPreference) findPreference("pref_key_controls_btheadsetonaction");
+			final HtcListPreference btHeadsetDisconnectedActionPreference = (HtcListPreference) findPreference("pref_key_controls_btheadsetoffaction");
 			HtcPreference launchAppsBackLongPress = findPreference("pref_key_controls_backlongpress_app");
 			HtcPreference launchAppsHomeAssist = findPreference("pref_key_controls_homeassist_app");
+			final HtcPreference launchAppsWiredHeadsetConnected = findPreference("pref_key_controls_wiredheadseton_app");
+			final HtcPreference launchAppsWiredHeadsetDisconnected = findPreference("pref_key_controls_wiredheadsetoff_app");
+			final HtcPreference launchAppsBtHeadsetConnected = findPreference("pref_key_controls_btheadseton_app");
+			final HtcPreference launchAppsBtHeadsetDisconnected = findPreference("pref_key_controls_btheadsetoff_app");
 			HtcListPreferencePlus toggleBackLongPress = (HtcListPreferencePlus) findPreference("pref_key_controls_backlongpress_toggle");
 			HtcListPreferencePlus toggleHomeAssist = (HtcListPreferencePlus) findPreference("pref_key_controls_homeassist_toggle");
 			
@@ -536,15 +558,69 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			toggleHomeAssist.setSummary(toggleHomeAssist.getEntry() == null ? not_selected: toggleHomeAssist.getEntry());
 			toggleHomeAssist.setOnPreferenceChangeListener(setEntryAsSummary);
 			
+			launchAppsWiredHeadsetConnected.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_controls_wiredheadseton_app", not_selected)));
+			launchAppsWiredHeadsetConnected.setOnPreferenceClickListener(clickPref);
+			launchAppsWiredHeadsetDisconnected.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_controls_wiredheadsetoff_app", not_selected)));
+			launchAppsWiredHeadsetDisconnected.setOnPreferenceClickListener(clickPref);
+			
+			launchAppsBtHeadsetConnected.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_controls_btheadseton_app", not_selected)));
+			launchAppsBtHeadsetConnected.setOnPreferenceClickListener(clickPref);
+			launchAppsBtHeadsetDisconnected.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_controls_btheadsetoff_app", not_selected)));
+			launchAppsBtHeadsetDisconnected.setOnPreferenceClickListener(clickPref);
+			
 			if (backLongPressActionPreference.getValue().equals("7"))	launchAppsBackLongPress.setEnabled(true);	else launchAppsBackLongPress.setEnabled(false);
 			if (backLongPressActionPreference.getValue().equals("8"))	toggleBackLongPress.setEnabled(true);		else toggleBackLongPress.setEnabled(false);
 			if (homeAssistActionPreference.getValue().equals("7"))		launchAppsHomeAssist.setEnabled(true);		else launchAppsHomeAssist.setEnabled(false);
 			if (homeAssistActionPreference.getValue().equals("8"))		toggleHomeAssist.setEnabled(true);			else toggleHomeAssist.setEnabled(false);
+			if (wiredHeadsetConnectedActionPreference.getValue().equals("2"))		launchAppsWiredHeadsetConnected.setEnabled(true);		else launchAppsWiredHeadsetConnected.setEnabled(false);
+			if (wiredHeadsetDisconnectedActionPreference.getValue().equals("2"))	launchAppsWiredHeadsetDisconnected.setEnabled(true);	else launchAppsWiredHeadsetDisconnected.setEnabled(false);
+			if (btHeadsetConnectedActionPreference.getValue().equals("2"))			launchAppsBtHeadsetConnected.setEnabled(true);			else launchAppsBtHeadsetConnected.setEnabled(false);
+			if (btHeadsetDisconnectedActionPreference.getValue().equals("2"))		launchAppsBtHeadsetDisconnected.setEnabled(true);		else launchAppsBtHeadsetDisconnected.setEnabled(false);
 
 			//voldownPreference.setOnPreferenceChangeListener(camChangeListener);
 			//volupPreference.setOnPreferenceChangeListener(camChangeListener);
 			backLongPressActionPreference.setOnPreferenceChangeListener(chooseAction);
 			homeAssistActionPreference.setOnPreferenceChangeListener(chooseAction);
+			
+			HtcPreference.OnPreferenceChangeListener chooseHeadsetAction = new HtcPreference.OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
+					HtcPreference launchApps = null;
+					
+					if (preference.equals(findPreference("pref_key_controls_wiredheadsetonaction")))
+						launchApps = findPreference("pref_key_controls_wiredheadseton_app");
+					else if (preference.equals(findPreference("pref_key_controls_wiredheadsetoffaction")))
+						launchApps = findPreference("pref_key_controls_wiredheadsetoff_app");
+					if (preference.equals(findPreference("pref_key_controls_btheadsetonaction")))
+						launchApps = findPreference("pref_key_controls_btheadseton_app");
+					else if (preference.equals(findPreference("pref_key_controls_btheadsetoffaction")))
+						launchApps = findPreference("pref_key_controls_btheadsetoff_app");
+					
+					if (launchApps != null)
+					if (newValue.equals("2")) {
+						launchApps.setEnabled(true);
+						if (launchApps instanceof DynamicPreference)
+							((DynamicPreference)launchApps).show();
+						else
+							launchApps.getOnPreferenceClickListener().onPreferenceClick(launchApps);
+					} else launchApps.setEnabled(false);
+					
+					if (newValue.equals("3")) {
+						Helpers.shortcutDlg = new AppShortcutAddDialog(getActivity(), preference.getKey() + "_shortcut");
+						Helpers.shortcutDlg.setTitle(preference.getTitle());
+						Helpers.shortcutDlg.setIcon(preference.getIcon());
+						Helpers.shortcutDlg.show();
+					}
+					
+					return true;
+				}
+			};
+			
+			wiredHeadsetConnectedActionPreference.setOnPreferenceChangeListener(chooseHeadsetAction);
+			wiredHeadsetDisconnectedActionPreference.setOnPreferenceChangeListener(chooseHeadsetAction);
+			btHeadsetConnectedActionPreference.setOnPreferenceChangeListener(chooseHeadsetAction);
+			btHeadsetDisconnectedActionPreference.setOnPreferenceChangeListener(chooseHeadsetAction);
+			
 			vol2wakePref.setOnPreferenceClickListener(new HtcPreference.OnPreferenceClickListener(){
 				@Override
 				public boolean onPreferenceClick(HtcPreference preference) {

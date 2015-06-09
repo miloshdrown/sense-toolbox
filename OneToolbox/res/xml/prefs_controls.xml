@@ -132,6 +132,96 @@
 		</com.htc.preference.HtcPreferenceCategory>
 		
 		<com.htc.preference.HtcPreferenceCategory
+			android:title="@string/controls_mods_wiredheadset"
+			android:key="pref_key_controls_wiredheadset">
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_wiredheadsetonaction"
+			android:summary="@string/controls_headsetonaction_summ"
+			android:title="@string/controls_headsetonaction_title"
+			android:entries="@array/audio_actions"
+			android:entryValues="@array/audio_actions_val"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_controls_wiredheadseton_app"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_wiredheadsetoneffect"
+			android:summary="@string/controls_headsetoneffect_summ"
+			android:title="@string/controls_headsetoneffect_title"
+			android:entries="@array/global_effects"
+			android:entryValues="@array/global_effects_val"
+			android:icon="@drawable/right_arrow"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_wiredheadsetoffaction"
+			android:summary="@string/controls_headsetoffaction_summ"
+			android:title="@string/controls_headsetoffaction_title"
+			android:entries="@array/audio_actions"
+			android:entryValues="@array/audio_actions_val"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_controls_wiredheadsetoff_app"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_wiredheadsetoffeffect"
+			android:summary="@string/controls_headsetoffeffect_summ"
+			android:title="@string/controls_headsetoffeffect_title"
+			android:entries="@array/global_effects"
+			android:entryValues="@array/global_effects_val"
+			android:icon="@drawable/right_arrow"
+			android:defaultValue="1" />
+		</com.htc.preference.HtcPreferenceCategory>
+		
+		<com.htc.preference.HtcPreferenceCategory
+			android:title="@string/controls_mods_btheadset"
+			android:key="pref_key_controls_btheadset">
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_btheadsetonaction"
+			android:summary="@string/controls_headsetonaction_summ"
+			android:title="@string/controls_headsetonaction_title"
+			android:entries="@array/audio_actions"
+			android:entryValues="@array/audio_actions_val"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_controls_btheadseton_app"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_btheadsetoneffect"
+			android:summary="@string/controls_headsetoneffect_summ"
+			android:title="@string/controls_headsetoneffect_title"
+			android:entries="@array/global_effects"
+			android:entryValues="@array/global_effects_val"
+			android:icon="@drawable/right_arrow"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_btheadsetoffaction"
+			android:summary="@string/controls_headsetoffaction_summ"
+			android:title="@string/controls_headsetoffaction_title"
+			android:entries="@array/audio_actions"
+			android:entryValues="@array/audio_actions_val"
+			android:defaultValue="1" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_controls_btheadsetoff_app"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_btheadsetoffeffect"
+			android:summary="@string/controls_headsetoffeffect_summ"
+			android:title="@string/controls_headsetoffeffect_title"
+			android:entries="@array/global_effects"
+			android:entryValues="@array/global_effects_val"
+			android:icon="@drawable/right_arrow"
+			android:defaultValue="1" />
+		</com.htc.preference.HtcPreferenceCategory>
+		
+		<com.htc.preference.HtcPreferenceCategory
 			android:title="@string/controls_mods_volume"
 			android:key="pref_key_controls_media">
 		<!--

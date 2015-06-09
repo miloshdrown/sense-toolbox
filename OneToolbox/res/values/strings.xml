@@ -338,10 +338,20 @@
 	<string name="controls_backlongpressaction_title">Action</string>
 	<string name="controls_backlongpressaction_summ">Action for back button long press.</string>
 	<string name="controls_mods_homeassist">Home assist</string>
+	<string name="controls_mods_wiredheadset">Wired headset</string>
+	<string name="controls_mods_btheadset">Bluetooth headset</string>
 	<string name="controls_no_recents">No recent apps yet</string>
 	<string name="controls_mods_recentslongpress">Recents button long press</string>
 	<string name="controls_homeassistaction_title">Action</string>
 	<string name="controls_homeassistaction_summ">Overrides assist action (which is Google Now by default).</string>
+	<string name="controls_headsetonaction_title">Connected</string>
+	<string name="controls_headsetonaction_summ">Executes action when headset is connected.</string>
+	<string name="controls_headsetoneffect_title">Global effect</string>
+	<string name="controls_headsetoneffect_summ">Change global audio effect.</string>
+	<string name="controls_headsetoffaction_title">Disconnected</string>
+	<string name="controls_headsetoffaction_summ">Executes action when headset is disconnected.</string>
+	<string name="controls_headsetoffeffect_title">Global effect</string>
+	<string name="controls_headsetoffeffect_summ">Change global audio effect.</string>
 	<string name="controls_recentslongpressaction_summ">Assigns action to recents button long press.</string>
 	<string name="controls_vol2wake_title">Volume2Wake</string>
 	<string name="controls_vol2wake_summ">Wake your phone with the volume keys. Requires rooted device with init.d support! Make a FULL reboot to apply!</string>
@@ -727,7 +737,7 @@
 	<string name="array_color_red">Red</string>
 	<string name="array_color_orange">Orange</string>
 	<string name="array_color_white">White</string>
-	<string name="array_media_none">No Change</string>
+	<string name="array_media_none">No change</string>
 	<string name="array_media_playpause">Play/Pause</string>
 	<string name="array_media_next">Next track</string>
 	<string name="array_media_prev">Previous track</string>
@@ -762,5 +772,7 @@
 	<string name="array_autoeqs_clearable">If no clearable notifications are active</string>
 	<string name="array_stock">Stock Android\nOpen/close: slide up/slide down</string>
 	<string name="array_htc">HTC\nOpen/close: slide up with fade/none</string>
+	<string name="array_effect_none">No effect</string>
+	<string name="array_effect_boomsrs">Boomsound / SRS</string>
 
 </resources>

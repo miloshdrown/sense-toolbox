@@ -196,8 +196,13 @@ public class FloatingSelector extends FrameLayout {
 		
 		UsageStatsManager mUsageStatsManager = (UsageStatsManager)mContext.getSystemService("usagestats");
 		long time = System.currentTimeMillis();
-		List<UsageStats> stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, time - 24 * 60 * 60 * 1000, time);
+		List<UsageStats> stats = null;
+		stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 24 * 60 * 60 * 1000, time);
+		if (stats == null || (stats != null && stats.size() <= 1))
+		stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, time - 24 * 60 * 60 * 1000, time);
 		if (stats != null) {
+			XposedBridge.log("[S6T] Apps used recently: " + String.valueOf(stats.size()));
+			
 			SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>(Collections.reverseOrder());
 			for (UsageStats usageStats: stats)
 			mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);

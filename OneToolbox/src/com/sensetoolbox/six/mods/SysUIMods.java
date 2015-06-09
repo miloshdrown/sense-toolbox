@@ -2032,16 +2032,19 @@ public class SysUIMods {
 	
 	public static void execHook_OverrideAssist(LoadPackageParam lpparam) {
 		try {
-			findAndHookMethod("com.android.systemui.SearchPanelView", lpparam.classLoader, "show", boolean.class, boolean.class, new XC_MethodHook() {
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "showSearchPanel", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					if ((Boolean)param.args[0]) {
-						ControlsMods.assistAndSearchPanelOverride(param);
-					} else {
-						XMain.pref.reload();
-						if (Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassistaction", "1")) == 15)
-						GlobalActions.hideQuickRecents((Context)XposedHelpers.getObjectField(param.thisObject, "mContext"));
-					}
+					ControlsMods.assistAndSearchPanelOverride(param);
+				}
+			});
+			
+			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "hideSearchPanel", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					XMain.pref.reload();
+					if (Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassistaction", "1")) == 15)
+					GlobalActions.hideQuickRecents((Context)XposedHelpers.getObjectField(param.thisObject, "mContext"));
 				}
 			});
 		} catch (Throwable t) {

@@ -288,6 +288,10 @@ public class Helpers {
 					entriesResName = "googleapp_widget";
 				else if (titleResName.equals("sense_transitions_title"))
 					entriesResName = "transitions";
+				else if (titleResName.contains("controls_headsetonaction") || titleResName.contains("controls_headsetoffaction"))
+					entriesResName = "audio_actions";
+				else if (titleResName.contains("controls_headsetoneffect") || titleResName.contains("controls_headsetoffeffect"))
+					entriesResName = "global_effects";
 				else if (titleResName.contains("sense_") || titleResName.contains("controls_"))
 					entriesResName = "global_actions";
 				else if (titleResName.contains("wakegestures_"))

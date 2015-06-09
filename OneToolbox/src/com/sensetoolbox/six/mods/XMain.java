@@ -173,6 +173,16 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_other_noautoime", false))
 			OtherMods.execHook_NoAutoIME();
 		
+		if (Integer.parseInt(pref.getString("pref_key_controls_wiredheadsetonaction", "1")) != 1 ||
+			Integer.parseInt(pref.getString("pref_key_controls_wiredheadsetoffaction", "1")) != 1 ||
+			Integer.parseInt(pref.getString("pref_key_controls_wiredheadsetoneffect", "1")) != 1 ||
+			Integer.parseInt(pref.getString("pref_key_controls_wiredheadsetoffeffect", "1")) != 1 ||
+			Integer.parseInt(pref.getString("pref_key_controls_btheadsetonaction", "1")) != 1 ||
+			Integer.parseInt(pref.getString("pref_key_controls_btheadsetoffaction", "1")) != 1 ||
+			Integer.parseInt(pref.getString("pref_key_controls_btheadsetoneffect", "1")) != 1 ||
+			Integer.parseInt(pref.getString("pref_key_controls_btheadsetoffeffect", "1")) != 1)
+			ControlsMods.execHook_AccessoriesActions();
+		
 		//OtherMods.execHook_HapticNotify();
 	}
 	
