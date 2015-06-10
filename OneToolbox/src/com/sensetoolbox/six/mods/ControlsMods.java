@@ -788,6 +788,7 @@ public class ControlsMods {
 			XposedBridge.log("[S6T] BT device class: " + String.valueOf(mBluetoothHeadsetDevice.getBluetoothClass().getDeviceClass()));
 		
 		int deviceType = (Integer)param.args[0];
+		XposedBridge.log("[S6T] deviceType == " + String.valueOf(deviceType));
 		switch (deviceType) {
 			case 128:
 			case 256:
