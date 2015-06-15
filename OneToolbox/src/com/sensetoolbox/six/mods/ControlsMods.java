@@ -5,6 +5,9 @@ import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 import static de.robv.android.xposed.XposedHelpers.setObjectField;
+
+import java.util.HashMap;
+
 import android.annotation.SuppressLint;
 import android.bluetooth.BluetoothDevice;
 import android.content.BroadcastReceiver;
@@ -159,22 +162,12 @@ public class ControlsMods {
 				case 4: GlobalActions.lockDevice(mContext); break;
 				case 5: GlobalActions.goToSleep(mContext); break;
 				case 6: GlobalActions.takeScreenshot(mContext); break;
-				case 7: Object amn = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
-						if (Helpers.isLP())
-							XposedHelpers.callMethod(amn, "keyguardWaitingForActivityDrawn");
-						else
-							XposedHelpers.callMethod(amn, "dismissKeyguardOnNextActivity");
-						GlobalActions.launchApp(mContext, 4); break;
+				case 7: GlobalActions.dismissKeyguard(); GlobalActions.launchApp(mContext, 4); break;
 				case 8: GlobalActions.toggleThis(mContext, Integer.parseInt(XMain.pref.getString("pref_key_controls_homeassist_toggle", "0"))); break;
 				case 9: GlobalActions.killForegroundApp(mContext); break;
 				case 10: GlobalActions.simulateMenu(mContext); break;
 				case 11: GlobalActions.openRecents(mContext); break;
-				case 12: Object amn2 = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
-						if (Helpers.isLP())
-							XposedHelpers.callMethod(amn2, "keyguardWaitingForActivityDrawn");
-						else
-							XposedHelpers.callMethod(amn2, "dismissKeyguardOnNextActivity");
-						GlobalActions.launchShortcut(mContext, 4); break;
+				case 12: GlobalActions.dismissKeyguard(); GlobalActions.launchShortcut(mContext, 4); break;
 				case 13: GlobalActions.switchToPrevApp(mContext); break;
 				case 14: GlobalActions.openAppDrawer(mContext); break;
 				case 15: GlobalActions.showQuickRecents(mContext); break;
@@ -336,16 +329,7 @@ public class ControlsMods {
 									public void run() {
 										if (isVolumePressed) {
 											isVolumeLongPressed = true;
-											AudioManager am = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
-											boolean isMusicActive = am.isMusicActive();
-											boolean isMusicActiveRemotely  = (Boolean)XposedHelpers.callMethod(am, "isMusicActiveRemotely");
-											boolean isAllowed = isMusicActive || isMusicActiveRemotely;
-											if (!isAllowed) {
-												long mCurrentTime = System.currentTimeMillis();
-												long mLastPauseTime = Settings.System.getLong(mContext.getContentResolver(), "last_music_paused_time", mCurrentTime);
-												if (mCurrentTime - mLastPauseTime < 10 * 60 * 1000) isAllowed = true;
-											}
-											if (isAllowed)
+											if (GlobalActions.isMediaActionsAllowed(mContext))
 											switch (keyEvent.getKeyCode()) {
 												case KeyEvent.KEYCODE_VOLUME_UP:
 													XMain.pref.reload();
@@ -754,17 +738,13 @@ public class ControlsMods {
 		});
 	}
 	
+	public static Object mAS = null;
 	public static boolean isWiredHeadsetConnected = false;
-	public static boolean isBluetoothHeadsetConnected = false;
+	public static HashMap<String, Boolean> isBluetoothConnected = new HashMap<String, Boolean>();
 	
 	public static void executeAction(Context mContext, int action, int app) {
 		if (action != 1) {
-			Object amn = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
-			if (Helpers.isLP())
-				XposedHelpers.callMethod(amn, "keyguardWaitingForActivityDrawn");
-			else
-				XposedHelpers.callMethod(amn, "dismissKeyguardOnNextActivity");
-			
+			GlobalActions.dismissKeyguard();
 			switch (action) {
 				case 2: GlobalActions.launchApp(mContext, app); break;
 				case 3: GlobalActions.launchShortcut(mContext, app); break;
@@ -772,49 +752,56 @@ public class ControlsMods {
 		}
 	}
 	
-	public static void executeEffect(Context mContext, int effect, Object thisObject) {
+	public static void executeEffect(Context mContext, int effect) {
 		switch (effect) {
-			case 2: XposedHelpers.callMethod(thisObject, "setGlobalEffect", 800, "Sense 6 Toolbox"); break;
-			case 3: XposedHelpers.callMethod(thisObject, "setGlobalEffect", 900, "Sense 6 Toolbox"); break;
-			case 4: XposedHelpers.callMethod(thisObject, "setGlobalEffect", 902, "Sense 6 Toolbox"); break;
+			case 2: XposedHelpers.callMethod(mAS, "setGlobalEffect", 800, "Sense 6 Toolbox"); break;
+			case 3: XposedHelpers.callMethod(mAS, "setGlobalEffect", 900, "Sense 6 Toolbox"); break;
+			case 4: XposedHelpers.callMethod(mAS, "setGlobalEffect", 902, "Sense 6 Toolbox"); break;
+		}
+	}
+	
+	public static void execBluetoothAction(Context mContext, String macAdress, boolean newBtState) {
+		if (isBluetoothConnected.get(macAdress) == null) isBluetoothConnected.put(macAdress, false);
+		if (newBtState != isBluetoothConnected.get(macAdress)) {
+			isBluetoothConnected.put(macAdress, newBtState);
+			XMain.pref.reload();
+			int pref_btheadsetaction = 1;
+			int pref_btheadsetapp = 0;
+			int pref_btheadseteffect = 1;
+			if (isBluetoothConnected.get(macAdress)) {
+				XposedBridge.log("[S6T] Bluetooth device connected");
+				pref_btheadsetaction = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetonaction", "1"));
+				pref_btheadsetapp = 11;
+				pref_btheadseteffect = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetoneffect", "1"));
+			} else {
+				XposedBridge.log("[S6T] Bluetooth device disconnected");
+				pref_btheadsetaction = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetoffaction", "1"));
+				pref_btheadsetapp = 12;
+				pref_btheadseteffect = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetoffeffect", "1"));
+			}
+			executeAction(mContext, pref_btheadsetaction, pref_btheadsetapp);
+			executeEffect(mContext, pref_btheadseteffect);
 		}
 	}
 	
 	public static void handleDeviceTypeChange(MethodHookParam param) {
-		BluetoothDevice mBluetoothHeadsetDevice = (BluetoothDevice)XposedHelpers.getObjectField(param.thisObject, "mBluetoothHeadsetDevice");
-		if (mBluetoothHeadsetDevice == null)
-			XposedBridge.log("[S6T] mBluetoothHeadsetDevice == null");
-		else
-			XposedBridge.log("[S6T] BT device class: " + String.valueOf(mBluetoothHeadsetDevice.getBluetoothClass().getDeviceClass()));
-		
 		int deviceType = (Integer)param.args[0];
-		XposedBridge.log("[S6T] deviceType == " + String.valueOf(deviceType));
 		switch (deviceType) {
 			case 128:
 			case 256:
 			case 512:
-				boolean newBtState = XposedHelpers.getBooleanField(param.thisObject, "mBluetoothHeadsetConnected");
-				if (newBtState != isBluetoothHeadsetConnected) {
-					isBluetoothHeadsetConnected = newBtState;
+				BluetoothDevice mBluetoothHeadsetDevice = (BluetoothDevice)XposedHelpers.getObjectField(param.thisObject, "mBluetoothHeadsetDevice");
+				if (mBluetoothHeadsetDevice != null) {
+					int majorDeviceClass = mBluetoothHeadsetDevice.getBluetoothClass().getMajorDeviceClass();
+					String macAdress = mBluetoothHeadsetDevice.getAddress();
+					XposedBridge.log("[S6T] BT device class: " + String.valueOf(majorDeviceClass) + " MAC: " + macAdress);
+					
+					//BluetoothClass.Device.Major.AUDIO_VIDEO;
+					
+					boolean newBtState = XposedHelpers.getBooleanField(param.thisObject, "mBluetoothHeadsetConnected");
 					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-					XMain.pref.reload();
-					int pref_btheadsetaction = 1;
-					int pref_btheadsetapp = 0;
-					int pref_btheadseteffect = 1;
-					if (isBluetoothHeadsetConnected) {
-						XposedBridge.log("[S6T] Bluetooth headset connected");
-						pref_btheadsetaction = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetonaction", "1"));
-						pref_btheadsetapp = 11;
-						pref_btheadseteffect = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetoneffect", "1"));
-					} else {
-						XposedBridge.log("[S6T] Bluetooth headset disconnected");
-						pref_btheadsetaction = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetoffaction", "1"));
-						pref_btheadsetapp = 12;
-						pref_btheadseteffect = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetoffeffect", "1"));
-					}
-					executeAction(mContext, pref_btheadsetaction, pref_btheadsetapp);
-					executeEffect(mContext, pref_btheadseteffect, param.thisObject);
-				}
+					execBluetoothAction(mContext, macAdress, newBtState);
+				} else XposedBridge.log("[S6T] mBluetoothHeadsetDevice == null");
 				break;
 			case 4:
 			case 8:
@@ -827,18 +814,16 @@ public class ControlsMods {
 					int pref_wiredheadsetapp = 0;
 					int pref_wiredheadseteffect = 1;
 					if (isWiredHeadsetConnected) {
-						XposedBridge.log("[S6T] Wired headset connected");
 						pref_wiredheadsetaction = Integer.parseInt(XMain.pref.getString("pref_key_controls_wiredheadsetonaction", "1"));
 						pref_wiredheadsetapp = 9;
 						pref_wiredheadseteffect = Integer.parseInt(XMain.pref.getString("pref_key_controls_wiredheadsetoneffect", "1"));
 					} else {
-						XposedBridge.log("[S6T] Wired headset disconnected");
 						pref_wiredheadsetaction = Integer.parseInt(XMain.pref.getString("pref_key_controls_wiredheadsetoffaction", "1"));
 						pref_wiredheadsetapp = 10;
 						pref_wiredheadseteffect = Integer.parseInt(XMain.pref.getString("pref_key_controls_wiredheadsetoffeffect", "1"));
 					}
 					executeAction(mContext, pref_wiredheadsetaction, pref_wiredheadsetapp);
-					executeEffect(mContext, pref_wiredheadseteffect, param.thisObject);
+					executeEffect(mContext, pref_wiredheadseteffect);
 				}
 				break;
 		}
@@ -849,8 +834,8 @@ public class ControlsMods {
 			XposedBridge.hookAllConstructors(findClass("android.media.AudioService", null), new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					mAS = param.thisObject;
 					isWiredHeadsetConnected = XposedHelpers.getIntField(param.thisObject, "mHeadsetState") > 0;
-					isBluetoothHeadsetConnected = XposedHelpers.getBooleanField(param.thisObject, "mBluetoothHeadsetConnected");
 				}
 			});
 			
@@ -865,6 +850,51 @@ public class ControlsMods {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					handleDeviceTypeChange(param);
+				}
+			});
+			
+			findAndHookMethod("android.media.AudioService", null, "makeA2dpDeviceAvailable", String.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					String macAdress = (String)param.args[0];
+					execBluetoothAction(mContext, macAdress, true);
+				}
+			});
+			
+			findAndHookMethod("android.media.AudioService", null, "makeA2dpSrcAvailable", String.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					String macAdress = (String)param.args[0];
+					execBluetoothAction(mContext, macAdress, true);
+				}
+			});
+			
+			findAndHookMethod("android.media.AudioService", null, "makeA2dpDeviceUnavailableNow", String.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					String macAdress = (String)param.args[0];
+					execBluetoothAction(mContext, macAdress, false);
+				}
+			});
+			
+			findAndHookMethod("android.media.AudioService", null, "makeA2dpDeviceUnavailableLater", String.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					String macAdress = (String)param.args[0];
+					execBluetoothAction(mContext, macAdress, false);
+				}
+			});
+			
+			findAndHookMethod("android.media.AudioService", null, "makeA2dpSrcUnavailable", String.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					String macAdress = (String)param.args[0];
+					execBluetoothAction(mContext, macAdress, false);
 				}
 			});
 		} catch (Throwable t) {

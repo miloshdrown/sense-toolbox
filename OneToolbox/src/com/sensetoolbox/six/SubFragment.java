@@ -15,6 +15,7 @@ import com.htc.preference.HtcListPreference;
 import com.htc.preference.HtcMultiSelectListPreference;
 import com.htc.preference.HtcPreference;
 import com.htc.preference.HtcPreferenceCategory;
+import com.htc.preference.HtcPreferenceGroup;
 import com.htc.preference.HtcPreferenceScreen;
 import com.htc.preference.HtcSwitchPreference;
 import com.htc.preference.HtcPreference.OnPreferenceChangeListener;
@@ -96,6 +97,59 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				@Override
 				public boolean onPreferenceClick(HtcPreference arg0) {
 					getActivity().startActivity(new Intent(getActivity(), SenseThemes.class));
+					return true;
+				}
+			});
+			
+			final HtcListPreference clockActionPreference = (HtcListPreference)findPreference("pref_key_controls_clockaction");
+			final HtcPreference launchAppsClock = findPreference("pref_key_controls_clock_app");
+			if (Integer.parseInt(prefs.getString("pref_key_sysui_headerclick", "1")) != 1) clockActionPreference.setEnabled(true);
+			
+			findPreference("pref_key_sysui_headerclick").setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
+					if (Integer.parseInt((String)newValue) != 1) {
+						clockActionPreference.setEnabled(true);
+						if (clockActionPreference.getValue().equals("2")) launchAppsClock.setEnabled(true); else launchAppsClock.setEnabled(false);
+					} else {
+						clockActionPreference.setEnabled(false);
+						launchAppsClock.setEnabled(false);
+					}
+					return true;
+				}
+			});
+			
+			launchAppsClock.setSummary(Helpers.getAppName(getActivity(), prefs.getString("pref_key_controls_clock_app", Helpers.l10n(getActivity(), R.string.notselected))));
+			launchAppsClock.setOnPreferenceClickListener(new HtcPreference.OnPreferenceClickListener() {
+				@Override
+				public boolean onPreferenceClick(HtcPreference preference) {
+					HtcPreferenceCategory sysUiStatusBar = (HtcPreferenceCategory)findPreference("pref_systemui_statusbar");
+					makeDynamicPref(sysUiStatusBar, preference);
+					return true;
+				}
+			});
+			
+			if (clockActionPreference.isEnabled() && clockActionPreference.getValue().equals("2")) launchAppsClock.setEnabled(true); else launchAppsClock.setEnabled(false);
+			clockActionPreference.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
+					HtcPreference launchApps = findPreference("pref_key_controls_clock_app");
+					if (launchApps != null)
+					if (preference.isEnabled() && newValue.equals("2")) {
+						launchApps.setEnabled(true);
+						if (launchApps instanceof DynamicPreference)
+							((DynamicPreference)launchApps).show();
+						else
+							launchApps.getOnPreferenceClickListener().onPreferenceClick(launchApps);
+					} else launchApps.setEnabled(false);
+						
+					if (newValue.equals("3")) {
+						Helpers.shortcutDlg = new AppShortcutAddDialog(getActivity(), preference.getKey() + "_shortcut");
+						Helpers.shortcutDlg.setTitle(preference.getTitle());
+						Helpers.shortcutDlg.setIcon(preference.getIcon());
+						Helpers.shortcutDlg.show();
+					}
+					
 					return true;
 				}
 			});
@@ -215,58 +269,7 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				@Override
 				public boolean onPreferenceClick(HtcPreference preference) {
 					HtcPreferenceCategory senseGesturesCat = (HtcPreferenceCategory) findPreference("pref_key_sense_gestures");
-					Context mContext = senseGesturesCat.getContext();
-					
-					final DynamicPreference dp = new DynamicPreference(mContext);
-					dp.setTitle(preference.getTitle());
-					dp.setIcon(preference.getIcon());
-					dp.setDialogTitle(preference.getTitle());
-					dp.setSummary(preference.getSummary());
-					dp.setOrder(preference.getOrder());
-					dp.setKey(preference.getKey());
-					dp.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
-						@Override
-						public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-							preference.setSummary(Helpers.getAppName(getActivity(), (String)newValue));
-							return true;
-						}
-					});
-					
-					senseGesturesCat.removePreference(preference);
-					senseGesturesCat.addPreference(dp);
-					
-					if (Helpers.launchableAppsList == null) {
-						final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
-						dialog.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
-						dialog.setCancelable(false);
-						dialog.show();
-						
-						new Thread() {
-							@Override
-							public void run() {
-								try {
-									Helpers.getLaunchableApps(getActivity());
-									getActivity().runOnUiThread(new Runnable(){
-										@Override
-										public void run(){
-											dp.show();
-										}
-									});
-									// Nasty hack! Wait for icons to load.
-									Thread.sleep(1000);
-									getActivity().runOnUiThread(new Runnable(){
-										@Override
-										public void run() {
-											dialog.dismiss();
-										}
-									});
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							}
-						}.start();
-					} else dp.show();
-					
+					makeDynamicPref(senseGesturesCat, preference);
 					return true;
 				}
 			};
@@ -375,87 +378,19 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			HtcPreference.OnPreferenceClickListener clickPref = new HtcPreference.OnPreferenceClickListener() {
 				@Override
 				public boolean onPreferenceClick(HtcPreference preference) {
-					int prefCategory = 0;
-					Context mContext = null;
 					HtcPreferenceCategory senseControlsBackCat = (HtcPreferenceCategory) findPreference("pref_key_controls_back");
 					HtcPreferenceCategory senseControlsHomeCat = (HtcPreferenceCategory) findPreference("pref_key_controls_home");
 					HtcPreferenceCategory wiredHeadsetCat = (HtcPreferenceCategory) findPreference("pref_key_controls_wiredheadset");
 					HtcPreferenceCategory btHeadsetCat = (HtcPreferenceCategory) findPreference("pref_key_controls_btheadset");
 					
-					if (senseControlsBackCat.findPreference(preference.getKey()) != null) {
-						prefCategory = 1;
-						mContext = senseControlsBackCat.getContext();
-					} else if (senseControlsHomeCat.findPreference(preference.getKey()) != null) {
-						prefCategory = 2;
-						mContext = senseControlsHomeCat.getContext();
-					} else if (wiredHeadsetCat.findPreference(preference.getKey()) != null) {
-						prefCategory = 3;
-						mContext = wiredHeadsetCat.getContext();
-					} else if (btHeadsetCat.findPreference(preference.getKey()) != null) {
-						prefCategory = 4;
-						mContext = btHeadsetCat.getContext();
-					} else return true;
-					
-					final DynamicPreference dp = new DynamicPreference(mContext);
-					dp.setTitle(preference.getTitle());
-					dp.setIcon(preference.getIcon());
-					dp.setDialogTitle(preference.getTitle());
-					dp.setSummary(preference.getSummary());
-					dp.setOrder(preference.getOrder());
-					dp.setKey(preference.getKey());
-					dp.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
-						@Override
-						public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-							preference.setSummary(Helpers.getAppName(getActivity(), (String)newValue));
-							return true;
-						}
-					});
-					
-					if (prefCategory == 1) {
-						senseControlsBackCat.removePreference(preference);
-						senseControlsBackCat.addPreference(dp);
-					} else if (prefCategory == 2) {
-						senseControlsHomeCat.removePreference(preference);
-						senseControlsHomeCat.addPreference(dp);
-					} else if (prefCategory == 3) {
-						wiredHeadsetCat.removePreference(preference);
-						wiredHeadsetCat.addPreference(dp);
-					} else if (prefCategory == 4) {
-						btHeadsetCat.removePreference(preference);
-						btHeadsetCat.addPreference(dp);
-					}
-					
-					if (Helpers.launchableAppsList == null) {
-						final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
-						dialog.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
-						dialog.setCancelable(false);
-						dialog.show();
-						
-						new Thread() {
-							@Override
-							public void run() {
-								try {
-									Helpers.getLaunchableApps(getActivity());
-									getActivity().runOnUiThread(new Runnable(){
-										@Override
-										public void run(){
-											dp.show();
-										}
-									});
-									// Nasty hack! Wait for icons to load.
-									Thread.sleep(1000);
-									getActivity().runOnUiThread(new Runnable(){
-										@Override
-										public void run() {
-											dialog.dismiss();
-										}
-									});
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							}
-						}.start();
-					} else dp.show();
+					if (senseControlsBackCat.findPreference(preference.getKey()) != null)
+						makeDynamicPref(senseControlsBackCat, preference);
+					else if (senseControlsHomeCat.findPreference(preference.getKey()) != null)
+						makeDynamicPref(senseControlsHomeCat, preference);
+					else if (wiredHeadsetCat.findPreference(preference.getKey()) != null)
+						makeDynamicPref(wiredHeadsetCat, preference);
+					else if (btHeadsetCat.findPreference(preference.getKey()) != null)
+						makeDynamicPref(btHeadsetCat, preference);
 					
 					return true;
 				}
@@ -816,57 +751,7 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				@Override
 				public boolean onPreferenceClick(HtcPreference preference) {
 					HtcPreferenceScreen gesturesCat = (HtcPreferenceScreen) findPreference("pref_key_wakegest");
-					final Context mContext = gesturesCat.getContext();
-					final DynamicPreference dp = new DynamicPreference(mContext);
-					dp.setTitle(preference.getTitle());
-					dp.setIcon(preference.getIcon());
-					dp.setDialogTitle(preference.getTitle());
-					dp.setSummary(preference.getSummary());
-					dp.setOrder(preference.getOrder());
-					dp.setKey(preference.getKey());
-					dp.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
-						@Override
-						public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-							preference.setSummary(Helpers.getAppName(getActivity(), (String)newValue));
-							return true;
-						}
-					});
-					
-					gesturesCat.removePreference(preference);
-					gesturesCat.addPreference(dp);
-					
-					if (Helpers.launchableAppsList == null) {
-						final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
-						dialog.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
-						dialog.setCancelable(false);
-						dialog.show();
-						
-						new Thread() {
-							@Override
-							public void run() {
-								try {
-									Helpers.getLaunchableApps(getActivity());
-									getActivity().runOnUiThread(new Runnable(){
-										@Override
-										public void run() {
-											dp.show();
-										}
-									});
-									// Nasty hack! Wait for icons to load.
-									Thread.sleep(1000);
-									getActivity().runOnUiThread(new Runnable(){
-										@Override
-										public void run() {
-											dialog.dismiss();
-										}
-									});
-								} catch (Exception e) {
-									e.printStackTrace();
-								}
-							}
-						}.start();
-					} else dp.show();
-					
+					makeDynamicPref(gesturesCat, preference);
 					return true;
 				}
 			};
@@ -1209,6 +1094,58 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			themeHint.setBackgroundResource(backResId);
 			themeHint.setText(Helpers.l10n(getActivity(), R.string.various_eps_hint));
 		}
+	}
+	
+	public void makeDynamicPref(final HtcPreferenceGroup group, HtcPreference clickedPreference) {
+		final DynamicPreference dp = new DynamicPreference(group.getContext());
+		dp.setTitle(clickedPreference.getTitle());
+		dp.setIcon(clickedPreference.getIcon());
+		dp.setDialogTitle(clickedPreference.getTitle());
+		dp.setSummary(clickedPreference.getSummary());
+		dp.setOrder(clickedPreference.getOrder());
+		dp.setKey(clickedPreference.getKey());
+		dp.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
+				preference.setSummary(Helpers.getAppName(getActivity(), (String)newValue));
+				return true;
+			}
+		});
+		
+		group.removePreference(clickedPreference);
+		group.addPreference(dp);
+		
+		if (Helpers.launchableAppsList == null) {
+			final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
+			dialog.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
+			dialog.setCancelable(false);
+			dialog.show();
+			
+			new Thread() {
+				@Override
+				public void run() {
+					try {
+						Helpers.getLaunchableApps(getActivity());
+						getActivity().runOnUiThread(new Runnable(){
+							@Override
+							public void run() {
+								dp.show();
+							}
+						});
+						// Nasty hack! Wait for icons to load.
+						Thread.sleep(1000);
+						getActivity().runOnUiThread(new Runnable(){
+							@Override
+							public void run() {
+								dialog.dismiss();
+							}
+						});
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}.start();
+		} else dp.show();
 	}
 	
 	@Override

@@ -6,7 +6,6 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 import static de.robv.android.xposed.XposedHelpers.getObjectField;
 
 import java.lang.reflect.Constructor;
-import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
@@ -14,8 +13,11 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.htc.fragment.widget.CarouselFragment;
+import com.htc.preference.HtcPreference;
+import com.htc.preference.HtcPreferenceFragment;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.R;
+import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
 
 import android.animation.ObjectAnimator;
@@ -51,7 +53,6 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
@@ -269,7 +270,7 @@ public class OtherMods {
 		
 		if (XMain.pref_screenon != 0) {
 			ObjectAnimator mColorFadeOnAnimator = (ObjectAnimator)XposedHelpers.getObjectField(dpc, "mColorFadeOnAnimator");
-			mColorFadeOnAnimator.setDuration(length);
+			mColorFadeOnAnimator.setDuration(Math.round(length * 0.8f));
 		}
 	}
 	
@@ -336,9 +337,10 @@ public class OtherMods {
 					if ((Boolean)XposedHelpers.callMethod(mPowerRequest, "isBrightOrDim")) {
 						if ((Float)XposedHelpers.callMethod(mPowerState, "getColorFadeLevel") == 1.0F)
 							XposedHelpers.callMethod(mPowerState, "dismissColorFade");
-						else if ((Boolean)XposedHelpers.callMethod(mPowerState, "prepareColorFade", mContext, XMain.pref_screenon + 100))
+						else if ((Boolean)XposedHelpers.callMethod(mPowerState, "prepareColorFade", mContext, XMain.pref_screenon + 100)) {
+							mColorFadeOnAnimator.setStartDelay(0);
 							mColorFadeOnAnimator.start();
-						else
+						} else
 							mColorFadeOnAnimator.end();
 					} else {
 						XposedHelpers.callMethod(mPowerState, "setColorFadeLevel", 1.0F);
@@ -1635,18 +1637,7 @@ public class OtherMods {
 						umc.addCategory(Intent.CATEGORY_DEFAULT);
 						umc.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 						mContext.startActivity(umc);
-						
-						try {
-							Object sbservice = v.getContext().getSystemService("statusbar");
-							Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
-							Method hidesb;
-							if (Build.VERSION.SDK_INT >= 17)
-								hidesb = statusbarManager.getMethod("collapsePanels");
-							else
-								hidesb = statusbarManager.getMethod("collapse");
-							hidesb.setAccessible(true);
-							hidesb.invoke(sbservice);
-						} catch (Throwable t) {}
+						GlobalActions.collapseDrawer(v.getContext());
 						return true;
 					}
 				});
@@ -1990,6 +1981,36 @@ public class OtherMods {
 						row4.invalidate();
 					} catch (Throwable t) {
 						XposedBridge.log(t);
+					}
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_NoFlipToMute(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.phone.HtcPhoneSensorFunctions", lpparam.classLoader, "handleRotateToSilent", float.class, float.class, XC_MethodReplacement.DO_NOTHING);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_NoFlipToMuteSetting(LoadPackageParam lpparam) {
+		try {
+			String className = "com.android.settings.SoundSettings";
+			if (Helpers.isLP()) className = "com.android.settings.notification.NotificationSettings";
+			findAndHookMethod(className, lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					HtcPreferenceFragment notifySettings = (HtcPreferenceFragment)param.thisObject;
+					if (notifySettings != null) {
+						HtcPreference flipToMutePref = notifySettings.findPreference("HtcFlipToMutePreference");
+						if (flipToMutePref != null) {
+							flipToMutePref.setEnabled(false);
+							flipToMutePref.setSummary(Helpers.xl10n(XModuleResources.createInstance(XMain.MODULE_PATH, null), R.string.disabled_by_toolbox));
+						}
 					}
 				}
 			});

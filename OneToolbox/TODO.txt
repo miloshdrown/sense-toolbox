@@ -17,8 +17,11 @@ Current changelog
 
 1.5.6
 [New] Actions for wired and bluetooth headsets connect and disconnect
+[New] Completely disable Flip to mute
+[Fixed] Media actions 10 minute timeout is now applied to Wake gestures as well
 [Fixed] Touch Lock menu item in Power menu
 [Fixed] Swipe up from Home action on lock screen
+[Fixed] Quick recent apps improvements
 
 
 ===========

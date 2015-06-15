@@ -187,6 +187,11 @@
 			android:summary="@string/various_rejectedcall_summ"
 			android:title="@string/various_rejectedcall_title"
 			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_nofliptomute"
+			android:summary="@string/various_nofliptomute_summ"
+			android:title="@string/various_nofliptomute_title"
+			android:defaultValue="false" />
 		</com.htc.preference.HtcPreferenceCategory>
 			
 		<com.htc.preference.HtcPreferenceCategory

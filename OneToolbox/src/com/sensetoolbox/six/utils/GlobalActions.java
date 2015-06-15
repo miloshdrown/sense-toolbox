@@ -675,6 +675,7 @@ public class GlobalActions {
 				case 10: pkgAppName = XMain.pref.getString("pref_key_controls_wiredheadsetoff_app", null); break;
 				case 11: pkgAppName = XMain.pref.getString("pref_key_controls_btheadseton_app", null); break;
 				case 12: pkgAppName = XMain.pref.getString("pref_key_controls_btheadsetoff_app", null); break;
+				case 13: pkgAppName = XMain.pref.getString("pref_key_controls_clock_app", null); break;
 			}
 			
 			if (pkgAppName != null) {
@@ -711,6 +712,7 @@ public class GlobalActions {
 				case 10: intentString = XMain.pref.getString("pref_key_controls_wiredheadsetoffaction_shortcut_intent", null); break;
 				case 11: intentString = XMain.pref.getString("pref_key_controls_btheadsetonaction_shortcut_intent", null); break;
 				case 12: intentString = XMain.pref.getString("pref_key_controls_btheadsetoffaction_shortcut_intent", null); break;
+				case 13: intentString = XMain.pref.getString("pref_key_controls_clockaction_shortcut_intent", null); break;
 			}
 			
 			if (intentString != null) {
@@ -859,11 +861,11 @@ public class GlobalActions {
 			return ColorFilterGenerator.adjustColor(brightness, 0, saturation, hue);
 	}
 	
-	public static void sendMediaButton(Context ctx, KeyEvent keyEvent) {
+	public static void sendMediaButton(Context mContext, KeyEvent keyEvent) {
 		try {
 			if (Build.VERSION.SDK_INT >= 19) {
-				AudioManager am = (AudioManager)ctx.getSystemService(Context.AUDIO_SERVICE);
-				if (ctx != null) am.dispatchMediaKeyEvent(keyEvent);
+				AudioManager am = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+				if (mContext != null) am.dispatchMediaKeyEvent(keyEvent);
 			} else {
 				// Get binder from ServiceManager.checkService(String)
 				IBinder iBinder  = (IBinder) Class.forName("android.os.ServiceManager").getDeclaredMethod("checkService", String.class).invoke(null, Context.AUDIO_SERVICE);
@@ -877,5 +879,41 @@ public class GlobalActions {
 		}
 	}
 	
+	public static void collapseDrawer(Context mContext) {
+		try {
+			Object sbservice = mContext.getSystemService("statusbar");
+			Class<?> statusbarManager = Class.forName("android.app.StatusBarManager");
+			Method hidesb;
+			if (Build.VERSION.SDK_INT >= 17) {
+				hidesb = statusbarManager.getMethod("collapsePanels");
+			} else {
+				hidesb = statusbarManager.getMethod("collapse");
+			}
+			hidesb.setAccessible(true);
+			hidesb.invoke(sbservice);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
 	
+	public static void dismissKeyguard() {
+		Object amn = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
+		if (Helpers.isLP())
+			XposedHelpers.callMethod(amn, "keyguardWaitingForActivityDrawn");
+		else
+			XposedHelpers.callMethod(amn, "dismissKeyguardOnNextActivity");
+	}
+	
+	public static boolean isMediaActionsAllowed(Context mContext) {
+		AudioManager am = (AudioManager)mContext.getSystemService(Context.AUDIO_SERVICE);
+		boolean isMusicActive = am.isMusicActive();
+		boolean isMusicActiveRemotely  = (Boolean)XposedHelpers.callMethod(am, "isMusicActiveRemotely");
+		boolean isAllowed = isMusicActive || isMusicActiveRemotely;
+		if (!isAllowed) {
+			long mCurrentTime = System.currentTimeMillis();
+			long mLastPauseTime = Settings.System.getLong(mContext.getContentResolver(), "last_music_paused_time", mCurrentTime);
+			if (mCurrentTime - mLastPauseTime < 10 * 60 * 1000) isAllowed = true;
+		}
+		return isAllowed;
+	}
 }

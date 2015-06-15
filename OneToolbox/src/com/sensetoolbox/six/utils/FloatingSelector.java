@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.SortedMap;
 import java.util.TreeMap;
 
 import com.sensetoolbox.six.R;
@@ -57,6 +56,7 @@ public class FloatingSelector extends FrameLayout {
 	float density;
 	LinearLayout items;
 	String pkgNameSel = null;
+	List<RecentTaskInfo> recentTasks = null;
 	boolean isShowing = false;
 	//int materialTextColor;
 	//int btn_borderless_material;
@@ -82,10 +82,9 @@ public class FloatingSelector extends FrameLayout {
 			return true;
 		} else if (ev.getActionMasked() == MotionEvent.ACTION_UP) {
 			if (pkgNameSel != null) {
-				@SuppressWarnings("deprecation")
-				List<RecentTaskInfo> tasks = mActivityManager.getRecentTasks(Integer.MAX_VALUE, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
 				boolean isInRecents = false;
-				for (RecentTaskInfo task: tasks)
+				if (recentTasks != null)
+				for (RecentTaskInfo task: recentTasks)
 				if (task.baseIntent != null && task.baseIntent.getComponent().getPackageName().equals(pkgNameSel)) {
 					isInRecents = true;
 					if (task.id == -1) try {
@@ -184,6 +183,7 @@ public class FloatingSelector extends FrameLayout {
 	}
 	
 	@SuppressLint("NewApi")
+	@SuppressWarnings("deprecation")
 	public void show() {
 		if (mContext == null || mResources == null || mPackageManager == null) return;
 		
@@ -194,165 +194,192 @@ public class FloatingSelector extends FrameLayout {
 		items.removeAllViews();
 		pkgNameSel = null;
 		
+		List<ActivityManager.RunningTaskInfo> currentTask = mActivityManager.getRunningTasks(1);
+		String currAppPkgName = currentTask.get(0).topActivity.getPackageName();
+		
 		UsageStatsManager mUsageStatsManager = (UsageStatsManager)mContext.getSystemService("usagestats");
 		long time = System.currentTimeMillis();
-		List<UsageStats> stats = null;
-		stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 24 * 60 * 60 * 1000, time);
-		if (stats == null || (stats != null && stats.size() <= 1))
-		stats = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, time - 24 * 60 * 60 * 1000, time);
-		if (stats != null) {
-			XposedBridge.log("[S6T] Apps used recently: " + String.valueOf(stats.size()));
-			
-			SortedMap<Long, UsageStats> mySortedMap = new TreeMap<Long, UsageStats>(Collections.reverseOrder());
-			for (UsageStats usageStats: stats)
-			mySortedMap.put(usageStats.getLastTimeUsed(), usageStats);
-			
-			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-			lp.gravity = Gravity.BOTTOM;
-			lp.setMargins(0, 0, 0, densify(5));
-			
-			GradientDrawable gbkg = new GradientDrawable();
-			gbkg.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
-			gbkg.setShape(GradientDrawable.RECTANGLE);
-			gbkg.setCornerRadius(densify(3));
-			gbkg.setColor(0xff2E2E38);
-			//gbkg.setStroke(2, 0xee222229);
-			
-			Intent intent_launcher = new Intent(Intent.ACTION_MAIN, null);
-			intent_launcher.addCategory(Intent.CATEGORY_LAUNCHER);
-			List<ResolveInfo> appsList = mPackageManager.queryIntentActivities(intent_launcher, 0);
-			Map<String, ActivityInfo> pkgs = new HashMap<String, ActivityInfo>();
-			for (ResolveInfo app: appsList) pkgs.put(app.activityInfo.applicationInfo.packageName, app.activityInfo);
-			
-			Intent intent_home = new Intent(Intent.ACTION_MAIN);
-			intent_home.addCategory(Intent.CATEGORY_HOME);
-			intent_home.addCategory(Intent.CATEGORY_DEFAULT);
-			List<ResolveInfo> launcherList = mPackageManager.queryIntentActivities(intent_home, 0);
-			ArrayList<String> launchers = new ArrayList<String>();
-			for (ResolveInfo launcher: launcherList) launchers.add(launcher.activityInfo.applicationInfo.packageName);
+		List<UsageStats> stats = new ArrayList<UsageStats>();
+		List<UsageStats> statsBest = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, time - 2 * 24 * 60 * 60 * 1000, time);
+		XposedBridge.log("[S6T] Interval best: " + String.valueOf(statsBest.size()));
+		if (statsBest != null) stats.addAll(statsBest);
+		
+		if (stats.size() <= 2) {
+			List<UsageStats> statsWeek = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, time - 7 * 24 * 60 * 60 * 1000, time);
+			XposedBridge.log("[S6T] Interval weekly: " + String.valueOf(statsWeek.size()));
+			if (statsWeek != null) stats.addAll(statsWeek);
+		}
+		
+		TreeMap<Long, String> mySortedMap = new TreeMap<Long, String>(Collections.reverseOrder());
+		for (UsageStats usageStats: stats) {
+			String pkgName = usageStats.getPackageName();
+			if (!pkgName.equals(currAppPkgName) && !mySortedMap.containsValue(pkgName))
+			mySortedMap.put(usageStats.getLastTimeUsed(), pkgName);
+		}
+		
+		recentTasks = mActivityManager.getRecentTasks(Integer.MAX_VALUE, ActivityManager.RECENT_IGNORE_UNAVAILABLE);
+		
+		long addTime = recentTasks.size();
+		if (recentTasks != null)
+		for (RecentTaskInfo task: recentTasks) {
+			String pkgName = task.baseIntent.getComponent().getPackageName();
+			if (task.baseIntent != null && !mySortedMap.containsValue(pkgName) && !pkgName.equals(currAppPkgName)) {
+				mySortedMap.put(addTime, pkgName);
+				addTime--;
+			}
+		}
+		
+		XposedBridge.log("[S6T] Recently used apps: " + String.valueOf(mySortedMap.size()));
+		
+		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+		lp.gravity = Gravity.BOTTOM;
+		lp.setMargins(0, 0, 0, densify(5));
+		
+		GradientDrawable gbkg = new GradientDrawable();
+		gbkg.setOrientation(GradientDrawable.Orientation.BOTTOM_TOP);
+		gbkg.setShape(GradientDrawable.RECTANGLE);
+		gbkg.setCornerRadius(densify(3));
+		gbkg.setColor(0xff2E2E38);
+		//gbkg.setStroke(2, 0xee222229);
+		
+		Intent intent_launcher = new Intent(Intent.ACTION_MAIN, null);
+		intent_launcher.addCategory(Intent.CATEGORY_LAUNCHER);
+		
+		List<ResolveInfo> appsList = mPackageManager.queryIntentActivities(intent_launcher, 0);
+		Map<String, ActivityInfo> pkgs = new HashMap<String, ActivityInfo>();
+		for (ResolveInfo app: appsList) pkgs.put(app.activityInfo.applicationInfo.packageName, app.activityInfo);
+		
+		Intent intent_home = new Intent(Intent.ACTION_MAIN);
+		intent_home.addCategory(Intent.CATEGORY_HOME);
+		intent_home.addCategory(Intent.CATEGORY_DEFAULT);
+		List<ResolveInfo> launcherList = mPackageManager.queryIntentActivities(intent_home, 0);
+		ArrayList<String> launchers = new ArrayList<String>();
+		for (ResolveInfo launcher: launcherList) launchers.add(launcher.activityInfo.applicationInfo.packageName);
 
-			int rot = getDeviceRotation();
-			boolean isLandscape = (rot == Surface.ROTATION_90 || rot == Surface.ROTATION_270);
-			int cnt = 0;
-			int cntMax = 9;
-			LinearLayout column1 = new LinearLayout(mContext);
-			LinearLayout column2 = new LinearLayout(mContext);
-			if (isLandscape) {
-				items.setOrientation(LinearLayout.HORIZONTAL);
-				
-				LinearLayout.LayoutParams lpc = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0.47f);
-				column1.setOrientation(LinearLayout.VERTICAL);
-				column1.setLayoutParams(lpc);
-				column1.setClipToPadding(false);
-				column1.setClipToOutline(false);
-				column2.setOrientation(LinearLayout.VERTICAL);
-				column2.setLayoutParams(lpc);
-				column2.setClipToPadding(false);
-				column2.setClipToOutline(false);
-				
-				if (rot == Surface.ROTATION_90) {
-					items.setGravity(Gravity.RIGHT);
-					items.setPadding(0, 0, 0, 0);
-					column2.setPadding(densify(20), densify(20), densify(10), densify(20));
-					column1.setPadding(densify(10), densify(20), densify(20), densify(20));
-					items.addView(column2);
-					items.addView(column1);
-				} else if (rot == Surface.ROTATION_270) {
-					items.setGravity(Gravity.LEFT);
-					items.setPadding(0, 0, 0, 0);
-					column1.setPadding(densify(20), densify(20), densify(10), densify(20));
-					column2.setPadding(densify(10), densify(20), densify(20), densify(20));
-					items.addView(column1);
-					items.addView(column2);
+		int rot = getDeviceRotation();
+		boolean isLandscape = (rot == Surface.ROTATION_90 || rot == Surface.ROTATION_270);
+		int cnt = 0;
+		int cntMax = 9;
+		LinearLayout column1 = new LinearLayout(mContext);
+		LinearLayout column2 = new LinearLayout(mContext);
+		if (isLandscape) {
+			items.setOrientation(LinearLayout.HORIZONTAL);
+			
+			LinearLayout.LayoutParams lpcL = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0.47f);
+			lpcL.gravity = Gravity.LEFT | Gravity.BOTTOM;
+			LinearLayout.LayoutParams lpcR = new LinearLayout.LayoutParams(0, LayoutParams.WRAP_CONTENT, 0.47f);
+			lpcR.gravity = Gravity.RIGHT | Gravity.TOP;
+			column1.setOrientation(LinearLayout.VERTICAL);
+			column1.setClipToPadding(false);
+			column1.setClipToOutline(false);
+			column2.setOrientation(LinearLayout.VERTICAL);
+			column2.setClipToPadding(false);
+			column2.setClipToOutline(false);
+			
+			if (rot == Surface.ROTATION_90) {
+				items.setGravity(Gravity.RIGHT | Gravity.TOP);
+				items.setPadding(0, 0, 0, 0);
+				column2.setPadding(densify(20), densify(20), densify(10), densify(20));
+				column2.setLayoutParams(lpcR);
+				column1.setPadding(densify(10), densify(20), densify(20), densify(20));
+				column1.setLayoutParams(lpcR);
+				items.addView(column2);
+				items.addView(column1);
+			} else if (rot == Surface.ROTATION_270) {
+				items.setGravity(Gravity.LEFT | Gravity.BOTTOM);
+				items.setPadding(0, 0, 0, 0);
+				column1.setPadding(densify(20), densify(20), densify(10), densify(20));
+				column1.setLayoutParams(lpcL);
+				column2.setPadding(densify(10), densify(20), densify(20), densify(20));
+				column2.setLayoutParams(lpcL);
+				items.addView(column1);
+				items.addView(column2);
+			}
+
+			items.setWeightSum(1.0f);
+			cntMax = 12;
+		} else {
+			items.setOrientation(LinearLayout.VERTICAL);
+			if (rot == Surface.ROTATION_0)
+				items.setPadding(densify(20), densify(20), densify(20), densify(20));
+			else if (rot == Surface.ROTATION_180)
+				items.setPadding(densify(20), densify(20), densify(20), densify(40));
+		}
+		
+		boolean isEmpty = true;
+		if (mySortedMap != null && !mySortedMap.isEmpty())
+		for (Map.Entry<Long, String> entry: mySortedMap.entrySet()) {
+			String pkgName = entry.getValue();
+			ActivityInfo actInfo = pkgs.get(pkgName);
+			
+			if (actInfo == null || launchers.contains(pkgName)) continue;
+			if (cnt >= cntMax) break;
+			cnt++;
+			Button appBtn = new Button(mContext);
+			appBtn.setTag(new Object[] { 0, pkgName });
+			appBtn.setFocusable(true);
+			appBtn.setClickable(true);
+			appBtn.setTextColor(Color.argb(255, 245, 245, 245));
+			appBtn.setStateListAnimator(null);
+			appBtn.setClipToOutline(false);
+			appBtn.setZ(densify(5));
+			appBtn.setScaleX(0.95f);
+			appBtn.setScaleY(0.95f);
+			appBtn.setBackground(gbkg);
+			appBtn.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
+			appBtn.setPadding(densify(20), 0, densify(20), 0);
+			
+			String ai = null;
+			try {
+				ai = (String)actInfo.loadLabel(mPackageManager);
+			} catch (Exception e) {}
+			appBtn.setText(ai != null ? ai : pkgName);
+			
+			try {
+				Drawable icon = actInfo.loadIcon(mPackageManager);
+				if (icon == null) icon = mPackageManager.getApplicationIcon(pkgName);
+				if (BitmapDrawable.class.isInstance(icon)) {
+					int newIconSize = densify(30);
+					Bitmap bmp = ((BitmapDrawable)icon).getBitmap();
+					Matrix matrix = new Matrix();
+					matrix.postScale(((float)newIconSize) / bmp.getWidth(), ((float)newIconSize) / bmp.getHeight());
+					bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, false);
+					appBtn.setCompoundDrawablesWithIntrinsicBounds(new BitmapDrawable(mResources, bmp), null, null, null);
+					appBtn.setCompoundDrawablePadding(densify(15));
 				}
-
-				items.setWeightSum(1.0f);
-				cntMax = 12;
-			} else {
-				items.setOrientation(LinearLayout.VERTICAL);
-				if (rot == Surface.ROTATION_0)
-					items.setPadding(densify(20), densify(20), densify(20), densify(20));
-				else if (rot == Surface.ROTATION_180)
-					items.setPadding(densify(20), densify(20), densify(20), densify(40));
+			} catch (Throwable t) {
+				XposedBridge.log(t);
 			}
 			
-			boolean skipFirst = true;
-			boolean isEmpty = true;
-			if (mySortedMap != null && !mySortedMap.isEmpty())
-			for (Map.Entry<Long, UsageStats> entry: mySortedMap.entrySet()) {
-				String pkgName = entry.getValue().getPackageName();
-				ActivityInfo actInfo = pkgs.get(pkgName);
-				
-				if (skipFirst) { skipFirst = false; continue; }
-				if (actInfo == null || launchers.contains(pkgName)) continue;
-				if (cnt >= cntMax) break;
-				cnt++;
-				Button appBtn = new Button(mContext);
-				appBtn.setTag(new Object[] { 0, pkgName });
-				appBtn.setFocusable(true);
-				appBtn.setClickable(true);
-				appBtn.setTextColor(Color.argb(255, 245, 245, 245));
-				appBtn.setStateListAnimator(null);
-				appBtn.setClipToOutline(false);
-				appBtn.setZ(densify(5));
-				appBtn.setScaleX(0.95f);
-				appBtn.setScaleY(0.95f);
-				appBtn.setBackground(gbkg);
-				appBtn.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
-				appBtn.setPadding(densify(20), 0, densify(20), 0);
-				
-				String ai = null;
-				try {
-					ai = (String)actInfo.loadLabel(mPackageManager);
-				} catch (Exception e) {}
-				appBtn.setText(ai != null ? ai : pkgName);
-				
-				try {
-					Drawable icon = actInfo.loadIcon(mPackageManager);
-					if (icon == null) icon = mPackageManager.getApplicationIcon(pkgName);
-					if (BitmapDrawable.class.isInstance(icon)) {
-						int newIconSize = densify(30);
-						Bitmap bmp = ((BitmapDrawable)icon).getBitmap();
-						Matrix matrix = new Matrix();
-						matrix.postScale(((float)newIconSize) / bmp.getWidth(), ((float)newIconSize) / bmp.getHeight());
-						bmp = Bitmap.createBitmap(bmp, 0, 0, bmp.getWidth(), bmp.getHeight(), matrix, false);
-						appBtn.setCompoundDrawablesWithIntrinsicBounds(new BitmapDrawable(mResources, bmp), null, null, null);
-						appBtn.setCompoundDrawablePadding(densify(15));
-					}
-				} catch (Throwable t) {
-					XposedBridge.log(t);
-				}
-				
-				LinearLayout itemsHolder = items;
-				if (isLandscape)
-				if (cnt <= 6)
-					itemsHolder = column1;
-				else
-					itemsHolder = column2;
-
+			LinearLayout itemsHolder = items;
+			if (isLandscape)
+			if (cnt <= 6)
+				itemsHolder = column1;
+			else
+				itemsHolder = column2;
 				appBtn.setLayoutParams(lp);
-				switch (rot) {
-					case Surface.ROTATION_0: itemsHolder.addView(appBtn, 0); break;
-					case Surface.ROTATION_180: itemsHolder.addView(appBtn); break;
-					case Surface.ROTATION_90: itemsHolder.addView(appBtn); break;
-					case Surface.ROTATION_270: itemsHolder.addView(appBtn, 0); break;
-				}
-				isEmpty = false;
+
+			switch (rot) {
+				case Surface.ROTATION_0: itemsHolder.addView(appBtn, 0); break;
+				case Surface.ROTATION_180: itemsHolder.addView(appBtn); break;
+				case Surface.ROTATION_90: itemsHolder.addView(appBtn); break;
+				case Surface.ROTATION_270: itemsHolder.addView(appBtn, 0); break;
 			}
+			isEmpty = false;
+		}
 			
-			if (isEmpty) {
-				TextView noApps = new TextView(mContext);
-				noApps.setLayoutParams(lp);
-				noApps.setElevation(densify(10));
-				noApps.setTypeface(Typeface.create("sans-serif-condensed", Typeface.NORMAL));
-				noApps.setTextColor(Color.argb(225, 245, 245, 245));
-				noApps.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20.0f);
-				noApps.setText(Helpers.xl10n(XModuleResources.createInstance(XMain.MODULE_PATH, null), R.string.controls_no_recents));
-				noApps.setGravity(Gravity.CENTER);
-				noApps.setAllCaps(true);
-				noApps.setPadding(0, 0, 0, densify(40));
-				items.addView(noApps);
-			}
+		if (isEmpty) {
+			TextView noApps = new TextView(mContext);
+			noApps.setLayoutParams(lp);
+			noApps.setElevation(densify(10));
+			noApps.setTypeface(Typeface.create("sans-serif-condensed", Typeface.NORMAL));
+			noApps.setTextColor(Color.argb(225, 245, 245, 245));
+			noApps.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20.0f);
+			noApps.setText(Helpers.xl10n(XModuleResources.createInstance(XMain.MODULE_PATH, null), R.string.controls_no_recents));
+			noApps.setGravity(Gravity.CENTER);
+			noApps.setAllCaps(true);
+			noApps.setPadding(0, 0, 0, densify(40));
+			items.addView(noApps);
 		}
 		setVisibility(View.VISIBLE);
 		animate().setDuration(200L).setStartDelay(0).alpha(1.0F).start();

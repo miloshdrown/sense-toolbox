@@ -527,6 +527,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_dndnotif", false))
 				OtherMods.execHook_DNDNotif(lpparam);
 			
+			if (pref.getBoolean("pref_key_other_nofliptomute", false))
+				OtherMods.execHook_NoFlipToMuteSetting(lpparam);
+			
 			if (!Helpers.isLP())
 				SettingsMods.execHook_AppFilter(lpparam);
 			
@@ -698,6 +701,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_other_rejectedcall", false))
 				OtherMods.execHook_RejectCallSilently(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_nofliptomute", false))
+				OtherMods.execHook_NoFlipToMute(lpparam);
 			
 			//OtherMods.execHook_USSD(lpparam);
 		}

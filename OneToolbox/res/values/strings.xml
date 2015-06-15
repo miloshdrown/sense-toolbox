@@ -116,6 +116,7 @@
 	<string name="restartprism_explain_prefs">This will restart BlinkFeed launcher.\nContinue?</string>
 	<string name="restartmessages_explain_prefs">This will restart Messages app.\nContinue?</string>
 	<string name="success">Success</string>
+	<string name="disabled_by_toolbox">Disabled by Sense Toolbox</string>
 
 	<string name="sunbeam_installed">SunBeam has been installed. Make sure you soft reboot to apply the changes. Remember that you need to reinstall SunBeam after every ROM flash.</string>
 	<string name="dummy"></string>
@@ -185,6 +186,8 @@
 	<string name="systemui_clockstyle_summ">Changes the style of the status bar clock.</string>
 	<string name="systemui_statusheaderclick_title">Header click</string>
 	<string name="systemui_statusheaderclick_summ">Action for tap on notification drawer header.</string>
+	<string name="controls_clockaction_title">Clock app</string>
+	<string name="controls_clockaction_summ">Launches any app or shortcut instead of stock Clock app on header tap.</string>
 	<string name="systemui_brightslide_title">Brightness slider</string>
 	<string name="systemui_brightslide_summ">Add a brightness slider to the notification panel.</string>
 	<string name="systemui_brightslide_auto">Auto</string>
@@ -339,17 +342,17 @@
 	<string name="controls_backlongpressaction_summ">Action for back button long press.</string>
 	<string name="controls_mods_homeassist">Home assist</string>
 	<string name="controls_mods_wiredheadset">Wired headset</string>
-	<string name="controls_mods_btheadset">Bluetooth headset</string>
+	<string name="controls_mods_btheadset">Bluetooth audio</string>
 	<string name="controls_no_recents">No recent apps yet</string>
 	<string name="controls_mods_recentslongpress">Recents button long press</string>
 	<string name="controls_homeassistaction_title">Action</string>
 	<string name="controls_homeassistaction_summ">Overrides assist action (which is Google Now by default).</string>
 	<string name="controls_headsetonaction_title">Connected</string>
-	<string name="controls_headsetonaction_summ">Executes action when headset is connected.</string>
+	<string name="controls_headsetonaction_summ">Executes action when device is connected.</string>
 	<string name="controls_headsetoneffect_title">Global effect</string>
 	<string name="controls_headsetoneffect_summ">Change global audio effect.</string>
 	<string name="controls_headsetoffaction_title">Disconnected</string>
-	<string name="controls_headsetoffaction_summ">Executes action when headset is disconnected.</string>
+	<string name="controls_headsetoffaction_summ">Executes action when device is disconnected.</string>
 	<string name="controls_headsetoffeffect_title">Global effect</string>
 	<string name="controls_headsetoffeffect_summ">Change global audio effect.</string>
 	<string name="controls_recentslongpressaction_summ">Assigns action to recents button long press.</string>
@@ -480,6 +483,8 @@
 	<string name="various_largephoto_summ">Change the size of the photo displayed during incoming and outgoing calls.</string>
 	<string name="various_rejectedcall_title">Disable rejected call reminder</string>
 	<string name="various_rejectedcall_summ">Don\'t show missed call notification for manually rejected incoming calls. They will be added to call history as normal finished calls.</string>
+	<string name="various_nofliptomute_title">Disable Flip to mute</string>
+	<string name="various_nofliptomute_summ">Don\'t mute incoming call ringer when device is flipped.</string>
 	<string name="various_mods_volume">Volume</string>
 	<string name="various_volsnd_title">Disable volume change sound</string>
 	<string name="various_volsnd_summ">Check to disable the sound on volume change.</string>
@@ -704,6 +709,7 @@
 	<string name="array_global_actions_lock">Lock device</string>
 	<string name="array_global_actions_sleep">Go to sleep</string>
 	<string name="array_global_actions_screenshot">Take screenshot</string>
+	<string name="array_global_actions_clock">Default clock app</string>
 	<string name="array_global_actions_launch">Launch app</string>
 	<string name="array_global_actions_shortcut">Launch shortcut</string>
 	<string name="array_global_actions_toggle">Toggle settings</string>
@@ -773,6 +779,6 @@
 	<string name="array_stock">Stock Android\nOpen/close: slide up/slide down</string>
 	<string name="array_htc">HTC\nOpen/close: slide up with fade/none</string>
 	<string name="array_effect_none">No effect</string>
-	<string name="array_effect_boomsrs">Boomsound / SRS</string>
+	<string name="array_effect_srs">SRS</string>
 
 </resources>

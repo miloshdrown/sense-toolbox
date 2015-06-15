@@ -145,13 +145,13 @@ public class Helpers {
 		return false;
 	}
 	
-	public static String l10n(Context ctx, int resId) {
-		if (ctx != null && resId != 0)
-			return l10n(ctx, ctx.getResources().getResourceEntryName(resId));
+	public static String l10n(Context mContext, int resId) {
+		if (mContext != null && resId != 0)
+			return l10n(mContext, mContext.getResources().getResourceEntryName(resId));
 		else
 			return "???";
 	}
-	public static String l10n(Context ctx, String resName) {
+	public static String l10n(Context mContext, String resName) {
 		String lang_full = Locale.getDefault().toString();
 		String lang = Locale.getDefault().getLanguage();
 		boolean allowFallback = true;
@@ -164,9 +164,9 @@ public class Helpers {
 			newStr = l10n.get(resName);
 		if (newStr != null) return newStr;
 		
-		int resId = ctx.getResources().getIdentifier(resName, "string", ctx.getPackageName());
+		int resId = mContext.getResources().getIdentifier(resName, "string", mContext.getPackageName());
 		if (resId != 0)
-			return ctx.getResources().getString(resId);
+			return mContext.getResources().getString(resId);
 		else
 			return "???";
 	}
@@ -205,13 +205,13 @@ public class Helpers {
 		}
 	}
 	
-	public static String[] l10n_array(Context ctx, int resId) {
-		TypedArray ids = ctx.getResources().obtainTypedArray(resId);
+	public static String[] l10n_array(Context mContext, int resId) {
+		TypedArray ids = mContext.getResources().obtainTypedArray(resId);
 		List<String> array = new ArrayList<String>();
 		for (int i = 0; i < ids.length(); i++) {
 			int id = ids.getResourceId(i, 0);
 			if (id != 0)
-				array.add(l10n(ctx, id));
+				array.add(l10n(mContext, id));
 			else
 				array.add("???");
 		}
@@ -290,6 +290,8 @@ public class Helpers {
 					entriesResName = "transitions";
 				else if (titleResName.contains("controls_headsetonaction") || titleResName.contains("controls_headsetoffaction"))
 					entriesResName = "audio_actions";
+				else if (titleResName.contains("controls_clockaction"))
+					entriesResName = "clock_actions";
 				else if (titleResName.contains("controls_headsetoneffect") || titleResName.contains("controls_headsetoffeffect"))
 					entriesResName = "global_effects";
 				else if (titleResName.contains("sense_") || titleResName.contains("controls_"))
@@ -403,8 +405,8 @@ public class Helpers {
 		alert.show();
 	}
 
-	public static boolean isXposedInstalled(Context ctx) {
-		PackageManager pm = ctx.getPackageManager();
+	public static boolean isXposedInstalled(Context mContext) {
+		PackageManager pm = mContext.getPackageManager();
 		boolean installed = false;
 		try {
 			pm.getPackageInfo("de.robv.android.xposed.installer", PackageManager.GET_ACTIVITIES);
@@ -427,13 +429,13 @@ public class Helpers {
 		return new Version(getSenseVersion()).compareTo(new Version("7.0")) >= 0;
 	}
 	
-	public static TextView createCenteredText(Context ctx, int resId) {
-		TextView centerMsg = new TextView(ctx);
-		centerMsg.setText(l10n(ctx, resId));
+	public static TextView createCenteredText(Context mContext, int resId) {
+		TextView centerMsg = new TextView(mContext);
+		centerMsg.setText(l10n(mContext, resId));
 		centerMsg.setGravity(Gravity.CENTER_HORIZONTAL);
 		centerMsg.setPadding(10, 60, 10, 60);
 		centerMsg.setTextSize(18.0f);
-		centerMsg.setTextColor(ctx.getResources().getColor(android.R.color.primary_text_light));
+		centerMsg.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_light));
 		return centerMsg;
 	}
 	
@@ -610,14 +612,14 @@ public class Helpers {
 		return new BitmapDrawable(mContext.getResources(), imageWithShadow);
 	}
 	
-	public static boolean checkStorageReadable(Context ctx) {
+	public static boolean checkStorageReadable(Context mContext) {
 		String state = Environment.getExternalStorageState();
 		if (state.equals(Environment.MEDIA_MOUNTED_READ_ONLY) || state.equals(Environment.MEDIA_MOUNTED)) {
 			return true;
 		} else {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
-			alert.setTitle(l10n(ctx, R.string.warning));
-			alert.setView(createCenteredText(ctx, R.string.storage_unavailable));
+			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
+			alert.setTitle(l10n(mContext, R.string.warning));
+			alert.setView(createCenteredText(mContext, R.string.storage_unavailable));
 			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
@@ -626,12 +628,12 @@ public class Helpers {
 		}
 	}
 	
-	public static boolean preparePathForBackup(Context ctx, String path) {
+	public static boolean preparePathForBackup(Context mContext, String path) {
 		String state = Environment.getExternalStorageState();
 		if (state.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
-			alert.setTitle(l10n(ctx, R.string.warning));
-			alert.setView(createCenteredText(ctx, R.string.storage_read_only));
+			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
+			alert.setTitle(l10n(mContext, R.string.warning));
+			alert.setView(createCenteredText(mContext, R.string.storage_read_only));
 			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
@@ -640,9 +642,9 @@ public class Helpers {
 		} else if (state.equals(Environment.MEDIA_MOUNTED)) {
 			File file = new File(path);
 			if (!file.exists() && !file.mkdirs()) {
-				HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
-				alert.setTitle(l10n(ctx, R.string.warning));
-				alert.setView(createCenteredText(ctx, R.string.storage_cannot_mkdir));
+				HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
+				alert.setTitle(l10n(mContext, R.string.warning));
+				alert.setView(createCenteredText(mContext, R.string.storage_cannot_mkdir));
 				alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {}
 				});
@@ -651,9 +653,9 @@ public class Helpers {
 			}
 			return true;
 		} else {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
-			alert.setTitle(l10n(ctx, R.string.warning));
-			alert.setView(createCenteredText(ctx, R.string.storage_unavailable));
+			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
+			alert.setTitle(l10n(mContext, R.string.warning));
+			alert.setView(createCenteredText(mContext, R.string.storage_unavailable));
 			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
@@ -684,15 +686,15 @@ public class Helpers {
 		}
 	}
 	
-	public static void openURL(Context ctx, String url) {
-		if (ctx == null) return;
+	public static void openURL(Context mContext, String url) {
+		if (mContext == null) return;
 		Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		if (uriIntent.resolveActivity(ctx.getPackageManager()) != null) {
-			ctx.startActivity(uriIntent);
+		if (uriIntent.resolveActivity(mContext.getPackageManager()) != null) {
+			mContext.startActivity(uriIntent);
 		} else {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(ctx);
-			alert.setTitle(Helpers.l10n(ctx, R.string.warning));
-			alert.setView(Helpers.createCenteredText(ctx, R.string.no_browser));
+			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
+			alert.setTitle(Helpers.l10n(mContext, R.string.warning));
+			alert.setView(Helpers.createCenteredText(mContext, R.string.no_browser));
 			alert.setCancelable(true);
 			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
@@ -778,8 +780,8 @@ public class Helpers {
 			Bitmap icon = null;
 			Intent.ShortcutIconResource iconResId = data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON_RESOURCE);
 			if (iconResId != null) try {
-				Context ctx = act.createPackageContext(iconResId.packageName, Context.CONTEXT_IGNORE_SECURITY);
-				icon = BitmapFactory.decodeResource(ctx.getResources(), ctx.getResources().getIdentifier(iconResId.resourceName, "drawable", iconResId.packageName));
+				Context mContext = act.createPackageContext(iconResId.packageName, Context.CONTEXT_IGNORE_SECURITY);
+				icon = BitmapFactory.decodeResource(mContext.getResources(), mContext.getResources().getIdentifier(iconResId.resourceName, "drawable", iconResId.packageName));
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
@@ -813,8 +815,8 @@ public class Helpers {
 		}
 	}
 	
-	public static void getInstalledApps(Context ctx) {
-		final PackageManager pm = ctx.getPackageManager();
+	public static void getInstalledApps(Context mContext) {
+		final PackageManager pm = mContext.getPackageManager();
 		List<ApplicationInfo> packs = pm.getInstalledApplications(PackageManager.GET_META_DATA);
 		installedAppsList = new ArrayList<AppData>();
 		AppData app;
@@ -834,8 +836,8 @@ public class Helpers {
 		});
 	}
 	
-	public static void getLaunchableApps(Context ctx) {
-		PackageManager pm = ctx.getPackageManager();
+	public static void getLaunchableApps(Context mContext) {
+		PackageManager pm = mContext.getPackageManager();
 		final Intent mainIntent = new Intent(Intent.ACTION_MAIN, null);
 		mainIntent.addCategory(Intent.CATEGORY_LAUNCHER);
 		List<ResolveInfo> packs = pm.queryIntentActivities(mainIntent, 0);
@@ -861,9 +863,9 @@ public class Helpers {
 		});
 	}
 	
-	public static CharSequence getAppName(Context ctx, String pkgActName) {
-		PackageManager pm = ctx.getPackageManager();
-		String not_selected = l10n(ctx, R.string.notselected);
+	public static CharSequence getAppName(Context mContext, String pkgActName) {
+		PackageManager pm = mContext.getPackageManager();
+		String not_selected = l10n(mContext, R.string.notselected);
 		String[] pkgActArray = pkgActName.split("\\|");
 		ApplicationInfo ai = null;
 
@@ -1060,11 +1062,11 @@ public class Helpers {
 		return result;
 	}
 	
-	public static boolean getHTCHaptic(Context ctx) {
+	public static boolean getHTCHaptic(Context mContext) {
 		Boolean isHapticAllowed = true;
 		try {
-			boolean powersaver = (Settings.System.getInt(ctx.getContentResolver(), "user_powersaver_enable", 0) == 1);
-			boolean haptic = (Settings.Secure.getInt(ctx.getContentResolver(), "powersaver_haptic_feedback", 1) == 1);
+			boolean powersaver = (Settings.System.getInt(mContext.getContentResolver(), "user_powersaver_enable", 0) == 1);
+			boolean haptic = (Settings.Secure.getInt(mContext.getContentResolver(), "powersaver_haptic_feedback", 1) == 1);
 			if (powersaver && haptic) isHapticAllowed = false;
 		} catch (Exception e) {}
 		return isHapticAllowed;
@@ -1072,29 +1074,29 @@ public class Helpers {
 	
 	@SuppressLint("NewApi")
 	@SuppressWarnings("deprecation")
-	public static String getNextAlarm(Context ctx) {
-		if (ctx != null) {
+	public static String getNextAlarm(Context mContext) {
+		if (mContext != null) {
 			if (Helpers.isLP()) {
-				AlarmManager am = (AlarmManager)ctx.getSystemService(Context.ALARM_SERVICE);
+				AlarmManager am = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
 				if (am.getNextAlarmClock() == null) return null;
-				String systemFormat = "E " + ((SimpleDateFormat)DateFormat.getTimeFormat(ctx)).toLocalizedPattern();
+				String systemFormat = "E " + ((SimpleDateFormat)DateFormat.getTimeFormat(mContext)).toLocalizedPattern();
 				SimpleDateFormat format = new SimpleDateFormat(systemFormat, Locale.getDefault());
 				return format.format(new Date(am.getNextAlarmClock().getTriggerTime()));
 			} else {
-				return Settings.System.getString(ctx.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
+				return Settings.System.getString(mContext.getContentResolver(), Settings.System.NEXT_ALARM_FORMATTED);
 			}
 		} else return null;
 	}
 	
-	public static long getNextAlarmTime(Context ctx) {
-		if (ctx != null)
-			return Settings.System.getLong(ctx.getContentResolver(), "next_alarm_time", -1);
+	public static long getNextAlarmTime(Context mContext) {
+		if (mContext != null)
+			return Settings.System.getLong(mContext.getContentResolver(), "next_alarm_time", -1);
 		else
 			return -1;
 	}
 	
 	static boolean isWaitingForCmd = false;
-	public static boolean setButtonBacklightTo(final Context ctx, final int pref_keyslight, final boolean applyNoMatterWhat) {
+	public static boolean setButtonBacklightTo(final Context mContext, final int pref_keyslight, final boolean applyNoMatterWhat) {
 		if (applyNoMatterWhat) isWaitingForCmd = false;
 		if (isWaitingForCmd) return false; else try {
 			isWaitingForCmd = true;
@@ -1134,7 +1136,7 @@ public class Helpers {
 								public void commandOutput(int id, String line) {
 									super.commandOutput(id, line);
 									if (lineCnt2 == 0) try {
-										boolean isSELinuxEnforcing = Boolean.parseBoolean(Settings.System.getString(ctx.getContentResolver(), "isSELinuxEnforcing"));
+										boolean isSELinuxEnforcing = Boolean.parseBoolean(Settings.System.getString(mContext.getContentResolver(), "isSELinuxEnforcing"));
 										if (isSELinuxEnforcing || !line.trim().equals(String.valueOf(Process.myUid()))) {
 											RootTools.getShell(true).add(new Command(0, false, cmdsPerm));
 										} else {

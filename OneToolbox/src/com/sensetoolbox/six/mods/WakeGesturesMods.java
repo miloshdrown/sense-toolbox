@@ -281,16 +281,22 @@ public class WakeGesturesMods {
 				case 10: doWakeUp(param.thisObject, event_time_local); sendLockScreenIntentLaunchApp(mContext, action); break;
 				case 14: doWakeUp(param.thisObject, event_time_local); sendLockScreenIntentLaunchShortcut(mContext, action); break;
 				case 11:
-					GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_DOWN, 85));
-					GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_UP, 85));
+					if (GlobalActions.isMediaActionsAllowed(mContext)) {
+						GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_DOWN, 85));
+						GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_UP, 85));
+					} else isHaptic = false;
 					break;
 				case 12:
-					GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_DOWN, 87));
-					GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_UP, 87));
+					if (GlobalActions.isMediaActionsAllowed(mContext)) {
+						GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_DOWN, 87));
+						GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_UP, 87));
+					} else isHaptic = false;
 					break;
 				case 13:
-					GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_DOWN, 88));
-					GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_UP, 88));
+					if (GlobalActions.isMediaActionsAllowed(mContext)) {
+						GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_DOWN, 88));
+						GlobalActions.sendMediaButton(mContext, new KeyEvent(KeyEvent.ACTION_UP, 88));
+					} else isHaptic = false;
 					break;
 			}
 
