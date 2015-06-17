@@ -1034,6 +1034,74 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 					return false;
 				}
 			});
+			
+			final HtcMultiSelectListPreferenceEx ignoreListApps = (HtcMultiSelectListPreferenceEx)findPreference("pref_key_betterheadsup_ignorelist_apps");
+			ignoreListApps.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+				@Override
+				public boolean onPreferenceClick(HtcPreference paramHtcPreference) {
+					if (ignoreListApps.getEntries().length == 0 || ignoreListApps.getEntryValues().length == 0) {
+						if (ignoreListApps.getDialog() != null) ignoreListApps.getDialog().dismiss();
+						final HtcProgressDialog dialog = new HtcProgressDialog(getActivity());
+						if (Helpers.installedAppsList == null) {
+							dialog.setMessage(Helpers.l10n(getActivity(), R.string.loading_app_data));
+							dialog.setCancelable(false);
+							dialog.show();
+						}
+						
+						new Thread() {
+							@Override
+							public void run() {
+								try {
+									if (Helpers.installedAppsList == null) Helpers.getInstalledApps(getActivity());
+									getActivity().runOnUiThread(new Runnable() {
+										@Override
+										public void run() {
+											HashSet<String> ignoreList = (HashSet<String>)prefs.getStringSet("pref_key_betterheadsup_ignorelist_apps", new HashSet<String>());
+											ArrayList<ArrayList<CharSequence>> entries = new ArrayList<ArrayList<CharSequence>>();
+											for (AppData ad: Helpers.installedAppsList) {
+												ArrayList<CharSequence> entry = new ArrayList<CharSequence>();
+												entry.add(ad.label);
+												entry.add(ad.pkgName);
+												if (ignoreList.contains(ad.pkgName))
+													entry.add("1");
+												else
+													entry.add("0");
+												entries.add(entry);
+											}
+											
+											Collections.sort(entries, new Comparator<ArrayList<CharSequence>>() {
+												@Override
+												public int compare(ArrayList<CharSequence> entry1, ArrayList<CharSequence> entry2) {
+													return ((String)entry2.get(2)).compareTo((String)entry1.get(2));
+												}
+											});
+											
+											ArrayList<CharSequence> entryLabels = new ArrayList<CharSequence>();
+											ArrayList<CharSequence> entryVals = new ArrayList<CharSequence>();
+											for (ArrayList<CharSequence> entry: entries) {
+												entryLabels.add(entry.get(0));
+												entryVals.add(entry.get(1));
+											}
+											
+											ignoreListApps.setEntries(entryLabels.toArray(new CharSequence[entries.size()]));
+											ignoreListApps.setEntryValues(entryVals.toArray(new CharSequence[entryVals.size()]));
+											
+											if (getActivity() != null && !getActivity().isFinishing()) {
+												if (dialog != null && dialog.isShowing()) dialog.dismiss();
+												if (ignoreListApps.getDialog() != null && ignoreListApps.getDialog().isShowing()) ignoreListApps.getDialog().dismiss();
+											}
+											ignoreListApps.show();
+										}
+									});
+								} catch (Exception e) {
+									e.printStackTrace();
+								}
+							}
+						}.start();
+					}
+					return false;
+				}
+			});
 		} else if (xmlResId == R.xml.prefs_fleetingglance) {
 			this.menuType = 5;
 			

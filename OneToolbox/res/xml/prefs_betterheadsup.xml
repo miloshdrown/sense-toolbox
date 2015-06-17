@@ -43,6 +43,14 @@
 		android:entries="@array/empty_array"
 		android:entryValues="@array/empty_array"
 		android:defaultValue="@array/empty_array" />
+	<com.sensetoolbox.six.utils.HtcMultiSelectListPreferenceEx
+		android:dialogTitle="@string/various_betterheadsup_ignorelist_title"
+		android:key="pref_key_betterheadsup_ignorelist_apps"
+		android:summary="@string/various_betterheadsup_ignorelist_summ"
+		android:title="@string/various_betterheadsup_ignorelist_title"
+		android:entries="@array/empty_array"
+		android:entryValues="@array/empty_array"
+		android:defaultValue="@array/empty_array" />
 	
 	<com.htc.preference.HtcPreferenceCategory
 		android:title="@string/sense_theme_sep1"

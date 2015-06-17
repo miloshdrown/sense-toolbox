@@ -3595,12 +3595,19 @@ public class SysUIMods {
 			if (sbn != null && sbn.isClearable() && !sbn.isOngoing()) {
 				XMain.pref.reload();
 				if (!XMain.pref.getBoolean("better_headsup_active", false)) return;
-
+				
 				boolean lowPriority = XMain.pref.getBoolean("pref_key_betterheadsup_priority", false);
 				if (sbn.getNotification().priority >= 0 || (sbn.getNotification().priority < 0 && lowPriority))
 				if (huView != null && isAllowed(sbn.getPackageName())) {
+					boolean isIgnored = false;
+					try {
+						ActivityManager amgr = (ActivityManager)huView.getContext().getSystemService(Context.ACTIVITY_SERVICE);
+						HashSet<String> ignoreList = (HashSet<String>)XMain.pref.getStringSet("pref_key_betterheadsup_ignorelist_apps", new HashSet<String>());
+						isIgnored = ignoreList.contains(amgr.getRunningTasks(1).get(0).topActivity.getPackageName());
+					} catch (Throwable t) {}
+					
 					KeyguardManager km = (KeyguardManager)huView.getContext().getSystemService(Context.KEYGUARD_SERVICE);
-					if (!km.isKeyguardLocked())
+					if (!isIgnored && !km.isKeyguardLocked())
 					if (!isHUVShown) {
 						PowerManager pwm = (PowerManager)huView.getContext().getSystemService(Context.POWER_SERVICE);
 						if (pwm.isScreenOn() && XMain.pref.getBoolean("pref_key_betterheadsup_sleepmode", false)) return;

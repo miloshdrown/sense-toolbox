@@ -440,6 +440,8 @@
 	<string name="various_popupnotify_bwlist_white_summ">Popups will be shown only for notifications from selected apps.</string>
 	<string name="various_betterheadsup_bwlist_white_title">Whitelist</string>
 	<string name="various_betterheadsup_bwlist_white_summ">Heads-ups will be shown only for notifications from selected apps.</string>
+	<string name="various_betterheadsup_ignorelist_title">Do not disturb</string>
+	<string name="various_betterheadsup_ignorelist_summ">Heads-ups will not be shown if these apps are currently active.</string>
 	<string name="various_betterheadsup_themes">Notification themes</string>
 	<string name="various_betterheadsup_theme_preset_title">Complete presets</string>
 	<string name="various_betterheadsup_theme_preset_summ">Predefined sets of colors</string>

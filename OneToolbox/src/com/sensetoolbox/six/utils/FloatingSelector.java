@@ -328,6 +328,7 @@ public class FloatingSelector extends FrameLayout {
 			appBtn.setBackground(gbkg);
 			appBtn.setGravity(Gravity.LEFT | Gravity.CENTER_VERTICAL);
 			appBtn.setPadding(densify(20), 0, densify(20), 0);
+			appBtn.setAllCaps(false);
 			
 			String ai = null;
 			try {
