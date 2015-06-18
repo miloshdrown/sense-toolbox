@@ -1991,7 +1991,12 @@ public class OtherMods {
 	
 	public static void execHook_NoFlipToMute(LoadPackageParam lpparam) {
 		try {
-			findAndHookMethod("com.android.phone.HtcPhoneSensorFunctions", lpparam.classLoader, "handleRotateToSilent", float.class, float.class, XC_MethodReplacement.DO_NOTHING);
+			if (Helpers.isLP()) {
+				findAndHookMethod("com.android.phone.HtcPhoneSensorFunctions", lpparam.classLoader, "handleRotateToSilent", float.class, float.class, XC_MethodReplacement.DO_NOTHING);
+			} else {
+				findAndHookMethod("com.android.phone.HtcPhoneSensorFunctionsOrient", lpparam.classLoader, "handleRotateToSilent", float.class, float.class, XC_MethodReplacement.DO_NOTHING);
+				findAndHookMethod("com.android.phone.HtcPhoneSensorFunctionNonOrient", lpparam.classLoader, "handleRotateToSilent", float.class, float.class, XC_MethodReplacement.DO_NOTHING);
+			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
