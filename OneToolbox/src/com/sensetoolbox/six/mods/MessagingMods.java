@@ -3,16 +3,11 @@ package com.sensetoolbox.six.mods;
 import static de.robv.android.xposed.XposedHelpers.callStaticMethod;
 import static de.robv.android.xposed.XposedHelpers.findAndHookMethod;
 import static de.robv.android.xposed.XposedHelpers.findClass;
-import static de.robv.android.xposed.XposedHelpers.findConstructorExact;
-import static de.robv.android.xposed.XposedHelpers.getObjectField;
-import static de.robv.android.xposed.XposedHelpers.setObjectField;
-import android.content.ComponentName;
 import android.content.Context;
 import android.net.Uri;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XC_MethodReplacement;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
@@ -112,39 +107,6 @@ public class MessagingMods{
 			@Override
 			protected Object replaceHookedMethod(MethodHookParam methodHookParam) throws Throwable {
 				return Boolean.TRUE;
-			}
-		});
-	}
-	
-	public static void execHook_EASSecurityPartOne() {
-		findAndHookMethod("android.app.admin.DevicePolicyManager", null, "isAdminActive", ComponentName.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				ComponentName who = (ComponentName) param.args[0];
-				XposedBridge.log("isAdminActive() for class: " + who.getClassName() + " in package: " + who.getPackageName());
-				if(who.getClassName().equalsIgnoreCase("com.htc.android.mail.eassvc.provision.EASDeviceAdmin"))
-					param.setResult(true);
-			}
-		});
-	}
-	
-	public static void execHook_EASSecurityPartTwo(LoadPackageParam lpparam) {
-		Class<?> exchangesyncsources = findClass("com.htc.android.mail.eassvc.common.ExchangeSyncSources", lpparam.classLoader);
-		Class<?> easpolicyset = findClass("com.htc.android.mail.eassvc.provision.EASPolicySet", lpparam.classLoader);
-		final Class<?> easprovisiondoc = findClass("com.htc.android.mail.eassvc.provision.EASProvisionDoc", lpparam.classLoader);
-		findAndHookMethod("com.htc.android.mail.eassvc.core.SyncManager", lpparam.classLoader, "downloadPolicy", exchangesyncsources, easpolicyset, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				Object provDoc = getObjectField(param.args[1], "provisionDoc");
-				XposedBridge.log("Old provisionDoc: " + provDoc.toString());
-			}
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				Object provisionDoc = findConstructorExact(easprovisiondoc).newInstance();
-				XposedBridge.log("Constructed new provisionDoc: " + provisionDoc);
-				setObjectField(param.args[1], "provisionDoc", provisionDoc);
-				Object provDoc = getObjectField(param.args[1], "provisionDoc");
-				XposedBridge.log("New provisionDoc: " + provDoc.toString());
 			}
 		});
 	}

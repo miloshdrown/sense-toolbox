@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.ColorFilter;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.ScaleDrawable;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -298,9 +299,9 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 	
 	public void applyThemes() {
 		HtcPreferenceManager pm = getPreferenceManager();
+		HtcPreference beats = pm.findPreference("pref_key_cb_beats");
 		
 		if (Helpers.isLP()) {
-			HtcPreference beats = pm.findPreference("pref_key_cb_beats");
 			Drawable beats_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_beats);
 			beats.setIcon(Helpers.dropIconShadow(mContext, beats_icon));
 			
@@ -313,6 +314,14 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 			Drawable mtp_icon = mContext.getResources().getDrawable(R.drawable.stat_notify_running_services);
 			applyTheme(mtp_icon);
 			mtp.setIcon(mtp_icon);
+		}
+		
+		if (Helpers.isEight()) {
+			beats.setTitle(beats.getTitle().toString().replace("Beats", "Boomsound"));
+			beats.setSummary(beats.getSummary().toString().replace("Beats", "Boomsound"));
+			Drawable boomsound_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_boomsound);
+			applyTheme(boomsound_icon);
+			beats.setIcon(Helpers.dropIconShadow(mContext, boomsound_icon));
 		}
 		
 		HtcPreference signal = pm.findPreference("pref_key_cb_signal");
@@ -361,7 +370,9 @@ public class ColorPreference extends HtcDialogPreference implements SeekBar.OnSe
 		screenshot.setIcon(Helpers.dropIconShadow(mContext, screenshot_icon));
 		
 		HtcPreference usb = pm.findPreference("pref_key_cb_usb");
-		Drawable usb_icon = mContext.getResources().getDrawable(R.drawable.stat_sys_data_usb);
+		Drawable usb_icon_orig = mContext.getResources().getDrawable(R.drawable.stat_sys_data_usb);
+		ScaleDrawable usb_icon = new ScaleDrawable(usb_icon_orig, Gravity.CENTER, 1.0f, 1.0f);
+		usb_icon.setLevel(8000);
 		applyTheme(usb_icon);
 		usb.setIcon(Helpers.dropIconShadow(mContext, usb_icon));
 		

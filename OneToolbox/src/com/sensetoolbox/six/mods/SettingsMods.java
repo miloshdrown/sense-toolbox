@@ -6,8 +6,6 @@ import static de.robv.android.xposed.XposedHelpers.findClass;
 import java.io.File;
 import java.util.ArrayList;
 
-import com.htc.preference.HtcPreference;
-import com.htc.preference.HtcPreferenceFragment;
 import com.htc.widget.HtcListItem;
 import com.htc.widget.HtcListItem2LineStamp;
 import com.htc.widget.HtcListItem2LineText;
@@ -28,6 +26,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.ScrollView;
 import de.robv.android.xposed.XC_MethodHook;
@@ -93,10 +93,10 @@ public class SettingsMods {
 						XposedHelpers.setStaticObjectField(findClass("com.android.settings.framework.flag.feature.HtcAboutPhoneFeatureFlags", lpparam.classLoader), "supportHardwareVersion", supportHardwareVersion);
 						
 						Class<?> clsHAHP = findClass("com.android.settings.framework.preference.aboutphone.HtcAboutPhoneHardwarePreference", lpparam.classLoader);
-						HtcPreference hwPref = (HtcPreference)clsHAHP.getConstructor(Context.class).newInstance((Context)XposedHelpers.callMethod(param.thisObject, "getContext"));
-						HtcPreferenceFragment prefFrag = (HtcPreferenceFragment)param.thisObject;
-						hwPref.setOrder(4);
-						prefFrag.getPreferenceScreen().addPreference(hwPref);
+						Object hwPref = clsHAHP.getConstructor(Context.class).newInstance((Context)XposedHelpers.callMethod(param.thisObject, "getContext"));
+						XposedHelpers.callMethod(hwPref, "setOrder", 4);
+						Object prefScr = XposedHelpers.callMethod(param.thisObject, "getPreferenceScreen");
+						XposedHelpers.callMethod(prefScr, "addPreference", hwPref);
 						XposedHelpers.callMethod(param.thisObject, "addCallback", hwPref);
 					}
 				});
@@ -266,8 +266,8 @@ public class SettingsMods {
 					theContext = all_details.getContext();
 					
 					int uninstall_item_id = all_details.getResources().getIdentifier("uninstall_button_item", "id", "com.android.settings");
-					HtcListItem uninstall_item = (HtcListItem)all_details.findViewById(uninstall_item_id);
-					HtcRimButton uninstall_btn = (HtcRimButton)uninstall_item.getChildAt(0);
+					FrameLayout uninstall_item = (FrameLayout)all_details.findViewById(uninstall_item_id);
+					Button uninstall_btn = (Button)uninstall_item.getChildAt(0);
 					
 					HtcListItemSeparator toolbox_separator_apk = new HtcListItemSeparator(theContext);
 					toolbox_separator_apk.setText(0, Helpers.xl10n(modRes, R.string.appdetails_package));
@@ -354,15 +354,17 @@ public class SettingsMods {
 					uninstall_start.addView(apk_launch_btn);
 					uninstall_start_item.addView(uninstall_start);
 					
-					all_details.addView(uninstall_start_item, 4);
-					all_details.addView(toolbox_separator_apk, 5);
-					all_details.addView(toolbox_item_filename, 6);
-					all_details.addView(toolbox_item_path, 7);
-					all_details.addView(toolbox_item_data, 8);
-					all_details.addView(toolbox_separator_dev, 22);
-					all_details.addView(toolbox_item_process, 23);
-					all_details.addView(toolbox_item_uid, 24);
-					all_details.addView(toolbox_item_api, 25);
+					int startCnt = 4;
+					if (Helpers.isSense7()) startCnt = 3;
+					all_details.addView(uninstall_start_item, startCnt);
+					all_details.addView(toolbox_separator_apk, startCnt + 1);
+					all_details.addView(toolbox_item_filename, startCnt + 2);
+					all_details.addView(toolbox_item_path, startCnt + 3);
+					all_details.addView(toolbox_item_data, startCnt + 4);
+					all_details.addView(toolbox_separator_dev, startCnt + 18);
+					all_details.addView(toolbox_item_process, startCnt + 19);
+					all_details.addView(toolbox_item_uid, startCnt + 20);
+					all_details.addView(toolbox_item_api, startCnt + 21);
 					
 					XposedHelpers.callMethod(param.thisObject, "initUninstallButton");
 				} catch (Throwable t) {

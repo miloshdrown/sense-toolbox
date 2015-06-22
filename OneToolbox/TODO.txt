@@ -15,6 +15,28 @@ Ideas
 Current changelog
 =================
 
+2.0
+[New] Match HTC Sense Input trace color with the current theme
+[New] Change HTC Sense Input trace opacity
+[Changed] Vibrate mode, silent mode and USB status bar icons
+[Changed] Always active mods section was removed, mods were moved to another sections
+[Removed][Sense 7] HTC Music Channel mod
+[Removed][Sense 7] All Messaging mods
+[Fixed][Sense 7] Alarm and screenshot icons replacement
+[Fixed][Sense 7] Hide Beats/Boomsound icons
+[Fixed][Sense 7] Caller photo mod
+[Fixed][Sense 7] Revealed settings mod
+[Fixed][Sense 7] Additional app details mod
+[Fixed][Sense 7] EPS apps remap mod
+[Fixed][Sense 7] No HTC Sense Input autocorrect mod
+[Fixed][Sense 7] Disable Flip to mute mod
+[Fixed] Many UI improvements
+
+
+==============
+Old Changelogs
+==============
+
 1.5.6
 [New] Actions for wired and bluetooth headsets connect and disconnect
 [New] Completely disable Flip to mute
@@ -23,30 +45,6 @@ Current changelog
 [Fixed] Touch Lock menu item in Power menu
 [Fixed] Swipe up from Home action
 [Fixed] Quick recent apps improvements
-
-
-===========
-Translators
-===========
-
-Spanish: Seyaru
-http://forum.xda-developers.com/member.php?u=1917665
-Dutch: tomasz
-http://forum.xda-developers.com/member.php?u=273596
-Dutch: racka
-http://forum.xda-developers.com/member.php?u=293402
-Turkish: omercance
-http://forum.xda-developers.com/member.php?u=5390625
-Italian: teorouge
-http://forum.xda-developers.com/member.php?u=1113480
-Croatian: ico86
-http://forum.xda-developers.com/member.php?u=2027432
-French: Hsuan24
-http://forum.xda-developers.com/member.php?u=5379502
-
-==============
-Old Changelogs
-==============
 
 1.5.5
 [New][5.0][Experimental] Quick recent apps switch action on swipe up from home or recents key long press
@@ -366,3 +364,22 @@ Popup notifications
 [New] Small navbar on HTC One M8
 [New] Hide Power Saver notification
 [Change] Jelly Bean styled toast changed to flat Sense 6 styled
+
+===========
+Translators
+===========
+
+Spanish: Seyaru
+http://forum.xda-developers.com/member.php?u=1917665
+Dutch: tomasz
+http://forum.xda-developers.com/member.php?u=273596
+Dutch: racka
+http://forum.xda-developers.com/member.php?u=293402
+Turkish: omercance
+http://forum.xda-developers.com/member.php?u=5390625
+Italian: teorouge
+http://forum.xda-developers.com/member.php?u=1113480
+Croatian: ico86
+http://forum.xda-developers.com/member.php?u=2027432
+French: Hsuan24
+http://forum.xda-developers.com/member.php?u=5379502

@@ -185,13 +185,6 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 			ColorPreference colorChanger = (ColorPreference) findPreference("pref_key_colorfilter");
 			colorChanger.applyThemes();
 			
-			if (Helpers.isEight()) {
-				HtcCheckBoxPreference beats = (HtcCheckBoxPreference) findPreference("pref_key_cb_beats");
-				beats.setTitle(beats.getTitle().toString().replace("Beats", "Boomsound"));
-				beats.setSummary(beats.getSummary().toString().replace("Beats", "Boomsound"));
-				beats.setIcon(R.drawable.stat_sys_boomsound);
-			}
-			
 			if (Helpers.isLP()) {
 				Helpers.removePref(this, "pref_key_colorfilter", "pref_key_cb");
 				Helpers.removePref(this, "pref_key_cb_texts", "pref_key_cb");
@@ -601,17 +594,17 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				HtcListPreference scrOffPref = (HtcListPreference)findPreference("pref_key_other_screenoff");
 				scrOffPref.setEntries(Helpers.l10n_array(getActivity(), R.array.various_screenoff_lp));
 				
+				Helpers.removePref(this, "pref_key_persist_appfilter", "pref_various_mods_settings");
 				Helpers.removePref(this, "pref_key_other_psscrolltotop", "pref_key_other");
 				Helpers.removePref(this, "pref_key_other_vzwnotif", "pref_various_mods_notifications");
 				Helpers.removePref(this, "pref_key_other_ledtimeout", "pref_various_mods_notifications");
-				
-				if (Helpers.isSense7()) {
-					Helpers.disablePref(this, "pref_key_other_nochargerwarn", "* Sense 7");
-					Helpers.disablePref(this, "pref_key_other_noautocorrect", "* Sense 7");
-					Helpers.disablePref(this, "pref_key_other_appdetails", "* Sense 7");
-				}
 			} else {
 				Helpers.removePref(this, "pref_key_other_secureeqs", "pref_various_mods_lockscreen");
+			}
+			
+			if (Helpers.isSense7()) {
+				Helpers.removePref(this, "pref_key_other_musicchannel", "pref_key_other");
+				Helpers.removePref(this, "pref_key_other_nochargerwarn", "pref_various_mods_notifications");
 			}
 			
 			HtcListPreference.OnPreferenceChangeListener applyButtonsLight = new HtcListPreference.OnPreferenceChangeListener() {
@@ -783,9 +776,6 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				if (logoPressActionPreference != null) ((HtcPreferenceScreen)findPreference("pref_key_wakegest")).removePreference(logoPressActionPreference);
 				if (launchAppsLogoPress != null) ((HtcPreferenceScreen)findPreference("pref_key_wakegest")).removePreference(launchAppsLogoPress);
 			}
-		} else if (xmlResId == R.xml.prefs_persist) {
-			if (Helpers.isLP())
-			Helpers.removePref(this, "pref_key_persist_appfilter", "pref_key_persist");
 		} else if (xmlResId == R.xml.prefs_popupnotify) {
 			this.menuType = 3;
 			

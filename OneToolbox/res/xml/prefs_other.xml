@@ -16,14 +16,9 @@
 			android:title="@string/various_apm_title"
 			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
-			android:key="pref_key_other_keepscreenon"
-			android:summary="@string/various_scron_summ"
-			android:title="@string/various_scron_title"
-			android:defaultValue="false" />
-		<com.htc.preference.HtcCheckBoxPreference
-			android:key="pref_key_other_appdetails"
-			android:summary="@string/various_apps_summ"
-			android:title="@string/various_apps_title"
+			android:key="pref_key_persist_installer"
+			android:summary="@string/persist_installer_summ"
+			android:title="@string/persist_installer_title"
 			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_other_ytwatermark"
@@ -62,16 +57,31 @@
 			android:summary="@string/various_musicchannel_summ"
 			android:title="@string/various_musicchannel_title"
 			android:defaultValue="false" />
+		
+		<com.htc.preference.HtcPreferenceCategory
+			android:title="@string/various_mods_settings"
+			android:key="pref_various_mods_settings" >
 		<com.htc.preference.HtcCheckBoxPreference
-			android:key="pref_key_other_noautocorrect"
-			android:summary="@string/various_noautocorrect_summ"
-			android:title="@string/various_noautocorrect_title"
+			android:key="pref_key_other_appdetails"
+			android:summary="@string/various_apps_summ"
+			android:title="@string/various_apps_title"
 			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
-			android:key="pref_key_other_noautoime"
-			android:summary="@string/various_noautoime_summ"
-			android:title="@string/various_noautoime_title"
+			android:key="pref_key_other_keepscreenon"
+			android:summary="@string/various_scron_summ"
+			android:title="@string/various_scron_title"
 			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_persist_appfilter"
+			android:summary="@string/persist_appfilter_summ"
+			android:title="@string/persist_appfilter_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_persist_unhideprefs"
+			android:summary="@string/persist_unhideprefs_summ"
+			android:title="@string/persist_unhideprefs_title"
+			android:defaultValue="false" />
+		</com.htc.preference.HtcPreferenceCategory>
 		
 		<com.htc.preference.HtcPreferenceCategory
 			android:title="@string/various_mods_lockscreen"
@@ -96,6 +106,35 @@
 			android:summary="@string/various_scramblepin_summ"
 			android:title="@string/various_scramblepin_title"
 			android:defaultValue="false" />
+		</com.htc.preference.HtcPreferenceCategory>
+		
+		<com.htc.preference.HtcPreferenceCategory
+			android:title="@string/various_mods_senseinput"
+			android:key="various_mods_senseinput" >
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_noautocorrect"
+			android:summary="@string/various_noautocorrect_summ"
+			android:title="@string/various_noautocorrect_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_noautoime"
+			android:summary="@string/various_noautoime_summ"
+			android:title="@string/various_noautoime_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_tracecolor"
+			android:summary="@string/various_tracecolor_summ"
+			android:title="@string/various_tracecolor_title"
+			android:defaultValue="false" />
+		<com.sensetoolbox.six.utils.SeekBarPreference
+			android:key="pref_key_other_tracealpha"
+			android:title="@string/various_tracealpha_title"
+			android:summary="@string/various_tracealpha_summ"
+			android:dialogMessage="@string/transparency_msg"
+			android:defaultValue="100"
+			android:text=" %"
+			android:max="100"
+			toolbox:enableKey="pref_key_other_tracealpha_enable"/>
 		</com.htc.preference.HtcPreferenceCategory>
 		
 		<com.htc.preference.HtcPreferenceCategory

@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -305,6 +306,13 @@ public class StatusbarMods {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_notify_alarm));
 			}
 		});
+		
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_alarm", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return applyTheme(modRes.getDrawable(R.drawable.stat_notify_alarm));
+			}
+		});
 	}
 
 	public static void execHook_WiFiIcon(InitPackageResourcesParam resparam, final int i) {
@@ -463,6 +471,14 @@ public class StatusbarMods {
 				return applyTheme(modRes.getDrawable(R.drawable.stat_notify_image));
 			}
 		});
+		
+		if (Helpers.isSense7())
+		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_notify_screenshot", new XResources.DrawableLoader(){
+			@Override
+			public Drawable newDrawable(XResources res, int id)	throws Throwable {
+				return applyTheme(modRes.getDrawable(R.drawable.stat_notify_image));
+			}
+		});
 	}
 	
 	public static void execHook_USBIcon(InitPackageResourcesParam resparam) {
@@ -592,10 +608,27 @@ public class StatusbarMods {
 					if (notifIcon != null) {
 						String mSlot = (String)XposedHelpers.getObjectField(notifIcon, "mSlot");
 						if (mSlot != null && iconsToHide != null) {
+							if (Helpers.isSense7() && iconsToHide.contains("2") && mSlot.equals("android/0x0")) try {
+								HashSet<Integer> bbRes = new HashSet<Integer>();
+								bbRes.add(notifIcon.getContext().getResources().getIdentifier("stat_sys_beats", "drawable", "com.htc.framework"));
+								bbRes.add(notifIcon.getContext().getResources().getIdentifier("stat_notify_beats_grey", "drawable", "com.htc.framework"));
+								bbRes.add(notifIcon.getContext().getResources().getIdentifier("stat_notify_beats_red", "drawable", "com.htc.framework"));
+								bbRes.add(notifIcon.getContext().getResources().getIdentifier("stat_sys_boomsound", "drawable", "com.htc.framework"));
+								bbRes.add(notifIcon.getContext().getResources().getIdentifier("icon_btn_boomsound_light", "drawable", "com.htc.framework"));
+								bbRes.add(notifIcon.getContext().getResources().getIdentifier("icon_btn_boomsound_light_xl", "drawable", "com.htc.framework"));
+								bbRes.add(notifIcon.getContext().getResources().getIdentifier("icon_btn_boomsound_off_light", "drawable", "com.htc.framework"));
+								bbRes.add(notifIcon.getContext().getResources().getIdentifier("stat_notify_boomsound", "drawable", "com.htc.framework"));
+								
+								Object mIcon = XposedHelpers.getObjectField(notifIcon, "mIcon");
+								int iconId = XposedHelpers.getIntField(mIcon, "iconId");
+								if (bbRes.contains(iconId)) notifIcon.setVisibility(View.GONE);
+							} catch (Throwable t) {}
+							
 							if (iconsToHide.contains("8")) try {
 								int usbResId = notifIcon.getContext().getPackageManager().getResourcesForApplication("com.android.settings").getIdentifier("stat_sys_data_usb", "drawable", "com.android.settings");
 								if (mSlot.equals("com.android.settings/0x" + Integer.toHexString(usbResId))) notifIcon.setVisibility(View.GONE);
 							} catch (Throwable t) {}
+							
 							if (iconsToHide.contains("7") && mSlot.equals("com.android.systemui/0x315") ||
 								iconsToHide.contains("9") && mSlot.equals("com.htc.htcpowermanager/0x3e8") ||
 								iconsToHide.contains("11") && mSlot.equals("com.android.settings/0x1")) notifIcon.setVisibility(View.GONE);

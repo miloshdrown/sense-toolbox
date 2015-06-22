@@ -38,6 +38,7 @@ import android.view.ViewGroup;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.TextView;
@@ -230,6 +231,15 @@ public class SenseThemes extends Activity {
 				applyThemeState(state);
 			}
 		});
+		
+		if (Helpers.isSense7()) {
+			TextView experimental = (TextView)findViewById(R.id.experimental);
+			experimental.setText(Helpers.l10n(this, R.string.sense_theme_remind));
+			experimental.setTextColor(0xffeeeeee);
+			
+			FrameLayout experimentalFrame = (FrameLayout)findViewById(R.id.experimentalFrame);
+			experimentalFrame.setVisibility(View.VISIBLE);
+		}
 	}
 	
 	private void applyThemeState(Boolean state) {

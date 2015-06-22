@@ -715,8 +715,7 @@ public class SysUIMods {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) {
 					LinearLayout sbheader = (LinearLayout)param.thisObject;
-					float density = sbheader.getResources().getDisplayMetrics().density;
-					if (sbheader.getLayoutParams() != null) sbheader.getLayoutParams().height += density * 28;
+					if (sbheader.getLayoutParams() != null) sbheader.getLayoutParams().height += densify(sbheader.getContext(), 28);
 				}
 			});
 		} else {
@@ -3728,8 +3727,73 @@ public class SysUIMods {
 				act.sendBroadcast(fullscreenIntent);
 			}
 		});
+		/*
+		try {
+			findAndHookMethod("android.app.NotificationManager", null, "notify", String.class, int.class, Notification.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Notification call = (Notification)param.args[2];
+					if (call != null && call.fullScreenIntent != null && call.fullScreenIntent.getCreatorPackage().equals("com.android.phone")) {
+						XposedBridge.log("kill fullScreenIntent");
+						call.fullScreenIntent = null;
+					}
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+		*/
 	}
-	
+	/*
+	public static void execHook_BetterHeadsUpPhone(final LoadPackageParam lpparam) {
+		try {
+			
+			findAndHookMethod("com.android.phone.CallNotifier", lpparam.classLoader, "showIncomingCall", String.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					XposedBridge.log("CallNotifier showIncomingCall");
+					try {
+						Object amn = XposedHelpers.callStaticMethod(findClass("android.app.ActivityManagerNative", null), "getDefault");
+						XposedHelpers.callMethod(amn, "closeSystemDialogs", "call");
+						Object mApplication = XposedHelpers.getObjectField(param.thisObject, "mApplication");
+						Object WakeStateFull = XposedHelpers.getStaticObjectField(findClass("com.android.phone.PhoneGlobals.WakeState", lpparam.classLoader), "FULL");
+						XposedHelpers.callMethod(mApplication, "requestWakeState", WakeStateFull);
+						
+						Object nMgr = XposedHelpers.callStaticMethod(findClass("com.android.phone.NotificationMgr", lpparam.classLoader), "getDefault");
+						XposedHelpers.callMethod(nMgr, "updateInCallNotification");
+						
+						param.setResult(null);
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+				}
+			});
+			
+			findAndHookMethod("com.android.phone.PhoneGlobals", lpparam.classLoader, "createInCallIntent", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					XposedBridge.log("createInCallIntent");
+				}
+			});
+			
+			findAndHookMethod("com.android.phone.NotificationMgr", lpparam.classLoader, "updateInCallNotification", boolean.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					XposedBridge.log("updateInCallNotification: " + String.valueOf(param.args[0]) + " "  + String.valueOf(param.args[1]));
+				}
+			});
+			
+			findAndHookMethod("com.android.phone.PhoneUtils", lpparam.classLoader, "canShowIncomingCallUI", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					//param.setResult(false);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	*/
 	public static void execHook_AutoEQS(LoadPackageParam lpparam, final boolean isExcludeClearable) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.NotificationPanelView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
 			@Override

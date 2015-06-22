@@ -132,6 +132,11 @@
 		<com.htc.preference.HtcPreferenceCategory
 			android:title="@string/sense_appdrawer">
 		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_persist_appdrawer_grid"
+			android:summary="@string/persist_adgrid_summ"
+			android:title="@string/persist_adgrid_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_prism_gridtinyfont"
 			android:summary="@string/sense_gridtinyfont_summ"
 			android:title="@string/sense_gridtinyfont_title"

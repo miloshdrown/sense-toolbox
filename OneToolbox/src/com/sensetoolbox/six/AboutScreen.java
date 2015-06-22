@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Html;
 import android.view.View;
@@ -40,6 +41,16 @@ public class AboutScreen extends Activity {
 		findViewById(R.id.scrollView1).setBackgroundResource(bkgResId);
 		
 		Typeface face = Typeface.create("sans-serif-condensed", Typeface.NORMAL);
+		
+		TextView senseAndroidVer = (TextView)findViewById(R.id.senseAndroidVer);
+		senseAndroidVer.setTypeface(face);
+		String versions;
+		if (Helpers.isSense7())
+			versions = Helpers.l10n(this, R.string.about_rom_base) + ": Sense 7";
+		else
+			versions = Helpers.l10n(this, R.string.about_rom_base) + ": Sense 6";
+		versions += "\n" + Helpers.l10n(this, R.string.about_android_ver) + ": " + Build.VERSION.RELEASE;
+		senseAndroidVer.setText(versions);
 		
 		TextView iv2 = (TextView)findViewById(R.id.textView2);
 		iv2.setPaintFlags(iv2.getPaintFlags() | Paint.UNDERLINE_TEXT_FLAG);

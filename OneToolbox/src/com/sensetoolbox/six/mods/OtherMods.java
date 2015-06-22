@@ -13,8 +13,6 @@ import java.util.HashSet;
 import java.util.List;
 
 import com.htc.fragment.widget.CarouselFragment;
-import com.htc.preference.HtcPreference;
-import com.htc.preference.HtcPreferenceFragment;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
@@ -45,6 +43,7 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
@@ -126,21 +125,11 @@ public class OtherMods {
 	}
 	
 	public static void execHook_VolSound() {
-		findAndHookMethod("com.htc.view.VolumePanel", null, "onPlaySound", int.class, int.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				param.setResult(null);
-			}
-		});
+		findAndHookMethod("com.htc.view.VolumePanel", null, "onPlaySound", int.class, int.class, XC_MethodReplacement.DO_NOTHING);
 	}
 	
 	public static void execHook_VolSound(LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.systemui.volume.VolumePanel", lpparam.classLoader, "onPlaySound", int.class, int.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				param.setResult(null);
-			}
-		});
+		findAndHookMethod("com.android.systemui.volume.VolumePanel", lpparam.classLoader, "onPlaySound", int.class, int.class, XC_MethodReplacement.DO_NOTHING);
 	}
 		
 	public static void execHook_MTPNotif(LoadPackageParam lpparam) {
@@ -240,7 +229,6 @@ public class OtherMods {
 		try {
 			String methodName = "updatePanelRotationPosition";
 			if (Helpers.isSense7()) methodName = "createVolumePanel";
-			//createVolumePanel
 			XposedHelpers.findAndHookMethod("com.android.systemui.volume.VolumePanel", lpparam.classLoader, methodName, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -610,12 +598,7 @@ public class OtherMods {
 	}
 	
 	public static void execHook_SafeVolume() {
-		findAndHookMethod("android.media.AudioService", null, "checkSafeMediaVolume", int.class, int.class, int.class, new XC_MethodHook() {
-			@Override
-			public void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				param.setResult(true);
-			}
-		});
+		findAndHookMethod("android.media.AudioService", null, "checkSafeMediaVolume", int.class, int.class, int.class, XC_MethodReplacement.returnConstant(true));
 	}
 	
 	private static void changeToast(View toastView) {
@@ -659,6 +642,8 @@ public class OtherMods {
 			if (photoSize == 2) resId = R.dimen.people_info_top_margin_rect;
 			resparam.res.setReplacement("com.android.phone", "dimen", "photo_frame_height", modRes.fwd(resId));
 			resparam.res.setReplacement("com.android.phone", "dimen", "lockscreen_10", modRes.fwd(R.dimen.lockscreen_10));
+			if (Helpers.isSense7())
+			resparam.res.setReplacement("com.android.phone", "dimen", "lockscreen_11", modRes.fwd(R.dimen.lockscreen_11));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -881,6 +866,15 @@ public class OtherMods {
 				} catch (Throwable t) {
 					XposedBridge.log(t);
 				}
+			}
+		});
+		
+		if (Helpers.isSense7())
+		findAndHookMethod("com.htc.lib1.cc.widget.reminder.drag.WorkspaceView", lpparam.classLoader, "setMastheadOnTop", ViewGroup.class, new XC_MethodHook() {
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				ViewGroup mMasthead = (ViewGroup)param.args[0];
+				if (mMasthead != null) mMasthead.setVisibility(View.INVISIBLE);
 			}
 		});
 	}
@@ -1360,60 +1354,119 @@ public class OtherMods {
 	}
 	
 	public static void execHook_ExtremePowerSaverRemap(final LoadPackageParam lpparam) {
-		findAndHookMethod("com.htc.powersavinglauncher.Workspace", lpparam.classLoader, "a",
-			View.class, long.class, int.class, int.class, int.class, int.class, int.class, boolean.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				XMain.pref.reload();
-				if (XMain.pref.getBoolean("eps_remap_active", false)) {
-					final View shortcut = (View)param.args[0];
-					if (shortcut != null) {
-						shortcut.setOnLongClickListener(new OnLongClickListener(){
-							@Override
-							public boolean onLongClick(View v) {
-								XposedHelpers.callStaticMethod(findClass("com.htc.powersavinglauncher.a.a", lpparam.classLoader), "a", shortcut.getContext(), 1);
-								return true;
+		try {
+			findAndHookMethod("com.htc.powersavinglauncher.Workspace", lpparam.classLoader, "addInScreen",
+					View.class, long.class, int.class, int.class, int.class, int.class, int.class, boolean.class, new XC_MethodHook() {
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+						XMain.pref.reload();
+						if (XMain.pref.getBoolean("eps_remap_active", false)) {
+							final View shortcut = (View)param.args[0];
+							if (shortcut != null) {
+								shortcut.setOnLongClickListener(new OnLongClickListener(){
+									@Override
+									public boolean onLongClick(View v) {
+										XposedHelpers.callStaticMethod(findClass("com.htc.powersavinglauncher.exit.ExitUtil", lpparam.classLoader), "exitPowerSavingMode", shortcut.getContext(), 1);
+										return true;
+									}
+								});
 							}
-						});
-					}
-				}
-			}
-		});
-		
-		findAndHookMethod("com.htc.powersavinglauncher.b.b", lpparam.classLoader, "b", Context.class, int.class, new XC_MethodHook() {
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-				@SuppressWarnings("unchecked")
-				ArrayList<Object> favs = (ArrayList<Object>)param.getResult();
-				XMain.pref.reload();
-				if (XMain.pref.getBoolean("eps_remap_active", false))
-				for (int i = 0; i <= 5; i++) try {
-					String pkgActName = XMain.pref.getString("eps_remap_cell" + String.valueOf(i + 1), null);
-					if (pkgActName != null) {
-						String[] pkgActArray = pkgActName.split("\\|");
-						Class<?> favCls = XposedHelpers.findClass("com.htc.powersavinglauncher.b.a", lpparam.classLoader);
-						Constructor<?> favCtr = favCls.getConstructor(int.class, int.class, int.class, int.class, int.class, int.class, int.class);
-						int cellX = 0, cellY = 0;
-						switch (i) {
-							case 0: cellX = 0; cellY = 0; break;
-							case 1: cellX = 1; cellY = 0; break;
-							case 2: cellX = 0; cellY = 1; break;
-							case 3: cellX = 1; cellY = 1; break;
-							case 4: cellX = 0; cellY = 2; break;
-							case 5: cellX = 1; cellY = 2; break;
 						}
-						Object fav = favCtr.newInstance(1, 0, cellX, cellY, 0, 0, -100);
-						XposedHelpers.callMethod(fav, "a", pkgActArray[0], pkgActArray[1]);
-						if (i >= favs.size())
-							favs.add(fav);
-						else
-							favs.set(i, fav);
 					}
-				} catch (Throwable t) {
-					XposedBridge.log(t);
+				});
+		} catch (Throwable t) {
+			findAndHookMethod("com.htc.powersavinglauncher.Workspace", lpparam.classLoader, "a",
+				View.class, long.class, int.class, int.class, int.class, int.class, int.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					XMain.pref.reload();
+					if (XMain.pref.getBoolean("eps_remap_active", false)) {
+						final View shortcut = (View)param.args[0];
+						if (shortcut != null) {
+							shortcut.setOnLongClickListener(new OnLongClickListener(){
+								@Override
+								public boolean onLongClick(View v) {
+									XposedHelpers.callStaticMethod(findClass("com.htc.powersavinglauncher.a.a", lpparam.classLoader), "a", shortcut.getContext(), 1);
+									return true;
+								}
+							});
+						}
+					}
 				}
-			}
-		});
+			});
+		}
+		
+		try {
+			findAndHookMethod("com.htc.powersavinglauncher.scene.SceneLoader", lpparam.classLoader, "loadDefaultXMLScene", Context.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					@SuppressWarnings("unchecked")
+					ArrayList<Object> favs = (ArrayList<Object>)param.getResult();
+					XMain.pref.reload();
+					if (XMain.pref.getBoolean("eps_remap_active", false))
+					for (int i = 0; i <= 5; i++) try {
+						String pkgActName = XMain.pref.getString("eps_remap_cell" + String.valueOf(i + 1), null);
+						if (pkgActName != null) {
+							String[] pkgActArray = pkgActName.split("\\|");
+							Class<?> favCls = XposedHelpers.findClass("com.htc.powersavinglauncher.scene.FavoriteItem", lpparam.classLoader);
+							Constructor<?> favCtr = favCls.getConstructor(int.class, int.class, int.class, int.class, int.class, int.class, int.class);
+							int cellX = 0, cellY = 0;
+							switch (i) {
+								case 0: cellX = 0; cellY = 0; break;
+								case 1: cellX = 1; cellY = 0; break;
+								case 2: cellX = 0; cellY = 1; break;
+								case 3: cellX = 1; cellY = 1; break;
+								case 4: cellX = 0; cellY = 2; break;
+								case 5: cellX = 1; cellY = 2; break;
+							}
+							Object fav = favCtr.newInstance(1, 0, cellX, cellY, 0, 0, -100);
+							XposedHelpers.callMethod(fav, "setAsShortcut", pkgActArray[0], pkgActArray[1]);
+							if (i >= favs.size())
+								favs.add(fav);
+							else
+								favs.set(i, fav);
+						}
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+				}
+			});
+		} catch (Throwable t) {
+			findAndHookMethod("com.htc.powersavinglauncher.b.b", lpparam.classLoader, "b", Context.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					@SuppressWarnings("unchecked")
+					ArrayList<Object> favs = (ArrayList<Object>)param.getResult();
+					XMain.pref.reload();
+					if (XMain.pref.getBoolean("eps_remap_active", false))
+					for (int i = 0; i <= 5; i++) try {
+						String pkgActName = XMain.pref.getString("eps_remap_cell" + String.valueOf(i + 1), null);
+						if (pkgActName != null) {
+							String[] pkgActArray = pkgActName.split("\\|");
+							Class<?> favCls = XposedHelpers.findClass("com.htc.powersavinglauncher.b.a", lpparam.classLoader);
+							Constructor<?> favCtr = favCls.getConstructor(int.class, int.class, int.class, int.class, int.class, int.class, int.class);
+							int cellX = 0, cellY = 0;
+							switch (i) {
+								case 0: cellX = 0; cellY = 0; break;
+								case 1: cellX = 1; cellY = 0; break;
+								case 2: cellX = 0; cellY = 1; break;
+								case 3: cellX = 1; cellY = 1; break;
+								case 4: cellX = 0; cellY = 2; break;
+								case 5: cellX = 1; cellY = 2; break;
+							}
+							Object fav = favCtr.newInstance(1, 0, cellX, cellY, 0, 0, -100);
+							XposedHelpers.callMethod(fav, "a", pkgActArray[0], pkgActArray[1]);
+							if (i >= favs.size())
+								favs.add(fav);
+							else
+								favs.set(i, fav);
+						}
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+				}
+			});
+		}
 	}
 	
 	private static LoadPackageParam phoneLPP = null;
@@ -1812,7 +1865,36 @@ public class OtherMods {
 	
 	public static void execHook_KeyboardNoAutocorrect(LoadPackageParam lpparam) {
 		try {
-			XposedHelpers.findAndHookMethod("com.htc.sense.ime.XT9IME.XT9Engine", lpparam.classLoader, "getActiveWordIndex", XC_MethodReplacement.returnConstant(Integer.valueOf(0)));
+			if (Helpers.isSense7()) {
+				XposedHelpers.findAndHookMethod("com.htc.sense.ime.latinim.util.PredictionInfo", lpparam.classLoader, "setIdxEngAdvised", int.class, new XC_MethodHook() {
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+						param.args[0] = 0;
+					}
+				});
+				XposedHelpers.findAndHookMethod("com.htc.sense.ime.latinim.util.PredictionInfo", lpparam.classLoader, "setIdxIMEAdvised", int.class, new XC_MethodHook() {
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+						param.args[0] = 0;
+					}
+				});
+				/*
+				XposedHelpers.findAndHookMethod("com.htc.sense.ime.latinim.LatinIMInfo", lpparam.classLoader, "setIdxEngAdvised", int.class, new XC_MethodHook() {
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+						param.args[0] = 0;
+					}
+				});
+				XposedHelpers.findAndHookMethod("com.htc.sense.ime.latinim.LatinIMInfo", lpparam.classLoader, "setIdxIMEAdvised", int.class, new XC_MethodHook() {
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+						param.args[0] = 0;
+					}
+				});
+				*/
+			} else {
+				XposedHelpers.findAndHookMethod("com.htc.sense.ime.XT9IME.XT9Engine", lpparam.classLoader, "getActiveWordIndex", XC_MethodReplacement.returnConstant(Integer.valueOf(0)));
+			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -2009,12 +2091,12 @@ public class OtherMods {
 			findAndHookMethod(className, lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					HtcPreferenceFragment notifySettings = (HtcPreferenceFragment)param.thisObject;
+					Object notifySettings = param.thisObject;
 					if (notifySettings != null) {
-						HtcPreference flipToMutePref = notifySettings.findPreference("HtcFlipToMutePreference");
+						Object flipToMutePref = XposedHelpers.callMethod(notifySettings, "findPreference", "HtcFlipToMutePreference");
 						if (flipToMutePref != null) {
-							flipToMutePref.setEnabled(false);
-							flipToMutePref.setSummary(Helpers.xl10n(XModuleResources.createInstance(XMain.MODULE_PATH, null), R.string.disabled_by_toolbox));
+							XposedHelpers.callMethod(flipToMutePref, "setEnabled", false);
+							XposedHelpers.callMethod(flipToMutePref, "setSummary", Helpers.xl10n(XModuleResources.createInstance(XMain.MODULE_PATH, null), R.string.disabled_by_toolbox));
 						}
 					}
 				}
@@ -2023,4 +2105,64 @@ public class OtherMods {
 			XposedBridge.log(t);
 		}
 	}
+	
+	public static void execHook_KeyboardTraceColor(final LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.htc.sense.ime.ezsip.trace.Trace", lpparam.classLoader, "startInput", View.class, new XC_MethodHook(100) {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Object mConfig = XposedHelpers.getObjectField(param.thisObject, "mConfig");
+					int mStrokeColor = XposedHelpers.getIntField(mConfig, "mStrokeColor");
+					int highlightColor = mStrokeColor;
+					
+					try {
+						if (Helpers.isSense7())
+							highlightColor = XposedHelpers.getStaticIntField(findClass("com.htc.sense.ime.NonAndroidSDK.HtcThemeUtilForService", lpparam.classLoader), "sIMEColorHighlight");
+						else
+							highlightColor = XposedHelpers.getStaticIntField(findClass("com.htc.sense.ime.HTCIMMData", lpparam.classLoader), "mCategoryColor");
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+
+					//int sMultiplyColor = XposedHelpers.getStaticIntField(findClass("com.htc.sense.ime.NonAndroidSDK.HtcThemeUtilForService", lpparam.classLoader), "sMultiplyColor");
+					//int sIMEColorKeyText = XposedHelpers.getStaticIntField(findClass("com.htc.sense.ime.NonAndroidSDK.HtcThemeUtilForService", lpparam.classLoader), "sIMEColorKeyText");
+					
+					Paint mPaint = (Paint)XposedHelpers.getObjectField(param.thisObject, "mPaint");
+					mPaint.setColor(highlightColor);
+					mPaint.setAlpha(128);
+					mPaint.setAntiAlias(true);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_KeyboardTraceAlpha(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.htc.sense.ime.ezsip.trace.Trace", lpparam.classLoader, "startInput", View.class, new XC_MethodHook(1000) {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Paint mPaint = (Paint)XposedHelpers.getObjectField(param.thisObject, "mPaint");
+					mPaint.setAlpha((int) Math.floor(XMain.pref.getInt("pref_key_other_tracealpha", 50) * 2.55f));
+					mPaint.setAntiAlias(true);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	/*
+	public static void execHook_GlobalEffectNotification() {
+		try {
+			findAndHookMethod("android.media.htcsoundfx.view.EffectViewNotification", null, "createNotification", Context.class, int.class, String.class, String.class, int.class, String.class, Intent.class, boolean.class, new XC_MethodHook() {
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	*/
 }

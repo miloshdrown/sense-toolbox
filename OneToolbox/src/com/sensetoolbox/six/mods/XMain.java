@@ -155,9 +155,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (Integer.parseInt(pref.getString("pref_key_controls_mediadownaction", "0")) != 0 || Integer.parseInt(pref.getString("pref_key_controls_mediaupaction", "0")) != 0)
 			ControlsMods.execHook_VolumeMediaButtons(vol2wakeEnabled);
 		
-		if (pref.getBoolean("pref_key_messaging_eassecurity", false))
-			MessagingMods.execHook_EASSecurityPartOne();
-		
 		if (pref.getBoolean("pref_key_other_volsafe", false))
 			OtherMods.execHook_SafeVolume();
 		
@@ -219,7 +216,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (Integer.parseInt(pref.getString("pref_key_prism_transitions", "1")) == 3)
 				PrismMods.execHook_StockTransitionsAnim(resparam);
 			
-			PrismMods.execHook_AppDrawerGridSizesLayout(resparam);
+			if (pref.getBoolean("pref_key_persist_appdrawer_grid", false))
+				PrismMods.execHook_AppDrawerGridSizesLayout(resparam);
 		}
 		
 		if (pkg.equals("com.android.systemui")) {
@@ -418,7 +416,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				OtherMods.execHook_ExtremePowerSaverRemap(lpparam);
 		}
 		
-		if (pkg.equals("com.htc.sense.mms") && !Helpers.isSense7()) {
+		if (pkg.equals("com.htc.sense.mms")) {
 			pref.reload();
 			if (pref.getBoolean("pref_key_other_smscreenon", false))
 				MessagingMods.execHook_smsscreenon(lpparam);
@@ -456,7 +454,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref_swipedown != 1 || pref_swipeup != 1)
 				PrismMods.execHook_SwipeActions(lpparam);
 			
-			PrismMods.execHook_AppDrawerGridSizes(lpparam);
+			if (pref.getBoolean("pref_key_persist_appdrawer_grid", false))
+				PrismMods.execHook_AppDrawerGridSizes(lpparam);
 			
 			if (pref.getBoolean("pref_key_prism_gridtinyfont", false))
 				PrismMods.execHook_AppDrawerGridTinyText(lpparam);
@@ -515,7 +514,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_keepscreenon", false))
 				SettingsMods.execHook_ScreenOn(lpparam);
 			
-			if (pref.getBoolean("pref_key_other_appdetails", false) && !Helpers.isSense7())
+			if (pref.getBoolean("pref_key_other_appdetails", false))
 				SettingsMods.execHook_Apps(lpparam);
 			
 			if (pref.getBoolean("pref_key_other_nochargerwarn", false))
@@ -530,10 +529,11 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_nofliptomute", false))
 				OtherMods.execHook_NoFlipToMuteSetting(lpparam);
 			
-			if (!Helpers.isLP())
-				SettingsMods.execHook_AppFilter(lpparam);
+			if (pref.getBoolean("pref_key_persist_unhideprefs", false))
+				SettingsMods.execHook_UnhidePrefs(lpparam);
 			
-			SettingsMods.execHook_UnhidePrefs(lpparam);
+			if (!Helpers.isLP() && pref.getBoolean("pref_key_persist_appfilter", false))
+				SettingsMods.execHook_AppFilter(lpparam);
 		}
 		
 		if (pkg.equals("com.htc.musicenhancer")) {
@@ -686,12 +686,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		}
 		
 		if (pkg.equals("com.android.packageinstaller")) {
-			OtherMods.execHook_EnhancedInstaller(lpparam);
-		}
-		
-		if (pkg.equals("com.htc.android.mail")) {
-			if (pref.getBoolean("pref_key_messaging_eassecurity", false))
-				MessagingMods.execHook_EASSecurityPartTwo(lpparam);
+			if (pref.getBoolean("pref_key_persist_installer", false))
+				OtherMods.execHook_EnhancedInstaller(lpparam);
 		}
 		
 		if (pkg.equals("com.android.phone")) {
@@ -729,6 +725,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_other_noautocorrect", false))
 				OtherMods.execHook_KeyboardNoAutocorrect(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_tracecolor", false))
+				OtherMods.execHook_KeyboardTraceColor(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_tracealpha_enable", false))
+				OtherMods.execHook_KeyboardTraceAlpha(lpparam);
 		}
 		
 		if (pkg.equals("com.htc.sense.easyaccessservice")) {

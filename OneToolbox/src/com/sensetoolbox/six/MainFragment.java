@@ -115,7 +115,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		final Handler handler = new Handler();
 		
 		addPreferencesFromResource(R.xml.preferences);
-		
+		/*
 		if (Helpers.isSense7()) {
 			TextView experimental = (TextView)act.findViewById(R.id.experimental);
 			experimental.setText(Helpers.l10n(act, R.string.preview_release));
@@ -123,7 +123,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 			FrameLayout experimentalFrame = (FrameLayout)act.findViewById(R.id.experimentalFrame);
 			experimentalFrame.setVisibility(View.VISIBLE);
 		}
-		
+		*/
 		// Preventing launch delay
 		new Thread(new Runnable() {
 			public void run() {
@@ -319,22 +319,28 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 			Helpers.removePref(this, "pref_key_betterheadsup", "prefs_cat");
 		
 		if (Helpers.isSense7()) {
-			Helpers.disablePref(this, "pref_key_sms", "* Sense 7");
+			Helpers.removePref(this, "pref_key_sms", "prefs_cat");
+			prefs.edit().putBoolean("pref_key_sms_smsmmsconv", false).commit();
+			prefs.edit().putBoolean("pref_key_sms_toastnotification", false).commit();
+			prefs.edit().putBoolean("pref_key_sms_mmssize", false).commit();
+			prefs.edit().putBoolean("pref_key_sms_accents", false).commit();
+			prefs.edit().putBoolean("pref_key_other_smscreenon", false).commit();
+			prefs.edit().putBoolean("pref_key_other_musicchannel", false).commit();
 			prefs.edit().putBoolean("pref_key_other_nochargerwarn", false).commit();
-			prefs.edit().putBoolean("pref_key_other_noautocorrect", false).commit();
-			prefs.edit().putBoolean("pref_key_other_appdetails", false).commit();
 		}
 	}
 
 	private void showQuickTip(int step) {
-		if (qtp == null) {
+		if (qtp == null) try {
 			int width = getWidthWithPadding();
 			qtp = new QuickTipPopup(getActivity());
 			qtp.setCloseVisibility(true);
 			qtp.setClipToScreenEnabled(true);
 			qtp.setMaxWidth(width);
 			qtp.setWidth(width);
-		}
+		} catch (Exception e) {}
+		
+		if (qtp == null) return;
 		
 		View target = null;
 		if (step == 0) {
@@ -473,14 +479,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		}
 	}
 	
-	public static class PersistFragment extends HtcPreferenceFragmentExt {
-		@Override
-		public void onActivityCreated(Bundle savedInstanceState) {
-			super.onActivityCreated(savedInstanceState, R.xml.prefs_persist);
-			addPreferencesFromResource(R.xml.prefs_persist);
-		}
-	}
-	
 	@Override
 	public void onViewCreated(View view, Bundle savedInstanceState) {
 		super.onViewCreated(view, savedInstanceState);
@@ -489,7 +487,7 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 		view.post(new Runnable() {
 			@Override
 			public void run() {
-				if (isFragmentReady(getActivity()) && !Helpers.isSense7()) showQuickTip(0);
+				if (isFragmentReady(getActivity())) showQuickTip(0);
 			}
 		});
 	}
@@ -520,9 +518,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 					break;
 				case "pref_key_other":
 					xmlResId = R.xml.prefs_other;
-					break;
-				case "pref_key_persist":
-					xmlResId = R.xml.prefs_persist;
 					break;
 				case "pref_key_popupnotify":
 					xmlResId = R.xml.prefs_popupnotify;

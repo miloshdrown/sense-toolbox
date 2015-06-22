@@ -8,11 +8,7 @@
 	<com.htc.preference.HtcPreferenceCategory
 		android:title="@string/mods"
 		android:key="prefs_cat" >
-	<!--
-	<com.htc.preference.HtcPreferenceScreen
-		android:title="@string/camera_mods"
-		android:key="pref_key_cam" />
-	-->
+		
 	<com.htc.preference.HtcPreferenceScreen
 		android:title="@string/systemui_mods"
 		android:key="pref_key_sysui" />
@@ -40,10 +36,6 @@
 	<com.htc.preference.HtcPreferenceScreen
 		android:title="@string/wakegestures_mod"
 		android:key="pref_key_wakegest" />
-	
-	<com.htc.preference.HtcPreferenceScreen
-		android:title="@string/persistent_mods"
-		android:key="pref_key_persist" />
 	
 	<com.htc.preference.HtcPreferenceScreen
 		android:title="@string/various_touchlock_title"
