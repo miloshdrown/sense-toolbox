@@ -201,12 +201,12 @@ public class FloatingSelector extends FrameLayout {
 		long time = System.currentTimeMillis();
 		List<UsageStats> stats = new ArrayList<UsageStats>();
 		List<UsageStats> statsBest = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_BEST, time - 2 * 24 * 60 * 60 * 1000, time);
-		XposedBridge.log("[S6T] Interval best: " + String.valueOf(statsBest.size()));
+		XposedBridge.log("[ST] Interval best: " + String.valueOf(statsBest.size()));
 		if (statsBest != null) stats.addAll(statsBest);
 		
 		if (stats.size() <= 2) {
 			List<UsageStats> statsWeek = mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_WEEKLY, time - 7 * 24 * 60 * 60 * 1000, time);
-			XposedBridge.log("[S6T] Interval weekly: " + String.valueOf(statsWeek.size()));
+			XposedBridge.log("[ST] Interval weekly: " + String.valueOf(statsWeek.size()));
 			if (statsWeek != null) stats.addAll(statsWeek);
 		}
 		
@@ -229,7 +229,7 @@ public class FloatingSelector extends FrameLayout {
 			}
 		}
 		
-		XposedBridge.log("[S6T] Recently used apps: " + String.valueOf(mySortedMap.size()));
+		XposedBridge.log("[ST] Recently used apps: " + String.valueOf(mySortedMap.size()));
 		
 		LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 		lp.gravity = Gravity.BOTTOM;

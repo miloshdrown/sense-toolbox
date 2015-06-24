@@ -30,6 +30,9 @@
     <issue id="ProtectedPermissions">
         <ignore path="AndroidManifest.xml" />
     </issue>
+    <issue id="RtlHardcoded">
+        <ignore path="res/layout/about_screen.xml" />
+    </issue>
     <issue id="UnusedResources">
         <ignore path="res/drawable-xxhdpi/b_stat_sys_wifi_signal_0.png" />
         <ignore path="res/drawable-xxhdpi/b_stat_sys_wifi_signal_1.png" />

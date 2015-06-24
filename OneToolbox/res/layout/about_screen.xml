@@ -9,52 +9,34 @@
 	android:rowCount="2"
 	tools:context=".AboutScreen" >
 
-	<LinearLayout
+	<RelativeLayout
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:layout_gravity="fill_horizontal"
 		android:orientation="vertical"
 		android:id="@+id/backLayer"
-		android:paddingTop="15dp" >
+		android:paddingTop="15dp"
+		android:paddingLeft="20dp"
+		android:paddingRight="20dp" >
 
 			<ImageView
 				android:id="@+id/imageView1"
-				android:layout_width="match_parent"
+				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
-				android:layout_gravity="center_horizontal"
-				android:layout_marginBottom="20dp"
+				android:layout_gravity="left"
 				android:contentDescription="@string/app_about"
 				android:src="@drawable/ic_logo" />
-
-	</LinearLayout>
-
-	<ScrollView
-		android:id="@+id/scrollView1"
-		android:layout_width="wrap_content"
-		android:layout_height="0dp"
-		android:layout_gravity="fill_horizontal|fill_vertical"
-		android:fillViewport="true"
-		android:scrollbarStyle="outsideOverlay"
-		android:scrollbars="vertical|none"
-		android:paddingLeft="20dp"
-		android:paddingRight="20dp"
-		android:paddingBottom="10dp"
-		android:paddingTop="0dp" >
-
-		<LinearLayout
-			android:layout_width="match_parent"
-			android:layout_height="wrap_content"
-			android:layout_gravity="fill_horizontal"
-			android:orientation="vertical" >
-
+			
 			<TextView
 				android:id="@+id/textViewVersion"
 				android:layout_width="wrap_content"
 				android:layout_height="wrap_content"
+				android:layout_marginTop="-25dp"
 				android:paddingBottom="10dp"
 				android:paddingTop="0dp"
 				android:text="@string/about_version"
-				android:textSize="20sp" />
+				android:textSize="20sp"
+				android:layout_below="@id/imageView1" />
 			
 			<TextView
 				android:id="@+id/senseAndroidVer"
@@ -64,7 +46,8 @@
 				android:paddingLeft="20dp"
 				android:paddingRight="20dp"
 				android:paddingTop="10dp"
-				android:textSize="18sp" />
+				android:textSize="18sp"
+				android:layout_below="@id/textViewVersion" />
 
 			<TextView
 				android:id="@+id/textView2"
@@ -72,7 +55,8 @@
 				android:layout_height="wrap_content"
 				android:paddingTop="0dp"
 				android:text="@string/about_devs"
-				android:textSize="20sp" />
+				android:textSize="20sp"
+				android:layout_below="@id/senseAndroidVer" />
 
 			<TextView
 				android:id="@+id/textView3"
@@ -83,7 +67,8 @@
 				android:paddingRight="20dp"
 				android:paddingTop="10dp"
 				android:text="@string/about_devs_names"
-				android:textSize="18sp" />
+				android:textSize="18sp"
+				android:layout_below="@id/textView2" />
 
 			<TextView
 				android:id="@+id/TextView02"
@@ -92,7 +77,8 @@
 				android:paddingBottom="10dp"
 				android:text="@string/about_thanks"
 				android:textSize="20sp"
-				android:visibility="gone" />
+				android:visibility="gone"
+				android:layout_below="@id/textView3" />
 
 			<TextView
 				android:id="@+id/TextView03"
@@ -105,7 +91,8 @@
 				android:paddingTop="10dp"
 				android:text="@string/about_thanks_data"
 				android:textSize="18sp"
-				android:visibility="gone" />
+				android:visibility="gone"
+				android:layout_below="@id/TextView02" />
 
 			<TextView
 				android:id="@+id/TextView04"
@@ -113,7 +100,28 @@
 				android:layout_height="wrap_content"
 				android:paddingBottom="10dp"
 				android:text="@string/about_l10n"
-				android:textSize="20sp" />
+				android:textSize="20sp"
+				android:layout_below="@id/TextView03" />
+	</RelativeLayout>
+
+	<ScrollView
+		android:id="@+id/scrollView1"
+		android:layout_width="wrap_content"
+		android:layout_height="0dp"
+		android:layout_gravity="fill_horizontal|fill_vertical"
+		android:fillViewport="true"
+		android:scrollbarStyle="outsideOverlay"
+		android:scrollbars="vertical|none"
+		android:paddingBottom="10dp"
+		android:paddingTop="0dp" >
+
+		<LinearLayout
+			android:layout_width="match_parent"
+			android:layout_height="wrap_content"
+			android:layout_gravity="fill_horizontal"
+			android:orientation="vertical"
+			android:paddingLeft="20dp"
+			android:paddingRight="20dp" >
 
 			<TextView
 				android:id="@+id/TextView4"

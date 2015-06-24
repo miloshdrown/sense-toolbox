@@ -28,7 +28,7 @@ public class HelperReceiver extends BroadcastReceiver {
 		if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED) && !Helpers.isEight() && Helpers.isLP()) {
 			SharedPreferences prefs = ctx.getSharedPreferences("one_toolbox_prefs", 1);
 			if (prefs.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures()) {
-				Log.i("[S6T]", "Wake gestures activated");
+				Log.i("[ST]", "Wake gestures activated");
 				Helpers.setWakeGestures(true);
 			}
 		}

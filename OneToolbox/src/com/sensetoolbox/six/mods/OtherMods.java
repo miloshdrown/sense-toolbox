@@ -1086,7 +1086,7 @@ public class OtherMods {
 			
 			if (pm.isScreenOn() && sleepMode && !isFromPhone) return;
 			if (lightUpScreen) {
-				WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "S6T PN Light up");
+				WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "ST PN Light up");
 				wl.acquire(1000);
 				XposedHelpers.callMethod(pm, "wakeUp", SystemClock.uptimeMillis());
 			}

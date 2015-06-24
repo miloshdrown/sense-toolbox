@@ -397,7 +397,7 @@ public class SysUIMods {
 					fillView.setId(0x999999);
 					statusBarContents.addView(fillView, statusBarContents.indexOfChild(systemIconArea));
 				} else {
-					XposedBridge.log("[S6T] Center Clock Error: One or more layouts or views not found");
+					XposedBridge.log("[ST] Center Clock Error: One or more layouts or views not found");
 				}
 			}
 		});
@@ -1709,7 +1709,7 @@ public class SysUIMods {
 									} catch (Throwable t) {}
 								}
 							});
-							cpuThread.setName("s6t_thermal_cputemp");
+							cpuThread.setName("st_thermal_cputemp");
 							cpuThread.start();
 							isThreadActive = true;
 						}
@@ -3408,7 +3408,7 @@ public class SysUIMods {
 					
 					PowerManager pwm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 					if (XMain.pref.getBoolean("pref_key_betterheadsup_lightup", false)) {
-						WakeLock wl = pwm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "S6T BHU Light up");
+						WakeLock wl = pwm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "ST BHU Light up");
 						wl.acquire(1000);
 						XposedHelpers.callMethod(pwm, "wakeUp", SystemClock.uptimeMillis());
 					}

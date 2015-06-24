@@ -122,7 +122,7 @@ public class WakeGesturesMods {
 	private static void doWakeUp(Object thisObject, long atTime) {
 		PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(thisObject, "mPowerManager");
 		if (mPowerManager != null) {
-			WakeLock wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "S6T WakeUpSleepy");
+			WakeLock wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "ST WakeUpSleepy");
 			wl.acquire(1000);
 			XposedHelpers.callMethod(mPowerManager, "wakeUp", atTime);
 		}
@@ -192,7 +192,7 @@ public class WakeGesturesMods {
 			if (pkgAppName != null) {
 				String[] pkgAppArray = pkgAppName.split("\\|");
 				
-				if (mEasyAccessCtrl == null) XposedBridge.log("[S6T] Failed to start app using wake gesture!"); else
+				if (mEasyAccessCtrl == null) XposedBridge.log("[ST] Failed to start app using wake gesture!"); else
 				if (pkgAppArray[0].equals("com.htc.camera")) {
 					XposedHelpers.callMethod(mEasyAccessCtrl, "launchCamera", ctx, false);
 				} else {
@@ -234,7 +234,7 @@ public class WakeGesturesMods {
 	
 	public static void launchShortcut(Context ctx, int action) {
 		try {
-			if (mEasyAccessCtrl == null) XposedBridge.log("[S6T] Failed to start app using wake gesture!"); else {
+			if (mEasyAccessCtrl == null) XposedBridge.log("[ST] Failed to start app using wake gesture!"); else {
 				String intentString = getShortcutIntent(action);
 				if (intentString != null) {
 					Intent shortcutIntent = Intent.parseUri(intentString, 0);
@@ -266,7 +266,7 @@ public class WakeGesturesMods {
 				case 6: doWakeUp(param.thisObject, event_time_local); sendLockScreenIntentOpenAppDrawer(mContext); break;
 				case 7:
 					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
-					if (Helpers.mWakeLock == null) Helpers.mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T Flashlight");
+					if (Helpers.mWakeLock == null) Helpers.mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ST Flashlight");
 					if (Helpers.mFlashlightLevel == 0 || !Helpers.mWakeLock.isHeld()) {
 						Helpers.mFlashlightLevel = 127;
 						if (!Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.acquire(600000);
@@ -353,7 +353,7 @@ public class WakeGesturesMods {
 					if (bfin.read(event) > 0 && !isOnLockdown) {
 						input_event = new StructInputEvent(event);
 						//XposedBridge.log("event: " + bytesToHex(event));
-						//XposedBridge.log("[S6T @ " + String.valueOf(SystemClock.uptimeMillis()) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
+						//XposedBridge.log("[ST @ " + String.valueOf(SystemClock.uptimeMillis()) + "] input_event: type " + input_event.type_name + " code " + input_event.code_name + " value " + String.valueOf(input_event.value));
 						if (input_event != null && input_event.type == 0x02 && input_event.code == 0x0b) {
 							XMain.pref.reload();
 							if (XMain.pref.getBoolean("wake_gestures_active", false)) {
@@ -385,7 +385,7 @@ public class WakeGesturesMods {
 			}
 		});
 		th.setPriority(Thread.MAX_PRIORITY);
-		th.setName("S6T_WakeGestures");
+		th.setName("ST_WakeGestures");
 		XposedHelpers.setAdditionalInstanceField(param.thisObject, "eventXthread", th);
 		return th;
 	}
@@ -513,7 +513,7 @@ public class WakeGesturesMods {
 					if (bfin_touch.read(event_touch) > 0 && !pm.isScreenOn()) {
 						input_event_touch = new StructInputEvent(event_touch);
 						//XposedBridge.log("event_touch: " + bytesToHex(event_touch));
-						//XposedBridge.log("[S6T @ " + String.valueOf(SystemClock.uptimeMillis()) + "] input_event: type " + input_event_touch.type_name + " code " + input_event_touch.code_name + " value " + String.valueOf(input_event_touch.value));
+						//XposedBridge.log("[ST @ " + String.valueOf(SystemClock.uptimeMillis()) + "] input_event: type " + input_event_touch.type_name + " code " + input_event_touch.code_name + " value " + String.valueOf(input_event_touch.value));
 					
 						if (input_event_touch.type == 0x03 && input_event_touch.code == 0x2f) slot = input_event_touch.value;
 						if (slot == 0) {
@@ -551,7 +551,7 @@ public class WakeGesturesMods {
 									String prefSeqPart = TextUtils.join(" ", prefSequence.subList(0, prefSequence.size() - 1)).trim();
 									//XposedBridge.log(seq + "   !   " + prefSeq);
 									if (seqPart.equals(prefSeqPart)) {
-										WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T TouchLockAttempt");
+										WakeLock wl = pm.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ST TouchLockAttempt");
 										wl.acquire(2000);
 									}
 									
@@ -579,7 +579,7 @@ public class WakeGesturesMods {
 			}
 		});
 		th_touch.setPriority(Thread.MAX_PRIORITY);
-		th_touch.setName("S6T_TouchLock");
+		th_touch.setName("ST_TouchLock");
 		XposedHelpers.setAdditionalInstanceField(param.thisObject, "eventXthreadtouch", th_touch);
 		return th_touch;
 	}
@@ -598,7 +598,7 @@ public class WakeGesturesMods {
 						} catch (Exception e) {
 							th.interrupt();
 							th = null;
-							XposedBridge.log("[S6T] Resetting gesture listener thread...");
+							XposedBridge.log("[ST] Resetting gesture listener thread...");
 							createThread(param).start();
 						}
 					} else if (!mPowerManager.isScreenOn()) synchronized (mPauseLock) {
@@ -773,7 +773,7 @@ public class WakeGesturesMods {
 							public void run() {
 								PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 								if (pm.isScreenOn()) {
-									XposedBridge.log("[S6T] Touch lock activated!");
+									XposedBridge.log("[ST] Touch lock activated!");
 									goToSleep(mContext);
 									mHandler.postDelayed(this, 1000);
 								}
@@ -857,7 +857,7 @@ public class WakeGesturesMods {
 					}
 				});
 			} catch (Throwable t2) {
-				XposedBridge.log("[S6T] Both lockscreen init hooks failed");
+				XposedBridge.log("[ST] Both lockscreen init hooks failed");
 			}
 		}
 		
@@ -982,7 +982,7 @@ public class WakeGesturesMods {
 		public void onTrigger(TriggerEvent event) {
 			if (isCovered) {
 				if (!mPowerManager.isScreenOn()) {
-					WakeLock wlk = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T FleetingGlanceDelay");
+					WakeLock wlk = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ST FleetingGlanceDelay");
 					try {
 						wlk.acquire();
 						isActive = mSensorManager.requestTriggerSensor(TriggerSensor.this, mSensor);
@@ -1015,7 +1015,7 @@ public class WakeGesturesMods {
 				if (!mPowerManager.isScreenOn()) {
 					mHandler.post(stopScreenOn);
 					if (wl != null && wl.isHeld()) wl.release();
-					wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T FleetingGlanceDelay");
+					wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ST FleetingGlanceDelay");
 					if (sensorType == Sensor.TYPE_SIGNIFICANT_MOTION) {
 						wl.acquire();
 						mHandler.postDelayed(new Runnable() {

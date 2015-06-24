@@ -254,7 +254,7 @@ public class ControlsMods {
 										isPowerLongPressed = true;
 										
 										if (Helpers.mWakeLock == null)
-											Helpers.mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "S6T Flashlight");
+											Helpers.mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ST Flashlight");
 											
 										if (Helpers.mFlashlightLevel == 0 || !Helpers.mWakeLock.isHeld()) {
 											Helpers.mFlashlightLevel = 127;
@@ -754,9 +754,9 @@ public class ControlsMods {
 	
 	public static void executeEffect(Context mContext, int effect) {
 		switch (effect) {
-			case 2: XposedHelpers.callMethod(mAS, "setGlobalEffect", 800, "Sense 6 Toolbox"); break;
-			case 3: XposedHelpers.callMethod(mAS, "setGlobalEffect", 900, "Sense 6 Toolbox"); break;
-			case 4: XposedHelpers.callMethod(mAS, "setGlobalEffect", 902, "Sense 6 Toolbox"); break;
+			case 2: XposedHelpers.callMethod(mAS, "setGlobalEffect", 800, "Sense Toolbox"); break;
+			case 3: XposedHelpers.callMethod(mAS, "setGlobalEffect", 900, "Sense Toolbox"); break;
+			case 4: XposedHelpers.callMethod(mAS, "setGlobalEffect", 902, "Sense Toolbox"); break;
 		}
 	}
 	
@@ -769,12 +769,12 @@ public class ControlsMods {
 			int pref_btheadsetapp = 0;
 			int pref_btheadseteffect = 1;
 			if (isBluetoothConnected.get(macAdress)) {
-				XposedBridge.log("[S6T] Bluetooth device connected");
+				XposedBridge.log("[ST] Bluetooth device connected");
 				pref_btheadsetaction = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetonaction", "1"));
 				pref_btheadsetapp = 11;
 				pref_btheadseteffect = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetoneffect", "1"));
 			} else {
-				XposedBridge.log("[S6T] Bluetooth device disconnected");
+				XposedBridge.log("[ST] Bluetooth device disconnected");
 				pref_btheadsetaction = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetoffaction", "1"));
 				pref_btheadsetapp = 12;
 				pref_btheadseteffect = Integer.parseInt(XMain.pref.getString("pref_key_controls_btheadsetoffeffect", "1"));
@@ -794,14 +794,14 @@ public class ControlsMods {
 				if (mBluetoothHeadsetDevice != null) {
 					int majorDeviceClass = mBluetoothHeadsetDevice.getBluetoothClass().getMajorDeviceClass();
 					String macAdress = mBluetoothHeadsetDevice.getAddress();
-					XposedBridge.log("[S6T] BT device class: " + String.valueOf(majorDeviceClass) + " MAC: " + macAdress);
+					XposedBridge.log("[ST] BT device class: " + String.valueOf(majorDeviceClass) + " MAC: " + macAdress);
 					
 					//BluetoothClass.Device.Major.AUDIO_VIDEO;
 					
 					boolean newBtState = XposedHelpers.getBooleanField(param.thisObject, "mBluetoothHeadsetConnected");
 					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 					execBluetoothAction(mContext, macAdress, newBtState);
-				} else XposedBridge.log("[S6T] mBluetoothHeadsetDevice == null");
+				} else XposedBridge.log("[ST] mBluetoothHeadsetDevice == null");
 				break;
 			case 4:
 			case 8:

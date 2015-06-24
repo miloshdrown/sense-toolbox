@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
 	package="com.sensetoolbox.six"
-	android:versionCode="30"
-	android:versionName="1.5.6"
+	android:versionCode="31"
+	android:versionName="2.0"
 	android:supportsRtl="true" >
 
 	<uses-sdk
@@ -118,7 +118,7 @@
 		</receiver>
 		<meta-data android:value="true" android:name="xposedmodule"/>
 		<meta-data android:value="54+" android:name="xposedminversion"/>
-		<meta-data android:value="Mods for Sense 6 ROMs" android:name="xposeddescription"/>
+		<meta-data android:value="Mods for Sense 6 and 7 ROMs" android:name="xposeddescription"/>
 		<meta-data android:name="com.google.android.backup.api_key" android:value="AEdPqrEAAAAIUO4cyZ9EtqkIPeN8Fb883BiV-vVVl10qB41-oA" />
 	</application>
 

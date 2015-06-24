@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-	<string name="app_name">Sense 6 Toolbox</string>
+	<string name="app_name">Sense Toolbox</string>
 	<string name="app_about">About</string>
 	<string name="about_version">Version: %1$s (build %2$s)</string>
 	<string name="support_version">Support (App Version: %1$s)</string>
@@ -15,7 +15,7 @@
 	<string name="cpu_mhz">MHz</string>
 	<string name="backup_restore">Settings management</string>
 	<string name="backup_restore_choose">Choose the desired routine</string>
-	<string name="backup_restore_tip">\nBackup and restore Sense 6 Toolbox settings using internal storage or SDCard.</string>
+	<string name="backup_restore_tip">\nBackup and restore Sense Toolbox settings using internal storage or SDCard.</string>
 	<string name="do_backup">Backup</string>
 	<string name="do_restore">Restore</string>
 	<string name="storage_read_only">Your external storage is read-only</string>
@@ -46,11 +46,11 @@
 	<string name="crash_error">Failed to send report</string>
 
 	<string name="warning">Warning!</string>
-	<string name="wrong_sense_version">Your ROM is not Sense 6 based and therefore is not compatible with Sense 6 Toolbox module</string>
+	<string name="wrong_sense_version">Your ROM is not Sense based and therefore is not compatible with Sense Toolbox module</string>
 	<string name="preview_release">Sense 7 is not supported, expect bugs and broken mods. Feedback is not required.</string>
 	<string name="update_available">Update is available! Tap here to download</string>
-	<string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense 6 Toolbox module there and reboot.</string>
-	<string name="module_not_active">Sense 6 Toolbox module is not active! Open Xposed Installer, activate module and reboot.</string>
+	<string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense Toolbox module there and reboot.</string>
+	<string name="module_not_active">Sense Toolbox module is not active! Open Xposed Installer, activate module and reboot.</string>
 	<string name="checking_root">Checking device capabilities…</string>
 	<string name="no_currents">Buttons backlight control not found. Your device may be uncompatible with this mod.</string>
 	<string name="backup_restore_info">Your settings have been restored via Google Cloud Backup. If you had Vol2wake enabled, please re-enable it manually. Please do a full reboot after enabling the Toolbox Xposed module.</string>
@@ -102,7 +102,7 @@
 	<string name="mods">Mods</string>
 
 	<string name="not_compatible">Incompatible Android version</string>
-	<string name="not_compatible_desc">Current Sense 6 Toolbox version is not working on Android 5.0</string>
+	<string name="not_compatible_desc">Current Sense Toolbox version is not working on Android 5.0</string>
 	<string name="not_yet_working">Not yet working on Android 5.0</string>
 	<string name="xposed_not_found">Xposed Installer not found</string>
 	<string name="xposed_not_found_explain">It looks like you don\'t have Xposed Installed.\n\nPlease note that the mods on this page will only work with Xposed!\n\nXposed is available in the ARHD installer.</string>
@@ -478,7 +478,6 @@
 	<string name="various_scron_summ">Show the \'Stay awake\' setting in developer options.</string>
 	<string name="various_apps_title">Show additional app details</string>
 	<string name="various_apps_summ">Add new fields to Settings > Apps:\n- button to launch an app\n- apk filename and path\n- data path\n- process name\n- user id\n- target SDK version</string>
-	<string name="various_mods_settings">Settings</string>
 	<string name="various_mods_lockscreen">HTC Lock Screen</string>
 	<string name="various_mods_senseinput">HTC Sense Input</string>
 	<string name="various_mods_toasts">Toasts</string>
@@ -624,7 +623,7 @@
 	<string name="toolbox_acramail_tip">It\'s absolutely necessary to fill this in if you expect to receive replies to your crash reports. Use e-mail, ICQ, XDA or 4PDA nickname.\nTap Feedback below to do it now.</string>
 	
 	<string name="support">Support</string>
-	<string name="support_s6t_title">Sense 6 Toolbox Site</string>
+	<string name="support_s6t_title">Sense Toolbox Site</string>
 	<string name="support_s6t_summ">Find infos and changelog for the app here.</string>
 	<string name="support_bug_title">Report a bug</string>
 	<string name="support_bug_summ">Send us a bug report or a feature request via official issue tracker.</string>

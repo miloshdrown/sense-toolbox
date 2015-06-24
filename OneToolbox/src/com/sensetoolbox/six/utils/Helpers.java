@@ -515,7 +515,7 @@ public class Helpers {
 		context.getTheme().resolveAttribute(multiply_color_id, typedValue, true);
 		int multiply_theme = typedValue.data;
 		
-		if ((context.getClass() == MainActivity.class || context.getClass() == SubActivity.class) && category_theme == multiply_theme) category_theme = 0xffdadada;
+		if ((context.getClass() == MainActivity.class || context.getClass() == SubActivity.class) && category_theme == multiply_theme) category_theme = 0xffe0e0e0;
 		
 		Bitmap src = ((BitmapDrawable)img).getBitmap();
 		Bitmap bitmap = src.copy(Bitmap.Config.ARGB_8888, true);
@@ -539,9 +539,9 @@ public class Helpers {
 			int curG = Color.green(pixColor);
 			int curB = Color.blue(pixColor);
 			
-			int deltaR = Math.abs(78 - curR);
-			int deltaG = Math.abs(167 - curG);
-			int deltaB = Math.abs(112 - curB);
+			int deltaR = Math.abs(80 - curR);
+			int deltaG = Math.abs(144 - curG);
+			int deltaB = Math.abs(154 - curB);
 			
 			if (deltaR < 60 && deltaG < 60 && deltaB < 60) {
 				int newR = outR - Math.round(deltaR / 3);
@@ -677,7 +677,7 @@ public class Helpers {
 	public static void emptyFile(String pathToFile, boolean forceClear) {
 		File f = new File(pathToFile);
 		if (f.exists() && (f.length() > 150 * 1024 || forceClear)) {
-			Log.i("S6T", "Clearing uncaught exceptions log...");
+			Log.i("ST", "Clearing uncaught exceptions log...");
 			try (FileOutputStream fOut = new FileOutputStream(f, false)) {
 				try (OutputStreamWriter output = new OutputStreamWriter(fOut)) {
 					output.write("");
