@@ -631,6 +631,8 @@
 	<string name="support_donate_summ">Best way to express your gratitude for this awesome module :)</string>
 	<string name="support_blog_title">Android Revolution HD Blog</string>
 	<string name="support_blog_summ">Get the latest news and updates for your favorite ROM here.</string>
+	<string name="support_artmod_title">ARTMOD ROM</string>
+	<string name="support_artmod_summ">Recommended Sense 7 ROM for HTC One M7.</string>
 
 	<string name="toggle_wifi_on">Wi-Fi enabled</string>
 	<string name="toggle_wifi_off">Wi-Fi disabled</string>

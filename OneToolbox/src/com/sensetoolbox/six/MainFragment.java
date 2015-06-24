@@ -312,6 +312,14 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				return true;
 			}
 		});
+		HtcPreference ARTMODPreference = findPreference("pref_key_ARTMOD");
+		ARTMODPreference.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+			@Override
+			public boolean onPreferenceClick(HtcPreference pref) {
+				Helpers.openURL(act, "http://forum.xda-developers.com/htc-one/development/rom-artmod-sense-7-lollipop-1-32-401-8-t3064090");
+				return true;
+			}
+		});
 		
 		if (Helpers.isLP())
 			Helpers.removePref(this, "pref_key_popupnotify", "prefs_cat");

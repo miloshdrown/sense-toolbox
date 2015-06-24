@@ -99,5 +99,9 @@
 			android:title="@string/support_blog_title"
 			android:summary="@string/support_blog_summ"
 			android:key="pref_key_ARHD" />
+		<com.htc.preference.HtcPreference
+			android:title="@string/support_artmod_title"
+			android:summary="@string/support_artmod_summ"
+			android:key="pref_key_ARTMOD" />
 	</com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>
