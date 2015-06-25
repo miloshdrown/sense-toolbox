@@ -1068,7 +1068,7 @@ public class OtherMods {
 			intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP);
 			
 			PowerManager pm = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
-			if (pm.isScreenOn()) {
+			if (pm.isScreenOn() && Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() > 16 * 1024 * 1024) {
 				Bitmap bmp = getScreenshot(mContext);
 				if (bmp != null) intent.putExtra("bmp", bmp);
 			}

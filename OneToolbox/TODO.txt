@@ -16,6 +16,7 @@ Current changelog
 =================
 
 2.0
+[New] App icon, logo and name. Support for both Sense 6 and 7
 [New] Match HTC Sense Input trace color with the current theme
 [New] Change HTC Sense Input trace opacity
 [Changed] Vibrate mode, silent mode and USB status bar icons
@@ -30,7 +31,7 @@ Current changelog
 [Fixed][Sense 7] EPS apps remap mod
 [Fixed][Sense 7] No HTC Sense Input autocorrect mod
 [Fixed][Sense 7] Disable Flip to mute mod
-[Fixed] Many UI improvements
+Many UI improvements
 
 
 ==============
