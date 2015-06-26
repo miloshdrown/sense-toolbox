@@ -139,13 +139,28 @@ public class PrismMods {
 			}
 		});
 		
-		if (!Helpers.isSense7())
-		findAndHookMethod(WeatherClock4x1ViewClass, lpparam.classLoader, getGraphicTypeMethod, boolean.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				param.args[0] = false;
-			}
-		});
+		if (Helpers.isSense7()) {
+			findAndHookMethod(WeatherClock4x1ViewClass, lpparam.classLoader, "getAllViews", WidgetDataClass, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					Object widgetData = param.args[0];
+					if (widgetData != null) {
+						Object mWidgetInfo = XposedHelpers.getObjectField(widgetData, "mWidgetInfo");
+						if (mWidgetInfo != null) {
+							int widgetType = XposedHelpers.getIntField(mWidgetInfo, "widgetType");
+							if (widgetType == 7) XposedHelpers.setObjectField(widgetData, "mDayNight", null);
+						}
+					}
+				}
+			});
+		} else {
+			findAndHookMethod(WeatherClock4x1ViewClass, lpparam.classLoader, getGraphicTypeMethod, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					param.args[0] = false;
+				}
+			});
+		}
 		/*
 		findAndHookMethod(WeatherClock4x1ViewClass, lpparam.classLoader, "d", WidgetDataClass, new XC_MethodHook() {
 			@Override

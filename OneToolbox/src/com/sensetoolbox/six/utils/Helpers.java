@@ -104,7 +104,7 @@ public class Helpers {
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
 	public static float strings_total = 762.0f;
-	public static String buildVersion = "260";
+	public static String buildVersion = "261";
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -479,10 +479,13 @@ public class Helpers {
 			break;
 		}
 		
-		if (ptOut != null)
+		if (ptOut != null) {
 			return colors.keyAt(ptOut.getTheme());
-		else
+		} else try {
 			return HtcWrapConfiguration.getHtcThemeId(context, 0);
+		} catch (Exception e) {
+			return 0;
+		}
 	}
 	
 	public static PackageTheme getThemeForPackageFromXposed(String pkgName) {
