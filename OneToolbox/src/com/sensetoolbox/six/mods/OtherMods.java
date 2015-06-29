@@ -69,7 +69,6 @@ import android.service.notification.StatusBarNotification;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.LongSparseArray;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -2160,8 +2159,8 @@ public class OtherMods {
 	
 	public static Context dialerContext = null;
 	public static SharedPreferences mPrefs = null;
-	public static LongSparseArray<String> queryCache = new LongSparseArray<String>();
-	public static String queryContactFullName(long id, LoadPackageParam lpparam) {
+	public static HashMap<String, String> queryCache = new HashMap<String, String>();
+	public static String queryContactFullName(long id, String origName, LoadPackageParam lpparam) {
 		if (dialerContext == null) return "";
 		boolean displayOrder = false;
 		if (mPrefs == null) try {
@@ -2173,7 +2172,8 @@ public class OtherMods {
 		displayOrder = mPrefs.getBoolean("All contact display order", false);
 		if (!displayOrder) return "";
 		
-		String fullName = queryCache.get(id);
+		String key = String.valueOf(id) + "_" + origName;
+		String fullName = queryCache.get(key);
 		if (fullName != null) {
 			return fullName;
 		} else {
@@ -2202,7 +2202,7 @@ public class OtherMods {
 			if (firstName != null && !firstName.isEmpty()) fullName += firstName + " ";
 			if (middleName != null && !middleName.isEmpty()) fullName += middleName + " ";
 			fullName = fullName.trim();
-			queryCache.put(id, fullName);
+			queryCache.put(key, fullName);
 			return fullName;
 		}
 	}
@@ -2226,7 +2226,8 @@ public class OtherMods {
 					String fullName = "";
 					try {
 						long id = cursor.getInt(15);
-						fullName = queryContactFullName(id, lpparam);
+						String origName = cursor.getString(12);
+						fullName = queryContactFullName(id, origName, lpparam);
 						View recentItem = (View)param.args[0];
 						if (fullName.isEmpty() || recentItem == null) return;
 						
@@ -2274,7 +2275,7 @@ public class OtherMods {
 					
 					String fullName = "";
 					try {
-						fullName = queryContactFullName(XposedHelpers.getLongField(sContact, "id"), lpparam);
+						fullName = queryContactFullName(XposedHelpers.getLongField(sContact, "id"), (String)XposedHelpers.getObjectField(sContact, "name"), lpparam);
 					} catch (Throwable t) {
 						XposedBridge.log(t);
 					}
