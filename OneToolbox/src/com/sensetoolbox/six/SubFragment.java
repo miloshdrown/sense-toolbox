@@ -602,6 +602,10 @@ public class SubFragment extends HtcPreferenceFragmentExt {
 				Helpers.removePref(this, "pref_key_other_secureeqs", "pref_various_mods_lockscreen");
 			}
 			
+			if (!Helpers.is443plus()) {
+				Helpers.removePref(this, "pref_key_other_nameorder", "pref_various_mods_calls");
+			}
+			
 			if (Helpers.isSense7()) {
 				Helpers.removePref(this, "pref_key_other_musicchannel", "pref_key_other");
 				Helpers.removePref(this, "pref_key_other_nochargerwarn", "pref_various_mods_notifications");

@@ -9,6 +9,7 @@ import java.lang.reflect.Constructor;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
@@ -32,6 +33,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
@@ -39,6 +41,7 @@ import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.database.ContentObserver;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -60,11 +63,13 @@ import android.os.PowerManager;
 import android.os.SystemClock;
 import android.os.Vibrator;
 import android.os.PowerManager.WakeLock;
+import android.provider.ContactsContract;
 import android.provider.Settings;
 import android.service.notification.StatusBarNotification;
 import android.telephony.TelephonyManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.LongSparseArray;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
@@ -2146,6 +2151,151 @@ public class OtherMods {
 					Paint mPaint = (Paint)XposedHelpers.getObjectField(param.thisObject, "mPaint");
 					mPaint.setAlpha((int) Math.floor(XMain.pref.getInt("pref_key_other_tracealpha", 50) * 2.55f));
 					mPaint.setAntiAlias(true);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static Context dialerContext = null;
+	public static SharedPreferences mPrefs = null;
+	public static LongSparseArray<String> queryCache = new LongSparseArray<String>();
+	public static String queryContactFullName(long id, LoadPackageParam lpparam) {
+		if (dialerContext == null) return "";
+		boolean displayOrder = false;
+		if (mPrefs == null) try {
+			mPrefs = (SharedPreferences)XposedHelpers.callStaticMethod(XposedHelpers.findClass("com.htc.contacts.util.ContactsUtils", lpparam.classLoader), "getDefaultSharedPreferences", dialerContext);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+		if (mPrefs != null)
+		displayOrder = mPrefs.getBoolean("All contact display order", false);
+		if (!displayOrder) return "";
+		
+		String fullName = queryCache.get(id);
+		if (fullName != null) {
+			return fullName;
+		} else {
+			String firstName = "", middleName = "", lastName = "";
+			String[] nameProjection = new String[] {
+				ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,
+				ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME,
+				ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME
+			};
+			
+			try (Cursor nameCursor = dialerContext.getContentResolver().query(
+				ContactsContract.Data.CONTENT_URI, nameProjection,
+				ContactsContract.CommonDataKinds.StructuredName.RAW_CONTACT_ID + " = ? AND " +
+				ContactsContract.CommonDataKinds.StructuredName.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE + "'",
+				new String[] { String.valueOf(id) }, null
+			)) {
+				if (nameCursor.moveToNext()) {
+					firstName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
+					middleName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME));
+					lastName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
+				}
+			}
+			
+			fullName = "";
+			if (lastName == null || lastName.isEmpty()) return ""; else fullName = lastName + " ";
+			if (firstName != null && !firstName.isEmpty()) fullName += firstName + " ";
+			if (middleName != null && !middleName.isEmpty()) fullName += middleName + " ";
+			fullName = fullName.trim();
+			queryCache.put(id, fullName);
+			return fullName;
+		}
+	}
+	
+	public static void execHook_ContactsNameOrder(final LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.htc.contacts.ui.ContactsPreferencesActivity", lpparam.classLoader, "setSortOrder", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					queryCache.clear();
+				}
+			});
+			
+			findAndHookMethod("com.htc.contacts.fragment.BrowseCallHistoryFragment.RecentCallsAdapter", lpparam.classLoader, "bindView", View.class, Context.class, Cursor.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					dialerContext = (Context)param.args[1];
+					Cursor cursor = (Cursor)param.args[2];
+					if (cursor == null) return;
+					
+					String fullName = "";
+					try {
+						long id = cursor.getInt(15);
+						fullName = queryContactFullName(id, lpparam);
+						View recentItem = (View)param.args[0];
+						if (fullName.isEmpty() || recentItem == null) return;
+						
+						Object mListItem2LineText = XposedHelpers.getObjectField(recentItem.getTag(), "mListItem2LineText");
+						if (mListItem2LineText != null)
+						XposedHelpers.callMethod(mListItem2LineText, "setPrimaryText", fullName);
+						
+						@SuppressWarnings("unchecked")
+						HashMap<String, ?> mContactInfo = (HashMap<String, ?>)XposedHelpers.getObjectField(param.thisObject, "mContactInfo");
+						if (mContactInfo != null) {
+							Object contactInfo = mContactInfo.get(String.valueOf(cursor.getInt(0)));
+							if (contactInfo != null) {
+								String name = (String)XposedHelpers.getObjectField(contactInfo, "name");
+								if (name != null && !name.isEmpty())
+								XposedHelpers.setObjectField(contactInfo, "name", fullName);
+							}
+						}
+						
+						String mDisplayName = (String)XposedHelpers.getObjectField(recentItem.getTag(), "mDisplayName");
+						if (mDisplayName != null && !mDisplayName.isEmpty())
+						XposedHelpers.setObjectField(recentItem.getTag(), "mDisplayName", fullName);
+						XposedHelpers.callMethod(XposedHelpers.getSurroundingThis(param.thisObject), "updateNameString", recentItem.getTag());
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+		
+		try {
+			findAndHookMethod("com.htc.htcdialer.BaseSmartSearchList.SearchListAdapter", lpparam.classLoader, "getNameMarked", "com.htc.htcdialer.search.SearchableObject", "com.htc.htcdialer.search.SearchableContact", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					dialerContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				}
+			});
+			
+			findAndHookMethod("com.htc.htcdialer.search.SearchableObject", lpparam.classLoader, "getContactName", "com.htc.htcdialer.search.SearchableObject", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Object sContact = XposedHelpers.callStaticMethod(findClass("com.htc.htcdialer.search.SearchableObject", lpparam.classLoader), "getContact", param.args[0]);
+					if (sContact == null) return;
+					
+					String fullName = "";
+					try {
+						fullName = queryContactFullName(XposedHelpers.getLongField(sContact, "id"), lpparam);
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+					
+					if (param.getResult() != null && !fullName.isEmpty()) try {
+						XposedHelpers.setObjectField(sContact, "name", fullName);
+						XposedHelpers.callMethod(sContact, "setNamePattern", fullName);
+						String sortKey = (String)XposedHelpers.callMethod(sContact, "extractSortKey", fullName);
+						XposedHelpers.setObjectField(sContact, "sortKey", sortKey);
+						XposedHelpers.setObjectField(sContact, "namePosition", XposedHelpers.callMethod(sContact, "getNamePosition", fullName));
+						String sortChar = (String)XposedHelpers.getObjectField(sContact, "sortChar");
+						String s5;
+						if (sortChar == null)
+							s5 = sortKey;
+						else
+							s5 = sortChar;
+						XposedHelpers.setObjectField(sContact, "sectionIndex", XposedHelpers.callMethod(sContact, "getSectionIndex", s5));
+						param.setResult(fullName);
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
 				}
 			});
 		} catch (Throwable t) {

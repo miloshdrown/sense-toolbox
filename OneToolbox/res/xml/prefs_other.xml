@@ -213,7 +213,8 @@
 		</com.htc.preference.HtcPreferenceCategory>
 		
 		<com.htc.preference.HtcPreferenceCategory
-			android:title="@string/various_mods_calls" >
+			android:title="@string/various_mods_calls"
+			android:key="pref_various_mods_calls" >
 		<com.htc.preference.HtcListPreference
 			android:key="pref_key_other_largephoto"
 			android:summary="@string/various_largephoto_summ"
@@ -230,6 +231,11 @@
 			android:key="pref_key_other_nofliptomute"
 			android:summary="@string/various_nofliptomute_summ"
 			android:title="@string/various_nofliptomute_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_nameorder"
+			android:summary="@string/various_nameorder_summ"
+			android:title="@string/various_nameorder_title"
 			android:defaultValue="false" />
 		</com.htc.preference.HtcPreferenceCategory>
 			

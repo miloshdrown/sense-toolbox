@@ -15,6 +15,10 @@ Ideas
 Current changelog
 =================
 
+2.0.1
+[New][4.4.3+] Make "Last name first" option in People app work for call history and dialer autocomplete
+[Fixed] Minor bugs
+
 2.0
 [New] App icon, logo and name. Support for both Sense 6 and 7
 [New] Match HTC Sense Input trace color with the current theme

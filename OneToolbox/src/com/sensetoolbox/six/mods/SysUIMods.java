@@ -452,7 +452,7 @@ public class SysUIMods {
 				}
 			});
 			
-			//Hide keyguard clocks on LP
+			// Hide keyguard clocks on LP
 			if (Helpers.isLP()) {
 				findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "showClock", boolean.class, new XC_MethodHook() {
 					@Override
@@ -3113,7 +3113,7 @@ public class SysUIMods {
 					header.setCompoundDrawables(circle_left, null, circle_right, null);
 			}
 			
-			if (cnt > 0) {
+			if (cnt > 0 && pager.getChildAt(0) != null) {
 				XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 				HtcRimButton rimBtn = (HtcRimButton)pager.getChildAt(0).findViewById(R.id.headsup_page_dismissbtn);
 				HtcRimButton rimBtnSleep = (HtcRimButton)pager.getChildAt(0).findViewById(R.id.headsup_page_dismissbtn_sleep);

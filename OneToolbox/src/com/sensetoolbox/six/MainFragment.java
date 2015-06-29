@@ -75,7 +75,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				updateFrame.setLayoutTransition(new LayoutTransition());
 				updateFrame.setVisibility(View.VISIBLE);
 				updateFrame.setBackgroundColor(multiply_color);
-				
 				updateFrame.setOnClickListener(new OnClickListener() {
 					@Override
 					public void onClick(View v) {
@@ -170,15 +169,6 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 				}); else checkForXposed();
 				
 				String toolboxPath = Environment.getExternalStorageDirectory().getAbsolutePath() + "/SenseToolbox/";
-				try (InputStream inputFile = new FileInputStream(toolboxPath + "last_build")) {
-					BufferedReader reader = new BufferedReader(new InputStreamReader(inputFile));
-					String last_build = reader.readLine().trim();
-					if (!last_build.isEmpty() && !Helpers.buildVersion.equals(last_build))
-						handler.post(showUpdateNotification);
-					else
-						handler.post(hideUpdateNotification);
-				} catch (Exception e) {}
-				
 				HttpURLConnection connection = null;
 				
 				try {
@@ -203,16 +193,24 @@ public class MainFragment extends HtcPreferenceFragmentExt {
 						try (OutputStreamWriter writer = new OutputStreamWriter(new FileOutputStream(toolboxPath + "last_build", false))) {
 							writer.write(last_build);
 						} catch (Exception e) { e.printStackTrace(); }
-						
-						if (!last_build.isEmpty() && !Helpers.buildVersion.equals(last_build))
-							handler.post(showUpdateNotification);
-						else
-							handler.post(hideUpdateNotification);
 					}
 				} catch (Exception e) {}
 				
 				try {
 					if (connection != null) connection.disconnect();
+				} catch (Exception e) {}
+				
+				try (InputStream inputFile = new FileInputStream(toolboxPath + "last_build")) {
+					BufferedReader reader = new BufferedReader(new InputStreamReader(inputFile));
+					int last_build = 0;
+					try {
+						last_build = Integer.parseInt(reader.readLine().trim());
+					} catch (Exception e) {}
+					
+					if (last_build != 0 && Helpers.buildVersion < last_build)
+						handler.post(showUpdateNotification);
+					else
+						handler.post(hideUpdateNotification);
 				} catch (Exception e) {}
 				
 				Runnable hideCheck = new Runnable() {

@@ -28,6 +28,7 @@ import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.os.Environment;
 import android.util.Base64;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.MotionEvent;
@@ -47,7 +48,7 @@ public class CrashReportDialog extends Activity {
 	private HtcEditText desc;
 	
 	private boolean isNetworkAvailable() {
-		ConnectivityManager connectivityManager = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+		ConnectivityManager connectivityManager = (ConnectivityManager)getSystemService(Context.CONNECTIVITY_SERVICE);
 		NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 		return activeNetworkInfo != null && activeNetworkInfo.isConnected();
 	}
@@ -123,7 +124,7 @@ public class CrashReportDialog extends Activity {
 				} catch (Exception e) {}
 			} catch (Exception e) {}
 			
-			String buildData = crashData.get(ReportField.BUILD);
+			String buildData = crashData.getProperty(ReportField.BUILD);
 			buildData += "ROM.VERSION=" + ROM + "\n";
 			buildData += "KERNEL.VERSION=" + kernel + "\n";
 			buildData += "SHARED.PREFS=" + Base64.encodeToString(keysAsString.getBytes(), Base64.NO_WRAP) + "\n";
@@ -196,6 +197,7 @@ public class CrashReportDialog extends Activity {
 			String payload = mapper.writeValueAsString(Helpers.getParamsAsStringString(crashData));
 			int payloadSize = payload.getBytes("UTF-8").length;
 			boolean isManualReport = crashData.getProperty(ReportField.STACK_TRACE).contains("Report requested by developer");
+			Log.e("ACRA", crashData.getProperty(ReportField.STACK_TRACE));
 			
 			TextView descText = new TextView(this);
 			descText.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
