@@ -2188,7 +2188,24 @@ public class OtherMods {
 			XposedBridge.log("[Cached] " + key + " | " + fullName);
 			return fullName;
 		} else {
-			String firstName = "", middleName = "", lastName = "";
+			String firstName = "", middleName = "", lastName = "", rawContactId = "";
+			
+			try (Cursor nameCursor = dialerContext.getContentResolver().query(
+				ContactsContract.Contacts.CONTENT_URI,
+				new String[] { "name_raw_contact_id" },
+				ContactsContract.Contacts._ID + " = ?",
+				new String[] { String.valueOf(id) }, null
+			)) {
+				if (nameCursor.moveToNext()) {
+					rawContactId = nameCursor.getString(nameCursor.getColumnIndex("name_raw_contact_id"));
+				}
+			}
+			
+			if (rawContactId.isEmpty()) {
+				XposedBridge.log("[Query] " + key + " | rawContactId is empty");
+				return "";
+			} else XposedBridge.log("[Query] " + key + " | rawContactId = " + rawContactId);
+				
 			String[] nameProjection = new String[] {
 				ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,
 				ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME,
@@ -2197,9 +2214,9 @@ public class OtherMods {
 			
 			try (Cursor nameCursor = dialerContext.getContentResolver().query(
 				ContactsContract.Data.CONTENT_URI, nameProjection,
-				ContactsContract.CommonDataKinds.StructuredName.RAW_CONTACT_ID + " = ? AND " +
-				ContactsContract.CommonDataKinds.StructuredName.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE + "'",
-				new String[] { String.valueOf(id) }, null
+				ContactsContract.Data.RAW_CONTACT_ID + " = ? AND " +
+				ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE + "'",
+				new String[] { rawContactId }, null
 			)) {
 				if (nameCursor.moveToNext()) {
 					firstName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
