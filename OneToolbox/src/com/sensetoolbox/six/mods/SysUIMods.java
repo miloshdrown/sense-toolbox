@@ -707,9 +707,11 @@ public class SysUIMods {
 				}
 			};
 			
-			Object[] argsAndHook = { int.class, hook };
-			if (Helpers.isSense7()) argsAndHook = new Object[] { int.class, int.class, hook };
-			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "onThemeChanged", argsAndHook);
+			try {
+				findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "onThemeChanged", int.class, int.class, hook);
+			} catch (Throwable t) {
+				findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "onThemeChanged", int.class, hook);
+			}
 			
 			findAndHookMethod("com.android.systemui.statusbar.phone.StatusBarHeaderView", lpparam.classLoader, "setupContainerParams", new XC_MethodHook(){
 				@Override

@@ -472,13 +472,14 @@ public class StatusbarMods {
 			}
 		});
 		
-		if (Helpers.isSense7())
-		resparam.res.setReplacement("com.android.systemui", "drawable", "stat_notify_screenshot", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id)	throws Throwable {
-				return applyTheme(modRes.getDrawable(R.drawable.stat_notify_image));
-			}
-		});
+		if (Helpers.isSense7()) try {
+			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_notify_screenshot", new XResources.DrawableLoader(){
+				@Override
+				public Drawable newDrawable(XResources res, int id)	throws Throwable {
+					return applyTheme(modRes.getDrawable(R.drawable.stat_notify_image));
+				}
+			});
+		} catch (Throwable t) {}
 	}
 	
 	public static void execHook_USBIcon(InitPackageResourcesParam resparam) {

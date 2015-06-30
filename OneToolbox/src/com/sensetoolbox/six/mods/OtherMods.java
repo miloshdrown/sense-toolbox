@@ -24,6 +24,7 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -873,14 +874,15 @@ public class OtherMods {
 			}
 		});
 		
-		if (Helpers.isSense7())
-		findAndHookMethod("com.htc.lib1.cc.widget.reminder.drag.WorkspaceView", lpparam.classLoader, "setMastheadOnTop", ViewGroup.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-				ViewGroup mMasthead = (ViewGroup)param.args[0];
-				if (mMasthead != null) mMasthead.setVisibility(View.INVISIBLE);
-			}
-		});
+		if (Helpers.isSense7()) try {
+			findAndHookMethod("com.htc.lib1.cc.widget.reminder.drag.WorkspaceView", lpparam.classLoader, "setMastheadOnTop", ViewGroup.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					ViewGroup mMasthead = (ViewGroup)param.args[0];
+					if (mMasthead != null) mMasthead.setVisibility(View.INVISIBLE);
+				}
+			});
+		} catch (Throwable t) {}
 	}
 	
 	public static void execHook_RejectCallSilently(final LoadPackageParam lpparam) {
@@ -2161,10 +2163,8 @@ public class OtherMods {
 	public static SharedPreferences mPrefs = null;
 	public static HashMap<String, String> queryCache = new HashMap<String, String>();
 	public static String queryContactFullName(long id, String origName, LoadPackageParam lpparam) {
-		if (id == 0 || origName == null)  {
-			XposedBridge.log("id == 0 || origName == null");
-			return "";
-		}
+		if (id == 0 || origName == null) return "";
+		
 		String key = String.valueOf(id) + "_" + origName;
 		if (dialerContext == null) {
 			XposedBridge.log("[Init] " + key + " | " + "dialerContext == null");
@@ -2178,10 +2178,7 @@ public class OtherMods {
 		}
 		if (mPrefs != null)
 		displayOrder = mPrefs.getBoolean("All contact display order", false);
-		if (!displayOrder) {
-			XposedBridge.log("[Init] " + key + " | " + "displayOrder == false");
-			return "";
-		}
+		if (!displayOrder) return "";
 		
 		String fullName = queryCache.get(key);
 		if (fullName != null) {
@@ -2196,9 +2193,8 @@ public class OtherMods {
 				ContactsContract.Contacts._ID + " = ?",
 				new String[] { String.valueOf(id) }, null
 			)) {
-				if (nameCursor.moveToNext()) {
-					rawContactId = nameCursor.getString(nameCursor.getColumnIndex("name_raw_contact_id"));
-				}
+				if (nameCursor.moveToFirst())
+				rawContactId = nameCursor.getString(nameCursor.getColumnIndex("name_raw_contact_id"));
 			}
 			
 			if (rawContactId.isEmpty()) {
@@ -2218,7 +2214,7 @@ public class OtherMods {
 				ContactsContract.Data.MIMETYPE + " = '" + ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE + "'",
 				new String[] { rawContactId }, null
 			)) {
-				if (nameCursor.moveToNext()) {
+				if (nameCursor.moveToFirst()) {
 					firstName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
 					middleName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME));
 					lastName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
@@ -2226,10 +2222,7 @@ public class OtherMods {
 			}
 			
 			fullName = "";
-			if (lastName == null || lastName.isEmpty()) {
-				XposedBridge.log("[Query] " + key + " | lastName is empty");
-				return "";
-			} else fullName = lastName + " ";
+			if (lastName == null || lastName.isEmpty()) return ""; else fullName = lastName + " ";
 			if (firstName != null && !firstName.isEmpty()) fullName += firstName + " ";
 			if (middleName != null && !middleName.isEmpty()) fullName += middleName + " ";
 			fullName = fullName.trim();
@@ -2239,30 +2232,24 @@ public class OtherMods {
 		}
 	}
 	
+	public static BroadcastReceiver mIntentReceiverForNameOrder = null;
+	public static BroadcastReceiver mIntentReceiverForNameOrderDialer = null;
 	public static void execHook_ContactsNameOrder(final LoadPackageParam lpparam) {
 		try {
-			findAndHookMethod("com.htc.contacts.ui.ContactsPreferencesActivity", lpparam.classLoader, "setSortOrder", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					queryCache.clear();
-				}
-			});
-			
 			findAndHookMethod("com.htc.contacts.fragment.BrowseCallHistoryFragment.RecentCallsAdapter", lpparam.classLoader, "bindView", View.class, Context.class, Cursor.class, int.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					dialerContext = (Context)param.args[1];
-					if (dialerContext == null) try { dialerContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext"); } catch (Throwable t) { XposedBridge.log(t); }
-					if (dialerContext == null) try { dialerContext = (Context)XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mAppContext");  } catch (Throwable t) { XposedBridge.log(t); }
+					if (dialerContext == null) try { dialerContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext"); } catch (Throwable t) {}
+					if (dialerContext == null) try { dialerContext = (Context)XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mAppContext");  } catch (Throwable t) {}
 					Cursor cursor = (Cursor)param.args[2];
 					if (cursor == null) return;
 					
-					String fullName = "";
 					try {
 						long id = cursor.getInt(15);
 						String origName = cursor.getString(12);
 						XposedBridge.log("[bindView] " + String.valueOf(id) + " | " + origName);
-						fullName = queryContactFullName(id, origName, lpparam);
+						String fullName = queryContactFullName(id, origName, lpparam);
 						View recentItem = (View)param.args[0];
 						if (fullName.isEmpty() || recentItem == null) {
 							XposedBridge.log("fullName.isEmpty() || recentItem == null");
@@ -2290,6 +2277,46 @@ public class OtherMods {
 						XposedHelpers.callMethod(XposedHelpers.getSurroundingThis(param.thisObject), "updateNameString", recentItem.getTag());
 					} catch (Throwable t) {
 						XposedBridge.log(t);
+					}
+				}
+			});
+			
+			findAndHookMethod("com.htc.contacts.ui.ContactsPreferencesActivity", lpparam.classLoader, "updatePrefs", String.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					if (((String)param.args[0]).equals("All contact display order")) {
+						queryCache.clear();
+						Activity act = (Activity)param.thisObject;
+						if (act != null) act.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.UpdateNameOrder"));
+					}
+				}
+			});
+			
+			findAndHookMethod("com.htc.contacts.fragment.BrowseCallHistoryFragment", lpparam.classLoader, "onActivityCreated", Bundle.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					Fragment frg = (Fragment)param.thisObject;
+					if (frg == null) return;
+					Activity act = frg.getActivity();
+					if (act != null) {
+						mIntentReceiverForNameOrder = new BroadcastReceiver() {
+							public void onReceive(Context context, Intent intent) {
+								XposedHelpers.callMethod(param.thisObject, "updateTimeString");
+							}
+						};
+						act.registerReceiver(mIntentReceiverForNameOrder, new IntentFilter("com.sensetoolbox.six.mods.action.UpdateNameOrder"));
+					}
+				}
+			});
+			
+			findAndHookMethod("com.htc.contacts.fragment.BrowseCallHistoryFragment", lpparam.classLoader, "onDestroyView", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Fragment frg = (Fragment)param.thisObject;
+					if (frg == null) return;
+					Activity act = frg.getActivity();
+					if (act != null && mIntentReceiverForNameOrder != null) {
+						act.unregisterReceiver(mIntentReceiverForNameOrder);
 					}
 				}
 			});
@@ -2338,6 +2365,39 @@ public class OtherMods {
 					} else {
 						XposedBridge.log("param.getResult() == null || fullName.isEmpty()");
 					}
+				}
+			});
+			
+			findAndHookMethod("com.htc.htcdialer.Dialer", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					Fragment frg = (Fragment)param.thisObject;
+					if (frg == null) return;
+					Activity act = frg.getActivity();
+					if (act != null) {
+						mIntentReceiverForNameOrderDialer = new BroadcastReceiver() {
+							public void onReceive(Context context, Intent intent) {
+								Object mHandler = XposedHelpers.getStaticObjectField(findClass("com.htc.htcdialer.DialerService", lpparam.classLoader), "mHandler");
+								if (mHandler != null) XposedHelpers.callMethod(mHandler, "initDialerCache");
+								
+								Object mAdapter = XposedHelpers.getObjectField(param.thisObject, "mAdapter");
+								if (mAdapter != null) XposedHelpers.callMethod(mAdapter, "notifyDataSetChanged");
+							}
+						};
+						act.registerReceiver(mIntentReceiverForNameOrderDialer, new IntentFilter("com.sensetoolbox.six.mods.action.UpdateNameOrder"));
+					}
+				}
+			});
+			
+			findAndHookMethod("com.htc.htcdialer.Dialer", lpparam.classLoader, "onDestroy", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Fragment frg = (Fragment)param.thisObject;
+					if (frg == null) return;
+					Activity act = frg.getActivity();
+					if (act != null && mIntentReceiverForNameOrderDialer != null) try {
+						act.unregisterReceiver(mIntentReceiverForNameOrderDialer);
+					} catch (Throwable t) {}
 				}
 			});
 		} catch (Throwable t) {
