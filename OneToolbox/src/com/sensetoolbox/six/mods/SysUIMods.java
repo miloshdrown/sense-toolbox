@@ -2894,7 +2894,12 @@ public class SysUIMods {
 				MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED)
 			);
 			
-			final int newHeight = page.getMeasuredHeight();
+			final int newHeight;
+			if (XMain.pref.getBoolean("pref_key_betterheadsup_nodismiss", false))
+				newHeight = page.getMeasuredHeight() + densify(5);
+			else
+				newHeight = page.getMeasuredHeight();
+				
 			final int newWindowHeight = newHeight + densify(50);
 			final int oldHeight = hPager.getMeasuredHeight();
 			

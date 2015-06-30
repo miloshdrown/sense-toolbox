@@ -2175,6 +2175,7 @@ public class OtherMods {
 		String key = String.valueOf(id) + "_" + origName;
 		String fullName = queryCache.get(key);
 		if (fullName != null) {
+			XposedBridge.log("[Cached] " + key + " | " + fullName);
 			return fullName;
 		} else {
 			String firstName = "", middleName = "", lastName = "";
@@ -2203,6 +2204,7 @@ public class OtherMods {
 			if (middleName != null && !middleName.isEmpty()) fullName += middleName + " ";
 			fullName = fullName.trim();
 			queryCache.put(key, fullName);
+			XposedBridge.log("[Query] " + key + " | " + fullName);
 			return fullName;
 		}
 	}
@@ -2227,6 +2229,7 @@ public class OtherMods {
 					try {
 						long id = cursor.getInt(15);
 						String origName = cursor.getString(12);
+						XposedBridge.log("[bindView] " + String.valueOf(id) + " | " + origName);
 						fullName = queryContactFullName(id, origName, lpparam);
 						View recentItem = (View)param.args[0];
 						if (fullName.isEmpty() || recentItem == null) return;
@@ -2275,6 +2278,7 @@ public class OtherMods {
 					
 					String fullName = "";
 					try {
+						XposedBridge.log("[getContactName] " + String.valueOf(XposedHelpers.getLongField(sContact, "id")) + " | " + (String)XposedHelpers.getObjectField(sContact, "name"));
 						fullName = queryContactFullName(XposedHelpers.getLongField(sContact, "id"), (String)XposedHelpers.getObjectField(sContact, "name"), lpparam);
 					} catch (Throwable t) {
 						XposedBridge.log(t);
