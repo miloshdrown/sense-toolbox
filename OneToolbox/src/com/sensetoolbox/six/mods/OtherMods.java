@@ -2161,7 +2161,15 @@ public class OtherMods {
 	public static SharedPreferences mPrefs = null;
 	public static HashMap<String, String> queryCache = new HashMap<String, String>();
 	public static String queryContactFullName(long id, String origName, LoadPackageParam lpparam) {
-		if (dialerContext == null) return "";
+		if (id == 0 || origName == null)  {
+			XposedBridge.log("id == 0 || origName == null");
+			return "";
+		}
+		String key = String.valueOf(id) + "_" + origName;
+		if (dialerContext == null) {
+			XposedBridge.log("[Init] " + key + " | " + "dialerContext == null");
+			return "";
+		}
 		boolean displayOrder = false;
 		if (mPrefs == null) try {
 			mPrefs = (SharedPreferences)XposedHelpers.callStaticMethod(XposedHelpers.findClass("com.htc.contacts.util.ContactsUtils", lpparam.classLoader), "getDefaultSharedPreferences", dialerContext);
@@ -2170,9 +2178,11 @@ public class OtherMods {
 		}
 		if (mPrefs != null)
 		displayOrder = mPrefs.getBoolean("All contact display order", false);
-		if (!displayOrder) return "";
+		if (!displayOrder) {
+			XposedBridge.log("[Init] " + key + " | " + "displayOrder == false");
+			return "";
+		}
 		
-		String key = String.valueOf(id) + "_" + origName;
 		String fullName = queryCache.get(key);
 		if (fullName != null) {
 			XposedBridge.log("[Cached] " + key + " | " + fullName);
@@ -2199,7 +2209,10 @@ public class OtherMods {
 			}
 			
 			fullName = "";
-			if (lastName == null || lastName.isEmpty()) return ""; else fullName = lastName + " ";
+			if (lastName == null || lastName.isEmpty()) {
+				XposedBridge.log("[Query] " + key + " | lastName is empty");
+				return "";
+			} else fullName = lastName + " ";
 			if (firstName != null && !firstName.isEmpty()) fullName += firstName + " ";
 			if (middleName != null && !middleName.isEmpty()) fullName += middleName + " ";
 			fullName = fullName.trim();
@@ -2222,6 +2235,8 @@ public class OtherMods {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					dialerContext = (Context)param.args[1];
+					if (dialerContext == null) try { dialerContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext"); } catch (Throwable t) { XposedBridge.log(t); }
+					if (dialerContext == null) try { dialerContext = (Context)XposedHelpers.getObjectField(XposedHelpers.getSurroundingThis(param.thisObject), "mAppContext");  } catch (Throwable t) { XposedBridge.log(t); }
 					Cursor cursor = (Cursor)param.args[2];
 					if (cursor == null) return;
 					
@@ -2232,7 +2247,10 @@ public class OtherMods {
 						XposedBridge.log("[bindView] " + String.valueOf(id) + " | " + origName);
 						fullName = queryContactFullName(id, origName, lpparam);
 						View recentItem = (View)param.args[0];
-						if (fullName.isEmpty() || recentItem == null) return;
+						if (fullName.isEmpty() || recentItem == null) {
+							XposedBridge.log("fullName.isEmpty() || recentItem == null");
+							return;
+						}
 						
 						Object mListItem2LineText = XposedHelpers.getObjectField(recentItem.getTag(), "mListItem2LineText");
 						if (mListItem2LineText != null)
@@ -2300,6 +2318,8 @@ public class OtherMods {
 						param.setResult(fullName);
 					} catch (Throwable t) {
 						XposedBridge.log(t);
+					} else {
+						XposedBridge.log("param.getResult() == null || fullName.isEmpty()");
 					}
 				}
 			});
