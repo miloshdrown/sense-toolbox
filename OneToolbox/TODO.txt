@@ -16,7 +16,8 @@ Current changelog
 =================
 
 2.0.1
-[New][4.4.3+] Make "Last name first" option in People app work for call history and dialer autocomplete
+[New][4.4.3+] Force "Last name first" order in contacts, call history and dialer
+[Fixed][Sense 7] Darken wallpaper above rectangular caller photo
 [Fixed] Some mods on Android 5.0.1 Sense 7
 [Fixed] Minor bugs
 

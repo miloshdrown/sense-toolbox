@@ -68,7 +68,6 @@
 	<string name="apm_title">Choose reboot option</string>
 	<string name="apm_normal_title">Reboot</string>
 	<string name="apm_normal_summ">Close all apps and restart device</string>
-	<string name="apm_hotreboot_title">Hot Reboot</string>
 	<string name="apm_hotreboot_summ">Restart the shell</string>
 	<string name="apm_recovery_title">Recovery</string>
 	<string name="apm_recovery_summ">Reboot directly to recovery</string>
@@ -490,7 +489,7 @@
 	<string name="various_nofliptomute_title">Disable Flip to mute</string>
 	<string name="various_nofliptomute_summ">Don\'t mute incoming call ringer when device is flipped.</string>
 	<string name="various_nameorder_title">Contacts name order</string>
-	<string name="various_nameorder_summ">Applies \'Last name first\' option to call history and dialer autocomplete.</string>
+	<string name="various_nameorder_summ">Force \'Last name first\' order in contacts, call history and dialer.</string>
 	<string name="various_mods_volume">Volume</string>
 	<string name="various_volsnd_title">Disable volume change sound</string>
 	<string name="various_volsnd_summ">Check to disable the sound on volume change.</string>

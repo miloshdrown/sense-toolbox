@@ -701,6 +701,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_nofliptomute", false))
 				OtherMods.execHook_NoFlipToMute(lpparam);
 			
+			if (pref.getBoolean("pref_key_other_nameorder", false))
+				OtherMods.execHook_ContactsNameOrderPhone(lpparam);
+			
 			//OtherMods.execHook_USSD(lpparam);
 		}
 		

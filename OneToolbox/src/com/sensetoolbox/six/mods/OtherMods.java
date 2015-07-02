@@ -24,7 +24,6 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
-import android.app.Fragment;
 import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationManager;
@@ -880,6 +879,23 @@ public class OtherMods {
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					ViewGroup mMasthead = (ViewGroup)param.args[0];
 					if (mMasthead != null) mMasthead.setVisibility(View.INVISIBLE);
+				}
+			});
+			
+			if (photoSize == 2)
+			findAndHookMethod("com.htc.lib1.cc.widget.reminder.drag.WorkspaceView", lpparam.classLoader, "initView", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					ViewGroup mForegroundContainer = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "mForegroundContainer");
+					if (mForegroundContainer != null) {
+						FrameLayout dummy = new FrameLayout(mForegroundContainer.getContext());
+						RelativeLayout.LayoutParams lp = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+						lp.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+						lp.addRule(RelativeLayout.ABOVE, mForegroundContainer.getResources().getIdentifier("tile_container", "id", "com.android.phone"));
+						dummy.setLayoutParams(lp);
+						dummy.setBackgroundResource(mForegroundContainer.getResources().getIdentifier("lockscreen_panel", "drawable", "com.android.phone"));
+						mForegroundContainer.addView(dummy, 0);
+					}
 				}
 			});
 		} catch (Throwable t) {}
@@ -2160,32 +2176,22 @@ public class OtherMods {
 	}
 	
 	public static Context dialerContext = null;
-	public static SharedPreferences mPrefs = null;
 	public static HashMap<String, String> queryCache = new HashMap<String, String>();
-	public static String queryContactFullName(long id, String origName, LoadPackageParam lpparam) {
+	public static String queryContactFullName(long id, String origName, boolean useComma) {
 		if (id == 0 || origName == null) return "";
 		
-		String key = String.valueOf(id) + "_" + origName;
+		String key = String.valueOf(id) + "_" + String.valueOf(origName) + "_" + String.valueOf(useComma);
 		if (dialerContext == null) {
 			XposedBridge.log("[Init] " + key + " | " + "dialerContext == null");
 			return "";
 		}
-		boolean displayOrder = false;
-		if (mPrefs == null) try {
-			mPrefs = (SharedPreferences)XposedHelpers.callStaticMethod(XposedHelpers.findClass("com.htc.contacts.util.ContactsUtils", lpparam.classLoader), "getDefaultSharedPreferences", dialerContext);
-		} catch (Throwable t) {
-			XposedBridge.log(t);
-		}
-		if (mPrefs != null)
-		displayOrder = mPrefs.getBoolean("All contact display order", false);
-		if (!displayOrder) return "";
-		
+
 		String fullName = queryCache.get(key);
 		if (fullName != null) {
 			XposedBridge.log("[Cached] " + key + " | " + fullName);
 			return fullName;
 		} else {
-			String firstName = "", middleName = "", lastName = "", rawContactId = "";
+			String prefix = "", firstName = "", middleName = "", lastName = "", rawContactId = "", suffix = "";
 			
 			try (Cursor nameCursor = dialerContext.getContentResolver().query(
 				ContactsContract.Contacts.CONTENT_URI,
@@ -2203,9 +2209,11 @@ public class OtherMods {
 			} else XposedBridge.log("[Query] " + key + " | rawContactId = " + rawContactId);
 				
 			String[] nameProjection = new String[] {
+				ContactsContract.CommonDataKinds.StructuredName.PREFIX,
 				ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME,
 				ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME,
-				ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME
+				ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME,
+				ContactsContract.CommonDataKinds.StructuredName.SUFFIX
 			};
 			
 			try (Cursor nameCursor = dialerContext.getContentResolver().query(
@@ -2215,25 +2223,40 @@ public class OtherMods {
 				new String[] { rawContactId }, null
 			)) {
 				if (nameCursor.moveToFirst()) {
+					prefix = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.PREFIX));
 					firstName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME));
 					middleName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.MIDDLE_NAME));
 					lastName = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.FAMILY_NAME));
+					suffix = nameCursor.getString(nameCursor.getColumnIndex(ContactsContract.CommonDataKinds.StructuredName.SUFFIX));
 				}
 			}
 			
 			fullName = "";
-			if (lastName == null || lastName.isEmpty()) return ""; else fullName = lastName + " ";
+			
+			if (prefix != null && !prefix.isEmpty()) fullName += prefix + " ";
+			
+			if (lastName == null || lastName.isEmpty()) return ""; else
+			if (useComma)
+				fullName += lastName + ", ";
+			else
+				fullName += lastName + " ";
+					
 			if (firstName != null && !firstName.isEmpty()) fullName += firstName + " ";
 			if (middleName != null && !middleName.isEmpty()) fullName += middleName + " ";
+			if (suffix != null && !suffix.isEmpty())
+			if (useComma)
+				fullName += ", " + suffix;
+			else
+				fullName += " " + suffix;
+			
 			fullName = fullName.trim();
+			if (fullName.endsWith(",")) fullName = fullName.substring(0, fullName.length() - 1);
 			queryCache.put(key, fullName);
 			XposedBridge.log("[Query] " + key + " | " + fullName);
 			return fullName;
 		}
 	}
 	
-	public static BroadcastReceiver mIntentReceiverForNameOrder = null;
-	public static BroadcastReceiver mIntentReceiverForNameOrderDialer = null;
 	public static void execHook_ContactsNameOrder(final LoadPackageParam lpparam) {
 		try {
 			findAndHookMethod("com.htc.contacts.fragment.BrowseCallHistoryFragment.RecentCallsAdapter", lpparam.classLoader, "bindView", View.class, Context.class, Cursor.class, int.class, new XC_MethodHook() {
@@ -2249,7 +2272,7 @@ public class OtherMods {
 						long id = cursor.getInt(15);
 						String origName = cursor.getString(12);
 						XposedBridge.log("[bindView] " + String.valueOf(id) + " | " + origName);
-						String fullName = queryContactFullName(id, origName, lpparam);
+						String fullName = queryContactFullName(id, origName, true);
 						View recentItem = (View)param.args[0];
 						if (fullName.isEmpty() || recentItem == null) {
 							XposedBridge.log("fullName.isEmpty() || recentItem == null");
@@ -2281,43 +2304,19 @@ public class OtherMods {
 				}
 			});
 			
-			findAndHookMethod("com.htc.contacts.ui.ContactsPreferencesActivity", lpparam.classLoader, "updatePrefs", String.class, boolean.class, new XC_MethodHook() {
+			findAndHookMethod("com.htc.contacts.ui.ContactsPreferencesActivity", lpparam.classLoader, "createDisplayOrderPreferenceView", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					if (((String)param.args[0]).equals("All contact display order")) {
-						queryCache.clear();
-						Activity act = (Activity)param.thisObject;
-						if (act != null) act.sendBroadcast(new Intent("com.sensetoolbox.six.mods.action.UpdateNameOrder"));
-					}
+					Object mDisplayOrderView = XposedHelpers.getObjectField(param.thisObject, "mDisplayOrderView");
+					if (mDisplayOrderView != null) XposedHelpers.callMethod(mDisplayOrderView, "setEnabled", false);
 				}
 			});
 			
-			findAndHookMethod("com.htc.contacts.fragment.BrowseCallHistoryFragment", lpparam.classLoader, "onActivityCreated", Bundle.class, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-					Fragment frg = (Fragment)param.thisObject;
-					if (frg == null) return;
-					Activity act = frg.getActivity();
-					if (act != null) {
-						mIntentReceiverForNameOrder = new BroadcastReceiver() {
-							public void onReceive(Context context, Intent intent) {
-								XposedHelpers.callMethod(param.thisObject, "updateTimeString");
-							}
-						};
-						act.registerReceiver(mIntentReceiverForNameOrder, new IntentFilter("com.sensetoolbox.six.mods.action.UpdateNameOrder"));
-					}
-				}
-			});
-			
-			findAndHookMethod("com.htc.contacts.fragment.BrowseCallHistoryFragment", lpparam.classLoader, "onDestroyView", new XC_MethodHook() {
+			findAndHookMethod("com.htc.contacts.app.BaseMainActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					Fragment frg = (Fragment)param.thisObject;
-					if (frg == null) return;
-					Activity act = frg.getActivity();
-					if (act != null && mIntentReceiverForNameOrder != null) {
-						act.unregisterReceiver(mIntentReceiverForNameOrder);
-					}
+					SharedPreferences mPrefs = (SharedPreferences)XposedHelpers.callStaticMethod(findClass("com.htc.contacts.util.ContactsUtils", lpparam.classLoader), "getDefaultSharedPreferences", (Activity)param.thisObject);
+					if (mPrefs != null) mPrefs.edit().putBoolean("All contact display order", true).commit();
 				}
 			});
 		} catch (Throwable t) {
@@ -2341,7 +2340,7 @@ public class OtherMods {
 					String fullName = "";
 					try {
 						XposedBridge.log("[getContactName] " + String.valueOf(XposedHelpers.getLongField(sContact, "id")) + " | " + (String)XposedHelpers.getObjectField(sContact, "name"));
-						fullName = queryContactFullName(XposedHelpers.getLongField(sContact, "id"), (String)XposedHelpers.getObjectField(sContact, "name"), lpparam);
+						fullName = queryContactFullName(XposedHelpers.getLongField(sContact, "id"), (String)XposedHelpers.getObjectField(sContact, "name"), false);
 					} catch (Throwable t) {
 						XposedBridge.log(t);
 					}
@@ -2367,39 +2366,112 @@ public class OtherMods {
 					}
 				}
 			});
-			
-			findAndHookMethod("com.htc.htcdialer.Dialer", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_ContactsNameOrderPhone(final LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "updateDisplayForPerson", "com.htc.internal.telephony.CallerInfo", int.class, boolean.class, "com.android.internal.telephony.Call", new XC_MethodHook() {
 				@Override
-				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-					Fragment frg = (Fragment)param.thisObject;
-					if (frg == null) return;
-					Activity act = frg.getActivity();
-					if (act != null) {
-						mIntentReceiverForNameOrderDialer = new BroadcastReceiver() {
-							public void onReceive(Context context, Intent intent) {
-								Object mHandler = XposedHelpers.getStaticObjectField(findClass("com.htc.htcdialer.DialerService", lpparam.classLoader), "mHandler");
-								if (mHandler != null) XposedHelpers.callMethod(mHandler, "initDialerCache");
-								
-								Object mAdapter = XposedHelpers.getObjectField(param.thisObject, "mAdapter");
-								if (mAdapter != null) XposedHelpers.callMethod(mAdapter, "notifyDataSetChanged");
-							}
-						};
-						act.registerReceiver(mIntentReceiverForNameOrderDialer, new IntentFilter("com.sensetoolbox.six.mods.action.UpdateNameOrder"));
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					if (param.thisObject != null)
+					dialerContext = ((View)param.thisObject).getContext();
+					
+					Object callerInfo = param.args[0];
+					long rawContactId = (Long)XposedHelpers.getObjectField(callerInfo, "rawContactId");
+					String origName = (String)XposedHelpers.getObjectField(callerInfo, "name");
+					if (rawContactId > 0L) {
+						String fullName = queryContactFullName(rawContactId, origName, false);
+						if (!fullName.isEmpty()) XposedHelpers.setObjectField(callerInfo, "name", fullName);
 					}
 				}
 			});
 			
-			findAndHookMethod("com.htc.htcdialer.Dialer", lpparam.classLoader, "onDestroy", new XC_MethodHook() {
+			findAndHookMethod("com.android.phone.InCallScreen.CallerData", lpparam.classLoader, "initFromIntent", Intent.class, new XC_MethodHook() {
 				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					Fragment frg = (Fragment)param.thisObject;
-					if (frg == null) return;
-					Activity act = frg.getActivity();
-					if (act != null && mIntentReceiverForNameOrderDialer != null) try {
-						act.unregisterReceiver(mIntentReceiverForNameOrderDialer);
-					} catch (Throwable t) {}
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Activity act = (Activity)XposedHelpers.getSurroundingThis(param.thisObject);
+					if (act != null) dialerContext = act.getBaseContext();
+					
+					Intent callIntent = (Intent)param.args[0];
+					long rawContactId = Long.parseLong(callIntent.getStringExtra("personId"));
+					String origName = callIntent.getStringExtra("name");
+					if (rawContactId > 0L) {
+						String fullName = queryContactFullName(rawContactId, origName, false);
+						if (!fullName.isEmpty()) callIntent.putExtra("name", fullName);
+					}
 				}
 			});
+			/*
+			findAndHookMethod("com.android.phone.InCallScreen", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Activity act = (Activity)param.thisObject;
+					Intent callIntent = act.getIntent();
+					XposedBridge.log("onCreate personId: " + callIntent.getStringExtra("personId"));
+					XposedBridge.log("onCreate name: " + callIntent.getStringExtra("name"));
+					XposedBridge.log("onCreate cname: " + callIntent.getStringExtra("cname"));
+					XposedBridge.log("onCreate numberType: " + String.valueOf(callIntent.getIntExtra("numberType", -1)));
+					if (callIntent.getData() != null)
+					XposedBridge.log("onCreate Uri: " + ((Uri)callIntent.getData()).toString());
+				}
+			});
+			
+			findAndHookMethod("com.android.phone.InCallScreen", lpparam.classLoader, "onNewIntent", Intent.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Intent callIntent = (Intent)param.args[0];
+					XposedBridge.log("onNewIntent personId: " + callIntent.getStringExtra("personId"));
+					XposedBridge.log("onNewIntent name: " + callIntent.getStringExtra("name"));
+					XposedBridge.log("onNewIntent cname: " + callIntent.getStringExtra("cname"));
+					XposedBridge.log("onNewIntent numberType: " + String.valueOf(callIntent.getIntExtra("numberType", -1)));
+					if (callIntent.getData() != null)
+					XposedBridge.log("onNewIntent Uri: " + ((Uri)callIntent.getData()).toString());
+				}
+			});
+			
+			findAndHookMethod("com.android.phone.PhoneInterfaceManager", lpparam.classLoader, "dialWithoutDelay", Intent.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Intent callIntent = (Intent)param.args[0];
+					XposedBridge.log("dialWithoutDelay personId: " + callIntent.getStringExtra("personId"));
+					XposedBridge.log("dialWithoutDelay name: " + callIntent.getStringExtra("name"));
+					XposedBridge.log("dialWithoutDelay cname: " + callIntent.getStringExtra("cname"));
+					XposedBridge.log("dialWithoutDelay numberType: " + String.valueOf(callIntent.getIntExtra("numberType", -1)));
+					if (callIntent.getData() != null)
+					XposedBridge.log("dialWithoutDelay Uri: " + ((Uri)callIntent.getData()).toString());
+				}
+			});
+			
+			findAndHookMethod("com.android.phone.PhoneInterfaceManager", lpparam.classLoader, "dialWithoutBroadcast", Intent.class, String.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Intent callIntent = (Intent)param.args[0];
+					XposedBridge.log("dialWithoutBroadcast param1: " + String.valueOf(param.args[1]));
+					XposedBridge.log("dialWithoutBroadcast personId: " + callIntent.getStringExtra("personId"));
+					XposedBridge.log("dialWithoutBroadcast name: " + callIntent.getStringExtra("name"));
+					XposedBridge.log("dialWithoutBroadcast cname: " + callIntent.getStringExtra("cname"));
+					XposedBridge.log("dialWithoutBroadcast numberType: " + String.valueOf(callIntent.getIntExtra("numberType", -1)));
+					if (callIntent.getData() != null)
+					XposedBridge.log("dialWithoutBroadcast Uri: " + ((Uri)callIntent.getData()).toString());
+				}
+			});
+			
+			findAndHookMethod("com.android.phone.PhoneInterfaceManager.OutgoingCallReceiver", lpparam.classLoader, "doReceive", Context.class, Intent.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Intent callIntent = (Intent)param.args[1];
+					XposedBridge.log("doReceive personId: " + callIntent.getStringExtra("personId"));
+					XposedBridge.log("doReceive name: " + callIntent.getStringExtra("name"));
+					XposedBridge.log("doReceive cname: " + callIntent.getStringExtra("cname"));
+					XposedBridge.log("doReceive numberType: " + String.valueOf(callIntent.getIntExtra("numberType", -1)));
+					if (callIntent.getData() != null)
+					XposedBridge.log("doReceive Uri: " + ((Uri)callIntent.getData()).toString());
+				}
+			});
+			*/
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

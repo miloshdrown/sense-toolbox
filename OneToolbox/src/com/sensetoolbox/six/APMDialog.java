@@ -58,7 +58,7 @@ public class APMDialog extends HtcAlertDialog.Builder {
 		
 		final ArrayList<MenuItem> items = new ArrayList<MenuItem>();
 		items.add(new MenuItem(Helpers.l10n(context, R.string.apm_normal_title), Helpers.l10n(context, R.string.apm_normal_summ), R.drawable.apm_reboot));
-		items.add(new MenuItem(Helpers.l10n(context, R.string.apm_hotreboot_title), Helpers.l10n(context, R.string.apm_hotreboot_summ), R.drawable.apm_hotreboot));
+		items.add(new MenuItem(Helpers.l10n(context, R.string.soft_reboot), Helpers.l10n(context, R.string.apm_hotreboot_summ), R.drawable.apm_hotreboot));
 		items.add(new MenuItem(Helpers.l10n(context, R.string.apm_recovery_title), Helpers.l10n(context, R.string.apm_recovery_summ), R.drawable.apm_recovery));
 		items.add(new MenuItem(Helpers.l10n(context, R.string.apm_bootloader_title), Helpers.l10n(context, R.string.apm_bootloader_summ), R.drawable.apm_bootloader));
 		
