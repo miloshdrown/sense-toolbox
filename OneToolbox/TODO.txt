@@ -2,13 +2,7 @@
 Ideas
 =====
 
-- http://forum.xda-developers.com/showpost.php?p=45931184&postcount=46834
-- Only one toast for group notifications
-- Small font also on home screens
-- 2 finger swipes
-- switch to zoe on camera volume buttons
 - Pageless BF scrolling, remove snap to block scrolling
-- https://www.youtube.com/watch?v=HfCa3JtGpxc
 - Mount ISO image
 
 =================
@@ -16,6 +10,9 @@ Current changelog
 =================
 
 2.0.1
+[New] Vibrate on outgoing call connect even if proximity sensor is covered
+[New] Vibrate on call disconnect
+[New] Disable Back to mute incoming call ringer
 [New][4.4.3+] Force "Last name first" order in contacts, call history and dialer
 [Fixed][Sense 7] Darken wallpaper above rectangular caller photo
 [Fixed] Some mods on Android 5.0.1 Sense 7

@@ -233,9 +233,24 @@
 			android:title="@string/various_nofliptomute_title"
 			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_nobacktomute"
+			android:summary="@string/various_nobacktomute_summ"
+			android:title="@string/various_nobacktomute_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_other_nameorder"
 			android:summary="@string/various_nameorder_summ"
 			android:title="@string/various_nameorder_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_callvibrateon"
+			android:summary="@string/various_callvibrateon_summ"
+			android:title="@string/various_callvibrateon_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_callvibrateoff"
+			android:summary="@string/various_callvibrateoff_summ"
+			android:title="@string/various_callvibrateoff_title"
 			android:defaultValue="false" />
 		</com.htc.preference.HtcPreferenceCategory>
 			

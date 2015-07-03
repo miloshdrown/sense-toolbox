@@ -2235,8 +2235,10 @@ public class OtherMods {
 			
 			if (prefix != null && !prefix.isEmpty()) fullName += prefix + " ";
 			
-			if (lastName == null || lastName.isEmpty()) return ""; else
-			if (useComma)
+			if (lastName == null || lastName.isEmpty()) {
+				queryCache.put(key, origName);
+				return "";
+			} else if (useComma)
 				fullName += lastName + ", ";
 			else
 				fullName += lastName + " ";
@@ -2396,7 +2398,8 @@ public class OtherMods {
 					if (act != null) dialerContext = act.getBaseContext();
 					
 					Intent callIntent = (Intent)param.args[0];
-					long rawContactId = Long.parseLong(callIntent.getStringExtra("personId"));
+					long rawContactId = 0L;
+					try { rawContactId = Long.parseLong(callIntent.getStringExtra("personId")); } catch (Throwable t) {}
 					String origName = callIntent.getStringExtra("name");
 					if (rawContactId > 0L) {
 						String fullName = queryContactFullName(rawContactId, origName, false);
@@ -2472,6 +2475,88 @@ public class OtherMods {
 				}
 			});
 			*/
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+
+	public static boolean overrideVibration = false;
+	public static void execHook_VibrateOnCallConnected(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.phone.CallNotifier", lpparam.classLoader, "onCallConnected", "android.os.AsyncResult", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					overrideVibration = true;
+				}
+				
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					overrideVibration = false;
+				}
+			});
+			
+			if (Helpers.isLP()) {
+				findAndHookMethod("com.android.phone.HtcPhoneSensorFunctions", lpparam.classLoader, "getProximitySensorActive", new XC_MethodHook() {
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+						if (overrideVibration) param.setResult(false);
+					}
+				});
+			} else {
+				findAndHookMethod("com.android.phone.HtcPhoneSensorFunctionsOrient", lpparam.classLoader, "getProximitySensorActive", new XC_MethodHook() {
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+						if (overrideVibration) param.setResult(false);
+					}
+				});
+				
+				findAndHookMethod("com.android.phone.HtcPhoneSensorFunctionNonOrient", lpparam.classLoader, "getProximitySensorActive", new XC_MethodHook() {
+					@Override
+					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+						if (overrideVibration) param.setResult(false);
+					}
+				});
+			}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_VibrateOnCallDisconnected(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.phone.CallNotifier", lpparam.classLoader, "onDisconnect", "android.os.AsyncResult", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Object mRinger = XposedHelpers.getObjectField(param.thisObject, "mRinger");
+					if (mRinger != null) XposedHelpers.callMethod(mRinger, "startVibrateforMoConnected");
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static boolean overrideBackKey = false;
+	public static void execHook_NoBackToMute(final LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.phone.InCallScreen", lpparam.classLoader, "handleBackKey", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					overrideBackKey = true;
+				}
+				
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					overrideBackKey = false;
+				}
+			});
+			
+			findAndHookMethod("com.android.phone.PhoneUtils", lpparam.classLoader, "muteRingingCall", "com.android.internal.telephony.Phone", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					if (overrideBackKey) param.setResult(false);
+				}
+			});
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
