@@ -2373,26 +2373,38 @@ public class OtherMods {
 		}
 	}
 	
-	public static void execHook_ContactsNameOrderPhone(final LoadPackageParam lpparam) {
+	private static void getFullName(MethodHookParam param) {
+		if (param.thisObject != null)
+		dialerContext = ((View)param.thisObject).getContext();
+		
+		Object callerInfo = param.args[0];
+		long contactId = 0L;
+		try { contactId = (Long)XposedHelpers.getLongField(callerInfo, "contactIdOrZero"); } catch (Throwable t) {}
+		String origName = (String)XposedHelpers.getObjectField(callerInfo, "name");
+		XposedBridge.log("[updateDisplayForPerson] " + String.valueOf(contactId) + " | " + origName);
+		if (contactId > 0L) {
+			String fullName = queryContactFullName(contactId, origName, false);
+			if (!fullName.isEmpty()) XposedHelpers.setObjectField(callerInfo, "name", fullName);
+		}
+	}
+	public static void execHook_ContactsNameOrderPhone(LoadPackageParam lpparam) {
 		try {
 			findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "updateDisplayForPerson", "com.htc.internal.telephony.CallerInfo", int.class, boolean.class, "com.android.internal.telephony.Call", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-					if (param.thisObject != null)
-					dialerContext = ((View)param.thisObject).getContext();
-					
-					Object callerInfo = param.args[0];
-					long contactId = 0L;
-					try { contactId = (Long)XposedHelpers.getLongField(callerInfo, "contactIdOrZero"); } catch (Throwable t) {}
-					String origName = (String)XposedHelpers.getObjectField(callerInfo, "name");
-					XposedBridge.log("[updateDisplayForPerson] " + String.valueOf(contactId) + " | " + origName);
-					if (contactId > 0L) {
-						String fullName = queryContactFullName(contactId, origName, false);
-						if (!fullName.isEmpty()) XposedHelpers.setObjectField(callerInfo, "name", fullName);
-					}
+					getFullName(param);
 				}
 			});
+		} catch (Throwable t) {
+			findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "updateDisplayForPerson", "com.android.internal.telephony.CallerInfo", int.class, boolean.class, "com.android.internal.telephony.Call", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					getFullName(param);
+				}
+			});
+		}
 			
+		try {
 			findAndHookMethod("com.android.phone.InCallScreen.CallerData", lpparam.classLoader, "initFromIntent", Intent.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
