@@ -2385,6 +2385,7 @@ public class OtherMods {
 					long contactId = 0L;
 					try { contactId = (Long)XposedHelpers.getLongField(callerInfo, "contactIdOrZero"); } catch (Throwable t) {}
 					String origName = (String)XposedHelpers.getObjectField(callerInfo, "name");
+					XposedBridge.log("[updateDisplayForPerson] " + String.valueOf(contactId) + " | " + origName);
 					if (contactId > 0L) {
 						String fullName = queryContactFullName(contactId, origName, false);
 						if (!fullName.isEmpty()) XposedHelpers.setObjectField(callerInfo, "name", fullName);
@@ -2399,11 +2400,12 @@ public class OtherMods {
 					if (act != null) dialerContext = act.getBaseContext();
 					
 					Intent callIntent = (Intent)param.args[0];
-					long rawContactId = 0L;
-					try { rawContactId = Long.parseLong(callIntent.getStringExtra("personId")); } catch (Throwable t) {}
+					long personId = 0L;
+					try { personId = Long.parseLong(callIntent.getStringExtra("personId")); } catch (Throwable t) {}
 					String origName = callIntent.getStringExtra("name");
-					if (rawContactId > 0L) {
-						String fullName = queryContactFullName(rawContactId, origName, false);
+					XposedBridge.log("[initFromIntent] " + String.valueOf(personId) + " | " + origName);
+					if (personId > 0L) {
+						String fullName = queryContactFullName(personId, origName, false);
 						if (!fullName.isEmpty()) callIntent.putExtra("name", fullName);
 					}
 				}
