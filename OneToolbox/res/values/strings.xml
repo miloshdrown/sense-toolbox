@@ -489,13 +489,15 @@
 	<string name="various_nofliptomute_title">Disable Flip to mute</string>
 	<string name="various_nofliptomute_summ">Don\'t mute incoming call ringer when device is flipped.</string>
 	<string name="various_nobacktomute_title">Disable Back to mute</string>
-	<string name="various_nobacktomute_summ">Don\'t mute incoming call ringer when Back button is pressed. Mostly for Dual SIM devices.</string>
+	<string name="various_nobacktomute_summ">Don\'t mute incoming call ringer when Back button is pressed. Mostly for Dual SIM devices with hardware buttons.</string>
 	<string name="various_nameorder_title">Contacts name order</string>
 	<string name="various_nameorder_summ">Force \'Last name first\' order in contacts, call history and dialer.</string>
 	<string name="various_callvibrateon_title">Vibrate on connect</string>
 	<string name="various_callvibrateon_summ">Always vibrate when outgoing call is connected even if proximity sensor is covered.</string>
 	<string name="various_callvibrateoff_title">Vibrate on disconnect</string>
 	<string name="various_callvibrateoff_summ">Add vibration when call is disconnected.</string>
+	<string name="various_callvibratedur_title">Vibration duration</string>
+	<string name="various_callvibratedur_summ">Change duration of vibrations that happen on call connect and disconnect.</string>
 	<string name="various_mods_volume">Volume</string>
 	<string name="various_volsnd_title">Disable volume change sound</string>
 	<string name="various_volsnd_summ">Check to disable the sound on volume change.</string>

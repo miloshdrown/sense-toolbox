@@ -252,6 +252,17 @@
 			android:summary="@string/various_callvibrateoff_summ"
 			android:title="@string/various_callvibrateoff_title"
 			android:defaultValue="false" />
+		<com.sensetoolbox.six.utils.SeekBarPreference
+			android:key="pref_key_other_callvibratedur"
+			android:title="@string/various_callvibratedur_title"
+			android:summary="@string/various_callvibratedur_summ"
+			toolbox:dialogEnableMessage="@string/seekbar_mod_enable"
+			android:dialogMessage="@string/controls_keyshaptic_desc"
+			android:defaultValue="100"
+			android:text=" ms"
+			android:max="100"
+			toolbox:hapticPref="true"
+			toolbox:enableKey="pref_key_other_callvibratedur_enable"/>
 		</com.htc.preference.HtcPreferenceCategory>
 			
 		<com.htc.preference.HtcPreferenceCategory

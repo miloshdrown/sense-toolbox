@@ -710,6 +710,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_callvibrateoff", false))
 				OtherMods.execHook_VibrateOnCallDisconnected(lpparam);
 			
+			if (pref.getBoolean("pref_key_other_callvibratedur_enable", false))
+				OtherMods.execHook_VibrateOnCallDuration(lpparam);
+			
 			if (pref.getBoolean("pref_key_other_nobacktomute", false))
 				OtherMods.execHook_NoBackToMute(lpparam);
 			

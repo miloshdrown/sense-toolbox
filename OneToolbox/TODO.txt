@@ -9,9 +9,10 @@ Ideas
 Current changelog
 =================
 
-2.0.1
+2.0.5
 [New] Vibrate on outgoing call connect even if proximity sensor is covered
 [New] Vibrate on call disconnect
+[New] Vibration duration on call connect and disconnect
 [New] Disable Back to mute incoming call ringer
 [New][4.4.3+] Force "Last name first" order in contacts, call history and dialer
 [Fixed][Sense 7] Darken wallpaper above rectangular caller photo

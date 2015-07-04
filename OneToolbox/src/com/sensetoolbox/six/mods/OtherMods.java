@@ -2382,10 +2382,11 @@ public class OtherMods {
 					dialerContext = ((View)param.thisObject).getContext();
 					
 					Object callerInfo = param.args[0];
-					long rawContactId = (Long)XposedHelpers.getObjectField(callerInfo, "rawContactId");
+					long contactId = 0L;
+					try { contactId = (Long)XposedHelpers.getLongField(callerInfo, "contactIdOrZero"); } catch (Throwable t) {}
 					String origName = (String)XposedHelpers.getObjectField(callerInfo, "name");
-					if (rawContactId > 0L) {
-						String fullName = queryContactFullName(rawContactId, origName, false);
+					if (contactId > 0L) {
+						String fullName = queryContactFullName(contactId, origName, false);
 						if (!fullName.isEmpty()) XposedHelpers.setObjectField(callerInfo, "name", fullName);
 					}
 				}
@@ -2555,6 +2556,24 @@ public class OtherMods {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					if (overrideBackKey) param.setResult(false);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_VibrateOnCallDuration(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.phone.Ringer", lpparam.classLoader, "startVibrateforMoConnected", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					boolean shouldVibrateOut = (Boolean)XposedHelpers.callMethod(param.thisObject, "shouldVibrateOut");
+					Object mVibratorThread = XposedHelpers.getObjectField(param.thisObject, "mVibratorThread");
+					Vibrator mVibrator = (Vibrator)XposedHelpers.getObjectField(param.thisObject, "mVibrator");
+					if (shouldVibrateOut && mVibratorThread == null && mVibrator != null)
+					mVibrator.vibrate(XMain.pref.getInt("pref_key_other_callvibratedur", 100));
+					param.setResult(null);
 				}
 			});
 		} catch (Throwable t) {
