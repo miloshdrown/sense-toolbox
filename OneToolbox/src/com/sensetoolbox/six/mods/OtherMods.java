@@ -2373,21 +2373,25 @@ public class OtherMods {
 		}
 	}
 	
-	private static void getFullName(MethodHookParam param) {
+	public static long lastPersonId = 0L;
+	public static void getFullName(MethodHookParam param) {
 		if (param.thisObject != null)
 		dialerContext = ((View)param.thisObject).getContext();
 		
 		Object callerInfo = param.args[0];
 		long contactId = 0L;
-		try { contactId = (Long)XposedHelpers.getLongField(callerInfo, "contactIdOrZero"); } catch (Throwable t) {}
+		try { contactId = (Long)XposedHelpers.getLongField(callerInfo, "contactIdOrZero"); } catch (Throwable t) { XposedBridge.log(t); }
+		if (contactId == 0L) contactId = lastPersonId;
 		String origName = (String)XposedHelpers.getObjectField(callerInfo, "name");
 		XposedBridge.log("[updateDisplayForPerson] " + String.valueOf(contactId) + " | " + origName);
 		if (contactId > 0L) {
+			lastPersonId = contactId;
 			String fullName = queryContactFullName(contactId, origName, false);
 			if (!fullName.isEmpty()) XposedHelpers.setObjectField(callerInfo, "name", fullName);
 		}
 	}
-	public static void execHook_ContactsNameOrderPhone(LoadPackageParam lpparam) {
+	
+	public static void execHook_ContactsNameOrderPhone(final LoadPackageParam lpparam) {
 		try {
 			findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "updateDisplayForPerson", "com.htc.internal.telephony.CallerInfo", int.class, boolean.class, "com.android.internal.telephony.Call", new XC_MethodHook() {
 				@Override
@@ -2417,6 +2421,7 @@ public class OtherMods {
 					String origName = callIntent.getStringExtra("name");
 					XposedBridge.log("[initFromIntent] " + String.valueOf(personId) + " | " + origName);
 					if (personId > 0L) {
+						lastPersonId = personId;
 						String fullName = queryContactFullName(personId, origName, false);
 						if (!fullName.isEmpty()) callIntent.putExtra("name", fullName);
 					}
