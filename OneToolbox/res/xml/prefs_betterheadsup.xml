@@ -35,7 +35,7 @@
 		android:key="pref_key_betterheadsup_bwlist"
 		android:summary="@string/various_popupnotify_bwlist_summ"
 		android:title="@string/various_popupnotify_bwlist_title" />
-	<com.sensetoolbox.six.utils.HtcMultiSelectListPreferenceEx
+	<com.sensetoolbox.six.htc.utils.HtcMultiSelectListPreferenceEx
 		android:dialogTitle="@string/various_betterheadsup_bwlist_black_title"
 		android:key="pref_key_betterheadsup_bwlist_apps"
 		android:summary="@string/various_betterheadsup_bwlist_black_summ"
@@ -43,7 +43,7 @@
 		android:entries="@array/empty_array"
 		android:entryValues="@array/empty_array"
 		android:defaultValue="@array/empty_array" />
-	<com.sensetoolbox.six.utils.HtcMultiSelectListPreferenceEx
+	<com.sensetoolbox.six.htc.utils.HtcMultiSelectListPreferenceEx
 		android:dialogTitle="@string/various_betterheadsup_ignorelist_title"
 		android:key="pref_key_betterheadsup_ignorelist_apps"
 		android:summary="@string/various_betterheadsup_ignorelist_summ"
@@ -59,30 +59,25 @@
 			android:key="pref_key_betterheadsup_theme_preset"
 			android:summary="@string/various_betterheadsup_theme_preset_summ"
 			android:title="@string/various_betterheadsup_theme_preset_title" />
-		<com.sensetoolbox.six.utils.ColorPickerPreference
+		<com.sensetoolbox.six.htc.utils.ColorPickerPreference
 			android:key="pref_key_betterheadsup_theme_background"
 			android:summary="@string/various_betterheadsup_theme_background_summ"
-			android:title="@string/various_betterheadsup_theme_background_title"
-			toolbox:element="0" />
-		<com.sensetoolbox.six.utils.ColorPickerPreference
+			android:title="@string/various_betterheadsup_theme_background_title" />
+		<com.sensetoolbox.six.htc.utils.ColorPickerPreference
 			android:key="pref_key_betterheadsup_theme_primary"
 			android:summary="@string/various_betterheadsup_theme_primary_summ"
-			android:title="@string/various_betterheadsup_theme_primary_title"
-			toolbox:element="1" />
-		<com.sensetoolbox.six.utils.ColorPickerPreference
+			android:title="@string/various_betterheadsup_theme_primary_title" />
+		<com.sensetoolbox.six.htc.utils.ColorPickerPreference
 			android:key="pref_key_betterheadsup_theme_secondary"
 			android:summary="@string/various_betterheadsup_theme_secondary_summ"
-			android:title="@string/various_betterheadsup_theme_secondary_title"
-			toolbox:element="2" />
-		<com.sensetoolbox.six.utils.ColorPickerPreference
+			android:title="@string/various_betterheadsup_theme_secondary_title" />
+		<com.sensetoolbox.six.htc.utils.ColorPickerPreference
 			android:key="pref_key_betterheadsup_theme_dismiss"
 			android:summary="@string/various_betterheadsup_theme_dismiss_summ"
-			android:title="@string/various_betterheadsup_theme_dismiss_title"
-			toolbox:element="3" />
-		<com.sensetoolbox.six.utils.ColorPickerPreference
+			android:title="@string/various_betterheadsup_theme_dismiss_title" />
+		<com.sensetoolbox.six.htc.utils.ColorPickerPreference
 			android:key="pref_key_betterheadsup_theme_dividers"
 			android:summary="@string/various_betterheadsup_theme_dividers_summ"
-			android:title="@string/various_betterheadsup_theme_dividers_title"
-			toolbox:element="4" />
+			android:title="@string/various_betterheadsup_theme_dividers_title" />
 	</com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>

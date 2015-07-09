@@ -14,6 +14,7 @@ import java.util.Arrays;
 import java.util.EnumSet;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.appwidget.AppWidgetProviderInfo;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -54,10 +55,10 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import com.htc.widget.HtcAlertDialog;
-import com.htc.widget.HtcPopupWindow;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
@@ -82,6 +83,7 @@ public class PrismMods {
 	private static GestureDetector mDetectorHorizontal;
 	private static GestureDetector mDetectorVertical;
 	static HtcAlertDialog dlg = null;
+	static AlertDialog dlgStock = null;
 	static Object launcher;
 	
 	public static void execHook_InvisiWidget(LoadPackageParam lpparam, final int transparency) {
@@ -848,7 +850,7 @@ public class PrismMods {
 		}
 	}
 	
-	private static HtcPopupWindow popup = null;
+	private static PopupWindow popup = null;
 	
 	public static void execHook_HomeMenu(final LoadPackageParam lpparam) {
 		XposedHelpers.findAndHookMethod("com.htc.launcher.Launcher", lpparam.classLoader, "onKeyDown", int.class, KeyEvent.class, new XC_MethodHook() {
@@ -876,7 +878,7 @@ public class PrismMods {
 			ctx = m_workspace_local.getContext();
 		
 		if (popup == null) {
-			popup = new HtcPopupWindow(ctx);
+			popup = new PopupWindow(ctx);
 			popup.setWidth(WindowManager.LayoutParams.WRAP_CONTENT);
 			popup.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
 			popup.setTouchable(true);
@@ -896,13 +898,7 @@ public class PrismMods {
 		options.setOnItemClickListener(new AdapterView.OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-				if (Helpers.isLP())
-				view.postDelayed(new Runnable() {
-					@Override
-					public void run() {
-						popup.dismiss();
-					}
-				}, 500); else popup.dismiss();
+				popup.dismiss();
 				
 				if (position == 0) {
 					launcherAct.startActivity(new Intent(Settings.ACTION_MANAGE_APPLICATIONS_SETTINGS));
@@ -1048,6 +1044,22 @@ public class PrismMods {
 		if (!dlg.isShowing()) dlg.show();
 	}
 	
+	private static synchronized void showLockedWarningStock(final Activity act) {
+		if (dlgStock == null) {
+			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+			AlertDialog.Builder builder = new AlertDialog.Builder(act);
+			builder.setTitle(Helpers.xl10n(modRes, R.string.warning));
+			builder.setMessage(Helpers.xl10n(modRes, R.string.locked_warning));
+			builder.setCancelable(false);
+			builder.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton){
+				}
+			});
+			dlgStock = builder.create();
+		}
+		if (!dlgStock.isShowing()) dlgStock.show();
+	}
+	
 	public static void execHook_LauncherLock(final LoadPackageParam lpparam) {
 		// Disable dragging inside folders
 		XposedBridge.hookAllConstructors(findClass("com.htc.launcher.folder.Folder.FolderDataManager", lpparam.classLoader), new XC_MethodHook() {
@@ -1095,7 +1107,10 @@ public class PrismMods {
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				Activity launcherAct = (Activity)param.thisObject;
 				if (launcherAct != null && isLauncherLocked(launcherAct)) {
-					showLockedWarning(launcherAct);
+					if (Helpers.isNewSense())
+						showLockedWarningStock(launcherAct);
+					else
+						showLockedWarning(launcherAct);
 					param.setResult(null);
 				}
 			}
@@ -1112,7 +1127,10 @@ public class PrismMods {
 						if (isAddToHome) {
 							Activity launcherAct = (Activity)param.thisObject;
 							if (launcherAct != null && isLauncherLocked(launcherAct)) {
-								showLockedWarning(launcherAct);
+								if (Helpers.isNewSense())
+									showLockedWarningStock(launcherAct);
+								else
+									showLockedWarning(launcherAct);
 								param.setResult(null);
 							}
 						}

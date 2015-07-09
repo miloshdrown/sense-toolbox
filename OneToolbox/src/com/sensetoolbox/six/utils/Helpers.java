@@ -9,6 +9,7 @@ import java.io.FileReader;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Field;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -19,10 +20,13 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.TimeZone;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
@@ -32,23 +36,29 @@ import com.htc.configuration.HtcWrapConfiguration;
 import com.htc.preference.HtcListPreference;
 import com.htc.preference.HtcMultiSelectListPreference;
 import com.htc.preference.HtcPreference;
-import com.htc.preference.HtcPreferenceActivity;
 import com.htc.preference.HtcPreferenceCategory;
 import com.htc.preference.HtcPreferenceGroup;
 import com.htc.preference.HtcPreferenceScreen;
 import com.htc.widget.HtcAlertDialog;
-import com.sensetoolbox.six.MainActivity;
-import com.sensetoolbox.six.MainFragment;
 import com.sensetoolbox.six.R;
-import com.sensetoolbox.six.SenseThemes.PackageTheme;
-import com.sensetoolbox.six.SubActivity;
+import com.sensetoolbox.six.htc.HMainActivity;
+import com.sensetoolbox.six.htc.HSubActivity;
+import com.sensetoolbox.six.htc.SenseThemes.PackageTheme;
+import com.sensetoolbox.six.htc.utils.HtcListPreferenceEx;
+import com.sensetoolbox.six.htc.HPreferenceFragmentExt;
+import com.sensetoolbox.six.material.MMainActivity;
+import com.sensetoolbox.six.material.MSubActivity;
+import com.sensetoolbox.six.material.MPreferenceFragmentExt;
+import com.sensetoolbox.six.material.utils.ListPreferenceEx;
 import com.sensetoolbox.six.mods.XMain;
 import com.stericson.RootShell.execution.Command;
 import com.stericson.RootTools.RootTools;
 
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.AlarmManager;
+import android.app.AlertDialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -78,6 +88,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
 import android.os.Process;
+import android.preference.ListPreference;
+import android.preference.MultiSelectListPreference;
+import android.preference.Preference;
+import android.preference.PreferenceCategory;
+import android.preference.PreferenceGroup;
+import android.preference.PreferenceScreen;
 import android.os.PowerManager.WakeLock;
 import android.provider.Settings;
 import android.text.format.DateFormat;
@@ -90,10 +106,15 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.EditText;
+import android.widget.NumberPicker;
 import android.widget.TextView;
 
 public class Helpers {
 	
+	public static SharedPreferences prefs = null;
+	public static String lastShortcutKey = null;
+	public static String lastShortcutKeyContents = null;
 	public static boolean hasRoot = false;
 	public static boolean hasRootAccess = false;
 	public static boolean hasBusyBox = false;
@@ -104,7 +125,7 @@ public class Helpers {
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
 	public static float strings_total = 762.0f;
-	public static int buildVersion = 264;
+	public static int buildVersion = 265;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -120,7 +141,11 @@ public class Helpers {
 	public static SparseArray<Object[]> colors = new SparseArray<Object[]>();
 	public static int mFlashlightLevel = 0;
 	public static WakeLock mWakeLock;
-	public static AppShortcutAddDialog shortcutDlg = null;
+	public static com.sensetoolbox.six.htc.utils.AppShortcutAddDialog shortcutDlg = null;
+	public static com.sensetoolbox.six.material.utils.AppShortcutAddDialog shortcutDlgStock = null;
+	public static LinkedHashMap<String, Integer> colorValues = new LinkedHashMap<String, Integer>();
+	public static LinkedHashMap<String, Integer> colorValuesHeader = new LinkedHashMap<String, Integer>();
+	public static ObjectMapper mapper = new ObjectMapper();
 
 	private static synchronized boolean preloadLang(String lang) {
 		try {
@@ -248,12 +273,52 @@ public class Helpers {
 		return list;
 	}
 	
-	public static void applyLang(Activity act, HtcPreferenceFragmentExt frag) {
-		ArrayList<HtcPreference> list;
-		if (frag == null)
-			list = getPreferenceList(((HtcPreferenceActivity)act).getPreferenceScreen(), new ArrayList<HtcPreference>());
+	private static ArrayList<Preference> getPreferenceList(Preference p, ArrayList<Preference> list) {
+		if (p instanceof PreferenceCategory || p instanceof PreferenceScreen) {
+			PreferenceGroup pGroup = (PreferenceGroup) p;
+			int pCount = pGroup.getPreferenceCount();
+			for (int i = 0; i < pCount; i++)
+			getPreferenceList(pGroup.getPreference(i), list);
+		}
+		list.add(p);
+		return list;
+	}
+	
+	private static String titleResName2EntriesResName(String titleResName, int titleResId) {
+		String entriesResName;
+		if (titleResName.equals("controls_vol_up_media_title") || titleResName.equals("controls_vol_down_media_title"))
+			entriesResName = "media_action";
+		else if (titleResName.equals("controls_vol_up_cam_title") || titleResName.equals("controls_vol_down_cam_title"))
+			entriesResName = "cam_actions";
+		else if (titleResName.equals("various_popupnotify_clock_title"))
+			entriesResName = "various_clock_style";
+		else if (titleResName.equals("various_popupnotify_back_title"))
+			entriesResName = "various_background_style";
+		else if (titleResName.equals("controls_extendedpanel_left_title") || titleResName.equals("controls_extendedpanel_right_title"))
+			entriesResName = "extendedpanel_actions";
+		else if (titleResName.equals("sense_gappwidget_title"))
+			entriesResName = "googleapp_widget";
+		else if (titleResName.equals("sense_transitions_title"))
+			entriesResName = "transitions";
+		else if (titleResName.contains("controls_headsetonaction") || titleResName.contains("controls_headsetoffaction"))
+			entriesResName = "audio_actions";
+		else if (titleResName.contains("controls_clockaction"))
+			entriesResName = "clock_actions";
+		else if (titleResName.contains("controls_headsetoneffect") || titleResName.contains("controls_headsetoffeffect"))
+			entriesResName = "global_effects";
+		else if (titleResName.contains("sense_") || titleResName.contains("controls_"))
+			entriesResName = "global_actions";
+		else if (titleResName.contains("wakegestures_"))
+			entriesResName = "wakegest_actions";
+		else if (titleResId == R.string.array_global_actions_toggle)
+			entriesResName = "global_toggles";
 		else
-			list = getPreferenceList(frag.getPreferenceScreen(), new ArrayList<HtcPreference>());
+			entriesResName = titleResName.replace("_title", "");
+		return entriesResName;
+	}
+	
+	public static void applyLang(Activity act, HPreferenceFragmentExt frag) {
+		ArrayList<HtcPreference> list = getPreferenceList(frag.getPreferenceScreen(), new ArrayList<HtcPreference>());
 		
 		for (HtcPreference p: list) {
 			int titleResId = p.getTitleRes();
@@ -271,38 +336,9 @@ public class Helpers {
 				}
 			}
 			
-			if (p.getClass() == HtcListPreference.class || p.getClass() == HtcListPreferencePlus.class || p.getClass() == ImageListPreference.class || p.getClass() == HtcMultiSelectListPreference.class) {
+			if (p.getClass() == HtcListPreference.class || p.getClass() == HtcListPreferenceEx.class || p.getClass() == com.sensetoolbox.six.htc.utils.ImageListPreference.class || p.getClass() == HtcMultiSelectListPreference.class) {
 				String titleResName = act.getResources().getResourceEntryName(titleResId);
-				String entriesResName;
-				if (titleResName.equals("controls_vol_up_media_title") || titleResName.equals("controls_vol_down_media_title"))
-					entriesResName = "media_action";
-				else if (titleResName.equals("controls_vol_up_cam_title") || titleResName.equals("controls_vol_down_cam_title"))
-					entriesResName = "cam_actions";
-				else if (titleResName.equals("various_popupnotify_clock_title"))
-					entriesResName = "various_clock_style";
-				else if (titleResName.equals("various_popupnotify_back_title"))
-					entriesResName = "various_background_style";
-				else if (titleResName.equals("controls_extendedpanel_left_title") || titleResName.equals("controls_extendedpanel_right_title"))
-					entriesResName = "extendedpanel_actions";
-				else if (titleResName.equals("sense_gappwidget_title"))
-					entriesResName = "googleapp_widget";
-				else if (titleResName.equals("sense_transitions_title"))
-					entriesResName = "transitions";
-				else if (titleResName.contains("controls_headsetonaction") || titleResName.contains("controls_headsetoffaction"))
-					entriesResName = "audio_actions";
-				else if (titleResName.contains("controls_clockaction"))
-					entriesResName = "clock_actions";
-				else if (titleResName.contains("controls_headsetoneffect") || titleResName.contains("controls_headsetoffeffect"))
-					entriesResName = "global_effects";
-				else if (titleResName.contains("sense_") || titleResName.contains("controls_"))
-					entriesResName = "global_actions";
-				else if (titleResName.contains("wakegestures_"))
-					entriesResName = "wakegest_actions";
-				else if (titleResId == R.string.array_global_actions_toggle)
-					entriesResName = "global_toggles";
-				else
-					entriesResName = titleResName.replace("_title", "");
-				
+				String entriesResName = titleResName2EntriesResName(titleResName, titleResId);
 				int arrayId = act.getResources().getIdentifier(entriesResName, "array", act.getPackageName());
 				if (arrayId != 0) {
 					TypedArray ids = act.getResources().obtainTypedArray(arrayId);
@@ -330,7 +366,56 @@ public class Helpers {
 		}
 	}
 	
-	public static void openLangDialog(final Activity act) {
+	public static void applyLang(Activity act, MPreferenceFragmentExt frag) {
+		ArrayList<Preference> list = getPreferenceList(frag.getPreferenceScreen(), new ArrayList<Preference>());
+		
+		for (Preference p: list) {
+			int titleResId = p.getTitleRes();
+			if (titleResId == 0) continue;
+			p.setTitle(l10n(act, titleResId));
+			
+			CharSequence summ = p.getSummary();
+			if (summ != null && summ != "") {
+				if (titleResId == R.string.array_global_actions_launch || titleResId == R.string.array_global_actions_toggle) {
+					p.setSummary(l10n(act, "notselected"));
+				} else {
+					String titleResName = act.getResources().getResourceEntryName(titleResId);
+					String summResName = titleResName.replace("_title", "_summ");
+					p.setSummary(l10n(act, summResName));
+				}
+			}
+			
+			if (p.getClass() == ListPreference.class || p.getClass() == ListPreferenceEx.class || p.getClass() == com.sensetoolbox.six.material.utils.ImageListPreference.class || p.getClass() == MultiSelectListPreference.class) {
+				String titleResName = act.getResources().getResourceEntryName(titleResId);
+				String entriesResName = titleResName2EntriesResName(titleResName, titleResId);
+				int arrayId = act.getResources().getIdentifier(entriesResName, "array", act.getPackageName());
+				if (arrayId != 0) {
+					TypedArray ids = act.getResources().obtainTypedArray(arrayId);
+					List<String> newEntries = new ArrayList<String>();
+					for (int i = 0; i < ids.length(); i++) {
+						int id = ids.getResourceId(i, 0);
+						if (id != 0)
+							newEntries.add(l10n(act, id));
+						else
+							newEntries.add("???");
+					}
+					ids.recycle();
+					
+					if (p.getClass() == MultiSelectListPreference.class) {
+						MultiSelectListPreference lst = ((MultiSelectListPreference)p);
+						lst.setEntries(newEntries.toArray(new CharSequence[newEntries.size()]));
+						lst.setDialogTitle(l10n(act, titleResId));
+					} else {
+						ListPreference lst = ((ListPreference)p);
+						lst.setEntries(newEntries.toArray(new CharSequence[newEntries.size()]));
+						lst.setDialogTitle(l10n(act, titleResId));
+					}
+				}
+			}
+		}
+	}
+	
+	public static void openLangDialogH(final Activity act) {
 		HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(act);
 		alert.setTitle(l10n(act, R.string.toolbox_l10n_title));
 		String buildId = "?";
@@ -367,10 +452,10 @@ public class Helpers {
 			alert.setView(createCenteredText(act, R.string.download_update));
 			if (!(e instanceof FileNotFoundException)) e.printStackTrace();
 		}
-		alert.setNegativeButton(l10n(act, R.string.sense_themes_cancel), new DialogInterface.OnClickListener() {
+		alert.setNeutralButton(l10n(act, R.string.sense_themes_cancel), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {}
 		});
-		alert.setNeutralButton(l10n(act, R.string.remove), new DialogInterface.OnClickListener() {
+		alert.setNegativeButton(l10n(act, R.string.remove), new DialogInterface.OnClickListener() {
 			void deleteRecursive(File fileOrDirectory) {
 				if (fileOrDirectory.isDirectory()) for (File child: fileOrDirectory.listFiles()) deleteRecursive(child);
 				fileOrDirectory.delete();
@@ -384,7 +469,7 @@ public class Helpers {
 				alert.setTitle(l10n(act, R.string.success));
 				alert.setView(createCenteredText(act, R.string.download_removed));
 				alert.setCancelable(false);
-				alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						l10n = null;
 						cLang = "";
@@ -397,7 +482,82 @@ public class Helpers {
 		alert.setPositiveButton(l10n(act, R.string.toolbox_l10n_btn), new DialogInterface.OnClickListener() {
 			public void onClick(DialogInterface dialog, int whichButton) {
 				if (act != null) {
-					final DownloadAndUnZip downloadTask = new DownloadAndUnZip(act);
+					final com.sensetoolbox.six.htc.utils.DownloadAndUnZip downloadTask = new com.sensetoolbox.six.htc.utils.DownloadAndUnZip(act);
+					downloadTask.execute("http://sensetoolbox.com/l10n/strings_sense6.zip");
+				}
+			}
+		});
+		alert.show();
+	}
+	
+	public static void openLangDialogM(final Activity act) {
+		AlertDialog.Builder alert = new AlertDialog.Builder(act);
+		alert.setTitle(l10n(act, R.string.toolbox_l10n_title));
+		String buildId = "?";
+		int timeStamp = 0;
+		try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(dataPath + "version")))) {
+			buildId = br.readLine();
+			timeStamp = Integer.parseInt(br.readLine());
+			Date datetime = new Date((long)timeStamp * 1000);
+			SimpleDateFormat format = new SimpleDateFormat("dd MMM yyyy HH:mm:ss zzz", Locale.getDefault());
+			format.setTimeZone(TimeZone.getTimeZone("UTC"));
+			TextView center = createCenteredText(act, R.string.download_current_ver);
+			
+			DecimalFormatSymbols dotSep = new DecimalFormatSymbols(Locale.getDefault());
+			dotSep.setDecimalSeparator('.');
+			dotSep.setGroupingSeparator(' ');
+			DecimalFormat percentageFormat = new DecimalFormat("0.0", dotSep);
+			percentageFormat.setMinimumFractionDigits(0);
+			percentageFormat.setMaximumFractionDigits(1);
+			percentageFormat.setMinimumIntegerDigits(1);
+			percentageFormat.setMaximumIntegerDigits(3);
+			
+			String l10ncount = "";
+			if (l10n != null) {
+				float floatPercentage = (float)l10n.size() / strings_total * 100.0f;
+				if (floatPercentage > 100f) floatPercentage = 100f;
+				String percentage = percentageFormat.format(floatPercentage);
+				l10ncount = "\n" + l10n(act, R.string.toolbox_l10n_ready) + ": " + percentage + "%";
+			} else if (cLang.equals("not_found"))
+				l10ncount = "\n" + l10n(act, R.string.toolbox_l10n_ready) + ": 0%";
+			
+			center.setText(center.getText()  + " " + buildId + "\n" + format.format(datetime) + l10ncount);
+			alert.setView(center);
+		} catch (Exception e) {
+			alert.setView(createCenteredText(act, R.string.download_update));
+			if (!(e instanceof FileNotFoundException)) e.printStackTrace();
+		}
+		alert.setNeutralButton(l10n(act, R.string.sense_themes_cancel), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {}
+		});
+		alert.setNegativeButton(l10n(act, R.string.remove), new DialogInterface.OnClickListener() {
+			void deleteRecursive(File fileOrDirectory) {
+				if (fileOrDirectory.isDirectory()) for (File child: fileOrDirectory.listFiles()) deleteRecursive(child);
+				fileOrDirectory.delete();
+			}
+			
+			public void onClick(DialogInterface dialog, int whichButton) {
+				File tmp = new File(dataPath);
+				deleteRecursive(tmp);
+				
+				AlertDialog.Builder alert = new AlertDialog.Builder(act);
+				alert.setTitle(l10n(act, R.string.success));
+				alert.setView(createCenteredText(act, R.string.download_removed));
+				alert.setCancelable(false);
+				alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+					public void onClick(DialogInterface dialog, int whichButton) {
+						l10n = null;
+						cLang = "";
+						act.recreate();
+					}
+				});
+				alert.show();
+			}
+		});
+		alert.setPositiveButton(l10n(act, R.string.toolbox_l10n_btn), new DialogInterface.OnClickListener() {
+			public void onClick(DialogInterface dialog, int whichButton) {
+				if (act != null) {
+					final com.sensetoolbox.six.material.utils.DownloadAndUnZip downloadTask = new com.sensetoolbox.six.material.utils.DownloadAndUnZip(act);
 					downloadTask.execute("http://sensetoolbox.com/l10n/strings_sense6.zip");
 				}
 			}
@@ -405,16 +565,14 @@ public class Helpers {
 		alert.show();
 	}
 
-	public static boolean isXposedInstalled(Context mContext) {
+	public static boolean isXposedInstallerInstalled(Context mContext) {
 		PackageManager pm = mContext.getPackageManager();
-		boolean installed = false;
 		try {
 			pm.getPackageInfo("de.robv.android.xposed.installer", PackageManager.GET_ACTIVITIES);
-			installed = true;
+			return true;
 		} catch (PackageManager.NameNotFoundException e) {
-			installed = false;
+			return false;
 		}
-		return installed;
 	}
 	
 	public static String getSenseVersion() {
@@ -429,16 +587,76 @@ public class Helpers {
 		return new Version(getSenseVersion()).compareTo(new Version("7.0")) >= 0;
 	}
 	
+	public static boolean isNewSense() {
+		return isLP() && Resources.getSystem().getIdentifier("common_app_bkg", "drawable", "com.htc") == 0;
+	}
+	
 	public static TextView createCenteredText(Context mContext, int resId) {
 		TextView centerMsg = new TextView(mContext);
 		centerMsg.setText(l10n(mContext, resId));
 		centerMsg.setGravity(Gravity.CENTER_HORIZONTAL);
-		centerMsg.setPadding(10, 60, 10, 60);
-		centerMsg.setTextSize(18.0f);
-		centerMsg.setTextColor(mContext.getResources().getColor(android.R.color.primary_text_light));
+		float density = mContext.getResources().getDisplayMetrics().density;
+		centerMsg.setPadding(Math.round(density * 20), Math.round(density * 20), Math.round(density * 20), Math.round(density * 15));
+		centerMsg.setTextSize(TypedValue.COMPLEX_UNIT_SP, 17);
+		centerMsg.setTextColor(getThemePrimaryTextColor(mContext));
 		return centerMsg;
 	}
 	
+	public static int getThemePrimaryTextColor(Context mContext) {
+		TypedValue tv = new TypedValue();
+		if (isNewSense()) {
+			mContext.getTheme().resolveAttribute(mContext.getResources().getIdentifier("colorPrimaryDark", "attr", "android"), tv, true);
+		} else {
+			mContext.getTheme().resolveAttribute(mContext.getResources().getIdentifier("light_primaryfont_color", "attr", "com.htc"), tv, true);
+		}
+		return tv.data;
+	}
+	
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public static void themeNumberPicker(NumberPicker picker) {
+		if (picker == null) return;
+		Context mContext = picker.getContext();
+		float density = mContext.getResources().getDisplayMetrics().density;
+		
+		java.lang.reflect.Field[] pickerFields = NumberPicker.class.getDeclaredFields();
+		for (java.lang.reflect.Field pf : pickerFields)
+		if (pf.getName().equals("mSelectionDivider")) try {
+			pf.setAccessible(true);
+			TypedValue typedValue = new TypedValue();
+			mContext.getTheme().resolveAttribute(android.R.attr.colorAccent, typedValue, true);
+			pf.set(picker, new ColorDrawable(typedValue.data));
+			break;
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		int count = picker.getChildCount();
+		for (int i = 0; i < count; i++) {
+			View child = picker.getChildAt(i);
+			if (child != null) try {
+				if (child instanceof EditText) {
+					int mThemeBackground = Integer.parseInt(prefs.getString("pref_key_toolbox_material_background", "1"));
+					int sColor = mContext.getResources().getColor(R.color.material_text_secondary_dark);
+					Field selectorWheelPaintField = picker.getClass().getDeclaredField("mSelectorWheelPaint");
+					selectorWheelPaintField.setAccessible(true);
+					if (mThemeBackground == 2)
+					((Paint)selectorWheelPaintField.get(picker)).setColor(sColor);
+					((Paint)selectorWheelPaintField.get(picker)).setTextSize(density * 20f);
+					
+					EditText txt = ((EditText)child);
+					txt.setTextSize(TypedValue.COMPLEX_UNIT_SP, 20);
+					txt.setFocusable(false);
+					txt.setHighlightColor(Color.TRANSPARENT);
+					if (mThemeBackground == 2)
+					txt.setTextColor(sColor);
+				}
+				picker.invalidate();
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+	}
+
 	public static void setTranslucentStatusBar(Activity act) {
 		int multiply_color_id = act.getResources().getIdentifier("multiply_color", "attr", "com.htc");
 		TypedValue typedValue = new TypedValue();
@@ -450,24 +668,14 @@ public class Helpers {
 		actWnd.setBackgroundDrawable(new ColorDrawable(color));
 		
 		act.findViewById(android.R.id.content).setFitsSystemWindows(true);
-		/*
-		Drawable bkg = actWnd.getDecorView().getBackground();
-		if (bkg instanceof ColorDrawable)
-			((ColorDrawable)bkg).setColor(color);
-		else if (bkg instanceof StateListDrawable) {
-			StateListDrawable bkgState = new StateListDrawable();
-			bkgState.addState(new int[] { android.R.attr.state_enabled }, new ColorDrawable(color));
-			actWnd.getDecorView().setBackground(bkgState);
-		}
-		*/
 	}
 	
 	public static synchronized int getCurrentTheme(Context context) {
 		String current_str = context.getSharedPreferences("one_toolbox_prefs", 1).getString("pkgthm", "");
 		if (!current_str.equals(cached_str)) {
 			if (current_str != null && !current_str.equals("")) try {
-				ObjectMapper mapper = new ObjectMapper();
-				cached_pkgthm = mapper.readValue(current_str, mapper.getTypeFactory().constructCollectionType(List.class, PackageTheme.class));
+				ObjectMapper mapperLocal = new ObjectMapper();
+				cached_pkgthm = mapperLocal.readValue(current_str, mapperLocal.getTypeFactory().constructCollectionType(List.class, PackageTheme.class));
 			} catch (Exception e) {}
 			cached_str = current_str;
 		}
@@ -492,14 +700,14 @@ public class Helpers {
 		XMain.pref.reload();
 		if (XMain.pref.getBoolean("themes_active", false)) {
 			String current_str = XMain.pref.getString("pkgthm", "");
-			if (!current_str.equals(XMain.xcached_str)) {
+			if (!current_str.equals(cached_str)) {
 				if (current_str != null && !current_str.equals("")) try {
-					XMain.xcached_pkgthm = XMain.mapper.readValue(current_str, XMain.mapper.getTypeFactory().constructCollectionType(List.class, PackageTheme.class));
+					cached_pkgthm = mapper.readValue(current_str, mapper.getTypeFactory().constructCollectionType(List.class, PackageTheme.class));
 				} catch (Exception e) {}
-				XMain.xcached_str = current_str;
+				cached_str = current_str;
 			}
 			
-			for (PackageTheme pt: XMain.xcached_pkgthm) if (pt.getPkg() != null)
+			for (PackageTheme pt: cached_pkgthm) if (pt.getPkg() != null)
 			if (pt.getPkg().equals(pkgName) ||
 				(pt.getPkg().equals("com.htc.contacts") && pkgName.equals("com.htc.htcdialer")) ||
 				(pt.getPkg().equals("com.android.settings") && Arrays.asList("com.htc.htcpowermanager", "com.htc.sdm", "com.htc.home.personalize", "com.htc.widget.notification", "com.htc.sense.easyaccessservice").contains(pkgName))) {
@@ -518,11 +726,28 @@ public class Helpers {
 		context.getTheme().resolveAttribute(multiply_color_id, typedValue, true);
 		int multiply_theme = typedValue.data;
 		
-		if ((context.getClass() == MainActivity.class || context.getClass() == SubActivity.class) && category_theme == multiply_theme) category_theme = 0xffe0e0e0;
+		if ((context.getClass() == HMainActivity.class || context.getClass() == HSubActivity.class) && category_theme == multiply_theme) category_theme = 0xffe0e0e0;
 		
 		Bitmap src = ((BitmapDrawable)img).getBitmap();
 		Bitmap bitmap = src.copy(Bitmap.Config.ARGB_8888, true);
 		return new BitmapDrawable(context.getResources(), shiftRGB(bitmap, category_theme));
+	}
+	
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public static BitmapDrawable applyMaterialTheme(Context context, Drawable img) {
+		TypedValue typedValue = new TypedValue();
+		context.getTheme().resolveAttribute(android.R.attr.colorAccent, typedValue, true);
+		int accent_color = typedValue.data;
+		
+		TypedValue typedValue2 = new TypedValue();
+		context.getTheme().resolveAttribute(android.R.attr.colorPrimary, typedValue2, true);
+		int header_color = typedValue2.data;
+		
+		if ((context.getClass() == MMainActivity.class || context.getClass() == MSubActivity.class) && accent_color == header_color) accent_color = 0xffe0e0e0;
+		
+		Bitmap src = ((BitmapDrawable)img).getBitmap();
+		Bitmap bitmap = src.copy(Bitmap.Config.ARGB_8888, true);
+		return new BitmapDrawable(context.getResources(), shiftRGB(bitmap, accent_color));
 	}
 	
 	public static Bitmap shiftRGB(Bitmap input, int reqColor) {
@@ -567,19 +792,27 @@ public class Helpers {
 		return dropIconShadow(mContext, icon, false);
 	}
 	
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	public static Drawable dropIconShadow(Context mContext, Drawable icon, Boolean force) {
-		if (!force && !Helpers.isLP())
-		if (MainFragment.prefs.getInt("pref_key_colorfilter_brightValue", 100) != 200 || MainFragment.prefs.getInt("pref_key_colorfilter_satValue", 100) != 0) return icon;
+		if (!force && !isLP())
+		if (prefs.getInt("pref_key_colorfilter_brightValue", 100) != 200 || prefs.getInt("pref_key_colorfilter_satValue", 100) != 0) return icon;
 		
 		Bitmap bitmap = Bitmap.createBitmap(icon.getIntrinsicWidth(), icon.getIntrinsicHeight(), Config.ARGB_8888);
 		Canvas canvas = new Canvas(bitmap);
 		icon.setBounds(0, 0, icon.getIntrinsicWidth(), icon.getIntrinsicHeight());
 		icon.draw(canvas);
 		
-		int category_color_id = mContext.getResources().getIdentifier("category_color", "attr", "com.htc");
-		TypedValue typedValue = new TypedValue();
-		mContext.getTheme().resolveAttribute(category_color_id, typedValue, true);
-		int category_theme = typedValue.data;
+		int category_theme = 0;
+		if (isNewSense()) {
+			TypedValue typedValue = new TypedValue();
+			mContext.getTheme().resolveAttribute(android.R.attr.colorAccent, typedValue, true);
+			category_theme = typedValue.data;
+		} else {
+			int category_color_id = mContext.getResources().getIdentifier("category_color", "attr", "com.htc");
+			TypedValue typedValue = new TypedValue();
+			mContext.getTheme().resolveAttribute(category_color_id, typedValue, true);
+			category_theme = typedValue.data;
+		}
 		
 		float density = mContext.getResources().getDisplayMetrics().density;
 		Bitmap imageWithShadow = Bitmap.createBitmap(icon.getIntrinsicWidth() + Math.round(density * 6), icon.getIntrinsicHeight() + Math.round(density * 6), Config.ARGB_8888);
@@ -587,7 +820,7 @@ public class Helpers {
 		
 		int[] offsetXY = new int[2];
 		Bitmap shadowImage;
-		if (Helpers.isLP()) {
+		if (isLP()) {
 			shadowImage = Bitmap.createBitmap(imageWithShadow.getWidth(), imageWithShadow.getHeight(), Config.ARGB_8888);
 			Canvas cnv = new Canvas(shadowImage);
 			Paint paint = new Paint();
@@ -623,7 +856,7 @@ public class Helpers {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
 			alert.setTitle(l10n(mContext, R.string.warning));
 			alert.setView(createCenteredText(mContext, R.string.storage_unavailable));
-			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
 			alert.show();
@@ -637,7 +870,7 @@ public class Helpers {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
 			alert.setTitle(l10n(mContext, R.string.warning));
 			alert.setView(createCenteredText(mContext, R.string.storage_read_only));
-			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
 			alert.show();
@@ -648,7 +881,7 @@ public class Helpers {
 				HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
 				alert.setTitle(l10n(mContext, R.string.warning));
 				alert.setView(createCenteredText(mContext, R.string.storage_cannot_mkdir));
-				alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 					public void onClick(DialogInterface dialog, int whichButton) {}
 				});
 				alert.show();
@@ -659,7 +892,7 @@ public class Helpers {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
 			alert.setTitle(l10n(mContext, R.string.warning));
 			alert.setView(createCenteredText(mContext, R.string.storage_unavailable));
-			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
 			alert.show();
@@ -696,10 +929,10 @@ public class Helpers {
 			mContext.startActivity(uriIntent);
 		} else {
 			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
-			alert.setTitle(Helpers.l10n(mContext, R.string.warning));
-			alert.setView(Helpers.createCenteredText(mContext, R.string.no_browser));
+			alert.setTitle(l10n(mContext, R.string.warning));
+			alert.setView(createCenteredText(mContext, R.string.no_browser));
 			alert.setCancelable(true);
-			alert.setNeutralButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+			alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
 				public void onClick(DialogInterface dialog, int whichButton) {}
 			});
 			alert.show();
@@ -734,8 +967,8 @@ public class Helpers {
 		return Build.DEVICE.contains("htc_a5");
 	}
 	
-	public static boolean isNotM7() {
-		return (!Build.DEVICE.contains("m7")); //|| Build.DEVICE.equals("m7cdug") || Build.DEVICE.equals("m7cdwg")
+	public static boolean isM7() {
+		return Build.DEVICE.contains("m7"); //|| Build.DEVICE.equals("m7cdug") || Build.DEVICE.equals("m7cdwg")
 	}
 	
 	public static boolean is443plus() {
@@ -794,31 +1027,32 @@ public class Helpers {
 			}
 			if (icon == null) icon = (Bitmap)data.getParcelableExtra(Intent.EXTRA_SHORTCUT_ICON);
 
-			if (icon != null && MainFragment.lastShortcutKey != null) try {
+			if (icon != null && lastShortcutKey != null) try {
 				String dir = act.getFilesDir() + "/shortcuts";
-				String fileName = dir + "/" + MainFragment.lastShortcutKey + ".png";
+				String fileName = dir + "/" + lastShortcutKey + ".png";
 				File shortcutsDir = new File(dir);
 				shortcutsDir.mkdirs();
 				File shortcutFileName = new File(fileName);
 				try (FileOutputStream shortcutOutStream = new FileOutputStream(shortcutFileName)) {
 					if (icon.compress(CompressFormat.PNG, 100, shortcutOutStream))
-					MainFragment.prefs.edit().putString(MainFragment.lastShortcutKey + "_icon", shortcutFileName.getAbsolutePath()).commit();
+						prefs.edit().putString(lastShortcutKey + "_icon", shortcutFileName.getAbsolutePath()).commit();
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 			
-			if (MainFragment.lastShortcutKey != null) {
-				if (MainFragment.lastShortcutKeyContents != null) MainFragment.prefs.edit().putString(MainFragment.lastShortcutKey, MainFragment.lastShortcutKeyContents).commit();
+			if (lastShortcutKey != null) {
+				if (lastShortcutKeyContents != null) prefs.edit().putString(lastShortcutKey, lastShortcutKeyContents).commit();
 				
 				String shortcutName = data.getStringExtra(Intent.EXTRA_SHORTCUT_NAME);
-				if (shortcutName != null) MainFragment.prefs.edit().putString(MainFragment.lastShortcutKey + "_name", shortcutName).commit();
+				if (shortcutName != null) prefs.edit().putString(lastShortcutKey + "_name", shortcutName).commit();
 				
 				Intent shortcutIntent = (Intent)data.getParcelableExtra(Intent.EXTRA_SHORTCUT_INTENT);
-				if (shortcutIntent != null) MainFragment.prefs.edit().putString(MainFragment.lastShortcutKey + "_intent", shortcutIntent.toUri(0)).commit();
+				if (shortcutIntent != null) prefs.edit().putString(lastShortcutKey + "_intent", shortcutIntent.toUri(0)).commit();
 			}
 			
 			if (shortcutDlg != null) shortcutDlg.dismiss();
+			if (shortcutDlgStock != null) shortcutDlgStock.dismiss();
 		}
 	}
 	
@@ -1083,7 +1317,7 @@ public class Helpers {
 	@SuppressWarnings("deprecation")
 	public static String getNextAlarm(Context mContext) {
 		if (mContext != null) {
-			if (Helpers.isLP()) {
+			if (isLP()) {
 				AlarmManager am = (AlarmManager)mContext.getSystemService(Context.ALARM_SERVICE);
 				if (am.getNextAlarmClock() == null) return null;
 				String systemFormat = "E " + ((SimpleDateFormat)DateFormat.getTimeFormat(mContext)).toLocalizedPattern();
@@ -1185,6 +1419,36 @@ public class Helpers {
 		}
 	}
 	
+	public static boolean isXposedFrameworkInstalled = false;
+	public static int lineCount = 0;
+	public static void checkForXposedFramework(final Runnable rnbl) {
+		Command command = new Command(0, false, "/system/bin/app_process --xposedversion 2>/dev/null") {
+			@Override
+			public void commandOutput(int id, String line) {
+				super.commandOutput(id, line);
+				if (lineCount > 0) return;
+				Pattern pattern = Pattern.compile("Xposed version: (\\d+)");
+				Matcher matcher = pattern.matcher(line);
+				if (matcher.find()) {
+					String xposed_ver = matcher.group(1);
+					try {
+						Integer.parseInt(xposed_ver);
+						isXposedFrameworkInstalled = true;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+				rnbl.run();
+				lineCount++;
+			}
+		};
+		try {
+			RootTools.getShell(false).add(command);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
 	/**
 	 * Enables or diables the init script for vol2wake
 	 * @param newState true to enable, false to disable
@@ -1216,7 +1480,7 @@ public class Helpers {
 		}
 	}
 	
-	public static void removePref(HtcPreferenceFragmentExt frag, String prefName, String catName) {
+	public static void removePref(HPreferenceFragmentExt frag, String prefName, String catName) {
 		if (frag.findPreference(prefName) != null) {
 			HtcPreference cat = frag.findPreference(catName);
 			if (cat instanceof HtcPreferenceScreen) ((HtcPreferenceScreen)cat).removePreference(frag.findPreference(prefName));
@@ -1224,8 +1488,24 @@ public class Helpers {
 		}
 	}
 	
-	public static void disablePref(HtcPreferenceFragmentExt frag, String prefName, String reasonText) {
+	public static void removePref(MPreferenceFragmentExt frag, String prefName, String catName) {
+		if (frag.findPreference(prefName) != null) {
+			Preference cat = frag.findPreference(catName);
+			if (cat instanceof PreferenceScreen) ((PreferenceScreen)cat).removePreference(frag.findPreference(prefName));
+			else if (cat instanceof PreferenceCategory) ((PreferenceCategory)cat).removePreference(frag.findPreference(prefName));
+		}
+	}
+	
+	public static void disablePref(HPreferenceFragmentExt frag, String prefName, String reasonText) {
 		HtcPreference pref = frag.findPreference(prefName);
+		if (pref != null) {
+			pref.setEnabled(false);
+			pref.setSummary(reasonText);
+		}
+	}
+	
+	public static void disablePref(MPreferenceFragmentExt frag, String prefName, String reasonText) {
+		Preference pref = frag.findPreference(prefName);
 		if (pref != null) {
 			pref.setEnabled(false);
 			pref.setSummary(reasonText);
@@ -1290,11 +1570,359 @@ public class Helpers {
 		return new int[] {0, 0, 0, 255};
 	}
 	
-	public static void setThemeForElement(SharedPreferences prefs, String mKey, int theme) {
-		int[] themeColors = Helpers.getThemeColors(mKey, theme);
-		prefs.edit().putInt(mKey + "_R", themeColors[0]).commit();
-		prefs.edit().putInt(mKey + "_G", themeColors[1]).commit();
-		prefs.edit().putInt(mKey + "_B", themeColors[2]).commit();
-		prefs.edit().putInt(mKey + "_A", themeColors[3]).commit();
+	public static void setThemeForElement(SharedPreferences sprefs, String mKey, int theme) {
+		int[] themeColors = getThemeColors(mKey, theme);
+		sprefs.edit().putInt(mKey + "_R", themeColors[0]).commit();
+		sprefs.edit().putInt(mKey + "_G", themeColors[1]).commit();
+		sprefs.edit().putInt(mKey + "_B", themeColors[2]).commit();
+		sprefs.edit().putInt(mKey + "_A", themeColors[3]).commit();
+	}
+	
+	public static int[][] cellArray = {
+		{ 0, 0, 0 },
+		{ R.id.cell1, R.id.cell1img, R.id.cell1txt },
+		{ R.id.cell2, R.id.cell2img, R.id.cell2txt },
+		{ R.id.cell3, R.id.cell3img, R.id.cell3txt },
+		{ R.id.cell4, R.id.cell4img, R.id.cell4txt },
+		{ R.id.cell5, R.id.cell5img, R.id.cell5txt },
+		{ R.id.cell6, R.id.cell6img, R.id.cell6txt }
+	};
+	
+	static {
+		// Sense
+		colorValues.put("sense_1", 0xff4ea770);
+		colorValues.put("sense_2", 0xff00afab);
+		colorValues.put("sense_3", 0xff07b7b9);
+		colorValues.put("sense_4", 0xff118b9c);
+		
+		colorValues.put("sense_5", 0xff17b7cd);
+		colorValues.put("sense_6", 0xff62b1bd);
+		colorValues.put("sense_7", 0xff0091b3);
+		colorValues.put("sense_8", 0xff0086cb);
+		
+		colorValues.put("sense_9", 0xff3786e6);
+		colorValues.put("sense_10", 0xff0761b9);
+		colorValues.put("sense_11", 0xff255999);
+		colorValues.put("sense_12", 0xff6658cf);
+		
+		colorValues.put("sense_13", 0xffa325a3);
+		colorValues.put("sense_14", 0xffffa63d);
+		colorValues.put("sense_15", 0xffff813d);
+		colorValues.put("sense_16", 0xffff5d3d);
+		
+		colorValues.put("sense_17", 0xffff7376);
+		colorValues.put("sense_18", 0xffff647e);
+		colorValues.put("sense_19", 0xfffe4a5d);
+		colorValues.put("sense_20", 0xffe74457);
+		
+		colorValues.put("sense_21", 0xfff64541);
+		colorValues.put("sense_22", 0xffd0343a);
+		colorValues.put("sense_23", 0xfff3cbb1);
+		colorValues.put("sense_24", 0xfff1b08e);
+		
+		colorValues.put("sense_25", 0xffc9a892);
+		colorValues.put("sense_26", 0xffce9374);
+		colorValues.put("sense_27", 0xffd1a194);
+		colorValues.put("sense_28", 0xffa57f74);
+		
+		colorValuesHeader.putAll(colorValues);
+		
+		// Material
+		colorValues.put("red_50", 0xffFFEBEE);
+		colorValues.put("red_100", 0xFFFFCDD2);
+		colorValues.put("red_200", 0xFFEF9A9A);
+		colorValues.put("red_300", 0xFFE57373);
+		colorValues.put("red_400", 0xFFEF5350);
+		colorValues.put("red_500", 0xFFF44336);
+		colorValuesHeader.put("red_500", 0xFFF44336);
+		colorValues.put("red_600", 0xFFE53935);
+		colorValues.put("red_700", 0xFFD32F2F);
+		colorValues.put("red_800", 0xFFC62828);
+		colorValues.put("red_900", 0xFFB71C1C);
+		colorValues.put("red_A100", 0xFFFF8A80);
+		colorValues.put("red_A200", 0xFFFF5252);
+		colorValues.put("red_A400", 0xFFFF1744);
+		colorValues.put("red_A700", 0xFFD50000);
+
+		colorValues.put("pink_50", 0xFFFCE4EC);
+		colorValues.put("pink_100", 0xFFF8BBD0);
+		colorValues.put("pink_200", 0xFFF48FB1);
+		colorValues.put("pink_300", 0xFFF06292);
+		colorValues.put("pink_400", 0xFFEC407A);
+		colorValues.put("pink_500", 0xFFE91E63);
+		colorValuesHeader.put("pink_500", 0xFFE91E63);
+		colorValues.put("pink_600", 0xFFD81B60);
+		colorValues.put("pink_700", 0xFFC2185B);
+		colorValues.put("pink_800", 0xFFAD1457);
+		colorValues.put("pink_900", 0xFF880E4F);
+		colorValues.put("pink_A100", 0xFFFF80AB);
+		colorValues.put("pink_A200", 0xFFFF4081);
+		colorValues.put("pink_A400", 0xFFF50057);
+		colorValues.put("pink_A700", 0xFFC51162);
+
+		colorValues.put("purple_50", 0xFFF3E5F5);
+		colorValues.put("purple_100", 0xFFE1BEE7);
+		colorValues.put("purple_200", 0xFFCE93D8);
+		colorValues.put("purple_300", 0xFFBA68C8);
+		colorValues.put("purple_400", 0xFFAB47BC);
+		colorValues.put("purple_500", 0xFF9C27B0);
+		colorValuesHeader.put("purple_500", 0xFF9C27B0);
+		colorValues.put("purple_600", 0xFF8E24AA);
+		colorValues.put("purple_700", 0xFF7B1FA2);
+		colorValues.put("purple_800", 0xFF6A1B9A);
+		colorValues.put("purple_900", 0xFF4A148C);
+		colorValues.put("purple_A100", 0xFFEA80FC);
+		colorValues.put("purple_A200", 0xFFE040FB);
+		colorValues.put("purple_A400", 0xFFD500F9);
+		colorValues.put("purple_A700", 0xFFAA00FF);
+
+		colorValues.put("deep_purple_50", 0xFFEDE7F6);
+		colorValues.put("deep_purple_100", 0xFFD1C4E9);
+		colorValues.put("deep_purple_200", 0xFFB39DDB);
+		colorValues.put("deep_purple_300", 0xFF9575CD);
+		colorValues.put("deep_purple_400", 0xFF7E57C2);
+		colorValues.put("deep_purple_500", 0xFF673AB7);
+		colorValuesHeader.put("deep_purple_500", 0xFF673AB7);
+		colorValues.put("deep_purple_600", 0xFF5E35B1);
+		colorValues.put("deep_purple_700", 0xFF512DA8);
+		colorValues.put("deep_purple_800", 0xFF4527A0);
+		colorValues.put("deep_purple_900", 0xFF311B92);
+		colorValues.put("deep_purple_A100", 0xFFB388FF);
+		colorValues.put("deep_purple_A200", 0xFF7C4DFF);
+		colorValues.put("deep_purple_A400", 0xFF651FFF);
+		colorValues.put("deep_purple_A700", 0xFF6200EA);
+
+		colorValues.put("indigo_50", 0xFFE8EAF6);
+		colorValues.put("indigo_100", 0xFFC5CAE9);
+		colorValues.put("indigo_200", 0xFF9FA8DA);
+		colorValues.put("indigo_300", 0xFF7986CB);
+		colorValues.put("indigo_400", 0xFF5C6BC0);
+		colorValues.put("indigo_500", 0xFF3F51B5);
+		colorValuesHeader.put("indigo_500", 0xFF3F51B5);
+		colorValues.put("indigo_600", 0xFF3949AB);
+		colorValues.put("indigo_700", 0xFF303F9F);
+		colorValues.put("indigo_800", 0xFF283593);
+		colorValues.put("indigo_900", 0xFF1A237E);
+		colorValues.put("indigo_A100", 0xFF8C9EFF);
+		colorValues.put("indigo_A200", 0xFF536DFE);
+		colorValues.put("indigo_A400", 0xFF3D5AFE);
+		colorValues.put("indigo_A700", 0xFF304FFE);
+
+		colorValues.put("blue_50", 0xFFE3F2FD);
+		colorValues.put("blue_100", 0xFFBBDEFB);
+		colorValues.put("blue_200", 0xFF90CAF9);
+		colorValues.put("blue_300", 0xFF64B5F6);
+		colorValues.put("blue_400", 0xFF42A5F5);
+		colorValues.put("blue_500", 0xFF2196F3);
+		colorValuesHeader.put("blue_500", 0xFF2196F3);
+		colorValues.put("blue_600", 0xFF1E88E5);
+		colorValues.put("blue_700", 0xFF1976D2);
+		colorValues.put("blue_800", 0xFF1565C0);
+		colorValues.put("blue_900", 0xFF0D47A1);
+		colorValues.put("blue_A100", 0xFF82B1FF);
+		colorValues.put("blue_A200", 0xFF448AFF);
+		colorValues.put("blue_A400", 0xFF2979FF);
+		colorValues.put("blue_A700", 0xFF2962FF);
+
+		colorValues.put("light_blue_50", 0xFFE1F5FE);
+		colorValues.put("light_blue_100", 0xFFB3E5FC);
+		colorValues.put("light_blue_200", 0xFF81D4fA);
+		colorValues.put("light_blue_300", 0xFF4fC3F7);
+		colorValues.put("light_blue_400", 0xFF29B6FC);
+		colorValues.put("light_blue_500", 0xFF03A9F4);
+		colorValuesHeader.put("light_blue_500", 0xFF03A9F4);
+		colorValues.put("light_blue_600", 0xFF039BE5);
+		colorValues.put("light_blue_700", 0xFF0288D1);
+		colorValues.put("light_blue_800", 0xFF0277BD);
+		colorValues.put("light_blue_900", 0xFF01579B);
+		colorValues.put("light_blue_A100", 0xFF80D8FF);
+		colorValues.put("light_blue_A200", 0xFF40C4FF);
+		colorValues.put("light_blue_A400", 0xFF00B0FF);
+		colorValues.put("light_blue_A700", 0xFF0091EA);
+
+		colorValues.put("cyan_50", 0xFFE0F7FA);
+		colorValues.put("cyan_100", 0xFFB2EBF2);
+		colorValues.put("cyan_200", 0xFF80DEEA);
+		colorValues.put("cyan_300", 0xFF4DD0E1);
+		colorValues.put("cyan_400", 0xFF26C6DA);
+		colorValues.put("cyan_500", 0xFF00BCD4);
+		colorValuesHeader.put("cyan_500", 0xFF00BCD4);
+		colorValues.put("cyan_600", 0xFF00ACC1);
+		colorValues.put("cyan_700", 0xFF0097A7);
+		colorValues.put("cyan_800", 0xFF00838F);
+		colorValues.put("cyan_900", 0xFF006064);
+		colorValues.put("cyan_A100", 0xFF84FFFF);
+		colorValues.put("cyan_A200", 0xFF18FFFF);
+		colorValues.put("cyan_A400", 0xFF00E5FF);
+		colorValues.put("cyan_A700", 0xFF00B8D4);
+
+		colorValues.put("teal_50", 0xFFE0F2F1);
+		colorValues.put("teal_100", 0xFFB2DFDB);
+		colorValues.put("teal_200", 0xFF80CBC4);
+		colorValues.put("teal_300", 0xFF4DB6AC);
+		colorValues.put("teal_400", 0xFF26A69A);
+		colorValues.put("teal_500", 0xFF009688);
+		colorValuesHeader.put("teal_500", 0xFF009688);
+		colorValues.put("teal_600", 0xFF00897B);
+		colorValues.put("teal_700", 0xFF00796B);
+		colorValues.put("teal_800", 0xFF00695C);
+		colorValues.put("teal_900", 0xFF004D40);
+		colorValues.put("teal_A100", 0xFFA7FFEB);
+		colorValues.put("teal_A200", 0xFF64FFDA);
+		colorValues.put("teal_A400", 0xFF1DE9B6);
+		colorValues.put("teal_A700", 0xFF00BFA5);
+
+		colorValues.put("green_50", 0xFFE8F5E9);
+		colorValues.put("green_100", 0xFFC8E6C9);
+		colorValues.put("green_200", 0xFFA5D6A7);
+		colorValues.put("green_300", 0xFF81C784);
+		colorValues.put("green_400", 0xFF66BB6A);
+		colorValues.put("green_500", 0xFF4CAF50);
+		colorValuesHeader.put("green_500", 0xFF4CAF50);
+		colorValues.put("green_600", 0xFF43A047);
+		colorValues.put("green_700", 0xFF388E3C);
+		colorValues.put("green_800", 0xFF2E7D32);
+		colorValues.put("green_900", 0xFF1B5E20);
+		colorValues.put("green_A100", 0xFFB9F6CA);
+		colorValues.put("green_A200", 0xFF69F0AE);
+		colorValues.put("green_A400", 0xFF00E676);
+		colorValues.put("green_A700", 0xFF00C853);
+
+		colorValues.put("light_green_50", 0xFFF1F8E9);
+		colorValues.put("light_green_100", 0xFFDCEDC8);
+		colorValues.put("light_green_200", 0xFFC5E1A5);
+		colorValues.put("light_green_300", 0xFFAED581);
+		colorValues.put("light_green_400", 0xFF9CCC65);
+		colorValues.put("light_green_500", 0xFF8BC34A);
+		colorValuesHeader.put("light_green_500", 0xFF8BC34A);
+		colorValues.put("light_green_600", 0xFF7CB342);
+		colorValues.put("light_green_700", 0xFF689F38);
+		colorValues.put("light_green_800", 0xFF558B2F);
+		colorValues.put("light_green_900", 0xFF33691E);
+		colorValues.put("light_green_A100", 0xFFCCFF90);
+		colorValues.put("light_green_A200", 0xFFB2FF59);
+		colorValues.put("light_green_A400", 0xFF76FF03);
+		colorValues.put("light_green_A700", 0xFF64DD17);
+
+		colorValues.put("lime_50", 0xFFF9FBE7);
+		colorValues.put("lime_100", 0xFFF0F4C3);
+		colorValues.put("lime_200", 0xFFE6EE9C);
+		colorValues.put("lime_300", 0xFFDCE775);
+		colorValues.put("lime_400", 0xFFD4E157);
+		colorValues.put("lime_500", 0xFFCDDC39);
+		colorValuesHeader.put("lime_500", 0xFFCDDC39);
+		colorValues.put("lime_600", 0xFFC0CA33);
+		colorValues.put("lime_700", 0xFFA4B42B);
+		colorValues.put("lime_800", 0xFF9E9D24);
+		colorValues.put("lime_900", 0xFF827717);
+		colorValues.put("lime_A100", 0xFFF4FF81);
+		colorValues.put("lime_A200", 0xFFEEFF41);
+		colorValues.put("lime_A400", 0xFFC6FF00);
+		colorValues.put("lime_A700", 0xFFAEEA00);
+
+		colorValues.put("yellow_50", 0xFFFFFDE7);
+		colorValues.put("yellow_100", 0xFFFFF9C4);
+		colorValues.put("yellow_200", 0xFFFFF590);
+		colorValues.put("yellow_300", 0xFFFFF176);
+		colorValues.put("yellow_400", 0xFFFFEE58);
+		colorValues.put("yellow_500", 0xFFFFEB3B);
+		colorValuesHeader.put("yellow_500", 0xFFFFEB3B);
+		colorValues.put("yellow_600", 0xFFFDD835);
+		colorValues.put("yellow_700", 0xFFFBC02D);
+		colorValues.put("yellow_800", 0xFFF9A825);
+		colorValues.put("yellow_900", 0xFFF57F17);
+		colorValues.put("yellow_A100", 0xFFFFFF82);
+		colorValues.put("yellow_A200", 0xFFFFFF00);
+		colorValues.put("yellow_A400", 0xFFFFEA00);
+		colorValues.put("yellow_A700", 0xFFFFD600);
+
+		colorValues.put("amber_50", 0xFFFFF8E1);
+		colorValues.put("amber_100", 0xFFFFECB3);
+		colorValues.put("amber_200", 0xFFFFE082);
+		colorValues.put("amber_300", 0xFFFFD54F);
+		colorValues.put("amber_400", 0xFFFFCA28);
+		colorValues.put("amber_500", 0xFFFFC107);
+		colorValuesHeader.put("amber_500", 0xFFFFC107);
+		colorValues.put("amber_600", 0xFFFFB300);
+		colorValues.put("amber_700", 0xFFFFA000);
+		colorValues.put("amber_800", 0xFFFF8F00);
+		colorValues.put("amber_900", 0xFFFF6F00);
+		colorValues.put("amber_A100", 0xFFFFE57F);
+		colorValues.put("amber_A200", 0xFFFFD740);
+		colorValues.put("amber_A400", 0xFFFFC400);
+		colorValues.put("amber_A700", 0xFFFFAB00);
+
+		colorValues.put("orange_50", 0xFFFFF3E0);
+		colorValues.put("orange_100", 0xFFFFE0B2);
+		colorValues.put("orange_200", 0xFFFFCC80);
+		colorValues.put("orange_300", 0xFFFFB74D);
+		colorValues.put("orange_400", 0xFFFFA726);
+		colorValues.put("orange_500", 0xFFFF9800);
+		colorValuesHeader.put("orange_500", 0xFFFF9800);
+		colorValues.put("orange_600", 0xFFFB8C00);
+		colorValues.put("orange_700", 0xFFF57C00);
+		colorValues.put("orange_800", 0xFFEF6C00);
+		colorValues.put("orange_900", 0xFFE65100);
+		colorValues.put("orange_A100", 0xFFFFD180);
+		colorValues.put("orange_A200", 0xFFFFAB40);
+		colorValues.put("orange_A400", 0xFFFF9100);
+		colorValues.put("orange_A700", 0xFFFF6D00);
+
+		colorValues.put("deep_orange_50", 0xFFFBE9A7);
+		colorValues.put("deep_orange_100", 0xFFFFCCBC);
+		colorValues.put("deep_orange_200", 0xFFFFAB91);
+		colorValues.put("deep_orange_300", 0xFFFF8A65);
+		colorValues.put("deep_orange_400", 0xFFFF7043);
+		colorValues.put("deep_orange_500", 0xFFFF5722);
+		colorValuesHeader.put("deep_orange_500", 0xFFFF5722);
+		colorValues.put("deep_orange_600", 0xFFF4511E);
+		colorValues.put("deep_orange_700", 0xFFE64A19);
+		colorValues.put("deep_orange_800", 0xFFD84315);
+		colorValues.put("deep_orange_900", 0xFFBF360C);
+		colorValues.put("deep_orange_A100", 0xFFFF9E80);
+		colorValues.put("deep_orange_A200", 0xFFFF6E40);
+		colorValues.put("deep_orange_A400", 0xFFFF3D00);
+		colorValues.put("deep_orange_A700", 0xFFDD2600);
+
+		colorValues.put("brown_50", 0xFFEFEBE9);
+		colorValues.put("brown_100", 0xFFD7CCC8);
+		colorValues.put("brown_200", 0xFFBCAAA4);
+		colorValues.put("brown_300", 0xFFA1887F);
+		colorValues.put("brown_400", 0xFF8D6E63);
+		colorValues.put("brown_500", 0xFF795548);
+		colorValuesHeader.put("brown_500", 0xFF795548);
+		colorValues.put("brown_600", 0xFF6D4C41);
+		colorValues.put("brown_700", 0xFF5D4037);
+		colorValues.put("brown_800", 0xFF4E342E);
+		colorValues.put("brown_900", 0xFF3E2723);
+
+		colorValues.put("grey_50", 0xFFFAFAFA);
+		colorValues.put("grey_100", 0xFFF5F5F5);
+		colorValues.put("grey_200", 0xFFEEEEEE);
+		colorValues.put("grey_300", 0xFFE0E0E0);
+		colorValues.put("grey_400", 0xFFBDBDBD);
+		colorValues.put("grey_500", 0xFF9E9E9E);
+		colorValuesHeader.put("grey_500", 0xFF9E9E9E);
+		colorValues.put("grey_600", 0xFF757575);
+		colorValues.put("grey_700", 0xFF616161);
+		colorValues.put("grey_800", 0xFF424242);
+		colorValues.put("grey_900", 0xFF212121);
+
+		colorValues.put("blue_grey_50", 0xFFECEFF1);
+		colorValues.put("blue_grey_100", 0xFFCFD8DC);
+		colorValues.put("blue_grey_200", 0xFFB0BBC5);
+		colorValues.put("blue_grey_300", 0xFF90A4AE);
+		colorValues.put("blue_grey_400", 0xFF78909C);
+		colorValues.put("blue_grey_500", 0xFF607D8B);
+		colorValuesHeader.put("blue_grey_500", 0xFF607D8B);
+		colorValues.put("blue_grey_600", 0xFF546E7A);
+		colorValues.put("blue_grey_700", 0xFF455A64);
+		colorValues.put("blue_grey_800", 0xFF37474F);
+		colorValues.put("blue_grey_900", 0xFF263238);
+		
+		colorValues.put("white_1000", 0xFFFFFFFF);
+		colorValues.put("black_1000", 0xFF000000);
+		
+		colorValuesHeader.put("grey_sense", 0xFF252525);
 	}
 }

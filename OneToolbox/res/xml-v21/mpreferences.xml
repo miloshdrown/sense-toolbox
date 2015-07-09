@@ -1,0 +1,117 @@
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:key="prefs" >
+	
+	<PreferenceCategory
+		android:title="@string/mods"
+		android:key="prefs_cat" >
+		
+	<PreferenceScreen
+		android:title="@string/systemui_mods"
+		android:key="pref_key_sysui" />
+
+	<PreferenceScreen
+		android:title="@string/cleanbeam_mods"
+		android:key="pref_key_cb" />
+	
+	<PreferenceScreen
+		android:title="@string/sense_mods"
+		android:key="pref_key_prism" />
+	
+	<PreferenceScreen
+		android:title="@string/message_mods"
+		android:key="pref_key_sms" />
+
+	<PreferenceScreen
+		android:title="@string/controls_mods"
+		android:key="pref_key_controls" />
+	
+	<PreferenceScreen
+		android:title="@string/various_mods"
+		android:key="pref_key_other" />
+	
+	<PreferenceScreen
+		android:title="@string/wakegestures_mod"
+		android:key="pref_key_wakegest" />
+	
+	<PreferenceScreen
+		android:title="@string/various_touchlock_title"
+		android:summary="@string/various_touchlock_summ"
+		android:key="pref_key_touchlock" />
+		
+	<PreferenceScreen
+		android:key="pref_key_betterheadsup"
+		android:title="@string/betterheadsup_title"
+		android:summary="@string/betterheadsup_summ" />
+	</PreferenceCategory>
+	
+	<PreferenceCategory
+		android:title="@string/toolbox"
+		android:key="pref_key_toolbox">
+		<CheckBoxPreference
+			android:key="pref_key_toolbox_icon"
+			android:summary="@string/toolbox_show_icon_summ"
+			android:title="@string/toolbox_show_icon_title"
+			android:defaultValue="true" />
+		<ListPreference
+			android:key="pref_key_toolbox_material_background"
+			android:summary="@string/toolbox_material_background_summ"
+			android:title="@string/toolbox_material_background_title"
+			android:entries="@array/material_background"
+			android:entryValues="@array/material_background_val"
+			android:defaultValue="1" />
+		<Preference
+			android:key="pref_key_toolbox_material_header"
+			android:summary="@string/toolbox_material_header_summ"
+			android:title="@string/toolbox_material_header_title" />
+		<Preference
+			android:key="pref_key_toolbox_material_accent"
+			android:summary="@string/toolbox_material_accent_summ"
+			android:title="@string/toolbox_material_accent_title" />
+		<Preference
+			android:key="pref_key_toolbox_lang"
+			android:summary="@string/toolbox_l10n_summ"
+			android:title="@string/toolbox_l10n_title" />
+	</PreferenceCategory>
+	
+	<PreferenceCategory
+		android:title="@string/troubleshoot"
+		android:key="pref_key_troubleshoot">
+		<Preference
+			android:title="@string/support_bug_title"
+			android:summary="@string/support_bug_summ"
+			android:key="pref_key_issuetracker" />
+		<Preference
+			android:key="pref_key_toolbox_sendreport"
+			android:title="@string/toolbox_acrasend_title"
+			android:summary="@string/toolbox_acrasend_summ" />
+		<EditTextPreference
+			android:key="acra.user.email"
+			android:title="@string/toolbox_acramail_title"
+			android:summary="@string/toolbox_acramail_summ"	/>
+	</PreferenceCategory>
+	
+	<PreferenceCategory
+		android:title="@string/support"
+		android:key="pref_key_support">
+		<Preference
+			android:title="@string/support_s6t_title"
+			android:summary="@string/support_s6t_summ"
+			android:key="pref_key_toolboxsite" />
+		<Preference
+			android:title="@string/support_donate_title"
+			android:summary="@string/support_donate_summ"
+			android:key="pref_key_donatepage" />
+		<Preference
+			android:title="@string/support_blog_title"
+			android:summary="@string/support_blog_summ"
+			android:key="pref_key_ARHD" />
+		<Preference
+			android:title="@string/support_artmod_title"
+			android:summary="@string/support_artmod_summ"
+			android:key="pref_key_ARTMOD" />
+	</PreferenceCategory>
+</PreferenceScreen>

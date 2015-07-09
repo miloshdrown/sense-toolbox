@@ -322,6 +322,7 @@
 	<string name="sense_transitions_summ">Change transition animations between apps and launcher. Soft reboot is required!</string>
 	<string name="notselected">Not selected</string>
 	<string name="loading_app_data">Loading apps&#8230;</string>
+	<string name="loading_accents">Loading color accents&#8230;</string>
 	<string name="locked_warning">Please unlock launcher first!</string>
 
 	<string name="message_mods">Messaging mods</string>
@@ -618,6 +619,12 @@
 	<string name="toolbox">Toolbox settings</string>
 	<string name="toolbox_show_icon_title">Fast access icon</string>
 	<string name="toolbox_show_icon_summ">Show Toolbox icon in Settings.</string>
+	<string name="toolbox_material_header_title">Header color</string>
+	<string name="toolbox_material_header_summ">Change Material header color.</string>
+	<string name="toolbox_material_accent_title">Accent color</string>
+	<string name="toolbox_material_accent_summ">Change Material accent color.</string>
+	<string name="toolbox_material_background_title">Theme</string>
+	<string name="toolbox_material_background_summ">Change app\'s background and text colors.</string>
 	<string name="toolbox_l10n_title">Localization</string>
 	<string name="toolbox_l10n_summ">Download and update language pack.</string>
 	<string name="toolbox_l10n_btn">Update</string>

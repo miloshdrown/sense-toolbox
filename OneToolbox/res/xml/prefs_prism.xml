@@ -5,7 +5,7 @@
 		<com.htc.preference.HtcPreferenceCategory
 			android:title="@string/sense_transparency"
 			android:key="pref_key_sense_transparency">
-		<com.sensetoolbox.six.utils.SeekBarPreference
+		<com.sensetoolbox.six.htc.utils.SeekBarPreference
 			android:key="pref_key_prism_invisiwidget"
 			android:title="@string/sense_twidget_title"
 			android:summary="@string/sense_twidget_summ"
@@ -21,7 +21,7 @@
 			android:entries="@array/googleapp_widget"
 			android:entryValues="@array/googleapp_widget_val"
 			android:defaultValue="1"/>
-		<com.sensetoolbox.six.utils.SeekBarPreference
+		<com.sensetoolbox.six.htc.utils.SeekBarPreference
 			android:key="pref_key_prism_invisidrawer"
 			android:title="@string/sense_tappdrawer_title"
 			android:summary="@string/sense_tappdrawer_summ"
@@ -30,7 +30,7 @@
 			android:text=" %"
 			android:max="100"
 			toolbox:enableKey="pref_key_prism_invisidrawer_enable"/>
-		<com.sensetoolbox.six.utils.SeekBarPreference
+		<com.sensetoolbox.six.htc.utils.SeekBarPreference
 			android:key="pref_key_prism_invisifolders"
 			android:title="@string/sense_tfolders_title"
 			android:summary="@string/sense_tfolders_summ"
@@ -39,7 +39,7 @@
 			android:text=" %"
 			android:max="100"
 			toolbox:enableKey="pref_key_prism_invisifolders_enable"/>
-		<com.sensetoolbox.six.utils.SeekBarPreference
+		<com.sensetoolbox.six.htc.utils.SeekBarPreference
 			android:key="pref_key_prism_invisifoldersbkg"
 			android:title="@string/sense_tfoldersbkg_title"
 			android:summary="@string/sense_tfoldersbkg_summ"
@@ -158,7 +158,7 @@
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_launch"
 			android:icon="@drawable/right_arrow" />
-		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+		<com.sensetoolbox.six.htc.utils.HtcListPreferenceEx
 			android:key="pref_key_prism_swipedown_toggle"
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_toggle"
@@ -177,7 +177,7 @@
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_launch"
 			android:icon="@drawable/right_arrow" />
-		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+		<com.sensetoolbox.six.htc.utils.HtcListPreferenceEx
 			android:key="pref_key_prism_swipeup_toggle"
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_toggle"
@@ -196,7 +196,7 @@
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_launch"
 			android:icon="@drawable/right_arrow" />
-		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+		<com.sensetoolbox.six.htc.utils.HtcListPreferenceEx
 			android:key="pref_key_prism_swiperight_toggle"
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_toggle"
@@ -215,7 +215,7 @@
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_launch"
 			android:icon="@drawable/right_arrow" />
-		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+		<com.sensetoolbox.six.htc.utils.HtcListPreferenceEx
 			android:key="pref_key_prism_swipeleft_toggle"
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_toggle"
@@ -234,7 +234,7 @@
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_launch"
 			android:icon="@drawable/right_arrow" />
-		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+		<com.sensetoolbox.six.htc.utils.HtcListPreferenceEx
 			android:key="pref_key_prism_shake_toggle"
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_toggle"
@@ -253,7 +253,7 @@
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_launch"
 			android:icon="@drawable/right_arrow" />
-		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+		<com.sensetoolbox.six.htc.utils.HtcListPreferenceEx
 			android:key="pref_key_prism_appslongpress_toggle"
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_toggle"

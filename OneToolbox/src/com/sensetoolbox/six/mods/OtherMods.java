@@ -13,8 +13,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import com.htc.fragment.widget.CarouselFragment;
-import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
@@ -24,12 +22,15 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityOptions;
 import android.app.Dialog;
+import android.app.Fragment;
 import android.app.KeyguardManager;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.BroadcastReceiver;
+import android.content.ContentProviderOperation;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -873,6 +874,27 @@ public class OtherMods {
 			}
 		});
 		
+		if (photoSize == 2)
+		findAndHookMethod("com.android.phone.InCallScreen", lpparam.classLoader, "createReminderView", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				try {
+					ViewGroup mReminder = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "mReminder");
+					if (mReminder != null) {
+						TextView callerName = (TextView)mReminder.findViewById(mReminder.getResources().getIdentifier("text2", "id", "com.android.phone"));
+						if (callerName != null) {
+							callerName.setSingleLine(false);
+							callerName.setMaxLines(2);
+							//callerName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 27);
+							callerName.setPadding(callerName.getPaddingLeft(), Math.round(callerName.getResources().getDisplayMetrics().density * 5), callerName.getPaddingRight(), callerName.getPaddingBottom());
+						}
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+		
 		if (Helpers.isSense7()) try {
 			findAndHookMethod("com.htc.lib1.cc.widget.reminder.drag.WorkspaceView", lpparam.classLoader, "setMastheadOnTop", ViewGroup.class, new XC_MethodHook() {
 				@Override
@@ -1115,9 +1137,9 @@ public class OtherMods {
 			
 			KeyguardManager kgMgr = (KeyguardManager)mContext.getSystemService(Context.KEYGUARD_SERVICE);
 			if (kgMgr.isKeyguardLocked())
-				intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.DimmedActivityLS");
+				intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.htc.DimmedActivityLS");
 			else
-				intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.DimmedActivity");
+				intent.setClassName("com.sensetoolbox.six", "com.sensetoolbox.six.htc.DimmedActivity");
 			intent.putParcelableArrayListExtra("sbns", sbns);
 			
 			Bundle animate = ActivityOptions.makeCustomAnimation(mContext, android.R.anim.fade_in, android.R.anim.fade_out).toBundle();
@@ -1168,7 +1190,7 @@ public class OtherMods {
 			@Override
 			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 				try {
-					CarouselFragment mCarousel = (CarouselFragment)param.thisObject;
+					Fragment mCarousel = (Fragment)param.thisObject;
 					if (mCarousel != null && mCarousel.getActivity().getPackageName().equals("com.sensetoolbox.six")) param.setResult(null);
 				} catch (Throwable t) {
 					XposedBridge.log(t);
@@ -1535,7 +1557,7 @@ public class OtherMods {
 				}
 			});
 			
-			findAndHookMethod("com.android.phone.PhoneUtils", lpparam.classLoader, "displayMMIComplete", "com.android.internal.telephony.Phone", Context.class, "com.android.internal.telephony.MmiCode", Message.class, HtcAlertDialog.class, new XC_MethodHook() {
+			findAndHookMethod("com.android.phone.PhoneUtils", lpparam.classLoader, "displayMMIComplete", "com.android.internal.telephony.Phone", Context.class, "com.android.internal.telephony.MmiCode", Message.class, "com.htc.lib1.cc.widget.HtcAlertDialog", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					Boolean hideNextUSSD = (Boolean)XposedHelpers.getAdditionalStaticField(findClass("com.android.phone.PhoneUtils", lpparam.classLoader), "hideNextUSSD");
@@ -2317,8 +2339,27 @@ public class OtherMods {
 			findAndHookMethod("com.htc.contacts.app.BaseMainActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					SharedPreferences mPrefs = (SharedPreferences)XposedHelpers.callStaticMethod(findClass("com.htc.contacts.util.ContactsUtils", lpparam.classLoader), "getDefaultSharedPreferences", (Activity)param.thisObject);
-					if (mPrefs != null) mPrefs.edit().putBoolean("All contact display order", true).commit();
+					Activity act = (Activity)param.thisObject;
+					SharedPreferences mPrefs = (SharedPreferences)XposedHelpers.callStaticMethod(findClass("com.htc.contacts.util.ContactsUtils", lpparam.classLoader), "getDefaultSharedPreferences", act);
+					if (mPrefs != null) try {
+						String orderKey = "All contact display order";
+						XposedBridge.log(orderKey);
+						mPrefs.edit().putBoolean(orderKey, true).apply();
+						
+						ContentValues opsVals = new ContentValues();
+						opsVals.put(orderKey, true);
+						
+						ArrayList<ContentProviderOperation> ops = new ArrayList<ContentProviderOperation>();
+						Uri uri = Uri.parse("content://com.android.contacts/contacts/display/sort/order/update");
+						ops.add(ContentProviderOperation.newUpdate(uri).withValues(opsVals).build());
+						act.getContentResolver().applyBatch("com.android.contacts", ops);
+						
+						Intent intent = new Intent("com.htc.contacts.intent.name_order_change");
+						intent.putExtra(orderKey, true);
+						act.sendBroadcast(intent);
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
 				}
 			});
 		} catch (Throwable t) {

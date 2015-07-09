@@ -9,13 +9,16 @@ Ideas
 Current changelog
 =================
 
-2.0.5
+2.1
+[New] Material UI design compatible with any 5.0+ ROM
 [New] Vibrate on outgoing call connect even if proximity sensor is covered
 [New] Vibrate on call disconnect
 [New] Vibration duration on call connect and disconnect
 [New] Disable Back to mute incoming call ringer
 [New][4.4.3+] Force "Last name first" order in contacts, call history and dialer
 [Fixed][Sense 7] Darken wallpaper above rectangular caller photo
+[Fixed][Sense 7] 2-line caller name on lockscreen with rectangular caller photo
+[Fixed] E8 and M9+ detection
 [Fixed] Some mods on Android 5.0.1 Sense 7
 [Fixed] Minor bugs
 

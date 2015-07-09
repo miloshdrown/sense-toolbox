@@ -22,6 +22,7 @@ import android.animation.Animator.AnimatorListener;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.KeyguardManager;
@@ -61,6 +62,7 @@ import android.net.NetworkInfo;
 import android.net.TrafficStats;
 import android.net.Uri;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
 import android.os.StatFs;
@@ -114,6 +116,7 @@ import android.widget.ImageView.ScaleType;
 import android.widget.LinearLayout;
 import android.widget.ListAdapter;
 import android.widget.ListView;
+import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -123,12 +126,10 @@ import android.widget.Toast;
 import com.htc.configuration.HtcWrapConfiguration;
 import com.htc.widget.HtcCheckBox;
 import com.htc.widget.HtcCompoundButton;
-import com.htc.widget.HtcPopupWindow;
 import com.htc.widget.HtcCompoundButton.OnCheckedChangeListener;
-import com.htc.widget.HtcRimButton;
 import com.htc.widget.HtcSeekBar;
 import com.sensetoolbox.six.R;
-import com.sensetoolbox.six.SenseThemes.PackageTheme;
+import com.sensetoolbox.six.htc.SenseThemes.PackageTheme;
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.HorizontalPager;
@@ -686,14 +687,160 @@ public class SysUIMods {
 		}
 	}
 	
-	public static void execHook_BrightnessSlider(LoadPackageParam lpparam) {
+	private static SettingsObserverM mso = null;
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	private static void addBrightnessSliderM(ViewGroup mStatusBarWindow, ViewGroup mHeader, ClassLoader cl) {
+		try {
+			final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+			ViewGroup panel;
+			if (mHeader != null)
+				panel = mHeader;
+			else
+				panel = (LinearLayout) mStatusBarWindow.findViewById(mStatusBarWindow.getResources().getIdentifier("panel", "id", "com.android.systemui"));
+			
+			// Get rid of old slider
+			if (mso != null) {
+				mStatusBarWindow.getContext().getContentResolver().unregisterContentObserver(mso);
+				mso = null;
+			}
+			View oldSliderConatiner = panel.findViewWithTag("sliderConatiner");
+			if (oldSliderConatiner != null) panel.removeView(oldSliderConatiner);
+			
+			// Inflate the slider layout using material theme
+			//ContextThemeWrapper ctw = new ContextThemeWrapper(panel.getContext(), android.R.style.Theme_Material);
+			Context mContext = panel.getContext();
+			
+			LinearLayout sliderConatiner = new LinearLayout(mContext);
+			sliderConatiner = new LinearLayout(mContext);
+			sliderConatiner.setLayoutParams(new ViewGroup.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			sliderConatiner.setOrientation(LinearLayout.HORIZONTAL);
+			sliderConatiner.setGravity(Gravity.CENTER_VERTICAL);
+			sliderConatiner.setPadding(densify(mContext, 13), 0, 0, densify(mContext, 7));
+			sliderConatiner.setBackground(new ColorDrawable(Color.TRANSPARENT));
+			//panel.getResources().getColor(panel.getResources().getIdentifier("notification_header_color", "color", "com.android.systemui")
+			sliderConatiner.setTag("sliderConatiner");
+			sliderConatiner.setOnTouchListener(new OnTouchListener() {
+				@Override
+				public boolean onTouch(View v, MotionEvent event) {
+					v.performClick();
+					return true;
+				}
+			});
+			
+			Class<?> clsHtcCheckBox = findClass("com.htc.lib1.cc.widget.HtcCheckBox", cl);
+			Class<?> clsHtcSeekBar = findClass("com.htc.lib1.cc.widget.HtcSeekBar", cl);
+			
+			final View checkBox = (View)clsHtcCheckBox.getConstructor(Context.class, int.class).newInstance(mContext, 1);
+			checkBox.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+			
+			TextView autoText = new TextView(mContext);
+			LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			lp.bottomMargin = Math.round(densify(mContext, 1) / 2);
+			lp.leftMargin = densify(mContext, 3);
+			autoText.setLayoutParams(lp);
+			autoText.setGravity(Gravity.CENTER_VERTICAL);
+			autoText.setText(Helpers.xl10n(modRes, R.string.systemui_brightslide_auto));
+			
+			sliderConatiner.addView(checkBox);
+			sliderConatiner.addView(autoText);
+			
+			if (Helpers.isLP())
+				panel.addView(sliderConatiner);
+			else
+				panel.addView(sliderConatiner, 1);
+			
+			final SeekBar seekBar = (SeekBar)clsHtcSeekBar.getConstructor(Context.class).newInstance(mContext);
+			LinearLayout.LayoutParams sblp = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+			sblp.rightMargin = densify(mContext, 10);
+			sblp.leftMargin = densify(mContext, 10);
+			sblp.topMargin = densify(mContext, 1);
+			seekBar.setLayoutParams(sblp);
+			seekBar.setMax(225);
+			
+			sliderConatiner.addView(seekBar);
+			
+			final ContentResolver cr = mStatusBarWindow.getContext().getContentResolver();
+			
+			seekBar.setProgress(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS) - 30);
+			XposedHelpers.callMethod(checkBox, "setChecked", android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE) == 0 ? false : true);
+			seekBar.setEnabled(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE) == 0 ? true : false);
+			seekBar.setOnSeekBarChangeListener(new OnSeekBarChangeListener() {
+				@Override
+				public void onStopTrackingTouch(SeekBar seekBar) {
+					seekBar.setPressed(false);
+					android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS, seekBar.getProgress() + 30);
+				}
+				@Override
+				public void onStartTrackingTouch(SeekBar seekBar) {
+					seekBar.setPressed(true);
+				}
+				@Override
+				public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+					if (fromUser) try {
+						Object pwrmgr = seekBar.getContext().getSystemService(Context.POWER_SERVICE);
+						XposedHelpers.callMethod(pwrmgr, "setBacklightBrightness", progress + 30);
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+				}
+			});
+			
+			autoText.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					try {
+						XposedHelpers.callMethod(checkBox, "toggle");
+						if (XposedHelpers.getBooleanField(checkBox, "mChecked")) {
+							android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, 1);
+							seekBar.setProgress(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS) - 30);
+							seekBar.setEnabled(false);
+						} else {
+							android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, 0);
+							seekBar.setProgress(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS) - 30);
+							seekBar.setEnabled(true);
+						}
+					} catch (SettingNotFoundException e) {}
+				}
+			});
+			
+			checkBox.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					try {
+						if (XposedHelpers.getBooleanField(checkBox, "mChecked")) {
+							android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, 1);
+							seekBar.setProgress(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS) - 30);
+							seekBar.setEnabled(false);
+						} else {
+							android.provider.Settings.System.putInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE, 0);
+							seekBar.setProgress(android.provider.Settings.System.getInt(cr, android.provider.Settings.System.SCREEN_BRIGHTNESS) - 30);
+							seekBar.setEnabled(true);
+						}
+					} catch (SettingNotFoundException e) {}
+				}
+			});
+			
+			if (mso == null) {
+				mso = new SettingsObserverM(new Handler());
+				mso.setup(checkBox, seekBar, cr);
+				cr.registerContentObserver(android.provider.Settings.System.CONTENT_URI, true, mso);
+			}
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_BrightnessSlider(final LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook(){
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) {
 				ViewGroup mStatusBarWindow = (ViewGroup)getObjectField(param.thisObject, "mStatusBarWindow");
 				ViewGroup mHeader = null;
 				if (Helpers.isLP()) mHeader = (ViewGroup)getObjectField(param.thisObject, "mHeader");
-				addBrightnessSlider(mStatusBarWindow, mHeader);
+				if (Helpers.isNewSense())
+					addBrightnessSliderM(mStatusBarWindow, mHeader, lpparam.classLoader);
+				else
+					addBrightnessSlider(mStatusBarWindow, mHeader);
 			}
 		});
 		
@@ -703,7 +850,11 @@ public class SysUIMods {
 				protected void afterHookedMethod(MethodHookParam param) {
 					ViewGroup mStatusBarWindow = (ViewGroup)getObjectField(param.thisObject, "mStatusBarWindow");
 					ViewGroup mHeader = (ViewGroup)getObjectField(param.thisObject, "mHeader");
-					addBrightnessSlider(mStatusBarWindow, mHeader);
+					if (Helpers.isNewSense())
+						addBrightnessSliderM(mStatusBarWindow, mHeader, lpparam.classLoader);
+					else
+						addBrightnessSlider(mStatusBarWindow, mHeader);
+					
 				}
 			};
 			
@@ -717,7 +868,8 @@ public class SysUIMods {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) {
 					LinearLayout sbheader = (LinearLayout)param.thisObject;
-					if (sbheader.getLayoutParams() != null) sbheader.getLayoutParams().height += densify(sbheader.getContext(), 28);
+					if (sbheader.getLayoutParams() != null)
+					sbheader.getLayoutParams().height += densify(sbheader.getContext(), 28);
 				}
 			});
 		} else {
@@ -725,12 +877,72 @@ public class SysUIMods {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) {
 					FrameLayout mStatusBarWindow = (FrameLayout)getObjectField(param.thisObject, "mStatusBarWindow");
-					addBrightnessSlider(mStatusBarWindow, null);
+					if (Helpers.isNewSense())
+						addBrightnessSliderM(mStatusBarWindow, null, lpparam.classLoader);
+					else
+						addBrightnessSlider(mStatusBarWindow, null);
+					
 				}
 			});
 		}
 	}
 	
+	//Need this to listen for settings changes
+	protected static class SettingsObserver extends ContentObserver {
+		private HtcCheckBox cb = null;
+		private HtcSeekBar sb = null;
+		private ContentResolver cr;
+		public SettingsObserver(Handler handler) {
+			super(handler);
+		}
+		public void setup(HtcCheckBox cbx, HtcSeekBar sbr, ContentResolver crr) {
+			this.cb = cbx;
+			this.sb = sbr;
+			this.cr = crr;
+		}
+		@Override
+		public void onChange(boolean selfChange) {
+			this.onChange(selfChange, null);
+		}
+		@Override
+		public void onChange(boolean selfChange, Uri uri) {
+			if (!this.sb.isPressed()) try {
+				this.cb.setChecked(android.provider.Settings.System.getInt(this.cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE) == 0 ? false : true);
+				this.sb.setProgress(android.provider.Settings.System.getInt(this.cr, android.provider.Settings.System.SCREEN_BRIGHTNESS) - 30);
+			} catch (SettingNotFoundException e) {
+				//No brightness setting?
+			}
+		}
+	}
+	
+	protected static class SettingsObserverM extends ContentObserver {
+		private View cb = null;
+		private SeekBar sb = null;
+		private ContentResolver cr;
+		public SettingsObserverM(Handler handler) {
+			super(handler);
+		}
+		public void setup(View cbx, SeekBar sbr, ContentResolver crr) {
+			this.cb = cbx;
+			this.sb = sbr;
+			this.cr = crr;
+		}
+		@Override
+		public void onChange(boolean selfChange) {
+			this.onChange(selfChange, null);
+		}
+		@Override
+		public void onChange(boolean selfChange, Uri uri) {
+			if (!this.sb.isPressed()) try {
+				XposedHelpers.callMethod(this.cb, "setChecked", android.provider.Settings.System.getInt(this.cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE) == 0 ? false : true);
+				this.cb.callOnClick();
+				this.sb.setProgress(android.provider.Settings.System.getInt(this.cr, android.provider.Settings.System.SCREEN_BRIGHTNESS) - 30);
+			} catch (SettingNotFoundException e) {
+				//No brightness setting?
+			}
+		}
+	}
+		
 	private static ConnectivityManager connectivityManager = null;
 	private static TextView dataRateVal = null;
 	private static TextView dataRateUnits = null;
@@ -884,34 +1096,6 @@ public class SysUIMods {
 				}
 			}
 		});
-	}
-	
-	//Need this to listen for settings changes
-	protected static class SettingsObserver extends ContentObserver {
-		private HtcCheckBox cb = null;
-		private HtcSeekBar sb = null;
-		private ContentResolver cr;
-		public SettingsObserver(Handler handler) {
-			super(handler);
-		}
-		public void setup(HtcCheckBox cbx, HtcSeekBar sbr, ContentResolver crr) {
-			this.cb = cbx;
-			this.sb = sbr;
-			this.cr = crr;
-		}
-		@Override
-		public void onChange(boolean selfChange) {
-			this.onChange(selfChange, null);
-		}
-		@Override
-		public void onChange(boolean selfChange, Uri uri) {
-			if (!this.sb.isPressed()) try {
-				this.cb.setChecked(android.provider.Settings.System.getInt(this.cr, android.provider.Settings.System.SCREEN_BRIGHTNESS_MODE) == 0 ? false : true);
-				this.sb.setProgress(android.provider.Settings.System.getInt(this.cr, android.provider.Settings.System.SCREEN_BRIGHTNESS) - 30);
-			} catch (SettingNotFoundException e) {
-				//No brightness setting?
-			}
-		}
 	}
 	/*
 	public static void execHook_DisableEQS(final InitPackageResourcesParam resparam) {
@@ -1468,7 +1652,7 @@ public class SysUIMods {
 		}
 	}
 	
-	static HtcPopupWindow popup = null;
+	static PopupWindow popup = null;
 	
 	private static void bindPopup(final Activity act, final ViewGroup theView) {
 		theView.setOnLongClickListener(new OnLongClickListener() {
@@ -1482,7 +1666,7 @@ public class SysUIMods {
 					else
 						ctx = act;
 					
-					popup = new HtcPopupWindow(ctx);
+					popup = new PopupWindow(ctx);
 					float density = ctx.getResources().getDisplayMetrics().density;
 					int theWidth = Math.round(ctx.getResources().getDisplayMetrics().widthPixels / 3 + 30 * density);
 					popup.setWidth(theWidth);
@@ -2694,7 +2878,9 @@ public class SysUIMods {
 						XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 						Intent intent = new Intent("com.sensetoolbox.six.DELETE_SCREENSHOT");
 						intent.putExtra("screenshot_file", uri);
-						mNotificationBuilder.addAction(ctx.getResources().getIdentifier("icon_btn_delete_light", "drawable", "com.htc"), Helpers.xl10n(modRes, R.string.delete), PendingIntent.getBroadcast(ctx, 0, intent, 0x10000000));
+						int resId = ctx.getResources().getIdentifier("icon_btn_delete_light", "drawable", "com.htc");
+						if (resId == 0) resId = ctx.getResources().getIdentifier("icon_btn_cancel_dark_s", "drawable", "com.android.systemui");
+						mNotificationBuilder.addAction(resId, Helpers.xl10n(modRes, R.string.delete), PendingIntent.getBroadcast(ctx, 0, intent, 0x10000000));
 					}
 				} catch (Throwable t) {
 					XposedBridge.log(t);
@@ -3117,8 +3303,8 @@ public class SysUIMods {
 			
 			if (cnt > 0 && pager.getChildAt(0) != null) {
 				XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-				HtcRimButton rimBtn = (HtcRimButton)pager.getChildAt(0).findViewById(R.id.headsup_page_dismissbtn);
-				HtcRimButton rimBtnSleep = (HtcRimButton)pager.getChildAt(0).findViewById(R.id.headsup_page_dismissbtn_sleep);
+				Button rimBtn = (Button)pager.getChildAt(0).findViewById(R.id.headsup_page_dismissbtn);
+				Button rimBtnSleep = (Button)pager.getChildAt(0).findViewById(R.id.headsup_page_dismissbtn_sleep);
 				
 				if (cnt == 1 && sleepOnDismissLast) {
 					if (rimBtn != null) rimBtn.setText(Helpers.xl10n(modRes, R.string.popupnotify_dismissonly));
@@ -3324,15 +3510,38 @@ public class SysUIMods {
 					actions.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
 					actions.setPadding(0, 0, 0, 0);
 					
-					HtcRimButton rimBtn;
-					HtcRimButton rimBtnSleep;
+					Button rimBtn;
+					Button rimBtnSleep;
 					if (isUpdate) {
-						rimBtn = (HtcRimButton)notification.findViewById(R.id.headsup_page_dismissbtn);
-						rimBtnSleep = (HtcRimButton)notification.findViewById(R.id.headsup_page_dismissbtn_sleep);
+						rimBtn = (Button)notification.findViewById(R.id.headsup_page_dismissbtn);
+						rimBtnSleep = (Button)notification.findViewById(R.id.headsup_page_dismissbtn_sleep);
 					} else {
-						rimBtn = new HtcRimButton(mContext);
+						OnTouchListener otl = new OnTouchListener() {
+							@Override
+							public boolean onTouch(View v, MotionEvent event) {
+								switch (event.getActionMasked()) {
+									case MotionEvent.ACTION_DOWN:
+										int color = getThemeColor("pref_key_betterheadsup_theme_dismiss");
+										int newR = Color.red(color) + 7;
+										if (newR > 255) newR = 255;
+										int newG = Color.green(color) + 7;
+										if (newG > 255) newG = 255;
+										int newB = Color.blue(color) + 7;
+										if (newB > 255) newB = 255;
+										v.setBackgroundColor(Color.argb(Color.alpha(color), newR, newG, newB));
+										break;
+									case MotionEvent.ACTION_UP:
+									case MotionEvent.ACTION_CANCEL:
+										v.setBackgroundColor(getThemeColor("pref_key_betterheadsup_theme_dismiss"));
+										break;
+								}
+								return false;
+							}
+						};
+						
+						rimBtn = new Button(mContext);
 						rimBtn.setId(R.id.headsup_page_dismissbtn);
-						LinearLayout.LayoutParams lpbtn = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+						LinearLayout.LayoutParams lpbtn = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, densify(34));
 						lpbtn.weight = 1;
 						lpbtn.gravity = Gravity.LEFT | Gravity.BOTTOM;
 						rimBtn.setLayoutParams(lpbtn);
@@ -3342,11 +3551,13 @@ public class SysUIMods {
 						rimBtn.setTypeface(faceCondensed);
 						rimBtn.setText(Helpers.xl10n(modRes, R.string.popupnotify_dismiss));
 						rimBtn.setPadding(densify(5), densify(5), densify(5), densify(7));
+						rimBtn.setAllCaps(false);
+						rimBtn.setOnTouchListener(otl);
 						
-						rimBtnSleep = new HtcRimButton(mContext);
+						rimBtnSleep = new Button(mContext);
 						rimBtnSleep.setVisibility(View.GONE);
 						rimBtnSleep.setId(R.id.headsup_page_dismissbtn_sleep);
-						LinearLayout.LayoutParams lpbtnsleep = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+						LinearLayout.LayoutParams lpbtnsleep = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, densify(34));
 						lpbtnsleep.weight = 1;
 						lpbtnsleep.gravity = Gravity.RIGHT | Gravity.BOTTOM;
 						rimBtnSleep.setLayoutParams(lpbtnsleep);
@@ -3356,6 +3567,8 @@ public class SysUIMods {
 						rimBtnSleep.setTypeface(faceCondensed);
 						rimBtnSleep.setText(Helpers.xl10n(modRes, R.string.popupnotify_dismisssleep));
 						rimBtnSleep.setPadding(densify(5), densify(5), densify(5), densify(7));
+						rimBtnSleep.setAllCaps(false);
+						rimBtnSleep.setOnTouchListener(otl);
 					}
 					
 					rimBtn.setOnClickListener(new OnClickListener() {

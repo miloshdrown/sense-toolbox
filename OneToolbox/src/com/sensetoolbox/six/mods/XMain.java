@@ -1,12 +1,7 @@
 package com.sensetoolbox.six.mods;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import android.content.res.XResources;
 
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.sensetoolbox.six.SenseThemes.PackageTheme;
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
 import com.sensetoolbox.six.utils.PackagePermissions;
@@ -38,9 +33,6 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 	public static boolean prefs_pwm = false;
 	public static boolean prefs_icons_lp = false;
 	public static Version senseVersion;
-	public static ObjectMapper mapper = new ObjectMapper();
-	public static List<PackageTheme> xcached_pkgthm = new ArrayList<PackageTheme>();
-	public static String xcached_str;
 	
 	@Override
 	public void initZygote(StartupParam startupParam) throws Throwable {
@@ -515,7 +507,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				SettingsMods.execHook_ScreenOn(lpparam);
 			
 			if (pref.getBoolean("pref_key_other_appdetails", false))
-				SettingsMods.execHook_Apps(lpparam);
+				if (Helpers.isNewSense())
+					SettingsMods.execHook_AppsM(lpparam);
+				else
+					SettingsMods.execHook_Apps(lpparam);
 			
 			if (pref.getBoolean("pref_key_other_nochargerwarn", false))
 				OtherMods.execHook_NoChargerWarning(lpparam);

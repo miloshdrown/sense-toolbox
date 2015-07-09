@@ -47,7 +47,7 @@
 		android:key="pref_key_other_popupnotify_bwlist"
 		android:summary="@string/various_popupnotify_bwlist_summ"
 		android:title="@string/various_popupnotify_bwlist_title" />
-	<com.sensetoolbox.six.utils.HtcMultiSelectListPreferenceEx
+	<com.sensetoolbox.six.htc.utils.HtcMultiSelectListPreferenceEx
 		android:dialogTitle="@string/various_popupnotify_bwlist_title"
 		android:key="pref_key_other_popupnotify_bwlist_apps"
 		android:summary="@string/various_popupnotify_bwlist_black_summ"

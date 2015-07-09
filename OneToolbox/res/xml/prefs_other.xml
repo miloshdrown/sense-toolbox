@@ -126,7 +126,7 @@
 			android:summary="@string/various_tracecolor_summ"
 			android:title="@string/various_tracecolor_title"
 			android:defaultValue="false" />
-		<com.sensetoolbox.six.utils.SeekBarPreference
+		<com.sensetoolbox.six.htc.utils.SeekBarPreference
 			android:key="pref_key_other_tracealpha"
 			android:title="@string/various_tracealpha_title"
 			android:summary="@string/various_tracealpha_summ"
@@ -196,7 +196,7 @@
 			android:summary="@string/various_ledoncharge_summ"
 			android:title="@string/various_ledoncharge_title"
 			android:defaultValue="false" />
-		<com.sensetoolbox.six.utils.LEDTimePicker
+		<com.sensetoolbox.six.htc.utils.LEDTimePicker
 			android:key="pref_key_other_ledtimeout"
 			android:summary="@string/various_ledtimeout_summ"
 			android:title="@string/various_ledtimeout_title" />
@@ -252,7 +252,7 @@
 			android:summary="@string/various_callvibrateoff_summ"
 			android:title="@string/various_callvibrateoff_title"
 			android:defaultValue="false" />
-		<com.sensetoolbox.six.utils.SeekBarPreference
+		<com.sensetoolbox.six.htc.utils.SeekBarPreference
 			android:key="pref_key_other_callvibratedur"
 			android:title="@string/various_callvibratedur_title"
 			android:summary="@string/various_callvibratedur_summ"
@@ -300,7 +300,7 @@
 				android:entries="@array/various_screenoff"
 				android:entryValues="@array/various_screenoff_val"
 				android:defaultValue="0" />
-			<com.sensetoolbox.six.utils.SeekBarPreference
+			<com.sensetoolbox.six.htc.utils.SeekBarPreference
 				android:key="pref_key_other_screenanim_duration"
 				android:title="@string/various_screenanim_duration_title"
 				android:summary="@string/various_screenanim_duration_summ"

@@ -41,7 +41,6 @@ import android.telephony.TelephonyManager;
 import android.view.KeyEvent;
 import android.widget.Toast;
 
-import com.sensetoolbox.six.MainFragment;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.mods.XMain;
 
@@ -462,12 +461,20 @@ public class GlobalActions {
 	
 	public static void toolboxInit(LoadPackageParam lpparam) {
 		try {
-			XposedHelpers.findAndHookMethod("com.sensetoolbox.six.MainFragment", lpparam.classLoader, "onActivityCreated", Bundle.class, new XC_MethodHook() {
+			XposedHelpers.findAndHookMethod("com.sensetoolbox.six.htc.HMainFragment", lpparam.classLoader, "onActivityCreated", Bundle.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					XposedHelpers.setBooleanField(param.thisObject, "toolboxModuleActive", true);
 				}
 			});
+			
+			XposedHelpers.findAndHookMethod("com.sensetoolbox.six.material.MMainFragment", lpparam.classLoader, "onActivityCreated", Bundle.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					XposedHelpers.setBooleanField(param.thisObject, "toolboxModuleActive", true);
+				}
+			});
+			
 			Helpers.emptyFile(Environment.getExternalStorageDirectory().getAbsolutePath() + "/SenseToolbox/uncaught_exceptions", false);
 		} catch (Throwable t) {
 			XposedBridge.log(t);
@@ -846,10 +853,10 @@ public class GlobalActions {
 				hue = XMain.pref.getInt("pref_key_colorfilter_hueValue", 180) - 180;
 			}
 		} else {
-			if (MainFragment.prefs != null) {
-				brightness = MainFragment.prefs.getInt("pref_key_colorfilter_brightValue", 100) - 100;
-				saturation = MainFragment.prefs.getInt("pref_key_colorfilter_satValue", 100) - 100;
-				hue = MainFragment.prefs.getInt("pref_key_colorfilter_hueValue", 180) - 180;
+			if (Helpers.prefs != null) {
+				brightness = Helpers.prefs.getInt("pref_key_colorfilter_brightValue", 100) - 100;
+				saturation = Helpers.prefs.getInt("pref_key_colorfilter_satValue", 100) - 100;
+				hue = Helpers.prefs.getInt("pref_key_colorfilter_hueValue", 180) - 180;
 			}
 		}
 		

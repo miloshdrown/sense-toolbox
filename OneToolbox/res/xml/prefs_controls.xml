@@ -49,7 +49,7 @@
 			android:entryValues="@array/extendedpanel_actions_val"
 			android:defaultValue="1"
 			android:dependency="pref_key_controls_extendedpanel" />
-		<com.sensetoolbox.six.utils.SeekBarPreference
+		<com.sensetoolbox.six.htc.utils.SeekBarPreference
 			android:key="pref_key_controls_keyshaptic"
 			android:title="@string/controls_keyshaptic_title"
 			android:summary="@string/controls_keyshaptic_summ"
@@ -60,7 +60,7 @@
 			android:max="100"
 			toolbox:hapticPref="true"
 			toolbox:enableKey="pref_key_controls_keyshaptic_enable"/>
-		<com.sensetoolbox.six.utils.SeekBarPreference
+		<com.sensetoolbox.six.htc.utils.SeekBarPreference
 			android:key="pref_key_controls_longpresshaptic"
 			android:title="@string/controls_longpresshaptic_title"
 			android:summary="@string/controls_longpresshaptic_summ"
@@ -71,7 +71,7 @@
 			android:max="100"
 			toolbox:hapticPref="true"
 			toolbox:enableKey="pref_key_controls_longpresshaptic_enable"/>
-		<com.sensetoolbox.six.utils.SeekBarPreference
+		<com.sensetoolbox.six.htc.utils.SeekBarPreference
 			android:key="pref_key_controls_keyboardhaptic"
 			android:title="@string/controls_keyboardhaptic_title"
 			android:summary="@string/controls_keyboardhaptic_summ"
@@ -98,7 +98,7 @@
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_launch"
 			android:icon="@drawable/right_arrow" />
-		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+		<com.sensetoolbox.six.htc.utils.HtcListPreferenceEx
 			android:key="pref_key_controls_backlongpress_toggle"
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_toggle"
@@ -122,7 +122,7 @@
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_launch"
 			android:icon="@drawable/right_arrow" />
-		<com.sensetoolbox.six.utils.HtcListPreferencePlus
+		<com.sensetoolbox.six.htc.utils.HtcListPreferenceEx
 			android:key="pref_key_controls_homeassist_toggle"
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_toggle"

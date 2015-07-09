@@ -14,7 +14,7 @@
 			android:summary="@string/systemui_tsb_summ"
 			android:title="@string/systemui_tsb_title"
 			android:defaultValue="false" />
-		<com.sensetoolbox.six.utils.SeekBarPreference
+		<com.sensetoolbox.six.htc.utils.SeekBarPreference
 			android:key="pref_key_sysui_invisinotify"
 			android:title="@string/systemui_tnb_title"
 			android:summary="@string/systemui_tnb_summ"
@@ -92,11 +92,11 @@
 		<com.htc.preference.HtcPreferenceCategory
 			android:title="@string/systemui_eqs"
 			android:key="pref_systemui_eqs">
-		<com.sensetoolbox.six.utils.BrightnessPicker
+		<com.sensetoolbox.six.htc.utils.BrightnessPicker
 			android:key="pref_key_sysui_brightqs"
 			android:summary="@string/systemui_brightqs_summ"
 			android:title="@string/systemui_brightqs_title" />
-		<com.sensetoolbox.six.utils.TimeoutPicker
+		<com.sensetoolbox.six.htc.utils.TimeoutPicker
 			android:key="pref_key_sysui_timeoutqs"
 			android:summary="@string/systemui_timeoutqs_summ"
 			android:title="@string/systemui_timeoutqs_title" />

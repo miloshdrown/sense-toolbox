@@ -39,10 +39,10 @@
 			<meta-data android:name="plugAnchorItem" android:value="personalize"/>
 			<meta-data android:name="plugAnchorShift" android:value="-1.0"/>
 			<meta-data android:name="plugLaunchType" android:value="activity"/>
-			<meta-data android:name="plugLaunchTarget" android:value="intent:#Intent;component=com.sensetoolbox.six/.MainActivity;end"/>
+			<meta-data android:name="plugLaunchTarget" android:value="intent:#Intent;component=com.sensetoolbox.six/.UISwitcher;end"/>
 		</activity>
 		<activity
-			android:name="com.sensetoolbox.six.MainActivity"
+			android:name="com.sensetoolbox.six.UISwitcher"
 			android:label="@string/app_name"
 			android:icon="@drawable/ic_launcher"
 			android:configChanges="keyboardHidden|orientation|screenSize" >
@@ -52,13 +52,33 @@
 			</intent-filter>
 		</activity>
 		<activity
-			android:name="com.sensetoolbox.six.SubActivity"
+			android:name="com.sensetoolbox.six.htc.HMainActivity"
 			android:label="@string/app_name"
 			android:icon="@drawable/ic_launcher"
 			android:configChanges="keyboardHidden|orientation|screenSize" >
 		</activity>
 		<activity
-			android:theme="@style/Invisible"
+			android:name="com.sensetoolbox.six.material.MMainActivity"
+			android:label="@string/app_name"
+			android:icon="@drawable/ic_launcher"
+			android:theme="@style/MaterialTheme"
+			android:configChanges="keyboardHidden|orientation|screenSize" >
+		</activity>
+		<activity
+			android:name="com.sensetoolbox.six.htc.HSubActivity"
+			android:label="@string/app_name"
+			android:icon="@drawable/ic_launcher"
+			android:configChanges="keyboardHidden|orientation|screenSize" >
+		</activity>
+		<activity
+			android:name="com.sensetoolbox.six.material.MSubActivity"
+			android:label="@string/app_name"
+			android:icon="@drawable/ic_launcher"
+			android:theme="@style/MaterialTheme"
+			android:configChanges="keyboardHidden|orientation|screenSize" >
+		</activity>
+		<activity
+			android:theme="@style/MaterialInvisible"
 			android:name="com.sensetoolbox.six.APMActivity"
 			android:exported="true"
 			android:launchMode="singleInstance"
@@ -68,7 +88,7 @@
 			android:noHistory="false" />
 		<activity
 			android:theme="@style/Invisible"
-			android:name="com.sensetoolbox.six.DimmedActivity"
+			android:name="com.sensetoolbox.six.htc.DimmedActivity"
 			android:exported="true"
 			android:showOnLockScreen="false"
 			android:launchMode="singleTask"
@@ -77,16 +97,30 @@
 			android:noHistory="false" />
 		<activity
 			android:theme="@style/InvisibleOnLockscreen"
-			android:name="com.sensetoolbox.six.DimmedActivityLS"
+			android:name="com.sensetoolbox.six.htc.DimmedActivityLS"
 			android:exported="true"
 			android:showOnLockScreen="true"
 			android:screenOrientation="portrait"
 			android:configChanges="keyboardHidden|orientation|screenSize"
 			android:launchMode="singleTask"
 			android:excludeFromRecents="true" />
-		<activity android:name="com.sensetoolbox.six.AboutScreen" android:screenOrientation="portrait" />
-		<activity android:name="com.sensetoolbox.six.SenseThemes" android:configChanges="keyboardHidden|orientation|screenSize" />
-		<activity android:name="com.sensetoolbox.six.TouchLock" android:configChanges="keyboardHidden|orientation|screenSize" />
+		<activity
+			android:name="com.sensetoolbox.six.htc.HAboutScreen"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name="com.sensetoolbox.six.material.MAboutScreen"
+			android:theme="@style/MaterialTheme"
+			android:screenOrientation="portrait" />
+		<activity
+			android:name="com.sensetoolbox.six.htc.HTouchLock"
+			android:configChanges="keyboardHidden|orientation|screenSize" />
+		<activity
+			android:name="com.sensetoolbox.six.material.MTouchLock"
+			android:theme="@style/MaterialTheme"
+			android:configChanges="keyboardHidden|orientation|screenSize" />
+		<activity
+			android:name="com.sensetoolbox.six.htc.SenseThemes"
+			android:configChanges="keyboardHidden|orientation|screenSize" />
 		<activity
 			android:name="com.sensetoolbox.six.BlinkFeed"
 			android:label="BlinkFeed"
@@ -102,6 +136,18 @@
 		</activity>
 		<activity android:name="org.acra.CrashReportDialog"
 			android:theme="@style/Invisible"
+			android:launchMode="singleTask"
+			android:excludeFromRecents="true"
+			android:finishOnTaskLaunch="true"
+			android:configChanges="keyboardHidden|orientation|screenSize" />
+		<activity android:name="org.acra.HCrashReportDialog"
+			android:theme="@style/Invisible"
+			android:launchMode="singleTask"
+			android:excludeFromRecents="true"
+			android:finishOnTaskLaunch="true"
+			android:configChanges="keyboardHidden|orientation|screenSize" />
+		<activity android:name="org.acra.MCrashReportDialog"
+			android:theme="@style/MaterialInvisible"
 			android:launchMode="singleTask"
 			android:excludeFromRecents="true"
 			android:finishOnTaskLaunch="true"

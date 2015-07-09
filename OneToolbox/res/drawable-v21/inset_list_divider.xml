@@ -1,0 +1,2 @@
+<?xml version="1.0" encoding="utf-8"?>
+<inset android:drawable="@drawable/common_list_divider" android:insetLeft="15.333dp" android:insetRight="15.333dp" xmlns:android="http://schemas.android.com/apk/res/android" />

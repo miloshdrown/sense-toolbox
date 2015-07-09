@@ -6,8 +6,7 @@
 	android:orientation="vertical"
 	android:background="@android:color/transparent"
 	android:baselineAligned="false"
-	android:id="@+id/container"
-	tools:context=".DimmedActivity" >
+	android:id="@+id/container" >
 
 	<RelativeLayout
 		android:id="@+id/notifyRemote"

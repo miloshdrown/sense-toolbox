@@ -1,0 +1,4 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/softreboot" android:icon="@drawable/ic_menu_reboot" android:title="@string/soft_reboot" android:showAsAction="always"></item>
+	<item android:title="" android:showAsAction="always" android:actionLayout="@layout/material_toggle" />
+</menu>

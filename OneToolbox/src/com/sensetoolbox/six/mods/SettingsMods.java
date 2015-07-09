@@ -18,9 +18,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.content.res.XModuleResources;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Message;
 import android.text.format.Formatter;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -29,7 +31,10 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.TextView;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
@@ -106,10 +111,6 @@ public class SettingsMods {
 		}
 	}
 	
-	static HtcRimButton apk_launch_btn = null;
-	static HtcListItem uninstall_start_item = null;
-	static ApplicationInfo appInfo = null;
-	static Context theContext = null;
 	static Boolean showDisabledOnly = false;
 	
 	public static void execHook_AppFilter(LoadPackageParam lpparam) {
@@ -196,6 +197,11 @@ public class SettingsMods {
 		} catch (Throwable t) {}
 	}
 	
+	static HtcRimButton apk_launch_btn = null;
+	static HtcListItem uninstall_start_item = null;
+	static ApplicationInfo appInfo = null;
+	static Context theContext = null;
+	
 	public static void execHook_Apps(LoadPackageParam lpparam) {
 		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 		
@@ -240,7 +246,7 @@ public class SettingsMods {
 					}
 					if (uninstall_start_item != null) {
 						if (!apk_launch_btn.isEnabled() && j != 0)
-						uninstall_start_item.setVisibility(8);
+						uninstall_start_item.setVisibility(View.GONE);
 					}
 				} catch (Throwable t) {
 					XposedBridge.log(t);
@@ -284,7 +290,7 @@ public class SettingsMods {
 					HtcListItem toolbox_item_path = new HtcListItem(theContext);
 					HtcListItem2LineText toolbox_item_path_text = new HtcListItem2LineText(theContext);
 					toolbox_item_path_text.setPrimaryText(Helpers.xl10n(modRes, R.string.appdetails_apk_path));
-					toolbox_item_path_text.setSecondaryText(apkFile.getParent() + "/");
+					toolbox_item_path_text.setSecondaryText(apkFile.getParent());
 					toolbox_item_path.addView(toolbox_item_path_text);
 					
 					HtcListItem toolbox_item_data = new HtcListItem(theContext);
@@ -320,6 +326,7 @@ public class SettingsMods {
 					toolbox_item_api.addView(toolbox_item_api_text);
 					
 					apk_launch_btn = new HtcRimButton(theContext);
+					if (uninstall_btn.getBackground() != null) apk_launch_btn.setBackground(uninstall_btn.getBackground().getConstantState().newDrawable().mutate());
 					
 					final Intent mainActivity = theContext.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);
 					apk_launch_btn.setText(Helpers.xl10n(modRes, R.string.appdetails_launch));
@@ -357,6 +364,251 @@ public class SettingsMods {
 					int startCnt = 4;
 					if (Helpers.isSense7()) startCnt = 3;
 					all_details.addView(uninstall_start_item, startCnt);
+					all_details.addView(toolbox_separator_apk, startCnt + 1);
+					all_details.addView(toolbox_item_filename, startCnt + 2);
+					all_details.addView(toolbox_item_path, startCnt + 3);
+					all_details.addView(toolbox_item_data, startCnt + 4);
+					all_details.addView(toolbox_separator_dev, startCnt + 18);
+					all_details.addView(toolbox_item_process, startCnt + 19);
+					all_details.addView(toolbox_item_uid, startCnt + 20);
+					all_details.addView(toolbox_item_api, startCnt + 21);
+					
+					XposedHelpers.callMethod(param.thisObject, "initUninstallButton");
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+		});
+	}
+	
+	static Button mapk_launch_btn = null;
+	static RelativeLayout muninstall_start_item = null;
+	
+	private static RelativeLayout makeItem(String text1, String text2, String stamp) {
+		float density = theContext.getResources().getDisplayMetrics().density;
+		
+		RelativeLayout list_item = new RelativeLayout(theContext);
+		list_item.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+		int padding = Math.round(15.33f * density);
+		list_item.setPadding(padding, padding, padding, 0);
+		list_item.setClipToPadding(false);
+		
+		TextView tv1 = new TextView(theContext);
+		tv1.setId(10001);
+		tv1.setText(text1);
+		tv1.setTextColor(0xff4b4b4b);
+		tv1.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
+		tv1.setTypeface(Typeface.create("sans-serif-condensed", Typeface.NORMAL));
+		RelativeLayout.LayoutParams tlp1 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		tlp1.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+		tlp1.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+		tv1.setLayoutParams(tlp1);
+		list_item.addView(tv1);
+
+		TextView tv2 = new TextView(theContext);
+		tv2.setId(10002);
+		tv2.setText(text2);
+		tv2.setTextColor(0xff4b4b4b);
+		tv2.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+		tv2.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+		RelativeLayout.LayoutParams tlp2 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		tlp2.addRule(RelativeLayout.ALIGN_PARENT_LEFT, RelativeLayout.TRUE);
+		tlp2.addRule(RelativeLayout.BELOW, 10001);
+		tv2.setLayoutParams(tlp2);
+		list_item.addView(tv2);
+		
+		if (stamp != null) {
+			TextView tv3 = new TextView(theContext);
+			tv3.setText(stamp);
+			tv3.setTextColor(0xff888888);
+			tv3.setTextSize(TypedValue.COMPLEX_UNIT_SP, 13);
+			tv3.setAllCaps(true);
+			tv3.setTypeface(Typeface.create("sans-serif-condensed", Typeface.NORMAL));
+			RelativeLayout.LayoutParams tlp3 = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+			tlp3.addRule(RelativeLayout.ALIGN_PARENT_RIGHT, RelativeLayout.TRUE);
+			tlp3.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
+			tlp3.topMargin = Math.round(4 * density);
+			tv3.setLayoutParams(tlp3);
+			list_item.addView(tv3);
+		}
+		
+		FrameLayout divider = new FrameLayout(theContext);
+		RelativeLayout.LayoutParams tlp4 = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, 2);
+		tlp4.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM, RelativeLayout.TRUE);
+		tlp4.addRule(RelativeLayout.BELOW, 10002);
+		tlp4.topMargin = padding;
+		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+		divider.setBackground(modRes.getDrawable(R.drawable.common_list_divider));
+		divider.setLayoutParams(tlp4);
+		list_item.addView(divider);
+		
+		return list_item;
+	}
+	
+	public static void execHook_AppsM(LoadPackageParam lpparam) {
+		final XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+		
+		findAndHookMethod("com.android.settings.applications.InstalledAppDetails", lpparam.classLoader, "onHandleUiMessage", Message.class, new XC_MethodHook(){
+			@Override
+			protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+				// Change elements dynamically
+				Message msg = (Message)param.args[0];
+				if (msg == null) return;
+				if (msg.what != 5 || mapk_launch_btn == null) return;
+					
+				Bundle bundle = (Bundle)msg.obj;
+				int i = Integer.valueOf(bundle.getInt("widget_id_field")).intValue();
+				//String s = bundle.getString("widget_text_field");
+				//Boolean boolean1 = Boolean.valueOf(bundle.getBoolean("widget_enabled_field"));
+				
+				if (i == 107)
+				try {
+					final Intent mainActivity = theContext.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);
+					if (mainActivity == null) {
+						mapk_launch_btn.setEnabled(false);
+						mapk_launch_btn.setAlpha(0.5f);
+					} else {
+						mapk_launch_btn.setEnabled(true);
+						mapk_launch_btn.setAlpha(1.0f);
+						mapk_launch_btn.setOnClickListener(new Button.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								theContext.startActivity(mainActivity);
+							}
+						});
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+				
+				if (i == 103)
+				try {
+					int j = bundle.getInt("widget_visibility_field");
+					if (j == 8) {
+						LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(0, Math.round(34.66f * theContext.getResources().getDisplayMetrics().density), 1);
+						lp.setMargins(0, 0, 0, 0);
+						mapk_launch_btn.setLayoutParams(lp);
+					}
+					if (muninstall_start_item != null) {
+						if (!mapk_launch_btn.isEnabled() && j != 0)
+						muninstall_start_item.setVisibility(View.GONE);
+					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
+				}
+			}
+			
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				// Add new options to App Details view
+				Message msg = (Message)param.args[0];
+				if (msg == null) return;
+				if (msg.what == 4) try {
+					ScrollView mRootView = (ScrollView)XposedHelpers.getObjectField(param.thisObject, "mRootView");
+					
+					Object mAppEntry = XposedHelpers.getObjectField(param.thisObject, "mAppEntry");
+					if (mAppEntry == null) {
+						XposedBridge.log("Cannot get mAppEntry");
+						return;
+					}
+					final File apkFile = (File)XposedHelpers.getObjectField(mAppEntry, "apkFile");
+					appInfo = (ApplicationInfo)XposedHelpers.getObjectField(mAppEntry, "info");
+					LinearLayout all_details = (LinearLayout)mRootView.getChildAt(0);
+					theContext = all_details.getContext();
+					
+					int uninstall_item_id = all_details.getResources().getIdentifier("uninstall_button_item", "id", "com.android.settings");
+					FrameLayout uninstall_item = (FrameLayout)all_details.findViewById(uninstall_item_id);
+					Button uninstall_btn = (Button)uninstall_item.getChildAt(0);
+					
+					float density = theContext.getResources().getDisplayMetrics().density;
+					
+					TextView toolbox_separator_apk = new TextView(theContext);
+					LinearLayout.LayoutParams lpsep = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, Math.round(30 * density));
+					toolbox_separator_apk.setLayoutParams(lpsep);
+					toolbox_separator_apk.setBackground(modRes.getDrawable(R.drawable.category_header));
+					toolbox_separator_apk.setTextColor(0xff939393);
+					toolbox_separator_apk.setAllCaps(true);
+					toolbox_separator_apk.setTypeface(Typeface.create("sans-serif-condensed", Typeface.BOLD));
+					toolbox_separator_apk.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+					toolbox_separator_apk.setPadding(Math.round(15.33f * density), 0, Math.round(15.33f * density), 0);
+					toolbox_separator_apk.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+					toolbox_separator_apk.setText(Helpers.xl10n(modRes, R.string.appdetails_package));
+					
+					RelativeLayout toolbox_item_filename = makeItem(Helpers.xl10n(modRes, R.string.appdetails_apk_file), apkFile.getName(), Formatter.formatFileSize(theContext, apkFile.length()));
+					RelativeLayout toolbox_item_path = makeItem(Helpers.xl10n(modRes, R.string.appdetails_apk_path), apkFile.getParent(), null);
+					RelativeLayout toolbox_item_data = makeItem(Helpers.xl10n(modRes, R.string.appdetails_data_path), appInfo.dataDir, null);
+					
+					TextView toolbox_separator_dev = new TextView(theContext);
+					toolbox_separator_dev.setLayoutParams(lpsep);
+					toolbox_separator_dev.setBackground(modRes.getDrawable(R.drawable.category_header));
+					toolbox_separator_dev.setTextColor(0xff939393);
+					toolbox_separator_dev.setAllCaps(true);
+					toolbox_separator_dev.setTypeface(Typeface.create("sans-serif-condensed", Typeface.BOLD));
+					toolbox_separator_dev.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+					toolbox_separator_dev.setPadding(Math.round(15.33f * density), 0, Math.round(15.33f * density), 0);
+					toolbox_separator_dev.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+					toolbox_separator_dev.setText(Helpers.xl10n(modRes, R.string.appdetails_dev));
+					int permissions_id = all_details.getResources().getIdentifier("permissions_section", "id", "com.android.settings");
+					LinearLayout permissions_section = (LinearLayout)all_details.findViewById(permissions_id);
+					int perm_pos;
+					for (perm_pos = 0; perm_pos < all_details.getChildCount(); perm_pos++)
+					if (all_details.getChildAt(perm_pos).equals(permissions_section)) break;
+					
+					RelativeLayout toolbox_item_process = makeItem(Helpers.xl10n(modRes, R.string.appdetails_proc_name), appInfo.processName, null);
+					RelativeLayout toolbox_item_uid = makeItem(Helpers.xl10n(modRes, R.string.appdetails_uid), String.valueOf(appInfo.uid), null);
+					RelativeLayout toolbox_item_api = makeItem(Helpers.xl10n(modRes, R.string.appdetails_sdk), String.valueOf(appInfo.targetSdkVersion), null);
+
+					mapk_launch_btn = new Button(theContext);
+					if (uninstall_btn.getBackground() != null) mapk_launch_btn.setBackground(uninstall_btn.getBackground().getConstantState().newDrawable().mutate());
+					mapk_launch_btn.setPadding(uninstall_btn.getPaddingLeft(), uninstall_btn.getPaddingTop(), uninstall_btn.getPaddingRight(), uninstall_btn.getPaddingBottom());
+					mapk_launch_btn.setTypeface(uninstall_btn.getTypeface());
+					mapk_launch_btn.setTextColor(uninstall_btn.getCurrentTextColor());
+					mapk_launch_btn.setTextSize(TypedValue.COMPLEX_UNIT_PX, uninstall_btn.getTextSize());
+					mapk_launch_btn.setAllCaps(false);
+					mapk_launch_btn.setIncludeFontPadding(uninstall_btn.getIncludeFontPadding());
+					
+					final Intent mainActivity = theContext.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);
+					mapk_launch_btn.setText(Helpers.xl10n(modRes, R.string.appdetails_launch));
+					if (mainActivity == null) {
+						mapk_launch_btn.setEnabled(false);
+						mapk_launch_btn.setAlpha(0.5f);
+					} else {
+						mapk_launch_btn.setEnabled(true);
+						mapk_launch_btn.setAlpha(1.0f);
+						mapk_launch_btn.setOnClickListener(new Button.OnClickListener() {
+							@Override
+							public void onClick(View v) {
+								theContext.startActivity(mainActivity);
+							}
+						});
+					}
+
+					int btnHeight = Math.round(34.66f * density);
+					LinearLayout.LayoutParams lp1 = new LinearLayout.LayoutParams(0, btnHeight, 1);
+					LinearLayout.LayoutParams lp2 = new LinearLayout.LayoutParams(0, btnHeight, 1);
+					
+					lp1.setMargins(0, 0, Math.round(5.0f * density), 0);
+					lp2.setMargins(Math.round(5.0f * density), 0, 0, 0);
+					uninstall_btn.setLayoutParams(lp1);
+					mapk_launch_btn.setLayoutParams(lp2);
+					
+					uninstall_item.removeView(uninstall_btn);
+					all_details.removeView(uninstall_item);
+					
+					muninstall_start_item = new RelativeLayout(theContext);
+					muninstall_start_item.setLayoutParams(new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT));
+					muninstall_start_item.setPadding(0, Math.round(15.33f * density), 0, Math.round(15.33f * density));
+					LinearLayout uninstall_start = new LinearLayout(theContext);
+					uninstall_start.setLayoutParams(new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.MATCH_PARENT, RelativeLayout.LayoutParams.WRAP_CONTENT));
+					uninstall_start.setPadding(Math.round(15.33f * density), 0, Math.round(15.33f * density), 0);
+					uninstall_start.setOrientation(LinearLayout.HORIZONTAL);
+					uninstall_start.addView(uninstall_btn);
+					uninstall_start.addView(mapk_launch_btn);
+					muninstall_start_item.addView(uninstall_start);
+					
+					int startCnt = 4;
+					if (Helpers.isSense7()) startCnt = 3;
+					all_details.addView(muninstall_start_item, startCnt);
 					all_details.addView(toolbox_separator_apk, startCnt + 1);
 					all_details.addView(toolbox_item_filename, startCnt + 2);
 					all_details.addView(toolbox_item_path, startCnt + 3);

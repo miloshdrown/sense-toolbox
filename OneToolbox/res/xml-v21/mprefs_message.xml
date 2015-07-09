@@ -1,0 +1,30 @@
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
+	android:key="pref_key_sms">
+		<CheckBoxPreference
+			android:key="pref_key_sms_smsmmsconv"
+			android:summary="@string/message_smsmms_summ"
+			android:title="@string/message_smsmms_title"
+			android:defaultValue="false" />
+		<CheckBoxPreference
+			android:key="pref_key_other_smscreenon"
+			android:summary="@string/message_smswake_summ"
+			android:title="@string/message_smswake_title"
+			android:defaultValue="false" />
+		<CheckBoxPreference
+			android:key="pref_key_sms_toastnotification"
+			android:summary="@string/message_toast_summ"
+			android:title="@string/message_toast_title"
+			android:defaultValue="false" />
+		<CheckBoxPreference
+			android:key="pref_key_sms_mmssize"
+			android:summary="@string/message_size_summ"
+			android:title="@string/message_size_title"
+			android:defaultValue="false" />
+		<CheckBoxPreference
+			android:key="pref_key_sms_accents"
+			android:summary="@string/message_accents_summ"
+			android:title="@string/message_accents_title"
+			android:defaultValue="false" />
+</PreferenceScreen>

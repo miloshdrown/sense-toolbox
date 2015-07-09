@@ -2,11 +2,11 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six"
 	android:key="pref_key_cb">
-		<com.sensetoolbox.six.utils.ColorPreference
+		<com.sensetoolbox.six.htc.utils.ColorPreference
 			android:key="pref_key_colorfilter"
 			android:summary="@string/cleanbeam_colortheme_summ"
 			android:title="@string/cleanbeam_colortheme_title" />
-		<com.sensetoolbox.six.utils.ImageListPreference
+		<com.sensetoolbox.six.htc.utils.ImageListPreference
 			android:key="pref_key_sysui_battery"
 			android:summary="@string/cleanbeam_battery_summ"
 			android:title="@string/cleanbeam_battery_title"
@@ -14,7 +14,7 @@
 			android:entryValues="@array/cleanbeam_battery_val"
 			android:defaultValue="1"
 			toolbox:entryImages="@array/battery_images" />
-		<com.sensetoolbox.six.utils.ImageListPreference
+		<com.sensetoolbox.six.htc.utils.ImageListPreference
 			android:key="pref_key_cb_wifi_multi"
 			android:summary="@string/cleanbeam_wifi_summ"
 			android:title="@string/cleanbeam_wifi_title"
@@ -142,7 +142,7 @@
 			android:key="pref_key_hide_icons"
 			android:entries="@array/hideicons"
 			android:entryValues="@array/hideicons_val" />
-		<com.sensetoolbox.six.utils.SeekBarPreference
+		<com.sensetoolbox.six.htc.utils.SeekBarPreference
 			android:key="pref_key_statusbar_selectivealarmicon"
 			android:title="@string/selectivealarmicon_title"
 			android:summary="@string/selectivealarmicon_summ"

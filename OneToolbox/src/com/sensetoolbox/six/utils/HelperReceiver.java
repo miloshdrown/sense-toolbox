@@ -62,7 +62,7 @@ public class HelperReceiver extends BroadcastReceiver {
 			Helpers.l10n = null;
 			Helpers.cLang = "";
 		} else {
-			if (Helpers.isNotM7()) return;
+			if (!Helpers.isM7()) return;
 			final int thepref = Integer.parseInt(ctx.getSharedPreferences("one_toolbox_prefs", 1).getString("pref_key_other_keyslight", "1"));
 			if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED)) {
 				if (thepref > 1) Helpers.setButtonBacklightTo(ctx, thepref, false);

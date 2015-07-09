@@ -1,0 +1,83 @@
+<PreferenceScreen
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six">
+	<CheckBoxPreference
+		android:key="pref_key_betterheadsup_priority"
+		android:summary="@string/various_betterheadsup_priority_summ"
+		android:title="@string/various_betterheadsup_priority_title"
+		android:defaultValue="false" />
+	<CheckBoxPreference
+		android:key="pref_key_betterheadsup_expand"
+		android:summary="@string/various_betterheadsup_expand_summ"
+		android:title="@string/various_betterheadsup_expand_title"
+		android:defaultValue="true" />
+	<CheckBoxPreference
+		android:key="pref_key_betterheadsup_fullscreen"
+		android:summary="@string/various_betterheadsup_fullscreen_summ"
+		android:title="@string/various_betterheadsup_fullscreen_title"
+		android:defaultValue="false" />
+	<CheckBoxPreference
+		android:key="pref_key_betterheadsup_lightup"
+		android:summary="@string/various_betterheadsup_lightup_summ"
+		android:title="@string/various_betterheadsup_lightup_title"
+		android:defaultValue="false" />
+	<CheckBoxPreference
+		android:key="pref_key_betterheadsup_sleepmode"
+		android:summary="@string/various_betterheadsup_sleepmode_summ"
+		android:title="@string/various_betterheadsup_sleepmode_title"
+		android:defaultValue="false" />
+	<CheckBoxPreference
+		android:key="pref_key_betterheadsup_nodismiss"
+		android:summary="@string/various_betterheadsup_nodismiss_summ"
+		android:title="@string/various_betterheadsup_nodismiss_title"
+		android:defaultValue="false" />
+	<SwitchPreference
+		android:key="pref_key_betterheadsup_bwlist"
+		android:summary="@string/various_popupnotify_bwlist_summ"
+		android:title="@string/various_popupnotify_bwlist_title" />
+	<com.sensetoolbox.six.material.utils.MultiSelectListPreferenceEx
+		android:dialogTitle="@string/various_betterheadsup_bwlist_black_title"
+		android:key="pref_key_betterheadsup_bwlist_apps"
+		android:summary="@string/various_betterheadsup_bwlist_black_summ"
+		android:title="@string/various_betterheadsup_bwlist_black_title"
+		android:entries="@array/empty_array"
+		android:entryValues="@array/empty_array"
+		android:defaultValue="@array/empty_array" />
+	<com.sensetoolbox.six.material.utils.MultiSelectListPreferenceEx
+		android:dialogTitle="@string/various_betterheadsup_ignorelist_title"
+		android:key="pref_key_betterheadsup_ignorelist_apps"
+		android:summary="@string/various_betterheadsup_ignorelist_summ"
+		android:title="@string/various_betterheadsup_ignorelist_title"
+		android:entries="@array/empty_array"
+		android:entryValues="@array/empty_array"
+		android:defaultValue="@array/empty_array" />
+	
+	<PreferenceCategory
+		android:title="@string/sense_theme_sep1"
+		android:key="pref_various_betterheadsup_theme">
+		<Preference
+			android:key="pref_key_betterheadsup_theme_preset"
+			android:summary="@string/various_betterheadsup_theme_preset_summ"
+			android:title="@string/various_betterheadsup_theme_preset_title" />
+		<com.sensetoolbox.six.material.utils.ColorPickerPreference
+			android:key="pref_key_betterheadsup_theme_background"
+			android:summary="@string/various_betterheadsup_theme_background_summ"
+			android:title="@string/various_betterheadsup_theme_background_title" />
+		<com.sensetoolbox.six.material.utils.ColorPickerPreference
+			android:key="pref_key_betterheadsup_theme_primary"
+			android:summary="@string/various_betterheadsup_theme_primary_summ"
+			android:title="@string/various_betterheadsup_theme_primary_title" />
+		<com.sensetoolbox.six.material.utils.ColorPickerPreference
+			android:key="pref_key_betterheadsup_theme_secondary"
+			android:summary="@string/various_betterheadsup_theme_secondary_summ"
+			android:title="@string/various_betterheadsup_theme_secondary_title" />
+		<com.sensetoolbox.six.material.utils.ColorPickerPreference
+			android:key="pref_key_betterheadsup_theme_dismiss"
+			android:summary="@string/various_betterheadsup_theme_dismiss_summ"
+			android:title="@string/various_betterheadsup_theme_dismiss_title" />
+		<com.sensetoolbox.six.material.utils.ColorPickerPreference
+			android:key="pref_key_betterheadsup_theme_dividers"
+			android:summary="@string/various_betterheadsup_theme_dividers_summ"
+			android:title="@string/various_betterheadsup_theme_dividers_title" />
+	</PreferenceCategory>
+</PreferenceScreen>

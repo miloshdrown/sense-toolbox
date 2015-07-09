@@ -1,0 +1,505 @@
+<resources xmlns:android="http://schemas.android.com/apk/res/android" xmlns:tools="http://schemas.android.com/tools">
+	
+	<attr name="accentColor" format="color" />
+	<attr name="headerColor" format="color" />
+	<attr name="statusBarColor" format="color" />
+
+	<style name="MaterialBase" parent="@android:style/Theme.Material.Light">
+		<item name="android:colorPrimaryDark">@color/material_text_primary</item>
+		<item name="android:windowBackground">@android:color/white</item>
+		<item name="android:preferenceCategoryStyle">@style/MaterialPreferenceCategory</item>
+		<item name="android:listViewStyle">@style/MaterialListView</item>
+		<item name="android:listPreferredItemHeight">64dp</item>
+		<item name="android:listPreferredItemHeightSmall">64dp</item>
+		<item name="android:fontFamily">sans-serif-condensed</item>
+		<item name="android:actionBarSize">@dimen/sense_actionbar_height</item>
+		<item name="android:actionBarStyle">@style/MaterialActionBar</item>
+		<item name="android:actionBarTheme">@android:style/ThemeOverlay.Material.Dark.ActionBar</item>
+		<item name="android:dialogTheme">@style/MaterialDialog</item>
+		<item name="android:alertDialogTheme">@style/MaterialAlertDialog</item>
+		<item name="android:textColor">@color/primary_text_material</item>
+		<item name="android:textColorSecondary">@color/primary_text_material</item>
+		<item name="android:actionButtonStyle">@style/MaterialAtionBarItems</item>
+		<item name="accentColor">@color/material_accent</item>
+		<item name="headerColor">@color/material_actionbar</item>
+		<item name="statusBarColor">@color/material_primary_dark</item>
+		<item name="android:colorForeground">@color/material_switch_background</item>
+	</style>
+	
+	<style name="MaterialTheme" parent="MaterialBase">
+		<item name="android:colorAccent">?attr/accentColor</item>
+		<item name="android:colorPrimary">?attr/headerColor</item>
+		<item name="android:statusBarColor">?attr/statusBarColor</item>
+	</style>
+	
+	<style name="MaterialThemeDark">
+		<item name="android:windowBackground">@color/material_background_dark</item>
+		<item name="android:colorPrimaryDark">@color/material_text_primary_dark</item>
+		<item name="android:textColor">@color/primary_text_material_dark</item>
+		<item name="android:textColorSecondary">@color/secondary_text_material_dark</item>
+		<item name="android:dialogTheme">@style/MaterialDialogDark</item>
+		<item name="android:alertDialogTheme">@style/MaterialAlertDialogDark</item>
+		<item name="android:listViewStyle">@style/MaterialListViewDark</item>
+		<item name="android:preferenceCategoryStyle">@style/MaterialPreferenceCategoryDark</item>
+		<item name="android:buttonStyle">@android:style/Widget.Material.Button</item>
+		<item name="android:buttonStyleSmall">@android:style/Widget.Material.Button.Small</item>
+		<item name="android:buttonStyleInset">@android:style/Widget.Material.Button.Inset</item>
+		<item name="android:buttonStyleToggle">@android:style/Widget.Material.Button.Toggle</item>
+		<item name="android:borderlessButtonStyle">@android:style/android:Widget.Material.Button.Borderless</item>
+		<item name="android:colorButtonNormal">?attr/accentColor</item>
+	</style>
+	
+	<style name="MaterialDialog" parent="@android:style/Theme.Material.Light.Dialog">
+		<item name="android:colorAccent">?attr/accentColor</item>
+		<item name="android:textColor">@color/material_actionbar</item>
+	</style>
+
+	<style name="MaterialAlertDialog" parent="@android:style/Theme.Material.Light.Dialog.Alert">
+		<item name="android:colorAccent">?attr/accentColor</item>
+		<item name="android:textColor">@color/material_actionbar</item>
+	</style>
+	
+	<style name="MaterialDialogDark" parent="@android:style/Theme.Material.Dialog">
+		<item name="android:colorAccent">?attr/accentColor</item>
+		<item name="android:textColor">@color/material_text_primary_dark</item>
+	</style>
+
+	<style name="MaterialAlertDialogDark" parent="@android:style/Theme.Material.Dialog.Alert">
+		<item name="android:colorAccent">?attr/accentColor</item>
+		<item name="android:textColor">@color/material_text_primary_dark</item>
+	</style>
+	
+	<style name="MaterialPreferenceCategory">
+		<item name="android:layout">@layout/preference_category_material</item>
+		<item name="android:shouldDisableView">false</item>
+		<item name="android:selectable">false</item>
+	</style>
+	
+	<style name="MaterialPreferenceCategoryDark">
+		<item name="android:layout">@layout/preference_category_material_dark</item>
+		<item name="android:shouldDisableView">false</item>
+		<item name="android:selectable">false</item>
+	</style>
+	
+	<style name="MaterialActionBar" parent="@android:style/Widget.Material.ActionBar.Solid">
+		<item name="android:titleTextStyle">@style/MaterialTitleTextStyle</item>
+	</style>
+	
+	<style name="MaterialAtionBarItems" parent="@android:style/Widget.Material.Light.ActionButton">
+		<item name="android:minWidth">55dp</item>
+		<item name="android:padding">0dp</item>
+	</style>
+
+	<style name="MaterialTitleTextStyle" parent="@android:style/TextAppearance.Material.Widget.ActionBar.Title">
+		<item name="android:fontFamily">sans-serif-condensed</item>
+		<item name="android:textSize">19sp</item>
+	</style>
+	
+	<style name="MaterialListView" parent="@android:style/Widget.Material.ListView">
+		<item name="android:divider">@drawable/inset_list_divider</item>
+		<item name="android:dividerHeight" tools:ignore="PxUsage">2px</item>
+	</style>
+	
+	<style name="MaterialListViewDark" parent="@android:style/Widget.Material.ListView">
+		<item name="android:divider">@drawable/inset_list_divider_dark</item>
+		<item name="android:dividerHeight" tools:ignore="PxUsage">2px</item>
+	</style>
+	
+	<style name="MaterialInvisible" parent="@style/MaterialTheme">
+		<item name="android:backgroundDimEnabled">true</item>
+		<item name="android:windowFrame">@null</item>
+		<item name="android:windowCloseOnTouchOutside">true</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowContentOverlay">@null</item>
+		<item name="android:windowIsFloating">false</item>
+		<item name="android:windowTranslucentStatus">true</item>
+		<item name="android:windowTranslucentNavigation">true</item>
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:colorBackgroundCacheHint">@null</item>
+		<item name="android:windowIsTranslucent">true</item>
+	</style>
+	
+	<style name="ApplyInvisible">
+		<item name="android:backgroundDimEnabled">true</item>
+		<item name="android:windowFrame">@null</item>
+		<item name="android:windowCloseOnTouchOutside">true</item>
+		<item name="android:windowNoTitle">true</item>
+		<item name="android:windowContentOverlay">@null</item>
+		<item name="android:windowIsFloating">false</item>
+		<item name="android:windowTranslucentStatus">true</item>
+		<item name="android:windowTranslucentNavigation">true</item>
+		<item name="android:windowBackground">@android:color/transparent</item>
+		<item name="android:colorBackgroundCacheHint">@null</item>
+		<item name="android:windowIsTranslucent">true</item>
+	</style>
+	
+	<style name="MaterialThemeAccent_sense_1"><item name="accentColor">#4ea770</item></style>
+	<style name="MaterialThemeAccent_sense_2"><item name="accentColor">#00afab</item></style>
+	<style name="MaterialThemeAccent_sense_3"><item name="accentColor">#07b7b9</item></style>
+	<style name="MaterialThemeAccent_sense_4"><item name="accentColor">#118b9c</item></style>
+	
+	<style name="MaterialThemeAccent_sense_5"><item name="accentColor">#17b7cd</item></style>
+	<style name="MaterialThemeAccent_sense_6"><item name="accentColor">#62b1bd</item></style>
+	<style name="MaterialThemeAccent_sense_7"><item name="accentColor">#0091b3</item></style>
+	<style name="MaterialThemeAccent_sense_8"><item name="accentColor">#0086cb</item></style>
+	
+	<style name="MaterialThemeAccent_sense_9"><item name="accentColor">#3786e6</item></style>
+	<style name="MaterialThemeAccent_sense_10"><item name="accentColor">#0761b9</item></style>
+	<style name="MaterialThemeAccent_sense_11"><item name="accentColor">#255999</item></style>
+	<style name="MaterialThemeAccent_sense_12"><item name="accentColor">#6658cf</item></style>
+	
+	<style name="MaterialThemeAccent_sense_13"><item name="accentColor">#a325a3</item></style>
+	<style name="MaterialThemeAccent_sense_14"><item name="accentColor">#ffa63d</item></style>
+	<style name="MaterialThemeAccent_sense_15"><item name="accentColor">#ff813d</item></style>
+	<style name="MaterialThemeAccent_sense_16"><item name="accentColor">#ff5d3d</item></style>
+	
+	<style name="MaterialThemeAccent_sense_17"><item name="accentColor">#ff7376</item></style>
+	<style name="MaterialThemeAccent_sense_18"><item name="accentColor">#ff647e</item></style>
+	<style name="MaterialThemeAccent_sense_19"><item name="accentColor">#fe4a5d</item></style>
+	<style name="MaterialThemeAccent_sense_20"><item name="accentColor">#e74457</item></style>
+	
+	<style name="MaterialThemeAccent_sense_21"><item name="accentColor">#f64541</item></style>
+	<style name="MaterialThemeAccent_sense_22"><item name="accentColor">#d0343a</item></style>
+	<style name="MaterialThemeAccent_sense_23"><item name="accentColor">#f3cbb1</item></style>
+	<style name="MaterialThemeAccent_sense_24"><item name="accentColor">#f1b08e</item></style>
+	
+	<style name="MaterialThemeAccent_sense_25"><item name="accentColor">#c9a892</item></style>
+	<style name="MaterialThemeAccent_sense_26"><item name="accentColor">#ce9374</item></style>
+	<style name="MaterialThemeAccent_sense_27"><item name="accentColor">#d1a194</item></style>
+	<style name="MaterialThemeAccent_sense_28"><item name="accentColor">#a57f74</item></style>
+	
+	<style name="MaterialThemeAccent_red_50"><item name="accentColor">#FFEBEE</item></style>
+	<style name="MaterialThemeAccent_red_100"><item name="accentColor">#FFCDD2</item></style>
+	<style name="MaterialThemeAccent_red_200"><item name="accentColor">#EF9A9A</item></style>
+	<style name="MaterialThemeAccent_red_300"><item name="accentColor">#E57373</item></style>
+	<style name="MaterialThemeAccent_red_400"><item name="accentColor">#EF5350</item></style>
+	<style name="MaterialThemeAccent_red_500"><item name="accentColor">#F44336</item></style>
+	<style name="MaterialThemeAccent_red_600"><item name="accentColor">#E53935</item></style>
+	<style name="MaterialThemeAccent_red_700"><item name="accentColor">#D32F2F</item></style>
+	<style name="MaterialThemeAccent_red_800"><item name="accentColor">#C62828</item></style>
+	<style name="MaterialThemeAccent_red_900"><item name="accentColor">#B71C1C</item></style>
+	<style name="MaterialThemeAccent_red_A100"><item name="accentColor">#FF8A80</item></style>
+	<style name="MaterialThemeAccent_red_A200"><item name="accentColor">#FF5252</item></style>
+	<style name="MaterialThemeAccent_red_A400"><item name="accentColor">#FF1744</item></style>
+	<style name="MaterialThemeAccent_red_A700"><item name="accentColor">#D50000</item></style>
+
+	<style name="MaterialThemeAccent_pink_50"><item name="accentColor">#FCE4EC</item></style>
+	<style name="MaterialThemeAccent_pink_100"><item name="accentColor">#F8BBD0</item></style>
+	<style name="MaterialThemeAccent_pink_200"><item name="accentColor">#F48FB1</item></style>
+	<style name="MaterialThemeAccent_pink_300"><item name="accentColor">#F06292</item></style>
+	<style name="MaterialThemeAccent_pink_400"><item name="accentColor">#EC407A</item></style>
+	<style name="MaterialThemeAccent_pink_500"><item name="accentColor">#E91E63</item></style>
+	<style name="MaterialThemeAccent_pink_600"><item name="accentColor">#D81B60</item></style>
+	<style name="MaterialThemeAccent_pink_700"><item name="accentColor">#C2185B</item></style>
+	<style name="MaterialThemeAccent_pink_800"><item name="accentColor">#AD1457</item></style>
+	<style name="MaterialThemeAccent_pink_900"><item name="accentColor">#880E4F</item></style>
+	<style name="MaterialThemeAccent_pink_A100"><item name="accentColor">#FF80AB</item></style>
+	<style name="MaterialThemeAccent_pink_A200"><item name="accentColor">#FF4081</item></style>
+	<style name="MaterialThemeAccent_pink_A400"><item name="accentColor">#F50057</item></style>
+	<style name="MaterialThemeAccent_pink_A700"><item name="accentColor">#C51162</item></style>
+
+	<style name="MaterialThemeAccent_purple_50"><item name="accentColor">#F3E5F5</item></style>
+	<style name="MaterialThemeAccent_purple_100"><item name="accentColor">#E1BEE7</item></style>
+	<style name="MaterialThemeAccent_purple_200"><item name="accentColor">#CE93D8</item></style>
+	<style name="MaterialThemeAccent_purple_300"><item name="accentColor">#BA68C8</item></style>
+	<style name="MaterialThemeAccent_purple_400"><item name="accentColor">#AB47BC</item></style>
+	<style name="MaterialThemeAccent_purple_500"><item name="accentColor">#9C27B0</item></style>
+	<style name="MaterialThemeAccent_purple_600"><item name="accentColor">#8E24AA</item></style>
+	<style name="MaterialThemeAccent_purple_700"><item name="accentColor">#7B1FA2</item></style>
+	<style name="MaterialThemeAccent_purple_800"><item name="accentColor">#6A1B9A</item></style>
+	<style name="MaterialThemeAccent_purple_900"><item name="accentColor">#4A148C</item></style>
+	<style name="MaterialThemeAccent_purple_A100"><item name="accentColor">#EA80FC</item></style>
+	<style name="MaterialThemeAccent_purple_A200"><item name="accentColor">#E040FB</item></style>
+	<style name="MaterialThemeAccent_purple_A400"><item name="accentColor">#D500F9</item></style>
+	<style name="MaterialThemeAccent_purple_A700"><item name="accentColor">#AA00FF</item></style>
+
+	<style name="MaterialThemeAccent_deep_purple_50"><item name="accentColor">#EDE7F6</item></style>
+	<style name="MaterialThemeAccent_deep_purple_100"><item name="accentColor">#D1C4E9</item></style>
+	<style name="MaterialThemeAccent_deep_purple_200"><item name="accentColor">#B39DDB</item></style>
+	<style name="MaterialThemeAccent_deep_purple_300"><item name="accentColor">#9575CD</item></style>
+	<style name="MaterialThemeAccent_deep_purple_400"><item name="accentColor">#7E57C2</item></style>
+	<style name="MaterialThemeAccent_deep_purple_500"><item name="accentColor">#673AB7</item></style>
+	<style name="MaterialThemeAccent_deep_purple_600"><item name="accentColor">#5E35B1</item></style>
+	<style name="MaterialThemeAccent_deep_purple_700"><item name="accentColor">#512DA8</item></style>
+	<style name="MaterialThemeAccent_deep_purple_800"><item name="accentColor">#4527A0</item></style>
+	<style name="MaterialThemeAccent_deep_purple_900"><item name="accentColor">#311B92</item></style>
+	<style name="MaterialThemeAccent_deep_purple_A100"><item name="accentColor">#B388FF</item></style>
+	<style name="MaterialThemeAccent_deep_purple_A200"><item name="accentColor">#7C4DFF</item></style>
+	<style name="MaterialThemeAccent_deep_purple_A400"><item name="accentColor">#651FFF</item></style>
+	<style name="MaterialThemeAccent_deep_purple_A700"><item name="accentColor">#6200EA</item></style>
+
+	<style name="MaterialThemeAccent_indigo_50"><item name="accentColor">#E8EAF6</item></style>
+	<style name="MaterialThemeAccent_indigo_100"><item name="accentColor">#C5CAE9</item></style>
+	<style name="MaterialThemeAccent_indigo_200"><item name="accentColor">#9FA8DA</item></style>
+	<style name="MaterialThemeAccent_indigo_300"><item name="accentColor">#7986CB</item></style>
+	<style name="MaterialThemeAccent_indigo_400"><item name="accentColor">#5C6BC0</item></style>
+	<style name="MaterialThemeAccent_indigo_500"><item name="accentColor">#3F51B5</item></style>
+	<style name="MaterialThemeAccent_indigo_600"><item name="accentColor">#3949AB</item></style>
+	<style name="MaterialThemeAccent_indigo_700"><item name="accentColor">#303F9F</item></style>
+	<style name="MaterialThemeAccent_indigo_800"><item name="accentColor">#283593</item></style>
+	<style name="MaterialThemeAccent_indigo_900"><item name="accentColor">#1A237E</item></style>
+	<style name="MaterialThemeAccent_indigo_A100"><item name="accentColor">#8C9EFF</item></style>
+	<style name="MaterialThemeAccent_indigo_A200"><item name="accentColor">#536DFE</item></style>
+	<style name="MaterialThemeAccent_indigo_A400"><item name="accentColor">#3D5AFE</item></style>
+	<style name="MaterialThemeAccent_indigo_A700"><item name="accentColor">#304FFE</item></style>
+
+	<style name="MaterialThemeAccent_blue_50"><item name="accentColor">#E3F2FD</item></style>
+	<style name="MaterialThemeAccent_blue_100"><item name="accentColor">#BBDEFB</item></style>
+	<style name="MaterialThemeAccent_blue_200"><item name="accentColor">#90CAF9</item></style>
+	<style name="MaterialThemeAccent_blue_300"><item name="accentColor">#64B5F6</item></style>
+	<style name="MaterialThemeAccent_blue_400"><item name="accentColor">#42A5F5</item></style>
+	<style name="MaterialThemeAccent_blue_500"><item name="accentColor">#2196F3</item></style>
+	<style name="MaterialThemeAccent_blue_600"><item name="accentColor">#1E88E5</item></style>
+	<style name="MaterialThemeAccent_blue_700"><item name="accentColor">#1976D2</item></style>
+	<style name="MaterialThemeAccent_blue_800"><item name="accentColor">#1565C0</item></style>
+	<style name="MaterialThemeAccent_blue_900"><item name="accentColor">#0D47A1</item></style>
+	<style name="MaterialThemeAccent_blue_A100"><item name="accentColor">#82B1FF</item></style>
+	<style name="MaterialThemeAccent_blue_A200"><item name="accentColor">#448AFF</item></style>
+	<style name="MaterialThemeAccent_blue_A400"><item name="accentColor">#2979FF</item></style>
+	<style name="MaterialThemeAccent_blue_A700"><item name="accentColor">#2962FF</item></style>
+
+	<style name="MaterialThemeAccent_light_blue_50"><item name="accentColor">#E1F5FE</item></style>
+	<style name="MaterialThemeAccent_light_blue_100"><item name="accentColor">#B3E5FC</item></style>
+	<style name="MaterialThemeAccent_light_blue_200"><item name="accentColor">#81D4fA</item></style>
+	<style name="MaterialThemeAccent_light_blue_300"><item name="accentColor">#4fC3F7</item></style>
+	<style name="MaterialThemeAccent_light_blue_400"><item name="accentColor">#29B6FC</item></style>
+	<style name="MaterialThemeAccent_light_blue_500"><item name="accentColor">#03A9F4</item></style>
+	<style name="MaterialThemeAccent_light_blue_600"><item name="accentColor">#039BE5</item></style>
+	<style name="MaterialThemeAccent_light_blue_700"><item name="accentColor">#0288D1</item></style>
+	<style name="MaterialThemeAccent_light_blue_800"><item name="accentColor">#0277BD</item></style>
+	<style name="MaterialThemeAccent_light_blue_900"><item name="accentColor">#01579B</item></style>
+	<style name="MaterialThemeAccent_light_blue_A100"><item name="accentColor">#80D8FF</item></style>
+	<style name="MaterialThemeAccent_light_blue_A200"><item name="accentColor">#40C4FF</item></style>
+	<style name="MaterialThemeAccent_light_blue_A400"><item name="accentColor">#00B0FF</item></style>
+	<style name="MaterialThemeAccent_light_blue_A700"><item name="accentColor">#0091EA</item></style>
+
+	<style name="MaterialThemeAccent_cyan_50"><item name="accentColor">#E0F7FA</item></style>
+	<style name="MaterialThemeAccent_cyan_100"><item name="accentColor">#B2EBF2</item></style>
+	<style name="MaterialThemeAccent_cyan_200"><item name="accentColor">#80DEEA</item></style>
+	<style name="MaterialThemeAccent_cyan_300"><item name="accentColor">#4DD0E1</item></style>
+	<style name="MaterialThemeAccent_cyan_400"><item name="accentColor">#26C6DA</item></style>
+	<style name="MaterialThemeAccent_cyan_500"><item name="accentColor">#00BCD4</item></style>
+	<style name="MaterialThemeAccent_cyan_600"><item name="accentColor">#00ACC1</item></style>
+	<style name="MaterialThemeAccent_cyan_700"><item name="accentColor">#0097A7</item></style>
+	<style name="MaterialThemeAccent_cyan_800"><item name="accentColor">#00838F</item></style>
+	<style name="MaterialThemeAccent_cyan_900"><item name="accentColor">#006064</item></style>
+	<style name="MaterialThemeAccent_cyan_A100"><item name="accentColor">#84FFFF</item></style>
+	<style name="MaterialThemeAccent_cyan_A200"><item name="accentColor">#18FFFF</item></style>
+	<style name="MaterialThemeAccent_cyan_A400"><item name="accentColor">#00E5FF</item></style>
+	<style name="MaterialThemeAccent_cyan_A700"><item name="accentColor">#00B8D4</item></style>
+
+	<style name="MaterialThemeAccent_teal_50"><item name="accentColor">#E0F2F1</item></style>
+	<style name="MaterialThemeAccent_teal_100"><item name="accentColor">#B2DFDB</item></style>
+	<style name="MaterialThemeAccent_teal_200"><item name="accentColor">#80CBC4</item></style>
+	<style name="MaterialThemeAccent_teal_300"><item name="accentColor">#4DB6AC</item></style>
+	<style name="MaterialThemeAccent_teal_400"><item name="accentColor">#26A69A</item></style>
+	<style name="MaterialThemeAccent_teal_500"><item name="accentColor">#009688</item></style>
+	<style name="MaterialThemeAccent_teal_600"><item name="accentColor">#00897B</item></style>
+	<style name="MaterialThemeAccent_teal_700"><item name="accentColor">#00796B</item></style>
+	<style name="MaterialThemeAccent_teal_800"><item name="accentColor">#00695C</item></style>
+	<style name="MaterialThemeAccent_teal_900"><item name="accentColor">#004D40</item></style>
+	<style name="MaterialThemeAccent_teal_A100"><item name="accentColor">#A7FFEB</item></style>
+	<style name="MaterialThemeAccent_teal_A200"><item name="accentColor">#64FFDA</item></style>
+	<style name="MaterialThemeAccent_teal_A400"><item name="accentColor">#1DE9B6</item></style>
+	<style name="MaterialThemeAccent_teal_A700"><item name="accentColor">#00BFA5</item></style>
+
+	<style name="MaterialThemeAccent_green_50"><item name="accentColor">#E8F5E9</item></style>
+	<style name="MaterialThemeAccent_green_100"><item name="accentColor">#C8E6C9</item></style>
+	<style name="MaterialThemeAccent_green_200"><item name="accentColor">#A5D6A7</item></style>
+	<style name="MaterialThemeAccent_green_300"><item name="accentColor">#81C784</item></style>
+	<style name="MaterialThemeAccent_green_400"><item name="accentColor">#66BB6A</item></style>
+	<style name="MaterialThemeAccent_green_500"><item name="accentColor">#4CAF50</item></style>
+	<style name="MaterialThemeAccent_green_600"><item name="accentColor">#43A047</item></style>
+	<style name="MaterialThemeAccent_green_700"><item name="accentColor">#388E3C</item></style>
+	<style name="MaterialThemeAccent_green_800"><item name="accentColor">#2E7D32</item></style>
+	<style name="MaterialThemeAccent_green_900"><item name="accentColor">#1B5E20</item></style>
+	<style name="MaterialThemeAccent_green_A100"><item name="accentColor">#B9F6CA</item></style>
+	<style name="MaterialThemeAccent_green_A200"><item name="accentColor">#69F0AE</item></style>
+	<style name="MaterialThemeAccent_green_A400"><item name="accentColor">#00E676</item></style>
+	<style name="MaterialThemeAccent_green_A700"><item name="accentColor">#00C853</item></style>
+
+	<style name="MaterialThemeAccent_light_green_50"><item name="accentColor">#F1F8E9</item></style>
+	<style name="MaterialThemeAccent_light_green_100"><item name="accentColor">#DCEDC8</item></style>
+	<style name="MaterialThemeAccent_light_green_200"><item name="accentColor">#C5E1A5</item></style>
+	<style name="MaterialThemeAccent_light_green_300"><item name="accentColor">#AED581</item></style>
+	<style name="MaterialThemeAccent_light_green_400"><item name="accentColor">#9CCC65</item></style>
+	<style name="MaterialThemeAccent_light_green_500"><item name="accentColor">#8BC34A</item></style>
+	<style name="MaterialThemeAccent_light_green_600"><item name="accentColor">#7CB342</item></style>
+	<style name="MaterialThemeAccent_light_green_700"><item name="accentColor">#689F38</item></style>
+	<style name="MaterialThemeAccent_light_green_800"><item name="accentColor">#558B2F</item></style>
+	<style name="MaterialThemeAccent_light_green_900"><item name="accentColor">#33691E</item></style>
+	<style name="MaterialThemeAccent_light_green_A100"><item name="accentColor">#CCFF90</item></style>
+	<style name="MaterialThemeAccent_light_green_A200"><item name="accentColor">#B2FF59</item></style>
+	<style name="MaterialThemeAccent_light_green_A400"><item name="accentColor">#76FF03</item></style>
+	<style name="MaterialThemeAccent_light_green_A700"><item name="accentColor">#64DD17</item></style>
+
+	<style name="MaterialThemeAccent_lime_50"><item name="accentColor">#F9FBE7</item></style>
+	<style name="MaterialThemeAccent_lime_100"><item name="accentColor">#F0F4C3</item></style>
+	<style name="MaterialThemeAccent_lime_200"><item name="accentColor">#E6EE9C</item></style>
+	<style name="MaterialThemeAccent_lime_300"><item name="accentColor">#DCE775</item></style>
+	<style name="MaterialThemeAccent_lime_400"><item name="accentColor">#D4E157</item></style>
+	<style name="MaterialThemeAccent_lime_500"><item name="accentColor">#CDDC39</item></style>
+	<style name="MaterialThemeAccent_lime_600"><item name="accentColor">#C0CA33</item></style>
+	<style name="MaterialThemeAccent_lime_700"><item name="accentColor">#A4B42B</item></style>
+	<style name="MaterialThemeAccent_lime_800"><item name="accentColor">#9E9D24</item></style>
+	<style name="MaterialThemeAccent_lime_900"><item name="accentColor">#827717</item></style>
+	<style name="MaterialThemeAccent_lime_A100"><item name="accentColor">#F4FF81</item></style>
+	<style name="MaterialThemeAccent_lime_A200"><item name="accentColor">#EEFF41</item></style>
+	<style name="MaterialThemeAccent_lime_A400"><item name="accentColor">#C6FF00</item></style>
+	<style name="MaterialThemeAccent_lime_A700"><item name="accentColor">#AEEA00</item></style>
+
+	<style name="MaterialThemeAccent_yellow_50"><item name="accentColor">#FFFDE7</item></style>
+	<style name="MaterialThemeAccent_yellow_100"><item name="accentColor">#FFF9C4</item></style>
+	<style name="MaterialThemeAccent_yellow_200"><item name="accentColor">#FFF590</item></style>
+	<style name="MaterialThemeAccent_yellow_300"><item name="accentColor">#FFF176</item></style>
+	<style name="MaterialThemeAccent_yellow_400"><item name="accentColor">#FFEE58</item></style>
+	<style name="MaterialThemeAccent_yellow_500"><item name="accentColor">#FFEB3B</item></style>
+	<style name="MaterialThemeAccent_yellow_600"><item name="accentColor">#FDD835</item></style>
+	<style name="MaterialThemeAccent_yellow_700"><item name="accentColor">#FBC02D</item></style>
+	<style name="MaterialThemeAccent_yellow_800"><item name="accentColor">#F9A825</item></style>
+	<style name="MaterialThemeAccent_yellow_900"><item name="accentColor">#F57F17</item></style>
+	<style name="MaterialThemeAccent_yellow_A100"><item name="accentColor">#FFFF82</item></style>
+	<style name="MaterialThemeAccent_yellow_A200"><item name="accentColor">#FFFF00</item></style>
+	<style name="MaterialThemeAccent_yellow_A400"><item name="accentColor">#FFEA00</item></style>
+	<style name="MaterialThemeAccent_yellow_A700"><item name="accentColor">#FFD600</item></style>
+
+	<style name="MaterialThemeAccent_amber_50"><item name="accentColor">#FFF8E1</item></style>
+	<style name="MaterialThemeAccent_amber_100"><item name="accentColor">#FFECB3</item></style>
+	<style name="MaterialThemeAccent_amber_200"><item name="accentColor">#FFE082</item></style>
+	<style name="MaterialThemeAccent_amber_300"><item name="accentColor">#FFD54F</item></style>
+	<style name="MaterialThemeAccent_amber_400"><item name="accentColor">#FFCA28</item></style>
+	<style name="MaterialThemeAccent_amber_500"><item name="accentColor">#FFC107</item></style>
+	<style name="MaterialThemeAccent_amber_600"><item name="accentColor">#FFB300</item></style>
+	<style name="MaterialThemeAccent_amber_700"><item name="accentColor">#FFA000</item></style>
+	<style name="MaterialThemeAccent_amber_800"><item name="accentColor">#FF8F00</item></style>
+	<style name="MaterialThemeAccent_amber_900"><item name="accentColor">#FF6F00</item></style>
+	<style name="MaterialThemeAccent_amber_A100"><item name="accentColor">#FFE57F</item></style>
+	<style name="MaterialThemeAccent_amber_A200"><item name="accentColor">#FFD740</item></style>
+	<style name="MaterialThemeAccent_amber_A400"><item name="accentColor">#FFC400</item></style>
+	<style name="MaterialThemeAccent_amber_A700"><item name="accentColor">#FFAB00</item></style>
+
+	<style name="MaterialThemeAccent_orange_50"><item name="accentColor">#FFF3E0</item></style>
+	<style name="MaterialThemeAccent_orange_100"><item name="accentColor">#FFE0B2</item></style>
+	<style name="MaterialThemeAccent_orange_200"><item name="accentColor">#FFCC80</item></style>
+	<style name="MaterialThemeAccent_orange_300"><item name="accentColor">#FFB74D</item></style>
+	<style name="MaterialThemeAccent_orange_400"><item name="accentColor">#FFA726</item></style>
+	<style name="MaterialThemeAccent_orange_500"><item name="accentColor">#FF9800</item></style>
+	<style name="MaterialThemeAccent_orange_600"><item name="accentColor">#FB8C00</item></style>
+	<style name="MaterialThemeAccent_orange_700"><item name="accentColor">#F57C00</item></style>
+	<style name="MaterialThemeAccent_orange_800"><item name="accentColor">#EF6C00</item></style>
+	<style name="MaterialThemeAccent_orange_900"><item name="accentColor">#E65100</item></style>
+	<style name="MaterialThemeAccent_orange_A100"><item name="accentColor">#FFD180</item></style>
+	<style name="MaterialThemeAccent_orange_A200"><item name="accentColor">#FFAB40</item></style>
+	<style name="MaterialThemeAccent_orange_A400"><item name="accentColor">#FF9100</item></style>
+	<style name="MaterialThemeAccent_orange_A700"><item name="accentColor">#FF6D00</item></style>
+
+	<style name="MaterialThemeAccent_deep_orange_50"><item name="accentColor">#FBE9A7</item></style>
+	<style name="MaterialThemeAccent_deep_orange_100"><item name="accentColor">#FFCCBC</item></style>
+	<style name="MaterialThemeAccent_deep_orange_200"><item name="accentColor">#FFAB91</item></style>
+	<style name="MaterialThemeAccent_deep_orange_300"><item name="accentColor">#FF8A65</item></style>
+	<style name="MaterialThemeAccent_deep_orange_400"><item name="accentColor">#FF7043</item></style>
+	<style name="MaterialThemeAccent_deep_orange_500"><item name="accentColor">#FF5722</item></style>
+	<style name="MaterialThemeAccent_deep_orange_600"><item name="accentColor">#F4511E</item></style>
+	<style name="MaterialThemeAccent_deep_orange_700"><item name="accentColor">#E64A19</item></style>
+	<style name="MaterialThemeAccent_deep_orange_800"><item name="accentColor">#D84315</item></style>
+	<style name="MaterialThemeAccent_deep_orange_900"><item name="accentColor">#BF360C</item></style>
+	<style name="MaterialThemeAccent_deep_orange_A100"><item name="accentColor">#FF9E80</item></style>
+	<style name="MaterialThemeAccent_deep_orange_A200"><item name="accentColor">#FF6E40</item></style>
+	<style name="MaterialThemeAccent_deep_orange_A400"><item name="accentColor">#FF3D00</item></style>
+	<style name="MaterialThemeAccent_deep_orange_A700"><item name="accentColor">#DD2600</item></style>
+
+	<style name="MaterialThemeAccent_brown_50"><item name="accentColor">#EFEBE9</item></style>
+	<style name="MaterialThemeAccent_brown_100"><item name="accentColor">#D7CCC8</item></style>
+	<style name="MaterialThemeAccent_brown_200"><item name="accentColor">#BCAAA4</item></style>
+	<style name="MaterialThemeAccent_brown_300"><item name="accentColor">#A1887F</item></style>
+	<style name="MaterialThemeAccent_brown_400"><item name="accentColor">#8D6E63</item></style>
+	<style name="MaterialThemeAccent_brown_500"><item name="accentColor">#795548</item></style>
+	<style name="MaterialThemeAccent_brown_600"><item name="accentColor">#6D4C41</item></style>
+	<style name="MaterialThemeAccent_brown_700"><item name="accentColor">#5D4037</item></style>
+	<style name="MaterialThemeAccent_brown_800"><item name="accentColor">#4E342E</item></style>
+	<style name="MaterialThemeAccent_brown_900"><item name="accentColor">#3E2723</item></style>
+
+	<style name="MaterialThemeAccent_grey_50"><item name="accentColor">#FAFAFA</item></style>
+	<style name="MaterialThemeAccent_grey_100"><item name="accentColor">#F5F5F5</item></style>
+	<style name="MaterialThemeAccent_grey_200"><item name="accentColor">#EEEEEE</item></style>
+	<style name="MaterialThemeAccent_grey_300"><item name="accentColor">#E0E0E0</item></style>
+	<style name="MaterialThemeAccent_grey_400"><item name="accentColor">#BDBDBD</item></style>
+	<style name="MaterialThemeAccent_grey_500"><item name="accentColor">#9E9E9E</item></style>
+	<style name="MaterialThemeAccent_grey_600"><item name="accentColor">#757575</item></style>
+	<style name="MaterialThemeAccent_grey_700"><item name="accentColor">#616161</item></style>
+	<style name="MaterialThemeAccent_grey_800"><item name="accentColor">#424242</item></style>
+	<style name="MaterialThemeAccent_grey_900"><item name="accentColor">#212121</item></style>
+
+	<style name="MaterialThemeAccent_blue_grey_50"><item name="accentColor">#ECEFF1</item></style>
+	<style name="MaterialThemeAccent_blue_grey_100"><item name="accentColor">#CFD8DC</item></style>
+	<style name="MaterialThemeAccent_blue_grey_200"><item name="accentColor">#B0BBC5</item></style>
+	<style name="MaterialThemeAccent_blue_grey_300"><item name="accentColor">#90A4AE</item></style>
+	<style name="MaterialThemeAccent_blue_grey_400"><item name="accentColor">#78909C</item></style>
+	<style name="MaterialThemeAccent_blue_grey_500"><item name="accentColor">#607D8B</item></style>
+	<style name="MaterialThemeAccent_blue_grey_600"><item name="accentColor">#546E7A</item></style>
+	<style name="MaterialThemeAccent_blue_grey_700"><item name="accentColor">#455A64</item></style>
+	<style name="MaterialThemeAccent_blue_grey_800"><item name="accentColor">#37474F</item></style>
+	<style name="MaterialThemeAccent_blue_grey_900"><item name="accentColor">#263238</item></style>
+	
+	<style name="MaterialThemeAccent_white_1000"><item name="accentColor">#FFFFFF</item></style>
+	<style name="MaterialThemeAccent_black_1000"><item name="accentColor">#000000</item></style>
+	
+	
+	<style name="MaterialThemeHeader_sense_1"><item name="headerColor">#4ea770</item><item name="statusBarColor">#469765</item></style>
+	<style name="MaterialThemeHeader_sense_2"><item name="headerColor">#00afab</item><item name="statusBarColor">#009E9A</item></style>
+	<style name="MaterialThemeHeader_sense_3"><item name="headerColor">#07b7b9</item><item name="statusBarColor">#06A5A7</item></style>
+	<style name="MaterialThemeHeader_sense_4"><item name="headerColor">#118b9c</item><item name="statusBarColor">#0F7D8D</item></style>
+	
+	<style name="MaterialThemeHeader_sense_5"><item name="headerColor">#17b7cd</item><item name="statusBarColor">#15A5B9</item></style>
+	<style name="MaterialThemeHeader_sense_6"><item name="headerColor">#62b1bd</item><item name="statusBarColor">#58A0AA</item></style>
+	<style name="MaterialThemeHeader_sense_7"><item name="headerColor">#0091b3</item><item name="statusBarColor">#0083A1</item></style>
+	<style name="MaterialThemeHeader_sense_8"><item name="headerColor">#0086cb</item><item name="statusBarColor">#0079B7</item></style>
+	
+	<style name="MaterialThemeHeader_sense_9"><item name="headerColor">#3786e6</item><item name="statusBarColor">#3279CF</item></style>
+	<style name="MaterialThemeHeader_sense_10"><item name="headerColor">#0761b9</item><item name="statusBarColor">#0657A7</item></style>
+	<style name="MaterialThemeHeader_sense_11"><item name="headerColor">#255999</item><item name="statusBarColor">#21508A</item></style>
+	<style name="MaterialThemeHeader_sense_12"><item name="headerColor">#6658cf</item><item name="statusBarColor">#5C4FBB</item></style>
+	
+	<style name="MaterialThemeHeader_sense_13"><item name="headerColor">#a325a3</item><item name="statusBarColor">#932193</item></style>
+	<style name="MaterialThemeHeader_sense_14"><item name="headerColor">#ffa63d</item><item name="statusBarColor">#E69637</item></style>
+	<style name="MaterialThemeHeader_sense_15"><item name="headerColor">#ff813d</item><item name="statusBarColor">#E67437</item></style>
+	<style name="MaterialThemeHeader_sense_16"><item name="headerColor">#ff5d3d</item><item name="statusBarColor">#E65437</item></style>
+	
+	<style name="MaterialThemeHeader_sense_17"><item name="headerColor">#ff7376</item><item name="statusBarColor">#E6686A</item></style>
+	<style name="MaterialThemeHeader_sense_18"><item name="headerColor">#ff647e</item><item name="statusBarColor">#E65A72</item></style>
+	<style name="MaterialThemeHeader_sense_19"><item name="headerColor">#fe4a5d</item><item name="statusBarColor">#E54354</item></style>
+	<style name="MaterialThemeHeader_sense_20"><item name="headerColor">#e74457</item><item name="statusBarColor">#D03D4E</item></style>
+	
+	<style name="MaterialThemeHeader_sense_21"><item name="headerColor">#f64541</item><item name="statusBarColor">#DE3E3B</item></style>
+	<style name="MaterialThemeHeader_sense_22"><item name="headerColor">#d0343a</item><item name="statusBarColor">#BC2F34</item></style>
+	<style name="MaterialThemeHeader_sense_23"><item name="headerColor">#f3cbb1</item><item name="statusBarColor">#DBB7A0</item></style>
+	<style name="MaterialThemeHeader_sense_24"><item name="headerColor">#f1b08e</item><item name="statusBarColor">#D99F80</item></style>
+	
+	<style name="MaterialThemeHeader_sense_25"><item name="headerColor">#c9a892</item><item name="statusBarColor">#B59884</item></style>
+	<style name="MaterialThemeHeader_sense_26"><item name="headerColor">#ce9374</item><item name="statusBarColor">#BA8569</item></style>
+	<style name="MaterialThemeHeader_sense_27"><item name="headerColor">#d1a194</item><item name="statusBarColor">#BD9185</item></style>
+	<style name="MaterialThemeHeader_sense_28"><item name="headerColor">#a57f74</item><item name="statusBarColor">#957369</item></style>
+	
+	<style name="MaterialThemeHeader_red_500"><item name="headerColor">#F44336</item><item name="statusBarColor">#DC3C31</item></style>
+	<style name="MaterialThemeHeader_pink_500"><item name="headerColor">#E91E63</item><item name="statusBarColor">#D21B59</item></style>
+	<style name="MaterialThemeHeader_purple_500"><item name="headerColor">#9C27B0</item><item name="statusBarColor">#8D239F</item></style>
+	<style name="MaterialThemeHeader_deep_purple_500"><item name="headerColor">#673AB7</item><item name="statusBarColor">#5D34A5</item></style>
+	<style name="MaterialThemeHeader_indigo_500"><item name="headerColor">#3F51B5</item><item name="statusBarColor">#3949A3</item></style>
+	<style name="MaterialThemeHeader_blue_500"><item name="headerColor">#2196F3</item><item name="statusBarColor">#1E87DB</item></style>
+	<style name="MaterialThemeHeader_light_blue_500"><item name="headerColor">#03A9F4</item><item name="statusBarColor">#0398DC</item></style>
+	<style name="MaterialThemeHeader_cyan_500"><item name="headerColor">#00BCD4</item><item name="statusBarColor">#00AABF</item></style>
+	<style name="MaterialThemeHeader_teal_500"><item name="headerColor">#009688</item><item name="statusBarColor">#00877B</item></style>
+	<style name="MaterialThemeHeader_green_500"><item name="headerColor">#4CAF50</item><item name="statusBarColor">#459E48</item></style>
+	<style name="MaterialThemeHeader_light_green_500"><item name="headerColor">#8BC34A</item><item name="statusBarColor">#7DB043</item></style>
+	<style name="MaterialThemeHeader_lime_500"><item name="headerColor">#CDDC39</item><item name="statusBarColor">#B9C633</item></style>
+	<style name="MaterialThemeHeader_yellow_500"><item name="headerColor">#FFEB3B</item><item name="statusBarColor">#E6D435</item></style>
+	<style name="MaterialThemeHeader_amber_500"><item name="headerColor">#FFC107</item><item name="statusBarColor">#E6AE06</item></style>
+	<style name="MaterialThemeHeader_orange_500"><item name="headerColor">#FF9800</item><item name="statusBarColor">#E68900</item></style>
+	<style name="MaterialThemeHeader_deep_orange_500"><item name="headerColor">#FF5722</item><item name="statusBarColor">#E64E1F</item></style>
+	<style name="MaterialThemeHeader_brown_500"><item name="headerColor">#795548</item><item name="statusBarColor">#6D4D41</item></style>
+	<style name="MaterialThemeHeader_grey_500"><item name="headerColor">#9E9E9E</item><item name="statusBarColor">#8F8F8F</item></style>
+	<style name="MaterialThemeHeader_blue_grey_500"><item name="headerColor">#607D8B</item><item name="statusBarColor">#57717D</item></style>
+	
+	<style name="MaterialThemeHeader_grey_sense"><item name="headerColor">#252525</item><item name="statusBarColor">#212121</item></style>
+	
+</resources>

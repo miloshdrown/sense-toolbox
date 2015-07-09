@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+	<color name="material_background_dark">#ff303030</color>
+	<color name="material_actionbar">#ff252525</color>
+	<color name="material_primary_dark">#ff212121</color>
+	<color name="material_accent">#ff62b1bd</color>
+	<color name="material_switch_background">#20ffffff</color>
+	<color name="material_text_primary">#ff4b4b4b</color>
+	<color name="material_text_disabled">#804b4b4b</color>
+	<color name="material_text_primary_dark">#deffffff</color>
+	<color name="material_text_secondary_dark">#ccffffff</color>
+	<color name="material_text_disabled_dark">#42ffffff</color>
+	
+</resources>

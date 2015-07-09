@@ -371,11 +371,6 @@
 		<item >@string/array_color_dark_sense</item>
 		<item >@string/array_color_light</item>
 	</string-array>
-	<string-array name="headsup_theme_presets_val">
-		<item >1</item>
-		<item >2</item>
-		<item >3</item>
-	</string-array>
 	
 	<string-array name="googleapp_widget">
 		<item >@string/array_default</item>
@@ -443,6 +438,15 @@
 		<item >2</item>
 		<item >3</item>
 		<item >4</item>
+	</string-array>
+	
+	<string-array name="material_background">
+		<item >@string/array_color_light</item>
+		<item >@string/array_color_dark_sense</item>
+	</string-array>
+	<string-array name="material_background_val">
+		<item >1</item>
+		<item >2</item>
 	</string-array>
 	
 	<string-array name="empty_array"/>

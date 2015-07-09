@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <lint>
     <issue id="AlwaysShowAction">
+        <ignore path="res/menu-v21/menu_sub_betterhu.xml" />
+        <ignore path="res/menu-v21/menu_sub_material.xml" />
+        <ignore path="res/menu-v21/menu_sub_touch.xml" />
         <ignore path="res/menu/menu_mods.xml" />
         <ignore path="res/menu/menu_sub.xml" />
     </issue>
@@ -19,10 +22,14 @@
         <ignore path="AndroidManifest.xml" />
     </issue>
     <issue id="NestedWeights">
+        <ignore path="res/layout-v21/mfragment_eps_remap.xml" />
         <ignore path="res/layout/activity_eps_remap.xml" />
         <ignore path="res/layout/activity_touch_lock.xml" />
         <ignore path="res/layout/epsremap.xml" />
         <ignore path="res/layout/fragment_eps_remap.xml" />
+    </issue>
+    <issue id="NewApi">
+        <ignore path="res/values/styles.xml" />
     </issue>
     <issue id="OldTargetApi">
         <ignore path="AndroidManifest.xml" />
@@ -30,7 +37,8 @@
     <issue id="ProtectedPermissions">
         <ignore path="AndroidManifest.xml" />
     </issue>
-    <issue id="RtlHardcoded">
+    <issue id="RtlEnabled" severity="ignore" />
+    <issue id="RtlHardcoded" severity="ignore">
         <ignore path="res/layout/about_screen.xml" />
     </issue>
     <issue id="UnusedResources">
@@ -80,6 +88,9 @@
         <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_glow_2.png" />
         <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_glow_3.png" />
         <ignore path="res/drawable-xxhdpi/stat_sys_wifi_signal_glow_4.png" />
+    </issue>
+    <issue id="UseCompoundDrawables">
+        <ignore path="res/layout-v21/list_item_with_image.xml" />
     </issue>
     <issue id="UselessParent">
         <ignore path="res/layout-land/notifications.xml" />

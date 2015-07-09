@@ -12,10 +12,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import com.htc.preference.HtcPreferenceFrameLayout.LayoutParams;
-import com.htc.widget.HtcListItem;
-import com.htc.widget.HtcListItem2LineText;
-import com.htc.widget.HtcListItemColorIcon;
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
 import com.sensetoolbox.six.utils.Helpers;
@@ -31,6 +27,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.res.XModuleResources;
 import android.graphics.PixelFormat;
+import android.graphics.Typeface;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -48,15 +45,20 @@ import android.provider.Settings;
 import android.service.notification.NotificationListenerService;
 import android.service.notification.StatusBarNotification;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.InputEvent;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.View.OnClickListener;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.AbsListView;
 import android.widget.FrameLayout;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XC_MethodHook.MethodHookParam;
 import de.robv.android.xposed.XposedBridge;
@@ -719,9 +721,13 @@ public class WakeGesturesMods {
 				
 				XMain.pref.reload();
 				if (!XMain.pref.getBoolean("touch_lock_active", false)) return;
-
-				AbsListView.LayoutParams lp1 = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-				HtcListItem listitem = new HtcListItem(mContext);
+				
+				float density = mContext.getResources().getDisplayMetrics().density;
+				AbsListView.LayoutParams lp1 = new AbsListView.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+				RelativeLayout listitem = new RelativeLayout(mContext);
+				
+				listitem.setPadding(Math.round(density * 20), Math.round(density * 15), Math.round(density * 5), 0);
+				listitem.setClipToPadding(false);
 				listitem.setEnabled(true);
 				listitem.setClickable(true);
 				listitem.setLayoutParams(lp1);
@@ -731,22 +737,60 @@ public class WakeGesturesMods {
 						goToSleep(mContext);
 					}
 				});
-				listitem.setBackgroundResource(mContext.getResources().getIdentifier("list_selector_light", "drawable", "com.htc"));
 				
-				HtcListItemColorIcon lockImg = new HtcListItemColorIcon(mContext);
-				//AbsListView.LayoutParams lp2 = new AbsListView.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-				//lockImg.setLayoutParams(lp2);
-				//lockImg.setPadding(0, 0, 0, Math.round(mContext.getResources().getDisplayMetrics().density * 40));
+				int resId = 0;
+				if (Helpers.isLP())
+					resId = mContext.getResources().getIdentifier("item_background_borderless_material", "drawable", "android");
+				else
+					resId = mContext.getResources().getIdentifier("list_selector_light", "drawable", "com.htc");
+				
+				if (resId != 0) listitem.setBackgroundResource(resId);
+				
+				RelativeLayout.LayoutParams lpImg = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+				lpImg.addRule(RelativeLayout.ALIGN_PARENT_LEFT);
+				lpImg.addRule(RelativeLayout.CENTER_VERTICAL);
+				
+				ImageView lockImg = new ImageView(mContext);
 				XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
-				lockImg.setColorIconImageDrawable(modRes.getDrawable(R.drawable.apm_touchlock));
+				lockImg.setLayoutParams(lpImg);
+				lockImg.setMinimumWidth(Math.round(density * 50));
+				lockImg.setMinimumHeight(Math.round(density * 50));
+				lockImg.setImageDrawable(modRes.getDrawable(R.drawable.apm_touchlock));
 				lockImg.setEnabled(true);
+				lockImg.setId(10001);
 				
-				HtcListItem2LineText lockTitle = new HtcListItem2LineText(mContext);
-				lockTitle.setPrimaryText(Helpers.xl10n(modRes, R.string.various_touchlock_title));
-				lockTitle.setSecondaryText(Helpers.xl10n(modRes, R.string.touchlock_power_summary));
+				RelativeLayout.LayoutParams lp2line = new RelativeLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+				lp2line.addRule(RelativeLayout.CENTER_VERTICAL);
+				lp2line.addRule(RelativeLayout.RIGHT_OF, 10001);
+				
+				RelativeLayout text2line = new RelativeLayout(mContext);
+				text2line.setLayoutParams(lp2line);
+				
+				RelativeLayout.LayoutParams lpTitle = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+				TextView lockTitle = new TextView(mContext);
+				lockTitle.setLayoutParams(lpTitle);
+				lockTitle.setText(Helpers.xl10n(modRes, R.string.various_touchlock_title));
+				lockTitle.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
+				lockTitle.setPadding(Math.round(15 * density), 0, 0, 0);
+				lockTitle.setTypeface(Typeface.create("sans-serif-condensed", Typeface.NORMAL));
+				lockTitle.setId(10002);
+				lockTitle.setTextColor(0xff4b4b4b);
+				
+				RelativeLayout.LayoutParams lpSummary = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+				lpSummary.addRule(RelativeLayout.ALIGN_LEFT);
+				lpSummary.addRule(RelativeLayout.BELOW, 10002);
+				TextView lockSummary = new TextView(mContext);
+				lockSummary.setLayoutParams(lpSummary);
+				lockSummary.setText(Helpers.xl10n(modRes, R.string.touchlock_power_summary));
+				lockSummary.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+				lockSummary.setPadding(Math.round(15 * density), 0, 0, 0);
+				lockSummary.setTypeface(Typeface.create("sans-serif-light", Typeface.NORMAL));
+				lockSummary.setTextColor(0xff4b4b4b);
 				
 				listitem.addView(lockImg);
-				listitem.addView(lockTitle);
+				text2line.addView(lockTitle);
+				text2line.addView(lockSummary);
+				listitem.addView(text2line);
 				Object mDialog = (Object)XposedHelpers.getObjectField(param.thisObject, "mDialog");
 				ListView lv = (ListView)XposedHelpers.callMethod(mDialog, "getListView");
 				lv.addFooterView(listitem);

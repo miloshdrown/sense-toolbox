@@ -1,0 +1,4 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+	<item android:id="@+id/test" android:icon="@drawable/icon_btn_view_dark" android:title="@string/betterheadsup_test" android:showAsAction="always"></item>
+	<item android:title="" android:showAsAction="always" android:actionLayout="@layout/material_toggle" />
+</menu>
