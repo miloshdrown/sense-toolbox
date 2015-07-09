@@ -26,13 +26,15 @@ public class CrashReport implements ReportSender {
 			//final String basicAuth = "Basic " + Base64.encodeToString("Sense6Toolbox:NotASecret".getBytes(), Base64.NO_WRAP);
 			URL url = new URL(ACRA.getConfig().formUri());
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
-			conn.setReadTimeout(5000);
-			conn.setConnectTimeout(5000);
+			conn.setReadTimeout(10000);
+			conn.setConnectTimeout(10000);
 			conn.setDoInput(true);
 			conn.setDoOutput(true);
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Accept", "application/json");
 			conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+			conn.setUseCaches(false);
+			conn.setDefaultUseCaches(false);
 			try (OutputStream os = conn.getOutputStream()) {
 				try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"))) {
 					writer.write(json);

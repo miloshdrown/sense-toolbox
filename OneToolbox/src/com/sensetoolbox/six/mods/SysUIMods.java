@@ -4039,7 +4039,10 @@ public class SysUIMods {
 				boolean mQsExpansionEnabled = XposedHelpers.getBooleanField(param.thisObject, "mQsExpansionEnabled");
 				
 				if (ev.getActionMasked() == 0 && mExpandedHeight == 0.0F && mQsExpansionEnabled && ev.getY(ev.getActionIndex()) < (float)mStatusBarMinHeight) {
-					XposedHelpers.setBooleanField(param.thisObject, "mTwoFingerQsExpand", true);
+					if (Helpers.isLP2())
+						XposedHelpers.setBooleanField(param.thisObject, "mQsExpandImmediate", true);
+					else
+						XposedHelpers.setBooleanField(param.thisObject, "mTwoFingerQsExpand", true);
 					XposedHelpers.callMethod(param.thisObject, "requestPanelHeightUpdate");
 					XposedHelpers.callMethod(param.thisObject, "setListening", true);
 				}
