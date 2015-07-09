@@ -177,6 +177,11 @@
 			android:title="@string/various_imenotif_title"
 			android:defaultValue="false" />
 		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_beatsnotif"
+			android:summary="@string/various_beatsnotif_summ"
+			android:title="@string/various_beatsnotif_title"
+			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_other_vzwnotif"
 			android:summary="@string/various_vzwnotif_summ"
 			android:title="@string/various_vzwnotif_title"

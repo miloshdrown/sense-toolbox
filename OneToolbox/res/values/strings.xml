@@ -514,6 +514,8 @@
 	<string name="various_powersavenotif_summ">Disable Power Saver notification.</string>
 	<string name="various_imenotif_title">Hide Input Method notification</string>
 	<string name="various_imenotif_summ">Disable Input Method notification.</string>
+	<string name="various_beatsnotif_title">Hide Beats/BoomSound notification</string>
+	<string name="various_beatsnotif_summ">Disable current audio effect notification.</string>
 	<string name="various_vzwnotif_title">Hide Wi-Fi notifications</string>
 	<string name="various_vzwnotif_summ">Disable Wi-Fi notifications on Verizon devices.</string>
 	<string name="various_fastunlock_title">Fast unlock</string>

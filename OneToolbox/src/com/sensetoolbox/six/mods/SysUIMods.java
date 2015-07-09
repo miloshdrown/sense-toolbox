@@ -613,8 +613,8 @@ public class SysUIMods {
 				}
 			});
 			
-			TextView autoText = (TextView)sliderConatiner.findViewById(R.id.autoText);
 			final HtcCheckBox cb = (HtcCheckBox)sliderConatiner.findViewById(R.id.autoCheckBox);
+			TextView autoText = (TextView)sliderConatiner.findViewById(R.id.autoText);
 			autoText.setOnClickListener(new OnClickListener() {
 				@Override
 				public void onClick(View v) {
@@ -1183,30 +1183,34 @@ public class SysUIMods {
 	// Pinch to clear all recent apps
 	public static void execHook_RecentAppsInit(final LoadPackageParam lpparam) {
 		try {
-			if (Helpers.isLP())
-			findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook(){
-				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-					final ViewGroup mPager = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "mPager").get(param.thisObject);
-			
-					killedEmAll = false;
-			
-					actObject = param.thisObject;
-					actContext = mPager.getContext();
-					pagerSelf = mPager;
-				}
-			});
-			else
-			findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook(){
-				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-					final GridView recentGridView = (GridView)XposedHelpers.findField(param.thisObject.getClass(), "mRecentGridView").get(param.thisObject);
+			if (Helpers.isLP()) {
+				String recentAppClass = "com.android.systemui.recent.htc.";
+				if (Helpers.isLP2()) recentAppClass = "com.android.systemui.recents.htc.";
 				
-					killedEmAll = false;
-				
-					actObject = param.thisObject;
-					actContext = recentGridView.getContext();
-					gridViewSelf = recentGridView;
-				}
-			});
+				findAndHookMethod(recentAppClass + "RecentAppActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook(){
+					protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+						final ViewGroup mPager = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "mPager").get(param.thisObject);
+						
+						killedEmAll = false;
+						
+						actObject = param.thisObject;
+						actContext = mPager.getContext();
+						pagerSelf = mPager;
+					}
+				});
+			} else {
+				findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook(){
+					protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+						final GridView recentGridView = (GridView)XposedHelpers.findField(param.thisObject.getClass(), "mRecentGridView").get(param.thisObject);
+						
+						killedEmAll = false;
+						
+						actObject = param.thisObject;
+						actContext = recentGridView.getContext();
+						gridViewSelf = recentGridView;
+					}
+				});
+			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -1214,7 +1218,10 @@ public class SysUIMods {
 	
 	public static void execHook_RecentAppsClearTouch(final LoadPackageParam lpparam) {
 		if (Helpers.isLP()) {
-			findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook(){
+			String recentAppClass = "com.android.systemui.recent.htc.";
+			if (Helpers.isLP2()) recentAppClass = "com.android.systemui.recents.htc.";
+			
+			findAndHookMethod(recentAppClass + "RecentAppActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook(){
 				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 					try {
 						initDetectors(((Activity)param.thisObject));
@@ -1237,8 +1244,8 @@ public class SysUIMods {
 				}
 			});
 			
-			findAndHookMethod("com.android.systemui.recent.htc.RecentAppSwipeHelper", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new TouchListenerOnTouch());
-			findAndHookMethod("com.android.systemui.recent.htc.RecentAppSwipeHelper", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouchIntercept());
+			findAndHookMethod(recentAppClass + "RecentAppSwipeHelper", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new TouchListenerOnTouch());
+			findAndHookMethod(recentAppClass + "RecentAppSwipeHelper", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouchIntercept());
 		} else {
 			findAndHookMethod("com.android.systemui.recent.RecentsGridView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new TouchListenerOnTouch());
 			findAndHookMethod("com.android.systemui.recent.RecentsGridView", lpparam.classLoader, "onInterceptTouchEvent", MotionEvent.class, new TouchListenerOnTouchIntercept());
@@ -1622,14 +1629,17 @@ public class SysUIMods {
 	
 	public static void execHook_RAMInRecents(final LoadPackageParam lpparam) {
 		if (Helpers.isLP()) {
-			findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "inflateItemView", ViewGroup.class, "com.android.systemui.recent.htc.RecentAppTask", new XC_MethodHook() {
+			String recentAppClass = "com.android.systemui.recent.htc.";
+			if (Helpers.isLP2()) recentAppClass = "com.android.systemui.recents.htc.";
+			
+			findAndHookMethod(recentAppClass + "RecentAppActivity", lpparam.classLoader, "inflateItemView", ViewGroup.class, recentAppClass + "RecentAppTask", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					execRAMView(param);
 				}
 			});
 			
-			findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "onResume", new XC_MethodHook() {
+			findAndHookMethod(recentAppClass + "RecentAppActivity", lpparam.classLoader, "onResume", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 					procs = null;
@@ -1739,7 +1749,10 @@ public class SysUIMods {
 	
 	public static void execHook_RecentsLongTap(final LoadPackageParam lpparam) {
 		if (Helpers.isLP()) {
-			findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "inflateItemView", ViewGroup.class, "com.android.systemui.recent.htc.RecentAppTask", new XC_MethodHook() {
+			String recentAppClass = "com.android.systemui.recent.htc.";
+			if (Helpers.isLP2()) recentAppClass = "com.android.systemui.recents.htc.";
+			
+			findAndHookMethod(recentAppClass + "RecentAppActivity", lpparam.classLoader, "inflateItemView", ViewGroup.class, recentAppClass + "RecentAppTask", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 					final FrameLayout theView = (FrameLayout)param.getResult();
@@ -1747,7 +1760,7 @@ public class SysUIMods {
 				}
 			});
 			
-			findAndHookMethod("com.android.systemui.recent.htc.RecentAppActivity", lpparam.classLoader, "handleSwipe", View.class, new XC_MethodHook() {
+			findAndHookMethod(recentAppClass + "RecentAppActivity", lpparam.classLoader, "handleSwipe", View.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 					Activity FxRecent = (Activity)param.thisObject;

@@ -59,6 +59,22 @@ public class PackagePermissions {
 	
 	public static void init(LoadPackageParam lpparam) {
 		try {
+			if (Helpers.isLP2())
+			findAndHookMethod("com.android.server.pm.PackageManagerService", lpparam.classLoader,
+								"grantSignaturePermission",
+								String.class,
+								"android.content.pm.PackageParser.Package",
+								"com.android.server.pm.BasePermission",
+								"android.util.ArraySet",
+			new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					Object pkg = param.args[1];
+					String pkgName = (String)XposedHelpers.getObjectField(pkg, "packageName");
+					if (pkgName.equalsIgnoreCase("com.sensetoolbox.six")) param.setResult(true);
+				}
+			});
+			else
 			findAndHookMethod("com.android.server.pm.PackageManagerService", lpparam.classLoader,
 								"grantSignaturePermission",
 								String.class,

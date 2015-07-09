@@ -610,6 +610,8 @@ public class HSubFragment extends HPreferenceFragmentExt {
 			if (Helpers.isSense7()) {
 				Helpers.removePref(this, "pref_key_other_musicchannel", "pref_key_other");
 				Helpers.removePref(this, "pref_key_other_nochargerwarn", "pref_various_mods_notifications");
+			} else {
+				Helpers.removePref(this, "pref_key_other_beatsnotif", "pref_various_mods_notifications");
 			}
 			
 			HtcListPreference.OnPreferenceChangeListener applyButtonsLight = new HtcListPreference.OnPreferenceChangeListener() {

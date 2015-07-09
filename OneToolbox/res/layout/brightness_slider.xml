@@ -17,7 +17,8 @@
 		android:layout_width="wrap_content"
 		android:layout_height="wrap_content"
 		android:layout_gravity="center_vertical"
-		android:layout_marginBottom="0.5dp"
+		android:layout_marginLeft="3dp"
+		android:layout_marginBottom="1dp"
 		android:id="@+id/autoText"
 		android:text="@string/systemui_brightslide_auto" />
 

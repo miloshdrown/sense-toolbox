@@ -1,13 +1,15 @@
 package com.sensetoolbox.six.crashreport;
 
+import java.io.BufferedWriter;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import org.acra.ACRA;
 import org.acra.collector.CrashReportData;
 import org.acra.sender.ReportSender;
 import org.acra.sender.ReportSenderException;
-import org.apache.http.client.methods.HttpPost;
-import org.apache.http.entity.StringEntity;
-import org.apache.http.impl.client.DefaultHttpClient;
-import org.apache.http.protocol.HTTP;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.sensetoolbox.six.utils.Helpers;
@@ -20,20 +22,27 @@ public class CrashReport implements ReportSender {
 		try {
 			ObjectMapper mapper = new ObjectMapper();
 			String json = mapper.writeValueAsString(Helpers.getParamsAsStringString(report));
-
-			DefaultHttpClient http = new DefaultHttpClient();
-			HttpPost httpPost = new HttpPost(ACRA.getConfig().formUri());
+			
 			//final String basicAuth = "Basic " + Base64.encodeToString("Sense6Toolbox:NotASecret".getBytes(), Base64.NO_WRAP);
-			
-			httpPost.setEntity(new StringEntity(json, HTTP.UTF_8));
-			httpPost.setHeader("Accept", "application/json");
-			httpPost.setHeader("Content-type", "application/json");
-			//httpPost.setHeader("Authorization", basicAuth);
-			
-			http.execute(httpPost);
-			//HttpResponse resp =
-			//String respText = EntityUtils.toString(resp.getEntity());
-			//Log.d(null, "Report server response: " + respText);
+			URL url = new URL(ACRA.getConfig().formUri());
+			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
+			conn.setReadTimeout(5000);
+			conn.setConnectTimeout(5000);
+			conn.setDoInput(true);
+			conn.setDoOutput(true);
+			conn.setRequestMethod("POST");
+			conn.setRequestProperty("Accept", "application/json");
+			conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+			try (OutputStream os = conn.getOutputStream()) {
+				try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"))) {
+					writer.write(json);
+					writer.flush();
+				}
+			}
+			conn.connect();
+
+			//Log.e(null, "Report server response code: " + String.valueOf(conn.getResponseCode()));
+			//Log.e(null, "Report server response: " + conn.getResponseMessage());
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

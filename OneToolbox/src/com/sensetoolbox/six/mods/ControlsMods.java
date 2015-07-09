@@ -32,8 +32,8 @@ import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
 import android.view.ViewConfiguration;
+import android.view.ViewGroup;
 import android.view.WindowManager;
-import android.widget.AbsListView;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
@@ -680,7 +680,7 @@ public class ControlsMods {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 				RelativeLayout thisView = (RelativeLayout) param.thisObject;
-				AbsListView.LayoutParams params = (AbsListView.LayoutParams) thisView.getLayoutParams();
+				ViewGroup.LayoutParams params = (ViewGroup.LayoutParams) thisView.getLayoutParams();
 				params.height = 503; // 449 stock + 54 pixel white bar
 				thisView.setLayoutParams(params);
 				thisView.invalidate();

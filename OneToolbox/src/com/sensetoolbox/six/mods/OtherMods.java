@@ -2645,17 +2645,17 @@ public class OtherMods {
 			XposedBridge.log(t);
 		}
 	}
-	/*
+	
 	public static void execHook_GlobalEffectNotification() {
 		try {
-			findAndHookMethod("android.media.htcsoundfx.view.EffectViewNotification", null, "createNotification", Context.class, int.class, String.class, String.class, int.class, String.class, Intent.class, boolean.class, new XC_MethodHook() {
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					
+			findAndHookMethod("android.media.htcsoundfx.view.EffectViewNotification", null, "show", new XC_MethodHook() {
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(null);
 				}
 			});
+			//findAndHookMethod("android.media.htcsoundfx.view.EffectViewNotification", null, "createNotification", Context.class, int.class, String.class, String.class, int.class, String.class, Intent.class, boolean.class, new XC_MethodHook()
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
 	}
-	*/
 }

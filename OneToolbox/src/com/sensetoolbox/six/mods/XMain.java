@@ -171,6 +171,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			Integer.parseInt(pref.getString("pref_key_controls_btheadsetoneffect", "1")) != 1 ||
 			Integer.parseInt(pref.getString("pref_key_controls_btheadsetoffeffect", "1")) != 1)
 			ControlsMods.execHook_AccessoriesActions();
+
+		if (pref.getBoolean("pref_key_other_beatsnotif", false))
+			OtherMods.execHook_GlobalEffectNotification();
 		
 		//OtherMods.execHook_HapticNotify();
 	}
