@@ -28,23 +28,24 @@ public class CrashReport implements ReportSender {
 			HttpURLConnection conn = (HttpURLConnection)url.openConnection();
 			conn.setReadTimeout(10000);
 			conn.setConnectTimeout(10000);
-			conn.setDoInput(true);
-			conn.setDoOutput(true);
 			conn.setRequestMethod("POST");
 			conn.setRequestProperty("Accept", "application/json");
-			conn.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
+			conn.setRequestProperty("Content-Type", "application/json");
+			conn.setDoInput(true);
+			conn.setDoOutput(true);
 			conn.setUseCaches(false);
 			conn.setDefaultUseCaches(false);
+			conn.connect();
 			try (OutputStream os = conn.getOutputStream()) {
 				try (BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(os, "UTF-8"))) {
 					writer.write(json);
 					writer.flush();
 				}
 			}
-			conn.connect();
-
+			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) throw new ReportSenderException(conn.getResponseMessage());
 			//Log.e(null, "Report server response code: " + String.valueOf(conn.getResponseCode()));
 			//Log.e(null, "Report server response: " + conn.getResponseMessage());
+			conn.disconnect();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
