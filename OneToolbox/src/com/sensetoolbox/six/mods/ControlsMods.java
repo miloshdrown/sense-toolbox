@@ -646,8 +646,9 @@ public class ControlsMods {
 					
 					recentsButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 					assistAndSearchPanelOverride(param);
-					
+					XposedBridge.log("[ST] assistAndSearchPanelOverride");
 					if (!Helpers.isLP() && XposedHelpers.getIntField(recentsButton, "mCode") == 0) return;
+					XposedBridge.log("[ST] sendAccessibilityEvent");
 					XposedHelpers.callMethod(recentsButton, "sendEvent", 0, 128);
 					XposedHelpers.callMethod(recentsButton, "sendAccessibilityEvent", 2);
 				}
@@ -673,6 +674,7 @@ public class ControlsMods {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				int mCode = XposedHelpers.getIntField(param.thisObject, "mCode");
+				XposedBridge.log("[ST] mCode = " + String.valueOf(mCode));
 				if (mCode == 0 || mCode == 187) {
 					MotionEvent mev = (MotionEvent)param.args[0];
 					int mevact = mev.getActionMasked();
