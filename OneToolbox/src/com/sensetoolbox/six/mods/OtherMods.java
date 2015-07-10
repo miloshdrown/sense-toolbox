@@ -1367,7 +1367,10 @@ public class OtherMods {
 			findAndHookMethod("com.android.server.notification.NotificationManagerService", lpparam.classLoader, "onStart", new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					XposedHelpers.setBooleanField(param.thisObject, "mFlashNotifLightDuringCharging", true);
+					if (Helpers.isLP2())
+						XposedHelpers.setBooleanField(param.thisObject, "mFlashNotifLightUnderCharge", true);
+					else
+						XposedHelpers.setBooleanField(param.thisObject, "mFlashNotifLightDuringCharging", true);
 				}
 			});
 		} else {

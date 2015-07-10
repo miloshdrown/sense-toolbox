@@ -492,13 +492,7 @@ public class ControlsMods {
 				@Override
 				public void run() {
 					if (backButton.isPressed()) {
-						if (Helpers.isLP()) {
-							XposedHelpers.callMethod(backButton, "setPressedForce", false);
-							XposedHelpers.callMethod(backButton, "sendEvent", 1, 32);
-						} else {
-							backButton.setPressed(false);
-						}
-						
+						backButton.setPressed(false);
 						XMain.pref.reload();
 						int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 						Context mContext = backButton.getContext();
@@ -563,13 +557,7 @@ public class ControlsMods {
 			@Override
 			public void run() {
 				if (homeButton.isPressed()) {
-					if (Helpers.isLP()) {
-						XposedHelpers.callMethod(homeButton, "setPressedForce", false);
-						XposedHelpers.callMethod(homeButton, "sendEvent", 1, 32);
-					} else {
-						homeButton.setPressed(false);
-					}
-					
+					homeButton.setPressed(false);
 					homeButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 					GlobalActions.simulateMenu(homeButton.getContext());
 					
@@ -637,13 +625,7 @@ public class ControlsMods {
 			@Override
 			public void run() {
 				if (recentsButton.isPressed()) {
-					if (Helpers.isLP()) {
-						XposedHelpers.callMethod(recentsButton, "setPressedForce", false);
-						XposedHelpers.callMethod(recentsButton, "sendEvent", 1, 32);
-					} else {
-						recentsButton.setPressed(false);
-					}
-					
+					recentsButton.setPressed(false);
 					recentsButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 					assistAndSearchPanelOverride(param);
 					XposedBridge.log("[ST] assistAndSearchPanelOverride");
