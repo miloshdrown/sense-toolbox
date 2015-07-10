@@ -1573,8 +1573,7 @@ public class SysUIMods {
 						ramView.setSingleLine();
 						ramView.setTypeface(text1.getTypeface());
 						ramView.setTextColor(Color.argb(190, Color.red(text1.getCurrentTextColor()), Color.green(text1.getCurrentTextColor()), Color.blue(text1.getCurrentTextColor())));
-						FrameLayout.LayoutParams p0 = (FrameLayout.LayoutParams)text1.getLayoutParams();
-						ramView.setLayoutParams(p0);
+						ramView.setLayoutParams(text1.getLayoutParams());
 						ramView.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
 						ramView.setBackground(new ColorDrawable(0xa0252525));
 						ramView.setPadding(text1.getPaddingLeft(), text1.getPaddingTop() + 5, text1.getPaddingRight(), text1.getPaddingBottom());

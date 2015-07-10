@@ -42,7 +42,7 @@ public class CrashReport implements ReportSender {
 					writer.flush();
 				}
 			}
-			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) throw new ReportSenderException(conn.getResponseMessage());
+			if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) throw new ReportSenderException(String.valueOf(conn.getResponseMessage()));
 			//Log.e(null, "Report server response code: " + String.valueOf(conn.getResponseCode()));
 			//Log.e(null, "Report server response: " + conn.getResponseMessage());
 			conn.disconnect();

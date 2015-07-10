@@ -20,6 +20,7 @@ Current changelog
 [Fixed][Sense 7] Darken wallpaper above rectangular caller photo
 [Fixed][Sense 7] 2-line caller name on lockscreen with rectangular caller photo
 [Fixed][Sense 7] Mods on Android 5.0.1 and 5.1 
+[Fixed] Soft keys long press actions
 [Fixed] E8 and M9+ detection
 [Fixed] Minor bugs
 

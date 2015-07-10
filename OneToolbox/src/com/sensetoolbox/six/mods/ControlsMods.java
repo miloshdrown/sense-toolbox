@@ -492,11 +492,13 @@ public class ControlsMods {
 				@Override
 				public void run() {
 					if (backButton.isPressed()) {
-						backButton.setPressed(false);
-						if (XposedHelpers.getIntField(backButton, "mCode") != 0) {
+						if (Helpers.isLP()) {
+							XposedHelpers.callMethod(backButton, "setPressedForce", false);
 							XposedHelpers.callMethod(backButton, "sendEvent", 1, 32);
-							XposedHelpers.callMethod(backButton, "sendAccessibilityEvent", 2);
+						} else {
+							backButton.setPressed(false);
 						}
+						
 						XMain.pref.reload();
 						int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 						Context mContext = backButton.getContext();
@@ -515,6 +517,10 @@ public class ControlsMods {
 							case 13: GlobalActions.switchToPrevApp(mContext); break;
 							case 14: GlobalActions.openAppDrawer(mContext); break;
 						}
+						
+						if (!Helpers.isLP() && XposedHelpers.getIntField(backButton, "mCode") == 0) return;
+						XposedHelpers.callMethod(backButton, "sendEvent", 0, 128);
+						XposedHelpers.callMethod(backButton, "sendAccessibilityEvent", 2);
 					}
 				}
 			});
@@ -540,10 +546,10 @@ public class ControlsMods {
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				if (XposedHelpers.getIntField(param.thisObject, "mCode") == 4) {
 					MotionEvent mev = (MotionEvent)param.args[0];
-					int mevact = mev.getAction();
-					if (mevact == 0) isBackPressed = true;
-					if (mevact == 2 && isBackPressed) param.setResult(true);
-					if (mevact == 1) isBackPressed = false;
+					int mevact = mev.getActionMasked();
+					if (mevact == MotionEvent.ACTION_DOWN) isBackPressed = true;
+					if (mevact == MotionEvent.ACTION_MOVE && isBackPressed) param.setResult(true);
+					if (mevact == MotionEvent.ACTION_UP) isBackPressed = false;
 				}
 			}
 		});
@@ -557,13 +563,19 @@ public class ControlsMods {
 			@Override
 			public void run() {
 				if (homeButton.isPressed()) {
-					homeButton.setPressed(false);
-					if (XposedHelpers.getIntField(homeButton, "mCode") != 0) {
+					if (Helpers.isLP()) {
+						XposedHelpers.callMethod(homeButton, "setPressedForce", false);
 						XposedHelpers.callMethod(homeButton, "sendEvent", 1, 32);
-						XposedHelpers.callMethod(homeButton, "sendAccessibilityEvent", 2);
+					} else {
+						homeButton.setPressed(false);
 					}
+					
 					homeButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 					GlobalActions.simulateMenu(homeButton.getContext());
+					
+					if (!Helpers.isLP() && XposedHelpers.getIntField(homeButton, "mCode") == 0) return;
+					XposedHelpers.callMethod(homeButton, "sendEvent", 0, 128);
+					XposedHelpers.callMethod(homeButton, "sendAccessibilityEvent", 2);
 				}
 			}
 		});
@@ -588,10 +600,10 @@ public class ControlsMods {
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				if (XposedHelpers.getIntField(param.thisObject, "mCode") == 3) {
 					MotionEvent mev = (MotionEvent)param.args[0];
-					int mevact = mev.getAction();
-					if (mevact == 0) isHomePressed = true;
-					if (mevact == 2 && isHomePressed) param.setResult(true);
-					if (mevact == 1) isHomePressed = false;
+					int mevact = mev.getActionMasked();
+					if (mevact == MotionEvent.ACTION_DOWN) isHomePressed = true;
+					if (mevact == MotionEvent.ACTION_MOVE && isHomePressed) param.setResult(true);
+					if (mevact == MotionEvent.ACTION_UP) isHomePressed = false;
 				}
 			}
 		});
@@ -625,13 +637,19 @@ public class ControlsMods {
 			@Override
 			public void run() {
 				if (recentsButton.isPressed()) {
-					recentsButton.setPressed(false);
-					if (XposedHelpers.getIntField(recentsButton, "mCode") != 0) {
+					if (Helpers.isLP()) {
+						XposedHelpers.callMethod(recentsButton, "setPressedForce", false);
 						XposedHelpers.callMethod(recentsButton, "sendEvent", 1, 32);
-						XposedHelpers.callMethod(recentsButton, "sendAccessibilityEvent", 2);
+					} else {
+						recentsButton.setPressed(false);
 					}
+					
 					recentsButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 					assistAndSearchPanelOverride(param);
+					
+					if (!Helpers.isLP() && XposedHelpers.getIntField(recentsButton, "mCode") == 0) return;
+					XposedHelpers.callMethod(recentsButton, "sendEvent", 0, 128);
+					XposedHelpers.callMethod(recentsButton, "sendAccessibilityEvent", 2);
 				}
 			}
 		});
@@ -654,12 +672,13 @@ public class ControlsMods {
 		findAndHookMethod("com.android.systemui.statusbar.policy.KeyButtonView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				if (XposedHelpers.getIntField(param.thisObject, "mCode") == 187) {
+				int mCode = XposedHelpers.getIntField(param.thisObject, "mCode");
+				if (mCode == 0 || mCode == 187) {
 					MotionEvent mev = (MotionEvent)param.args[0];
-					int mevact = mev.getAction();
-					if (mevact == 0) isRecentsPressed = true;
-					if (mevact == 2 && isRecentsPressed) param.setResult(true);
-					if (mevact == 1) isRecentsPressed = false;
+					int mevact = mev.getActionMasked();
+					if (mevact == MotionEvent.ACTION_DOWN) isRecentsPressed = true;
+					if (mevact == MotionEvent.ACTION_MOVE && isRecentsPressed) param.setResult(true);
+					if (mevact == MotionEvent.ACTION_UP) isRecentsPressed = false;
 				}
 			}
 		});

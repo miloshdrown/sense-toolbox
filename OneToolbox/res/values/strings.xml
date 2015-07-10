@@ -322,7 +322,6 @@
 	<string name="sense_transitions_summ">Change transition animations between apps and launcher. Soft reboot is required!</string>
 	<string name="notselected">Not selected</string>
 	<string name="loading_app_data">Loading apps&#8230;</string>
-	<string name="loading_accents">Loading color accents&#8230;</string>
 	<string name="locked_warning">Please unlock launcher first!</string>
 
 	<string name="message_mods">Messaging mods</string>
