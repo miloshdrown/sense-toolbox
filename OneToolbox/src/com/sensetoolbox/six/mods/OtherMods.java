@@ -670,19 +670,27 @@ public class OtherMods {
 			
 			KeyguardManager km = (KeyguardManager)mPhoto.getContext().getSystemService(Context.KEYGUARD_SERVICE);
 			float density = mPhoto.getContext().getResources().getDisplayMetrics().density;
-			if (photoSize == 2) photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_rect); else
+			
 			if (km.inKeyguardRestrictedInputMode()) {
-				photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_ls);
-				if ((Helpers.isEight() || Helpers.isDesire816()) && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false)) photoHeight += Math.round(density * 18);
+				if (photoSize == 2) {
+					photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_rect);
+				} else {
+					photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_ls);
+					if ((Helpers.isEight() || Helpers.isDesire816()) && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false)) photoHeight += Math.round(density * 18);
+				}
 			} else {
-				photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height);
+				if (photoSize == 2)
+					photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_rect);
+				else
+					photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height);
+				
 				if (Helpers.isEight() || Helpers.isDesire816())
 				if (XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false))
 					photoHeight -= Math.round(density * 19.333);
 				else
 					photoHeight -= Math.round(density * 37.333);
 			}
-		
+			
 			if (mPhotoParent != null)
 			if (mPhotoParent instanceof RelativeLayout) {
 				RelativeLayout mPhotoFrame = (RelativeLayout)mPhotoParent;
