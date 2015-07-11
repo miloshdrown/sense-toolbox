@@ -71,6 +71,11 @@
 			android:summary="@string/persist_unhideprefs_summ"
 			android:title="@string/persist_unhideprefs_title"
 			android:defaultValue="false" />
+		<CheckBoxPreference
+			android:key="pref_key_other_textmagnifier"
+			android:summary="@string/various_textmagnifier_summ"
+			android:title="@string/various_textmagnifier_title"
+			android:defaultValue="false" />
 		</PreferenceCategory>
 		
 		<PreferenceCategory

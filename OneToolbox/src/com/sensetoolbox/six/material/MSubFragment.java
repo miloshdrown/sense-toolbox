@@ -42,6 +42,7 @@ import android.preference.MultiSelectListPreference;
 import android.preference.Preference;
 import android.preference.Preference.OnPreferenceChangeListener;
 import android.preference.Preference.OnPreferenceClickListener;
+import android.provider.Settings;
 import android.util.TypedValue;
 import android.preference.PreferenceCategory;
 import android.preference.PreferenceGroup;
@@ -634,6 +635,29 @@ private int xmlResId = 0;
 					return true;
 				}
 			});
+			
+			CheckBoxPreference textMagnifierPreference = (CheckBoxPreference) findPreference("pref_key_other_textmagnifier");
+			if (textMagnifierPreference != null) {
+				if (Settings.System.getInt(getActivity().getContentResolver(), "htc_magnifier_setting", 0) == 1)
+					textMagnifierPreference.setChecked(true);
+				else
+					textMagnifierPreference.setChecked(false);
+				
+				textMagnifierPreference.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
+					@Override
+					public boolean onPreferenceChange(Preference preference, Object newValue) {
+						try {
+							int val = 0;
+							if ((Boolean)newValue) val = 1;
+							Settings.System.putInt(getActivity().getContentResolver(), "htc_magnifier_setting", val);
+							return true;
+						} catch (Exception e) {
+							e.printStackTrace();
+							return false;
+						}
+					}
+				});
+			}
 		} else if (xmlResId == R.xml.mprefs_wakegest) {
 			this.menuType = 1;
 			

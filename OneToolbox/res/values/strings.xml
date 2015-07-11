@@ -475,6 +475,8 @@
 	<string name="various_apm_summ">Enable or disable Advanced Power Menu\nIf you have the native APM installed, better keep this disabled.</string>
 	<string name="various_scron_title">Enable \'Stay awake\'</string>
 	<string name="various_scron_summ">Show the \'Stay awake\' setting in developer options.</string>
+	<string name="various_textmagnifier_title">Text magnifier</string>
+	<string name="various_textmagnifier_summ">Show magnifier when positioning cursor in text fields.</string>
 	<string name="various_apps_title">Show additional app details</string>
 	<string name="various_apps_summ">Add new fields to Settings > Apps:\n- button to launch an app\n- apk filename and path\n- data path\n- process name\n- user id\n- target SDK version</string>
 	<string name="various_mods_lockscreen">HTC Lock Screen</string>

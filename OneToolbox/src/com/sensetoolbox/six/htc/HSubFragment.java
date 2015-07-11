@@ -47,6 +47,7 @@ import android.content.res.TypedArray;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -651,6 +652,29 @@ public class HSubFragment extends HPreferenceFragmentExt {
 					return true;
 				}
 			});
+			
+			HtcCheckBoxPreference textMagnifierPreference = (HtcCheckBoxPreference) findPreference("pref_key_other_textmagnifier");
+			if (textMagnifierPreference != null) {
+				if (Settings.System.getInt(getActivity().getContentResolver(), "htc_magnifier_setting", 0) == 1)
+					textMagnifierPreference.setChecked(true);
+				else
+					textMagnifierPreference.setChecked(false);
+				
+				textMagnifierPreference.setOnPreferenceChangeListener(new HtcCheckBoxPreference.OnPreferenceChangeListener() {
+					@Override
+					public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
+						try {
+							int val = 0;
+							if ((Boolean)newValue) val = 1; else val = 0;
+							Settings.System.putInt(getActivity().getContentResolver(), "htc_magnifier_setting", val);
+							return true;
+						} catch (Exception e) {
+							e.printStackTrace();
+							return false;
+						}
+					}
+				});
+			}
 		} else if (xmlResId == R.xml.prefs_wakegest) {
 			this.menuType = 1;
 			
