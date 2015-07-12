@@ -694,8 +694,8 @@ public class OtherMods {
 			}
 			
 			// Nasty...
-			if (Helpers.isDesire816()) photoHeight = Math.round(photoHeight / 1.5f);
-			
+			if (Helpers.isDesire816() && photoHeight > 900) photoHeight = Math.round(photoHeight / 1.5f);
+						
 			if (mPhotoParent != null)
 			if (mPhotoParent instanceof RelativeLayout) {
 				RelativeLayout mPhotoFrame = (RelativeLayout)mPhotoParent;

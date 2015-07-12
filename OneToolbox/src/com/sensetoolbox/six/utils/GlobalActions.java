@@ -174,7 +174,10 @@ public class GlobalActions {
 					if (!isLauncher) {
 						if (Helpers.getHTCHaptic(context)) {
 							Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-							vibe.vibrate(20);
+							if (XMain.pref.getBoolean("pref_key_controls_longpresshaptic_enable", false))
+								vibe.vibrate(XMain.pref.getInt("pref_key_controls_longpresshaptic", 21));
+							else
+								vibe.vibrate(21);
 						}
 						if (rtitem.id >= 0)
 							am.moveTaskToFront(rtitem.id, 0);
@@ -404,10 +407,12 @@ public class GlobalActions {
 			}
 			
 			if (isLauncher || isAllowed) {
-				// Getting HTC Power Saver vibration state
 				if (Helpers.getHTCHaptic(context)) {
 					Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
-					vibe.vibrate(30);
+					if (XMain.pref.getBoolean("pref_key_controls_longpresshaptic_enable", false))
+						vibe.vibrate(XMain.pref.getInt("pref_key_controls_longpresshaptic", 30));
+					else
+						vibe.vibrate(30);
 				}
 			}
 		} catch (Throwable t) {

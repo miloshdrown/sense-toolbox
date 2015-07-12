@@ -3621,7 +3621,10 @@ public class SysUIMods {
 							FloatingAlertDialog blDialog = new FloatingAlertDialog(mContext, String.format(Helpers.xl10n(modRes, R.string.popupnotify_blacklist), appName), sbn);
 							blDialog.show();
 							Vibrator vibe = (Vibrator)v.getContext().getSystemService(Context.VIBRATOR_SERVICE);
-							vibe.vibrate(20);
+							if (XMain.pref.getBoolean("pref_key_controls_longpresshaptic_enable", false))
+								vibe.vibrate(XMain.pref.getInt("pref_key_controls_longpresshaptic", 21));
+							else
+								vibe.vibrate(21);
 							return true;
 						}
 					};
