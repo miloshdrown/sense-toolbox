@@ -2,17 +2,26 @@
 Ideas
 =====
 
-- Pageless BF scrolling, remove snap to block scrolling
-- Mount ISO image
+Pageless BF scrolling, remove snap to block scrolling
+Mount ISO image
+
+=====
+Bugs
+=====
+
+[5.1] Hide NFC icon
+[5.1] Compact EQS titles
+[Desire 816] Wrong caller photo height
 
 =================
 Current changelog
 =================
 
 2.1.1
+[Fixed] Vibration on connect
+[Fixed][5.1] Contacts photo frame
 [Fixed][5.1] Enhanced screen lock
 [Fixed][5.1] Center clock on lockscreen
-[Fixed][5.1] Contacts photo frame
 
 2.1
 [New] Material UI design compatible with any 5.0+ ROM, activates automatically if HTC resource framework is missing

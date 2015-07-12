@@ -693,6 +693,9 @@ public class OtherMods {
 					photoHeight -= Math.round(density * 37.333);
 			}
 			
+			// Nasty...
+			if (Helpers.isDesire816()) photoHeight = Math.round(photoHeight / 1.5f);
+			
 			if (mPhotoParent != null)
 			if (mPhotoParent instanceof RelativeLayout) {
 				RelativeLayout mPhotoFrame = (RelativeLayout)mPhotoParent;
@@ -1439,7 +1442,7 @@ public class OtherMods {
 	}
 	
 	public static void execHook_ContactsNoCorner(final InitPackageResourcesParam resparam) {
-		if (resparam.packageName.equals("com.htc.contacts")) try {
+		try {
 			resparam.res.setReplacement(resparam.packageName, "drawable", "common_photo_frame_quick_contact_mask", Color.TRANSPARENT);
 		} catch (Throwable t) {
 			XposedBridge.log(t);
