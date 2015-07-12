@@ -465,14 +465,23 @@ public class SysUIMods {
 						}
 					}
 				});
-			
-				findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook() {
-					@Override
-					protected void beforeHookedMethod(MethodHookParam param) {
-						TextView clock = (TextView)param.thisObject;
-						if (clock.getId() == clock.getResources().getIdentifier("keyguard_clock", "id", "com.android.systemui")) clock.setVisibility(View.GONE);
-					}
-				});
+				
+				if (Helpers.isLP2())
+					findAndHookMethod("com.android.systemui.statusbar.policy.ClockInternal", lpparam.classLoader, "updateClock", new XC_MethodHook() {
+						@Override
+						protected void beforeHookedMethod(MethodHookParam param) {
+							TextView clock = (TextView)param.thisObject;
+							if (clock.getId() == clock.getResources().getIdentifier("keyguard_clock", "id", "com.android.systemui")) clock.setVisibility(View.GONE);
+						}
+					});
+				else
+					findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook() {
+						@Override
+						protected void beforeHookedMethod(MethodHookParam param) {
+							TextView clock = (TextView)param.thisObject;
+							if (clock.getId() == clock.getResources().getIdentifier("keyguard_clock", "id", "com.android.systemui")) clock.setVisibility(View.GONE);
+						}
+					});
 			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);

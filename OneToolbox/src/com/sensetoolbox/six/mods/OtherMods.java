@@ -73,6 +73,7 @@ import android.text.TextWatcher;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.Surface;
 import android.view.View;
@@ -676,7 +677,8 @@ public class OtherMods {
 					photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_rect);
 				} else {
 					photoHeight = modRes.getDimensionPixelSize(R.dimen.photo_new_height_ls);
-					if ((Helpers.isEight() || Helpers.isDesire816()) && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false)) photoHeight += Math.round(density * 18);
+					if ((Helpers.isEight() || Helpers.isDesire816()) && XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false))
+					photoHeight += Math.round(density * 18);
 				}
 			} else {
 				if (photoSize == 2)
@@ -864,7 +866,16 @@ public class OtherMods {
 					RelativeLayout callCard = (RelativeLayout)param.thisObject;
 					LinearLayout peopleInfoLayout = (LinearLayout)callCard.findViewById(callCard.getResources().getIdentifier("peopleInfoLayout", "id", "com.android.phone"));
 					
-					if (photoSize == 3) {
+					if (photoSize == 2) {
+						float density = peopleInfoLayout.getResources().getDisplayMetrics().density;
+						int pdBottom = Math.round(density * 45);
+						if (Helpers.isEight() || Helpers.isDesire816())
+						if (XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false))
+							pdBottom += Math.round(density * 19.333);
+						else
+							pdBottom += Math.round(density * 37.333);
+						peopleInfoLayout.setPadding(peopleInfoLayout.getPaddingLeft(), peopleInfoLayout.getPaddingTop(), peopleInfoLayout.getPaddingRight(), pdBottom);
+					} else {
 						peopleInfoLayout.setBackgroundColor(Color.argb(140, 22, 22, 22));
 						peopleInfoLayout.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
 						peopleInfoLayout.setPadding(peopleInfoLayout.getPaddingLeft(), Math.round(peopleInfoLayout.getResources().getDisplayMetrics().density * 8), peopleInfoLayout.getPaddingRight(), Math.round(peopleInfoLayout.getResources().getDisplayMetrics().density * 10));
@@ -873,8 +884,6 @@ public class OtherMods {
 						paramsPI.height = LayoutParams.WRAP_CONTENT;
 						((LinearLayout)peopleInfoLayout.getParent()).setGravity(Gravity.BOTTOM);
 						peopleInfoLayout.setLayoutParams(paramsPI);
-					} else {
-						peopleInfoLayout.setPadding(peopleInfoLayout.getPaddingLeft(), peopleInfoLayout.getPaddingTop(), peopleInfoLayout.getPaddingRight(), Math.round(peopleInfoLayout.getResources().getDisplayMetrics().density * 45));
 					}
 				} catch (Throwable t) {
 					XposedBridge.log(t);
@@ -974,11 +983,14 @@ public class OtherMods {
 					if (kgMgr.isKeyguardLocked() && kgMgr.isKeyguardSecure()) {
 						Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 						if (mHandler != null) {
-							Runnable mPowerLongPress = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mPowerLongPress");
+							try {
+								Runnable mPowerLongPress = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mPowerLongPress");
+								if (mPowerLongPress != null) mHandler.removeCallbacks(mPowerLongPress);
+							} catch (Throwable t) {}
+							
 							Runnable mPowerLongPress_Toast = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mPowerLongPress_Toast");
 							Runnable mPowerLongPress_Toast_2KeyHWResetHint = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mPowerLongPress_Toast_2KeyHWResetHint");
 							Runnable mPowerLongPress_Toast_2KeyHWResetIndicator = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mPowerLongPress_Toast_2KeyHWResetIndicator");
-							if (mPowerLongPress != null) mHandler.removeCallbacks(mPowerLongPress);
 							if (mPowerLongPress_Toast != null) mHandler.removeCallbacks(mPowerLongPress_Toast);
 							if (mPowerLongPress_Toast_2KeyHWResetHint != null) mHandler.removeCallbacks(mPowerLongPress_Toast_2KeyHWResetHint);
 							if (mPowerLongPress_Toast_2KeyHWResetIndicator != null) mHandler.removeCallbacks(mPowerLongPress_Toast_2KeyHWResetIndicator);
@@ -991,13 +1003,31 @@ public class OtherMods {
 		};
 		
 		try {
-			findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptPowerKeyDown", boolean.class, boolean.class, hook);
+			if (Helpers.isLP2())
+				findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptPowerKeyDown", KeyEvent.class, boolean.class, hook);
+			else
+				findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptPowerKeyDown", boolean.class, boolean.class, hook);
 		} catch (Throwable t) {
 			try {
 				findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "interceptPowerKeyDown", boolean.class, hook);
 			} catch (Throwable t2) {
 				XposedBridge.log(t2);
 			}
+		}
+		
+		if (Helpers.isLP2()) {
+			findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "powerLongPress", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					try {
+						Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+						KeyguardManager kgMgr = (KeyguardManager)mPWMContext.getSystemService(Context.KEYGUARD_SERVICE);
+						if (kgMgr.isKeyguardLocked() && kgMgr.isKeyguardSecure()) param.setResult(null);
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+				}
+			});
 		}
 	}
 	
@@ -1392,12 +1422,14 @@ public class OtherMods {
 	}
 	
 	public static void execHook_ContactsNoCornerSystem() {
-		XResources.setSystemWideReplacement("com.htc:drawable/common_photo_frame_quick_contact_mask", new XResources.DrawableLoader(){
-			@Override
-			public Drawable newDrawable(XResources res, int id) throws Throwable {
-				return new ColorDrawable(Color.TRANSPARENT);
-			}
-		});
+		if (!Helpers.isNewSense()) try {
+			XResources.setSystemWideReplacement("com.htc:drawable/common_photo_frame_quick_contact_mask", new XResources.DrawableLoader(){
+				@Override
+				public Drawable newDrawable(XResources res, int id) throws Throwable {
+					return new ColorDrawable(Color.TRANSPARENT);
+				}
+			});
+		} catch (Throwable t) {}
 	}
 	
 	public static void execHook_ContactsNoCorner(final InitPackageResourcesParam resparam) {
@@ -2214,14 +2246,11 @@ public class OtherMods {
 		if (id == 0 || origName == null) return "";
 		
 		String key = String.valueOf(id) + "_" + String.valueOf(origName) + "_" + String.valueOf(useComma);
-		if (dialerContext == null) {
-			XposedBridge.log("[Init] " + key + " | " + "dialerContext == null");
-			return "";
-		}
+		if (dialerContext == null) return "";
 
 		String fullName = queryCache.get(key);
 		if (fullName != null) {
-			XposedBridge.log("[Cached] " + key + " | " + fullName);
+			//XposedBridge.log("[Cached] " + key + " | " + fullName);
 			return fullName;
 		} else {
 			String prefix = "", firstName = "", middleName = "", lastName = "", rawContactId = "", suffix = "";
@@ -2237,9 +2266,9 @@ public class OtherMods {
 			}
 			
 			if (rawContactId.isEmpty()) {
-				XposedBridge.log("[Query] " + key + " | rawContactId is empty");
+				//XposedBridge.log("[Query] " + key + " | rawContactId is empty");
 				return "";
-			} else XposedBridge.log("[Query] " + key + " | rawContactId = " + rawContactId);
+			} //else XposedBridge.log("[Query] " + key + " | rawContactId = " + rawContactId);
 				
 			String[] nameProjection = new String[] {
 				ContactsContract.CommonDataKinds.StructuredName.PREFIX,
@@ -2287,7 +2316,7 @@ public class OtherMods {
 			fullName = fullName.trim();
 			if (fullName.endsWith(",")) fullName = fullName.substring(0, fullName.length() - 1);
 			queryCache.put(key, fullName);
-			XposedBridge.log("[Query] " + key + " | " + fullName);
+			//XposedBridge.log("[Query] " + key + " | " + fullName);
 			return fullName;
 		}
 	}
@@ -2306,11 +2335,11 @@ public class OtherMods {
 					try {
 						long id = cursor.getInt(15);
 						String origName = cursor.getString(12);
-						XposedBridge.log("[bindView] " + String.valueOf(id) + " | " + origName);
+						//XposedBridge.log("[bindView] " + String.valueOf(id) + " | " + origName);
 						String fullName = queryContactFullName(id, origName, true);
 						View recentItem = (View)param.args[0];
 						if (fullName.isEmpty() || recentItem == null) {
-							XposedBridge.log("fullName.isEmpty() || recentItem == null");
+							//XposedBridge.log("fullName.isEmpty() || recentItem == null");
 							return;
 						}
 						
@@ -2393,7 +2422,7 @@ public class OtherMods {
 					
 					String fullName = "";
 					try {
-						XposedBridge.log("[getContactName] " + String.valueOf(XposedHelpers.getLongField(sContact, "id")) + " | " + (String)XposedHelpers.getObjectField(sContact, "name"));
+						//XposedBridge.log("[getContactName] " + String.valueOf(XposedHelpers.getLongField(sContact, "id")) + " | " + (String)XposedHelpers.getObjectField(sContact, "name"));
 						fullName = queryContactFullName(XposedHelpers.getLongField(sContact, "id"), (String)XposedHelpers.getObjectField(sContact, "name"), false);
 					} catch (Throwable t) {
 						XposedBridge.log(t);
@@ -2416,7 +2445,7 @@ public class OtherMods {
 					} catch (Throwable t) {
 						XposedBridge.log(t);
 					} else {
-						XposedBridge.log("param.getResult() == null || fullName.isEmpty()");
+						//XposedBridge.log("param.getResult() == null || fullName.isEmpty()");
 					}
 				}
 			});
@@ -2442,7 +2471,7 @@ public class OtherMods {
 		}
 		
 		String origName = (String)XposedHelpers.getObjectField(callerInfo, "name");
-		XposedBridge.log("[updateDisplayForPerson] " + String.valueOf(contactId) + " | " + origName);
+		//XposedBridge.log("[updateDisplayForPerson] " + String.valueOf(contactId) + " | " + origName);
 		if (contactId > 0L) {
 			String fullName = queryContactFullName(contactId, origName, false);
 			if (!fullName.isEmpty()) XposedHelpers.setObjectField(callerInfo, "name", fullName);
@@ -2477,7 +2506,7 @@ public class OtherMods {
 					long personId = 0L;
 					try { personId = Long.parseLong(callIntent.getStringExtra("personId")); } catch (Throwable t) {}
 					String origName = callIntent.getStringExtra("name");
-					XposedBridge.log("[initFromIntent] " + String.valueOf(personId) + " | " + origName);
+					//XposedBridge.log("[initFromIntent] " + String.valueOf(personId) + " | " + origName);
 					if (personId > 0L) {
 						String fullName = queryContactFullName(personId, origName, false);
 						if (!fullName.isEmpty()) callIntent.putExtra("name", fullName);
@@ -2613,9 +2642,16 @@ public class OtherMods {
 		}
 	}
 	
-	public static boolean overrideBackKey = false;
 	public static void execHook_NoBackToMute(final LoadPackageParam lpparam) {
 		try {
+			findAndHookMethod("com.android.phone.InCallScreen", lpparam.classLoader, "handleBackKey", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.setResult(true);
+				}
+			});
+			/*
+			public static boolean overrideBackKey = false;
 			findAndHookMethod("com.android.phone.InCallScreen", lpparam.classLoader, "handleBackKey", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
@@ -2634,6 +2670,7 @@ public class OtherMods {
 					if (overrideBackKey) param.setResult(false);
 				}
 			});
+			*/
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

@@ -9,6 +9,11 @@ Ideas
 Current changelog
 =================
 
+2.1.1
+[Fixed][5.1] Enhanced screen lock
+[Fixed][5.1] Center clock on lockscreen
+[Fixed][5.1] Contacts photo frame
+
 2.1
 [New] Material UI design compatible with any 5.0+ ROM, activates automatically if HTC resource framework is missing
 [New] Vibrate on outgoing call connect even if proximity sensor is covered
