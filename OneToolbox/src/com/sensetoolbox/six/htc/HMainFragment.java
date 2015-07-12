@@ -48,7 +48,7 @@ import com.stericson.RootTools.RootTools;
 
 public class HMainFragment extends HPreferenceFragmentExt {
 	
-	private boolean toolboxModuleActive = false;
+	public boolean toolboxModuleActive = false;
 	
 	public HMainFragment() {
 		super();

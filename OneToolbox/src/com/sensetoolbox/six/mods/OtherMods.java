@@ -865,22 +865,28 @@ public class OtherMods {
 				try {
 					RelativeLayout callCard = (RelativeLayout)param.thisObject;
 					LinearLayout peopleInfoLayout = (LinearLayout)callCard.findViewById(callCard.getResources().getIdentifier("peopleInfoLayout", "id", "com.android.phone"));
+					float density = peopleInfoLayout.getResources().getDisplayMetrics().density;
 					
 					if (photoSize == 2) {
-						float density = peopleInfoLayout.getResources().getDisplayMetrics().density;
-						int pdBottom = Math.round(density * 45);
+						peopleInfoLayout.setPadding(peopleInfoLayout.getPaddingLeft(), peopleInfoLayout.getPaddingTop(), peopleInfoLayout.getPaddingRight(), Math.round(density * 45));
+						
+						LinearLayout.LayoutParams paramsPI = (LinearLayout.LayoutParams)peopleInfoLayout.getLayoutParams();
+						int topMargin = paramsPI.topMargin;
+						
 						if (Helpers.isEight() || Helpers.isDesire816())
 						if (XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false))
-							pdBottom += Math.round(density * 19.333);
+							topMargin -= Math.round(density * 19.333);
 						else
-							pdBottom += Math.round(density * 37.333);
-						peopleInfoLayout.setPadding(peopleInfoLayout.getPaddingLeft(), peopleInfoLayout.getPaddingTop(), peopleInfoLayout.getPaddingRight(), pdBottom);
+							topMargin -= Math.round(density * 37.333);
+						
+						paramsPI.setMargins(paramsPI.leftMargin, topMargin, paramsPI.rightMargin, paramsPI.bottomMargin);
+						peopleInfoLayout.setLayoutParams(paramsPI);
 					} else {
 						peopleInfoLayout.setBackgroundColor(Color.argb(140, 22, 22, 22));
 						peopleInfoLayout.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-						peopleInfoLayout.setPadding(peopleInfoLayout.getPaddingLeft(), Math.round(peopleInfoLayout.getResources().getDisplayMetrics().density * 8), peopleInfoLayout.getPaddingRight(), Math.round(peopleInfoLayout.getResources().getDisplayMetrics().density * 10));
+						peopleInfoLayout.setPadding(peopleInfoLayout.getPaddingLeft(), Math.round(density * 8), peopleInfoLayout.getPaddingRight(), Math.round(density * 10));
 						LinearLayout.LayoutParams paramsPI = (LinearLayout.LayoutParams)peopleInfoLayout.getLayoutParams();
-						paramsPI.setMargins(paramsPI.leftMargin, 0, paramsPI.rightMargin, Math.round(peopleInfoLayout.getResources().getDisplayMetrics().density * 143));
+						paramsPI.setMargins(paramsPI.leftMargin, 0, paramsPI.rightMargin, Math.round(density * 143));
 						paramsPI.height = LayoutParams.WRAP_CONTENT;
 						((LinearLayout)peopleInfoLayout.getParent()).setGravity(Gravity.BOTTOM);
 						peopleInfoLayout.setLayoutParams(paramsPI);

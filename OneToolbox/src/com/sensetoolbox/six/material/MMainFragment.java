@@ -51,9 +51,7 @@ import android.widget.TextView;
 
 public class MMainFragment extends MPreferenceFragmentExt {
 	
-	public static String lastShortcutKey = null;
-	public static String lastShortcutKeyContents = null;
-	private boolean toolboxModuleActive = false;
+	public boolean toolboxModuleActive = false;
 	
 	public MMainFragment() {
 		super();

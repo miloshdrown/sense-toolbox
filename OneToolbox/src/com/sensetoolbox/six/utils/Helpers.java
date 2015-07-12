@@ -968,7 +968,7 @@ public class Helpers {
 	}
 	
 	public static boolean isM7() {
-		return Build.DEVICE.contains("m7"); //|| Build.DEVICE.equals("m7cdug") || Build.DEVICE.equals("m7cdwg")
+		return Build.DEVICE.contains("m7");
 	}
 	
 	public static boolean is443plus() {
