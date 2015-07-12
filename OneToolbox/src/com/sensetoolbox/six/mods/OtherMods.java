@@ -2604,6 +2604,8 @@ public class OtherMods {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
 					overrideVibration = false;
+					Object mRinger = XposedHelpers.getObjectField(param.thisObject, "mRinger");
+					if (mRinger != null) XposedHelpers.callMethod(mRinger, "startVibrateforMoConnected");
 				}
 			});
 			
@@ -2611,21 +2613,21 @@ public class OtherMods {
 				findAndHookMethod("com.android.phone.HtcPhoneSensorFunctions", lpparam.classLoader, "getProximitySensorActive", new XC_MethodHook() {
 					@Override
 					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-						if (overrideVibration) param.setResult(false);
+						if (overrideVibration) param.setResult(true);
 					}
 				});
 			} else {
 				findAndHookMethod("com.android.phone.HtcPhoneSensorFunctionsOrient", lpparam.classLoader, "getProximitySensorActive", new XC_MethodHook() {
 					@Override
 					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-						if (overrideVibration) param.setResult(false);
+						if (overrideVibration) param.setResult(true);
 					}
 				});
 				
 				findAndHookMethod("com.android.phone.HtcPhoneSensorFunctionNonOrient", lpparam.classLoader, "getProximitySensorActive", new XC_MethodHook() {
 					@Override
 					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-						if (overrideVibration) param.setResult(false);
+						if (overrideVibration) param.setResult(true);
 					}
 				});
 			}
