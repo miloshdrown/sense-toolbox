@@ -9,7 +9,7 @@ Mount ISO image
 Bugs
 =====
 
-[5.1] Hide NFC icon
+[5.1][?] Hide NFC icon
 [5.1] Compact EQS titles
 
 =================
@@ -21,7 +21,10 @@ Current changelog
 [Fixed] Vibration on connect
 [Fixed][5.1] Contacts photo frame
 [Fixed][5.1] Enhanced screen lock
-[Fixed][5.1] Center clock on lockscreen
+[Fixed][5.1] Center clock on lockscreen and clock removal
+[Fixed][5.1] Selective alarm icon visibility
+[Fixed][5.1] Remove AM/PM
+[Fixed][5.1] Notification drawer header system monitoring
 [Fixed][Desire 816] Caller photo height
 
 2.1

@@ -677,7 +677,7 @@ public class OtherMods {
 		}
 			
 		// Nasty...
-		if (Helpers.isDesire816() && photoHeight > 900) photoHeight = Math.round(photoHeight / 1.5f);
+		if (Helpers.isDesire816() && photoHeight > 900) photoHeight = Math.round(photoHeight / 1.5f) + 1;
 					
 		return photoHeight;
 	}

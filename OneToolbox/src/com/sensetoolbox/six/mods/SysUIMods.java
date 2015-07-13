@@ -543,13 +543,22 @@ public class SysUIMods {
 	}
 	
 	public static void execHook_removeAMPM(LoadPackageParam lpparam) {
-		findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook(){
-			@Override
-			protected void afterHookedMethod(MethodHookParam param) {
-				String newTime = ((TextView)param.thisObject).getText().toString().replaceAll("(?i)am|pm", "").trim();
-				((TextView)param.thisObject).setText(newTime);
-			}
-		});
+		if (Helpers.isLP2())
+			findAndHookMethod("com.android.systemui.statusbar.policy.ClockInternal", lpparam.classLoader, "updateClock", new XC_MethodHook(){
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) {
+					String newTime = ((TextView)param.thisObject).getText().toString().replaceAll("(?i)am|pm", "").trim();
+					((TextView)param.thisObject).setText(newTime);
+				}
+			});
+		else
+			findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook(){
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) {
+					String newTime = ((TextView)param.thisObject).getText().toString().replaceAll("(?i)am|pm", "").trim();
+					((TextView)param.thisObject).setText(newTime);
+				}
+			});
 	}
 	
 	public static void execHook_ClockRemove(LoadPackageParam lpparam) {
@@ -560,7 +569,15 @@ public class SysUIMods {
 			}
 		});
 		
-		if (Helpers.isLP()) {
+		if (Helpers.isLP2()) {
+			findAndHookMethod("com.android.systemui.statusbar.policy.ClockInternal", lpparam.classLoader, "updateClock", new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) {
+					TextView clock = (TextView)param.thisObject;
+					if (clock.getId() != clock.getResources().getIdentifier("header_clock", "id", "com.android.systemui")) clock.setVisibility(View.GONE);
+				}
+			});
+		} else if (Helpers.isLP()) {
 			findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) {
@@ -1867,7 +1884,8 @@ public class SysUIMods {
 	
 	public static void execHook_NotifDrawerHeaderSysInfo(final LoadPackageParam lpparam) {
 		String className = "com.android.systemui.statusbar.policy.DateView";
-		if (Helpers.isLP()) className += "2";
+		if (Helpers.isLP2()) className += "Internal";
+		else if (Helpers.isLP()) className += "2";
 		XposedBridge.hookAllConstructors(findClass(className, lpparam.classLoader), new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {

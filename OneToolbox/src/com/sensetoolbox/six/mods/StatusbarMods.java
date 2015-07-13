@@ -102,34 +102,22 @@ public class StatusbarMods {
 			}
 		});
 		
-		if (Helpers.isLP()) {
-			findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook() {
-				@Override
-				protected void beforeHookedMethod(MethodHookParam param) {
+		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateClockTime", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) {
+				try {
 					int themeColor = getThemeColor();
-					TextView clock = (TextView)param.thisObject;
-					if (clock.getId() != clock.getResources().getIdentifier("header_clock", "id", "com.android.systemui"))
-					clock.setTextColor(themeColor);
-				}
-			});
-		} else {
-			findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "updateClockTime", new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) {
-					try {
-						int themeColor = getThemeColor();
-						
-						ArrayList<?> mClockSet = (ArrayList<?>)XposedHelpers.getObjectField(param.thisObject, "mClockSet");
-						if (mClockSet != null && mClockSet.size() > 0) {
-							TextView clock0 = (TextView)mClockSet.get(0);
-							if (clock0 != null) clock0.setTextColor(themeColor);
-						}
-					} catch (Throwable t) {
-						XposedBridge.log(t);
+					
+					ArrayList<?> mClockSet = (ArrayList<?>)XposedHelpers.getObjectField(param.thisObject, "mClockSet");
+					if (mClockSet != null && mClockSet.size() > 0) {
+						TextView clock0 = (TextView)mClockSet.get(0);
+						if (clock0 != null) clock0.setTextColor(themeColor);
 					}
+				} catch (Throwable t) {
+					XposedBridge.log(t);
 				}
-			});
-		}
+			}
+		});
 	}
 
 	public static void execHook_BatteryIcon(InitPackageResourcesParam resparam, int battIcon) {
@@ -676,7 +664,8 @@ public class StatusbarMods {
 	
 	public static void execHook_SmartAlarm(LoadPackageParam lpparam) {
 		String className = "com.android.systemui.statusbar.phone.HtcPhoneStatusBarPolicy";
-		if (Helpers.isLP()) className = "com.android.systemui.statusbar.phone.PhoneStatusBarPolicy2";
+		if (Helpers.isLP2()) className = "com.android.systemui.statusbar.phone.PhoneStatusBarPolicyInternal";
+		else if (Helpers.isLP()) className = "com.android.systemui.statusbar.phone.PhoneStatusBarPolicy2";
 		XposedBridge.hookAllConstructors(XposedHelpers.findClass(className, lpparam.classLoader), new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -749,7 +738,10 @@ public class StatusbarMods {
 		
 		String psbclassName;
 		String methodName;
-		if (Helpers.isLP()) {
+		if (Helpers.isLP2()) {
+			psbclassName = "com.android.systemui.statusbar.policy.ClockInternal";
+			methodName = "updateClock";
+		} else if (Helpers.isLP()) {
 			psbclassName = "com.android.systemui.statusbar.policy.Clock";
 			methodName = "updateClock";
 		} else {
