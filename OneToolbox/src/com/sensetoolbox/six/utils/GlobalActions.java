@@ -379,7 +379,11 @@ public class GlobalActions {
 			final ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
 			@SuppressWarnings("deprecation")
 			final List<ActivityManager.RunningTaskInfo> taskInfo = am.getRunningTasks(1);
-			final Method removeTask = am.getClass().getMethod("removeTask", new Class[] { int.class, int.class });
+			final Method removeTask;
+			if (Helpers.isLP2())
+				removeTask = am.getClass().getMethod("removeTask", new Class[] { int.class });
+			else
+				removeTask = am.getClass().getMethod("removeTask", new Class[] { int.class, int.class });
 			final Method forceStopPackage = am.getClass().getMethod("forceStopPackage", new Class[] { String.class });
 			removeTask.setAccessible(true);
 			forceStopPackage.setAccessible(true);
@@ -401,7 +405,10 @@ public class GlobalActions {
 				XposedHelpers.callMethod(((PowerManager)context.getSystemService(Context.POWER_SERVICE)), "goToSleep", SystemClock.uptimeMillis());
 			} else if (isAllowed) {
 				// Removes from recents also
-				removeTask.invoke(am, Integer.valueOf(taskInfo.get(0).id), Integer.valueOf(1));
+				if (Helpers.isLP2())
+					removeTask.invoke(am, Integer.valueOf(taskInfo.get(0).id));
+				else
+					removeTask.invoke(am, Integer.valueOf(taskInfo.get(0).id), Integer.valueOf(1));
 				// Force closes all package parts
 				forceStopPackage.invoke(am, thisPkg);
 			}
