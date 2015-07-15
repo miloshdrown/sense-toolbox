@@ -276,7 +276,10 @@ public class WakeGesturesMods {
 						Helpers.mFlashlightLevel = 0;
 						if (Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 					}
-					GlobalActions.setFlashlight(Helpers.mFlashlightLevel);
+					if (Helpers.isLP2())
+						GlobalActions.setFlashlightStock(mContext, Helpers.mFlashlightLevel);
+					else
+						GlobalActions.setFlashlight(Helpers.mFlashlightLevel);
 					break;
 				case 8: doWakeUp(param.thisObject, event_time_local); GlobalActions.expandNotifications(mContext); break;
 				case 9: doWakeUp(param.thisObject, event_time_local); GlobalActions.expandEQS(mContext); break;
@@ -618,9 +621,14 @@ public class WakeGesturesMods {
 		XC_MethodHook hook2 = new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+				Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+				
 				if (Helpers.mFlashlightLevel > 0) {
 					Helpers.mFlashlightLevel = 0;
-					GlobalActions.setFlashlight(0);
+					if (Helpers.isLP2())
+						GlobalActions.setFlashlightStock(mContext, 0);
+					else
+						GlobalActions.setFlashlight(0);
 				}
 				if (Helpers.mWakeLock != null && Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 				

@@ -202,7 +202,10 @@ public class ControlsMods {
 		public void onReceive(final Context context, Intent intent) {
 			if (Helpers.mFlashlightLevel > 0) {
 				Helpers.mFlashlightLevel = 0;
-				GlobalActions.setFlashlight(0);
+				if (Helpers.isLP2())
+					GlobalActions.setFlashlightStock(context, 0);
+				else
+					GlobalActions.setFlashlight(0);
 			}
 			if (Helpers.mWakeLock != null && Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 		}
@@ -235,6 +238,7 @@ public class ControlsMods {
 				if ((flags & KeyEvent.FLAG_VIRTUAL_HARD_KEY) == KeyEvent.FLAG_VIRTUAL_HARD_KEY) return;
 				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM && keycode == KeyEvent.KEYCODE_POWER) {
 					// Power long press
+					final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
 					final PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 					if (!mPowerManager.isScreenOn()) {
 						//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
@@ -263,8 +267,11 @@ public class ControlsMods {
 											Helpers.mFlashlightLevel = 0;
 											if (Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 										}
-										
-										GlobalActions.setFlashlight(Helpers.mFlashlightLevel);
+
+										if (Helpers.isLP2())
+											GlobalActions.setFlashlightStock(mContext, Helpers.mFlashlightLevel);
+										else
+											GlobalActions.setFlashlight(Helpers.mFlashlightLevel);
 									}
 									isPowerPressed = false;
 									isWaitingForPowerLongPressed = false;
@@ -276,7 +283,10 @@ public class ControlsMods {
 						if (action == KeyEvent.ACTION_UP) {
 							if (isPowerPressed && !isPowerLongPressed) try {
 								Helpers.mFlashlightLevel = 0;
-								GlobalActions.setFlashlight(0);
+								if (Helpers.isLP2())
+									GlobalActions.setFlashlightStock(mContext, 0);
+								else
+									GlobalActions.setFlashlight(0);
 								if (Helpers.mWakeLock != null && Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 								XposedHelpers.callMethod(mPowerManager, "wakeUp", SystemClock.uptimeMillis());
 								param.setResult(0);
@@ -315,8 +325,8 @@ public class ControlsMods {
 				if ((flags & KeyEvent.FLAG_VIRTUAL_HARD_KEY) == KeyEvent.FLAG_VIRTUAL_HARD_KEY) return;
 				if ((flags & KeyEvent.FLAG_FROM_SYSTEM) == KeyEvent.FLAG_FROM_SYSTEM && (keycode == KeyEvent.KEYCODE_VOLUME_UP || keycode == KeyEvent.KEYCODE_VOLUME_DOWN)) {
 					// Volume long press
-					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 					final Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
 					if (!mPowerManager.isScreenOn()) {
 						//XposedBridge.log("interceptKeyBeforeQueueing: KeyCode: " + String.valueOf(keyEvent.getKeyCode()) + " | Action: " + String.valueOf(keyEvent.getAction()) + " | RepeatCount: " + String.valueOf(keyEvent.getRepeatCount())+ " | Flags: " + String.valueOf(keyEvent.getFlags()));
 						if (action == KeyEvent.ACTION_DOWN) {

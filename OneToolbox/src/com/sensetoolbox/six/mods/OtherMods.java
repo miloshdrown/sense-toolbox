@@ -1003,10 +1003,13 @@ public class OtherMods {
 					if (kgMgr.isKeyguardLocked() && kgMgr.isKeyguardSecure()) {
 						Handler mHandler = (Handler)XposedHelpers.getObjectField(param.thisObject, "mHandler");
 						if (mHandler != null) {
-							try {
+							if (Helpers.isLP2()) {
+								Runnable mEndCallLongPress = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mEndCallLongPress");
+								if (mEndCallLongPress != null) mHandler.removeCallbacks(mEndCallLongPress);
+							} else {
 								Runnable mPowerLongPress = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mPowerLongPress");
 								if (mPowerLongPress != null) mHandler.removeCallbacks(mPowerLongPress);
-							} catch (Throwable t) {}
+							}
 							
 							Runnable mPowerLongPress_Toast = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mPowerLongPress_Toast");
 							Runnable mPowerLongPress_Toast_2KeyHWResetHint = (Runnable)XposedHelpers.getObjectField(param.thisObject, "mPowerLongPress_Toast_2KeyHWResetHint");
@@ -1049,6 +1052,21 @@ public class OtherMods {
 				}
 			});
 		}
+		
+		if (Helpers.isLP()) try {
+			findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "showGlobalActions", new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					try {
+						Context mPWMContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+						KeyguardManager kgMgr = (KeyguardManager)mPWMContext.getSystemService(Context.KEYGUARD_SERVICE);
+						if (kgMgr.isKeyguardLocked() && kgMgr.isKeyguardSecure()) param.setResult(null);
+					} catch (Throwable t) {
+						XposedBridge.log(t);
+					}
+				}
+			});
+		} catch (Throwable t) {}
 	}
 	
 	public static void execHook_AllRotations() {

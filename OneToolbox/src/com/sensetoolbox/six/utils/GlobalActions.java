@@ -275,21 +275,34 @@ public class GlobalActions {
 					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_autorotate_off), Toast.LENGTH_SHORT).show();
 				}
 			}
-			if (action.equals("com.sensetoolbox.six.mods.action.ToggleFlashlight")) {
-				if (mCurrentLEDLevel == 0) {
-					mCurrentLEDLevel = 125;
-					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_low), Toast.LENGTH_SHORT).show();
-				} else if (mCurrentLEDLevel == 125) {
-					mCurrentLEDLevel = 126;
-					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_med), Toast.LENGTH_SHORT).show();
-				} else if (mCurrentLEDLevel == 126) {
-					mCurrentLEDLevel = 127;
-					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_high), Toast.LENGTH_SHORT).show();
-				} else if (mCurrentLEDLevel == 127) {
-					mCurrentLEDLevel = 0;
-					Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_off), Toast.LENGTH_SHORT).show();
+			if (action.equals("com.htc.intent.action.STATUS_BAR_FLASHLIGHT_RESULT")) {
+				mCurrentLEDLevel = intent.getIntExtra("com.htc.flashlight.state", 0);
+			} else if (action.equals("com.sensetoolbox.six.mods.action.ToggleFlashlight")) {
+				if (Helpers.isLP2()) {
+					if (mCurrentLEDLevel == 0) {
+						mCurrentLEDLevel = 127;
+						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_high), Toast.LENGTH_SHORT).show();
+					} else {
+						mCurrentLEDLevel = 0;
+						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_off), Toast.LENGTH_SHORT).show();
+					}
+					setFlashlightStock(context, mCurrentLEDLevel);
+				} else {
+					if (mCurrentLEDLevel == 0) {
+						mCurrentLEDLevel = 125;
+						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_low), Toast.LENGTH_SHORT).show();
+					} else if (mCurrentLEDLevel == 125) {
+						mCurrentLEDLevel = 126;
+						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_med), Toast.LENGTH_SHORT).show();
+					} else if (mCurrentLEDLevel == 126) {
+						mCurrentLEDLevel = 127;
+						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_high), Toast.LENGTH_SHORT).show();
+					} else if (mCurrentLEDLevel == 127) {
+						mCurrentLEDLevel = 0;
+						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_off), Toast.LENGTH_SHORT).show();
+					}
+					setFlashlight(mCurrentLEDLevel);
 				}
-				setFlashlight(mCurrentLEDLevel);
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.ToggleMobileData")) {
 				if (Helpers.isLP()) {
@@ -367,6 +380,20 @@ public class GlobalActions {
 			Object[] paramArray = new Object[1];
 			paramArray[0] = level;
 			setFlashlightBrightness.invoke(svc, paramArray);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void setFlashlightStock(Context mContext, int level) {
+		try {
+			Intent intent = new Intent("com.htc.intent.action.STATUS_BAR_FLASHLIGH");
+			if (level > 0)
+				intent.putExtra("com.htc.flashlight.state", 1);
+			else
+				intent.putExtra("com.htc.flashlight.state", 0);
+			intent.setPackage("com.android.systemui");
+			mContext.sendBroadcast(intent);
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
@@ -592,6 +619,9 @@ public class GlobalActions {
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleAutoRotation");
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleFlashlight");
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.ToggleMobileData");
+					
+					if (Helpers.isLP2())
+					intentfilter.addAction("com.htc.intent.action.STATUS_BAR_FLASHLIGHT_RESULT");
 					
 					//APM
 					intentfilter.addAction("com.sensetoolbox.six.mods.action.APMReboot");
