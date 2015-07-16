@@ -10,6 +10,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Field;
+import java.lang.reflect.Method;
 import java.text.DecimalFormat;
 import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
@@ -87,6 +88,7 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.os.IBinder;
 import android.os.Process;
 import android.preference.ListPreference;
 import android.preference.MultiSelectListPreference;
@@ -1307,7 +1309,7 @@ public class Helpers {
 		return result;
 	}
 	
-	public static boolean getHTCHaptic(Context mContext) {
+	public static boolean getHtcHaptic(Context mContext) {
 		Boolean isHapticAllowed = true;
 		try {
 			boolean powersaver = (Settings.System.getInt(mContext.getContentResolver(), "user_powersaver_enable", 0) == 1);
@@ -1315,6 +1317,24 @@ public class Helpers {
 			if (powersaver && haptic) isHapticAllowed = false;
 		} catch (Exception e) {}
 		return isHapticAllowed;
+	}
+	
+	public static boolean getHtcFlashlight() {
+		try {
+			Object svc = null;
+			Object HTCHW = Class.forName("android.os.ServiceManager").getMethod("getService", new Class[] { String.class }).invoke(null, new Object[] { "htchardware" });
+			Method HTCHWInterface = Class.forName("android.os.IHtcHardwareService$Stub").getMethod("asInterface", new Class[] { IBinder.class });
+			Object[] paramArr = new Object[1];
+			paramArr[0] = ((IBinder)HTCHW);
+			svc = HTCHWInterface.invoke(null, paramArr);
+			Class<?> svcClass = svc.getClass();
+			Class<?>[] paramArray2 = new Class[1];
+			paramArray2[0] = Integer.TYPE;
+			svcClass.getMethod("setFlashlightBrightness", paramArray2);
+			return true;
+		} catch (Throwable t) {
+			return false;
+		}
 	}
 	
 	@SuppressLint("NewApi")

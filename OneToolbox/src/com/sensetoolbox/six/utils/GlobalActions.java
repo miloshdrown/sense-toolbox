@@ -172,7 +172,7 @@ public class GlobalActions {
 					}
 					
 					if (!isLauncher) {
-						if (Helpers.getHTCHaptic(context)) {
+						if (Helpers.getHtcHaptic(context)) {
 							Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
 							if (XMain.pref.getBoolean("pref_key_controls_longpresshaptic_enable", false))
 								vibe.vibrate(XMain.pref.getInt("pref_key_controls_longpresshaptic", 21));
@@ -278,16 +278,7 @@ public class GlobalActions {
 			if (action.equals("com.htc.intent.action.STATUS_BAR_FLASHLIGHT_RESULT")) {
 				mCurrentLEDLevel = intent.getIntExtra("com.htc.flashlight.state", 0);
 			} else if (action.equals("com.sensetoolbox.six.mods.action.ToggleFlashlight")) {
-				if (Helpers.isLP2()) {
-					if (mCurrentLEDLevel == 0) {
-						mCurrentLEDLevel = 127;
-						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_high), Toast.LENGTH_SHORT).show();
-					} else {
-						mCurrentLEDLevel = 0;
-						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_off), Toast.LENGTH_SHORT).show();
-					}
-					setFlashlightStock(context, mCurrentLEDLevel);
-				} else {
+				if (Helpers.getHtcFlashlight()) {
 					if (mCurrentLEDLevel == 0) {
 						mCurrentLEDLevel = 125;
 						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_low), Toast.LENGTH_SHORT).show();
@@ -301,7 +292,16 @@ public class GlobalActions {
 						mCurrentLEDLevel = 0;
 						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_off), Toast.LENGTH_SHORT).show();
 					}
-					setFlashlight(mCurrentLEDLevel);
+					setHtcFlashlight(mCurrentLEDLevel);
+				} else {
+					if (mCurrentLEDLevel == 0) {
+						mCurrentLEDLevel = 127;
+						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_high), Toast.LENGTH_SHORT).show();
+					} else {
+						mCurrentLEDLevel = 0;
+						Toast.makeText(context, Helpers.xl10n(modRes, R.string.toggle_flash_off), Toast.LENGTH_SHORT).show();
+					}
+					setStockFlashlight(context, mCurrentLEDLevel);
 				}
 			}
 			if (action.equals("com.sensetoolbox.six.mods.action.ToggleMobileData")) {
@@ -364,7 +364,7 @@ public class GlobalActions {
 		}
 	};
 	
-	public static void setFlashlight(int level) {
+	public static void setHtcFlashlight(int level) {
 		try {
 			Method setFlashlightBrightness = null;
 			Object svc = null;
@@ -385,7 +385,7 @@ public class GlobalActions {
 		}
 	}
 	
-	public static void setFlashlightStock(Context mContext, int level) {
+	public static void setStockFlashlight(Context mContext, int level) {
 		try {
 			Intent intent = new Intent("com.htc.intent.action.STATUS_BAR_FLASHLIGH");
 			if (level > 0)
@@ -441,7 +441,7 @@ public class GlobalActions {
 			}
 			
 			if (isLauncher || isAllowed) {
-				if (Helpers.getHTCHaptic(context)) {
+				if (Helpers.getHtcHaptic(context)) {
 					Vibrator vibe = (Vibrator)context.getSystemService(Context.VIBRATOR_SERVICE);
 					if (XMain.pref.getBoolean("pref_key_controls_longpresshaptic_enable", false))
 						vibe.vibrate(XMain.pref.getInt("pref_key_controls_longpresshaptic", 30));

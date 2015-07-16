@@ -276,10 +276,10 @@ public class WakeGesturesMods {
 						Helpers.mFlashlightLevel = 0;
 						if (Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 					}
-					if (Helpers.isLP2())
-						GlobalActions.setFlashlightStock(mContext, Helpers.mFlashlightLevel);
+					if (Helpers.getHtcFlashlight())
+						GlobalActions.setHtcFlashlight(Helpers.mFlashlightLevel);
 					else
-						GlobalActions.setFlashlight(Helpers.mFlashlightLevel);
+						GlobalActions.setStockFlashlight(mContext, Helpers.mFlashlightLevel);
 					break;
 				case 8: doWakeUp(param.thisObject, event_time_local); GlobalActions.expandNotifications(mContext); break;
 				case 9: doWakeUp(param.thisObject, event_time_local); GlobalActions.expandEQS(mContext); break;
@@ -305,7 +305,7 @@ public class WakeGesturesMods {
 					break;
 			}
 
-			if (isHaptic && XMain.pref.getBoolean("pref_key_wakegest_haptic", false) && Helpers.getHTCHaptic(mContext)) {
+			if (isHaptic && XMain.pref.getBoolean("pref_key_wakegest_haptic", false) && Helpers.getHtcHaptic(mContext)) {
 				Vibrator vibe = (Vibrator)mContext.getSystemService(Context.VIBRATOR_SERVICE);
 				vibe.vibrate(30);
 			}
@@ -563,7 +563,7 @@ public class WakeGesturesMods {
 									if (seq.equals(prefSeq)) {
 										setLockdown(mContext, false);
 										doWakeUp(param.thisObject, SystemClock.uptimeMillis());
-										if (Helpers.getHTCHaptic(mContext)) {
+										if (Helpers.getHtcHaptic(mContext)) {
 											Vibrator vibe = (Vibrator)mContext.getSystemService(Context.VIBRATOR_SERVICE);
 											vibe.vibrate(50);
 										}
@@ -625,10 +625,10 @@ public class WakeGesturesMods {
 				
 				if (Helpers.mFlashlightLevel > 0) {
 					Helpers.mFlashlightLevel = 0;
-					if (Helpers.isLP2())
-						GlobalActions.setFlashlightStock(mContext, 0);
+					if (Helpers.getHtcFlashlight())
+						GlobalActions.setHtcFlashlight(0);
 					else
-						GlobalActions.setFlashlight(0);
+						GlobalActions.setStockFlashlight(mContext, 0);
 				}
 				if (Helpers.mWakeLock != null && Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 				

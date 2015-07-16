@@ -328,7 +328,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				OtherMods.execHook_YouTubeNoWatermark(resparam);
 		}
 		
-		if (pkg.equals("com.htc.contacts")) {
+		if (pkg.equals("com.htc.contacts") || pkg.equals("com.htc.sense.mms")) {
 			if (pref.getBoolean("pref_key_other_contactsnocorner", false))
 				OtherMods.execHook_ContactsNoCorner(resparam);
 		}

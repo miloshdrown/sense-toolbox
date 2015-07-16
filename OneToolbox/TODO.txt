@@ -18,7 +18,8 @@ Current changelog
 
 2.1.2
 [Fixed] Additional app details
-[Fixed][5.1] Power flash and flashlight toggle on actions and gestures
+[Fixed] Remove corners on photos in Messages too
+[Fixed][5.0+] Power flash and flashlight toggle on actions and gestures
 [Fixed][5.1] Enhanced screen lock
 
 

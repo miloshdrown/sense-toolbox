@@ -326,11 +326,10 @@ public class SettingsMods {
 					toolbox_item_api.addView(toolbox_item_api_text);
 					
 					apk_launch_btn = new HtcRimButton(theContext);
-					if (Helpers.isLP()) {
+					if (Helpers.isLP())
 						apk_launch_btn.setBackground(modRes.getDrawable(R.drawable.button_selector_light));
-					} else if (uninstall_btn != null && uninstall_btn.getBackground() != null) {
-						apk_launch_btn.setBackground(uninstall_btn.getBackground().getConstantState().newDrawable().mutate());
-					}
+					else if (uninstall_btn != null && uninstall_btn.getBackground() != null)
+						apk_launch_btn.setBackground(uninstall_btn.getBackground().mutate());
 					
 					final Intent mainActivity = theContext.getPackageManager().getLaunchIntentForPackage(appInfo.packageName);
 					apk_launch_btn.setText(Helpers.xl10n(modRes, R.string.appdetails_launch));

@@ -202,10 +202,10 @@ public class ControlsMods {
 		public void onReceive(final Context context, Intent intent) {
 			if (Helpers.mFlashlightLevel > 0) {
 				Helpers.mFlashlightLevel = 0;
-				if (Helpers.isLP2())
-					GlobalActions.setFlashlightStock(context, 0);
+				if (Helpers.getHtcFlashlight())
+					GlobalActions.setHtcFlashlight(0);
 				else
-					GlobalActions.setFlashlight(0);
+					GlobalActions.setStockFlashlight(context, 0);
 			}
 			if (Helpers.mWakeLock != null && Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 		}
@@ -268,10 +268,10 @@ public class ControlsMods {
 											if (Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 										}
 
-										if (Helpers.isLP2())
-											GlobalActions.setFlashlightStock(mContext, Helpers.mFlashlightLevel);
+										if (Helpers.getHtcFlashlight())
+											GlobalActions.setHtcFlashlight(Helpers.mFlashlightLevel);
 										else
-											GlobalActions.setFlashlight(Helpers.mFlashlightLevel);
+											GlobalActions.setStockFlashlight(mContext, Helpers.mFlashlightLevel);
 									}
 									isPowerPressed = false;
 									isWaitingForPowerLongPressed = false;
@@ -283,10 +283,10 @@ public class ControlsMods {
 						if (action == KeyEvent.ACTION_UP) {
 							if (isPowerPressed && !isPowerLongPressed) try {
 								Helpers.mFlashlightLevel = 0;
-								if (Helpers.isLP2())
-									GlobalActions.setFlashlightStock(mContext, 0);
+								if (Helpers.getHtcFlashlight())
+									GlobalActions.setHtcFlashlight(0);
 								else
-									GlobalActions.setFlashlight(0);
+									GlobalActions.setStockFlashlight(mContext, 0);
 								if (Helpers.mWakeLock != null && Helpers.mWakeLock.isHeld()) Helpers.mWakeLock.release();
 								XposedHelpers.callMethod(mPowerManager, "wakeUp", SystemClock.uptimeMillis());
 								param.setResult(0);
