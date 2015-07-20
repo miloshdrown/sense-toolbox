@@ -42,6 +42,7 @@ import com.htc.preference.HtcPreferenceGroup;
 import com.htc.preference.HtcPreferenceScreen;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.R;
+import com.sensetoolbox.six.UISwitcher;
 import com.sensetoolbox.six.htc.HMainActivity;
 import com.sensetoolbox.six.htc.HSubActivity;
 import com.sensetoolbox.six.htc.SenseThemes.PackageTheme;
@@ -127,7 +128,7 @@ public class Helpers {
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
 	public static float strings_total = 781.0f;
-	public static int buildVersion = 269;
+	public static int buildVersion = 270;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -475,7 +476,8 @@ public class Helpers {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						l10n = null;
 						cLang = "";
-						act.recreate();
+						act.startActivity(new Intent(act, UISwitcher.class));
+						act.finish();
 					}
 				});
 				alert.show();
@@ -550,7 +552,8 @@ public class Helpers {
 					public void onClick(DialogInterface dialog, int whichButton) {
 						l10n = null;
 						cLang = "";
-						act.recreate();
+						act.startActivity(new Intent(act, UISwitcher.class));
+						act.finish();
 					}
 				});
 				alert.show();

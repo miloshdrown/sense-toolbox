@@ -172,6 +172,14 @@ public class OtherMods {
 		}
 	}
 	
+	public static void execHook_PowerSaverNotifSysUI(LoadPackageParam lpparam) {
+		try {
+			XposedHelpers.findAndHookMethod("com.android.systemui.power.PowerNotificationWarnings", lpparam.classLoader, "showSaverNotification", XC_MethodReplacement.DO_NOTHING);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
 	public static void execHook_InputMethodNotif(LoadPackageParam lpparam) {
 		try {
 			XposedHelpers.findAndHookMethod("com.android.server.InputMethodManagerService", lpparam.classLoader, "setImeWindowStatus", IBinder.class, int.class, int.class, XC_MethodReplacement.DO_NOTHING);

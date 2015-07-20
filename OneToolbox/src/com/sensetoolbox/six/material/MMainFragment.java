@@ -15,6 +15,7 @@ import org.acra.ACRA;
 
 import com.sensetoolbox.six.GateWay;
 import com.sensetoolbox.six.R;
+import com.sensetoolbox.six.UISwitcher;
 import com.sensetoolbox.six.material.utils.MaterialColorPicker;
 import com.sensetoolbox.six.utils.Helpers;
 import com.stericson.RootTools.RootTools;
@@ -408,6 +409,17 @@ public class MMainFragment extends MPreferenceFragmentExt {
 			}
 		});
 		
+		CheckBoxPreference forceMaterialPreference = (CheckBoxPreference)findPreference("pref_key_toolbox_force_material");
+		forceMaterialPreference.setOnPreferenceChangeListener(new CheckBoxPreference.OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(Preference preference, Object newValue) {
+				Activity act = getActivity();
+				act.startActivity(new Intent(act, UISwitcher.class));
+				act.finish();
+				return true;
+			}
+		});
+		
 		if (Helpers.isSense7()) {
 			Helpers.removePref(this, "pref_key_sms", "prefs_cat");
 			Helpers.prefs.edit().putBoolean("pref_key_sms_smsmmsconv", false).commit();
@@ -422,6 +434,8 @@ public class MMainFragment extends MPreferenceFragmentExt {
 		if (Helpers.isNewSense()) {
 			Helpers.prefs.edit().putBoolean("themes_active", false).commit();
 		}
+		
+		Helpers.removePref(this, "pref_key_toolbox_force_material", "pref_key_toolbox");
 	}
 	
 	// PreferenceScreens management

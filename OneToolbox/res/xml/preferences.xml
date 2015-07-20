@@ -61,6 +61,11 @@
 			android:summary="@string/toolbox_show_icon_summ"
 			android:title="@string/toolbox_show_icon_title"
 			android:defaultValue="true" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_toolbox_force_material"
+			android:summary="Use Material UI instead of Sense UI."
+			android:title="Material interface"
+			android:defaultValue="false" />
 		<com.htc.preference.HtcPreference
 			android:key="pref_key_toolbox_lang"
 			android:summary="@string/toolbox_l10n_summ"

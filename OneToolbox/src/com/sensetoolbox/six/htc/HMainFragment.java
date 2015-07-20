@@ -43,6 +43,7 @@ import com.htc.widget.quicktips.PopupBubbleWindow.OnUserDismissListener;
 import com.htc.widget.quicktips.QuickTipPopup;
 import com.sensetoolbox.six.GateWay;
 import com.sensetoolbox.six.R;
+import com.sensetoolbox.six.UISwitcher;
 import com.sensetoolbox.six.utils.Helpers;
 import com.stericson.RootTools.RootTools;
 
@@ -333,6 +334,17 @@ public class HMainFragment extends HPreferenceFragmentExt {
 			}
 		});
 		
+		HtcCheckBoxPreference forceMaterialPreference = (HtcCheckBoxPreference)findPreference("pref_key_toolbox_force_material");
+		forceMaterialPreference.setOnPreferenceChangeListener(new HtcCheckBoxPreference.OnPreferenceChangeListener() {
+			@Override
+			public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
+				Activity act = getActivity();
+				act.startActivity(new Intent(act, UISwitcher.class));
+				act.finish();
+				return true;
+			}
+		});
+		
 		if (Helpers.isLP())
 			Helpers.removePref(this, "pref_key_popupnotify", "prefs_cat");
 		else
@@ -348,6 +360,8 @@ public class HMainFragment extends HPreferenceFragmentExt {
 			Helpers.prefs.edit().putBoolean("pref_key_other_musicchannel", false).commit();
 			Helpers.prefs.edit().putBoolean("pref_key_other_nochargerwarn", false).commit();
 		}
+		
+		Helpers.removePref(this, "pref_key_toolbox_force_material", "pref_key_toolbox");
 	}
 
 	private void showQuickTip(int step) {

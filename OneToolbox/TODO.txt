@@ -9,8 +9,7 @@ Mount ISO image
 Bugs
 =====
 
-[4.4] App details
-[5.1] Compact EQS titles
+
 
 =================
 Current changelog
@@ -21,6 +20,7 @@ Current changelog
 [Fixed] Remove corners on photos in Messages too
 [Fixed][5.0+] Power flash and flashlight toggle on actions and gestures
 [Fixed][5.1] Enhanced screen lock
+[Fixed][5.1] Hide Power Saver notification
 
 
 ==============

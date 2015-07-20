@@ -17,11 +17,13 @@ import java.util.zip.ZipInputStream;
 import com.htc.app.HtcProgressDialog;
 import com.htc.widget.HtcAlertDialog;
 import com.sensetoolbox.six.R;
+import com.sensetoolbox.six.UISwitcher;
 import com.sensetoolbox.six.utils.Helpers;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.AsyncTask;
 
 public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
@@ -158,7 +160,9 @@ public class DownloadAndUnZip extends AsyncTask<String, Integer, String> {
 							public void onClick(DialogInterface dialog, int whichButton) {
 								Helpers.l10n = null;
 								Helpers.cLang = "";
-								act.get().recreate();
+								Activity activity = act.get();
+								activity.startActivity(new Intent(activity, UISwitcher.class));
+								activity.finish();
 							}
 						});
 					} else {

@@ -402,7 +402,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		}
 		
 		if (pkg.equals("com.htc.htcpowermanager")) {
-			if (pref.getBoolean("pref_key_other_powersavenotif", false))
+			if (pref.getBoolean("pref_key_other_powersavenotif", false) && !Helpers.isLP2())
 				OtherMods.execHook_PowerSaverNotif(lpparam);
 		}
 		
@@ -679,6 +679,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("fleeting_glance_active", false))
 				WakeGesturesMods.execHook_FleetingGlanceSysUI(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_powersavenotif", false) && Helpers.isLP())
+				OtherMods.execHook_PowerSaverNotifSysUI(lpparam);
 			
 			StatusbarMods.execHook_HideIcons(lpparam);
 		}

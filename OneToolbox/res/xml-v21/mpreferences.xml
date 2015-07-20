@@ -56,6 +56,11 @@
 			android:summary="@string/toolbox_show_icon_summ"
 			android:title="@string/toolbox_show_icon_title"
 			android:defaultValue="true" />
+		<CheckBoxPreference
+			android:key="pref_key_toolbox_force_material"
+			android:summary="Use Material UI instead of Sense UI."
+			android:title="Material interface"
+			android:defaultValue="false" />
 		<ListPreference
 			android:key="pref_key_toolbox_material_background"
 			android:summary="@string/toolbox_material_background_summ"
