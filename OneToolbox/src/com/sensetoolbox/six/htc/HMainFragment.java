@@ -560,7 +560,7 @@ public class HMainFragment extends HPreferenceFragmentExt {
 					xmlResId = R.xml.prefs_betterheadsup;
 					break;
 				case "pref_key_wakegest":
-					if (Helpers.isWakeGestures() || Helpers.isEight()) {
+					if (Helpers.isWakeGesturesAvailable()) {
 						xmlResId = R.xml.prefs_wakegest;
 					} else {
 						HtcAlertDialog.Builder builder = new HtcAlertDialog.Builder(getActivity());
@@ -572,7 +572,7 @@ public class HMainFragment extends HPreferenceFragmentExt {
 					}
 					break;
 				case "pref_key_touchlock":
-					if (Helpers.isWakeGestures()) {
+					if (Helpers.isTouchscreenEventsAvailable()) {
 						getActivity().startActivity(new Intent(getActivity(), HTouchLock.class));
 						return true;
 					} else {

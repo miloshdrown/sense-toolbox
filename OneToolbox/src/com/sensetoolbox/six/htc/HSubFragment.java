@@ -172,6 +172,11 @@ public class HSubFragment extends HPreferenceFragmentExt {
 				Helpers.removePref(this, "pref_key_sysui_compacteqs", "pref_systemui_eqs");
 				Helpers.removePref(this, "pref_key_sysui_autoeqs", "pref_systemui_eqs");
 			}
+			
+			if (Helpers.isDualSIM()) {
+				Helpers.removePref(this, "pref_key_sysui_signalnotify", "pref_systemui_statusbar");
+				Helpers.removePref(this, "pref_key_sysui_alarmnotify", "pref_systemui_statusbar");
+			}
 		} else if (xmlResId == R.xml.prefs_statusbar) {
 			HtcPreference sunbeamInstallPref = findPreference("pref_key_cb_sunbeam");
 			sunbeamInstallPref.setOnPreferenceClickListener(new HtcPreference.OnPreferenceClickListener(){
@@ -472,10 +477,10 @@ public class HSubFragment extends HPreferenceFragmentExt {
 			if (Helpers.isLP()) {
 				entriesCS.add(entriesCS.size(), Helpers.l10n(getActivity(), R.string.quick_recents));
 				entryValsCS.add(entryValsCS.size(), "15");
-				homeAssistActionPreference.setEntries(entriesCS.toArray(new CharSequence[entriesCS.size()]));
-				homeAssistActionPreference.setEntryValues(entryValsCS.toArray(new CharSequence[entryValsCS.size()]));
 			}
-
+			homeAssistActionPreference.setEntries(entriesCS.toArray(new CharSequence[entriesCS.size()]));
+			homeAssistActionPreference.setEntryValues(entryValsCS.toArray(new CharSequence[entryValsCS.size()]));
+			
 			String not_selected = Helpers.l10n(getActivity(), R.string.notselected);
 			
 			launchAppsBackLongPress.setSummary(Helpers.getAppName(getActivity(), Helpers.prefs.getString("pref_key_controls_backlongpress_app", not_selected)));
@@ -688,7 +693,7 @@ public class HSubFragment extends HPreferenceFragmentExt {
 			if (Helpers.isEight()) {
 				logoPressActionPreference.setTitle(Helpers.l10n(getActivity(), R.string.wakegestures_volume_title));
 				logoPressActionPreference.setSummary(Helpers.l10n(getActivity(), R.string.wakegestures_volume_summ));
-				if (!Helpers.isWakeGestures()) {
+				if (!Helpers.isWakeGesturesEnabled()) {
 					List<String> newEntries = new ArrayList<String>();
 					TypedArray ids = getResources().obtainTypedArray(R.array.wakegest_m8stock_actions);
 					for (int i = 0; i < ids.length(); i++) {

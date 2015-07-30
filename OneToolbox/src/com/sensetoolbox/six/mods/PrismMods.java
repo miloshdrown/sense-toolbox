@@ -890,7 +890,7 @@ public class PrismMods {
 		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 		String[] menu_items = Helpers.xl10n_array(modRes, R.array.home_menu);
 		XMain.pref.reload();
-		if (!Helpers.isWakeGestures() || !XMain.pref.getBoolean("touch_lock_active", false))
+		if (!Helpers.isTouchscreenEventsAvailable() || !XMain.pref.getBoolean("touch_lock_active", false))
 		menu_items = Arrays.copyOf(menu_items, menu_items.length - 1);
 		ListAdapter listAdapter = new PopupAdapter(ctx, menu_items, false);
 		options.setAdapter(listAdapter);

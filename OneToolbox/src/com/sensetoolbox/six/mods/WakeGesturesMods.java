@@ -78,20 +78,27 @@ public class WakeGesturesMods {
 					int gesture = intent.getIntExtra("motion_gesture", 0);
 					String sdClass = "com.htc.lockscreen.keyguard.SlidingChallengeLayout.ScrollDirection";
 					if (Helpers.isLP()) sdClass = "com.htc.lockscreen.ctrl.EasyAccessCtrl.ScrollDirection";
+					
+					Object mLSState = XposedHelpers.getObjectField(mEasyAccessCtrl, "mLSState");
+					Object mByPassCtrl = null;
+					if (mLSState != null) mByPassCtrl = XposedHelpers.getObjectField(mLSState, "mByPassCtrl");
+					
 					if (mEasyAccessCtrl != null && mLSClassLoader != null)
 					switch (gesture) {
 						case 1:
 							XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass(sdClass, mLSClassLoader), "ScrollToUp"));
 							break;
 						case 2:
+							if (mByPassCtrl != null) XposedHelpers.callMethod(mByPassCtrl, "forceByPassNextTime", true);
 							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
 							XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass(sdClass, mLSClassLoader), "ScrollToRight"));
 							break;
 						case 3:
 							//XposedHelpers.callMethod(mEasyAccessCtrl, "snapToPage", XposedHelpers.getStaticObjectField(findClass(sdClass, mLSClassLoader), "ScrollToLeft"));
-							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
+							if (mByPassCtrl != null) XposedHelpers.callMethod(mByPassCtrl, "forceByPassNextTime", true);
 							Intent i = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_HOME).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK).putExtra("action", -1);
 							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i, true);
+							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
 							break;
 						case 4:
 							boolean isCT = (Boolean)XposedHelpers.callStaticMethod(findClass("com.htc.lockscreen.util.MyProjectSettings", mLSClassLoader), "isCT");
@@ -106,9 +113,10 @@ public class WakeGesturesMods {
 							launchApp(context, intent.getIntExtra("launch_app", 0));
 							break;
 						case 6:
-							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
+							if (mByPassCtrl != null) XposedHelpers.callMethod(mByPassCtrl, "forceByPassNextTime", true);
 							Intent i2 = new Intent("com.htc.intent.action.HTC_Prism_AllApps").addCategory(Intent.CATEGORY_DEFAULT).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 							XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", i2, true);
+							XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
 							break;
 						case 7:
 							launchShortcut(context, intent.getIntExtra("launch_shortcut", 0));
@@ -201,8 +209,14 @@ public class WakeGesturesMods {
 					Intent appIntent = new Intent();
 					appIntent.setClassName(pkgAppArray[0], pkgAppArray[1]);
 					appIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-					XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
+					
+					Object mLSState = XposedHelpers.getObjectField(mEasyAccessCtrl, "mLSState");
+					Object mByPassCtrl = null;
+					if (mLSState != null) mByPassCtrl = XposedHelpers.getObjectField(mLSState, "mByPassCtrl");
+					if (mByPassCtrl != null) XposedHelpers.callMethod(mByPassCtrl, "forceByPassNextTime", true);
+					
 					XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", appIntent, true);
+					XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
 				}
 			}
 		} catch (Throwable t) {
@@ -241,8 +255,14 @@ public class WakeGesturesMods {
 				if (intentString != null) {
 					Intent shortcutIntent = Intent.parseUri(intentString, 0);
 					shortcutIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED);
-					XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
+					
+					Object mLSState = XposedHelpers.getObjectField(mEasyAccessCtrl, "mLSState");
+					Object mByPassCtrl = null;
+					if (mLSState != null) mByPassCtrl = XposedHelpers.getObjectField(mLSState, "mByPassCtrl");
+					if (mByPassCtrl != null) XposedHelpers.callMethod(mByPassCtrl, "forceByPassNextTime", true);
+					
 					XposedHelpers.callMethod(mEasyAccessCtrl, "launchActivityfromEasyAccess", shortcutIntent, true);
+					XposedHelpers.callMethod(mEasyAccessCtrl, "dismissKeyguard");
 				}
 			}
 		} catch (Throwable t) {
@@ -930,27 +950,47 @@ public class WakeGesturesMods {
 		}
 	}
 	
-	public static void execHook_EasyAccessService(LoadPackageParam lpparam) {
-		XposedHelpers.findAndHookMethod("com.htc.sense.easyaccessservice.SensorHubService", lpparam.classLoader, "onHtcGestureMotion", int.class, int.class, int.class, new XC_MethodHook() {
-			@Override
-			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				int j = (Integer)param.args[1];
-				XMain.pref.reload();
-				if (XMain.pref.getBoolean("wake_gestures_active", false)) {
-					String prefName = null;
-					switch (j) {
-						case 3: case 25: prefName = "pref_key_wakegest_swipedown"; break;
-						case 15: prefName = "pref_key_wakegest_dt2w"; break;
-						case 6: prefName = "pref_key_wakegest_logo2wake"; break; // this is a volume keys
-						case 5: case 27: prefName = "pref_key_wakegest_swiperight"; break;
-						case 4: case 26: prefName = "pref_key_wakegest_swipeleft"; break;
-						case 2: case 24: prefName = "pref_key_wakegest_swipeup"; break;
-					}
-					executeActionFor(param, prefName, SystemClock.uptimeMillis(), j);
-					param.setResult(null);
-				}
+	private static void handleGesture(MethodHookParam param) {
+		int j = (Integer)param.args[1];
+		XMain.pref.reload();
+		if (XMain.pref.getBoolean("wake_gestures_active", false)) {
+			String prefName = null;
+			switch (j) {
+				case 3: case 25: prefName = "pref_key_wakegest_swipedown"; break;
+				case 15: prefName = "pref_key_wakegest_dt2w"; break;
+				case 6: prefName = "pref_key_wakegest_logo2wake"; break; // this is a volume keys
+				case 5: case 27: prefName = "pref_key_wakegest_swiperight"; break;
+				case 4: case 26: prefName = "pref_key_wakegest_swipeleft"; break;
+				case 2: case 24: prefName = "pref_key_wakegest_swipeup"; break;
 			}
-		});
+			executeActionFor(param, prefName, SystemClock.uptimeMillis(), j);
+			param.setResult(null);
+		}
+	}
+	
+	public static void execHook_EasyAccessService(LoadPackageParam lpparam) {
+		try {
+			XposedHelpers.findAndHookMethod("com.htc.sense.easyaccessservice.SensorHubService", lpparam.classLoader, "onHtcGestureMotion", int.class, int.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					handleGesture(param);
+				}
+			});
+		} catch (Throwable t) {
+			XposedHelpers.findAndHookMethod("com.htc.sense.easyaccessservice.easy.sense6.EasySensorAction60", lpparam.classLoader, "onHtcGestureMotion", int.class, int.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					handleGesture(param);
+				}
+			});
+			
+			XposedHelpers.findAndHookMethod("com.htc.sense.easyaccessservice.easy.sense65.EasySensorAction65", lpparam.classLoader, "onHtcGestureMotion", int.class, int.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					handleGesture(param);
+				}
+			});
+		}
 	}
 	
 	public static TriggerSensor mSigMotionSensor;

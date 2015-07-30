@@ -469,7 +469,7 @@ public class MMainFragment extends MPreferenceFragmentExt {
 					xmlResId = R.xml.mprefs_betterheadsup;
 					break;
 				case "pref_key_wakegest":
-					if (Helpers.isWakeGestures() || Helpers.isEight()) {
+					if (Helpers.isWakeGesturesAvailable()) {
 						xmlResId = R.xml.mprefs_wakegest;
 					} else {
 						AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -481,7 +481,7 @@ public class MMainFragment extends MPreferenceFragmentExt {
 					}
 					break;
 				case "pref_key_touchlock":
-					if (Helpers.isWakeGestures()) {
+					if (Helpers.isTouchscreenEventsAvailable()) {
 						getActivity().startActivity(new Intent(getActivity(), MTouchLock.class));
 						return true;
 					} else {

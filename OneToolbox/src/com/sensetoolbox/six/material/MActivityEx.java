@@ -8,7 +8,6 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
-import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -58,7 +57,7 @@ public class MActivityEx extends Activity {
 			});
 			alert.show();
 			return;
-		} else if (isMalwareInstalled()) {
+		} else if (Helpers.isMalwareInstalled(this)) {
 			Helpers.openURL(this, "http://sensetoolbox.com/copyright");
 			
 			launch = false;
@@ -70,17 +69,7 @@ public class MActivityEx extends Activity {
 		getActionBar().setElevation(0);
 		setContentView(actLayout);
 	}
-	
-	private boolean isMalwareInstalled() {
-		PackageManager pm = getPackageManager();
-		try {
-			pm.getPackageInfo("richmondouk.xtended.settings", PackageManager.GET_ACTIVITIES);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
-	}
-	
+
 	public void updateTheme(int newBkg) {
 		String newThemeHeaderName = Helpers.prefs.getString("pref_key_toolbox_material_header", null);
 		if (newThemeHeaderName != null && !newThemeHeaderName.equals(mThemeHeaderName)) recreate();

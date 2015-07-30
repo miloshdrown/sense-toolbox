@@ -96,10 +96,10 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_controls_smallsoftkeys", false))
 			ControlsMods.execHook_SmallNavbar();
 		
-		if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGestures() && !Helpers.isEight())
+		if (pref.getBoolean("wake_gestures_active", false) && Helpers.isWakeGesturesAvailable() && !Helpers.isEight())
 			WakeGesturesMods.execHook_InitListener();
 		
-		if (pref.getBoolean("touch_lock_active", false) && Helpers.isWakeGestures())
+		if (pref.getBoolean("touch_lock_active", false) && Helpers.isTouchscreenEventsAvailable())
 			WakeGesturesMods.execHook_InitTouchLockListener();
 		
 		if (pref.getBoolean("pref_key_controls_extendedpanel", false))
@@ -383,7 +383,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_ledoncharge", false))
 				OtherMods.execHook_LEDOnCharge(lpparam);
 			
-			if (pref.getBoolean("touch_lock_active", false) && Helpers.isWakeGestures())
+			if (pref.getBoolean("touch_lock_active", false) && Helpers.isTouchscreenEventsAvailable())
 				WakeGesturesMods.execHook_InitTouchServerListener(lpparam);
 			
 			if (pref.getBoolean("better_headsup_active", false))
@@ -586,14 +586,14 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				SysUIMods.execHook_RAMInRecents(lpparam);
 			
 			pref_alarmnotify = pref.getBoolean("pref_key_sysui_alarmnotify", false);
-			if (pref_alarmnotify)
+			if (pref_alarmnotify && !Helpers.isDualSIM())
 				SysUIMods.execHook_AlarmNotification(lpparam);
 			
 			pref_signalnotify = pref.getBoolean("pref_key_sysui_signalnotify", false);
-			if (pref_signalnotify)
+			if (pref_signalnotify && !Helpers.isDualSIM())
 				SysUIMods.execHook_SignalNotification(lpparam);
 			
-			if (pref_alarmnotify || pref_signalnotify)
+			if ((pref_alarmnotify || pref_signalnotify)  && !Helpers.isDualSIM())
 				SysUIMods.execHook_LabelsUpdate(lpparam);
 			
 			if (Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1")) == 3)

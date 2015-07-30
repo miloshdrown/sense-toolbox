@@ -11,7 +11,6 @@ import com.sensetoolbox.six.utils.Version;
 import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnDismissListener;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.view.ViewGroup.LayoutParams;
 import android.widget.RelativeLayout;
@@ -54,7 +53,7 @@ public class HActivityEx extends Activity {
 			});
 			alert.show();
 			return;
-		} else if (isMalwareInstalled()) {
+		} else if (Helpers.isMalwareInstalled(this)) {
 			Helpers.openURL(this, "http://sensetoolbox.com/copyright");
 			
 			launch = false;
@@ -79,16 +78,6 @@ public class HActivityEx extends Activity {
 		actionBarContainer.setBackUpEnabled(false);
 		
 		setContentView(actLayout);
-	}
-	
-	private boolean isMalwareInstalled() {
-		PackageManager pm = getPackageManager();
-		try {
-			pm.getPackageInfo("richmondouk.xtended.settings", PackageManager.GET_ACTIVITIES);
-			return true;
-		} catch (Exception e) {
-			return false;
-		}
 	}
 	
 	@Override

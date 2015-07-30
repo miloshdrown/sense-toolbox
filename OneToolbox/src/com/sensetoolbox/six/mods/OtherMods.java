@@ -38,6 +38,7 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
+import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
 import android.content.res.XResources;
@@ -772,6 +773,33 @@ public class OtherMods {
 					mName.setMaxLines(2);
 					mName.setTextSize(TypedValue.COMPLEX_UNIT_SP, 27);
 					mName.setPadding(mName.getPaddingLeft(), Math.round(mName.getResources().getDisplayMetrics().density * 5), mName.getPaddingRight(), mName.getPaddingBottom());
+					if (photoSize == 3) mName.setTextColor(0xffffffff);
+				}
+				TextView mPhoneNumber = (TextView)XposedHelpers.getObjectField(param.thisObject, "mPhoneNumber");
+				if (mPhoneNumber != null && photoSize == 3) mPhoneNumber.setTextColor(0xffdddddd);
+			}
+		});
+		
+		findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "updateCallTypeLabel", "com.android.internal.telephony.Call", new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				if (photoSize == 3) {
+					TextView mName = (TextView)XposedHelpers.getObjectField(param.thisObject, "mName");
+					if (mName != null) mName.setTextColor(0xffffffff);
+					TextView mPhoneNumber = (TextView)XposedHelpers.getObjectField(param.thisObject, "mPhoneNumber");
+					if (mPhoneNumber != null) mPhoneNumber.setTextColor(0xffdddddd);
+				}
+			}
+		});
+		
+		findAndHookMethod("com.android.phone.CallCard", lpparam.classLoader, "onConfigurationChanged", Configuration.class, new XC_MethodHook() {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+				if (photoSize == 3) {
+					TextView mName = (TextView)XposedHelpers.getObjectField(param.thisObject, "mName");
+					if (mName != null) mName.setTextColor(0xffffffff);
+					TextView mPhoneNumber = (TextView)XposedHelpers.getObjectField(param.thisObject, "mPhoneNumber");
+					if (mPhoneNumber != null) mPhoneNumber.setTextColor(0xffdddddd);
 				}
 			}
 		});

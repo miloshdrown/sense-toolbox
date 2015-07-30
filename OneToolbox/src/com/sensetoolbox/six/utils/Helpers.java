@@ -1015,12 +1015,24 @@ public class Helpers {
 		}
 	}
 	
-	public static boolean isWakeGestures() {
+	public static boolean isWakeGesturesAvailable() {
 		String wake_gestures = getWakeGestures();
-		if (isLP())
+		if (isEight())
+			return true;
+		else if (isLP())
 			return (wake_gestures != null);
 		else
 			return (wake_gestures != null && wake_gestures.equals("1"));
+	}
+	
+	public static boolean isWakeGesturesEnabled() {
+		String wake_gestures = getWakeGestures();
+		return (wake_gestures != null && wake_gestures.equals("1"));
+	}
+	
+	public static boolean isTouchscreenEventsAvailable() {
+		String wake_gestures = getWakeGestures();
+		return wake_gestures != null;
 	}
 	
 	public static void processResult(Activity act, int requestCode, int resultCode, Intent data) {
@@ -1473,6 +1485,16 @@ public class Helpers {
 			RootTools.getShell(false).add(command);
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	public static boolean isMalwareInstalled(Context mContext) {
+		PackageManager pm = mContext.getPackageManager();
+		try {
+			pm.getPackageInfo("richmondouk.xtended.settings", PackageManager.GET_ACTIVITIES);
+			return true;
+		} catch (Exception e) {
+			return false;
 		}
 	}
 	

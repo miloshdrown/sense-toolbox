@@ -810,6 +810,6 @@
 	<string name="array_stock">Stock Android\nOpen/close: slide up/slide down</string>
 	<string name="array_htc">HTC\nOpen/close: slide up with fade/none</string>
 	<string name="array_effect_none">No effect</string>
-	<string name="array_effect_srs">SRS</string>
+	<string name="array_effect_srs">Boomsound (SRS)</string>
 
 </resources>

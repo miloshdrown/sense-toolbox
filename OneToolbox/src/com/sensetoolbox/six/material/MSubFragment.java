@@ -183,6 +183,11 @@ private int xmlResId = 0;
 					return true;
 				}
 			});
+			
+			if (Helpers.isDualSIM()) {
+				Helpers.removePref(this, "pref_key_sysui_signalnotify", "pref_systemui_statusbar");
+				Helpers.removePref(this, "pref_key_sysui_alarmnotify", "pref_systemui_statusbar");
+			}
 		} else if (xmlResId == R.xml.mprefs_statusbar) {
 			Preference sunbeamInstallPref = findPreference("pref_key_cb_sunbeam");
 			sunbeamInstallPref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
@@ -671,7 +676,7 @@ private int xmlResId = 0;
 			if (Helpers.isEight()) {
 				logoPressActionPreference.setTitle(Helpers.l10n(getActivity(), R.string.wakegestures_volume_title));
 				logoPressActionPreference.setSummary(Helpers.l10n(getActivity(), R.string.wakegestures_volume_summ));
-				if (!Helpers.isWakeGestures()) {
+				if (!Helpers.isWakeGesturesEnabled()) {
 					List<String> newEntries = new ArrayList<String>();
 					TypedArray ids = getResources().obtainTypedArray(R.array.wakegest_m8stock_actions);
 					for (int i = 0; i < ids.length(); i++) {
