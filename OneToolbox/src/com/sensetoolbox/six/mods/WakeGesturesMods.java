@@ -130,7 +130,8 @@ public class WakeGesturesMods {
 	};
 	
 	private static void doWakeUp(Object thisObject, long atTime) {
-		PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(thisObject, "mPowerManager");
+		Context mContext = (Context)XposedHelpers.getObjectField(thisObject, "mContext");
+		PowerManager mPowerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 		if (mPowerManager != null) {
 			WakeLock wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "ST WakeUpSleepy");
 			wl.acquire(1000);
@@ -287,7 +288,7 @@ public class WakeGesturesMods {
 				case 5: doWakeUp(param.thisObject, event_time_local); sendLockScreenIntent(mContext, 4); break;
 				case 6: doWakeUp(param.thisObject, event_time_local); sendLockScreenIntentOpenAppDrawer(mContext); break;
 				case 7:
-					PowerManager mPowerManager = (PowerManager)XposedHelpers.getObjectField(param.thisObject, "mPowerManager");
+					PowerManager mPowerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 					if (Helpers.mWakeLock == null) Helpers.mWakeLock = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "ST Flashlight");
 					if (Helpers.mFlashlightLevel == 0 || !Helpers.mWakeLock.isHeld()) {
 						Helpers.mFlashlightLevel = 127;
