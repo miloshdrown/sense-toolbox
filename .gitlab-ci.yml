@@ -1,0 +1,8 @@
+types:
+  - deploy
+
+Pack l10n strings:
+  type: deploy
+  script:
+    - cd OneToolbox && ant clean release
+    - NOW=$(date +"%Y-%m-%d_%H-%M-%S") && cp "OneToolbox/bin/Sense Toolbox-release.apk" "/home/toolbox/data/www/sensetoolbox.com/deploy/SenseToolbox_$NOW.apk"
