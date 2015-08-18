@@ -2077,7 +2077,7 @@ public class OtherMods {
 				MotionEvent ev = (MotionEvent)param.args[0];
 				if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
 					Boolean isOnSecureLockscreen = (Boolean)XposedHelpers.getAdditionalStaticField(findClass("com.android.systemui.statusbar.policy.KeyguardMonitor", lpparam.classLoader), "isOnSecureLockscreen");
-					if (isOnSecureLockscreen != null && isOnSecureLockscreen.booleanValue()) param.setResult(true);
+					if (isOnSecureLockscreen != null && isOnSecureLockscreen.booleanValue()) param.setResult(false);
 				}
 			}
 		});
