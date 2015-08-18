@@ -4078,4 +4078,13 @@ public class SysUIMods {
 			}
 		});
 	}
+	
+	public static void execHook_RestoreEQSTiles(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.systemui.qs.tiles.QuickSettingRingtone", lpparam.classLoader, "isItemSupported", Context.class, XC_MethodReplacement.returnConstant(true));
+			findAndHookMethod("com.android.systemui.qs.tiles.QuickSettingUsage", lpparam.classLoader, "isItemSupported", Context.class, XC_MethodReplacement.returnConstant(true));
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
 }

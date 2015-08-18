@@ -5,26 +5,29 @@ Ideas
 Pageless BF scrolling, remove snap to block scrolling
 Mount ISO image
 
-Hide Interruptions icons
-Remove Sense widgets restriction
-
 =====
 Bugs
 =====
 
 Recents long press causes home long press to change too
 
-
 =================
 Current changelog
 =================
 
-2.1.3
+2.2
+[New] Hide Interruptions status bar icon
+[New] Allow using HTC widgets in any launcher
+[New][Sense 7] Restore Ringtone and Usage EQS tiles
 [Fixed][5.0+] Missing Home assist actions
 [Fixed][Sense 7] Wake gestures
+[Fixed] Hiding YouTube channel watermark
 [Fixed] Improved Wake gestures capability detection
 [Fixed] Bypassing lockscreen using Wake gestures should be faster now
 [Fixed] Force white name and phone number color in dialer when maximum caller photo is used
+[Fixed] Home long press executing recents long press action and other soft keys bugs
+[Fixed] Crashes when there are many apps in the lists with icons
+[Fixed] Crashes in Material Toolbox UI
 
 
 ==============

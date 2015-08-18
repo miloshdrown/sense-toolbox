@@ -57,6 +57,11 @@
 			android:summary="@string/various_musicchannel_summ"
 			android:title="@string/various_musicchannel_title"
 			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_bindhtcwidgets"
+			android:summary="@string/various_bindhtcwidgets_summ"
+			android:title="@string/various_bindhtcwidgets_title"
+			android:defaultValue="false" />
 		
 		<com.htc.preference.HtcPreferenceCategory
 			android:title="@string/array_home_menu_settings"

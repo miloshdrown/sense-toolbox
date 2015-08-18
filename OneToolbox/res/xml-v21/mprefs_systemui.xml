@@ -101,6 +101,11 @@
 			android:entries="@array/systemui_autoeqs"
 			android:entryValues="@array/systemui_autoeqs_val"
 			android:defaultValue="1"/>
+		<CheckBoxPreference
+			android:key="pref_key_sysui_restoretiles"
+			android:summary="@string/systemui_restoretiles_summ"
+			android:title="@string/systemui_restoretiles_title"
+			android:defaultValue="false" />
 		</PreferenceCategory>
 		
 		<PreferenceCategory

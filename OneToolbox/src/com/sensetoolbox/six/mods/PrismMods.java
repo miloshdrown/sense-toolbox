@@ -1352,6 +1352,17 @@ public class PrismMods {
 				return new ColorDrawable(Color.TRANSPARENT);
 			}
 		});
+		
+		resparam.res.hookLayout("com.htc.MusicWidget", "layout", "specific_grid44", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				ViewGroup widget = (ViewGroup)liparam.view;
+				if (widget != null) {
+					ImageView footer = (ImageView)widget.findViewById(widget.getResources().getIdentifier("footer", "id", "com.htc.MusicWidget"));
+					if (footer != null) footer.setAlpha(0f);
+				}
+			}
+		});
 	}
 	
 	public static void execHook_InvisiPeopleWidget(InitPackageResourcesParam resparam) {

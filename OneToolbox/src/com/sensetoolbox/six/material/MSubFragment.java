@@ -184,6 +184,10 @@ private int xmlResId = 0;
 				}
 			});
 			
+			if (!Helpers.isSense7()) {
+				Helpers.removePref(this, "pref_key_sysui_restoretiles", "pref_systemui_eqs");
+			}
+			
 			if (Helpers.isDualSIM()) {
 				Helpers.removePref(this, "pref_key_sysui_signalnotify", "pref_systemui_statusbar");
 				Helpers.removePref(this, "pref_key_sysui_alarmnotify", "pref_systemui_statusbar");

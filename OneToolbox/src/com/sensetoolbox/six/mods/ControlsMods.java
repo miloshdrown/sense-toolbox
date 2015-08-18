@@ -135,7 +135,7 @@ public class ControlsMods {
 				}
 			});
 			
-			XC_MethodHook assistHook = new XC_MethodHook() {
+			XC_MethodHook assistHook = new XC_MethodHook(10) {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 					assistAndSearchPanelOverride(param);
@@ -502,7 +502,11 @@ public class ControlsMods {
 				@Override
 				public void run() {
 					if (backButton.isPressed()) {
-						backButton.setPressed(false);
+						try {
+							XposedHelpers.callMethod(backButton, "setPressedForce", false);
+						} catch (Throwable t) {
+							backButton.setPressed(false);
+						}
 						XMain.pref.reload();
 						int pref_backlongpress = Integer.parseInt(XMain.pref.getString("pref_key_controls_backlongpressaction", "1"));
 						Context mContext = backButton.getContext();
@@ -522,7 +526,7 @@ public class ControlsMods {
 							case 14: GlobalActions.openAppDrawer(mContext); break;
 						}
 						
-						if (!Helpers.isLP() && XposedHelpers.getIntField(backButton, "mCode") == 0) return;
+						if (!Helpers.isLP() && XposedHelpers.getIntField(backButton, "mCode") == KeyEvent.KEYCODE_UNKNOWN) return;
 						XposedHelpers.callMethod(backButton, "sendEvent", 0, 128);
 						XposedHelpers.callMethod(backButton, "sendAccessibilityEvent", 2);
 					}
@@ -548,7 +552,7 @@ public class ControlsMods {
 		findAndHookMethod("com.android.systemui.statusbar.policy.KeyButtonView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				if (XposedHelpers.getIntField(param.thisObject, "mCode") == 4) {
+				if (XposedHelpers.getIntField(param.thisObject, "mCode") == KeyEvent.KEYCODE_BACK) {
 					MotionEvent mev = (MotionEvent)param.args[0];
 					int mevact = mev.getActionMasked();
 					if (mevact == MotionEvent.ACTION_DOWN) isBackPressed = true;
@@ -567,11 +571,15 @@ public class ControlsMods {
 			@Override
 			public void run() {
 				if (homeButton.isPressed()) {
-					homeButton.setPressed(false);
+					try {
+						XposedHelpers.callMethod(homeButton, "setPressedForce", false);
+					} catch (Throwable t) {
+						homeButton.setPressed(false);
+					}
 					homeButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 					GlobalActions.simulateMenu(homeButton.getContext());
-					
-					if (!Helpers.isLP() && XposedHelpers.getIntField(homeButton, "mCode") == 0) return;
+
+					if (!Helpers.isLP() && XposedHelpers.getIntField(homeButton, "mCode") == KeyEvent.KEYCODE_UNKNOWN) return;
 					XposedHelpers.callMethod(homeButton, "sendEvent", 0, 128);
 					XposedHelpers.callMethod(homeButton, "sendAccessibilityEvent", 2);
 				}
@@ -596,7 +604,7 @@ public class ControlsMods {
 		findAndHookMethod("com.android.systemui.statusbar.policy.KeyButtonView", lpparam.classLoader, "onTouchEvent", MotionEvent.class, new XC_MethodHook() {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-				if (XposedHelpers.getIntField(param.thisObject, "mCode") == 3) {
+				if (XposedHelpers.getIntField(param.thisObject, "mCode") == KeyEvent.KEYCODE_HOME) {
 					MotionEvent mev = (MotionEvent)param.args[0];
 					int mevact = mev.getActionMasked();
 					if (mevact == MotionEvent.ACTION_DOWN) isHomePressed = true;
@@ -609,8 +617,7 @@ public class ControlsMods {
 		XposedBridge.hookAllConstructors(findClass("com.android.systemui.statusbar.policy.KeyButtonView", lpparam.classLoader), new XC_MethodHook() {
 			@Override
 			protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-				Integer mCode = (Integer) getObjectField(param.thisObject, "mCode");
-				if (mCode == KeyEvent.KEYCODE_HOME)
+				if (XposedHelpers.getIntField(param.thisObject, "mCode") == KeyEvent.KEYCODE_HOME)
 					setObjectField(param.thisObject, "mSupportsLongpress", true);
 			}
 		});
@@ -627,6 +634,19 @@ public class ControlsMods {
 		});
 	}
 	
+	public static void execHook_HomeLongpressAssistEight() {
+		XC_MethodHook assistHook = new XC_MethodHook(100) {
+			@Override
+			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+				param.setResult(null);
+			}
+		};
+		
+		Object[] assistArgsAndHook = { assistHook };
+		if (Helpers.isLP()) assistArgsAndHook = new Object[] { String.class, assistHook };
+		findAndHookMethod("com.android.internal.policy.impl.PhoneWindowManager", null, "launchAssistAction", assistArgsAndHook);
+	}
+	
 	public static boolean isRecentsPressed = false;
 	private static void assignRecentsLongpress(final MethodHookParam param) {
 		final ImageView recentsButton = (ImageView) callMethod(param.thisObject, "getRecentsButton");
@@ -635,10 +655,15 @@ public class ControlsMods {
 			@Override
 			public void run() {
 				if (recentsButton.isPressed()) {
-					recentsButton.setPressed(false);
+					try {
+						XposedHelpers.callMethod(recentsButton, "setPressedForce", false);
+					} catch (Throwable t) {
+						recentsButton.setPressed(false);
+					}
 					recentsButton.performHapticFeedback(HapticFeedbackConstants.LONG_PRESS);
 					assistAndSearchPanelOverride(param);
-					if (!Helpers.isLP() && XposedHelpers.getIntField(recentsButton, "mCode") == 0) return;
+					
+					if (!Helpers.isLP() && XposedHelpers.getIntField(recentsButton, "mCode") == KeyEvent.KEYCODE_UNKNOWN) return;
 					XposedHelpers.callMethod(recentsButton, "sendEvent", 0, 128);
 					XposedHelpers.callMethod(recentsButton, "sendAccessibilityEvent", 2);
 				}
@@ -664,7 +689,7 @@ public class ControlsMods {
 			@Override
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				int mCode = XposedHelpers.getIntField(param.thisObject, "mCode");
-				if (mCode == 0 || mCode == 187) {
+				if (mCode == KeyEvent.KEYCODE_UNKNOWN || mCode == KeyEvent.KEYCODE_APP_SWITCH) {
 					MotionEvent mev = (MotionEvent)param.args[0];
 					int mevact = mev.getActionMasked();
 					if (mevact == MotionEvent.ACTION_DOWN) isRecentsPressed = true;

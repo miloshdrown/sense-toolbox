@@ -62,7 +62,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (prefs_pwm)
 			GlobalActions.setupPWM();
 		
-		if (pref_backlongpress != 1 || pref_homeassist != 1)
+		if ((pref_backlongpress != 1 || pref_homeassist != 1) && !Helpers.isEight())
 			ControlsMods.setupPWMKeys();
 		
 		if ((pref_screenon != 0 || pref_screenoff != 0)) {
@@ -174,6 +174,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 
 		if (pref.getBoolean("pref_key_other_beatsnotif", false))
 			OtherMods.execHook_GlobalEffectNotification();
+		
+		if (pref.getBoolean("pref_key_prism_homemenu", false) && Helpers.isEight())
+			ControlsMods.execHook_HomeLongpressAssistEight();
 		
 		//OtherMods.execHook_HapticNotify();
 	}
@@ -394,6 +397,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_other_noautoime", false))
 				OtherMods.execHook_NoAutoIMEService(lpparam);
+			
+			if (pref.getBoolean("pref_key_other_bindhtcwidgets", false))
+				OtherMods.execHook_CanBindHtcAppWigdet(lpparam);
 		}
 		
 		if (pkg.equals("com.android.providers.media")) {
@@ -682,6 +688,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_other_powersavenotif", false) && Helpers.isLP())
 				OtherMods.execHook_PowerSaverNotifSysUI(lpparam);
+			
+			if (pref.getBoolean("pref_key_sysui_restoretiles", false))
+				SysUIMods.execHook_RestoreEQSTiles(lpparam);
 			
 			StatusbarMods.execHook_HideIcons(lpparam);
 		}

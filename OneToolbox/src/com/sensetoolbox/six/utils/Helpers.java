@@ -127,8 +127,8 @@ public class Helpers {
 	public static ArrayList<AppData> launchableAppsList = null;
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
-	public static float strings_total = 781.0f;
-	public static int buildVersion = 270;
+	public static float strings_total = 787.0f;
+	public static int buildVersion = 272;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -853,18 +853,32 @@ public class Helpers {
 		return new BitmapDrawable(mContext.getResources(), imageWithShadow);
 	}
 	
+	public static void showOKDialog(Context mContext, int title, int text) {
+		if (isNewSense()) {
+			AlertDialog.Builder alert = new AlertDialog.Builder(mContext);
+			alert.setTitle(l10n(mContext, title));
+			alert.setView(createCenteredText(mContext, text));
+			alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {}
+			});
+			alert.show();
+		} else {
+			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
+			alert.setTitle(l10n(mContext, title));
+			alert.setView(createCenteredText(mContext, text));
+			alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
+				public void onClick(DialogInterface dialog, int whichButton) {}
+			});
+			alert.show();
+		}
+	}
+	
 	public static boolean checkStorageReadable(Context mContext) {
 		String state = Environment.getExternalStorageState();
 		if (state.equals(Environment.MEDIA_MOUNTED_READ_ONLY) || state.equals(Environment.MEDIA_MOUNTED)) {
 			return true;
 		} else {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
-			alert.setTitle(l10n(mContext, R.string.warning));
-			alert.setView(createCenteredText(mContext, R.string.storage_unavailable));
-			alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {}
-			});
-			alert.show();
+			showOKDialog(mContext, R.string.warning, R.string.storage_unavailable);
 			return false;
 		}
 	}
@@ -872,35 +886,17 @@ public class Helpers {
 	public static boolean preparePathForBackup(Context mContext, String path) {
 		String state = Environment.getExternalStorageState();
 		if (state.equals(Environment.MEDIA_MOUNTED_READ_ONLY)) {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
-			alert.setTitle(l10n(mContext, R.string.warning));
-			alert.setView(createCenteredText(mContext, R.string.storage_read_only));
-			alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {}
-			});
-			alert.show();
+			showOKDialog(mContext, R.string.warning, R.string.storage_read_only);
 			return false;
 		} else if (state.equals(Environment.MEDIA_MOUNTED)) {
 			File file = new File(path);
 			if (!file.exists() && !file.mkdirs()) {
-				HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
-				alert.setTitle(l10n(mContext, R.string.warning));
-				alert.setView(createCenteredText(mContext, R.string.storage_cannot_mkdir));
-				alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-					public void onClick(DialogInterface dialog, int whichButton) {}
-				});
-				alert.show();
+				showOKDialog(mContext, R.string.warning, R.string.storage_cannot_mkdir);
 				return false;
 			}
 			return true;
 		} else {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
-			alert.setTitle(l10n(mContext, R.string.warning));
-			alert.setView(createCenteredText(mContext, R.string.storage_unavailable));
-			alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {}
-			});
-			alert.show();
+			showOKDialog(mContext, R.string.warning, R.string.storage_unavailable);
 			return false;
 		}
 	}
@@ -930,18 +926,10 @@ public class Helpers {
 	public static void openURL(Context mContext, String url) {
 		if (mContext == null) return;
 		Intent uriIntent = new Intent(Intent.ACTION_VIEW, Uri.parse(url));
-		if (uriIntent.resolveActivity(mContext.getPackageManager()) != null) {
+		if (uriIntent.resolveActivity(mContext.getPackageManager()) != null)
 			mContext.startActivity(uriIntent);
-		} else {
-			HtcAlertDialog.Builder alert = new HtcAlertDialog.Builder(mContext);
-			alert.setTitle(l10n(mContext, R.string.warning));
-			alert.setView(createCenteredText(mContext, R.string.no_browser));
-			alert.setCancelable(true);
-			alert.setPositiveButton(android.R.string.ok, new DialogInterface.OnClickListener() {
-				public void onClick(DialogInterface dialog, int whichButton) {}
-			});
-			alert.show();
-		}
+		else
+			showOKDialog(mContext, R.string.warning, R.string.no_browser);
 	}
 	
 	public static boolean isM9Plus() {

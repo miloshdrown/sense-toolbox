@@ -2,6 +2,9 @@ package com.sensetoolbox.six.material.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.AppData;
@@ -11,7 +14,6 @@ import android.app.AlertDialog.Builder;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.preference.ListPreference;
 import android.util.AttributeSet;
@@ -79,12 +81,15 @@ public class DynamicPreference extends ListPreference {
 		private LayoutInflater mInflater;
 		private int index = 0;
 		Context mContext = null;
+		private ThreadPoolExecutor pool;
+		private int cpuCount = Runtime.getRuntime().availableProcessors();
 
 		public ImageArrayAdapter(Context context, CharSequence[] objects, int i) {
 			mContext = context;
 			items = objects;
 			index = i;
 			mInflater = LayoutInflater.from(context);
+			pool = new ThreadPoolExecutor(cpuCount + 1, cpuCount * 2 + 1, 2, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 		}
 		
 		public int getCount() {
@@ -119,7 +124,7 @@ public class DynamicPreference extends ListPreference {
 			Bitmap icon = Helpers.memoryCache.get(cacheKey);
 			if (icon == null) {
 				itemIcon.setAlpha(0.0f);
-				(new BitmapCachedLoader(itemIcon, ad, mContext)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				(new BitmapCachedLoader(itemIcon, ad, mContext)).executeOnExecutor(pool);
 			} else {
 				itemIcon.setAlpha(1.0f);
 				itemIcon.setImageBitmap(icon);

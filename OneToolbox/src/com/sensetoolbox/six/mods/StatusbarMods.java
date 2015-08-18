@@ -549,7 +549,8 @@ public class StatusbarMods {
 			iconsToHide.contains("4") && mSlot.equals("sync_active") ||
 			iconsToHide.contains("5") && mSlot.equals("gps") ||
 			iconsToHide.contains("6") && mSlot.equals("bluetooth") ||
-			iconsToHide.contains("10") && mSlot.equals("nfc")) statusIcon.setVisibility(View.GONE);
+			iconsToHide.contains("10") && mSlot.equals("nfc") ||
+			iconsToHide.contains("12") && mSlot.equals("zen")) statusIcon.setVisibility(View.GONE);
 	}
 	
 	private static void hideSystemIcons(MethodHookParam param, Set<String> iconsToHide) {

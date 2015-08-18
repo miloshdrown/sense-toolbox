@@ -207,6 +207,7 @@
 		<item >@string/cleanbeam_powersave_title</item>
 		<item >@string/cleanbeam_nfc_title</item>
 		<item >@string/cleanbeam_dnd_title</item>
+		<item >@string/cleanbeam_zen_title</item>
 	</string-array>
 	<string-array name="hideicons_val">
 		<item >1</item>
@@ -220,6 +221,7 @@
 		<item >9</item>
 		<item >10</item>
 		<item >11</item>
+		<item >12</item>
 	</string-array>
 
 	<string-array name="various_keyslight">

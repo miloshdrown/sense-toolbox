@@ -596,7 +596,7 @@ public class OtherMods {
 	}
 	
 	public static void execHook_YouTubeNoWatermark(final InitPackageResourcesParam resparam) {
-		resparam.res.hookLayout("com.google.android.youtube", "layout", "annotation_overlay", new XC_LayoutInflated() {
+		resparam.res.hookLayout("com.google.android.youtube", "layout", "invideo_programming_overlay", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
 				try {
@@ -2778,6 +2778,14 @@ public class OtherMods {
 				}
 			});
 			//findAndHookMethod("android.media.htcsoundfx.view.EffectViewNotification", null, "createNotification", Context.class, int.class, String.class, String.class, int.class, String.class, Intent.class, boolean.class, new XC_MethodHook()
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static void execHook_CanBindHtcAppWigdet(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.server.appwidget.AppWidgetServiceImpl", lpparam.classLoader, "canBindHtcAppWigdet", boolean.class, XC_MethodReplacement.returnConstant(Boolean.TRUE));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

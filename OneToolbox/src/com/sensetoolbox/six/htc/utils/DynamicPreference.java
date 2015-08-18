@@ -2,6 +2,9 @@ package com.sensetoolbox.six.htc.utils;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import com.htc.preference.HtcListPreference;
 import com.sensetoolbox.six.R;
@@ -15,7 +18,6 @@ import com.htc.widget.HtcRadioButton;
 
 import android.content.Context;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -73,12 +75,15 @@ public class DynamicPreference extends HtcListPreference {
 		private LayoutInflater mInflater;
 		private int index = 0;
 		Context mContext = null;
+		private ThreadPoolExecutor pool;
+		private int cpuCount = Runtime.getRuntime().availableProcessors();
 
 		public ImageArrayAdapter(Context context, CharSequence[] objects, int i) {
 			mContext = context;
 			items = objects;
 			index = i;
 			mInflater = LayoutInflater.from(context);
+			pool = new ThreadPoolExecutor(cpuCount + 1, cpuCount * 2 + 1, 2, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 		}
 		
 		public int getCount() {
@@ -114,7 +119,7 @@ public class DynamicPreference extends HtcListPreference {
 			Bitmap icon = Helpers.memoryCache.get(cacheKey);
 			if (icon == null) {
 				itemIcon.setAlpha(0.0f);
-				(new BitmapCachedLoader(itemIcon, ad, mContext)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				(new BitmapCachedLoader(itemIcon, ad, mContext)).executeOnExecutor(pool);
 			} else {
 				itemIcon.setAlpha(1.0f);
 				itemIcon.setTileImageBitmap(icon);

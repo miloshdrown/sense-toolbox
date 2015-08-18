@@ -240,9 +240,21 @@ public class HCrashReportDialog extends Activity {
 				});
 			}
 			
+			TextView feedbackNote = new TextView(this);
+			feedbackNote.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT));
+			feedbackNote.setGravity(Gravity.START);
+			feedbackNote.setPadding(densify(10), 0, densify(10), densify(10));
+			feedbackNote.setTextColor(text.getCurrentTextColor());
+			feedbackNote.setTextSize(TypedValue.COMPLEX_UNIT_PX, text.getTextSize() - 10);
+			feedbackNote.setText(Helpers.l10n(this, R.string.crash_dialog_note));
+			
 			dialogView.addView(text);
 			dialogView.addView(descText);
 			dialogView.addView(desc);
+			
+			if (getSharedPreferences("one_toolbox_prefs", 1).getString("acra.user.email", "").isEmpty())
+			dialogView.addView(feedbackNote);
+			
 			text.setText(text.getText() + "\n" + Helpers.l10n(this, R.string.crash_dialog_manual_size) + ": " + String.valueOf(Math.round(payloadSize / 1024)) + " KB");
 		} catch (Exception e) {}
 		

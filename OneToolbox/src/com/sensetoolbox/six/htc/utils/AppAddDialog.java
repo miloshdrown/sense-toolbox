@@ -3,11 +3,13 @@ package com.sensetoolbox.six.htc.utils;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import android.content.Context;
 import android.content.DialogInterface;
 import android.graphics.Bitmap;
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -92,9 +94,12 @@ public class AppAddDialog extends HtcAlertDialog {
 	
 	private class ImageArrayAdapter extends BaseAdapter {
 		private LayoutInflater mInflater;
+		private ThreadPoolExecutor pool;
+		private int cpuCount = Runtime.getRuntime().availableProcessors();
 		
 		public ImageArrayAdapter(Context context) {
 			mInflater = LayoutInflater.from(context);
+			pool = new ThreadPoolExecutor(cpuCount + 1, cpuCount * 2 + 1, 2, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
 		}
 		
 		public int getCount() {
@@ -126,7 +131,7 @@ public class AppAddDialog extends HtcAlertDialog {
 			Bitmap icon = Helpers.memoryCache.get(ad.pkgName);
 			if (icon == null) {
 				itemIcon.setAlpha(0.0f);
-				(new BitmapCachedLoader(itemIcon, ad, stContext)).executeOnExecutor(AsyncTask.THREAD_POOL_EXECUTOR);
+				(new BitmapCachedLoader(itemIcon, ad, stContext)).executeOnExecutor(pool);
 			} else {
 				itemIcon.setAlpha(1.0f);
 				itemIcon.setColorIconImageBitmap(icon);
