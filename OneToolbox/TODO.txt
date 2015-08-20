@@ -9,7 +9,7 @@ Mount ISO image
 Bugs
 =====
 
-Recents long press causes home long press to change too
+
 
 =================
 Current changelog
@@ -21,12 +21,12 @@ Current changelog
 [New][Sense 7] Restore Ringtone and Usage EQS tiles
 [Fixed][5.0+] Missing Home assist actions
 [Fixed][Sense 7] Wake gestures
-[Fixed] Hiding YouTube channel watermark
 [Fixed] Improved Wake gestures capability detection
+[Fixed] Hiding YouTube channel watermark
 [Fixed] Bypassing lockscreen using Wake gestures should be faster now
 [Fixed] Force white name and phone number color in dialer when maximum caller photo is used
 [Fixed] Home long press executing recents long press action and other soft keys bugs
-[Fixed] Crashes when there are many apps in the lists with icons
+[Fixed] Rare crashes when quickly scrolling app lists with icons
 [Fixed] Crashes in Material Toolbox UI
 
 

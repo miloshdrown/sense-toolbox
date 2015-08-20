@@ -24,7 +24,7 @@ public class HelperReceiver extends BroadcastReceiver {
 	@SuppressWarnings("deprecation")
 	public void onReceive(final Context ctx, Intent intent) {
 		if (intent.getAction() == null) return;
-		
+		/*
 		if (intent.getAction().equals(Intent.ACTION_BOOT_COMPLETED) && !Helpers.isEight() && Helpers.isLP()) {
 			SharedPreferences prefs = ctx.getSharedPreferences("one_toolbox_prefs", 1);
 			if (prefs.getBoolean("wake_gestures_active", false) && Helpers.isWakeGesturesAvailable()) {
@@ -32,7 +32,7 @@ public class HelperReceiver extends BroadcastReceiver {
 				Helpers.setWakeGestures(true);
 			}
 		}
-		
+		*/
 		if (intent.getAction().equals("com.sensetoolbox.six.BLOCKHEADSUP")) {
 			String pkgName = intent.getStringExtra("pkgName");
 			if (pkgName == null) return;
