@@ -696,10 +696,11 @@ public class OtherMods {
 			ViewParent mPhotoParent = mPhoto.getParent();
 			int photoHeight;
 			
+			TelephonyManager tm = (TelephonyManager)mPhoto.getContext().getSystemService(Context.TELEPHONY_SERVICE);
 			KeyguardManager km = (KeyguardManager)mPhoto.getContext().getSystemService(Context.KEYGUARD_SERVICE);
 			float density = mPhoto.getContext().getResources().getDisplayMetrics().density;
 			
-			if (km.inKeyguardRestrictedInputMode()) {
+			if (km.inKeyguardRestrictedInputMode() && tm.getCallState() == TelephonyManager.CALL_STATE_RINGING) {
 				photoHeight = getPhotoPx(true, photoSize);
 				
 				if (photoSize == 3) {
