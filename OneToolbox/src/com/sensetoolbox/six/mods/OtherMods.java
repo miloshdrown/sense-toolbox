@@ -2078,7 +2078,7 @@ public class OtherMods {
 				MotionEvent ev = (MotionEvent)param.args[0];
 				if (ev.getActionMasked() == MotionEvent.ACTION_DOWN) {
 					Boolean isOnSecureLockscreen = (Boolean)XposedHelpers.getAdditionalStaticField(findClass("com.android.systemui.statusbar.policy.KeyguardMonitor", lpparam.classLoader), "isOnSecureLockscreen");
-					if (isOnSecureLockscreen != null && isOnSecureLockscreen.booleanValue()) param.setResult(false);
+					if (isOnSecureLockscreen != null && isOnSecureLockscreen.booleanValue()) param.setResult(true);
 				}
 			}
 		});
@@ -2786,7 +2786,10 @@ public class OtherMods {
 	
 	public static void execHook_CanBindHtcAppWigdet(LoadPackageParam lpparam) {
 		try {
-			findAndHookMethod("com.android.server.appwidget.AppWidgetServiceImpl", lpparam.classLoader, "canBindHtcAppWigdet", boolean.class, XC_MethodReplacement.returnConstant(Boolean.TRUE));
+			if (Helpers.isLP())
+				findAndHookMethod("com.android.server.appwidget.AppWidgetServiceImpl", lpparam.classLoader, "canBindHtcAppWigdet", boolean.class, XC_MethodReplacement.returnConstant(true));
+			else
+				findAndHookMethod("com.android.server.AppWidgetServiceImpl", lpparam.classLoader, "canBindHtcAppWigdet", boolean.class, XC_MethodReplacement.returnConstant(true));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

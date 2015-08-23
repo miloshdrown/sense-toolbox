@@ -588,6 +588,8 @@
 	<string name="wakegestures_mod">Wake gestures</string>
 	<string name="wakegestures_haptic_title">Haptic feedback</string>
 	<string name="wakegestures_haptic_summ">Short vibration after successful gesture</string>
+	<string name="wakegestures_onboot_title">Activate on boot</string>
+	<string name="wakegestures_onboot_summ">Disable this option if you are having problems with touchscreen after restart</string>
 	<string name="wakegestures_dt2w_title">Double tap</string>
 	<string name="wakegestures_dt2w_summ">Action for double tap</string>
 	<string name="wakegestures_swipedown_title">Swipe down</string>

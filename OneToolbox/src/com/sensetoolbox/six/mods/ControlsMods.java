@@ -897,15 +897,6 @@ public class ControlsMods {
 				}
 			});
 			
-			findAndHookMethod("android.media.AudioService", null, "makeA2dpSrcAvailable", String.class, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-					String macAdress = (String)param.args[0];
-					execBluetoothAction(mContext, macAdress, true);
-				}
-			});
-			
 			findAndHookMethod("android.media.AudioService", null, "makeA2dpDeviceUnavailableNow", String.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
@@ -924,14 +915,25 @@ public class ControlsMods {
 				}
 			});
 			
-			findAndHookMethod("android.media.AudioService", null, "makeA2dpSrcUnavailable", String.class, new XC_MethodHook() {
-				@Override
-				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
-					Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
-					String macAdress = (String)param.args[0];
-					execBluetoothAction(mContext, macAdress, false);
-				}
-			});
+			if (Helpers.isLP()) {
+				findAndHookMethod("android.media.AudioService", null, "makeA2dpSrcAvailable", String.class, new XC_MethodHook() {
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+						Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+						String macAdress = (String)param.args[0];
+						execBluetoothAction(mContext, macAdress, true);
+					}
+				});
+
+				findAndHookMethod("android.media.AudioService", null, "makeA2dpSrcUnavailable", String.class, new XC_MethodHook() {
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+						Context mContext = (Context)XposedHelpers.getObjectField(param.thisObject, "mContext");
+						String macAdress = (String)param.args[0];
+						execBluetoothAction(mContext, macAdress, false);
+					}
+				});
+			}
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}

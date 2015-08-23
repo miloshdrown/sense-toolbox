@@ -228,7 +228,7 @@ public class MPreferenceFragmentExt extends PreferenceFragment {
 		if (menuType == 0) {
 			inflater.inflate(R.menu.menu_mods, menu);
 			
-			menu.getItem(2).setIcon(Helpers.applyMaterialTheme(getActivity(), menu.getItem(2).getIcon()));
+			menu.getItem(2).setIcon(Helpers.applyMaterialTheme(getActivity(), menu.getItem(2).getIcon(), true));
 			if (rebootType == 1) {
 				menu.getItem(0).setIcon(R.drawable.ic_menu_restart_prism);
 				menu.getItem(0).setTitle(Helpers.l10n(getActivity(), R.string.restart_prism));

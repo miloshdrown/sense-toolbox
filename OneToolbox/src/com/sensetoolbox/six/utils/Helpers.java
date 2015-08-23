@@ -127,8 +127,8 @@ public class Helpers {
 	public static ArrayList<AppData> launchableAppsList = null;
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
-	public static float strings_total = 787.0f;
-	public static int buildVersion = 273;
+	public static float strings_total = 789.0f;
+	public static int buildVersion = 274;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -731,7 +731,7 @@ public class Helpers {
 		context.getTheme().resolveAttribute(multiply_color_id, typedValue, true);
 		int multiply_theme = typedValue.data;
 		
-		if ((context.getClass() == HMainActivity.class || context.getClass() == HSubActivity.class) && category_theme == multiply_theme) category_theme = 0xffe0e0e0;
+		if ((context.getClass() == HMainActivity.class || context.getClass() == HSubActivity.class) && category_theme == multiply_theme) category_theme = 0xd9ffffff;
 		
 		Bitmap src = ((BitmapDrawable)img).getBitmap();
 		Bitmap bitmap = src.copy(Bitmap.Config.ARGB_8888, true);
@@ -740,15 +740,25 @@ public class Helpers {
 	
 	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
 	public static BitmapDrawable applyMaterialTheme(Context context, Drawable img) {
-		TypedValue typedValue = new TypedValue();
-		context.getTheme().resolveAttribute(android.R.attr.colorAccent, typedValue, true);
-		int accent_color = typedValue.data;
+		return applyMaterialTheme(context, img, false);
+	}
+	
+	@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+	public static BitmapDrawable applyMaterialTheme(Context context, Drawable img, boolean makeWhite) {
+		int accent_color;
+		if (makeWhite) {
+			accent_color = 0xd9ffffff;
+		} else {
+			TypedValue typedValue = new TypedValue();
+			context.getTheme().resolveAttribute(android.R.attr.colorAccent, typedValue, true);
+			accent_color = typedValue.data;
+		}
 		
 		TypedValue typedValue2 = new TypedValue();
 		context.getTheme().resolveAttribute(android.R.attr.colorPrimary, typedValue2, true);
 		int header_color = typedValue2.data;
 		
-		if ((context.getClass() == MMainActivity.class || context.getClass() == MSubActivity.class) && accent_color == header_color) accent_color = 0xffe0e0e0;
+		if ((context.getClass() == MMainActivity.class || context.getClass() == MSubActivity.class) && accent_color == header_color) accent_color = 0xd9ffffff;
 		
 		Bitmap src = ((BitmapDrawable)img).getBitmap();
 		Bitmap bitmap = src.copy(Bitmap.Config.ARGB_8888, true);
@@ -993,8 +1003,7 @@ public class Helpers {
 	}
 	
 	public static void setWakeGestures(boolean state) {
-		int stateInt = 0;
-		if (state) stateInt = 1;
+		int stateInt = state ? 1 : 0;
 		Command command = new Command(0, false,  "echo " + stateInt + " > /sys/android_touch/wake_gestures");
 		try {
 			RootTools.getShell(true).add(command);
