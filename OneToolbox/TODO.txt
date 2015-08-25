@@ -18,10 +18,15 @@ Current changelog
 2.2.1
 [New] Option to disable Wake gestures activation on boot
 [Fixed] Restrict EQS mod bug introduced in 2.2
+[Fixed][4.4] Sense Home launcher mods
 [Fixed][4.4] Unblock HTC widgets
 [Fixed][4.4] BT headset actions on connect/disconnect
 [Fixed] Action bar icons in Toolbox
 
+
+==============
+Old Changelogs
+==============
 
 2.2
 [New] Hide Interruptions status bar icon
@@ -36,11 +41,6 @@ Current changelog
 [Fixed] Home long press executing recents long press action and other soft keys bugs
 [Fixed] Rare crashes when quickly scrolling app lists with icons
 [Fixed] Crashes in Material Toolbox UI
-
-
-==============
-Old Changelogs
-==============
 
 2.1.2
 [Fixed] Additional app details

@@ -1,5 +1,7 @@
 package com.sensetoolbox.six.mods;
 
+import android.app.Application;
+import android.content.Context;
 import android.content.res.XResources;
 
 import com.sensetoolbox.six.utils.GlobalActions;
@@ -10,7 +12,10 @@ import com.sensetoolbox.six.utils.Version;
 import de.robv.android.xposed.IXposedHookInitPackageResources;
 import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
+import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
+import de.robv.android.xposed.XposedBridge;
+import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
 
@@ -354,8 +359,69 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		}
 	}
 	
+	public void hookLauncher(LoadPackageParam lpparam) {
+		if (pref.getBoolean("pref_key_prism_invisiwidget_enable", false)) {
+			int transparency = pref.getInt("pref_key_prism_invisiwidget", 100);
+			transparency = (int) Math.floor(transparency*2.55f);
+			PrismMods.execHook_InvisiWidget(lpparam, transparency);
+		}
+		
+		if (pref.getBoolean("pref_key_prism_folder20", false))
+			PrismMods.execHook_20Folder_code(lpparam);
+		
+		if (pref.getBoolean("pref_key_prism_invisidrawer_enable", false)) {
+			int transparency = pref.getInt("pref_key_prism_invisidrawer", 100);
+			transparency = (int) Math.floor(transparency*2.55f);
+			PrismMods.execHook_InvisiDrawerCode(lpparam, transparency);
+		}
+		
+		if (pref_swipedown != 1 || pref_swipeup != 1)
+			PrismMods.execHook_SwipeActions(lpparam);
+		
+		if (pref.getBoolean("pref_key_persist_appdrawer_grid", false))
+			PrismMods.execHook_AppDrawerGridSizes(lpparam);
+		
+		if (pref.getBoolean("pref_key_prism_gridtinyfont", false))
+			PrismMods.execHook_AppDrawerGridTinyText(lpparam);
+		
+		if (pref_swiperight != 1 || pref_swipeleft != 1 || pref.getBoolean("pref_key_prism_homemenu", false))
+			PrismMods.execHook_DockSwipe(lpparam);
+		
+		if (pref.getBoolean("pref_key_prism_homemenu", false)) {
+			PrismMods.execHook_HomeMenu(lpparam);
+			PrismMods.execHook_LauncherLock(lpparam);
+		}
+		
+		if (pref.getBoolean("pref_key_prism_sevenscreens", false))
+			PrismMods.execHook_SevenScreens(lpparam);
+		
+		if (pref.getBoolean("pref_key_prism_4x5homescreen", false))
+			PrismMods.execHook_HomeScreenResizableWidgets(lpparam);
+		
+		if (pref.getBoolean("pref_key_prism_invisilabels", false))
+			PrismMods.execHook_invisiLabels(lpparam);
+		
+		if (pref.getBoolean("pref_key_prism_blinkfeednodock", false))
+			PrismMods.execHook_BlinkFeedNoDock(lpparam);
+		
+		if (pref.getBoolean("pref_key_prism_blinkfeedimmersive", false))
+			PrismMods.execHook_BlinkFeedImmersive(lpparam);
+		
+		if (pref_shake != 1)
+			PrismMods.execHook_ShakeAction(lpparam);
+		
+		if (pref.getBoolean("pref_key_prism_invisiactionbar", false))
+			PrismMods.execHook_ActionBarNoBkg(lpparam);
+		
+		if (pref_appslongpress != 1)
+			PrismMods.execHook_hotseatToggleBtn(lpparam);
+		
+		if (Integer.parseInt(pref.getString("pref_key_prism_transitions", "1")) == 2)
+			PrismMods.execHook_StockTransitionsLauncher(lpparam);
+	}
+	
 	@Override
-	public void handleLoadPackage(LoadPackageParam lpparam) throws Throwable {
+	public void handleLoadPackage(final LoadPackageParam lpparam) throws Throwable {
 		String pkg = lpparam.packageName;
 		
 		if (pkg.equals("com.sensetoolbox.six")) {
@@ -437,64 +503,16 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		
 		if (pkg.equals("com.htc.launcher")) {
 			pref.reload();
-			if (pref.getBoolean("pref_key_prism_invisiwidget_enable", false)) {
-				int transparency = pref.getInt("pref_key_prism_invisiwidget", 100);
-				transparency = (int) Math.floor(transparency*2.55f);
-				PrismMods.execHook_InvisiWidget(lpparam, transparency);
-			}
 			
-			if (pref.getBoolean("pref_key_prism_folder20", false))
-				PrismMods.execHook_20Folder_code(lpparam);
-			
-			if (pref.getBoolean("pref_key_prism_invisidrawer_enable", false)) {
-				int transparency = pref.getInt("pref_key_prism_invisidrawer", 100);
-				transparency = (int) Math.floor(transparency*2.55f);
-				PrismMods.execHook_InvisiDrawerCode(lpparam, transparency);
-			}
-			
-			if (pref_swipedown != 1 || pref_swipeup != 1)
-				PrismMods.execHook_SwipeActions(lpparam);
-			
-			if (pref.getBoolean("pref_key_persist_appdrawer_grid", false))
-				PrismMods.execHook_AppDrawerGridSizes(lpparam);
-			
-			if (pref.getBoolean("pref_key_prism_gridtinyfont", false))
-				PrismMods.execHook_AppDrawerGridTinyText(lpparam);
-			
-			if (pref_swiperight != 1 || pref_swipeleft != 1 || pref.getBoolean("pref_key_prism_homemenu", false))
-				PrismMods.execHook_DockSwipe(lpparam);
-			
-			if (pref.getBoolean("pref_key_prism_homemenu", false)) {
-				PrismMods.execHook_HomeMenu(lpparam);
-				PrismMods.execHook_LauncherLock(lpparam);
-			}
-			
-			if (pref.getBoolean("pref_key_prism_sevenscreens", false))
-				PrismMods.execHook_SevenScreens(lpparam);
-			
-			if (pref.getBoolean("pref_key_prism_4x5homescreen", false))
-				PrismMods.execHook_HomeScreenResizableWidgets(lpparam);
-			
-			if (pref.getBoolean("pref_key_prism_invisilabels", false))
-				PrismMods.execHook_invisiLabels(lpparam);
-			
-			if (pref.getBoolean("pref_key_prism_blinkfeednodock", false))
-				PrismMods.execHook_BlinkFeedNoDock(lpparam);
-			
-			if (pref.getBoolean("pref_key_prism_blinkfeedimmersive", false))
-				PrismMods.execHook_BlinkFeedImmersive(lpparam);
-			
-			if (pref_shake != 1)
-				PrismMods.execHook_ShakeAction(lpparam);
-			
-			if (pref.getBoolean("pref_key_prism_invisiactionbar", false))
-				PrismMods.execHook_ActionBarNoBkg(lpparam);
-			
-			if (pref_appslongpress != 1)
-				PrismMods.execHook_hotseatToggleBtn(lpparam);
-			
-			if (Integer.parseInt(pref.getString("pref_key_prism_transitions", "1")) == 2)
-				PrismMods.execHook_StockTransitionsLauncher(lpparam);
+			if (Helpers.isLP())
+				hookLauncher(lpparam);
+			else
+				XposedHelpers.findAndHookMethod(Application.class, "attach", Context.class, new XC_MethodHook() {
+					@Override
+					protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+						hookLauncher(lpparam);
+					}
+				});
 		}
 		
 		if (pkg.equals("com.htc.lockscreen")) {

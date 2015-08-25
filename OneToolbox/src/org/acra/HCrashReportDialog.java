@@ -208,7 +208,7 @@ public class HCrashReportDialog extends Activity {
 			
 			desc = new HtcEditText(this);
 			desc.setGravity(Gravity.TOP | Gravity.START);
-			desc.setInputType(EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE);
+			desc.setInputType(EditorInfo.TYPE_CLASS_TEXT | EditorInfo.TYPE_TEXT_FLAG_MULTI_LINE);
 			desc.setSingleLine(false);
 			desc.setPadding(densify(5), densify(5), densify(5), densify(5));
 			
