@@ -1043,10 +1043,7 @@ public class SysUIMods {
 					dataRateVal.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
 					dataRateVal.setTextColor(Color.WHITE);
 					dataRateVal.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-					dataRateVal.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13.0f);
 					dataRateVal.setIncludeFontPadding(false);
-					dataRateVal.setPadding(0, 2, 5, 0);
-					dataRateVal.setLineSpacing(0, 0.9f);
 					//dataRateVal.setTypeface(null, Typeface.BOLD);
 					
 					dataRateUnits = new TextView(mContext);
@@ -1056,10 +1053,22 @@ public class SysUIMods {
 					dataRateUnits.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
 					dataRateUnits.setTextColor(Color.WHITE);
 					dataRateUnits.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-					dataRateUnits.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10.0f);
 					dataRateUnits.setIncludeFontPadding(false);
-					dataRateUnits.setPadding(0, 0, 5, 0);
 					dataRateUnits.setScaleY(0.9f);
+					
+					if (Helpers.isSense7()) {
+						dataRateVal.setPadding(0, 10, 5, 0);
+						dataRateVal.setLineSpacing(0, 0.4f);
+						dataRateVal.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10.0f);
+						dataRateUnits.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 8.0f);
+						dataRateUnits.setPadding(0, 0, 5, 7);
+					} else {
+						dataRateVal.setPadding(0, 2, 5, 0);
+						dataRateVal.setLineSpacing(0, 0.9f);
+						dataRateVal.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13.0f);
+						dataRateUnits.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10.0f);
+						dataRateUnits.setPadding(0, 0, 5, 0);
+					}
 					
 					textFrame.addView(dataRateVal, 0);
 					textFrame.addView(dataRateUnits, 1);
@@ -1975,7 +1984,7 @@ public class SysUIMods {
 		});
 	}
 	
-	public static void execHook_NotifDrawerHeaderClock(final InitPackageResourcesParam resparam, final int headerClock) {
+	public static void execHook_NotifDrawerHeaderClock(final InitPackageResourcesParam resparam, final int headerClick) {
 		resparam.res.hookLayout("com.android.systemui", "layout", "status_bar_expanded_header", new XC_LayoutInflated() {
 			@Override
 			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
@@ -2019,7 +2028,38 @@ public class SysUIMods {
 					}
 				};
 				clock.setOnClickListener(ocl);
-				if (headerClock == 2) date.setOnClickListener(ocl);
+				
+				if (headerClick == 2) {
+					final Intent dateIntent = new Intent(Intent.ACTION_MAIN).addCategory(Intent.CATEGORY_LAUNCHER);
+					OnClickListener ocl2 = new OnClickListener() {
+						@Override
+						public void onClick(View v) {
+							try {
+								GlobalActions.dismissKeyguard();
+								XMain.pref.reload();
+								int dateAction = Integer.parseInt(XMain.pref.getString("pref_key_controls_dateaction", "1"));
+								switch (dateAction) {
+									case 1:
+										ComponentName cn = new ComponentName("com.htc.calendar", "com.htc.calendar.CalendarActivityMain");
+										dateIntent.setComponent(cn);
+										dateIntent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+										v.getContext().startActivity(dateIntent);
+										break;
+									case 2:
+										GlobalActions.launchApp(v.getContext(), 14);
+										break;
+									case 3:
+										GlobalActions.launchShortcut(v.getContext(), 14);
+										break;
+								}
+								GlobalActions.collapseDrawer(v.getContext());
+							} catch (Throwable t) {
+								XposedBridge.log(t);
+							}
+						}
+					};
+					date.setOnClickListener(ocl2);
+				}
 			}
 		});
 	}

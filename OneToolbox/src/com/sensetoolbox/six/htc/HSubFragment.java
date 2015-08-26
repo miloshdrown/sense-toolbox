@@ -107,15 +107,28 @@ public class HSubFragment extends HPreferenceFragmentExt {
 			final HtcPreference launchAppsClock = findPreference("pref_key_controls_clock_app");
 			if (Integer.parseInt(Helpers.prefs.getString("pref_key_sysui_headerclick", "1")) != 1) clockActionPreference.setEnabled(true);
 			
+			final HtcListPreference dateActionPreference = (HtcListPreference)findPreference("pref_key_controls_dateaction");
+			final HtcPreference launchAppsDate = findPreference("pref_key_controls_date_app");
+			if (Integer.parseInt(Helpers.prefs.getString("pref_key_sysui_headerclick", "1")) == 2) dateActionPreference.setEnabled(true);
+			
 			findPreference("pref_key_sysui_headerclick").setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
-					if (Integer.parseInt((String)newValue) != 1) {
+					if (Integer.parseInt((String)newValue) == 2) {
 						clockActionPreference.setEnabled(true);
 						if (clockActionPreference.getValue().equals("2")) launchAppsClock.setEnabled(true); else launchAppsClock.setEnabled(false);
+						dateActionPreference.setEnabled(true);
+						if (dateActionPreference.getValue().equals("2")) launchAppsDate.setEnabled(true); else launchAppsDate.setEnabled(false);
+					} else if (Integer.parseInt((String)newValue) == 3) {
+						clockActionPreference.setEnabled(true);
+						if (clockActionPreference.getValue().equals("2")) launchAppsClock.setEnabled(true); else launchAppsClock.setEnabled(false);
+						dateActionPreference.setEnabled(false);
+						launchAppsDate.setEnabled(false);
 					} else {
 						clockActionPreference.setEnabled(false);
 						launchAppsClock.setEnabled(false);
+						dateActionPreference.setEnabled(false);
+						launchAppsDate.setEnabled(false);
 					}
 					return true;
 				}
@@ -131,11 +144,46 @@ public class HSubFragment extends HPreferenceFragmentExt {
 				}
 			});
 			
+			launchAppsDate.setSummary(Helpers.getAppName(getActivity(), Helpers.prefs.getString("pref_key_controls_date_app", Helpers.l10n(getActivity(), R.string.notselected))));
+			launchAppsDate.setOnPreferenceClickListener(new HtcPreference.OnPreferenceClickListener() {
+				@Override
+				public boolean onPreferenceClick(HtcPreference preference) {
+					HtcPreferenceCategory sysUiStatusBar = (HtcPreferenceCategory)findPreference("pref_systemui_statusbar");
+					makeDynamicPref(sysUiStatusBar, preference);
+					return true;
+				}
+			});
+			
 			if (clockActionPreference.isEnabled() && clockActionPreference.getValue().equals("2")) launchAppsClock.setEnabled(true); else launchAppsClock.setEnabled(false);
 			clockActionPreference.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
 				@Override
 				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
 					HtcPreference launchApps = findPreference("pref_key_controls_clock_app");
+					if (launchApps != null)
+					if (preference.isEnabled() && newValue.equals("2")) {
+						launchApps.setEnabled(true);
+						if (launchApps instanceof DynamicPreference)
+							((DynamicPreference)launchApps).show();
+						else
+							launchApps.getOnPreferenceClickListener().onPreferenceClick(launchApps);
+					} else launchApps.setEnabled(false);
+						
+					if (newValue.equals("3")) {
+						Helpers.shortcutDlg = new AppShortcutAddDialog(getActivity(), preference.getKey() + "_shortcut");
+						Helpers.shortcutDlg.setTitle(preference.getTitle());
+						Helpers.shortcutDlg.setIcon(preference.getIcon());
+						Helpers.shortcutDlg.show();
+					}
+					
+					return true;
+				}
+			});
+			
+			if (dateActionPreference.isEnabled() && dateActionPreference.getValue().equals("2")) launchAppsDate.setEnabled(true); else launchAppsDate.setEnabled(false);
+			dateActionPreference.setOnPreferenceChangeListener(new HtcPreference.OnPreferenceChangeListener() {
+				@Override
+				public boolean onPreferenceChange(HtcPreference preference, Object newValue) {
+					HtcPreference launchApps = findPreference("pref_key_controls_date_app");
 					if (launchApps != null)
 					if (preference.isEnabled() && newValue.equals("2")) {
 						launchApps.setEnabled(true);

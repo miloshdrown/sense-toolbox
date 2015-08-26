@@ -2027,38 +2027,38 @@ public class OtherMods {
 	
 	public static void execHook_KeyboardNoAutocorrect(LoadPackageParam lpparam) {
 		try {
-			if (Helpers.isSense7()) {
-				XposedHelpers.findAndHookMethod("com.htc.sense.ime.latinim.util.PredictionInfo", lpparam.classLoader, "setIdxEngAdvised", int.class, new XC_MethodHook() {
-					@Override
-					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-						param.args[0] = 0;
-					}
-				});
-				XposedHelpers.findAndHookMethod("com.htc.sense.ime.latinim.util.PredictionInfo", lpparam.classLoader, "setIdxIMEAdvised", int.class, new XC_MethodHook() {
-					@Override
-					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-						param.args[0] = 0;
-					}
-				});
-				/*
-				XposedHelpers.findAndHookMethod("com.htc.sense.ime.latinim.LatinIMInfo", lpparam.classLoader, "setIdxEngAdvised", int.class, new XC_MethodHook() {
-					@Override
-					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-						param.args[0] = 0;
-					}
-				});
-				XposedHelpers.findAndHookMethod("com.htc.sense.ime.latinim.LatinIMInfo", lpparam.classLoader, "setIdxIMEAdvised", int.class, new XC_MethodHook() {
-					@Override
-					protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
-						param.args[0] = 0;
-					}
-				});
-				*/
-			} else {
+			XposedHelpers.findAndHookMethod("com.htc.sense.ime.latinim.util.PredictionInfo", lpparam.classLoader, "setIdxEngAdvised", int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.args[0] = 0;
+				}
+			});
+			XposedHelpers.findAndHookMethod("com.htc.sense.ime.latinim.util.PredictionInfo", lpparam.classLoader, "setIdxIMEAdvised", int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.args[0] = 0;
+				}
+			});
+			/*
+			XposedHelpers.findAndHookMethod("com.htc.sense.ime.latinim.LatinIMInfo", lpparam.classLoader, "setIdxEngAdvised", int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.args[0] = 0;
+				}
+			});
+			XposedHelpers.findAndHookMethod("com.htc.sense.ime.latinim.LatinIMInfo", lpparam.classLoader, "setIdxIMEAdvised", int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					param.args[0] = 0;
+				}
+			});
+			*/
+		} catch (Throwable t1) {
+			try {
 				XposedHelpers.findAndHookMethod("com.htc.sense.ime.XT9IME.XT9Engine", lpparam.classLoader, "getActiveWordIndex", XC_MethodReplacement.returnConstant(Integer.valueOf(0)));
+			} catch (Throwable t2) {
+				XposedBridge.log(t2);
 			}
-		} catch (Throwable t) {
-			XposedBridge.log(t);
 		}
 	}
 	

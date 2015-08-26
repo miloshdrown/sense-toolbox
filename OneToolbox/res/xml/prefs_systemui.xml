@@ -62,6 +62,19 @@
 			android:summary="@string/notselected"
 			android:title="@string/array_global_actions_launch"
 			android:icon="@drawable/right_arrow" />
+		<com.htc.preference.HtcListPreference
+			android:key="pref_key_controls_dateaction"
+			android:summary="@string/controls_dateaction_summ"
+			android:title="@string/controls_dateaction_title"
+			android:entries="@array/date_actions"
+			android:entryValues="@array/date_actions_val"
+			android:defaultValue="1"
+			android:enabled="false" />
+		<com.htc.preference.HtcPreference
+			android:key="pref_key_controls_date_app"
+			android:summary="@string/notselected"
+			android:title="@string/array_global_actions_launch"
+			android:icon="@drawable/right_arrow" />
 		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_sysui_ampmremove"
 			android:summary="@string/systemui_ampmremove_summ"

@@ -190,7 +190,9 @@
 	<string name="systemui_statusheaderclick_title">Header click</string>
 	<string name="systemui_statusheaderclick_summ">Action for tap on notification drawer header.</string>
 	<string name="controls_clockaction_title">Clock app</string>
-	<string name="controls_clockaction_summ">Launches any app or shortcut instead of stock Clock app on header tap.</string>
+	<string name="controls_clockaction_summ">Launches any app or shortcut instead of stock Clock app on header clock tap.</string>
+	<string name="controls_dateaction_title">Calendar app</string>
+	<string name="controls_dateaction_summ">Launches any app or shortcut on header date tap.</string>
 	<string name="systemui_brightslide_title">Brightness slider</string>
 	<string name="systemui_brightslide_summ">Add a brightness slider to the notification panel.</string>
 	<string name="systemui_brightslide_auto">Auto</string>
@@ -749,6 +751,7 @@
 	<string name="array_global_actions_sleep">Go to sleep</string>
 	<string name="array_global_actions_screenshot">Take screenshot</string>
 	<string name="array_global_actions_clock">Default clock app</string>
+	<string name="array_global_actions_calendar">Default calendar app</string>
 	<string name="array_global_actions_launch">Launch app</string>
 	<string name="array_global_actions_shortcut">Launch shortcut</string>
 	<string name="array_global_actions_toggle">Toggle settings</string>
@@ -789,7 +792,7 @@
 	<string name="array_large_photo_default">Default</string>
 	<string name="array_large_photo_rectangular">Rectangular</string>
 	<string name="array_large_photo_max">Maximum</string>
-	<string name="array_header_click_clock">Open Clock app</string>
+	<string name="array_header_click_clock">Time: Open Clock app\nDate: Open Calendar app</string>
 	<string name="array_header_click_sysinfo">Time: Open Clock app\nDate: Toggle system monitoring</string>
 	<string name="array_keyslight_dim">Dim</string>
 	<string name="array_keyslight_extradim">Extra dim</string>

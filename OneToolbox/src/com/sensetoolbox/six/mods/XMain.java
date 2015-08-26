@@ -14,7 +14,6 @@ import de.robv.android.xposed.IXposedHookLoadPackage;
 import de.robv.android.xposed.IXposedHookZygoteInit;
 import de.robv.android.xposed.XC_MethodHook;
 import de.robv.android.xposed.XSharedPreferences;
-import de.robv.android.xposed.XposedBridge;
 import de.robv.android.xposed.XposedHelpers;
 import de.robv.android.xposed.callbacks.XC_InitPackageResources.InitPackageResourcesParam;
 import de.robv.android.xposed.callbacks.XC_LoadPackage.LoadPackageParam;
@@ -271,9 +270,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (Integer.parseInt(pref.getString("pref_key_sysui_clockstyle", "1")) == 2)
 				SysUIMods.execHook_CenterClockLayout(resparam);
 			
-			int headerClock = Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1"));
-			if (headerClock >= 2)
-				SysUIMods.execHook_NotifDrawerHeaderClock(resparam, headerClock);
+			int headerClick = Integer.parseInt(pref.getString("pref_key_sysui_headerclick", "1"));
+			if (headerClick >= 2)
+				SysUIMods.execHook_NotifDrawerHeaderClock(resparam, headerClick);
 			
 			if (pref.getBoolean("pref_key_sysui_tsb", false))
 				SysUIMods.execHook_NoStatusBarBackground(resparam);

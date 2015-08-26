@@ -127,8 +127,8 @@ public class Helpers {
 	public static ArrayList<AppData> launchableAppsList = null;
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
-	public static float strings_total = 789.0f;
-	public static int buildVersion = 275;
+	public static float strings_total = 792.0f;
+	public static int buildVersion = 276;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -307,6 +307,8 @@ public class Helpers {
 			entriesResName = "audio_actions";
 		else if (titleResName.contains("controls_clockaction"))
 			entriesResName = "clock_actions";
+		else if (titleResName.contains("controls_dateaction"))
+			entriesResName = "date_actions";
 		else if (titleResName.contains("controls_headsetoneffect") || titleResName.contains("controls_headsetoffeffect"))
 			entriesResName = "global_effects";
 		else if (titleResName.contains("sense_") || titleResName.contains("controls_"))

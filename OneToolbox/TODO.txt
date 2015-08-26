@@ -16,7 +16,9 @@ Current changelog
 =================
 
 2.2.1
+[New] Open Calendar or any other app/shortcut on notification drawer header date tap
 [New] Option to disable Wake gestures activation on boot
+[New][Sense 7] Smaller traffic meter
 [Fixed] Restrict EQS mod bug introduced in 2.2
 [Fixed][4.4] Sense Home launcher mods
 [Fixed][4.4] Unblock HTC widgets

@@ -725,6 +725,7 @@ public class GlobalActions {
 				case 11: pkgAppName = XMain.pref.getString("pref_key_controls_btheadseton_app", null); break;
 				case 12: pkgAppName = XMain.pref.getString("pref_key_controls_btheadsetoff_app", null); break;
 				case 13: pkgAppName = XMain.pref.getString("pref_key_controls_clock_app", null); break;
+				case 14: pkgAppName = XMain.pref.getString("pref_key_controls_date_app", null); break;
 			}
 			
 			if (pkgAppName != null) {

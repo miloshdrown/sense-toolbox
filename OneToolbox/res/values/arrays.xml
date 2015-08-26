@@ -429,6 +429,17 @@
 		<item >3</item>
 	</string-array>
 	
+	<string-array name="date_actions">
+		<item >@string/array_global_actions_calendar</item>
+		<item >@string/array_global_actions_launch</item>
+		<item >@string/array_global_actions_shortcut</item>
+	</string-array>
+	<string-array name="date_actions_val">
+		<item >1</item>
+		<item >2</item>
+		<item >3</item>
+	</string-array>
+	
 	<string-array name="global_effects">
 		<item >@string/array_media_none</item>
 		<item >@string/array_effect_none</item>
