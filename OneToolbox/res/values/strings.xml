@@ -575,7 +575,9 @@
 	<string name="various_screenopen_title">Select app to view screenshots</string>
 	<string name="various_screenopen_summ">Change screenshot notification to use viewer app selection dialog.</string>
 	<string name="various_screenopen_noapps">No apps found to view this screenshot</string>
-	<string name="various_fleetingglance_screenbright_summ">Screen brightness during the glance. Minimum is the default.</string>
+	<string name="various_fleetingglance_screenbright_title">Screen brightness</string>
+	<string name="various_fleetingglance_screenbright_summ">Brightness during the glance. Minimum is the default.</string>
+	<string name="various_fleetingglance_timeout_title">Screen timeout</string>
 	<string name="various_fleetingglance_timeout_summ">Duration of the glance. Default is 5 seconds.</string>
 	<string name="various_fleetingglance_triggerevents">Triggering events</string>
 	<string name="various_fleetingglance_notification_title">Notifications</string>

@@ -3,7 +3,7 @@
 	xmlns:toolbox="http://schemas.android.com/apk/res/com.sensetoolbox.six">
 	<com.sensetoolbox.six.htc.utils.SeekBarPreference
 		android:key="pref_key_fleetingglance_screenbright"
-		android:title="@string/systemui_brightqs_title"
+		android:title="@string/various_fleetingglance_screenbright_title"
 		android:summary="@string/various_fleetingglance_screenbright_summ"
 		android:dialogMessage="@string/dummy"
 		android:defaultValue="0"
@@ -13,7 +13,7 @@
 		toolbox:enableKey="pref_key_fleetingglance_timeout_enable"/>
 	<com.sensetoolbox.six.htc.utils.SeekBarPreference
 		android:key="pref_key_fleetingglance_timeout"
-		android:title="@string/systemui_timeoutqs_title"
+		android:title="@string/various_fleetingglance_timeout_title"
 		android:summary="@string/various_fleetingglance_timeout_summ"
 		android:dialogMessage="@string/dummy"
 		android:defaultValue="0"

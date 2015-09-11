@@ -465,6 +465,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_other_bindhtcwidgets", false))
 				OtherMods.execHook_CanBindHtcAppWigdet(lpparam);
+			
+			OtherMods.execHook_NoLightUpOnCharge(lpparam);
 		}
 		
 		if (pkg.equals("com.android.providers.media")) {
@@ -582,7 +584,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_sysui_noeqs", false))
 				SysUIMods.execHook_DisableEQS(lpparam);
 			
-			if (pref.getBoolean("pref_key_sysui_minorqs", false)) {
+			if (!Helpers.isLP() && pref.getBoolean("pref_key_sysui_minorqs", false)) {
 				SysUIMods.execHook_MinorEQS(lpparam, pref.getBoolean("pref_key_sysui_minorqs_notext", false));
 				SysUIMods.execHook_hEQSLongClick(lpparam);
 			}

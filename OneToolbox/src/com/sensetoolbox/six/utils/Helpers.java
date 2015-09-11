@@ -128,7 +128,7 @@ public class Helpers {
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
 	public static float strings_total = 792.0f;
-	public static int buildVersion = 276;
+	public static int buildVersion = 277;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -1071,8 +1071,10 @@ public class Helpers {
 				if (shortcutIntent != null) prefs.edit().putString(lastShortcutKey + "_intent", shortcutIntent.toUri(0)).commit();
 			}
 			
-			if (shortcutDlg != null) shortcutDlg.dismiss();
-			if (shortcutDlgStock != null) shortcutDlgStock.dismiss();
+			if (act != null && !act.isFinishing()) {
+				if (shortcutDlg != null && shortcutDlg.isShowing()) shortcutDlg.dismiss();
+				if (shortcutDlgStock != null && shortcutDlgStock.isShowing()) shortcutDlgStock.dismiss();
+			}
 		}
 	}
 	

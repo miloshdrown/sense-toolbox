@@ -2794,4 +2794,42 @@ public class OtherMods {
 			XposedBridge.log(t);
 		}
 	}
+	
+	public static void execHook_NoLightUpOnCharge(LoadPackageParam lpparam) {
+		try {
+			XC_MethodHook hook = new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					for (StackTraceElement s: Thread.currentThread().getStackTrace())
+					XposedBridge.log("wakeUpInternal stack: " + s.toString());
+					
+					final StackTraceElement[] stes = Thread.currentThread().getStackTrace();
+					final StackTraceElement ste = stes[stes.length - 1];
+					if (ste.getClassName().equals("android.os.Binder") && ste.getMethodName().equals("execTransact"))
+					param.setResult(null);
+				}
+			};
+			Object[] argsAndHook = { long.class, hook };
+			if (Helpers.isLP()) argsAndHook = new Object[] { long.class, int.class, hook };
+			findAndHookMethod("com.android.server.power.PowerManagerService", lpparam.classLoader, "wakeUpInternal", argsAndHook);
+			
+			XC_MethodHook hook2 = new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					for (StackTraceElement s: Thread.currentThread().getStackTrace())
+					XposedBridge.log("wakeUpNoUpdateLocked stack: " + s.toString());
+					
+					final StackTraceElement[] stes = Thread.currentThread().getStackTrace();
+					final StackTraceElement ste = stes[stes.length - 1];
+					if (ste.getClassName().equals("android.os.Binder") && ste.getMethodName().equals("execTransact"))
+					param.setResult(null);
+				}
+			};
+			Object[] argsAndHook2 = { long.class, hook2 };
+			if (Helpers.isLP()) argsAndHook2 = new Object[] { long.class, int.class, hook2 };
+			findAndHookMethod("com.android.server.power.PowerManagerService", lpparam.classLoader, "wakeUpNoUpdateLocked", argsAndHook2);
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
 }
