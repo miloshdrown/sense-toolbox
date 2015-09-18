@@ -128,7 +128,7 @@ public class Helpers {
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
 	public static float strings_total = 792.0f;
-	public static int buildVersion = 277;
+	public static int buildVersion = 278;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -595,7 +595,7 @@ public class Helpers {
 	}
 	
 	public static boolean isNewSense() {
-		return isLP() && Resources.getSystem().getIdentifier("common_app_bkg", "drawable", "com.htc") == 0;
+		return /*isLP() && */Resources.getSystem().getIdentifier("common_app_bkg", "drawable", "com.htc") == 0;
 	}
 	
 	public static TextView createCenteredText(Context mContext, int resId) {
