@@ -7,6 +7,9 @@
         <ignore path="res/menu/menu_mods.xml" />
         <ignore path="res/menu/menu_sub.xml" />
     </issue>
+    <issue id="DefaultLocale">
+        <ignore path="src/com/sensetoolbox/six/mods/SysUIMods.java" />
+    </issue>
     <issue id="ExportedReceiver">
         <ignore path="AndroidManifest.xml" />
     </issue>
