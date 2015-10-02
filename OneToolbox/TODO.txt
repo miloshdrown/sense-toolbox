@@ -15,6 +15,18 @@ Bugs
 Current changelog
 =================
 
+2.2.2
+[New] Disable screen light up when connecting USB
+[New] Show seconds in status bar clock
+[New][Sense Home 7] Hide app drawer page indicator
+[Fixed] Show traffic meter on lockscreen too
+
+
+
+==============
+Old Changelogs
+==============
+
 2.2.1
 [New] Open Calendar or any other app/shortcut on notification drawer header date tap
 [New] Option to disable Wake gestures activation on boot
@@ -24,11 +36,6 @@ Current changelog
 [Fixed][4.4] Unblock HTC widgets
 [Fixed][4.4] BT headset actions on connect/disconnect
 [Fixed] Action bar icons in Toolbox
-
-
-==============
-Old Changelogs
-==============
 
 2.2
 [New] Hide Interruptions status bar icon

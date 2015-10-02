@@ -541,7 +541,10 @@ public class StatusbarMods {
 	}
 	
 	private static void hideIconAtSlot(View statusIcon, Set<String> iconsToHide) {
-		String mSlot = (String)XposedHelpers.getObjectField(statusIcon, "mSlot");
+		String mSlot = null;
+		try {
+			mSlot = (String)XposedHelpers.getObjectField(statusIcon, "mSlot");
+		} catch (Throwable t) {}
 		if (mSlot != null)
 		if (iconsToHide.contains("1") && mSlot.equals("headset_plug") ||
 			iconsToHide.contains("2") && (mSlot.equals("beats_effect") || mSlot.equals("signal_doctor")) ||
@@ -596,7 +599,10 @@ public class StatusbarMods {
 				for (int i = 0; i < mNotificationIcons.getChildCount(); i++) {
 					View notifIcon = mNotificationIcons.getChildAt(i);
 					if (notifIcon != null) {
-						String mSlot = (String)XposedHelpers.getObjectField(notifIcon, "mSlot");
+						String mSlot = null;
+						try {
+							mSlot = (String)XposedHelpers.getObjectField(notifIcon, "mSlot");
+						} catch (Throwable t) {}
 						if (mSlot != null && iconsToHide != null) {
 							if (Helpers.isSense7() && iconsToHide.contains("2") && mSlot.equals("android/0x0")) try {
 								HashSet<Integer> bbRes = new HashSet<Integer>();

@@ -1418,4 +1418,16 @@ public class PrismMods {
 		resparam.res.setReplacement("com.htc.launcher", "anim", "trans_zoom_open", modRes.fwd(R.anim.activity_open_enter));
 		resparam.res.setReplacement("com.htc.launcher", "anim", "trans_zoom_close", modRes.fwd(R.anim.activity_close_exit));
 	}
+	
+	public static void execHook_NoAppDrawerPageIndicator(InitPackageResourcesParam resparam) {
+		resparam.res.hookLayout("com.htc.launcher", "layout", "specific_all_apps_pagedview", new XC_LayoutInflated() {
+			@Override
+			public void handleLayoutInflated(LayoutInflatedParam liparam) throws Throwable {
+				if (liparam.view != null) try {
+					View pageInd = liparam.view.findViewById(liparam.view.getResources().getIdentifier("allapps_page_indicator", "id", "com.htc.launcher"));
+					if (pageInd != null) ((FrameLayout)pageInd.getParent()).setVisibility(View.GONE);
+				} catch (Throwable t) {}
+			}
+		});
+	}
 }

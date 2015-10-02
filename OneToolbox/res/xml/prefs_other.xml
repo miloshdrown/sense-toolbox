@@ -62,6 +62,11 @@
 			android:summary="@string/various_bindhtcwidgets_summ"
 			android:title="@string/various_bindhtcwidgets_title"
 			android:defaultValue="false" />
+		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_other_nolightuponcharge"
+			android:summary="@string/various_nolightuponcharge_summ"
+			android:title="@string/various_nolightuponcharge_title"
+			android:defaultValue="false" />
 		
 		<com.htc.preference.HtcPreferenceCategory
 			android:title="@string/array_home_menu_settings"

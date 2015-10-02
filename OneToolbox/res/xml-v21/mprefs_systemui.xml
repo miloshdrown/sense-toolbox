@@ -65,6 +65,11 @@
 			android:title="@string/systemui_ampmremove_title"
 			android:defaultValue="false" />
 		<CheckBoxPreference
+			android:key="pref_key_sysui_clockseconds"
+			android:summary="@string/systemui_clockseconds_summ"
+			android:title="@string/systemui_clockseconds_title"
+			android:defaultValue="false" />
+		<CheckBoxPreference
 			android:key="pref_key_sysui_brightslide"
 			android:summary="@string/systemui_brightslide_summ"
 			android:title="@string/systemui_brightslide_title"

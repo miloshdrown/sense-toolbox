@@ -184,7 +184,9 @@
 	<string name="systemui_hqthumbs_title">High quality thumbnails</string>
 	<string name="systemui_hqthumbs_summ">Disable thumbnail conversion that reduces color data.</string>
 	<string name="systemui_ampmremove_title">Remove AM/PM</string>
-	<string name="systemui_ampmremove_summ">Enable to remove the AM/PM from the status bar clock in 12h mode.</string>
+	<string name="systemui_ampmremove_summ">Strip the AM/PM from the status bar clock in 12h mode.</string>
+	<string name="systemui_clockseconds_title">Show seconds</string>
+	<string name="systemui_clockseconds_summ">Display seconds in the status bar clock.</string>
 	<string name="systemui_clockstyle_title">Clock style</string>
 	<string name="systemui_clockstyle_summ">Changes the style of the status bar clock.</string>
 	<string name="systemui_statusheaderclick_title">Header click</string>
@@ -293,11 +295,13 @@
 	<string name="sense_musicwidgettransp_title">Music widget</string>
 	<string name="sense_musicwidgettransp_summ">Remove music widget background.</string>
 	<string name="sense_infini_title">Infinifolders</string>
-	<string name="sense_infini_summ">Enable to have infinite icons per folder.</string>
+	<string name="sense_infini_summ">Allow infinite icons in folders.</string>
 	<string name="sense_homemenu_title">Home popup menu</string>
 	<string name="sense_homemenu_summ">Show popup menu with useful commands on Menu press or Home longpress in launcher.</string>
 	<string name="sense_gridtinyfont_title">Small app drawer grid font</string>
 	<string name="sense_gridtinyfont_summ">Reduce titles font size for 6-row app drawer grids</string>
+	<string name="sense_nopageindicator_title">Hide page indicator</string>
+	<string name="sense_nopageindicator_summ">Remove page indicator from app drawer</string>
 	<string name="sense_appslongpressaction_title">App drawer icon action</string>
 	<string name="sense_appslongpressaction_summ">Action for app drawer icon long press.</string>
 	<string name="sense_swipedownaction_title">Swipe down action</string>
@@ -551,6 +555,8 @@
 	<string name="various_musicchannel_summ">Enable HTC music visualizations to be available for any audio player. Launch it from notification while music is playing. Notification visibility can be quickly toggled from Settings.</string>
 	<string name="various_bindhtcwidgets_title">Unblock HTC widgets</string>
 	<string name="various_bindhtcwidgets_summ">Allow HTC widgets in any launcher.</string>
+	<string name="various_nolightuponcharge_title">No screen light up on charge</string>
+	<string name="various_nolightuponcharge_summ">Do not turn screen on when you connect the charger.</string>
 	<string name="various_noautocorrect_title">No autocorrect</string>
 	<string name="various_noautocorrect_summ">Disable autocorrect while keeping word prediction enabled.</string>
 	<string name="various_noautoime_title">No auto soft input</string>

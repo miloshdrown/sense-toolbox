@@ -12,8 +12,11 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 
@@ -542,9 +545,9 @@ public class SysUIMods {
 		});
 	}
 	
-	public static void execHook_removeAMPM(LoadPackageParam lpparam) {
+	public static void execHook_RemoveAMPM(LoadPackageParam lpparam) {
 		if (Helpers.isLP2())
-			findAndHookMethod("com.android.systemui.statusbar.policy.ClockInternal", lpparam.classLoader, "updateClock", new XC_MethodHook(){
+			findAndHookMethod("com.android.systemui.statusbar.policy.ClockInternal", lpparam.classLoader, "updateClock", new XC_MethodHook(100){
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) {
 					String newTime = ((TextView)param.thisObject).getText().toString().replaceAll("(?i)am|pm", "").trim();
@@ -552,7 +555,7 @@ public class SysUIMods {
 				}
 			});
 		else
-			findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook(){
+			findAndHookMethod("com.android.systemui.statusbar.policy.Clock", lpparam.classLoader, "updateClock", new XC_MethodHook(100){
 				@Override
 				protected void afterHookedMethod(MethodHookParam param) {
 					String newTime = ((TextView)param.thisObject).getText().toString().replaceAll("(?i)am|pm", "").trim();
@@ -970,8 +973,8 @@ public class SysUIMods {
 	}
 		
 	private static ConnectivityManager connectivityManager = null;
-	private static TextView dataRateVal = null;
-	private static TextView dataRateUnits = null;
+	private static RelativeLayout dataRateFrame = null;
+	private static RelativeLayout dataRateFrameKg = null;
 	private static Handler mHandler = null;
 	private static Runnable mRunnable = null;
 	private static long bytesTotal = 0;
@@ -1002,9 +1005,20 @@ public class SysUIMods {
 					mHandler.removeCallbacks(mRunnable);
 					if (ni != null && ni.getState() == NetworkInfo.State.CONNECTED) {
 						mHandler.post(mRunnable);
-					} else if (dataRateVal != null && dataRateUnits != null) {
-						dataRateVal.setVisibility(8);
-						dataRateUnits.setVisibility(8);
+					} else {
+						if (dataRateFrame != null) {
+							TextView dataRateVal = (TextView)dataRateFrame.findViewWithTag(1001);
+							TextView dataRateUnits = (TextView)dataRateFrame.findViewWithTag(1002);
+							if (dataRateVal != null) dataRateVal.setVisibility(8);
+							if (dataRateUnits != null) dataRateUnits.setVisibility(8);
+						}
+						
+						if (dataRateFrameKg != null) {
+							TextView dataRateValKg = (TextView)dataRateFrameKg.findViewWithTag(1001);
+							TextView dataRateUnitsKg = (TextView)dataRateFrameKg.findViewWithTag(1002);
+							if (dataRateValKg != null) dataRateValKg.setVisibility(8);
+							if (dataRateUnitsKg != null) dataRateUnitsKg.setVisibility(8);
+						}
 					}
 				}
 			} catch(Throwable t) {
@@ -1013,77 +1027,110 @@ public class SysUIMods {
 		}
 	};
 	
+	public static RelativeLayout makeDataRateView(Object thisObject) {
+		Context mContext = (Context)getObjectField(thisObject, "mContext");
+		connectivityManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
+		
+		RelativeLayout alignFrame = new RelativeLayout(mContext);
+		alignFrame.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
+		alignFrame.setPadding(10, 0, 0, 0);
+		
+		LinearLayout textFrame = new LinearLayout(mContext);
+		textFrame.setOrientation(LinearLayout.VERTICAL);
+		textFrame.setGravity(Gravity.CENTER_HORIZONTAL);
+		RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+		//rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
+		textFrame.setLayoutParams(rlp);
+		
+		TextView dataRateVal = new TextView(mContext);
+		dataRateVal.setTag(1001);
+		dataRateVal.setVisibility(8);
+		dataRateVal.setTransformationMethod(SingleLineTransformationMethod.getInstance());
+		dataRateVal.setEllipsize(null);
+		dataRateVal.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
+		dataRateVal.setTextColor(Color.WHITE);
+		dataRateVal.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		dataRateVal.setIncludeFontPadding(false);
+		//dataRateVal.setTypeface(null, Typeface.BOLD);
+		
+		TextView dataRateUnits = new TextView(mContext);
+		dataRateUnits.setTag(1002);
+		dataRateUnits.setVisibility(8);
+		dataRateUnits.setTransformationMethod(SingleLineTransformationMethod.getInstance());
+		dataRateUnits.setEllipsize(null);
+		dataRateUnits.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
+		dataRateUnits.setTextColor(Color.WHITE);
+		dataRateUnits.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+		dataRateUnits.setIncludeFontPadding(false);
+		dataRateUnits.setScaleY(0.9f);
+		
+		if (Helpers.isSense7()) {
+			dataRateVal.setPadding(0, 10, 5, 0);
+			dataRateVal.setLineSpacing(0, 0.4f);
+			dataRateVal.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10.0f);
+			dataRateUnits.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 8.0f);
+			dataRateUnits.setPadding(0, 0, 5, 7);
+		} else {
+			dataRateVal.setPadding(0, 2, 5, 0);
+			dataRateVal.setLineSpacing(0, 0.9f);
+			dataRateVal.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13.0f);
+			dataRateUnits.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10.0f);
+			dataRateUnits.setPadding(0, 0, 5, 0);
+		}
+		
+		textFrame.addView(dataRateVal, 0);
+		textFrame.addView(dataRateUnits, 1);
+		alignFrame.addView(textFrame);
+		
+		return alignFrame;
+	}
+	
 	public static void execHook_DataRateStatus(LoadPackageParam lpparam) {
 		findAndHookMethod("com.android.systemui.statusbar.phone.PhoneStatusBar", lpparam.classLoader, "makeStatusBarView", new XC_MethodHook(){
 			@Override
 			protected void afterHookedMethod(MethodHookParam param) {
-				if (dataRateVal != null && dataRateUnits != null) return;
+				if (dataRateFrame != null) return;
 				try {
-					Context mContext = (Context)getObjectField(param.thisObject, "mContext");
-					connectivityManager = (ConnectivityManager)mContext.getSystemService(Context.CONNECTIVITY_SERVICE);
-					
 					FrameLayout mStatusBarView = (FrameLayout)getObjectField(param.thisObject, "mStatusBarView");
 					if (mStatusBarView == null) return;
+					
 					LinearLayout systemIconArea = (LinearLayout)mStatusBarView.findViewById(mStatusBarView.getResources().getIdentifier("system_icon_area", "id", "com.android.systemui"));
+					dataRateFrame = makeDataRateView(param.thisObject);
+					systemIconArea.addView(dataRateFrame, 0);
 					
-					RelativeLayout alignFrame = new RelativeLayout(mContext);
-					alignFrame.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
-					
-					LinearLayout textFrame = new LinearLayout(mContext);
-					textFrame.setOrientation(LinearLayout.VERTICAL);
-					textFrame.setGravity(Gravity.CENTER_HORIZONTAL);
-					RelativeLayout.LayoutParams rlp = new RelativeLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-					//rlp.addRule(RelativeLayout.CENTER_IN_PARENT);
-					textFrame.setLayoutParams(rlp);
-					
-					dataRateVal = new TextView(mContext);
-					dataRateVal.setVisibility(8);
-					dataRateVal.setTransformationMethod(SingleLineTransformationMethod.getInstance());
-					dataRateVal.setEllipsize(null);
-					dataRateVal.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL);
-					dataRateVal.setTextColor(Color.WHITE);
-					dataRateVal.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-					dataRateVal.setIncludeFontPadding(false);
-					//dataRateVal.setTypeface(null, Typeface.BOLD);
-					
-					dataRateUnits = new TextView(mContext);
-					dataRateUnits.setVisibility(8);
-					dataRateUnits.setTransformationMethod(SingleLineTransformationMethod.getInstance());
-					dataRateUnits.setEllipsize(null);
-					dataRateUnits.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL);
-					dataRateUnits.setTextColor(Color.WHITE);
-					dataRateUnits.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-					dataRateUnits.setIncludeFontPadding(false);
-					dataRateUnits.setScaleY(0.9f);
-					
-					if (Helpers.isSense7()) {
-						dataRateVal.setPadding(0, 10, 5, 0);
-						dataRateVal.setLineSpacing(0, 0.4f);
-						dataRateVal.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10.0f);
-						dataRateUnits.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 8.0f);
-						dataRateUnits.setPadding(0, 0, 5, 7);
-					} else {
-						dataRateVal.setPadding(0, 2, 5, 0);
-						dataRateVal.setLineSpacing(0, 0.9f);
-						dataRateVal.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 13.0f);
-						dataRateUnits.setTextSize(TypedValue.COMPLEX_UNIT_DIP, 10.0f);
-						dataRateUnits.setPadding(0, 0, 5, 0);
+					if (Helpers.isLP()) {
+						LinearLayout systemIconAreaKg = (LinearLayout)getObjectField(param.thisObject, "mStatusIconsKeyguard");
+						dataRateFrameKg = makeDataRateView(param.thisObject);
+						systemIconAreaKg.addView(dataRateFrameKg);
 					}
-					
-					textFrame.addView(dataRateVal, 0);
-					textFrame.addView(dataRateUnits, 1);
-					alignFrame.addView(textFrame);
-					systemIconArea.addView(alignFrame, 0);
 					
 					mHandler = new Handler();
 					mRunnable = new Runnable() {
 						public void run() {
 							try {
 								boolean isConnected = false;
-								if (connectivityManager != null && dataRateVal != null && dataRateUnits != null) {
+								if (connectivityManager != null) {
 									NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
 									if (activeNetworkInfo != null)
 									if (activeNetworkInfo.isConnected()) isConnected = true;
+									
+									TextView dataRateVal = null;
+									TextView dataRateUnits = null;
+									if (dataRateFrame != null) try {
+										dataRateVal = (TextView)dataRateFrame.findViewWithTag(1001);
+										dataRateUnits = (TextView)dataRateFrame.findViewWithTag(1002);
+									} catch (Throwable t) {
+										XposedBridge.log(t);
+									}
+									
+									TextView dataRateValKg = null;
+									TextView dataRateUnitsKg = null;
+									if (dataRateFrameKg != null) try {
+										dataRateValKg = (TextView)dataRateFrameKg.findViewWithTag(1001);
+										dataRateUnitsKg = (TextView)dataRateFrameKg.findViewWithTag(1002);
+									} catch (Throwable t) {
+										XposedBridge.log(t);
+									}
 									
 									if (isConnected) {
 										long rxBytes = TrafficStats.getTotalRxBytes();
@@ -1095,25 +1142,49 @@ public class SysUIMods {
 										long speed = Math.round(newBytesFixed/2);
 										bytesTotal = newBytes;
 										ArrayList<String> spd = humanReadableByteCount(speed);
-										dataRateVal.setText(spd.get(0));
-										dataRateUnits.setText(spd.get(1));
-										if (XMain.pref.getBoolean("pref_key_cb_texts", false)) {
-											int themeColor = StatusbarMods.getThemeColor();
-											dataRateVal.setTextColor(themeColor);
-											dataRateUnits.setTextColor(themeColor);
+										
+										if (dataRateVal != null && dataRateUnits != null) {
+											dataRateVal.setText(spd.get(0));
+											dataRateUnits.setText(spd.get(1));
+											if (XMain.pref.getBoolean("pref_key_cb_texts", false)) {
+												int themeColor = StatusbarMods.getThemeColor();
+												dataRateVal.setTextColor(themeColor);
+												dataRateUnits.setTextColor(themeColor);
+											}
+											if (speed == 0) {
+												dataRateVal.setAlpha(0.3f);
+												dataRateUnits.setAlpha(0.3f);
+											} else {
+												dataRateVal.setAlpha(1.0f);
+												dataRateUnits.setAlpha(1.0f);
+											}
+											dataRateVal.setVisibility(0);
+											dataRateUnits.setVisibility(0);
 										}
-										if (speed == 0) {
-											dataRateVal.setAlpha(0.3f);
-											dataRateUnits.setAlpha(0.3f);
-										} else {
-											dataRateVal.setAlpha(1.0f);
-											dataRateUnits.setAlpha(1.0f);
+										
+										if (dataRateValKg != null && dataRateUnitsKg != null) {
+											dataRateValKg.setText(spd.get(0));
+											dataRateUnitsKg.setText(spd.get(1));
+											if (XMain.pref.getBoolean("pref_key_cb_texts", false)) {
+												int themeColor = StatusbarMods.getThemeColor();
+												dataRateValKg.setTextColor(themeColor);
+												dataRateUnitsKg.setTextColor(themeColor);
+											}
+											if (speed == 0) {
+												dataRateValKg.setAlpha(0.3f);
+												dataRateUnitsKg.setAlpha(0.3f);
+											} else {
+												dataRateValKg.setAlpha(1.0f);
+												dataRateUnitsKg.setAlpha(1.0f);
+											}
+											dataRateValKg.setVisibility(0);
+											dataRateUnitsKg.setVisibility(0);
 										}
-										dataRateVal.setVisibility(0);
-										dataRateUnits.setVisibility(0);
 									} else {
-										dataRateVal.setVisibility(8);
-										dataRateUnits.setVisibility(8);
+										if (dataRateVal != null) dataRateVal.setVisibility(8);
+										if (dataRateUnits != null) dataRateUnits.setVisibility(8);
+										if (dataRateValKg != null) dataRateValKg.setVisibility(8);
+										if (dataRateUnitsKg != null) dataRateUnitsKg.setVisibility(8);
 									}
 								}
 							} catch (Throwable t) {
@@ -1125,6 +1196,7 @@ public class SysUIMods {
 						}
 					};
 					
+					Context mContext = (Context)getObjectField(param.thisObject, "mContext");
 					mContext.registerReceiver(connectChanged, new IntentFilter("android.net.conn.CONNECTIVITY_CHANGE"));
 				} catch (Throwable t) {
 					XposedBridge.log(t);
@@ -4126,5 +4198,59 @@ public class SysUIMods {
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
+	}
+	
+	public static String putSecondsIn(String clockStr) {
+		NumberFormat df = new DecimalFormat("00");
+		if (clockStr.toLowerCase().endsWith("am") || clockStr.toLowerCase().endsWith("pm"))
+			return clockStr.replaceAll("(?i)(\\s?)(am|pm)", ":" + df.format(Calendar.getInstance().get(Calendar.SECOND)) + "$1$2").trim();
+		else
+			return clockStr.trim() + ":" + df.format(Calendar.getInstance().get(Calendar.SECOND));
+	}
+	
+	public static void execHook_SBClockSeconds(LoadPackageParam lpparam) {
+		String clsName;
+		if (Helpers.isLP2())
+			clsName = "com.android.systemui.statusbar.policy.ClockInternal";
+		else
+			clsName = "com.android.systemui.statusbar.policy.Clock";
+		
+		findAndHookMethod(clsName, lpparam.classLoader, "updateClock", new XC_MethodHook(10) {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) {
+				TextView clock = (TextView)param.thisObject;
+				if (clock.getId() != clock.getResources().getIdentifier("header_clock", "id", "com.android.systemui"))
+				clock.setText(putSecondsIn(clock.getText().toString()));
+			}
+		});
+			
+		XposedBridge.hookAllConstructors(findClass(clsName, lpparam.classLoader), new XC_MethodHook(10) {
+			@Override
+			protected void afterHookedMethod(MethodHookParam param) {
+				final TextView clock = (TextView)param.thisObject;
+				XposedHelpers.setAdditionalInstanceField(clock, "mLastUpdate", 0L);
+				if (clock.getId() != clock.getResources().getIdentifier("header_clock", "id", "com.android.systemui")) {
+					final Handler mClockHandler = new Handler(clock.getContext().getMainLooper());
+					Runnable mTicker = new Runnable() {
+						public void run() {
+							mClockHandler.postDelayed(this, 499);
+							
+							long mElapsedSystem = SystemClock.elapsedRealtime();
+							long mLastUpdate = (Long)XposedHelpers.getAdditionalInstanceField(clock, "mLastUpdate");
+
+							if (mElapsedSystem - mLastUpdate >= 998L) {
+								Calendar mCalendar = Calendar.getInstance();
+								mCalendar.setTimeInMillis(System.currentTimeMillis());
+								XposedHelpers.setObjectField(clock, "mCalendar", mCalendar);
+								clock.setText(putSecondsIn((String)XposedHelpers.callMethod(clock, "getSmallTime")));
+								
+								XposedHelpers.setAdditionalInstanceField(clock, "mLastUpdate", mElapsedSystem);
+							}
+						}
+					};
+					mClockHandler.post(mTicker);
+				}
+			}
+		});
 	}
 }

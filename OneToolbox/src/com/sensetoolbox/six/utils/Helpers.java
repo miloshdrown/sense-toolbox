@@ -595,7 +595,7 @@ public class Helpers {
 	}
 	
 	public static boolean isNewSense() {
-		return /*isLP() && */Resources.getSystem().getIdentifier("common_app_bkg", "drawable", "com.htc") == 0;
+		return isLP() && Resources.getSystem().getIdentifier("common_app_bkg", "drawable", "com.htc") == 0;
 	}
 	
 	public static TextView createCenteredText(Context mContext, int resId) {

@@ -2800,8 +2800,8 @@ public class OtherMods {
 			XC_MethodHook hook = new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-					for (StackTraceElement s: Thread.currentThread().getStackTrace())
-					XposedBridge.log("wakeUpInternal stack: " + s.toString());
+					//for (StackTraceElement s: Thread.currentThread().getStackTrace())
+					//XposedBridge.log("wakeUpInternal stack: " + s.toString());
 					
 					final StackTraceElement[] stes = Thread.currentThread().getStackTrace();
 					final StackTraceElement ste = stes[stes.length - 1];
@@ -2816,8 +2816,8 @@ public class OtherMods {
 			XC_MethodHook hook2 = new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-					for (StackTraceElement s: Thread.currentThread().getStackTrace())
-					XposedBridge.log("wakeUpNoUpdateLocked stack: " + s.toString());
+					//for (StackTraceElement s: Thread.currentThread().getStackTrace())
+					//XposedBridge.log("wakeUpNoUpdateLocked stack: " + s.toString());
 					
 					final StackTraceElement[] stes = Thread.currentThread().getStackTrace();
 					final StackTraceElement ste = stes[stes.length - 1];

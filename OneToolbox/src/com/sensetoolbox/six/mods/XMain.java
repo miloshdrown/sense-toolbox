@@ -220,6 +220,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_persist_appdrawer_grid", false))
 				PrismMods.execHook_AppDrawerGridSizesLayout(resparam);
+			
+			if (pref.getBoolean("pref_key_prism_nopageindicator", false))
+				PrismMods.execHook_NoAppDrawerPageIndicator(resparam);
 		}
 		
 		if (pkg.equals("com.android.systemui")) {
@@ -466,7 +469,8 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_other_bindhtcwidgets", false))
 				OtherMods.execHook_CanBindHtcAppWigdet(lpparam);
 			
-			OtherMods.execHook_NoLightUpOnCharge(lpparam);
+			if (pref.getBoolean("pref_key_other_nolightuponcharge", false))
+				OtherMods.execHook_NoLightUpOnCharge(lpparam);
 		}
 		
 		if (pkg.equals("com.android.providers.media")) {
@@ -599,7 +603,7 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 				SysUIMods.execHook_ClockRemove(lpparam);
 			
 			if (pref.getBoolean("pref_key_sysui_ampmremove", false))
-				SysUIMods.execHook_removeAMPM(lpparam);
+				SysUIMods.execHook_RemoveAMPM(lpparam);
 			
 			if (pref.getBoolean("pref_key_sysui_brightslide", false))
 				SysUIMods.execHook_BrightnessSlider(lpparam);
@@ -710,6 +714,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_sysui_restoretiles", false))
 				SysUIMods.execHook_RestoreEQSTiles(lpparam);
+			
+			if (pref.getBoolean("pref_key_sysui_clockseconds", false))
+				SysUIMods.execHook_SBClockSeconds(lpparam);
 			
 			StatusbarMods.execHook_HideIcons(lpparam);
 		}
