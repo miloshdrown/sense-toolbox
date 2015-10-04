@@ -4,12 +4,18 @@
 
 	<dimen name="celllayout_top_padding_port">0.0dip</dimen>
 	<dimen name="celllayout_bottom_padding_port">78.0dip</dimen>
+	<dimen name="celllayout_bottom_padding_port_soft">100.0dip</dimen>
 	<dimen name="workspace_height_gap_port">-1.0dip</dimen>
 	<dimen name="workspace_height_gap_fix">10.0dip</dimen>
-	<dimen name="app_icon_padding_top">20.0dip</dimen>
+	<dimen name="app_icon_padding_top_port">5.0dip</dimen>
 	<dimen name="workspace_cell_height_port">120.0dip</dimen>
-	<dimen name="button_bar_height_without_padding">65.0dip</dimen>
-
+	<dimen name="workspace_cell_height_port_soft">118.0dip</dimen>
+	<dimen name="button_bar_height_without_padding">70.0dip</dimen>
+	<dimen name="button_bar_height_without_padding_soft">59.0dip</dimen>
+	<dimen name="button_bar_height_plus_padding_soft">69.0dip</dimen>
+	<dimen name="hotseat_toggle_icon_padding_top">18.599976dip</dimen>
+	<dimen name="hotseat_cell_height">80.0dip</dimen>
+	
 	<dimen name="photo_new_height">1297.0px</dimen>
 	<dimen name="photo_new_height_rect">1080.0px</dimen>
 	<dimen name="photo_new_height_ls">1194.0px</dimen>

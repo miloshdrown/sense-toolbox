@@ -2822,7 +2822,7 @@ public class OtherMods {
 					final StackTraceElement[] stes = Thread.currentThread().getStackTrace();
 					final StackTraceElement ste = stes[stes.length - 1];
 					if (ste.getClassName().equals("android.os.Binder") && ste.getMethodName().equals("execTransact"))
-					param.setResult(null);
+					param.setResult(false);
 				}
 			};
 			Object[] argsAndHook2 = { long.class, hook2 };

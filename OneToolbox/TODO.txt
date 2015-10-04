@@ -19,8 +19,8 @@ Current changelog
 [New] Disable screen light up when connecting USB
 [New] Show seconds in status bar clock
 [New][Sense Home 7] Hide app drawer page indicator
+[Fixed] 4x5 homescreen grid on devices with soft keys
 [Fixed] Show traffic meter on lockscreen too
-
 
 
 ==============
