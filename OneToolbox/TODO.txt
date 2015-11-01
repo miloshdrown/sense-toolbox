@@ -21,6 +21,7 @@ Current changelog
 [New][Sense Home 7] Hide app drawer page indicator
 [Fixed] 4x5 homescreen grid on devices with soft keys
 [Fixed] Show traffic meter on lockscreen too
+[Fixed] Minor fixes and memory usage improvements
 
 
 ==============

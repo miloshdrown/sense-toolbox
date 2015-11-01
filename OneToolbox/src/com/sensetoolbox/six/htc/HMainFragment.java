@@ -415,6 +415,8 @@ public class HMainFragment extends HPreferenceFragmentExt {
 			this.getHtcListView().postDelayed(new Runnable() {
 				@Override
 				public void run() {
+					if (HMainFragment.this.getHtcListView() == null) return;
+					
 					int pos = 17 - HMainFragment.this.getHtcListView().getFirstVisiblePosition();
 					View feedback = null;
 					if (pos < HMainFragment.this.getHtcListView().getChildCount())

@@ -127,8 +127,8 @@ public class Helpers {
 	public static ArrayList<AppData> launchableAppsList = null;
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
-	public static float strings_total = 792.0f;
-	public static int buildVersion = 279;
+	public static float strings_total = 800.0f;
+	public static int buildVersion = 280;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -977,7 +977,11 @@ public class Helpers {
 	}
 	
 	public static boolean is443plus() {
-		return (new Version(Build.VERSION.RELEASE).compareTo(new Version("4.4.3")) >= 0 ? true : false);
+		try {
+			return (new Version(Build.VERSION.RELEASE).compareTo(new Version("4.4.3")) >= 0 ? true : false);
+		} catch (Exception e) {
+			return true;
+		}
 	}
 	
 	public static boolean isLP() {

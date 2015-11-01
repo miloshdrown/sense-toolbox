@@ -1662,6 +1662,7 @@ public class SysUIMods {
 					MemoryInfo[] mi = amgr.getProcessMemoryInfo(toIntArray(pids_mem));
 					int memTotal = 0;
 					for (MemoryInfo memInfo: mi) memTotal += memInfo.getTotalPss();
+					pids_mem.clear();
 					
 					XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
 					ramText = String.format("%.1f", (float)(memTotal / 1024.0f)) + Helpers.xl10n(modRes, R.string.ram_mb);
@@ -1748,7 +1749,9 @@ public class SysUIMods {
 			findAndHookMethod(recentAppClass + "RecentAppActivity", lpparam.classLoader, "onResume", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					if (procs != null) procs.clear();
 					procs = null;
+					System.gc();
 				}
 			});
 		} else {
@@ -1762,7 +1765,9 @@ public class SysUIMods {
 			findAndHookMethod("com.android.systemui.recent.RecentAppFxActivity", lpparam.classLoader, "onResume", new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					if (procs != null) procs.clear();
 					procs = null;
+					System.gc();
 				}
 			});
 		}
@@ -2746,6 +2751,7 @@ public class SysUIMods {
 			findAndHookMethod("com.android.server.wm.WindowManagerService", lpparam.classLoader, "screenshotApplications", IBinder.class, int.class, int.class, int.class, boolean.class, new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					System.gc();
 					param.args[4] = false;
 				}
 			});
