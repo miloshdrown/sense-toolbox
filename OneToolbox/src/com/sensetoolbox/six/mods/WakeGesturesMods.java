@@ -130,16 +130,16 @@ public class WakeGesturesMods {
 	};
 	
 	private static void doWakeUp(Object thisObject, long atTime) {
-		//XposedBridge.log("doWakeUp: start at " + String.valueOf(atTime));
+		XposedBridge.log("doWakeUp: start at " + String.valueOf(atTime));
 		Context mContext = (Context)XposedHelpers.getObjectField(thisObject, "mContext");
 		PowerManager mPowerManager = (PowerManager)mContext.getSystemService(Context.POWER_SERVICE);
 		if (mPowerManager != null) {
-			//XposedBridge.log("doWakeUp: acquire wakelock");
+			XposedBridge.log("doWakeUp: acquire wakelock");
 			WakeLock wl = mPowerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK | PowerManager.ON_AFTER_RELEASE, "ST WakeUpSleepy");
 			wl.acquire(1000);
 			XposedHelpers.callMethod(mPowerManager, "wakeUp", atTime);
 		}
-		//XposedBridge.log("doWakeUp: finished");
+		XposedBridge.log("doWakeUp: finished");
 	}
 	
 	private static void sendLockScreenIntent(Context mContext, int action) {
@@ -956,7 +956,7 @@ public class WakeGesturesMods {
 	
 	private static void handleGesture(MethodHookParam param) {
 		int j = (Integer)param.args[1];
-		//XposedBridge.log("onHtcGestureMotion: " + String.valueOf(j));
+		XposedBridge.log("onHtcGestureMotion: " + String.valueOf(j));
 		XMain.pref.reload();
 		if (XMain.pref.getBoolean("wake_gestures_active", false)) {
 			String prefName = null;
