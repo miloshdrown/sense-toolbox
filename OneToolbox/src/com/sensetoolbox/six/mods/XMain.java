@@ -718,6 +718,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			if (pref.getBoolean("pref_key_sysui_clockseconds", false))
 				SysUIMods.execHook_SBClockSeconds(lpparam);
 			
+			if (Helpers.isLP())
+				SysUIMods.execHook_PreventOOM(lpparam);
+			
 			StatusbarMods.execHook_HideIcons(lpparam);
 		}
 		

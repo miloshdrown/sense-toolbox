@@ -1521,7 +1521,7 @@ public class SysUIMods {
 		
 		final Context helperContext;
 		
-		public SwipeListener(Context context) {
+		SwipeListener(Context context) {
 			helperContext = context;
 			float density = helperContext.getResources().getDisplayMetrics().density;
 			SWIPE_MIN_DISTANCE = Math.round(40 * density);
@@ -2144,7 +2144,7 @@ public class SysUIMods {
 	// Listen for alarm changes and update label
 	static class SystemSettingsObserver extends ContentObserver {
 		Object thisObj = null;
-		public SystemSettingsObserver(Handler h, Object paramThisObject) {
+		SystemSettingsObserver(Handler h, Object paramThisObject) {
 			super(h);
 			thisObj = paramThisObject;
 		}
@@ -2760,6 +2760,21 @@ public class SysUIMods {
 		}
 	}
 	
+	public static void execHook_PreventOOM(LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.systemui.recents.misc.SystemServicesProxy", lpparam.classLoader, "getThumbnail", ActivityManager.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					System.gc();
+					XposedBridge.log("System UI heap left: " + String.valueOf((Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory())/1024f) + " KB");
+					if (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() < 4 * 1024 * 1024) param.setResult((Bitmap)null);
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
 	public static void execHook_NoLowBatteryWarning(LoadPackageParam lpparam) {
 		try {
 			if (Helpers.isLP()) {
@@ -3107,7 +3122,7 @@ public class SysUIMods {
 		}
 
 		@SuppressLint("RtlHardcoded")
-		public FloatingAlertDialog(Context context, String msg, final StatusBarNotification sbn) {
+		FloatingAlertDialog(Context context, String msg, final StatusBarNotification sbn) {
 			super(context);
 			mContext = context;
 			mResources = mContext.getResources();
@@ -3287,7 +3302,7 @@ public class SysUIMods {
 		}
 
 		@SuppressLint({ "NewApi", "RtlHardcoded" })
-		public HeadsUpView(Context context, Handler handler) {
+		HeadsUpView(Context context, Handler handler) {
 			super(context);
 			mContext = context;
 			mHandler = handler;

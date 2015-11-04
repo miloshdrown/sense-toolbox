@@ -12,6 +12,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Locale;
 
 import com.sensetoolbox.six.R;
 import com.sensetoolbox.six.utils.GlobalActions;
@@ -2800,10 +2801,13 @@ public class OtherMods {
 			XC_MethodHook hook = new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-					for (StackTraceElement s: Thread.currentThread().getStackTrace())
-					XposedBridge.log("wakeUpInternal stack: " + s.toString());
-					
 					final StackTraceElement[] stes = Thread.currentThread().getStackTrace();
+					
+					for (StackTraceElement s: stes) {
+						if (s.getMethodName().toLowerCase(Locale.getDefault()).contains("wakelock")) return;
+						XposedBridge.log("wakeUpInternal stack: " + s.toString());
+					}
+					
 					final StackTraceElement ste = stes[stes.length - 1];
 					if (ste.getClassName().equals("android.os.Binder") && ste.getMethodName().equals("execTransact"))
 					param.setResult(null);
@@ -2816,10 +2820,13 @@ public class OtherMods {
 			XC_MethodHook hook2 = new XC_MethodHook() {
 				@Override
 				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
-					for (StackTraceElement s: Thread.currentThread().getStackTrace())
-					XposedBridge.log("wakeUpNoUpdateLocked stack: " + s.toString());
-					
 					final StackTraceElement[] stes = Thread.currentThread().getStackTrace();
+					
+					for (StackTraceElement s: stes) {
+						if (s.getMethodName().toLowerCase(Locale.getDefault()).contains("wakelock")) return;
+						XposedBridge.log("wakeUpNoUpdateLocked stack: " + s.toString());
+					}
+					
 					final StackTraceElement ste = stes[stes.length - 1];
 					if (ste.getClassName().equals("android.os.Binder") && ste.getMethodName().equals("execTransact"))
 					param.setResult(false);

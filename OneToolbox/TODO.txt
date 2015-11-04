@@ -15,6 +15,9 @@ Bugs
 Current changelog
 =================
 
+[Fixed] Alarm and timer with active "No screen light up on charge" mod
+[Fixed][5.0+] Prevent Out Of Memory System UI crash
+
 2.2.2
 [New] Disable screen light up when connecting USB
 [New] Show seconds in status bar clock
