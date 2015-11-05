@@ -125,10 +125,15 @@ public class StatusbarMods {
 			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 			resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery", modRes.fwd(R.drawable.stat_sys_battery));
 			
-			if (Helpers.isLP())
+			if (Helpers.isLP()) try {
 				resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_anim", modRes.fwd(R.drawable.stat_sys_battery_charging));
-			else
+			} catch (Throwable t) {
+				XposedBridge.log(t);
+			}
+			
+			try {
 				resparam.res.setReplacement("com.android.systemui", "drawable", "stat_sys_battery_charge", modRes.fwd(R.drawable.stat_sys_battery_charging));
+			} catch (Throwable t) {}
 		} else if (battIcon == 4) {
 			resparam.res.hookLayout("com.android.systemui", "layout", "super_status_bar", new XC_LayoutInflated() {
 				@Override
@@ -637,7 +642,7 @@ public class StatusbarMods {
 	
 	static class SystemSettingsObserver extends ContentObserver {
 		Object thisObj = null;
-		public SystemSettingsObserver(Handler h, Object paramThisObject) {
+		SystemSettingsObserver(Handler h, Object paramThisObject) {
 			super(h);
 			thisObj = paramThisObject;
 		}
