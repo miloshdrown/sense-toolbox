@@ -1752,7 +1752,7 @@ public class OtherMods {
 	
 	static class SystemSettingsObserver extends ContentObserver {
 		Object thisObj = null;
-		public SystemSettingsObserver(Handler h, Object paramThisObject) {
+		SystemSettingsObserver(Handler h, Object paramThisObject) {
 			super(h);
 			thisObj = paramThisObject;
 		}
@@ -2805,7 +2805,7 @@ public class OtherMods {
 					
 					for (StackTraceElement s: stes) {
 						if (s.getMethodName().toLowerCase(Locale.getDefault()).contains("wakelock")) return;
-						XposedBridge.log("wakeUpInternal stack: " + s.toString());
+						//XposedBridge.log("wakeUpInternal stack: " + s.toString());
 					}
 					
 					final StackTraceElement ste = stes[stes.length - 1];
@@ -2824,7 +2824,7 @@ public class OtherMods {
 					
 					for (StackTraceElement s: stes) {
 						if (s.getMethodName().toLowerCase(Locale.getDefault()).contains("wakelock")) return;
-						XposedBridge.log("wakeUpNoUpdateLocked stack: " + s.toString());
+						//XposedBridge.log("wakeUpNoUpdateLocked stack: " + s.toString());
 					}
 					
 					final StackTraceElement ste = stes[stes.length - 1];

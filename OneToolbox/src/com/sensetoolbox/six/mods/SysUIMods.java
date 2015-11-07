@@ -84,6 +84,7 @@ import android.telephony.PhoneStateListener;
 import android.telephony.SignalStrength;
 import android.telephony.TelephonyManager;
 import android.text.TextUtils.TruncateAt;
+import android.text.format.DateFormat;
 import android.text.format.Formatter;
 import android.text.method.SingleLineTransformationMethod;
 import android.util.TypedValue;
@@ -2766,8 +2767,10 @@ public class SysUIMods {
 				@Override
 				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
 					System.gc();
-					XposedBridge.log("System UI heap left: " + String.valueOf((Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory())/1024f) + " KB");
-					if (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() < 4 * 1024 * 1024) param.setResult((Bitmap)null);
+					if (Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory() < 4 * 1024 * 1024) {
+						XposedBridge.log("[ST] System UI heap critical: " + String.valueOf((Runtime.getRuntime().maxMemory() - Runtime.getRuntime().totalMemory())/1024f) + " KB");
+						param.setResult((Bitmap)null);
+					}
 				}
 			});
 		} catch (Throwable t) {
@@ -4221,8 +4224,9 @@ public class SysUIMods {
 		}
 	}
 	
-	public static String putSecondsIn(String clockStr) {
+	public static String putSecondsIn(CharSequence clockChr) {
 		NumberFormat df = new DecimalFormat("00");
+		String clockStr = clockChr.toString();
 		if (clockStr.toLowerCase().endsWith("am") || clockStr.toLowerCase().endsWith("pm"))
 			return clockStr.replaceAll("(?i)(\\s?)(am|pm)", ":" + df.format(Calendar.getInstance().get(Calendar.SECOND)) + "$1$2").trim();
 		else
@@ -4241,7 +4245,7 @@ public class SysUIMods {
 			protected void afterHookedMethod(MethodHookParam param) {
 				TextView clock = (TextView)param.thisObject;
 				if (clock.getId() != clock.getResources().getIdentifier("header_clock", "id", "com.android.systemui"))
-				clock.setText(putSecondsIn(clock.getText().toString()));
+				clock.setText(putSecondsIn(clock.getText()));
 			}
 		});
 			
@@ -4263,7 +4267,12 @@ public class SysUIMods {
 								Calendar mCalendar = Calendar.getInstance();
 								mCalendar.setTimeInMillis(System.currentTimeMillis());
 								XposedHelpers.setObjectField(clock, "mCalendar", mCalendar);
-								clock.setText(putSecondsIn((String)XposedHelpers.callMethod(clock, "getSmallTime")));
+								
+								try {
+									clock.setText(putSecondsIn((CharSequence)XposedHelpers.callMethod(clock, "getSmallTime")));
+								} catch (Throwable t) {
+									clock.setText(putSecondsIn(DateFormat.getTimeFormat(clock.getContext()).format(mCalendar.getTime())));
+								}
 								
 								XposedHelpers.setAdditionalInstanceField(clock, "mLastUpdate", mElapsedSystem);
 							}

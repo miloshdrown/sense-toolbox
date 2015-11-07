@@ -15,8 +15,10 @@ Bugs
 Current changelog
 =================
 
-[Fixed] Alarm and timer with active "No screen light up on charge" mod
-[Fixed][5.0+] Prevent Out Of Memory System UI crash
+[Fixed] Alarm and timer with active "No screen light up on charge" mod, native Motion Launch gestures are still not compatible with it
+[Fixed] Clock with seconds on some devices
+[Fixed][5.0+] Attempt to prevent Out Of Memory System UI crash
+
 
 2.2.2
 [New] Disable screen light up when connecting USB
