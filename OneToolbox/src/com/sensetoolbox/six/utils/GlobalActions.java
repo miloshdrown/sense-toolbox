@@ -83,13 +83,14 @@ public class GlobalActions {
 					if (action.equals("com.sensetoolbox.six.mods.action.ExpandNotifications"))
 						XposedHelpers.callMethod(mPSB, "animateExpandNotificationsPanel");
 					else if (action.equals("com.sensetoolbox.six.mods.action.ExpandSettings")) {
-						if (Helpers.isLP()) {
-							if (XMain.pref.getBoolean("pref_key_other_secureeqs", false)) {
-								KeyguardManager kgMgr = (KeyguardManager)context.getSystemService(Context.KEYGUARD_SERVICE);
-								if (kgMgr.isKeyguardLocked() && kgMgr.isKeyguardSecure()) return;
-							}
+						if (Helpers.isLP() && XMain.pref.getBoolean("pref_key_other_secureeqs", false)) {
+							KeyguardManager kgMgr = (KeyguardManager)context.getSystemService(Context.KEYGUARD_SERVICE);
+							if (kgMgr.isKeyguardLocked() && kgMgr.isKeyguardSecure()) return;
+						}
+						
+						try {
 							XposedHelpers.callMethod(mPSB, "animateExpandSettingsPanelInternal");
-						} else {
+						} catch (Throwable t) {
 							XposedHelpers.callMethod(mPSB, "animateExpandSettingsPanel");
 						}
 					}

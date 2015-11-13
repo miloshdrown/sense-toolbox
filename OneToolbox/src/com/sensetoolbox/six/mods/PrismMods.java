@@ -675,7 +675,7 @@ public class PrismMods {
 		
 		final Context helperContext;
 		
-		public SwipeListener(Context context) {
+		SwipeListener(Context context) {
 			helperContext = context;
 			float density = helperContext.getResources().getDisplayMetrics().density;
 			SWIPE_MIN_DISTANCE = Math.round(100 * density);
@@ -768,7 +768,7 @@ public class PrismMods {
 		
 		final Context helperContext;
 		
-		public SwipeListenerHorizontal(Object cellLayout) {
+		SwipeListenerHorizontal(Object cellLayout) {
 			helperContext = ((ViewGroup)cellLayout).getContext();
 			float density = helperContext.getResources().getDisplayMetrics().density;
 			SWIPE_MIN_DISTANCE_HORIZ = Math.round(75 * density);
@@ -828,7 +828,7 @@ public class PrismMods {
 		float density;
 		int screenHeight;
 		
-		public SwipeListenerVertical(Context ctx) {
+		SwipeListenerVertical(Context ctx) {
 			density = ctx.getResources().getDisplayMetrics().density;
 			screenHeight = ctx.getResources().getDisplayMetrics().heightPixels;
 			SWIPE_MIN_DISTANCE_VERT = Math.round(17 * density);
@@ -978,6 +978,14 @@ public class PrismMods {
 			public void afterHookedMethod(MethodHookParam param) throws Throwable {
 				try {
 					callMethod(param.args[0], "hideText", true);
+					boolean m_bIsHotseat = XposedHelpers.getBooleanField(param.thisObject, "m_bIsHotseat");
+					if (!m_bIsHotseat) {
+						float density = ((View)param.args[0]).getResources().getDisplayMetrics().density;
+						if (XMain.pref.getBoolean("pref_key_controls_smallsoftkeys", false))
+							callMethod(param.args[0], "setPadding", 0, Math.round(28 * density), 0, 0);
+						else
+							callMethod(param.args[0], "setPadding", 0, Math.round(25 * density), 0, 0);
+					}
 				} catch (Throwable t) {
 					//Not an app icon
 				}
