@@ -585,6 +585,9 @@ public class PrismMods {
 			if (Helpers.isEight()) {
 				resparam.res.setReplacement(resparam.res.getIdentifier("app_icon_padding_top", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.app_icon_padding_top_port));
 				resparam.res.setReplacement(resparam.res.getIdentifier("app_icon_padding_top_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.app_icon_padding_top_port));
+				resparam.res.setReplacement(resparam.res.getIdentifier("folder_icon_top_margin_workspace", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.folder_icon_top_margin_workspace_port));
+				resparam.res.setReplacement(resparam.res.getIdentifier("folder_icon_top_margin_workspace_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.folder_icon_top_margin_workspace_port));
+				
 				resparam.res.setReplacement(resparam.res.getIdentifier("hotseat_toggle_icon_padding_top", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.hotseat_toggle_icon_padding_top));
 				resparam.res.setReplacement(resparam.res.getIdentifier("hotseat_cell_height", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.hotseat_cell_height));
 				

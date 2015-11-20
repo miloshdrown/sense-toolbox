@@ -193,6 +193,7 @@ public class ColorPickerPreference extends HtcDialogPreference implements Dialog
 		int cnt = 1;
 		for (int colorNameId = 0; colorNameId < presetsArrayIds.length(); colorNameId++) {
 			HtcRimButton btn = new HtcRimButton(mContext);
+			btn.setSingleLine(true);
 			btn.setText(Helpers.l10n(mContext, presetsArrayIds.getResourceId(colorNameId, 0)));
 			LinearLayout.LayoutParams llparams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			llparams.rightMargin = densify(10);

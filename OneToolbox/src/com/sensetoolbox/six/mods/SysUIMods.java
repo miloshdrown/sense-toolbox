@@ -1297,7 +1297,7 @@ public class SysUIMods {
 				
 				findAndHookMethod(recentAppClass + "RecentAppActivity", lpparam.classLoader, "onCreate", Bundle.class, new XC_MethodHook(){
 					protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
-						final ViewGroup mPager = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "mPager").get(param.thisObject);
+						final ViewGroup mPager = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "mPager");
 						
 						killedEmAll = false;
 						
@@ -1336,7 +1336,7 @@ public class SysUIMods {
 					} catch (Throwable t) {
 						XposedBridge.log(t);
 					}
-					ViewGroup mPager = (ViewGroup)XposedHelpers.findField(param.thisObject.getClass(), "mPager").get(param.thisObject);
+					ViewGroup mPager = (ViewGroup)XposedHelpers.getObjectField(param.thisObject, "mPager");
 					mPager.setOnTouchListener(new OnTouchListener() {
 						@Override
 						@SuppressLint("ClickableViewAccessibility")

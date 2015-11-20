@@ -8,6 +8,7 @@
 	<dimen name="workspace_height_gap_port">-1.0dip</dimen>
 	<dimen name="workspace_height_gap_fix">10.0dip</dimen>
 	<dimen name="app_icon_padding_top_port">5.0dip</dimen>
+	<dimen name="folder_icon_top_margin_workspace_port">10.0dip</dimen>
 	<dimen name="workspace_cell_height_port">120.0dip</dimen>
 	<dimen name="workspace_cell_height_port_soft">118.0dip</dimen>
 	<dimen name="button_bar_height_without_padding">70.0dip</dimen>

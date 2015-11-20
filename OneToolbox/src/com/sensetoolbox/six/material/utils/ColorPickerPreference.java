@@ -195,6 +195,7 @@ public class ColorPickerPreference extends DialogPreference implements DialogInt
 		for (int colorNameId = 0; colorNameId < presetsArrayIds.length(); colorNameId++) {
 			Button btn = new Button(mContext);
 			btn.setText(Helpers.l10n(mContext, presetsArrayIds.getResourceId(colorNameId, 0)));
+			btn.setSingleLine(true);
 			LinearLayout.LayoutParams llparams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
 			llparams.rightMargin = densify(10);
 			llparams.bottomMargin = densify(3);

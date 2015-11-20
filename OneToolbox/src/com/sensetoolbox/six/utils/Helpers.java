@@ -128,7 +128,7 @@ public class Helpers {
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
 	public static float strings_total = 800.0f;
-	public static int buildVersion = 282;
+	public static int buildVersion = 283;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -303,6 +303,8 @@ public class Helpers {
 			entriesResName = "googleapp_widget";
 		else if (titleResName.equals("sense_transitions_title"))
 			entriesResName = "transitions";
+		else if (titleResName.equals("toolbox_material_background_title"))
+			entriesResName = "material_background";
 		else if (titleResName.contains("controls_headsetonaction") || titleResName.contains("controls_headsetoffaction"))
 			entriesResName = "audio_actions";
 		else if (titleResName.contains("controls_clockaction"))
