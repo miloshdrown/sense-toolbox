@@ -26,6 +26,7 @@ import android.content.res.XModuleResources;
 import android.content.res.XResources;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -351,6 +352,15 @@ public class PrismMods {
 					param.setResult(wall);
 				}
 			});
+			
+			findAndHookMethod("com.htc.launcher.util.Utilities", lpparam.classLoader, "getAllAppsColorBackground", Context.class, Drawable.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					ColorDrawable wall = (ColorDrawable)param.getResult();
+					wall.setAlpha(transparency);
+					param.setResult(wall);
+				}
+			});
 		} catch (Throwable t) {}
 		/*
 		findAndHookMethod("com.htc.launcher.DragLayer", lpparam.classLoader, "setBackgroundAlpha", float.class, new XC_MethodHook() {
@@ -573,9 +583,10 @@ public class PrismMods {
 	}
 	
 	public static void execHook_HomeScreenGridSize(InitPackageResourcesParam resparam) {
+		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
+		
 		try {
-			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
-			
+			resparam.res.setReplacement(resparam.res.getIdentifier("cell_count_x", "integer", "com.htc.launcher"), 4);
 			resparam.res.setReplacement(resparam.res.getIdentifier("cell_count_y", "integer", "com.htc.launcher"), 5);
 			resparam.res.setReplacement(resparam.res.getIdentifier("celllayout_top_padding_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.celllayout_top_padding_port));
 			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_height_gap_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_height_gap_port));
@@ -607,6 +618,27 @@ public class PrismMods {
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
+		
+		// Sense 8
+		try {
+			if (Helpers.isEight()) {
+				resparam.res.setReplacement(resparam.res.getIdentifier("workspace_cell_height_port_4x5", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_cell_height_port_soft));				
+			} else {
+				resparam.res.setReplacement(resparam.res.getIdentifier("workspace_cell_height_port_4x5", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_cell_height_port));
+				resparam.res.setReplacement(resparam.res.getIdentifier("hotseat_extra_height_no_navbar", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.hotseat_extra_height_no_navbar));
+			}
+		} catch (Throwable t) {}
+	}
+	
+	public static void execHook_HomeScreenHidePageIndicator(final LoadPackageParam lpparam) {
+		try {
+			XposedHelpers.findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "onFitSystemWindows", Rect.class, boolean.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					XposedHelpers.setBooleanField(param.thisObject, "bNoSystemNavBar", false);
+				}
+			});
+		} catch (Throwable t) {}
 	}
 	
 	public static void execHook_HomeScreenGapFix(InitPackageResourcesParam resparam) {
@@ -872,8 +904,10 @@ public class PrismMods {
 			protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
 				if ((Integer)param.args[0] == KeyEvent.KEYCODE_MENU) {
 					Enum<?> m_state = (Enum<?>)XposedHelpers.getObjectField(param.thisObject, "m_state");
-					if (m_state != null && m_state.ordinal() == 0)
-					createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_workspace"), (Activity)param.thisObject);
+					if (m_state != null && m_state.ordinal() == 0) {
+						createAndShowPopup((ViewGroup)XposedHelpers.getObjectField(param.thisObject, "m_workspace"), (Activity)param.thisObject);
+						param.setResult(true);
+					}
 				}
 			}
 		});

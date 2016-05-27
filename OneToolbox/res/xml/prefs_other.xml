@@ -331,5 +331,12 @@
 				android:max="1000"
 				toolbox:animPref="true"
 				toolbox:enableKey="pref_key_other_screenanim_duration_enable"/>
+			<com.htc.preference.HtcListPreference
+				android:key="pref_key_other_screenrotate"
+				android:summary="@string/various_screenrotate_summ"
+				android:title="@string/various_screenrotate_title"
+				android:entries="@array/various_screenrotate"
+				android:entryValues="@array/various_screenrotate_val"
+				android:defaultValue="0" />
 		</com.htc.preference.HtcPreferenceCategory>
 </com.htc.preference.HtcPreferenceScreen>

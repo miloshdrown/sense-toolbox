@@ -5,15 +5,24 @@ Ideas
 Pageless BF scrolling, remove snap to block scrolling
 Mount ISO image
 
-=====
-Bugs
-=====
-
-
-
 =================
 Current changelog
 =================
+
+2.2.4
+[New] Screen orientation change animations
+[New][Sense Home 8] Autohide page indicator
+[Fixed][Sense Home 8] 4x5 homescreen grid
+[Fixed][Sense Home 8] Opening home popup menu on home button long press
+[Fixed] Reverse portrait orientation support for all apps when All rotations mod is enabled
+[Fixed] More accurate traffic speed calculations
+[Fixed] 4x5 grid folder icon position on some devices
+[Fixed] HTC One E9 detection
+
+
+==============
+Old Changelogs
+==============
 
 2.2.3
 [Fixed] Alarm and timer with active "No screen light up on charge" mod. Still not compatible with native Motion Launch gestures!
@@ -22,11 +31,6 @@ Current changelog
 [Fixed] 4x5 homescreen grid without app labels
 [Fixed][5.0+] Attempt to prevent Out Of Memory System UI crash
 [Fixed][5.1] Expand quick settings action
-
-
-==============
-Old Changelogs
-==============
 
 2.2.2
 [New] Disable screen light up when connecting USB

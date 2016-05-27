@@ -101,6 +101,12 @@
 			android:defaultValue="false"
 			android:dependency="pref_key_prism_4x5homescreen" />
 		<com.htc.preference.HtcCheckBoxPreference
+			android:key="pref_key_prism_hidepageindicator"
+			android:summary="@string/sense_hidepageindicator_summ"
+			android:title="@string/sense_hidepageindicator_title"
+			android:defaultValue="false"
+			android:dependency="pref_key_prism_4x5homescreen" />
+		<com.htc.preference.HtcCheckBoxPreference
 			android:key="pref_key_prism_invisilabels"
 			android:summary="@string/sense_invisilabels_summ"
 			android:title="@string/sense_invisilabels_title"

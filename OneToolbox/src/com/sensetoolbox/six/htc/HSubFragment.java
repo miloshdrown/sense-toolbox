@@ -635,7 +635,7 @@ public class HSubFragment extends HPreferenceFragmentExt {
 				Helpers.removePref(this, "pref_key_controls_extendedpanel", "pref_key_controls");
 			}
 		} else if (xmlResId == R.xml.prefs_other) {
-			Helpers.disablePref(this, "pref_key_other_fleetingglance", Helpers.l10n(getActivity(), R.string.coming_soon) + " :)");
+			Helpers.removePref(this, "pref_key_other_fleetingglance", "pref_key_other");
 			
 			if (!Helpers.isM7()) {
 				Helpers.removePref(this, "pref_key_other_keyslight", "pref_key_other");
@@ -697,7 +697,7 @@ public class HSubFragment extends HPreferenceFragmentExt {
 					return true;
 				}
 			});
-			
+			/*
 			HtcPreference fleetingGlancePreference = (HtcPreference) findPreference("pref_key_other_fleetingglance");
 			fleetingGlancePreference.setOnPreferenceClickListener(new OnPreferenceClickListener(){
 				@Override
@@ -709,7 +709,7 @@ public class HSubFragment extends HPreferenceFragmentExt {
 					return true;
 				}
 			});
-			
+			*/
 			HtcCheckBoxPreference textMagnifierPreference = (HtcCheckBoxPreference) findPreference("pref_key_other_textmagnifier");
 			if (textMagnifierPreference != null) {
 				if (Settings.System.getInt(getActivity().getContentResolver(), "htc_magnifier_setting", 0) == 1)

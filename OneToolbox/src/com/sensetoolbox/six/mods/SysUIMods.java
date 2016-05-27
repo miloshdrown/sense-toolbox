@@ -979,6 +979,7 @@ public class SysUIMods {
 	private static Handler mHandler = null;
 	private static Runnable mRunnable = null;
 	private static long bytesTotal = 0;
+	private static long measureTime = 0;
 	
 	@SuppressLint("DefaultLocale")
 	private static ArrayList<String> humanReadableByteCount(long bytes) {
@@ -1136,11 +1137,15 @@ public class SysUIMods {
 									if (isConnected) {
 										long rxBytes = TrafficStats.getTotalRxBytes();
 										long txBytes = TrafficStats.getTotalTxBytes();
+										long nanoTime = System.nanoTime();
+										long newTime = nanoTime - measureTime;
+										measureTime = nanoTime;
+										if (newTime == 0) newTime = Math.round(2 * Math.pow(10, 9));
 										long newBytes = 0;
 										if (rxBytes != -1L && txBytes != -1L) newBytes = rxBytes + txBytes;
 										long newBytesFixed = newBytes - bytesTotal;
 										if (newBytesFixed < 0 || bytesTotal == 0) newBytesFixed = 0;
-										long speed = Math.round(newBytesFixed/2);
+										long speed = Math.round(newBytesFixed / (newTime / Math.pow(10, 9)));
 										bytesTotal = newBytes;
 										ArrayList<String> spd = humanReadableByteCount(speed);
 										

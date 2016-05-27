@@ -2,7 +2,7 @@
 <project name="Sense Toolbox" default="help">
     <property file="/home/git/android/sign.properties" />
     <property file="ant.properties" />
-	<property name="lib.dir" location="/home/git/android/libs-external-sense6/" />
+    <property name="lib.dir" location="/home/git/android/libs-external-sense7/" />
     <property name="sdk.dir" location="/home/git/android/android-sdk-linux/" />
     <property environment="env" />
     <condition property="sdk.dir" value="${env.ANDROID_HOME}">

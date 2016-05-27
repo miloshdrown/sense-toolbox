@@ -36,12 +36,14 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.content.pm.ActivityInfo;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.ResolveInfo;
 import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.content.res.XModuleResources;
+import android.content.res.XResForwarder;
 import android.content.res.XResources;
 import android.database.ContentObserver;
 import android.database.Cursor;
@@ -1116,6 +1118,61 @@ public class OtherMods {
 		}
 	}
 	
+	public static void execHook_AllRotationsPortrait() {
+		try {
+			findAndHookMethod(Activity.class, "onCreate", Bundle.class, new XC_MethodHook() {
+				@Override
+				protected void afterHookedMethod(MethodHookParam param) throws Throwable {
+					Activity act = ((Activity)param.thisObject);
+					ActivityInfo mActivityInfo = (ActivityInfo)XposedHelpers.getObjectField(param.thisObject, "mActivityInfo");
+					if (act != null && mActivityInfo != null && mActivityInfo.screenOrientation == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+					act.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT);
+				}
+			});
+			
+			findAndHookMethod(Activity.class, "setRequestedOrientation", int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					if ((int)param.args[0] == ActivityInfo.SCREEN_ORIENTATION_PORTRAIT)
+					param.args[0] = ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT;
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
+	public static int xfade_exit_id = 0;
+	public static int xfade_enter_id = 0;
+	public static void execHook_RotateAnimationRes() {
+		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, null);
+		xfade_exit_id = XResources.getFakeResId(modRes, R.anim.xfade_exit);
+		XResources.setSystemWideReplacement(xfade_exit_id, new XResForwarder(modRes, R.anim.xfade_exit));
+		xfade_enter_id = XResources.getFakeResId(modRes, R.anim.xfade_enter);
+		XResources.setSystemWideReplacement(xfade_enter_id, new XResForwarder(modRes, R.anim.xfade_enter));
+	}
+	
+	public static void execHook_RotateAnimation(final LoadPackageParam lpparam) {
+		try {
+			findAndHookMethod("com.android.server.wm.ScreenRotationAnimation", lpparam.classLoader, "startAnimation", "android.view.SurfaceSession", long.class, float.class, int.class, int.class, boolean.class, int.class, int.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(MethodHookParam param) throws Throwable {
+					XMain.pref.reload();
+					int rotateanim = Integer.parseInt(XMain.pref.getString("pref_key_other_screenrotate", "0"));
+					if (rotateanim == 1) {
+						param.args[1] = 0;
+						param.args[2] = 0;
+					} else if (rotateanim == 2) {
+						param.args[6] = xfade_exit_id;
+						param.args[7] = xfade_enter_id;
+					}
+				}
+			});
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+	}
+	
 	public static MethodHookParam mNMSParam = null;
 	public static boolean isInFullscreen = false;
 	private static BroadcastReceiver mBR = new BroadcastReceiver() {
@@ -1499,7 +1556,7 @@ public class OtherMods {
 	
 	public static void execHook_ContactsNoCornerSystem() {
 		if (!Helpers.isNewSense()) try {
-			XResources.setSystemWideReplacement("com.htc:drawable/common_photo_frame_quick_contact_mask", new XResources.DrawableLoader(){
+			XResources.setSystemWideReplacement("com.htc", "drawable", "common_photo_frame_quick_contact_mask", new XResources.DrawableLoader(){
 				@Override
 				public Drawable newDrawable(XResources res, int id) throws Throwable {
 					return new ColorDrawable(Color.TRANSPARENT);

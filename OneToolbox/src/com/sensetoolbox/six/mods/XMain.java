@@ -182,6 +182,12 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_prism_homemenu", false) && Helpers.isEight())
 			ControlsMods.execHook_HomeLongpressAssistEight();
 		
+		if (pref.getBoolean("pref_key_other_allrotations", false))
+			OtherMods.execHook_AllRotationsPortrait();
+		
+		if (Integer.parseInt(pref.getString("pref_key_other_screenrotate", "0")) != 0)
+			OtherMods.execHook_RotateAnimationRes();
+		
 		//OtherMods.execHook_HapticNotify();
 	}
 	
@@ -400,6 +406,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 		if (pref.getBoolean("pref_key_prism_4x5homescreen", false))
 			PrismMods.execHook_HomeScreenResizableWidgets(lpparam);
 		
+		if (pref.getBoolean("pref_key_prism_4x5homescreen", false) || pref.getBoolean("pref_key_prism_hidepageindicator", false))
+			PrismMods.execHook_HomeScreenHidePageIndicator(lpparam);
+		
 		if (pref.getBoolean("pref_key_prism_invisilabels", false))
 			PrismMods.execHook_invisiLabels(lpparam);
 		
@@ -471,6 +480,9 @@ public class XMain implements IXposedHookInitPackageResources, IXposedHookZygote
 			
 			if (pref.getBoolean("pref_key_other_nolightuponcharge", false))
 				OtherMods.execHook_NoLightUpOnCharge(lpparam);
+			
+			if (Integer.parseInt(pref.getString("pref_key_other_screenrotate", "0")) != 0)
+				OtherMods.execHook_RotateAnimation(lpparam);
 		}
 		
 		if (pkg.equals("com.android.providers.media")) {

@@ -127,8 +127,8 @@ public class Helpers {
 	public static ArrayList<AppData> launchableAppsList = null;
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
-	public static float strings_total = 800.0f;
-	public static int buildVersion = 283;
+	public static float strings_total = 804.0f;
+	public static int buildVersion = 285;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -954,6 +954,10 @@ public class Helpers {
 		return Build.DEVICE.contains("htc_hima");
 	}
 	
+	public static boolean isE9() {
+		return Build.DEVICE.contains("htc_a55");
+	}
+	
 	public static boolean isM8() {
 		return Build.DEVICE.contains("htc_m8");
 	}
@@ -963,7 +967,7 @@ public class Helpers {
 	}
 	
 	public static boolean isEight() {
-		return isM9Plus() || isM9() || isM8() || isE8();
+		return isM9Plus() || isM9() || isE9() || isM8() || isE8();
 	}
 	
 	public static boolean isButterflyS() {
