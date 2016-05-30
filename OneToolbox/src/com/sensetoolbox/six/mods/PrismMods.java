@@ -621,6 +621,7 @@ public class PrismMods {
 		
 		// Sense 8
 		try {
+			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_height_gap_port_4x5", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_height_gap_port));
 			if (Helpers.isEight()) {
 				resparam.res.setReplacement(resparam.res.getIdentifier("workspace_cell_height_port_4x5", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_cell_height_port_soft));				
 			} else {
@@ -630,22 +631,40 @@ public class PrismMods {
 		} catch (Throwable t) {}
 	}
 	
-	public static void execHook_HomeScreenHidePageIndicator(final LoadPackageParam lpparam) {
+	public static boolean bNoSystemNavBar = false;
+	public static void execHook_HomeScreenHidePageIndicator(final LoadPackageParam lpparam, boolean customGrid) {
 		try {
+			if (customGrid)
 			XposedHelpers.findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "onFitSystemWindows", Rect.class, boolean.class, new XC_MethodHook() {
 				@Override
 				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
 					XposedHelpers.setBooleanField(param.thisObject, "bNoSystemNavBar", false);
+				}
+			}); else
+			XposedHelpers.findAndHookMethod("com.htc.launcher.Workspace", lpparam.classLoader, "hideScrollingIndicator", boolean.class, new XC_MethodHook() {
+				@Override
+				protected void beforeHookedMethod(final MethodHookParam param) throws Throwable {
+					bNoSystemNavBar = XposedHelpers.getBooleanField(param.thisObject, "bNoSystemNavBar");
+					XposedHelpers.setBooleanField(param.thisObject, "bNoSystemNavBar", false);
+				}
+				@Override
+				protected void afterHookedMethod(final MethodHookParam param) throws Throwable {
+					XposedHelpers.setBooleanField(param.thisObject, "bNoSystemNavBar", bNoSystemNavBar);
 				}
 			});
 		} catch (Throwable t) {}
 	}
 	
 	public static void execHook_HomeScreenGapFix(InitPackageResourcesParam resparam) {
+		XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 		try {
-			XModuleResources modRes = XModuleResources.createInstance(XMain.MODULE_PATH, resparam.res);
 			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_height_gap_port", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_height_gap_fix));
 			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_height_gap", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_height_gap_fix));
+		} catch (Throwable t) {
+			XposedBridge.log(t);
+		}
+		try {
+			resparam.res.setReplacement(resparam.res.getIdentifier("workspace_height_gap_port_4x4", "dimen", "com.htc.launcher"), modRes.fwd(R.dimen.workspace_height_gap_fix));
 		} catch (Throwable t) {
 			XposedBridge.log(t);
 		}
