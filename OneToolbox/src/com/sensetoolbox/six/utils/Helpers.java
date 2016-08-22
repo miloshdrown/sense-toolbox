@@ -127,8 +127,8 @@ public class Helpers {
 	public static ArrayList<AppData> launchableAppsList = null;
 	public static Map<String, String> l10n = null;
 	public static String cLang = "";
-	public static float strings_total = 804.0f;
-	public static int buildVersion = 286;
+	public static float strings_total = 806.0f;
+	public static int buildVersion = 287;
 	@SuppressLint("SdCardPath")
 	public static String dataPath = "/data/data/com.sensetoolbox.six/files/";
 	public static LruCache<String, Bitmap> memoryCache = new LruCache<String, Bitmap>((int)(Runtime.getRuntime().maxMemory() / 1024) / 2) {
@@ -996,6 +996,10 @@ public class Helpers {
 	
 	public static boolean isLP2() {
 		return Build.VERSION.SDK_INT >= 22;
+	}
+	
+	public static boolean isMM() {
+		return Build.VERSION.SDK_INT >= 23;
 	}
 	
 	public static boolean isDualSIM() {

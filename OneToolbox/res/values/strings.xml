@@ -25,6 +25,7 @@
 	<string name="storage_cannot_restore">No settings backup found</string>
 	<string name="backup_ok">Settings were backed up successfully!</string>
 	<string name="restore_ok">Settings were successfully restored!</string>
+	<string name="no_point">Disabled on unsupported system</string>
 	<string name="no_root_summ">Root is required for this mod to work</string>
 	<string name="no_busybox_summ">BusyBox is required for this mod to work</string>
 	<string name="no_browser">Browser app is required to open URLs</string>
@@ -49,6 +50,7 @@
 	<string name="warning">Warning!</string>
 	<string name="wrong_sense_version">Your ROM is not Sense based and therefore is not compatible with Sense Toolbox module</string>
 	<string name="preview_release">Sense 7 is not supported, expect bugs and broken mods. Feedback is not required.</string>
+	<string name="unsupported_os">Android 6 is not supported! Most of the mods from categories other than Sense are broken.</string>
 	<string name="update_available">Update is available! Tap here to download</string>
 	<string name="xposed_not_installed">Xposed Framework is not properly installed, you must install app_process and XposedBridge.jar from Xposed Installer, then activate Sense Toolbox module there and reboot.</string>
 	<string name="module_not_active">Sense Toolbox module is not active! Open Xposed Installer, activate module and reboot.</string>

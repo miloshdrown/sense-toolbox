@@ -111,15 +111,18 @@ public class HMainFragment extends HPreferenceFragmentExt {
 		final Handler handler = new Handler();
 		
 		addPreferencesFromResource(R.xml.preferences);
-		/*
-		if (Helpers.isSense7()) {
+
+		if (Helpers.isMM()) {
 			TextView experimental = (TextView)act.findViewById(R.id.experimental);
-			experimental.setText(Helpers.l10n(act, R.string.preview_release));
+			experimental.setText(Helpers.l10n(act, R.string.unsupported_os));
 			experimental.setTextColor(getResources().getColor(android.R.color.background_light));
 			FrameLayout experimentalFrame = (FrameLayout)act.findViewById(R.id.experimentalFrame);
 			experimentalFrame.setVisibility(View.VISIBLE);
+			Helpers.disablePref(HMainFragment.this, "pref_key_issuetracker", Helpers.l10n(act, R.string.no_point));
+			Helpers.disablePref(HMainFragment.this, "pref_key_toolbox_sendreport", Helpers.l10n(act, R.string.no_point));
+			Helpers.disablePref(HMainFragment.this, "acra.user.email", Helpers.l10n(act, R.string.no_point));
 		}
-		*/
+		
 		// Preventing launch delay
 		new Thread(new Runnable() {
 			public void run() {
