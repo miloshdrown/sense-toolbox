@@ -1,0 +1,430 @@
+2.2.4
+[New] Screen orientation change animations
+[New][Sense Home 8] Autohide page indicator
+[Fixed][Sense Home 8] 4x5 homescreen grid
+[Fixed][Sense Home 8] Opening home popup menu on home button long press
+[Fixed] Reverse portrait orientation support for all apps when All rotations mod is enabled
+[Fixed] More accurate traffic speed calculations
+[Fixed] 4x5 grid folder icon position on some devices
+[Fixed] HTC One E9 detection
+
+2.2.3
+[Fixed] Alarm and timer with active "No screen light up on charge" mod. Still not compatible with native Motion Launch gestures!
+[Fixed] Clock with seconds on some devices
+[Fixed] Battery with percentage on some devices
+[Fixed] 4x5 homescreen grid without app labels
+[Fixed][5.0+] Attempt to prevent Out Of Memory System UI crash
+[Fixed][5.1] Expand quick settings action
+
+2.2.2
+[New] Disable screen light up when connecting USB
+[New] Show seconds in status bar clock
+[New][Sense Home 7] Hide app drawer page indicator
+[Fixed] 4x5 homescreen grid on devices with soft keys
+[Fixed] Show traffic meter on lockscreen too
+[Fixed] Minor fixes and memory usage improvements
+
+2.2.1
+[New] Open Calendar or any other app/shortcut on notification drawer header date tap
+[New] Option to disable Wake gestures activation on boot
+[New][Sense 7] Smaller traffic meter
+[Fixed] Restrict EQS mod bug introduced in 2.2
+[Fixed][4.4] Sense Home launcher mods
+[Fixed][4.4] Unblock HTC widgets
+[Fixed][4.4] BT headset actions on connect/disconnect
+[Fixed] Action bar icons in Toolbox
+
+2.2
+[New] Hide Interruptions status bar icon
+[New] Allow using HTC widgets in any launcher
+[New][Sense 7] Restore Ringtone and Usage EQS tiles
+[Fixed][5.0+] Missing Home assist actions
+[Fixed][Sense 7] Wake gestures
+[Fixed] Improved Wake gestures capability detection
+[Fixed] Hiding YouTube channel watermark
+[Fixed] Bypassing lockscreen using Wake gestures should be faster now
+[Fixed] Force white name and phone number color in dialer when maximum caller photo is used
+[Fixed] Home long press executing recents long press action and other soft keys bugs
+[Fixed] Rare crashes when quickly scrolling app lists with icons
+[Fixed] Crashes in Material Toolbox UI
+
+2.1.2
+[Fixed] Additional app details
+[Fixed] Remove corners on photos in Messages too
+[Fixed][5.0+] Power flash and flashlight toggle on actions and gestures
+[Fixed][5.1] Enhanced screen lock
+[Fixed][5.1] Hide Power Saver notification
+
+2.1.1
+[Fixed] Use vibration duration value from Long press haptic feedback mod in other Toolbox mods
+[Fixed] Vibration on connect
+[Fixed][5.1] Contacts photo frame
+[Fixed][5.1] Enhanced screen lock
+[Fixed][5.1] Center clock on lockscreen and clock removal
+[Fixed][5.1] Selective alarm icon visibility
+[Fixed][5.1] Remove AM/PM
+[Fixed][5.1] Notification drawer header system monitoring
+[Fixed][5.1] Long press Back to kill foreground app
+[Fixed][Desire 816] Caller photo height
+
+2.1
+[New] Material UI design compatible with any 5.0+ ROM, activates automatically if HTC resource framework is missing
+[New] Vibrate on outgoing call connect even if proximity sensor is covered
+[New] Vibrate on call disconnect
+[New] Vibration duration on call connect and disconnect
+[New] Disable Back to mute incoming call ringer
+[New] Toggle text magnifier (option was removed from Settings in 5.0)
+[New][4.4.3+] Force "Last name first" order in contacts, call history and dialer
+[New][Sense 7] Hide Beats/BoomSound notification
+[Fixed][Sense 7] Darken wallpaper above rectangular caller photo
+[Fixed][Sense 7] 2-line caller name on lockscreen with rectangular caller photo
+[Fixed][Sense 7] Mods on Android 5.0.1 and 5.1 
+[Fixed] Soft keys long press actions
+[Fixed] E8 and M9+ detection
+[Fixed] Minor bugs
+
+2.0
+[New] App icon, logo and name. Support for both Sense 6 and 7
+[New] Match HTC Sense Input trace color with the current theme
+[New] Change HTC Sense Input trace opacity
+[Changed] Vibrate mode, silent mode and USB status bar icons
+[Changed] Always active mods section was removed, mods were moved to another sections
+[Removed][Sense 7] HTC Music Channel mod
+[Removed][Sense 7] All Messaging mods
+[Fixed][Sense 7] Alarm and screenshot icons replacement
+[Fixed][Sense 7] Hide Beats/Boomsound icons
+[Fixed][Sense 7] Caller photo mod
+[Fixed][Sense 7] Revealed settings mod
+[Fixed][Sense 7] Additional app details mod
+[Fixed][Sense 7] EPS apps remap mod
+[Fixed][Sense 7] No HTC Sense Input autocorrect mod
+[Fixed][Sense 7] Disable Flip to mute mod
+Many UI improvements
+
+1.5.6
+[New] Actions for wired and bluetooth headsets connect and disconnect
+[New] Completely disable Flip to mute
+[New][Better heads-up] Prevent heads-ups from showing when particular apps are active
+[Fixed] Media actions 10 minute timeout is now applied to Wake gestures as well
+[Fixed] Touch Lock menu item in Power menu
+[Fixed] Swipe up from Home action
+[Fixed] Quick recent apps improvements
+
+1.5.5
+[New][5.0][Experimental] Quick recent apps switch action on swipe up from home or recents key long press
+[New] Random PIN buttons order on HTC lockscreen
+[New] Show soft keyboard only if you requested it
+[New] Stock Lollipop and modified HTC transition animations between Sense launcher and apps
+[Fixed] Wake gestures freeze on boot
+[Fixed] FC with enabled "Hide dismiss button" option in Better heads-up
+[Fixed] Delay lockscreen appearance until the end of screen off fade animation
+[Fixed] Hide useless reminder on lockscreen when "Disable rejected call reminder" mod is active
+[Fixed][4.4] Timeout for media actions on volume up/down keys
+[Changed][4.4] Colored Bluetooth status bar icon when disconnected
+
+1.5.4.1
+[New] Toolbox will now notify if new build or version is available
+[New] All uncaught exceptions (force close) in the system will be logged by Toolbox and send with bug reports (log is cleared after evey successful report or when its size exceeds 150KB)
+[Fixed] Wi-Fi icon replacement
+[Fixed] Dragging app icons between pages in Infinifolders
+[Fixed] Remove launcher dock gradient background on Blinkfeed page too
+[Fixed] Some Toolbox UI bugs
+
+1.5.4
+[New] Remove launcher dock gradient background
+[New] Remove people widget background and footer
+[New] Remove music widget background
+[Fixed] Infinifolders on Sense Home 7.12.541048
+[Fixed] Some mods on HTC One M9
+[Fixed][5.0] Large photo mod on HTC One M8 Dual SIM
+
+1.5.3
+[New] App drawer icon long press actions
+[New][5.0] Auto EQS mod (pull down settings panel with one finger, always or if there are no clearable notifications)
+[Changed][5.0] Statusbar icons replacement, requires Xposed Framework 3.0 alpha 3 (XposedBridge.jar version 64)
+[Fixed] App drawer size during rearrange mode
+[Fixed][Sense Home 7] Folder items dragging when launcher lock is active
+[Fixed] Root access request on Toolbox launch to prevent looped requests in some mods
+[Fixed] Toolbox UI working on real Sense 7 ports and HTC One M9; Sense 7 is still not supported, many mods are broken
+
+1.5.2
+[New] Partial support for Sense 7 ROMs
+[New] Transparent Google Search widget with and without border
+[Changed] Translators list in About screen is now generated automatically on every l10n update, those with more than 100 translations and suggestions will be mentioned there
+[Fixed] Wake up action for different mods (short wakelock added)
+[Fixed] Long animation start delay for RAM in recents
+[Fixed][4.4] Center shortcut (assist action) in Extended assist panel
+
+1.5.1
+[New] Open app drawer action for Sense gestures and navigation keys
+[New] Volume keys media actions will work only if music is currently active or was active in the last 10 minutes
+[New][5.0] Disable EQS on secure lock screen
+[Fixed][5.0] Transparent app drawer action bar
+[Fixed] Sent and delivered toasts can now be disabled using Messages settings
+[Changed] Fade in animation for app icons in lists
+
+1.5.0
+[New][5.0] Better heads-up notifications
+[New][5.0] Compact EQS mod
+[New][5.0] Material styled home and recents popup menus
+[New] Disable HTC Sense Input autocorrect while keeping word prediction enabled
+[New] Free internal memory instead of total RAM in notification header
+[Fixed] All Toolbox mods to be compatible with Android 5.0 and Sense Home 7.0 (some mods were removed or modified to match new environment)
+
+1.5.0 RC 2
+[Fixed][5.0] Wi-Fi and Mobile data status bar icons
+[Fixed][Better heads-up] Crash when trying to blacklist an app, other bugfixes and improvements
+[New][Better heads-up] Long press notification to dismiss it, option to hide Dismiss button
+
+1.5.0 RC 1
+[New][5.0] Option to delay wake gestures activation for 10 seconds on boot
+[New] Better heads-up: fully customizable color themes, swipe up to hide
+[New] Free internal memory instead of total RAM in notification header
+[Removed][5.0] Status bar color themes, all icons are white now
+[Fixed] Hardware buttons backlight with enforcing SELinux. Dynamic backlight mod will have to execute more root commands to change backlight brightness.
+[Fixed] Signal and battery with percentage status bar icons
+[Fixed] Compact EQS animations (when in 1 row without notifications)
+[Fixed] Better heads-up mod bugs
+
+1.5.0 beta 5
+[New][5.0] Better heads-up notifications
+[New][5.0] Compact EQS mod
+[Fixed][5.0] Proper home popup menu width, color and ripple effect
+[Fixed][5.0] Music Channel crash in Settings
+[Fixed][5.0] GPS icon replacement
+[Fixed][5.0] Enhanced screen lock
+[Fixed][5.0] Battery percentage color on lockscreen
+[Fixed] Wake gestures and Touch lock activation after reboot
+[Fixed] Toolbox UI
+
+1.5.0 beta 4
+[Fixed] Transparent statusbar mod
+[Fixed] Hide statusbar icons on lockscreen too
+[Fixed] Center/hide clock on lockscreen
+[Fixed] Enhanced screen lock
+[Fixed] CPU temperature in notification drawer header with enforcing SELinux
+[Fixed] Next alarm time in notification drawer
+[New] Home popup menu style and animations
+
+1.5.0 beta 3
+[Fixed] Crash at launch on some 4.4 ROMs
+[Fixed] Crash on Sense theme change for Settings (and Toolbox itself)
+[Fixed] Small navbar mod causing major problems
+[Fixed] Wake gestures actions that dismiss lockscreen or go to BF/main launcher page
+[Fixed] Recents apps RAM usage mod errors
+[Fixed] Sense 6 themes override for several apps
+[Fixed] Hide battery icon on lockscreen too
+
+1.5.0 beta 2
+[Fixed] Wake gestures crash on M8
+[Fixed] Crash after localization update
+
+1.4.7.1
+[Fixed] Next alarm and signal level labels in notification drawer's footer
+[Fixed] Large photo mod - carrier name label on lockscreen on Dual SIM devices
+
+1.4.7
+[New] Touch lock mod
+[New] Select app to open screenshots
+[New] Hide Do Not Disturb notification
+[New] Info about currently used translation progress
+[Fixed] Switching to front camera when launched by Wake gestures
+[Fixed] Next alarm and signal level labels while in roaming
+[Fixed] Selected USB icon prevents other icons from hiding
+[Fixed] Music Channel mod on some devices
+[Fixed] Toolbox UI for different background colors
+
+1.4.6
+[Fixed] Sense 6 theme override support for Camera app
+[Fixed] Correct interaction of Power Flashlight and Wake Gestures Flashlight mods
+[Fixed] Transparent background for TV notification
+[Fixed] Bugs and crashes
+
+1.4.5
+[New] Haptic feedback duration options for navigation keys, long press and Sense keyboard
+[New] Display alarm icon only for defined number of hours before alarm
+[New] Tap statusbar to scroll to top in Google Play Store
+[Changed] EQS tile added for Music Channel mod
+[Changed] Sense 6 themes performance and compatibility improvements
+[Fixed] Hide USB icon
+[Fixed] Various mod fixes
+
+1.4.4
+[New] "Switch to previous app" action
+[New] Option to delete taken screenshot from notification
+[New] Hide BoomSound, LiveStage and Clari-Fi icons
+[Changed] Recents popup menu mod moved from Always active to Interface mods
+[Fixed] Wake gestures support with different lockscreen versions
+[Fixed] HTC One E8 detection
+[Fixed] RTL bugs (including traffic meter width)
+[Fixed] Popup Notifications crash (countless attempt)
+
+1.4.3
+[New] Additional actions for extended assist panel
+[New] Hide Wi-Fi notifications on Verizon devices
+[New] Make Music Channel (HTC music visualizations) available for any audio player
+[New] Increased long press delay option for Quick Flashlight mod
+[New] Additional backlight brightness level (minimum)
+[Fixed] Toast delivery reports
+[Fixed] Large photo on lock screen
+[Fixed] 46% battery image
+[Fixed] White line in dialer with small soft keys
+[Fixed] Problem description is required in any bug report (that way crash reports will be a lot more useful)
+[Fixed] Lots of bugs
+
+1.4.2.1
+[Fixed] Popup notifications orientation change
+[Fixed] 4x1 weather and clock widget background
+
+1.4.2
+[New] Show signal strength in notification drawer's footer
+[New] Notification drawer footer static and dynamic transparency
+[New] Hide Input Method notification
+[New] HTC Sense keyboard will now change its theme according to the theme of a parent app, if that app is added to the list. You can even add non-HTC apps.
+[Fixed] Power Saver vibration option didn't stick after turning off Extreme Power Saving mode
+[Fixed] Width of enhanced toasts with app icon
+[Fixed] Displaying Popup Notification when APM dialog is visible
+[Fixed] Maximum number of popup notifications is 12 due to HTC tabs limitations, so only last 12 notifications will be shown
+[Fixed] Some bugs
+
+1.4.1
+[Fixed] Latest HTC Lock Screen update from Play Store (or stock from 4.4.3) is required for Wake Gestures to work
+[Fixed] Popup Notifications are dismissed when turning screen on from deep sleep
+[Fixed] Many bugs that were causing Toolbox crashes
+
+1.4
+[New] Extreme Power Saving apps remap. All 6 apps (including Exit) can be changed. Long press any app tile to turn off EPS mode.
+[New] Add application's icon and label to its toasts
+[New] Extended troubleshooting functionality
+ - Send crash reports to developers if Toolbox stops working
+ - Manually send a detailed report with the problem description and your contacts
+[Fixed] Hardware buttons backlight control stopped working after Toolbox reinstall
+[Fixed] Wake Gestures HTC Camera launch after last HTC Lock Screen update
+[Fixed] Lock device action wasn't locking device with set timeout
+[Fixed] Wrong labels for some apps in Toolbox list preferences
+[Fixed] Some mods and UI fixes, speed optimizations
+
+1.3.6
+[Fixed] Softkeys recents and home long press in landscape mode
+[Fixed] Popup notification height in landscape mode
+[Fixed][4.4.3] Sense 6 Themes and widget transparency.
+[New][4.4.3] Ability to change widget themes (add widget packages to the list) and the color of system controls (e.g. volume sliders, add Android System).
+
+1.3.5.1
+[Fixed] Translucent horizontal EQS
+
+1.3.5
+[New] Animate percentage battery during charge
+[New] Translucent EQS
+[New] Translucent horizontal EQS
+[New] Remove frames with corners from contact photos
+[Fixed] Large photo and small soft keys on HTC Desire 816
+[Fixed] Translucent notifications background and icons scaling
+[Fixed] Horizontal EQS width and fading edge background
+[Fixed] Small navbar in landscape mode
+[Fixed] Localization
+Popup notifications
+	[Fixed] Screen light up on every popup notification
+	[Fixed] Show popups for missed calls even in unobtrusive mode
+	[Fixed] Smaller popup in landscape mode
+
+1.3.3
+[New] Translucent notifications background
+[New] LED notifications during charge (not working on some devices)
+[New] Notification LED blinking timeout
+[New] Battery with percentage
+[Fixed] Wake gestures on 4.4.3
+[Fixed] Softkeys back long press in landscape orientation
+Popup notifications
+   [New] Dismiss by dragging popup to bottom
+   [New] Wake screen on every popup
+   [New] Display popups only if screen is off
+   [Fixed] Dismiss lockscreen on main notification action
+
+1.3.2
+[Fixed] Widgets and brightness slider background transparency
+[Fixed] Faster loading of application lists with icons
+[Fixed] Many minor mod and Toolbox UI problems
+[New] Disable low battery popup and sound warnings
+[New] Disable slow charge notification (untested)
+[New, Experimental] Popup Notifications
+ - Horizontally scrollable popup to show multiple notifications
+ - Can be displayed on secure lockscreen
+ - If popup was opened with screen off, it's possible to dismiss all notifications and go back to sleep immediately
+ - Blacklist and whitelist apps to control what notifications are allowed to be displayed as popups
+ - While using blacklist you can add apps to it by long pressing Dismiss button in popup window
+ - Switching between normal and expanded view can be done by 2-finger vertical swipe from notification area (excluding action buttons)
+ - Options: always show expanded view, ignore low priority notifications, prevent popups from showing in any fullscreen app
+ - Background blur was added just for fun. It is static, works only if screen is on and doesn't react properly to orientation changes
+
+1.3.0
+[Fixed][4.4.3] Sense 6 Themes
+[New] Additional elements support for Sense 6 Themes: add "Android System" to change system controls theme (e.g. volume panel sliders and header) [4.4.3], add any Sense widget to change its theme [4.4.3], add "System UI" to change Quick settings and Brightness slider themes
+[Fixed] Brightness slider reacts to brightness changes in Settings, min brightness value was set to 10%, background changed to the same as for header
+[New] High quality recent apps thumbnails
+[New] Transparent app drawer action bar background
+[New] [HTC One M8] Assist override was replaced with action for recents key long press
+
+1.2.7
+[New] Immersive BlinkFeed mod removes action bar and makes statusbar semitransparent
+[New] BlinkFeed shortcut mod adds an icon to app drawer that leads directly to BlinkFeed page
+[New] Allow 180 degree orientation
+[New] Fully transparent statusbar in launcher, in apps with translucent statusbar (including all Sense themed apps) and on lockscreen
+[New] Shortcuts added as an action for gestures/buttons
+[New] Apply Sense and Messaging mods without soft reboot
+[Fixed] Wake gestures support detection for some devices
+
+1.2.6
+[Fixed] Localization slowdown
+
+1.2.5
+[New] Mod to change timeout EQS values
+[New] Mod to fix bottom gap on BlinkFeed launcher homescreens
+[New] Extended assist panel (a ring selector that pops up on swipe up from Home). Added Voice Dial and APM shortcuts.
+[Fixed] Quick Call in Wake gestures for M7
+[Fixed] HTC Camera launch without unlocking secure lock and launch other actions/apps after unlocking (the only thing that won't work with secure screen lock is opening EQS/notification panels)
+[Fixed] Hide dock on Blinkfeed mod was not working with Go to Blinkfeed action in Wake gestures
+[Fixed] Issues due to HTC Launcher restart after font, theme or language change
+[Fixed] Dynamic buttons backlight in Gallery
+[Fixed] Apply icons theme color to traffic meter too
+[Fixed] Truncate labels to single line in 6-row appdrawer on M8, second line won't fit because of navbar
+[Fixed] Wake gestures bugs
+[Fixed] Some UI and language bugs
+
+1.2
+[Fixed] Sense 6 Themes color override for HTC Sense Input (onscreen keyboard)
+[Fixed] Some sections in Settings are separate packages, they were removed from list and forced to use Settings theme (but there are exclusions, e.g. Mobile data section theme == Phone app theme, Keyboard settings == HTC Sense Input, Data usage == Data usage)
+[Fixed] Long press home for menu on HTC One M8
+[Fixed] White bar in dialer when small sofkeys were used on M8
+[Fixed] SystemUI crash while using hEQS
+[Fixed] Wrong layout positions with Caller photo mod on M7 and M8
+[Fixed] Show Hardware information in About section of Settings
+[Fixed] Widgets size restrictions (for 4x5 homescreen)
+[New] Performing kill foreground app action in any launcher will turn the screen off
+[New] Wake gesture actions: play/pause music, next/previous track
+[New] Apply icon theme color to clock, battery percentage, network and carrier labels
+[New] Hide dock on BlinkFeed
+[New] Wake gestures support for HTC One M8
+[Improved] Wake gestures
+
+1.1
+[Fixed] Widget overlapping on 4x5 homescreens
+[Fixed] Swipe up on dock in appdrawer bug
+[Fixed] PIN/password are not displayed with Fast unlock mod enabled
+[Fixed] Sense 6 Themes color override for Gallery and TV
+[Fixed] Vibration when turning screen on with Quick Flashlight mod enabled
+[Fixed] APM shutdown animation
+[New] Ability to change Sense 6 theme for all selected apps at once
+[New] Wake gestures [requires ElementalX 14.4+ or any other kernel with wake_gesture support]
+[New] No signal icon
+[New] Downloadable localizations
+
+1.0
+[Fix] All Sense 5 Toolbox mods
+[Fix] Dynamic Buttons Backlight bug on screen off
+[New] Sense 6 Theme colors per app override
+[New] Option to hide Toolbox icon from Settings
+[New] EQS brightness levels control
+[New] Small navbar on HTC One M8
+[New] Hide Power Saver notification
+[Change] Jelly Bean styled toast changed to flat Sense 6 styled
