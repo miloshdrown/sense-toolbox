@@ -10,6 +10,6 @@ http://sensetoolbox.com/deploy/<br>
 CI is configured for Android 5 and will require changes to work with newer versions.<br>
 <br>
 Contact me if you have any questions or suggestions:<br>
-iam@mikanoshi.name<br>
+[iam@mikanoshi.name](mailto:iam@mikanoshi.name)<br>
 ICQ 230-490<br>
 http://forum.xda-developers.com/member.php?u=5386198
